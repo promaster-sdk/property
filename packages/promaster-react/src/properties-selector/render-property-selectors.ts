@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as R from "ramda";
+// import * as R from "ramda";
 import {
 	Unit,
 	Units,
@@ -16,7 +16,7 @@ import {
 	AmountPropertySelector,
 	AmountPropertySelectorClassNames,
 	ComboboxPropertySelectorClassNames
-} from "property-selectors";
+} from "../property-selectors";
 import {
 	PropertySelectionOnChange,
 	AmountFormat,
@@ -253,7 +253,7 @@ function getPropertyType(quantity: QuantityType): PropertyType {
 
 }
 
-function getSingleValidValueOrNull(productProperty: Property, properties: PropertyValueSet): PropertyValueItem {
+function getSingleValidValueOrNull(productProperty: Property, properties: PropertyValueSet): PropertyValueItem | null {
 	if (Units.getStringFromQuantityType(productProperty.quantity).toLocaleLowerCase() === 'discrete') {
 		const validPropertyValueItems: PropertyValueItem[] = [];
 		for (let productValueItem of productProperty.valueItems) {
