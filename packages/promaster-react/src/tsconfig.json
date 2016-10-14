@@ -16,7 +16,7 @@
     "noResolve": false,
     "outDir": "../js_out",
     "preserveConstEnums": true,
-    "pretty": true,
+    "pretty": false,
     "removeComments": true,
     "isolatedModules": false,
     "sourceMap": false,

@@ -85,7 +85,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     _onChange(e: React.SyntheticEvent<any>, onValueChange: (newAmount: Amount<any>) => void) {
         const newStringValue = (e.target as HTMLInputElement).value.replace(",", ".");
-        const {inputUnit, inputDecimalCount, errorMessage, notNumericMessage, isRequiredMessage} = this.props;
+        const {inputUnit, inputDecimalCount} = this.props;
 
         // If the change would add more decimals than allowed then ignore the change
         const stringDecimalCount = _getDecimalCountFromString(newStringValue);
@@ -95,12 +95,12 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
         // Update the internal state and if the change resulted in a valid value then emit a change with that value
         const newAmount = _unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
         const isValid = this.updateState(newAmount, newStringValue);
-        if (isValid)
+        if (isValid && newAmount)
             this._debouncedOnValueChange(newAmount, onValueChange);
     }
 
     // We need to return a boolean is the new value is valid or not because state is not immidiately mutated
-    updateState(newAmount: Amount<any>, newStringValue: string): boolean {
+    updateState(newAmount: Amount<any> | null, newStringValue: string): boolean {
         const {isRequiredMessage, notNumericMessage, errorMessage} = this.props;
         const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
         if (internalErrorMessage) {
@@ -116,7 +116,10 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 }
 
 
-function getInternalErrorMessage(newAmount: Amount<any>, newStringValue: string, isRequiredMessage: string, notNumericMessage: string): string {
+function getInternalErrorMessage(newAmount: Amount<any> | null,
+																 newStringValue: string,
+																 isRequiredMessage: string,
+																 notNumericMessage: string): string | null {
 
     // Check if blank and if required or not
     if (newStringValue.trim() === "" && isRequiredMessage) {
@@ -154,7 +157,7 @@ function _formatWithUnitAndDecimalCount<T>(amount: Amount<T>, unit: Unit<T>, dec
     }
 }
 
-function _unformatWithUnitAndDecimalCount<T>(text: string, unit: Unit<T>, inputDecimalCount: number): Amount<T> {
+function _unformatWithUnitAndDecimalCount<T>(text: string, unit: Unit<T>, inputDecimalCount: number): Amount<T> | null {
     if (!text || text.length === 0)
         return null;
     const parsedFloatValue = _filterFloat(text);
@@ -186,9 +189,9 @@ function _filterFloat(value: string): number {
 // be triggered. The function will be called after it stops being called for
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
-function debounce(func: Function, wait: number, immediate?: boolean): any {
+function debounce(this: any, func: Function, wait: number, immediate?: boolean): any {
     let timeout: any;
-    return function () {
+    return function (this: any) {
         const context = this, args = arguments;
         const later = function () {
             timeout = null;
