@@ -1,0 +1,20 @@
+{
+  "name": "promaster-react",
+  "version": "0.1.0",
+  "description": "React components for applications that use Promaster.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^0.14.41",
+    "@types/react-dom": "^0.14.18"
+  }
+}

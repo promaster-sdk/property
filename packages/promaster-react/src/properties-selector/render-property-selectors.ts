@@ -1,0 +1,302 @@
+import * as React from "react";
+import * as R from "ramda";
+import {
+	Unit,
+	Units,
+	PropertyValueSet,
+	QuantityType,
+	PropertyValue,
+	PropertyFilter,
+	PropertyType
+} from "promaster-primitives";
+import {FilterPrettyPrint} from "promaster-portable/lib/property_filtering";
+import {
+	ComboboxPropertySelector,
+	TextboxPropertySelector,
+	AmountPropertySelector,
+	AmountPropertySelectorClassNames,
+	ComboboxPropertySelectorClassNames
+} from "property-selectors";
+import {
+	PropertySelectionOnChange,
+	AmountFormat,
+	OnPropertyFormatChanged,
+	RenderedPropertySelector,
+	TranslatePropertyValue,
+	TranslateNotNumericMessage,
+	TranslateValueIsRequiredMessage,
+	TranslatePropertyName,
+	Property,
+	PropertyValueItem,
+} from "./types";
+
+export const amountPropertySelector = React.createFactory(AmountPropertySelector);
+export const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
+export const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
+
+export interface RenderPropertySelectorsParameters {
+
+	// Required inputs
+	readonly productProperties: Array<Property>
+	readonly selectedProperties: PropertyValueSet,
+	readonly filterPrettyPrint: FilterPrettyPrint,
+
+	// Includes the raw property name and value in paranthesis
+	readonly includeCodes: boolean,
+	// Will render properties that according to their rule should be hidden
+	readonly includeHiddenProperties: boolean,
+	// Will automatically select values for properties that have only one valid value
+	readonly autoSelectSingleValidValue: boolean
+
+	// Events
+	readonly onChange: PropertySelectionOnChange,
+	readonly onPropertyFormatChanged: OnPropertyFormatChanged,
+
+	// Translations
+	readonly translatePropertyName: TranslatePropertyName,
+	readonly translatePropertyValue: TranslatePropertyValue,
+	readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
+	readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage
+
+	// Specifies property names of properties that should be read-only
+	readonly readOnlyProperties: Set<string>,
+	// Specifies property names of properties that should be optional (only for amounts for now)
+	readonly optionalProperties: Set<string>,
+	// Specifies input format per property name for entering amount properties (measure unit and decimal count)
+	readonly inputFormats: Map<string, AmountFormat>,
+
+	readonly classNames: RenderPropertySelectorsParametersClassNames,
+}
+
+interface RenderPropertySelectorsParametersClassNames {
+	amountPropertySelectorClassNames: AmountPropertySelectorClassNames,
+	comboboxPropertySelectorClassNames: ComboboxPropertySelectorClassNames,
+}
+
+export function renderPropertySelectors({
+	productProperties,
+	selectedProperties,
+	filterPrettyPrint,
+
+	includeCodes,
+	includeHiddenProperties,
+	autoSelectSingleValidValue,
+
+	onChange,
+	onPropertyFormatChanged,
+
+	translatePropertyName,
+	translatePropertyValue,
+	translateValueMustBeNumericMessage,
+	translateValueIsRequiredMessage,
+
+	readOnlyProperties,
+	optionalProperties,
+	inputFormats,
+
+	classNames,
+
+}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector> {
+
+	// Default true if not specified otherwise
+	autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
+
+	const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
+
+	const selectorDefinitions: Array<RenderedPropertySelector> = sortedArray
+		.filter((property: Property) => includeHiddenProperties || property.visibilityFilter.isValid(selectedProperties))
+		.map((property: Property) => {
+
+			const selectedValue = selectedProperties.getValue(property.name, (): any => null);
+			const selectedValueItem = property.valueItems && property.valueItems.find((value: PropertyValueItem) => (value.value === null && selectedValue === null) || (value.value && value.value.equals(selectedValue)));
+
+			let isValid: boolean;
+			switch (getPropertyType(property.quantity)) {
+				case PropertyType.Integer:
+					isValid = selectedValueItem && selectedValueItem.validationFilter.isValid(selectedProperties);
+					break;
+				case PropertyType.Amount:
+					isValid = property.validationFilter && property.validationFilter.isValid(selectedProperties);
+					break;
+				default:
+					isValid = true;
+			}
+
+			const isReadOnly = readOnlyProperties.has(property.name);
+			const inputFormat = inputFormats.get(property.name);
+
+			return {
+				sortNo: property.sortNo,
+				propertyName: property.name,
+				groupName: property.group,
+
+				isValid: isValid,
+				isHidden: !property.visibilityFilter.isValid(selectedProperties),
+
+				label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
+
+				renderedSelectorElement: renderPropertySelector(
+					property.name,
+					property.quantity,
+					property.validationFilter,
+					property.valueItems,
+					selectedValue,
+					selectedProperties,
+					includeCodes,
+					optionalProperties,
+					handleChange(onChange, productProperties, autoSelectSingleValidValue),
+					onPropertyFormatChanged,
+					filterPrettyPrint,
+					inputFormat,
+					isReadOnly,
+					autoSelectSingleValidValue
+						? !!getSingleValidValueOrNull(property, selectedProperties)
+						: false,
+					translatePropertyValue,
+					translateValueMustBeNumericMessage,
+					translateValueIsRequiredMessage,
+					classNames
+				)
+
+			};
+		});
+
+	return selectorDefinitions;
+
+}
+
+function renderPropertySelector(propertyName: string,
+								quantity: QuantityType,
+								validationFilter: PropertyFilter,
+								valueItems: Array<PropertyValueItem>,
+								selectedValue: PropertyValue,
+								selectedProperties: PropertyValueSet,
+								includeCodes: boolean,
+								optionalProperties: Set<string>,
+								onChange: PropertySelectionOnChange,
+								onPropertyFormatChanged: OnPropertyFormatChanged,
+								filterPrettyPrint: FilterPrettyPrint,
+								inputFormat: AmountFormat,
+								readOnly: boolean,
+								locked: boolean,
+								translatePropertyValue: TranslatePropertyValue,
+								translateNotNumericMessage: TranslateNotNumericMessage,
+								translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
+								classNames: RenderPropertySelectorsParametersClassNames): any {
+
+	function onValueChange(newValue: PropertyValue) {
+		onChange(newValue
+			? selectedProperties.set(propertyName, newValue)
+			: selectedProperties.removeProperty(propertyName)
+		);
+	}
+
+	switch (getPropertyType(quantity)) {
+		case PropertyType.Text:
+			return textboxPropertySelector({
+				value: selectedValue && selectedValue.getText(),
+				readOnly: readOnly,
+				onValueChange: onValueChange
+			});
+		case PropertyType.Integer: {
+
+			return comboboxPropertySelector({
+				sortValidFirst: true,
+				propertyName: propertyName,
+				propertyValueSet: selectedProperties,
+				valueItems: valueItems && valueItems.map((vi) => ({
+					value: vi.value,
+					text: translatePropertyValue(propertyName, vi.value ? vi.value.getInteger() : null),
+					sortNo: vi.sortNo,
+					validationFilter: vi.validationFilter
+				})),
+				showCodes: includeCodes,
+				filterPrettyPrint: filterPrettyPrint,
+				onValueChange: onValueChange,
+				readOnly: readOnly,
+				locked: locked,
+				classNames: classNames.comboboxPropertySelectorClassNames
+			});
+		}
+		default:
+			return amountPropertySelector({
+				propertyName: propertyName,
+				propertyValueSet: selectedProperties,
+				inputUnit: inputFormat.unit,
+				inputDecimalCount: inputFormat.decimalCount,
+				onFormatChanged: (unit: Unit<any>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount),
+				onValueChange: onValueChange,
+				notNumericMessage: translateNotNumericMessage(),
+
+				// If it is optional then use blank required message
+				isRequiredMessage: optionalProperties && optionalProperties.has(propertyName) ? "" : translateValueIsRequiredMessage(),
+
+				validationFilter: validationFilter,
+				filterPrettyPrint: filterPrettyPrint,
+				readOnly: readOnly,
+				classNames: classNames.amountPropertySelectorClassNames
+			});
+	}
+}
+
+
+function getPropertyType(quantity: QuantityType): PropertyType {
+
+	switch (Units.getStringFromQuantityType(quantity).toLocaleLowerCase()) {
+		case 'text':
+			return PropertyType.Text;
+		case 'discrete':
+			return PropertyType.Integer;
+		default:
+			return PropertyType.Amount;
+	}
+
+}
+
+function getSingleValidValueOrNull(productProperty: Property, properties: PropertyValueSet): PropertyValueItem {
+	if (Units.getStringFromQuantityType(productProperty.quantity).toLocaleLowerCase() === 'discrete') {
+		const validPropertyValueItems: PropertyValueItem[] = [];
+		for (let productValueItem of productProperty.valueItems) {
+			const isValid = productValueItem.validationFilter.isValid(properties);
+
+			if (isValid) {
+				validPropertyValueItems.push(productValueItem);
+			}
+		}
+
+		return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : null;
+	}
+
+	return null;
+}
+
+function handleChange(externalOnChange: PropertySelectionOnChange, productProperties: Array<Property>, autoSelectSingleValidValue: boolean) {
+	return (properties: PropertyValueSet) => {
+
+		if (!autoSelectSingleValidValue) {
+			externalOnChange(properties);
+			return;
+		}
+
+		let lastProperties = properties;
+
+		for (let i = 0; i < 4; i++) {
+
+			for (let productProperty of productProperties) {
+				const propertyValueItem = getSingleValidValueOrNull(productProperty, properties);
+				if (propertyValueItem) {
+					properties = properties.set(productProperty.name, propertyValueItem.value);
+				}
+			}
+
+			if (properties === lastProperties) {
+				break;
+			}
+
+			lastProperties = properties;
+		}
+
+		externalOnChange(properties);
+	};
+}
+
