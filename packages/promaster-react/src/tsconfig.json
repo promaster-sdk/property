@@ -14,7 +14,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noResolve": false,
-    "outDir": "../dist",
+    "outDir": "../js_out",
     "preserveConstEnums": true,
     "pretty": true,
     "removeComments": true,
