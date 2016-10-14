@@ -101,7 +101,8 @@ export function renderPropertySelectors({
 	// Default true if not specified otherwise
 	autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
 
-	const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
+	// const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
+	const sortedArray = productProperties.slice().sort((a, b) => a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0);
 
 	const selectorDefinitions: Array<RenderedPropertySelector> = sortedArray
 		.filter((property: Property) => includeHiddenProperties || property.visibilityFilter.isValid(selectedProperties))
