@@ -114,7 +114,7 @@ export function renderPropertySelectors({
 			let isValid: boolean;
 			switch (getPropertyType(property.quantity)) {
 				case PropertyType.Integer:
-					isValid = selectedValueItem && selectedValueItem.validationFilter.isValid(selectedProperties);
+					isValid = selectedValueItem ? selectedValueItem.validationFilter.isValid(selectedProperties) : false;
 					break;
 				case PropertyType.Amount:
 					isValid = property.validationFilter && property.validationFilter.isValid(selectedProperties);
@@ -124,7 +124,8 @@ export function renderPropertySelectors({
 			}
 
 			const isReadOnly = readOnlyProperties.has(property.name);
-			const inputFormat = inputFormats.get(property.name);
+			// TODO: Better handling of format to use when the format is missing in the map
+			const inputFormat = inputFormats.get(property.name) || {unit: Units.One, decimalCount: 2};;
 
 			return {
 				sortNo: property.sortNo,

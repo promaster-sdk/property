@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Unit, PropertyValueSet, QuantityType, PropertyValue, PropertyFilter} from "promaster-primitives";
-import {FilterPrettyPrint} from "promaster-portable/lib/property_filtering";
 
 export type AmountFormat = {unit: Unit<any>, decimalCount: number};
 export type PropertySelectionOnChange = (properties: PropertyValueSet) => void;
