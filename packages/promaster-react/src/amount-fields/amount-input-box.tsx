@@ -6,7 +6,6 @@
  */
 import * as React from "react";
 import {Amount, Unit} from "promaster-primitives";
-import * as invariant from "invariant";
 
 export interface AmountInputBoxProps {
     readonly key?: string,
@@ -50,8 +49,10 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     initStateFromProps(initProps: AmountInputBoxProps) {
         const {value, inputUnit, inputDecimalCount} = initProps;
-        invariant(inputUnit, "Missing inputUnit");
-        invariant(inputDecimalCount !== null && inputDecimalCount !== undefined, "Missing inputDecimalCount");
+        if(!inputUnit)
+            console.error("Missing inputUnit");
+        if(!(inputDecimalCount !== null && inputDecimalCount !== undefined))
+            console.error("Missing inputDecimalCount");
         const formattedValue = _formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
         this.updateState(value, formattedValue);
     }
