@@ -33,7 +33,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
 			validationFilter, propertyValueSet, propertyName, filterPrettyPrint, inputUnit,
             inputDecimalCount, readOnly, classNames} = this.props;
 
-		const value = propertyValueSet.getAmount(propertyName, () => null);
+		const value: Amount<any> = propertyValueSet.getAmount(propertyName);
 
         return (
 			<span className={classNames.amount}>
