@@ -63,7 +63,7 @@ export class TextboxPropertySelector extends React.Component<TextboxPropertySele
 // leading edge, instead of the trailing.
 function debounce(func: Function, wait: number, immediate?: boolean): any {
     let timeout: any;
-    return function () {
+    return function (this: any) {
         const context = this, args = arguments;
         const later = function () {
             timeout = null;
