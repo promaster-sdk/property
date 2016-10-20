@@ -4,7 +4,8 @@
   "description": "React components for applications that use Promaster.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -p src",
+    "tsc": "tsc -p src",
+    "tsc:example": "tsc -p example",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server"
   },
