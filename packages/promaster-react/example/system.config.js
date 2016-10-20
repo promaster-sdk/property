@@ -31,5 +31,10 @@ SystemJS.config({
     "typescript": "typescript/",
     "react": "react/dist/react.js",
     "react-dom": "react-dom/dist/react-dom.js"
+  },
+  typescriptOptions: {
+    module: "system",
+    noImplicitAny: true,
+    jsx: "react"
   }
 });
