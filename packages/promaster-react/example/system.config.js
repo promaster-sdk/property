@@ -15,9 +15,6 @@ SystemJS.config({
         }
       }
     },
-    "fbjs": {
-      "defaultExtension": "js"
-    },
     "app": {
       "main": "app.tsx",
       "defaultExtension": "tsx",
