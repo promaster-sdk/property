@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,8 @@
   "devDependencies": {
     "@types/react": "^0.14.41",
     "@types/react-dom": "^0.14.18",
+    "http-server": "^0.9.0",
+    "plugin-typescript": "^5.2.7",
     "typescript": "^2.0.3"
   }
 }
