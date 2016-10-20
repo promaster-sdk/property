@@ -2,15 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Example</title>
 </head>
 <body>
 
-  <!-- body bottom scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.39/system.js"></script>
-  <script src="system.config.js"></script>
-  <script>
-    SystemJS.import('example/app/start.tsx');
-  </script>
+<div id="root"></div>
+
+<!-- body bottom scripts -->
+<script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+<script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.39/system.js"></script>
+<script src="system.config.js"></script>
+<script>
+  SystemJS.import('app/start.tsx');
+</script>
+
 </body>
 </html>

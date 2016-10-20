@@ -5,106 +5,106 @@ import * as React from "react";
 import {Units, Unit} from "promaster-primitives";
 
 export interface AmountFormatSelectorProps {
-    readonly key?: string,
-    readonly selectedUnit: Unit<any>,
-    readonly selectedDecimalCount: number,
-    readonly onFormatChanged?: OnFormatChanged,
-    readonly classNames: AmountFormatSelectorClassNames,
+	readonly key?: string,
+	readonly selectedUnit: Unit<any>,
+	readonly selectedDecimalCount: number,
+	readonly onFormatChanged?: OnFormatChanged,
+	readonly classNames: AmountFormatSelectorClassNames,
 }
 
 export interface AmountFormatSelectorClassNames {
-    readonly format: string,
-    readonly formatActive: string,
-    readonly unit: string,
-    readonly precision: string,
-    readonly cancel: string,
+	readonly format: string,
+	readonly formatActive: string,
+	readonly unit: string,
+	readonly precision: string,
+	readonly cancel: string,
 }
 
 interface State {
-    readonly active: boolean
+	readonly active: boolean
 }
 
 export type OnFormatChanged = (unit: Unit<any>, decimalCount: number) => void;
 
 export class AmountFormatSelector extends React.Component<AmountFormatSelectorProps, State> {
 
-    constructor(props: AmountFormatSelectorProps) {
-        super(props);
-        this.state = {active: false};
-    }
+	constructor(props: AmountFormatSelectorProps) {
+		super(props);
+		this.state = {active: false};
+	}
 
-    render() {
+	render() {
 
-        const {selectedUnit, selectedDecimalCount, onFormatChanged, classNames} = this.props;
+		const {selectedUnit, selectedDecimalCount, onFormatChanged, classNames} = this.props;
 
-        const className = classNames.format;
+		const className = classNames.format;
 
-        // If there is no handler for onFormatChanged then the user should not be able to change the format
-        if (!this.state.active || !onFormatChanged) {
+		// If there is no handler for onFormatChanged then the user should not be able to change the format
+		if (!this.state.active || !onFormatChanged) {
 
-            return (
-                <span className={className} onClick={(_:any) => this.setState({active: true})}>
+			return (
+				<span className={className} onClick={(_:any) => this.setState({active: true})}>
                     {selectedUnit.label}
 			    </span>
-            );
+			);
 
-        }
+		}
 
-        // Get a list of all units within the quantity
-        const quantity = selectedUnit.getQuantityType();
-        const units = Units.getUnitsForQuantity(quantity);
-        const unitNames = units.map((u) => Units.getStringFromUnit(u));
-        const selectedUnitName = Units.getStringFromUnit(selectedUnit);
+		// Get a list of all units within the quantity
+		const quantity = selectedUnit.getQuantityType();
+		const units = Units.getUnitsForQuantity(quantity);
+		const unitNames = units.map((u) => Units.getStringFromUnit(u));
+		const selectedUnitName = Units.getStringFromUnit(selectedUnit);
 
-        const decimalCounts = [0, 1, 2, 3, 4, 5];
-        if (decimalCounts.indexOf(selectedDecimalCount) === -1)
-            decimalCounts.push(selectedDecimalCount);
+		const decimalCounts = [0, 1, 2, 3, 4, 5];
+		if (decimalCounts.indexOf(selectedDecimalCount) === -1)
+			decimalCounts.push(selectedDecimalCount);
 
-        // const classNameToUse = className + (this.state.active? ' active' : '');
-        const classNameToUse = this.state.active ? classNames.formatActive : classNames.format;
+		// const classNameToUse = className + (this.state.active? ' active' : '');
+		const classNameToUse = this.state.active ? classNames.formatActive : classNames.format;
 
-        return (
-            <span className={classNameToUse}>
+		return (
+			<span className={classNameToUse}>
                 <select className={classNames.unit}
-                        value={selectedUnitName}
-                        onChange={(e) => {
+												value={selectedUnitName}
+												onChange={(e) => {
                             this.setState({active: false});
                             _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
                         }}>
                     {
-                        units.map((u, index) => <option key={unitNames[index]}
-                                                        value={unitNames[index]}> {u.label} </option>)
-                    }
+											units.map((u, index) => <option key={unitNames[index]}
+																											value={unitNames[index]}> {u.label} </option>)
+										}
                 </select>
                 <select className={classNames.precision}
-                        value={selectedDecimalCount.toString()}
-                        onChange={(e) => {
+												value={selectedDecimalCount.toString()}
+												onChange={(e) => {
                             this.setState({active: false});
                             _onDecimalCountChange(e, selectedUnit, onFormatChanged);
                         }}>
                     {decimalCounts.map((dc) => <option key={dc.toString()} value={dc.toString()}>{dc}</option>)}
                 </select>
                 <button className={classNames.cancel}
-                        onClick={(_: any) => this.setState({active: false})}>
+												onClick={(_: any) => this.setState({active: false})}>
                     {
-                        // &nbsp; or the vertical alignment breaks. Like, *why*, though?
-                        "\u00A0"
-                    }
+											// &nbsp; or the vertical alignment breaks. Like, *why*, though?
+											"\u00A0"
+										}
                 </button>
             </span>
-        );
+		);
 
-    }
+	}
 }
 
 function _onDecimalCountChange(e: React.SyntheticEvent<any>, selectedUnit: Unit<any>, onFormatChanged: OnFormatChanged) {
-    const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
-    const selectedDecimalCount = selectedIndex;
-    onFormatChanged(selectedUnit, selectedDecimalCount);
+	const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
+	const selectedDecimalCount = selectedIndex;
+	onFormatChanged(selectedUnit, selectedDecimalCount);
 }
 
 function _onUnitChange(e: React.SyntheticEvent<any>, units: Unit<any>[], selectedDecimalCount: number, onFormatChanged: OnFormatChanged) {
-    const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
-    const selectedUnit = units[selectedIndex];
-    onFormatChanged(selectedUnit, selectedDecimalCount);
+	const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
+	const selectedUnit = units[selectedIndex];
+	onFormatChanged(selectedUnit, selectedDecimalCount);
 }

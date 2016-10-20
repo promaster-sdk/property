@@ -1,33 +1,38 @@
 SystemJS.config({
-    baseURL: '../',
-    packages: {
-        "ts": {
-            "main": "plugin.js"
-        },
-        "typescript": {
-            "main": "lib/typescript.js",
-            "meta": {
-                "lib/typescript.js": {
-                    "exports": "ts"
-                }
-            }
-        },
-        "example/app": {
-            "main": "app.tsx",
-            "defaultExtension": "tsx",
-            "format": "esm",
-            "meta": {
-                "*.tsx": {
-                    "loader": "ts"
-                },
-                "*.ts": {
-                    "loader": "ts"
-                }
-            }
-        }
+  baseURL: '../node_modules/',
+  paths: {
+    "app/": "./app/"
+  },
+  packages: {
+    "ts": {
+      "main": "plugin.js"
     },
-    map: {
-        "ts": "node_modules/plugin-typescript/lib/",
-        "typescript": "node_modules/typescript/"
+    "typescript": {
+      "main": "lib/typescript.js",
+      "meta": {
+        "lib/typescript.js": {
+          "exports": "ts"
+        }
+      }
+    },
+    "fbjs": {
+      "defaultExtension": "js"
+    },
+    "app": {
+      "main": "app.tsx",
+      "defaultExtension": "tsx",
+      "format": "esm",
+      "meta": {
+        "*.tsx": {
+          "loader": "ts"
+        }
+      }
     }
+  },
+  map: {
+    "ts": "plugin-typescript/lib/",
+    "typescript": "typescript/",
+    "react": "https://unpkg.com/react@15.3.2/dist/react.js",
+    "react-dom": "https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"
+  }
 });
