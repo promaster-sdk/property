@@ -1,8 +1,5 @@
 SystemJS.config({
-  baseURL: '../node_modules/',
-  paths: {
-    "app/": "./app/"
-  },
+  baseURL: '.',
   packages: {
     "ts": {
       "main": "plugin.js"
@@ -24,13 +21,25 @@ SystemJS.config({
           "loader": "ts"
         }
       }
+    },
+    "promaster-react": {
+      "main": "index.tsx",
+      "defaultExtension": "tsx",
+      "format": "esm",
+      "meta": {
+        "*.tsx": {
+          "loader": "ts"
+        }
+      }
     }
   },
   map: {
-    "ts": "plugin-typescript/lib/",
-    "typescript": "typescript/",
-    "react": "react/dist/react.js",
-    "react-dom": "react-dom/dist/react-dom.js"
+    "ts": "../node_modules/plugin-typescript/lib/",
+    "typescript": "../node_modules/typescript/",
+    "react": "../node_modules/react/dist/react.js",
+    "react-dom": "../node_modules/react-dom/dist/react-dom.js",
+    "app": "./app",
+    "promaster-react": "../src/",
   },
   typescriptOptions: {
     module: "system",
