@@ -1,5 +1,6 @@
 SystemJS.config({
   baseURL: '.',
+  transpiler: "ts",
   packages: {
     "ts": {
       "main": "plugin.js"
@@ -31,6 +32,10 @@ SystemJS.config({
           "loader": "ts"
         }
       }
+    },
+    "promaster-primitives": {
+      "main": "lib/index",
+      "format": "commonjs"
     }
   },
   map: {
@@ -39,7 +44,9 @@ SystemJS.config({
     "react": "../node_modules/react/dist/react.js",
     "react-dom": "../node_modules/react-dom/dist/react-dom.js",
     "app": "./app",
-    "promaster-react": "../src/",
+    "promaster-react": "../src",
+    "promaster-primitives": "../node_modules/promaster-primitives/",
+    "invariant": "../node_modules/invariant"
   },
   typescriptOptions: {
     module: "system",
