@@ -5,7 +5,7 @@
  It is also allowed to have a blank input in which case a change event with value of NULL will be emitted.
  */
 import * as React from "react";
-import {Amount, Unit} from "promaster-primitives";
+import {Amount, Unit} from "promaster-primitives/lib/classes";
 
 export interface AmountInputBoxProps {
     readonly key?: string,

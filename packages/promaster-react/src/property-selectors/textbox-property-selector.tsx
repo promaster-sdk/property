@@ -1,5 +1,5 @@
 import * as React from "react";
-import {PropertyValue, PropertyType} from "promaster-primitives";
+import {PropertyValue, PropertyType} from "promaster-primitives/lib/classes";
 
 export interface TextboxPropertySelectorProps {
     readonly value: string,

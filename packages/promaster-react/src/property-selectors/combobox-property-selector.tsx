@@ -1,5 +1,5 @@
 import * as React from "react";
-import {PropertyFilter, PropertyValue, PropertyType, PropertyValueSet} from "promaster-primitives";
+import {PropertyFilter, PropertyValue, PropertyType, PropertyValueSet} from "promaster-primitives/lib/classes";
 import {FilterPrettyPrint} from "promaster-portable/lib/property_filtering";
 
 export interface ComboBoxPropertyValueItem {

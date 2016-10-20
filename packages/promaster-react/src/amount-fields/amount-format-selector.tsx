@@ -2,7 +2,7 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import * as React from "react";
-import {Units, Unit} from "promaster-primitives";
+import {Units, Unit} from "promaster-primitives/lib/classes";
 
 export interface AmountFormatSelectorProps {
 	readonly key?: string,

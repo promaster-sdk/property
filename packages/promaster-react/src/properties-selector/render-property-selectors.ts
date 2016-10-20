@@ -8,7 +8,7 @@ import {
 	PropertyValue,
 	PropertyFilter,
 	PropertyType
-} from "promaster-primitives";
+} from "promaster-primitives/lib/classes";
 import {FilterPrettyPrint} from "promaster-portable/lib/property_filtering";
 import {
 	ComboboxPropertySelector,

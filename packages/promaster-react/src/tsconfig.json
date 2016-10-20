@@ -39,11 +39,7 @@
       "*": ["lib/*", "custom_typings/*"]
     }
   },
-  "include": [
-    "**/*"
-  ],
   "exclude": [
-    "node_modules/**/",
-    "jspm_packages/**/"
+    "node_modules/"
   ]
 }

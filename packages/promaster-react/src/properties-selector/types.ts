@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Unit, PropertyValueSet, QuantityType, PropertyValue, PropertyFilter} from "promaster-primitives";
+import {Unit, PropertyValueSet, QuantityType, PropertyValue, PropertyFilter} from "promaster-primitives/lib/classes";
 
 export type AmountFormat = {unit: Unit<any>, decimalCount: number};
 export type PropertySelectionOnChange = (properties: PropertyValueSet) => void;
