@@ -1,6 +1,6 @@
 import * as React from "react";
 import {PropertyFilter, PropertyValue, PropertyValueSet} from "promaster-primitives";
-import {FilterPrettyPrint} from "promaster-portable/lib/property_filtering";
+import {FilterPrettyPrint} from "promaster-portable";
 
 export interface ComboBoxPropertyValueItem {
     readonly value: PropertyValue.PropertyValue | null,

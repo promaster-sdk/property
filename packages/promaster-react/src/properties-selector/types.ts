@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Unit, PropertyValueSet, PropertyValue, PropertyFilter} from "promaster-primitives";
+import {Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity} from "promaster-primitives";
 
 export type AmountFormat = {unit: Unit.Unit<any>, decimalCount: number};
 export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet) => void;
@@ -41,7 +41,7 @@ export interface Property {
 	readonly sortNo: number,
 	readonly name: string,
 	readonly group: string,
-	readonly quantity: QuantityType,
+	readonly quantity: Quantity.Quantity,
 	readonly validationFilter: PropertyFilter.PropertyFilter,
 	readonly visibilityFilter: PropertyFilter.PropertyFilter,
 	readonly valueItems: Array<PropertyValueItem>,

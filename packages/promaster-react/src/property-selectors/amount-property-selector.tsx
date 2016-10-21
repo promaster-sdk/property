@@ -70,7 +70,7 @@ function _getValidationMessage(propertyValueSet: PropertyValueSet.PropertyValueS
         return '';
     }
 
-    if (validationFilter.isValid(propertyValueSet)) {
+    if (PropertyFilter.isValid(false, propertyValueSet, validationFilter)) {
         return '';
     }
     else {
