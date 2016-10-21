@@ -4,7 +4,12 @@ import {Units, Amount} from "promaster-primitives";
 
 export function AmountFormatSelectorExample1() {
 
-    const classNames = {
+    const boxClassNames = {
+        input: "input",
+        inputInvalid: "inputInvalid"
+    };
+
+    const selectorClassNames = {
         format: "format",
         formatActive: "formatActive",
         unit: "unit",
@@ -19,7 +24,7 @@ export function AmountFormatSelectorExample1() {
             </div>
             <div>
                 <AmountInputBox isRequiredMessage="Is required"
-                                classNames={{input: "input", inputInvalid: "inputInvalid"}}
+                                classNames={boxClassNames}
                                 errorMessage=""
                                 inputDecimalCount={3}
                                 inputUnit={Units.Celsius}
@@ -27,9 +32,10 @@ export function AmountFormatSelectorExample1() {
                                 onValueChange={() => console.log("Value changed.")}
                                 readOnly={false}
                                 value={Amount.create(10.0, Units.Celsius)}/>
-                <AmountFormatSelector classNames={classNames}
+                <AmountFormatSelector classNames={selectorClassNames}
                                       selectedUnit={Units.Celsius}
-                                      selectedDecimalCount={2}/>
+                                      selectedDecimalCount={2}
+                                      onFormatChanged={() => 1}/>
             </div>
         </div>
     );
