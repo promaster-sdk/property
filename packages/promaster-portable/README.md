@@ -1,6 +1,6 @@
 # Introduction
 
-This is the main implementation of Promaster Primitives. There are other ports and clones but the goal is 
+This is the main implementation of Promaster Portable. There are other ports and clones but the goal is 
 to keep this single repo well maintained, documented, and tested.
 
 This implementaiton uses a functional approach with pure data-records and functions that operates on those data-records.
