@@ -1,7 +1,7 @@
 import * as React from "react";
 import {PropertySelectors} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
-import {Unit, Units, PropertyFilter, PropertyValueSet} from "promaster-primitives";
+import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
 import {merge} from "./utils";
 
 interface State {
@@ -16,7 +16,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
 
 const validationFilter = PropertyFilter.fromString("a<100:Celsius");
 
-export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
+export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
 
   constructor() {
     super();
@@ -59,12 +59,18 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
           AmountFormatSelector:
         </div>
         <div>
+          PropertyValueSet: {PropertyValueSet.toString(this.state.propertyValueSet)}
+        </div>
+        <div>
           <PropertySelectors.AmountPropertySelector
-            propertyName="myprop"
+            propertyName="a"
             propertyValueSet={this.state.propertyValueSet}
             inputUnit={this.state.selectedUnit}
             inputDecimalCount={this.state.selectedDecimalCount}
-            onValueChange={(amount) => this.setState(merge(this.state, {amount}))}
+            onValueChange={(pv) =>
+            this.setState(merge(this.state, {
+              propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, this.state.propertyValueSet)
+            }))}
             filterPrettyPrint={filterPrettyPrint}
             validationFilter={validationFilter}
             readOnly={false}

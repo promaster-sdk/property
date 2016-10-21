@@ -4,7 +4,7 @@ import {PropertyFiltering} from "promaster-portable";
 import {
     AmountInputBox, AmountFormatSelector, OnFormatChanged,
     AmountFormatSelectorClassNames, AmountInputBoxClassNames
-} from "../amount-fields";
+} from "../amount-fields/index";
 
 export interface AmountPropertySelectorProps {
     readonly propertyName: string,
