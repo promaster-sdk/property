@@ -29,7 +29,10 @@ export class Container extends React.Component<void, ContainerState> {
         return (
             <div>
                 <div>
-                    <ExampleSelector examples={this.state.examples} selectedExample={this.state.selectedExample}/>
+                    <ExampleSelector examples={this.state.examples}
+                                     selectedExample={this.state.selectedExample}
+                                     selectedExampleChanged={(index) =>
+                                        this.setState(merge(this.state, {selectedExample: index}))}/>
                 </div>
                 <div>
                     <ExampleRenderer example={this.state.examples[this.state.selectedExample]}/>
@@ -38,6 +41,10 @@ export class Container extends React.Component<void, ContainerState> {
         );
     }
 
+}
+
+function merge<T1, T2>(a: T1, b: T2): T1 & T2 {
+    return Object.assign({}, a, b);
 }
 
 interface ExampleRendererProps {
@@ -53,12 +60,13 @@ function ExampleRenderer({example}:ExampleRendererProps) {
 interface ExampleSelectorProps {
     readonly examples: Array<Example>,
     readonly selectedExample: number,
+    readonly selectedExampleChanged: (index: number) => void
 }
 
-function ExampleSelector({examples, selectedExample}:ExampleSelectorProps) {
-    console.log("selectedExample", selectedExample);
+function ExampleSelector({examples, selectedExample, selectedExampleChanged}:ExampleSelectorProps) {
     return (
-        <select value={selectedExample}>
+        <select value={selectedExample}
+                onChange={(e) => selectedExampleChanged((e.target as any).value)}>
             {
                 examples.map((example, index) =>
                     <option key={example.name}
