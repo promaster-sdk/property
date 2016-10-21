@@ -2,7 +2,7 @@ import * as React from "react";
 import {AmountInputBox} from "promaster-react/amount-fields/index";
 import {Units, Amount} from "promaster-primitives";
 
-export function AmountFieldExample2() {
+export function AmountFormatSelectorExample1() {
 
     return (
         <div>

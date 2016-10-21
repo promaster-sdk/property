@@ -1,6 +1,6 @@
 import * as React from "react";
-import {AmountFieldExample1} from "./amount-field-example-1";
-import {AmountFieldExample2} from "./amount-field-example-2";
+import {AmountInputBoxExample1} from "./amount-input-box-example-1";
+import {AmountFormatSelectorExample1} from "./amount-format-selector-example-1";
 
 interface Example {
     readonly name: string;
@@ -19,8 +19,8 @@ export class Container extends React.Component<void, ContainerState> {
         this.state = {
             selectedExample: 1,
             examples: [
-                {name: "Example1", component: AmountFieldExample1},
-                {name: "Example2", component: AmountFieldExample2},
+                {name: "AmountInputBox #1", component: AmountInputBoxExample1},
+                {name: "AmountFormatSelector #1", component: AmountFormatSelectorExample1},
             ]
         };
     }
