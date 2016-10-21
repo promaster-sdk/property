@@ -37,7 +37,9 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
             inputDecimalCount, readOnly, classNames
         } = this.props;
 
-        const value: Amount.Amount<any> = PropertyValueSet.getAmount(propertyName, propertyValueSet);
+        const value: Amount.Amount<any> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
+        if(!value)
+            throw new Error("Value is undefined");
 
         return (
             <span className={classNames.amount}>
