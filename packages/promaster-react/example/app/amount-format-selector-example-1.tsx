@@ -40,6 +40,9 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
     return (
       <div>
         <div>
+          Amount: {Amount.toString(this.state.amount)}
+        </div>
+        <div>
           AmountFormatSelector:
         </div>
         <div>
