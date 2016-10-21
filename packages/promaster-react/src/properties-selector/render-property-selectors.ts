@@ -135,7 +135,7 @@ export function renderPropertySelectors({
         groupName: property.group,
 
         isValid: isValid,
-        isHidden: ! PropertyFilter.isValid(false, selectedProperties, property.visibilityFilter),
+        isHidden: !PropertyFilter.isValid(false, selectedProperties, property.visibilityFilter),
 
         label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
 
@@ -197,8 +197,8 @@ function renderPropertySelector(propertyName: string,
 
   switch (getPropertyType(quantity)) {
     case "text":
-      const value:string | undefined = selectedValue && PropertyValue.getText(selectedValue);
-      if(!value)
+      const value: string | undefined = selectedValue && PropertyValue.getText(selectedValue);
+      if (!value)
         throw new Error("No value!");
       return textboxPropertySelector({
         value: value,
@@ -249,10 +249,10 @@ function renderPropertySelector(propertyName: string,
 
 function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyType {
 
-  switch (Units.getStringFromQuantityType(quantity).toLocaleLowerCase()) {
-    case 'text':
+  switch (quantity) {
+    case "Text":
       return "text";
-    case 'discrete':
+    case "Discrete":
       return "integer";
     default:
       return "amount";
@@ -261,7 +261,8 @@ function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyTyp
 }
 
 function getSingleValidValueOrNull(productProperty: Property, properties: PropertyValueSet.PropertyValueSet): PropertyValueItem | null {
-  if (Units.getStringFromQuantityType(productProperty.quantity).toLocaleLowerCase() === 'discrete') {
+  // if (Units.getStringFromQuantityType(productProperty.quantity).toLocaleLowerCase() === 'discrete') {
+  if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: PropertyValueItem[] = [];
     for (let productValueItem of productProperty.valueItems) {
       const isValid = PropertyFilter.isValid(false, properties, productValueItem.validationFilter);
