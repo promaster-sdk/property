@@ -6,7 +6,7 @@
  */
 import * as React from "react";
 import {Amount, Unit} from "promaster-primitives";
-import {Quantity} from "promaster-primitives/lib/fun/measure/quantity";
+import {Quantity} from "promaster-primitives";
 
 export interface AmountInputBoxProps {
     readonly key?: string,
@@ -136,7 +136,7 @@ function getInternalErrorMessage(newAmount: Amount.Amount<any> | null,
 
 }
 
-function _formatWithUnitAndDecimalCount<T extends Quantity>(amount: Amount.Amount<T>, unit: Unit.Unit<T>, decimalCount: number): string {
+function _formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amount.Amount<T>, unit: Unit.Unit<T>, decimalCount: number): string {
     if (!amount)
         return "";
 
@@ -159,7 +159,7 @@ function _formatWithUnitAndDecimalCount<T extends Quantity>(amount: Amount.Amoun
     }
 }
 
-function _unformatWithUnitAndDecimalCount<T extends Quantity>(text: string, unit: Unit.Unit<T>, inputDecimalCount: number): Amount.Amount<T> | null {
+function _unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(text: string, unit: Unit.Unit<T>, inputDecimalCount: number): Amount.Amount<T> | null {
     if (!text || text.length === 0)
         return null;
     const parsedFloatValue = _filterFloat(text);
