@@ -1,7 +1,7 @@
 import {assert} from "chai";
 import {PropertyFilter} from "promaster-primitives";
-import * as PrettyPrinting from "../../../src/fun/property_filtering/pretty_printing/index";
-import {FilterPrettyPrintMessagesEnglish} from "../../../src/fun/property_filtering/pretty_printing/filter_pretty_print_messages_english";
+import * as PrettyPrinting from "../../src/property_filtering/index";
+import {FilterPrettyPrintMessagesEnglish} from "../../src/property_filtering/index";
 
 describe('filterPrettyPrintSimple', () => {
 
@@ -19,7 +19,7 @@ describe('filterPrettyPrintSimple', () => {
 
 describe('filterPrettyPrintIndented', () => {
 
-    const messages = new FilterPrettyPrintMessagesEnglish();
+    const messages = FilterPrettyPrintMessagesEnglish;
 
     it('should print a must be 1', () => {
         const pretty = PrettyPrinting.filterPrettyPrintIndented(messages, 2, "*", PropertyFilter.fromString('a=1'));

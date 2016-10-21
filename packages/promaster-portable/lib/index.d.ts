@@ -1,2 +1,2 @@
-import * as PropertyFiltering from "./fun/property_filtering/index";
+import * as PropertyFiltering from "./property_filtering/index";
 export { PropertyFiltering };
