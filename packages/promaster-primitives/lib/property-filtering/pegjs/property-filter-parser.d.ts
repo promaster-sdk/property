@@ -10,4 +10,4 @@ export declare type ParserCallbacks = {
     createOrExpr(children: Iterable<Ast.Expr>): Ast.OrExpr;
 };
 export declare const parserCallbacks: ParserCallbacks;
-export declare function parse(text: string, throwOnInvalidSyntax?: boolean): Ast.Expr;
+export declare function parse(text: string, throwOnInvalidSyntax?: boolean): Ast.Expr | undefined;

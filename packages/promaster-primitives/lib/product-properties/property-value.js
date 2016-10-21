@@ -14,6 +14,7 @@ function create(type, value) {
         return { type: "text", value: value };
     if (type === "integer")
         return { type: "integer", value: value };
+    throw new Error("Unknown 'type' " + type + ".");
 }
 exports.create = create;
 function fromString(encodedValue) {

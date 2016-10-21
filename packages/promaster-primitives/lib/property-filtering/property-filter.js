@@ -8,21 +8,19 @@ exports.Empty = { text: "", ast: Ast.newEmptyExpr() };
 function create(text, ast) {
     return { text: text, ast: ast };
 }
-function fromString(filter, onError) {
-    if (filter == null)
-        return exports.Empty;
+function fromString(filter) {
+    if (filter === null || filter === undefined) {
+        throw new Error("Argument 'filter' must be defined.");
+    }
     if (!_cache.has(filter)) {
         var adjustedFilter = _preProcessString(filter);
-        if (adjustedFilter == null)
+        if (adjustedFilter === "")
             return exports.Empty;
         var ast = _buildAst(adjustedFilter, false);
-        if (ast == null) {
-            if (onError != null)
-                return onError(filter);
-            return exports.Empty;
+        if (ast === undefined) {
+            console.log("Invalid property filter syntax: " + adjustedFilter);
+            return undefined;
         }
-        // TODO: Cannot compile in Dart
-        //    var compiled = CompileAst(ast);
         _cache[filter] = create(adjustedFilter, ast);
     }
     return _cache[filter];
@@ -30,14 +28,19 @@ function fromString(filter, onError) {
 exports.fromString = fromString;
 function isSyntaxValid(filter, propertyNames) {
     if (propertyNames === void 0) { propertyNames = undefined; }
+    if (filter === null || filter === undefined) {
+        throw new Error("Argument 'filter' must be defined.");
+    }
     var adjusted = _preProcessString(filter);
-    if (adjusted == null)
+    if (adjusted === "")
         return true;
     var ast = _buildAst(adjusted, false);
-    if (ast == null)
+    if (ast === undefined) {
         return false;
-    if (propertyNames === undefined)
+    }
+    if (propertyNames === undefined) {
         return true;
+    }
     var parsed = create(filter, ast);
     var properties = getReferencedProperties(parsed);
     for (var _i = 0, _a = Array.from(properties); _i < _a.length; _i++) {
@@ -48,32 +51,58 @@ function isSyntaxValid(filter, propertyNames) {
     return true;
 }
 exports.isSyntaxValid = isSyntaxValid;
-function isValid(matchMissing, properties, filter) {
-    return evaluate(filter.ast, properties, matchMissing);
+function isValid(properties, filter) {
+    if (properties === null || properties === undefined) {
+        throw new Error("Argument 'properties' must be defined.");
+    }
+    if (filter === null || filter === undefined) {
+        throw new Error("Argument 'filter' must be defined.");
+    }
+    return _evaluate(filter.ast, properties, false);
 }
 exports.isValid = isValid;
+function isValidMatchMissing(properties, filter) {
+    if (properties === null || properties === undefined) {
+        throw new Error("Argument 'properties' must be defined.");
+    }
+    if (filter === null || filter === undefined) {
+        throw new Error("Argument 'filter' must be defined.");
+    }
+    return _evaluate(filter.ast, properties, true);
+}
+exports.isValidMatchMissing = isValidMatchMissing;
 function getReferencedProperties(filter) {
+    if (filter === null || filter === undefined) {
+        throw new Error("Argument 'filter' must be defined.");
+    }
     var properties = new Set();
     _findProperties(filter.ast, properties);
     return properties;
 }
 exports.getReferencedProperties = getReferencedProperties;
 function toString(filter) {
+    if (filter === null || filter === undefined) {
+        throw new Error("Argument 'filter' must be defined.");
+    }
     return filter.text != null ? filter.text : "";
 }
 exports.toString = toString;
 function equals(other, filter) {
-    if (other === null || other === undefined)
-        return false;
-    if (filter === other)
+    if (filter === other) {
         return true;
+    }
+    if (filter === null || filter === undefined) {
+        return false;
+    }
+    if (other === null || other === undefined) {
+        return false;
+    }
     return filter.text == filter.text;
 }
 exports.equals = equals;
-/// Guarantees that all empty strings will be null, and all characters will be lower case
 function _preProcessString(filter) {
-    if (filter === undefined || filter == null || filter === "" || filter.trim().length == 0)
-        return undefined;
+    if (filter === "" || filter.trim().length === 0)
+        return "";
     filter = filter.trim();
     var inString = false;
     var newFilter = "";
@@ -132,29 +161,14 @@ function _findProperties(e, properties) {
     }
 }
 function _buildAst(text, throwOnInvalidSyntax) {
-    if (text == null)
-        throw new Error("ArgumentNull: text");
-    /*
-     // TODO: Make singleton
-     var parser = new PropertyFilterParserDefinition().build();
-
-     var result = parser.parse(text);
-     if (!result.status) {
-     console.log(`Parsing failed, index: ${result.index}, expected: ${result.expected}, value '${result.value}'`);
-     if (throwOnInvalidSyntax)
-     throw `Syntax of PropertyFilter '${text}' is not valid.`;
-     return null;
-     }
-     return result.value;
-     */
     var result = Parser.parse(text, throwOnInvalidSyntax);
     return result;
 }
-function evaluate(e, properties, matchMissingIdentifiers) {
+function _evaluate(e, properties, matchMissingIdentifiers) {
     if (e.type === "AndExpr") {
         for (var _i = 0, _a = e.children; _i < _a.length; _i++) {
             var child = _a[_i];
-            if (!evaluate(child, properties, matchMissingIdentifiers))
+            if (!_evaluate(child, properties, matchMissingIdentifiers))
                 return false;
         }
         return true;
@@ -165,10 +179,10 @@ function evaluate(e, properties, matchMissingIdentifiers) {
             || _isMissingIdent(e.rightValue, properties))) {
             return true;
         }
-        var left = evaluate(e.leftValue, properties, matchMissingIdentifiers);
+        var left = _evaluate(e.leftValue, properties, matchMissingIdentifiers);
         if (left == null)
             return false;
-        var right = evaluate(e.rightValue, properties, matchMissingIdentifiers);
+        var right = _evaluate(e.rightValue, properties, matchMissingIdentifiers);
         if (right == null)
             return false;
         switch (e.operationType) {
@@ -198,10 +212,10 @@ function evaluate(e, properties, matchMissingIdentifiers) {
                 return true;
             }
         }
-        var left = evaluate(e.leftValue, properties, matchMissingIdentifiers);
+        var left = _evaluate(e.leftValue, properties, matchMissingIdentifiers);
         for (var _b = 0, _c = e.rightValueRanges; _b < _c.length; _b++) {
             var range = _c[_b];
-            var rangeResult = evaluate(range, properties, matchMissingIdentifiers);
+            var rangeResult = _evaluate(range, properties, matchMissingIdentifiers);
             var min = rangeResult[0];
             var max = rangeResult[1];
             // Match on NULL or inclusive in range
@@ -221,7 +235,7 @@ function evaluate(e, properties, matchMissingIdentifiers) {
     else if (e.type === "OrExpr") {
         for (var _d = 0, _e = e.children; _d < _e.length; _d++) {
             var child = _e[_d];
-            if (evaluate(child, properties, matchMissingIdentifiers))
+            if (_evaluate(child, properties, matchMissingIdentifiers))
                 return true;
         }
         return false;
@@ -231,8 +245,8 @@ function evaluate(e, properties, matchMissingIdentifiers) {
     }
     else if (e.type === "ValueRangeExpr") {
         return [
-            evaluate(e.min, properties, matchMissingIdentifiers),
-            evaluate(e.max, properties, matchMissingIdentifiers)];
+            _evaluate(e.min, properties, matchMissingIdentifiers),
+            _evaluate(e.max, properties, matchMissingIdentifiers)];
     }
     else if (e.type === "NullExpr") {
         return null;
@@ -241,7 +255,7 @@ function evaluate(e, properties, matchMissingIdentifiers) {
         throw new Error("invalid type.");
     }
 }
-exports.evaluate = evaluate;
+exports._evaluate = _evaluate;
 function _isMissingIdent(e, properties) {
     // If expression is an missing identifier it should match anything
     if (e.type === "IdentifierExpr") {

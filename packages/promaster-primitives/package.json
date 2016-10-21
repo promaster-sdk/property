@@ -4,7 +4,7 @@
   "main": "lib/index.js",
   "description": "Promster SDK Primitives",
   "author": "Divid AB",
-  "repository": "https://gitlab.divid.se/promaster-sdk/promaster_primitives_ts",
+  "repository": "https://gitlab.divid.se/promaster-sdk/promaster-primitives",
   "typings": "lib/index",
   "license": "UNLICENSED",
   "scripts": {
@@ -13,11 +13,11 @@
     "publish:minor": "npm run build && node scripts/publish.js minor",
     "publish:patch": "npm run build && node scripts/publish.js patch",
     "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
-    "test:class": "mocha --compilers ts:ts-node/register test/class/**/*.ts",
-    "test:fun": "mocha --compilers ts:ts-node/register test/fun/**/*.ts",
-    "test:jonas": "mocha --compilers ts:ts-node/register test/fun/measure/*.ts",
-    "test:adam": "mocha --compilers ts:ts-node/register test/fun/product-properties/*.ts",
-    "gen_parser": "pegjs ./src/fun/property-filtering/pegjs/parser.pegjs ./src/fun/property-filtering/pegjs/parser.ts",
+    "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
+    "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
+    "test:filtering": "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
+    "test:parser": "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
+    "gen_parser": "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/parser.ts",
     "benchmark": "node ./lib/test/property_filtering/property_filter_benchmark.js"
   },
   "devDependencies": {

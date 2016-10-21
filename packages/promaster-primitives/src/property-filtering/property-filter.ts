@@ -16,41 +16,42 @@ function create(text, ast): PropertyFilter {
 	return {text, ast};
 }
 
-export function fromString(filter: string | undefined, onError?: (s: string)=>PropertyFilter): PropertyFilter {
-	if (filter == null)
-		return Empty;
+export function fromString(filter: string): PropertyFilter | undefined {
+	if (filter === null || filter === undefined) {
+		throw new Error("Argument 'filter' must be defined.");
+	}
 
 	if (!_cache.has(filter)) {
 		var adjustedFilter = _preProcessString(filter);
-		if (adjustedFilter == null)
+		if (adjustedFilter === "")
 			return Empty;
-
 		var ast = _buildAst(adjustedFilter, false);
-
-		if (ast == null) {
-			if (onError != null)
-				return onError(filter);
-			return Empty;
+		if (ast === undefined) {
+			console.log("Invalid property filter syntax: " + adjustedFilter);
+			return undefined;
 		}
-		// TODO: Cannot compile in Dart
-		//    var compiled = CompileAst(ast);
-
 		_cache[filter] = create(adjustedFilter, ast);
 	}
 	return _cache[filter];
 }
 
 export function isSyntaxValid(filter: string, propertyNames: Array<string> | undefined = undefined): boolean {
+	if (filter === null || filter === undefined) {
+		throw new Error("Argument 'filter' must be defined.");
+	}
+
 	const adjusted = _preProcessString(filter);
-	if (adjusted == null)
+	if (adjusted === "")
 		return true;
 
 	const ast = _buildAst(adjusted, false);
-	if (ast == null)
+	if (ast === undefined) {
 		return false;
+	}
 
-	if (propertyNames === undefined)
+	if (propertyNames === undefined) {
 		return true;
+	}
 	var parsed = create(filter, ast);
 
 	const properties = getReferencedProperties(parsed);
@@ -61,32 +62,58 @@ export function isSyntaxValid(filter: string, propertyNames: Array<string> | und
 	return true;
 }
 
-export function isValid(matchMissing: boolean, properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean {
-	return evaluate(filter.ast, properties, matchMissing);
+export function isValid(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean {
+	if (properties === null || properties === undefined) {
+		throw new Error("Argument 'properties' must be defined.");
+	}
+	if (filter === null || filter === undefined) {
+		throw new Error("Argument 'filter' must be defined.");
+	}
+	return _evaluate(filter.ast, properties, false);
+}
+
+export function isValidMatchMissing(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean {
+	if (properties === null || properties === undefined) {
+		throw new Error("Argument 'properties' must be defined.");
+	}
+	if (filter === null || filter === undefined) {
+		throw new Error("Argument 'filter' must be defined.");
+	}
+	return _evaluate(filter.ast, properties, true);
 }
 
 export function getReferencedProperties(filter: PropertyFilter): Set<string> {
-	var properties = new Set<string>();
+	if (filter === null || filter === undefined) {
+		throw new Error("Argument 'filter' must be defined.");
+	}
+	let properties = new Set<string>();
 	_findProperties(filter.ast, properties);
 	return properties;
 }
 
 export function toString(filter: PropertyFilter): string {
+	if (filter === null || filter === undefined) {
+		throw new Error("Argument 'filter' must be defined.");
+	}
 	return filter.text != null ? filter.text : "";
 }
 
 export function equals(other: PropertyFilter, filter: PropertyFilter) {
-	if (other === null || other === undefined)
-		return false;
-	if (filter === other)
+	if (filter === other) {
 		return true;
+	}
+	if (filter === null || filter === undefined) {
+		return false;
+	}
+	if (other === null || other === undefined) {
+		return false;
+	}
 	return filter.text == filter.text;
 }
 
-/// Guarantees that all empty strings will be null, and all characters will be lower case
-function _preProcessString(filter: string): string | undefined {
-	if (filter === undefined || filter == null || filter === "" || filter.trim().length == 0)
-		return undefined;
+function _preProcessString(filter: string): string {
+	if (filter === "" || filter.trim().length === 0)
+		return "";
 
 	filter = filter.trim();
 	let inString: boolean = false;
@@ -142,35 +169,16 @@ function _findProperties(e: any, properties: Set<string>): void {
 	}
 }
 
-function _buildAst(text: string, throwOnInvalidSyntax: boolean): Ast.Expr {
-	if (text == null)
-		throw new Error("ArgumentNull: text");
-
-	/*
-	 // TODO: Make singleton
-	 var parser = new PropertyFilterParserDefinition().build();
-
-	 var result = parser.parse(text);
-	 if (!result.status) {
-	 console.log(`Parsing failed, index: ${result.index}, expected: ${result.expected}, value '${result.value}'`);
-	 if (throwOnInvalidSyntax)
-	 throw `Syntax of PropertyFilter '${text}' is not valid.`;
-	 return null;
-	 }
-	 return result.value;
-	 */
-
+function _buildAst(text: string, throwOnInvalidSyntax: boolean): Ast.Expr | undefined {
 	const result = Parser.parse(text, throwOnInvalidSyntax);
 	return result;
-
 }
 
-
-export function evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValueSet, matchMissingIdentifiers: boolean): any {
+export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValueSet, matchMissingIdentifiers: boolean): any {
 
 	if (e.type === "AndExpr") {
 		for (let child of e.children) {
-			if (!evaluate(child, properties, matchMissingIdentifiers))
+			if (!_evaluate(child, properties, matchMissingIdentifiers))
 				return false;
 		}
 		return true;
@@ -182,11 +190,11 @@ export function evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValue
 			return true;
 		}
 
-		let left: PropertyValue.PropertyValue = evaluate(e.leftValue, properties, matchMissingIdentifiers);
+		let left: PropertyValue.PropertyValue = _evaluate(e.leftValue, properties, matchMissingIdentifiers);
 		if (left == null)
 			return false;
 
-		let right: PropertyValue.PropertyValue = evaluate(e.rightValue, properties, matchMissingIdentifiers);
+		let right: PropertyValue.PropertyValue = _evaluate(e.rightValue, properties, matchMissingIdentifiers);
 		if (right == null)
 			return false;
 
@@ -218,10 +226,10 @@ export function evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValue
 			}
 		}
 
-		const left: PropertyValue.PropertyValue = evaluate(e.leftValue, properties, matchMissingIdentifiers);
+		const left: PropertyValue.PropertyValue = _evaluate(e.leftValue, properties, matchMissingIdentifiers);
 
 		for (let range of e.rightValueRanges) {
-			let rangeResult = evaluate(range, properties, matchMissingIdentifiers);
+			let rangeResult = _evaluate(range, properties, matchMissingIdentifiers);
 			let min: PropertyValue.PropertyValue = rangeResult[0];
 			let max: PropertyValue.PropertyValue = rangeResult[1];
 
@@ -242,7 +250,7 @@ export function evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValue
 	}
 	else if (e.type === "OrExpr") {
 		for (let child of e.children) {
-			if (evaluate(child, properties, matchMissingIdentifiers))
+			if (_evaluate(child, properties, matchMissingIdentifiers))
 				return true;
 		}
 		return false;
@@ -252,8 +260,8 @@ export function evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValue
 	}
 	else if (e.type === "ValueRangeExpr") {
 		return [
-			evaluate(e.min, properties, matchMissingIdentifiers),
-			evaluate(e.max, properties, matchMissingIdentifiers)];
+			_evaluate(e.min, properties, matchMissingIdentifiers),
+			_evaluate(e.max, properties, matchMissingIdentifiers)];
 	}
 	else if (e.type === "NullExpr") {
 		return null;

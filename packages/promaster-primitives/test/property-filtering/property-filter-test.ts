@@ -72,11 +72,6 @@ describe('main', () => {
             assert.equal(PropertyFilter.isSyntaxValid(""), true);
         });
 
-        it('should_accept_null_filter', () => {
-            let f: string = null;
-            assert.equal(PropertyFilter.isSyntaxValid(f), true);
-        });
-
         it('should_accept_filter_containing_only_whitespaces', () => {
             assert.equal(PropertyFilter.isSyntaxValid("   "), true);
         });
@@ -160,61 +155,61 @@ describe('main', () => {
         it('should_not_match_missing_property', () => {
             const pvs = PropertyValueSet.fromString("firstprop=2");
             const f = PropertyFilter.fromString("secondprop=2");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
         it('should_not_match_null', () => {
             const pvs = PropertyValueSet.fromString("firstprop=2");
             const f = PropertyFilter.fromString("firstprop=null");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
         it('should_accept_properties_when_filter_contains_several_matching_properties_with_single_value', () => {
             const pvs = PropertyValueSet.fromString("a=1;b=2;c=3;d=4;e=5;f=6;");
-            const f = PropertyFilter.fromString("a=1;c=3;f=6;");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            const f = PropertyFilter.fromString("a=1&c=3&f=6");
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('should_accept_properties_when_filter_contains_one_matching_property_with_single_value', () => {
             const pvs = PropertyValueSet.fromString("a=1;b=2;c=3;d=4;e=5;f=6;");
-            const f = PropertyFilter.fromString("a=1;");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            const f = PropertyFilter.fromString("a=1");
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('should_accept_properties_when_filter_contains_one_matching_property_with_single_range_value', () => {
             const pvs = PropertyValueSet.fromString("a=1;b=2;c=3;d=4;e=5;f=6;");
-            const f = PropertyFilter.fromString("a=-1~10;");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            const f = PropertyFilter.fromString("a=-1~10");
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('should_evaluate_to_false_if_matching_against_non_existent_property', () => {
             const pvs = PropertyValueSet.fromString("property1=1");
             const f = PropertyFilter.fromString("property1=nonexistentproperty");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
         it('should_accept_properties_when_filter_contains_one_matching_property_with_set_of_values', () => {
             const pvs = PropertyValueSet.fromString("a=1;b=2;c=3;d=4;e=5;f=6;");
-            const f = PropertyFilter.fromString("b=1,2,5;");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            const f = PropertyFilter.fromString("b=1,2,5");
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('should_accept_properties_when_filter_contains_one_matching_property_with_mixed_values', () => {
             const pvs = PropertyValueSet.fromString("a=1;b=2;c=3;d=4;e=5;f=6;");
-            const f = PropertyFilter.fromString("b=-1,1,2,5,10~15;");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            const f = PropertyFilter.fromString("b=-1,1,2,5,10~15");
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('should_support_properties_on_right_hand', () => {
             const pvs = PropertyValueSet.fromString("a=10;b=2;");
             const f = PropertyFilter.fromString("a>=b");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
         it('should_support_not_present_properties', () => {
             const pvs = PropertyValueSet.fromString("a=10;b=2;");
             const f = PropertyFilter.fromString("a>=c");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
         it('amount_value_is_supported', () => {
@@ -228,25 +223,25 @@ describe('main', () => {
         it('not_equals_works_as_expected1', () => {
             const pvs = PropertyValueSet.fromString("a=5");
             const f = PropertyFilter.fromString("a!=20");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('not_equals_works_as_expected2', () => {
             const pvs = PropertyValueSet.fromString("a=5");
             const f = PropertyFilter.fromString("a!=5");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
         it('supports_settings1', () => {
             const pvs = PropertyValueSet.fromString("a=5:Celsius");
             const f = PropertyFilter.fromString("a>2:Celsius");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('supports_settings2', () => {
             const pvs = PropertyValueSet.fromString("a=5:Celsius");
             const f = PropertyFilter.fromString("a<2:Celsius");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
         it('supports_null', () => {
@@ -256,45 +251,46 @@ describe('main', () => {
         it('supports_null_validation', () => {
             const pvs = PropertyValueSet.fromString("b=5");
             const filter = PropertyFilter.fromString("a=null");
-            assert.equal(PropertyFilter.isValid(false, pvs, filter), true);
+            assert.equal(PropertyFilter.isValid(pvs, filter), true);
         });
 
         // it('supports_null_validation_using_evaluator', () => {
         //     const pvs = PropertyValueSet.fromString("b=5");
         //     const filter = PropertyFilter.fromString("a=null");
         //     const evaluator = new FilterEvaluator();
-        //     const result = evaluator.evaluate(filter.ast, pvs, false);
+        //     const result = evaluator._evaluate(filter.ast, pvs, false);
         //     assert.equal(result, true);
         // });
 
         it('supports_null_validation2', () => {
             const pvs = PropertyValueSet.fromString("a=2");
             const filter = PropertyFilter.fromString("a=null");
-            assert.equal(PropertyFilter.isValid(false, pvs, filter), false);
+            assert.equal(PropertyFilter.isValid(pvs, filter), false);
         });
 
         it('supports_string', () => {
-            const pvs = PropertyValueSet.fromString("a=\"te st\"");
-            const filter = PropertyFilter.fromString("a=\"te st\"");
-            assert.equal(PropertyFilter.isValid(false, pvs, filter), true);
+            const pvs = PropertyValueSet.fromString('a="test"');
+            const filter = PropertyFilter.fromString('a="test"');
+            assert.equal(PropertyFilter.isValid(pvs, filter), true);
         });
 
         it('supports_dot_in_propertynames', () => {
             const pvs = PropertyValueSet.fromString("a.b=1");
             const filter = PropertyFilter.fromString("a.b>0");
-            assert.equal(PropertyFilter.isValid(false, pvs, filter), true);
+
+            assert.equal(PropertyFilter.isValid(pvs, filter), true);
         });
 
         it('supports_dot_in_propertynames_inverse', () => {
             const pvs = PropertyValueSet.fromString("a.b=1");
             const f = PropertyFilter.fromString("a.b>2");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), true);
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('should not assert 5.2:Meter as valid for 1 to 5 Meter range', () => {
             const pvs = PropertyValueSet.fromString("a=5.2:Meter");
             const f = PropertyFilter.fromString("a=1:Meter~5.0:Meter");
-            assert.equal(PropertyFilter.isValid(false, pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), false);
         });
 
     });
@@ -304,7 +300,7 @@ describe('main', () => {
         it('should return referenced properties', () => {
             const filter = PropertyFilter.fromString("a>b&c=1|d<2");
             const references = PropertyFilter.getReferencedProperties(filter);
-            assert.equal(references.values.length, 4);
+            assert.equal(references.size, 4);
         });
 
     });

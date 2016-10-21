@@ -91,5 +91,22 @@ describe('property_value_test', () => {
 		assert.equal(PropertyValue.getInteger(pv1), undefined);
 	});
 
+	it('should_compare_integers_correctly1', () => {
+		const pv1 = PropertyValue.fromString("2");
+		const pv2 = PropertyValue.fromString("3");
+		assert.equal(PropertyValue.compareTo(pv1, pv2) < 0, true);
+	});
+
+	it('should_compare_integers_correctly2', () => {
+		const pv2 = PropertyValue.fromString("3");
+		const pv3 = PropertyValue.fromString("3");
+		assert.equal(PropertyValue.compareTo(pv2, pv3) === 0, true);
+	});
+
+	it('should_compare_integers_correctly3', () => {
+		const pv1 = PropertyValue.fromString("2");
+		const pv3 = PropertyValue.fromString("3");
+		assert.equal(PropertyValue.compareTo(pv3, pv1) > 0, true);
+	});
 });
 

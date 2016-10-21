@@ -2,9 +2,7 @@ import * as PEG from "pegjs";
 import * as Ast from "../property-filter-ast";
 import * as Parser from "./parser_esm";
 
-// const parser = createParser();
 const parser:PEG.Parser = Parser;
-
 
 export type ParserCallbacks = {
 	createValueExpr(unparsed:string): Ast.ValueExpr,
@@ -34,19 +32,7 @@ const options = {
 	callbacks: parserCallbacks
 };
 
-
-// export function createParser():PEG.Parser {
-// 	// Read from filesystem if in development mode
-// 	// const content = fs.readFileSync("./src/property_filtering/pegjs/property_filter.pegjs", 'utf8');
-// 	// return PEG.buildParser(content);
-// 	// return theParser;
-//
-// 	return require('./parser');
-// }
-
-
-export function parse(text:string, throwOnInvalidSyntax:boolean = false): Ast.Expr {
-
+export function parse(text:string, throwOnInvalidSyntax:boolean = false): Ast.Expr | undefined {
 	try {
 		const result = parser.parse(text, options);
 		return result;
@@ -55,7 +41,6 @@ export function parse(text:string, throwOnInvalidSyntax:boolean = false): Ast.Ex
 		if (throwOnInvalidSyntax)
 			throw error;
 		else
-			return null;
+			return undefined;
 	}
-
 }

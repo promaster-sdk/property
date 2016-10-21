@@ -5,10 +5,11 @@ export interface PropertyFilter {
     ast: Ast.Expr;
 }
 export declare const Empty: PropertyFilter;
-export declare function fromString(filter: string | undefined, onError?: (s: string) => PropertyFilter): PropertyFilter;
+export declare function fromString(filter: string): PropertyFilter | undefined;
 export declare function isSyntaxValid(filter: string, propertyNames?: Array<string> | undefined): boolean;
-export declare function isValid(matchMissing: boolean, properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean;
+export declare function isValid(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean;
+export declare function isValidMatchMissing(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean;
 export declare function getReferencedProperties(filter: PropertyFilter): Set<string>;
 export declare function toString(filter: PropertyFilter): string;
 export declare function equals(other: PropertyFilter, filter: PropertyFilter): boolean;
-export declare function evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValueSet, matchMissingIdentifiers: boolean): any;
+export declare function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValueSet, matchMissingIdentifiers: boolean): any;

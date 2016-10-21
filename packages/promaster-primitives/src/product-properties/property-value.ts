@@ -32,12 +32,13 @@ export function create(type: PropertyType, value: Amount.Amount<any> | string | 
         throw new Error("Argument 'type' must be specified.");
     if (value == undefined || value == null)
         throw new Error("Argument 'value' must be specified.");
-    if (type === "amount")
+	if (type === "amount")
         return {type: "amount", value: value as Amount.Amount<any>};
     if (type === "text")
         return {type: "text", value: value as string};
     if (type === "integer")
         return {type: "integer", value: value as number};
+	throw new Error(`Unknown 'type' ${type}.`);
 }
 
 export function fromString(encodedValue: string): PropertyValue | undefined {
@@ -122,19 +123,19 @@ export function toString(value: PropertyValue): string {
     throw new Error("Invalid type.");
 }
 
-export function compareTo(other: PropertyValue, value: PropertyValue): number {
-    switch (value.type) {
+export function compareTo(left: PropertyValue, right: PropertyValue): number {
+    switch (left.type) {
         case "integer":
-            if (other.type === "integer")
-                return compareNumbers(value.value, other.value, 0);
+            if (right.type === "integer")
+                return compareNumbers(left.value, right.value, 0);
             throw new Error("Unexpected error comparing integers");
         case "amount":
-            if (other.type === "amount")
-                return Amount.compareTo(value.value, other.value);
+            if (right.type === "amount")
+                return Amount.compareTo(left.value, right.value);
             throw new Error("Unexpected error comparing amounts");
         case "text":
-            if (other.type === "text")
-                return compareIgnoreCase(value.value, other.value);
+            if (right.type === "text")
+                return compareIgnoreCase(left.value, right.value);
             throw new Error("Unexpected error comparing texts");
         default:
             throw new Error("Unknown property type");

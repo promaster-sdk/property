@@ -1,7 +1,6 @@
 "use strict";
 var Ast = require("../property-filter-ast");
 var Parser = require("./parser_esm");
-// const parser = createParser();
 var parser = Parser;
 exports.parserCallbacks = {
     createValueExpr: function (value_token) { return Ast.newValueExpr(value_token); },
@@ -18,14 +17,6 @@ var options = {
     tracer: undefined,
     callbacks: exports.parserCallbacks
 };
-// export function createParser():PEG.Parser {
-// 	// Read from filesystem if in development mode
-// 	// const content = fs.readFileSync("./src/property_filtering/pegjs/property_filter.pegjs", 'utf8');
-// 	// return PEG.buildParser(content);
-// 	// return theParser;
-//
-// 	return require('./parser');
-// }
 function parse(text, throwOnInvalidSyntax) {
     if (throwOnInvalidSyntax === void 0) { throwOnInvalidSyntax = false; }
     try {
@@ -36,7 +27,7 @@ function parse(text, throwOnInvalidSyntax) {
         if (throwOnInvalidSyntax)
             throw error;
         else
-            return null;
+            return undefined;
     }
 }
 exports.parse = parse;
