@@ -8,7 +8,7 @@ import {
   PropertyValue,
   PropertyFilter
 } from "promaster-primitives";
-import {FilterPrettyPrint} from "promaster-portable";
+import {PropertyFiltering} from "promaster-portable";
 import {
   ComboboxPropertySelector,
   TextboxPropertySelector,
@@ -38,7 +38,7 @@ export interface RenderPropertySelectorsParameters {
   // Required inputs
   readonly productProperties: Array<Property>
   readonly selectedProperties: PropertyValueSet.PropertyValueSet,
-  readonly filterPrettyPrint: FilterPrettyPrint,
+  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
 
   // Includes the raw property name and value in paranthesis
   readonly includeCodes: boolean,
@@ -179,7 +179,7 @@ function renderPropertySelector(propertyName: string,
                                 optionalProperties: Set<string>,
                                 onChange: PropertySelectionOnChange,
                                 onPropertyFormatChanged: OnPropertyFormatChanged,
-                                filterPrettyPrint: FilterPrettyPrint,
+                                filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
                                 inputFormat: AmountFormat,
                                 readOnly: boolean,
                                 locked: boolean,

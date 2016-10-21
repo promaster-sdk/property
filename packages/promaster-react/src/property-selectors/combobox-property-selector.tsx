@@ -1,6 +1,6 @@
 import * as React from "react";
 import {PropertyFilter, PropertyValue, PropertyValueSet} from "promaster-primitives";
-import {FilterPrettyPrint} from "promaster-portable";
+import {PropertyFiltering} from "promaster-portable";
 
 export interface ComboBoxPropertyValueItem {
     readonly value: PropertyValue.PropertyValue | null,
@@ -15,7 +15,7 @@ export interface ComboboxPropertySelectorProps {
     readonly propertyValueSet: PropertyValueSet.PropertyValueSet,
     readonly valueItems: ReadonlyArray<ComboBoxPropertyValueItem>,
     readonly showCodes: boolean,
-    readonly filterPrettyPrint: FilterPrettyPrint,
+    readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
     readonly readOnly: boolean,
     readonly locked: boolean,
@@ -151,7 +151,7 @@ function _getItemValue(valueItem: ComboBoxPropertyValueItem) {
     return valueItem.value == null ? "" : valueItem.value.toString();
 }
 
-function _getItemInvalidMessage(valueItem: ComboBoxPropertyValueItem, filterPrettyPrint: FilterPrettyPrint) {
+function _getItemInvalidMessage(valueItem: ComboBoxPropertyValueItem, filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {
     return filterPrettyPrint(valueItem.validationFilter);
 }
 
