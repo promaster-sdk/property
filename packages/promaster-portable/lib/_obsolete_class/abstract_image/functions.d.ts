@@ -1,0 +1,11 @@
+import { AbstractSize, AbstractComponent, AbstractImageRoot } from "./model/index";
+import { RenderedImage } from './model/rendered_image';
+export declare type ExportImage = (root: AbstractImageRoot, scale: number) => RenderedImage;
+export declare type MeasureImage = (component: AbstractComponent) => AbstractSize;
+export declare type ImportImage = (data: any) => AbstractImageRoot;
+export declare type ExportImageFormat = (format: string, scale: number, root: AbstractImageRoot) => RenderedImage;
+export declare type MeasureImageFormat = (format: string, component: AbstractComponent) => AbstractSize;
+export declare type ImportImageFormat = (format: string, data: any) => AbstractImageRoot;
+export declare const mapExportImageFormat: (exportFunctions: Map<string, ExportImage>) => (format: string, scale: number, root: AbstractImageRoot) => RenderedImage;
+export declare const mapMeasureImageFormat: (measureFunctions: Map<string, MeasureImage>) => (format: string, component: AbstractComponent) => AbstractSize;
+export declare const mapImportImageFormat: (importFunctions: Map<string, ImportImage>) => (format: string, data: any) => AbstractImageRoot;

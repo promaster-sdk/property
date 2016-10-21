@@ -1,0 +1,48 @@
+{
+  "name": "promaster-portable",
+  "version": "0.4.3",
+  "description": "Promaster SDK Portable Libraries",
+  "repository": "https://gitlab.divid.se/promaster-sdk/promaster_portable_ts",
+  "main": "lib/index.js",
+  "typings": "lib/index",
+  "license": "UNLICENSED",
+  "author": "Divid Promaster AB",
+  "scripts": {
+    "build": "rm -rf lib && tsc --version && tsc -p src",
+    "publish:major": "npm run build && node scripts/publish.js major",
+    "publish:minor": "npm run build && node scripts/publish.js minor",
+    "publish:patch": "npm run build && node scripts/publish.js patch",
+    "tsc:watch": "tsc --watch -p src",
+    "NOTpretest": "tsc -p test --module commonjs",
+    "NOTtest": "cd test && mocha --compilers",
+    "test": "mocha --require ts-node/register test/**/*.ts"
+  },
+  "dependencies": {
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.5",
+    "node-uuid": "^1.4.7",
+    "react": "^0.14.3"
+  },
+  "peerDependencies": {
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.5"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.45",
+    "@types/node-uuid": "0.0.28",
+    "@types/react": "^0.14.41",
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2",
+    "ts-loader": "^0.9.5",
+    "ts-node": "^1.6.0",
+    "typescript": "^2.0.3",
+    "shelljs": "^0.7.4"
+  },
+  "jspm": {
+    "dependencies": {
+      "promaster-primitives": "promaster:promaster_primitives_ts@^0.11.6",
+      "node-uuid": "npm:node-uuid@^1.4.7",
+      "react": "npm:react@^0.14.3"
+    }
+  }
+}

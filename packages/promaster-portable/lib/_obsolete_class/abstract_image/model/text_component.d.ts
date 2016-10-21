@@ -1,0 +1,33 @@
+import { AbstractComponent } from './abstract_component';
+import { AbstractColor } from './abstract_color';
+import { AbstractFontWeight } from './abstract_font_weight';
+import { AbstractPoint } from './abstract_point';
+import { TextAlignment } from './text_alignment';
+import { GrowthDirection } from './growth_direction';
+export declare class TextComponent extends AbstractComponent {
+    private _position;
+    private _text;
+    private _fontFamily;
+    private _fontSize;
+    private _textColor;
+    private _fontWeight;
+    private _clockwiseRotationDegrees;
+    private _textAlignment;
+    private _horizontalGrowthDirection;
+    private _verticalGrowthDirection;
+    private _strokeThickness;
+    private _strokeColor;
+    constructor(position: any, text: any, fontFamily: any, fontSize: any, textColor: any, fontWeight: any, clockwiseRotationDegrees: any, textAlignment: any, horizontalGrowthDirection: any, verticalGrowthDirection: any, strokeThickness: any, strokeColor: any);
+    readonly position: AbstractPoint;
+    readonly text: string;
+    readonly fontFamily: string;
+    readonly fontSize: number;
+    readonly textColor: AbstractColor;
+    readonly fontWeight: AbstractFontWeight;
+    readonly clockwiseRotationDegrees: number;
+    readonly textAlignment: TextAlignment;
+    readonly horizontalGrowthDirection: GrowthDirection;
+    readonly verticalGrowthDirection: GrowthDirection;
+    readonly strokeThickness: number;
+    readonly strokeColor: AbstractColor;
+}

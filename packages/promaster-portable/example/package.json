@@ -1,0 +1,23 @@
+{
+  "name": "promaster_portable_example",
+  "version": "0.1.0",
+  "description": "Promaster portable examples",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Divid AB",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "promaster-portable": "file:../",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.5",
+    "express": "^4.13.3",
+    "ts-loader": "^0.7.2",
+    "typescript": "^1.8.0",
+    "webpack": "^1.13.0",
+    "webpack-dev-middleware": "^1.4.0"
+  }
+}

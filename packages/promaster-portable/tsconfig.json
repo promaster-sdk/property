@@ -1,0 +1,19 @@
+// This file is just for running the tests
+// The actual tsconfig.json is located under src
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "test_js_out",
+    "noEmit": true,
+    "sourceMap": true,
+    "lib": ["es5", "dom", "es2015", "es2015.promise", "es2015.iterable", "es2015.symbol"],
+    "types": ["mocha", "node"]
+  },
+  "exclude": [
+    "node_modules",
+    "lib",
+    "example"
+  ]
+}

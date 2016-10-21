@@ -1,0 +1,13 @@
+{
+  "version": "1.7.5",
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "noLib": true,
+    "outDir": "js_out",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
