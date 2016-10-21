@@ -16,13 +16,13 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.4",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_portable_ts.git#0.4.0"
+    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_portable_ts.git#0.4.2"
   },
   "peerDependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.4",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_portable_ts.git#0.4.0"
+    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_portable_ts.git#0.4.2"
   },
   "devDependencies": {
     "@types/react": "^0.14.41",
