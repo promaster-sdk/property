@@ -1,5 +1,4 @@
 import * as React from "react";
-import {AmountInputBoxExample1} from "./amount-input-box-example-1";
 import {AmountFormatSelectorExample1} from "./amount-format-selector-example-1";
 import {AmountPropertySelectorExample1} from "./amount-property-selector-example-1";
 import {merge} from "./utils";
@@ -21,7 +20,6 @@ export class Container extends React.Component<void, State> {
     this.state = {
       selectedExample: 1,
       examples: [
-        {name: "AmountInputBox #1", component: AmountInputBoxExample1},
         {name: "AmountFormatSelector #1", component: AmountFormatSelectorExample1},
         {name: "AmountPropertySelector #1", component: AmountPropertySelectorExample1},
       ]
