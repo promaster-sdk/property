@@ -197,8 +197,11 @@ function renderPropertySelector(propertyName: string,
 
   switch (getPropertyType(quantity)) {
     case "text":
+      const value:string | undefined = selectedValue && PropertyValue.getText(selectedValue);
+      if(!value)
+        throw new Error("No value!");
       return textboxPropertySelector({
-        value: selectedValue && PropertyValue.getText(selectedValue),
+        value: value,
         readOnly: readOnly,
         onValueChange: onValueChange
       });
@@ -210,7 +213,7 @@ function renderPropertySelector(propertyName: string,
         propertyValueSet: selectedProperties,
         valueItems: valueItems && valueItems.map((vi) => ({
           value: vi.value,
-          text: translatePropertyValue(propertyName, vi.value ? PropertyValue.getInteger(vi.value) : null),
+          text: translatePropertyValue(propertyName, vi.value ? PropertyValue.getInteger(vi.value) : undefined),
           sortNo: vi.sortNo,
           validationFilter: vi.validationFilter
         })),
