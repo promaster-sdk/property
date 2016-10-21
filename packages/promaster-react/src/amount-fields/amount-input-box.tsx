@@ -5,18 +5,19 @@
  It is also allowed to have a blank input in which case a change event with value of NULL will be emitted.
  */
 import * as React from "react";
-import {Amount, Unit} from "promaster-primitives/lib/classes";
+import {Amount, Unit} from "promaster-primitives";
+import {Quantity} from "promaster-primitives/lib/fun/measure/quantity";
 
 export interface AmountInputBoxProps {
     readonly key?: string,
-    readonly value: Amount<any>,
-    readonly inputUnit: Unit<any>,
+    readonly value: Amount.Amount<any>,
+    readonly inputUnit: Unit.Unit<any>,
     readonly inputDecimalCount: number,
     readonly notNumericMessage: string,
     readonly isRequiredMessage: string,
     readonly errorMessage: string,
     readonly readOnly: boolean,
-    readonly onValueChange: (newAmount: Amount<any>) => void,
+    readonly onValueChange: (newAmount: Amount.Amount<any>) => void,
     readonly classNames: AmountInputBoxClassNames,
 }
 
@@ -74,7 +75,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     }
 
-    _debouncedOnValueChange(newAmount: Amount<any>, onValueChange: (newAmount: Amount<any>) => void): void {
+    _debouncedOnValueChange(newAmount: Amount.Amount<any>, onValueChange: (newAmount: Amount.Amount<any>) => void): void {
         // log("jk", "_debouncedOnValueChange");
         // An event can have been received when the input was valid, then the input has gone invalid
         // but we still received the delayed event from when the input was valid. Therefore
@@ -84,7 +85,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
             onValueChange(newAmount);
     }
 
-    _onChange(e: React.SyntheticEvent<any>, onValueChange: (newAmount: Amount<any>) => void) {
+    _onChange(e: React.SyntheticEvent<any>, onValueChange: (newAmount: Amount.Amount<any>) => void) {
         const newStringValue = (e.target as HTMLInputElement).value.replace(",", ".");
         const {inputUnit, inputDecimalCount} = this.props;
 
@@ -101,7 +102,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
     }
 
     // We need to return a boolean is the new value is valid or not because state is not immidiately mutated
-    updateState(newAmount: Amount<any> | null, newStringValue: string): boolean {
+    updateState(newAmount: Amount.Amount<any> | null, newStringValue: string): boolean {
         const {isRequiredMessage, notNumericMessage, errorMessage} = this.props;
         const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
         if (internalErrorMessage) {
@@ -117,7 +118,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 }
 
 
-function getInternalErrorMessage(newAmount: Amount<any> | null,
+function getInternalErrorMessage(newAmount: Amount.Amount<any> | null,
 																 newStringValue: string,
 																 isRequiredMessage: string,
 																 notNumericMessage: string): string | null {
@@ -135,7 +136,7 @@ function getInternalErrorMessage(newAmount: Amount<any> | null,
 
 }
 
-function _formatWithUnitAndDecimalCount<T>(amount: Amount<T>, unit: Unit<T>, decimalCount: number): string {
+function _formatWithUnitAndDecimalCount<T extends Quantity>(amount: Amount.Amount<T>, unit: Unit.Unit<T>, decimalCount: number): string {
     if (!amount)
         return "";
 
@@ -153,12 +154,12 @@ function _formatWithUnitAndDecimalCount<T>(amount: Amount<T>, unit: Unit<T>, dec
     else {
         // Conversion needed, use the max number of decimals so the conversion
         // result is as accurate as possible
-        valueToUse = amount.valueAs(unit);
+        valueToUse = Amount.valueAs(unit, amount);
         return valueToUse.toFixed(decimalCount);
     }
 }
 
-function _unformatWithUnitAndDecimalCount<T>(text: string, unit: Unit<T>, inputDecimalCount: number): Amount<T> | null {
+function _unformatWithUnitAndDecimalCount<T extends Quantity>(text: string, unit: Unit.Unit<T>, inputDecimalCount: number): Amount.Amount<T> | null {
     if (!text || text.length === 0)
         return null;
     const parsedFloatValue = _filterFloat(text);

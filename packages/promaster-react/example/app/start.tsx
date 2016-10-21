@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {AmountInputBox} from "promaster-react/amount-fields/index";
-import {Units, Amount} from "promaster-primitives/lib/classes";
+import {Units, Amount} from "promaster-primitives";
 
 ReactDOM.render(
 	<h1>Hello, world!<AmountFieldExample1 /></h1>,

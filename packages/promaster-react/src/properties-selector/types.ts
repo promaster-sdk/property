@@ -1,9 +1,9 @@
 import * as React from "react";
-import {Unit, PropertyValueSet, QuantityType, PropertyValue, PropertyFilter} from "promaster-primitives/lib/classes";
+import {Unit, PropertyValueSet, PropertyValue, PropertyFilter} from "promaster-primitives";
 
-export type AmountFormat = {unit: Unit<any>, decimalCount: number};
-export type PropertySelectionOnChange = (properties: PropertyValueSet) => void;
-export type OnPropertyFormatChanged = (propertyName: string, unit: Unit<any>, decimalCount: number) => void
+export type AmountFormat = {unit: Unit.Unit<any>, decimalCount: number};
+export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet) => void;
+export type OnPropertyFormatChanged = (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) => void
 
 export type TranslatePropertyName = (propertyName: string) => string;
 export type TranslatePropertyValue = (propertyName: string, value: number | null) => string;
@@ -42,15 +42,15 @@ export interface Property {
 	readonly name: string,
 	readonly group: string,
 	readonly quantity: QuantityType,
-	readonly validationFilter: PropertyFilter,
-	readonly visibilityFilter: PropertyFilter,
+	readonly validationFilter: PropertyFilter.PropertyFilter,
+	readonly visibilityFilter: PropertyFilter.PropertyFilter,
 	readonly valueItems: Array<PropertyValueItem>,
 }
 
 export interface PropertyValueItem {
-	readonly value: PropertyValue,
+	readonly value: PropertyValue.PropertyValue,
 	readonly sortNo: number,
-	readonly validationFilter: PropertyFilter,
+	readonly validationFilter: PropertyFilter.PropertyFilter,
 }
 
 

@@ -2,6 +2,7 @@
   "name": "promaster-react",
   "version": "0.1.0",
   "description": "React components for applications that use Promaster.",
+  "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
   "main": "index.js",
   "scripts": {
     "tsc": "tsc -p src",
@@ -14,13 +15,13 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.15.0",
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.4",
     "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_portable_ts.git#0.4.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.15.0",
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.4",
     "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_portable_ts.git#0.4.0"
   },
   "devDependencies": {

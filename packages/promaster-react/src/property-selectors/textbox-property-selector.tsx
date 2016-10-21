@@ -1,10 +1,10 @@
 import * as React from "react";
-import {PropertyValue, PropertyType} from "promaster-primitives/lib/classes";
+import {PropertyValue} from "promaster-primitives";
 
 export interface TextboxPropertySelectorProps {
     readonly value: string,
     readonly readOnly: boolean,
-    readonly onValueChange: (newValue: PropertyValue) => void
+    readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void
 }
 
 interface TextboxPropertySelectorState {
@@ -42,16 +42,16 @@ export class TextboxPropertySelector extends React.Component<TextboxPropertySele
         );
     }
 
-    _debouncedOnValueChange(newValue: PropertyValue, onValueChange: (newValue: PropertyValue) => void): void {
+    _debouncedOnValueChange(newValue: PropertyValue.PropertyValue, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
         // log("jk", "_debouncedOnValueChange");
         onValueChange(newValue);
     }
 
-    _onChange(e: React.SyntheticEvent<any>, onValueChange: (newValue: PropertyValue) => void) {
+    _onChange(e: React.SyntheticEvent<any>, onValueChange: (newValue: PropertyValue.PropertyValue) => void) {
         // log("jk", "_onChange");
         let newStringValue = (e.target as HTMLInputElement).value;
         this.setState({textValue: newStringValue});
-        this._debouncedOnValueChange(new PropertyValue(PropertyType.Text, newStringValue), onValueChange);
+        this._debouncedOnValueChange(PropertyValue.create("text", newStringValue), onValueChange);
     }
 
 }
