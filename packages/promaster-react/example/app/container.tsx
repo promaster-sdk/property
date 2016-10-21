@@ -1,18 +1,19 @@
 import * as React from "react";
 import {AmountInputBoxExample1} from "./amount-input-box-example-1";
 import {AmountFormatSelectorExample1} from "./amount-format-selector-example-1";
+import {merge} from "./utils";
 
 interface Example {
     readonly name: string;
     readonly component: React.ComponentClass<any> | React.StatelessComponent<any>;
 }
 
-interface ContainerState {
+interface State {
     readonly examples: Array<Example>,
     readonly selectedExample: number,
 }
 
-export class Container extends React.Component<void, ContainerState> {
+export class Container extends React.Component<void, State> {
 
     constructor() {
         super();
@@ -43,9 +44,6 @@ export class Container extends React.Component<void, ContainerState> {
 
 }
 
-function merge<T1, T2>(a: T1, b: T2): T1 & T2 {
-    return Object.assign({}, a, b);
-}
 
 interface ExampleRendererProps {
     example: Example;
