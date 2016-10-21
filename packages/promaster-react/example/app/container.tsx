@@ -29,7 +29,7 @@ export class Container extends React.Component<void, ContainerState> {
         return (
             <div>
                 <div>
-                    <ExampleSelector examples={this.state.examples}/>
+                    <ExampleSelector examples={this.state.examples} selectedExample={this.state.selectedExample}/>
                 </div>
                 <div>
                     <ExampleRenderer example={this.state.examples[this.state.selectedExample]}/>
@@ -52,13 +52,19 @@ function ExampleRenderer({example}:ExampleRendererProps) {
 
 interface ExampleSelectorProps {
     readonly examples: Array<Example>,
+    readonly selectedExample: number,
 }
 
-function ExampleSelector({examples}:ExampleSelectorProps) {
+function ExampleSelector({examples, selectedExample}:ExampleSelectorProps) {
+    console.log("selectedExample", selectedExample);
     return (
-        <select>
+        <select value={selectedExample}>
             {
-                examples.map((example) => <option key={example.name}>{example.name}</option>)
+                examples.map((example, index) =>
+                    <option key={example.name}
+                            value={index}>
+                        {example.name}
+                    </option>)
             }
         </select>
     );
