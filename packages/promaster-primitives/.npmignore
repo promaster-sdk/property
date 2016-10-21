@@ -1,0 +1,8 @@
+src/
+test/
+example/
+scripts/
+.idea/
+.editorconfig
+.gitattributes
+.npmignore

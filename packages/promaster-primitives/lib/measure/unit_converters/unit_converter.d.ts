@@ -1,0 +1,11 @@
+import * as OffsetConverter from "./offset_converter";
+import * as Compound from "./compound_converter";
+import * as FactorConverter from "./factor_converter";
+import * as IdentityConverter from "./identity_converter";
+export declare type UnitConverter = OffsetConverter.OffsetConverter | Compound.Compound | FactorConverter.FactorConverter | IdentityConverter.IdentityConverter;
+export declare const Identity: UnitConverter;
+export declare function inverse(converter: UnitConverter): UnitConverter;
+export declare function convert(value: number, converter: UnitConverter): number;
+export declare function concatenate(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter;
+export declare function offset(off: number): UnitConverter;
+export declare function factor(f: number): UnitConverter;

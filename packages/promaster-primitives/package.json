@@ -1,0 +1,39 @@
+{
+  "name": "promaster-primitives",
+  "version": "0.20.5",
+  "main": "lib/index.js",
+  "description": "Promster SDK Primitives",
+  "author": "Divid AB",
+  "repository": "https://gitlab.divid.se/promaster-sdk/promaster_primitives_ts",
+  "typings": "lib/index",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "rm -rf lib && tsc --version && tsc -p src",
+    "publish:major": "npm run build && node scripts/publish.js major",
+    "publish:minor": "npm run build && node scripts/publish.js minor",
+    "publish:patch": "npm run build && node scripts/publish.js patch",
+    "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
+    "test:class": "mocha --compilers ts:ts-node/register test/class/**/*.ts",
+    "test:fun": "mocha --compilers ts:ts-node/register test/fun/**/*.ts",
+    "test:jonas": "mocha --compilers ts:ts-node/register test/fun/measure/*.ts",
+    "test:adam": "mocha --compilers ts:ts-node/register test/fun/product-properties/*.ts",
+    "gen_parser": "pegjs ./src/fun/property-filtering/pegjs/parser.pegjs ./src/fun/property-filtering/pegjs/parser.ts",
+    "benchmark": "node ./lib/test/property_filtering/property_filter_benchmark.js"
+  },
+  "devDependencies": {
+    "@types/assertion-error": "^1.0.30",
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.45",
+    "@types/pegjs": "0.0.28",
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "pegjs": "0.9.0",
+    "shelljs": "^0.7.4",
+    "ts-node": "^1.6.0",
+    "typescript": "^2.0.3"
+  },
+  "jspm": {
+    "registry": "npm"
+  }
+}
