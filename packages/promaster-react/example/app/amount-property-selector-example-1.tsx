@@ -1,21 +1,28 @@
 import * as React from "react";
 import {PropertySelectors} from "promaster-react";
-import {Unit, Units, Amount} from "promaster-primitives";
+import {PropertyFiltering} from "promaster-portable";
+import {Unit, Units, PropertyFilter, PropertyValueSet} from "promaster-primitives";
 import {merge} from "./utils";
 
 interface State {
+  readonly propertyValueSet: PropertyValueSet.PropertyValueSet
   readonly selectedUnit: Unit.Unit<any>,
   readonly selectedDecimalCount: number,
-  readonly amount: Amount.Amount<any>
 }
+
+const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
+  PropertyFiltering.filterPrettyPrintIndented(
+    PropertyFiltering.FilterPrettyPrintMessagesEnglish, 2, " ", propertyFilter);
+
+const validationFilter = PropertyFilter.fromString("a<100:Celsius");
 
 export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
 
   constructor() {
     super();
     this.state = {
+      propertyValueSet: PropertyValueSet.fromString("a=10:Celsius"),
       selectedUnit: Units.Celsius,
-      amount: Amount.create(10.0, Units.Celsius),
       selectedDecimalCount: 2,
     };
   }
@@ -32,6 +39,18 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
       cancel: "cancel"
     };
 
+    const boxClassNames = {
+      input: "input",
+      inputInvalid: "inputInvalid"
+    };
+
+    const propSelClassNames =
+    {
+      amount: "amount",
+      amountFormatSelectorClassNames: selectorClassNames,
+      amountInputBoxClassNames: boxClassNames,
+    };
+
     // console.log("state", this.state);
 
     return (
@@ -41,18 +60,18 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
         </div>
         <div>
           <PropertySelectors.AmountPropertySelector
-            propertyName="myProp"
-            propertyValueSet={{}}
-            filterPrettyPrint={}
-            validationFilter={}
+            propertyName="myprop"
+            propertyValueSet={this.state.propertyValueSet}
             inputUnit={this.state.selectedUnit}
             inputDecimalCount={this.state.selectedDecimalCount}
             onValueChange={(amount) => this.setState(merge(this.state, {amount}))}
+            filterPrettyPrint={filterPrettyPrint}
+            validationFilter={validationFilter}
             readOnly={false}
             isRequiredMessage="Is required"
             notNumericMessage="Not numeric"
             onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
-            classNames={selectorClassNames}/>
+            classNames={propSelClassNames}/>
         </div>
       </div>
     );

@@ -14,8 +14,8 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
   constructor() {
     super();
     this.state = {
-      selectedUnit: Units.Celsius,
       amount: Amount.create(10.0, Units.Celsius),
+      selectedUnit: Units.Celsius,
       selectedDecimalCount: 2,
     };
   }
