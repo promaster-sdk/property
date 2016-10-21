@@ -5,7 +5,7 @@
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
   "main": "index.js",
   "scripts": {
-    "tsc": "tsc -p src",
+    "tsc": "tsc --version && tsc -p src",
     "tsc:example": "tsc -p example",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server"
@@ -15,8 +15,8 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.5",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_portable_ts.git#0.4.3"
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.1.1",
+    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.1.2"
   },
   "devDependencies": {
     "@types/react": "^0.14.41",
