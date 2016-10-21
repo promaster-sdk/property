@@ -22,9 +22,6 @@
     "node-uuid": "^1.4.7",
     "react": "^0.14.3"
   },
-  "peerDependencies": {
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster_primitives_ts.git#0.20.5"
-  },
   "devDependencies": {
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.32",
