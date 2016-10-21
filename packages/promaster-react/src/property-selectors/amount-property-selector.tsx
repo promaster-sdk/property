@@ -65,7 +65,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
 function _getValidationMessage(propertyValueSet: PropertyValueSet.PropertyValueSet,
                                value: Amount.Amount<any>,
                                validationFilter: PropertyFilter.PropertyFilter,
-                               filterPrettyPrint: FilterPrettyPrint) {
+                               filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {
     if (!value || !validationFilter) {
         return '';
     }
