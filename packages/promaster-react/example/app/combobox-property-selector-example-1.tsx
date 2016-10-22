@@ -21,7 +21,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
   constructor() {
     super();
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Celsius"),
+      propertyValueSet: PropertyValueSet.fromString("a=1;b=3"),
       selectedUnit: Units.Celsius,
       selectedDecimalCount: 2,
     };
@@ -45,13 +45,13 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
         value: PropertyValue.create("integer", 1),
         sortNo: 1,
         text: "Alternative 1",
-        validationFilter: PropertyFilter.fromString("a<100:Celsius")
+        validationFilter: PropertyFilter.Empty
       },
       {
         value: PropertyValue.create("integer", 2),
         sortNo: 2,
         text: "Alternative 2",
-        validationFilter: PropertyFilter.fromString("a<100:Celsius")
+        validationFilter: PropertyFilter.fromString("b=2")
       }
     ];
 
