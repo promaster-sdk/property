@@ -144,7 +144,7 @@ export function ComboboxPropertySelector({
 }
 
 function _getItemLabel(valueItem: ComboBoxPropertyValueItem, showCodes: boolean) {
-    return valueItem.text + (showCodes ? ` (${valueItem.value !== null ? valueItem.value : "null"})` : '');
+    return valueItem.text + (showCodes ? ` (${valueItem.value !== null ? PropertyValue.toString(valueItem.value) : "null"})` : '');
 }
 
 function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.PropertyValue | null) => void) {
