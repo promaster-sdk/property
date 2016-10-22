@@ -32,9 +32,7 @@ export function propertiesSelectorLayout({
     groups.map((groupName: any) => {
       const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
 
-      const selectorsDefinitionsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (groupName || ''));
-      // console.log("rows", rows);
-      // console.log("nameIn", nameIn, "rowsForGroup", rowsForGroup);
+      const renderedSelectorsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (groupName || ''));
 
       return DOM.div({
           key: groupName,
@@ -45,7 +43,7 @@ export function propertiesSelectorLayout({
           onClick: () => onToggleGroupClosed(groupName)
         }, DOM.button({className: 'expand-collapse'}, ''), translateGroupName(groupName)),
 
-        selectorsDefinitionsForGroup.map((selector) => PropertySelectorRow({
+        renderedSelectorsForGroup.map((selector) => PropertySelectorRow({
           key: selector.propertyName,
           propertyName: selector.propertyName,
           isHidden: selector.isHidden,
