@@ -65,7 +65,16 @@ export function ComboboxPropertySelector({
         selectedValueItem = selectedValueItemOrUndefined;
     }
 
-    const options = valueItems
+    interface Option {
+      value: string,
+      label: string,
+      isItemValid: boolean,
+      sortNo: number,
+      toolTip: string
+    }
+
+    // Convert value items to options
+    const options: Array<Option> = valueItems
         .map(valueItem => {
             const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem);
             return {
@@ -148,7 +157,7 @@ function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.Prop
 }
 
 function _getItemValue(valueItem: ComboBoxPropertyValueItem) {
-    return valueItem.value == null ? "" : valueItem.value.toString();
+    return valueItem.value == null ? "" : PropertyValue.toString(valueItem.value);
 }
 
 function _getItemInvalidMessage(valueItem: ComboBoxPropertyValueItem, filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {

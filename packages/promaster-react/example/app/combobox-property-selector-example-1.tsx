@@ -1,5 +1,5 @@
 import * as React from "react";
-import {PropertySelectors} from "promaster-react";
+import {PropertySelectors as Selectors} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
 import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
 import {merge} from "./utils";
@@ -16,7 +16,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
 
 const validationFilter = PropertyFilter.fromString("a<100:Celsius");
 
-export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
+export class ComboboxPropertySelectorExample1 extends React.Component<{}, State> {
 
   constructor() {
     super();
@@ -29,54 +29,54 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const selectorClassNames = {
-      input: "input",
-      inputInvalid: "inputInvalid",
-      format: "format",
-      formatActive: "formatActive",
-      unit: "unit",
-      precision: "precision",
-      cancel: "cancel"
-    };
-
-    const boxClassNames = {
-      input: "input",
-      inputInvalid: "inputInvalid"
-    };
-
-    const propSelClassNames =
-    {
-      amount: "amount",
-      amountFormatSelectorClassNames: selectorClassNames,
-      amountInputBoxClassNames: boxClassNames,
+    const propSelClassNames: Selectors.ComboboxPropertySelectorClassNames = {
+      select: "select",
+      selectInvalid: "selectInvalid",
+      selectLocked: "selectLocked",
+      selectInvalidLocked: "selectInvalidLocked",
+      option: "option",
+      optionInvalid: "optionInvalid",
     };
 
     // console.log("state", this.state);
 
+    const valueItems: Array<Selectors.ComboBoxPropertyValueItem> = [
+      {
+        value: PropertyValue.create("integer", 1),
+        sortNo: 1,
+        text: "Alternative 1",
+        validationFilter: PropertyFilter.fromString("a<100:Celsius")
+      },
+      {
+        value: PropertyValue.create("integer", 2),
+        sortNo: 2,
+        text: "Alternative 2",
+        validationFilter: PropertyFilter.fromString("a<100:Celsius")
+      }
+    ];
+
     return (
       <div>
         <div>
-          AmountPropertySelector:
+          ComboboxPropertySelector:
         </div>
         <div>
           PropertyValueSet: {PropertyValueSet.toString(this.state.propertyValueSet)}
         </div>
         <div>
-          <PropertySelectors.AmountPropertySelector
+          <Selectors.ComboboxPropertySelector
             propertyName="a"
+            valueItems={valueItems}
             propertyValueSet={this.state.propertyValueSet}
-            inputUnit={this.state.selectedUnit}
-            inputDecimalCount={this.state.selectedDecimalCount}
+            locked={false}
+            showCodes={true}
+            sortValidFirst={true}
             onValueChange={(pv) =>
             this.setState(merge(this.state, {
               propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, this.state.propertyValueSet)
             }))}
             filterPrettyPrint={filterPrettyPrint}
-            validationFilter={validationFilter}
             readOnly={false}
-            isRequiredMessage="Is required"
-            notNumericMessage="Not numeric"
-            onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
             classNames={propSelClassNames}/>
         </div>
       </div>
