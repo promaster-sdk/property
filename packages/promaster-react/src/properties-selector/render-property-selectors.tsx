@@ -15,7 +15,7 @@ import {
   AmountPropertySelector,
   AmountPropertySelectorClassNames,
   ComboboxPropertySelectorClassNames
-} from "../property-selectors";
+} from "../property-selectors/index";
 import {
   PropertySelectionOnChange,
   AmountFormat,
