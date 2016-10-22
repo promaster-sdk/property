@@ -1,51 +1,36 @@
-import {DOM, createFactory} from "react";
+import * as React from "react";
 
 export type TranslateHiddenProperty = () => string;
 
 export interface PropertySelectorRowProps {
-	readonly key?: string,
-	readonly propertyName: string,
-	readonly isHidden: boolean,
-	readonly label: string,
-	readonly translatePropertyLabelHover: (propertyName:string) => string,
-	readonly isValid:boolean,
-	readonly renderedSelectorElement: any,
+  readonly key?: string,
+  readonly propertyName: string,
+  readonly isHidden: boolean,
+  readonly label: string,
+  readonly translatePropertyLabelHover: (propertyName: string) => string,
+  readonly isValid: boolean,
+  readonly renderedSelectorElement: any,
   readonly translateHiddenProperty: TranslateHiddenProperty
 }
 
-function propertySelectorRow({
-	propertyName,
-	isHidden,
-	label,
-	translatePropertyLabelHover,
-	isValid,
-	renderedSelectorElement,
+export function PropertySelectorRow({
+  propertyName,
+  isHidden,
+  label,
+  translatePropertyLabelHover,
+  isValid,
+  renderedSelectorElement,
   translateHiddenProperty
 }:PropertySelectorRowProps) {
 
-	return DOM.div({className: 'property-selector-row'},
-		DOM.label(
-			{
-				className: !isValid
-					? 'invalid'
-					: undefined,
-				title: translatePropertyLabelHover(propertyName)
-			},
-			(isHidden
-					? DOM.span(
-					{
-						className: "hidden-property"
-					},
-					`(${translateHiddenProperty()}) `
-				)
-					: ""
-			),
-			label
-		),
-		renderedSelectorElement
-	);
-
-
+  return (
+    <div className="property-selector-row">
+      <label className={ !isValid	? 'invalid'	: undefined}
+             title={ translatePropertyLabelHover(propertyName)}>
+        <span className="hidden-property"> { isHidden ? `(${translateHiddenProperty()}` : ""}</span>
+        {label}
+      </label>
+      {renderedSelectorElement}
+    </div>
+  );
 }
-
-export const PropertySelectorRow = createFactory(propertySelectorRow);

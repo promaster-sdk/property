@@ -30,7 +30,6 @@ export function PropertiesSelectorLayout({
       {
         groups.map((groupName: any) => {
           const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
-
           const renderedSelectorsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (groupName || ''));
           const className1 = 'group-container' + (isClosedGroup || groupName === "Main" ? ' expanded' : ' collapsed'); // temp fix to hide on start
           return (
@@ -41,16 +40,16 @@ export function PropertiesSelectorLayout({
                 {translateGroupName(groupName)}
               </div>
               {
-                renderedSelectorsForGroup.map((selector) => PropertySelectorRow({
-                  key: selector.propertyName,
-                  propertyName: selector.propertyName,
-                  isHidden: selector.isHidden,
-                  renderedSelectorElement: selector.renderedSelectorElement,
-                  label: selector.label,
-                  isValid: selector.isValid,
-                  translatePropertyLabelHover: translatePropertyLabelHover,
-                  translateHiddenProperty: () => "Hidden_Property_Translation",
-                }))
+                renderedSelectorsForGroup.map((selector) =>
+                  <PropertySelectorRow key={selector.propertyName}
+                                       propertyName={selector.propertyName}
+                                       isHidden={selector.isHidden}
+                                       renderedSelectorElement={selector.renderedSelectorElement}
+                                       label={selector.label}
+                                       isValid={selector.isValid}
+                                       translatePropertyLabelHover={translatePropertyLabelHover}
+                                       translateHiddenProperty={() => "Hidden_Property_Translation"}/>
+                )
               }
             </div>
           );
