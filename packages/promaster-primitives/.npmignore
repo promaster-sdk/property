@@ -1,7 +1,8 @@
-test/
-example/
-scripts/
 .idea/
 .editorconfig
 .gitattributes
 .npmignore
+tsconfig.json
+example/
+scripts/
+test/
