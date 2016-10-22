@@ -3,6 +3,7 @@ import {PropertiesSelector} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
 import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
 import {merge} from "./utils";
+import {PropertiesSelectorLayout} from "./properties_selector_layout";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet
@@ -55,19 +56,20 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       }
     };
 
-    const productProperties = {};
+    const productProperties: Array<PropertiesSelector.Property> = [];
 
     // Render the selectors
     const renderPropertySelectorParams: PropertiesSelector.RenderPropertySelectorsParameters = {
       selectedProperties: this.state.propertyValueSet,
-      onChange: () => 1,
+      onChange: (properties: PropertyValueSet.PropertyValueSet) =>
+        this.setState(merge(this.state, {propertyValueSet: properties})),
       productProperties: productProperties,
       includeCodes: true,
       includeHiddenProperties: true,
       filterPrettyPrint: filterPrettyPrint,
-      inputFormats: null,
-      readOnlyProperties: null,
-      optionalProperties: null,
+      inputFormats: new Map<string, PropertiesSelector.AmountFormat>(),
+      readOnlyProperties: new Set<string>(),
+      optionalProperties: new Set<string>(),
       onPropertyFormatChanged: (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) => 1,
       autoSelectSingleValidValue: true,
       translatePropertyName: (propertyName: string) => `${propertyName}_Translation`,
@@ -78,19 +80,19 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     };
     const renderedPropertySelectors = PropertiesSelector.renderPropertySelectors(renderPropertySelectorParams);
 
-    // return PropertiesSelectorLayout({
-    //   renderedPropertySelectors,
-    //   productId,
-    //   intl,
-    //   translatePropertyLabelHover: getPropertyLabelHoverText,
-    //   hiddenTabs,
-    //   onToggleGroupContainer,
-    //   explicitLabels,
-    //   calculatedProperties,
-    //   overridableProperties,
-    //   overriddenProperties,
-    //   onPropertyOverrideChange,
-    // });
+    return PropertiesSelectorLayout({
+      renderedPropertySelectors,
+      productId,
+      intl,
+      translatePropertyLabelHover: getPropertyLabelHoverText,
+      hiddenTabs,
+      onToggleGroupContainer,
+      explicitLabels,
+      calculatedProperties,
+      overridableProperties,
+      overriddenProperties,
+      onPropertyOverrideChange,
+    });
 
   }
 }

@@ -6,7 +6,7 @@ export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyVa
 export type OnPropertyFormatChanged = (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) => void
 
 export type TranslatePropertyName = (propertyName: string) => string;
-export type TranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
+export type TranslatePropertyValue = (propertyName: string, value: number | null) => string;
 export type TranslateNotNumericMessage = () => string;
 export type TranslateValueIsRequiredMessage = () => string;
 
