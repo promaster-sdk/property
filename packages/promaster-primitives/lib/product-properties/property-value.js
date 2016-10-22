@@ -99,19 +99,19 @@ function toString(value) {
     throw new Error("Invalid type.");
 }
 exports.toString = toString;
-function compareTo(other, value) {
-    switch (value.type) {
+function compareTo(left, right) {
+    switch (left.type) {
         case "integer":
-            if (other.type === "integer")
-                return compare_utils_1.compareNumbers(value.value, other.value, 0);
+            if (right.type === "integer")
+                return compare_utils_1.compareNumbers(left.value, right.value, 0);
             throw new Error("Unexpected error comparing integers");
         case "amount":
-            if (other.type === "amount")
-                return Amount.compareTo(value.value, other.value);
+            if (right.type === "amount")
+                return Amount.compareTo(left.value, right.value);
             throw new Error("Unexpected error comparing amounts");
         case "text":
-            if (other.type === "text")
-                return compare_utils_1.compareIgnoreCase(value.value, other.value);
+            if (right.type === "text")
+                return compare_utils_1.compareIgnoreCase(left.value, right.value);
             throw new Error("Unexpected error comparing texts");
         default:
             throw new Error("Unknown property type");

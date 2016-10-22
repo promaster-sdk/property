@@ -12,6 +12,8 @@
     "publish:major": "npm run build && node scripts/publish.js major",
     "publish:minor": "npm run build && node scripts/publish.js minor",
     "publish:patch": "npm run build && node scripts/publish.js patch",
+    "tsc:src": "tsc -p src",
+    "tsc:test": "tsc",
     "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
     "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
     "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
