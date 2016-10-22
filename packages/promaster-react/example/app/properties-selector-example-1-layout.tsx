@@ -23,29 +23,30 @@ export function propertiesSelectorLayout({
   onToggleGroupClosed,
 }: PropertiesSelectorLayoutProps) {
 
-  const groups = getGroupNames(renderedPropertySelectors);
+  const groups = getGroupDistinctNames(renderedPropertySelectors);
 
   return DOM.div(
     {
       className: 'properties-selector'
     },
-    groups.map((groupNameIn: any) => {
-      const hidden = closedGroups.indexOf(groupNameIn) !== -1;
+    groups.map((groupName: any) => {
+      const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
 
-      const selectorsDefinitionsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (groupNameIn || ''));
+      const selectorsDefinitionsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (groupName || ''));
       // console.log("rows", rows);
       // console.log("nameIn", nameIn, "rowsForGroup", rowsForGroup);
 
       return DOM.div({
-          key: groupNameIn,
-          className: 'group-container' + (hidden || groupNameIn === "Main" ? ' expanded' : ' collapsed') // temp fix to hide on start
+          key: groupName,
+          className: 'group-container' + (isClosedGroup || groupName === "Main" ? ' expanded' : ' collapsed') // temp fix to hide on start
         },
         DOM.div({
           className: 'group-container-header',
-          onClick: () => onToggleGroupClosed(groupNameIn)
-        }, DOM.button({className: 'expand-collapse'}, ''), translateGroupName(groupNameIn)),
+          onClick: () => onToggleGroupClosed(groupName)
+        }, DOM.button({className: 'expand-collapse'}, ''), translateGroupName(groupName)),
 
         selectorsDefinitionsForGroup.map((selector) => PropertySelectorRow({
+          key: selector.propertyName,
           propertyName: selector.propertyName,
           isHidden: selector.isHidden,
           renderedSelectorElement: selector.renderedSelectorElement,
@@ -59,7 +60,7 @@ export function propertiesSelectorLayout({
   );
 }
 
-function getGroupNames(productPropertiesArray: Array<PropertiesSelector.RenderedPropertySelector>): Array<string> {
+function getGroupDistinctNames(productPropertiesArray: Array<PropertiesSelector.RenderedPropertySelector>): Array<string> {
   const sortedProperties = productPropertiesArray.sort((e) => e.sortNo);
   const groupNames: Array<string> = [];
   for (let property of sortedProperties) {
