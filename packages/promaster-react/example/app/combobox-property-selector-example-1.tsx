@@ -6,8 +6,6 @@ import {merge} from "./utils";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet
-  readonly selectedUnit: Unit.Unit<any>,
-  readonly selectedDecimalCount: number,
 }
 
 const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
@@ -20,8 +18,6 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
     super();
     this.state = {
       propertyValueSet: PropertyValueSet.fromString("a=1;b=3"),
-      selectedUnit: Units.Celsius,
-      selectedDecimalCount: 2,
     };
   }
 
