@@ -198,7 +198,7 @@ function toString(set) {
     var sb = "";
     for (var _i = 0, _a = Object.keys(set); _i < _a.length; _i++) {
         var name_7 = _a[_i];
-        sb += name_7 + " = " + set[name_7];
+        sb += name_7 + "=" + PropertyValue.toString(set[name_7]);
     }
     return sb;
 }
@@ -207,7 +207,7 @@ function toStringInSpecifiedOrder(order) {
     var sb = "";
     for (var _i = 0, order_1 = order; _i < order_1.length; _i++) {
         var name_8 = order_1[_i];
-        sb += name_8 + " = " + set[name_8];
+        sb += name_8 + "=" + PropertyValue.toString(set[name_8]);
     }
     return sb;
 }

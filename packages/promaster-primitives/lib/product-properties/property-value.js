@@ -84,14 +84,12 @@ function valueAs(unit, value) {
 exports.valueAs = valueAs;
 function toString(value) {
     if (value.type === "amount") {
-        var amountValue = value.value;
-        var valueString = amountValue.value.toString();
-        var unitString = Units.getStringFromUnit(amountValue.unit);
-        return valueString + ':' + unitString;
+        var valueString = value.value.value.toString();
+        var unitString = Units.getStringFromUnit(value.value.unit);
+        return valueString + ":" + unitString;
     }
     else if (value.type === "text") {
-        var textValue = value.value;
-        return _encodeToSafeString(textValue);
+        return _encodeToSafeString(value.value);
     }
     else if (value.type === "integer") {
         return value.value.toString();
