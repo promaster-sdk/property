@@ -1,7 +1,7 @@
 import * as React from "react";
 import {PropertiesSelector} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
-import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
+import {Unit, Units, PropertyFilter, PropertyValueSet} from "promaster-primitives";
 import {merge} from "./utils";
 import {PropertiesSelectorLayout} from "./properties_selector_layout";
 
@@ -9,13 +9,13 @@ interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet
   readonly selectedUnit: Unit.Unit<any>,
   readonly selectedDecimalCount: number,
+  readonly closedGroups: Array<string>,
+  readonly amountFormats: {[key: string]: PropertiesSelector.AmountFormat},
 }
 
 const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish, 2, " ", propertyFilter);
-
-const validationFilter = PropertyFilter.fromString("a<100:Celsius");
 
 export class PropertiesSelectorExample1 extends React.Component<{}, State> {
 
@@ -25,6 +25,8 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       propertyValueSet: PropertyValueSet.fromString("a=10:Celsius"),
       selectedUnit: Units.Celsius,
       selectedDecimalCount: 2,
+      closedGroups: [],
+      amountFormats: {},
     };
   }
 
@@ -70,7 +72,12 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       inputFormats: new Map<string, PropertiesSelector.AmountFormat>(),
       readOnlyProperties: new Set<string>(),
       optionalProperties: new Set<string>(),
-      onPropertyFormatChanged: (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) => 1,
+      onPropertyFormatChanged: (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) =>
+        this.setState(merge(this.state, {
+          amountFormats: merge(this.state.amountFormats, {
+            [propertyName]: {unit, decimalCount}
+          })
+        })),
       autoSelectSingleValidValue: true,
       translatePropertyName: (propertyName: string) => `${propertyName}_Translation`,
       translatePropertyValue: (propertyName: string, value: number | null) => `${propertyName}_${value}_Translation`,
@@ -82,7 +89,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
 
     return PropertiesSelectorLayout({
       renderedPropertySelectors,
-      translatePropertyLabelHover: getPropertyLabelHoverText,
+      translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: (name) => `${name}_Translated`,
       closedGroups: this.state.closedGroups,
       onToggleGroupClosed: (group) => this.setState(merge(this.state, {closedGroups: group})),

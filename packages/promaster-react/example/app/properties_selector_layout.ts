@@ -33,7 +33,7 @@ export function propertiesSelectorLayout({
       let name = (nameIn) ? nameIn : 'Other';
       const keyValue = name;
       name = translateGroupName(name);
-      const hidden = R.contains(name, closedGroups);
+      const hidden = closedGroups.indexOf(name) !== -1;
 
       const selectorsDefinitionsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (nameIn || ''));
       // console.log("rows", rows);
