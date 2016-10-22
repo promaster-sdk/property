@@ -117,13 +117,24 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     };
     const renderedPropertySelectors = PropertiesSelector.renderPropertySelectors(renderPropertySelectorParams);
 
-    return PropertiesSelectorLayout({
-      renderedPropertySelectors,
-      translatePropertyLabelHover: () => "translatePropertyLabelHover",
-      translateGroupName: (name) => `${name}_Translated`,
-      closedGroups: this.state.closedGroups,
-      onToggleGroupClosed: (group) => this.setState(merge(this.state, {closedGroups: group})),
-    });
+    // return PropertiesSelectorLayout({
+    //   renderedPropertySelectors,
+    //   translatePropertyLabelHover: () => "translatePropertyLabelHover",
+    //   translateGroupName: (name) => `${name}_Translated`,
+    //   closedGroups: this.state.closedGroups,
+    //   onToggleGroupClosed: (group) => this.setState(merge(this.state, {closedGroups: group})),
+    // });
+
+    return (
+      <PropertiesSelectorLayout
+        renderedPropertySelectors={renderedPropertySelectors}
+        translatePropertyLabelHover={ () => "translatePropertyLabelHover"}
+        translateGroupName={ (name) => `${name}_Translated`}
+        closedGroups={ this.state.closedGroups}
+        onToggleGroupClosed={ (group) => this.setState(merge(this.state, {closedGroups: group}))}
+      />
+    );
+
 
   }
 }
