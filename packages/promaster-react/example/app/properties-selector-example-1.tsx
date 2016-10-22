@@ -1,7 +1,7 @@
 import * as React from "react";
 import {PropertiesSelector} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
-import {Unit, Units, PropertyFilter, PropertyValueSet/*, PropertyValue*/} from "promaster-primitives";
+import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
 import {merge} from "./utils";
 import {PropertiesSelectorLayout} from "./properties-selector-example-1-layout";
 
@@ -22,7 +22,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
   constructor() {
     super();
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Celsius"),
+      propertyValueSet: PropertyValueSet.fromString("a=10:Celsius;b=1;"),
       selectedUnit: Units.Celsius,
       selectedDecimalCount: 2,
       closedGroups: [],
@@ -68,21 +68,26 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
         visibilityFilter: PropertyFilter.Empty,
         valueItems: [],
       },
-      // {
-      //   sortNo: 2,
-      //   name: "b",
-      //   group: "Group1",
-      //   quantity: "Discrete",
-      //   validationFilter: PropertyFilter.Empty,
-      //   visibilityFilter: PropertyFilter.Empty,
-      //   valueItems: [
-      //     {
-      //       value: PropertyValue.fromInteger(1),
-      //       sortNo: 1,
-      //       validationFilter: PropertyFilter.Empty,
-      //     }
-      //   ],
-      // }
+      {
+        sortNo: 2,
+        name: "b",
+        group: "Group1",
+        quantity: "Discrete",
+        validationFilter: PropertyFilter.Empty,
+        visibilityFilter: PropertyFilter.Empty,
+        valueItems: [
+          {
+            value: PropertyValue.fromInteger(1),
+            sortNo: 10,
+            validationFilter: PropertyFilter.Empty,
+          },
+          {
+            value: PropertyValue.fromInteger(2),
+            sortNo: 20,
+            validationFilter: PropertyFilter.Empty,
+          }
+        ],
+      }
     ];
 
     // Render the selectors
