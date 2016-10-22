@@ -1,18 +1,17 @@
-// import * as R from "ramda";
 import {DOM, createFactory} from "react";
 import {PropertySelectorRow} from "./properties_selector_row";
-import {RenderedPropertySelector} from "properties-selector";
+import {PropertiesSelector} from "promaster-react";
 
 export type TranslatePropertyLabelHover = () => string;
 export type TranslateGroupName = (groupName: string) => string;
-export type OnToggleGroupContainer = (groupName: string) => void;
+export type OnToggleGroupClosed = (groupName: string) => void;
 
 export interface PropertiesSelectorLayoutProps {
-  readonly renderedPropertySelectors: Array<RenderedPropertySelector>,
+  readonly renderedPropertySelectors: Array<PropertiesSelector.RenderedPropertySelector>,
   readonly translatePropertyLabelHover: TranslatePropertyLabelHover,
   readonly translateGroupName: TranslateGroupName,
-  readonly closedTabs: Array<string>,
-  readonly onToggleGroupContainer: OnToggleGroupContainer,
+  readonly closedGroups: Array<string>,
+  readonly onToggleGroupClosed: OnToggleGroupClosed,
 }
 
 export function propertiesSelectorLayout({
@@ -20,8 +19,8 @@ export function propertiesSelectorLayout({
 
   translatePropertyLabelHover,
   translateGroupName,
-  closedTabs,
-  onToggleGroupContainer,
+  closedGroups,
+  onToggleGroupClosed,
 }: PropertiesSelectorLayoutProps) {
 
   const groups = getGroupNames(renderedPropertySelectors);
@@ -34,7 +33,7 @@ export function propertiesSelectorLayout({
       let name = (nameIn) ? nameIn : 'Other';
       const keyValue = name;
       name = translateGroupName(name);
-      const hidden = R.contains(name, closedTabs);
+      const hidden = R.contains(name, closedGroups);
 
       const selectorsDefinitionsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (nameIn || ''));
       // console.log("rows", rows);
@@ -46,7 +45,7 @@ export function propertiesSelectorLayout({
         },
         DOM.div({
           className: 'group-container-header',
-          onClick: () => onToggleGroupContainer(name)
+          onClick: () => onToggleGroupClosed(name)
         }, DOM.button({className: 'expand-collapse'}, ''), name),
 
         selectorsDefinitionsForGroup.map((selector) => PropertySelectorRow({
@@ -63,11 +62,14 @@ export function propertiesSelectorLayout({
   );
 }
 
-function getGroupNames(productPropertiesArray: Array<RenderedPropertySelector>): Array<string> {
-
-  const productPropertiesArray2 = R.sortBy((selector) => selector.sortNo, productPropertiesArray);
-  const productPropertiesArray3 = R.uniqBy((selector) => selector.groupName, productPropertiesArray2);
-  const groupNames = productPropertiesArray3.map((p) => isNullOrWhiteSpace(p.groupName) ? undefined : p.groupName);
+function getGroupNames(productPropertiesArray: Array<PropertiesSelector.RenderedPropertySelector>): Array<string> {
+  const sortedProperties = productPropertiesArray.sort((e) => e.sortNo);
+  const groupNames: Array<string> = [];
+  for (let property of sortedProperties) {
+    if (groupNames.indexOf(property.groupName) === -1 && ! isNullOrWhiteSpace(property.groupName)) {
+      groupNames.push(property.groupName);
+    }
+  }
   return groupNames;
 }
 

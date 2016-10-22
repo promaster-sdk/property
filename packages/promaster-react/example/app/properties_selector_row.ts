@@ -1,6 +1,4 @@
 import {DOM, createFactory} from "react";
-import {IntlApi} from "../../intl/index";
-import {OnPropertyOverrideChange} from "./types";
 
 export type TranslateHiddenProperty = () => string;
 
@@ -40,7 +38,7 @@ function propertySelectorRow({
 					},
 					`(${translateHiddenProperty()}) `
 				)
-					: null
+					: ""
 			),
 			label
 		),

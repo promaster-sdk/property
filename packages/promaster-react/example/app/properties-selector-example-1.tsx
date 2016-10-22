@@ -82,16 +82,10 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
 
     return PropertiesSelectorLayout({
       renderedPropertySelectors,
-      productId,
-      intl,
       translatePropertyLabelHover: getPropertyLabelHoverText,
-      hiddenTabs,
-      onToggleGroupContainer,
-      explicitLabels,
-      calculatedProperties,
-      overridableProperties,
-      overriddenProperties,
-      onPropertyOverrideChange,
+      translateGroupName: (name) => `${name}_Translated`,
+      closedGroups: this.state.closedGroups,
+      onToggleGroupClosed: (group) => this.setState(merge(this.state, {closedGroups: group})),
     });
 
   }
