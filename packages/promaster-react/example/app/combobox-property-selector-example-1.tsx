@@ -14,8 +14,6 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish, 2, " ", propertyFilter);
 
-const validationFilter = PropertyFilter.fromString("a<100:Celsius");
-
 export class ComboboxPropertySelectorExample1 extends React.Component<{}, State> {
 
   constructor() {
