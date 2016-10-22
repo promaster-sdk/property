@@ -29,24 +29,21 @@ export function propertiesSelectorLayout({
     {
       className: 'properties-selector'
     },
-    groups.map((nameIn: any) => {
-      let name = (nameIn) ? nameIn : 'Other';
-      const keyValue = name;
-      name = translateGroupName(name);
-      const hidden = closedGroups.indexOf(name) !== -1;
+    groups.map((groupNameIn: any) => {
+      const hidden = closedGroups.indexOf(groupNameIn) !== -1;
 
-      const selectorsDefinitionsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (nameIn || ''));
+      const selectorsDefinitionsForGroup = renderedPropertySelectors.filter((selector) => selector.groupName === (groupNameIn || ''));
       // console.log("rows", rows);
       // console.log("nameIn", nameIn, "rowsForGroup", rowsForGroup);
 
       return DOM.div({
-          key: keyValue,
-          className: 'group-container' + (hidden || keyValue === "Main" ? ' expanded' : ' collapsed') // temp fix to hide on start
+          key: groupNameIn,
+          className: 'group-container' + (hidden || groupNameIn === "Main" ? ' expanded' : ' collapsed') // temp fix to hide on start
         },
         DOM.div({
           className: 'group-container-header',
-          onClick: () => onToggleGroupClosed(name)
-        }, DOM.button({className: 'expand-collapse'}, ''), name),
+          onClick: () => onToggleGroupClosed(groupNameIn)
+        }, DOM.button({className: 'expand-collapse'}, ''), translateGroupName(groupNameIn)),
 
         selectorsDefinitionsForGroup.map((selector) => PropertySelectorRow({
           propertyName: selector.propertyName,
