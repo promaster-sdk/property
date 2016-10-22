@@ -2,6 +2,7 @@ import * as React from "react";
 import {AmountFormatSelectorExample1} from "./amount-format-selector-example-1";
 import {AmountPropertySelectorExample1} from "./amount-property-selector-example-1";
 import {ComboboxPropertySelectorExample1} from "./combobox-property-selector-example-1";
+import {TextboxPropertySelectorExample1} from "./textbox-property-selector-example-1";
 import {merge} from "./utils";
 
 interface Example {
@@ -19,11 +20,12 @@ export class Container extends React.Component<void, State> {
   constructor() {
     super();
     this.state = {
-      selectedExample: 2,
+      selectedExample: 3,
       examples: [
         {name: "AmountFormatSelector #1", component: AmountFormatSelectorExample1},
         {name: "AmountPropertySelector #1", component: AmountPropertySelectorExample1},
-        {name: "ComboboxPropertySelectorExample1 #1", component: ComboboxPropertySelectorExample1},
+        {name: "ComboboxPropertySelector #1", component: ComboboxPropertySelectorExample1},
+        {name: "TextboxPropertySelector #1", component: TextboxPropertySelectorExample1},
       ]
     };
   }
