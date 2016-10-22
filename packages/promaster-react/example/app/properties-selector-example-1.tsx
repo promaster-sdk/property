@@ -3,7 +3,7 @@ import {PropertiesSelector} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
 import {Unit, Units, PropertyFilter, PropertyValueSet} from "promaster-primitives";
 import {merge} from "./utils";
-import {PropertiesSelectorLayout} from "./properties_selector_layout";
+import {PropertiesSelectorLayout} from "./properties-selector-example-1-layout";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet

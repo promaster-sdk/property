@@ -1,5 +1,5 @@
 import {DOM, createFactory} from "react";
-import {PropertySelectorRow} from "./properties_selector_row";
+import {PropertySelectorRow} from "./properties-selector-example-1-row";
 import {PropertiesSelector} from "promaster-react";
 
 export type TranslatePropertyLabelHover = () => string;
