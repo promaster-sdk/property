@@ -1,34 +1,28 @@
-import {DOM, SyntheticEvent, createFactory} from "react";
+import {DOM, createFactory} from "react";
 import {IntlApi} from "../../intl/index";
 import {OnPropertyOverrideChange} from "./types";
+
+export type TranslateHiddenProperty = () => string;
 
 export interface PropertySelectorRowProps {
 	readonly key?: string,
 	readonly propertyName: string,
 	readonly isHidden: boolean,
-	readonly onPropertyOverrideChange: OnPropertyOverrideChange,
-	readonly calculated: boolean,
-	readonly overridable: boolean,
-	readonly overridden: boolean,
-	readonly intl: IntlApi,
 	readonly label: string,
 	readonly translatePropertyLabelHover: (propertyName:string) => string,
 	readonly isValid:boolean,
 	readonly renderedSelectorElement: any,
+  readonly translateHiddenProperty: TranslateHiddenProperty
 }
 
 function propertySelectorRow({
 	propertyName,
 	isHidden,
-	onPropertyOverrideChange,
-	calculated,
-	overridable,
-	overridden,
-	intl,
 	label,
 	translatePropertyLabelHover,
 	isValid,
 	renderedSelectorElement,
+  translateHiddenProperty
 }:PropertySelectorRowProps) {
 
 	return DOM.div({className: 'property-selector-row'},
@@ -39,21 +33,12 @@ function propertySelectorRow({
 					: undefined,
 				title: translatePropertyLabelHover(propertyName)
 			},
-			calculated && overridable ?
-				DOM.input({
-					type: 'checkbox',
-					checked: overridden,
-					onChange: (e: SyntheticEvent<any>) =>
-					onPropertyOverrideChange && onPropertyOverrideChange(propertyName, (<HTMLInputElement>(e.target)).checked)
-				})
-				: undefined
-			,
 			(isHidden
 					? DOM.span(
 					{
 						className: "hidden-property"
 					},
-					`(${intl.texts.property_selector_hidden_property()}) `
+					`(${translateHiddenProperty()}) `
 				)
 					: null
 			),
