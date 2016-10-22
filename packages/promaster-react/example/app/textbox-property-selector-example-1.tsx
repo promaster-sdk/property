@@ -18,17 +18,6 @@ export class TextboxPropertySelectorExample1 extends React.Component<{}, State> 
 
   render() {
 
-    // const propSelClassNames: Selectors.ComboboxPropertySelectorClassNames = {
-    //   select: "select",
-    //   selectInvalid: "selectInvalid",
-    //   selectLocked: "selectLocked",
-    //   selectInvalidLocked: "selectInvalidLocked",
-    //   option: "option",
-    //   optionInvalid: "optionInvalid",
-    // };
-
-    // console.log("state", this.state);
-
     return (
       <div>
         <div>
