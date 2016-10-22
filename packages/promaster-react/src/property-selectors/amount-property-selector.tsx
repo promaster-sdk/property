@@ -72,7 +72,7 @@ function _getValidationMessage(propertyValueSet: PropertyValueSet.PropertyValueS
         return '';
     }
 
-    if (PropertyFilter.isValid(false, propertyValueSet, validationFilter)) {
+    if (PropertyFilter.isValid(propertyValueSet, validationFilter)) {
         return '';
     }
     else {

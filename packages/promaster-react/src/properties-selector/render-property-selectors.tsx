@@ -104,7 +104,7 @@ export function renderPropertySelectors({
   const sortedArray = productProperties.slice().sort((a, b) => a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0);
 
   const selectorDefinitions: Array<RenderedPropertySelector> = sortedArray
-    .filter((property: Property) => includeHiddenProperties || PropertyFilter.isValid(false, selectedProperties, property.visibilityFilter))
+    .filter((property: Property) => includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter))
     .map((property: Property) => {
 
       const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
@@ -115,10 +115,10 @@ export function renderPropertySelectors({
       let isValid: boolean;
       switch (getPropertyType(property.quantity)) {
         case "integer":
-          isValid = selectedValueItem ? PropertyFilter.isValid(false, selectedProperties, selectedValueItem.validationFilter) : false;
+          isValid = selectedValueItem ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter) : false;
           break;
         case "amount":
-          isValid = property.validationFilter && PropertyFilter.isValid(false, selectedProperties, property.validationFilter);
+          isValid = property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter);
           break;
         default:
           isValid = true;
@@ -135,7 +135,7 @@ export function renderPropertySelectors({
         groupName: property.group,
 
         isValid: isValid,
-        isHidden: !PropertyFilter.isValid(false, selectedProperties, property.visibilityFilter),
+        isHidden: !PropertyFilter.isValid(selectedProperties, property.visibilityFilter),
 
         label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
 
@@ -213,7 +213,7 @@ function renderPropertySelector(propertyName: string,
         propertyValueSet: selectedProperties,
         valueItems: valueItems && valueItems.map((vi) => ({
           value: vi.value,
-          text: translatePropertyValue(propertyName, vi.value ? PropertyValue.getInteger(vi.value) : undefined),
+          text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : null) as number),
           sortNo: vi.sortNo,
           validationFilter: vi.validationFilter
         })),
@@ -265,7 +265,7 @@ function getSingleValidValueOrNull(productProperty: Property, properties: Proper
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: PropertyValueItem[] = [];
     for (let productValueItem of productProperty.valueItems) {
-      const isValid = PropertyFilter.isValid(false, properties, productValueItem.validationFilter);
+      const isValid = PropertyFilter.isValid(properties, productValueItem.validationFilter);
 
       if (isValid) {
         validPropertyValueItems.push(productValueItem);

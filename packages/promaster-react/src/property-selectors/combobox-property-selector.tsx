@@ -171,6 +171,6 @@ function _isValueItemValid(propertyName: string, propertyValueSet: PropertyValue
     let pvsToCheck = PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
     if (!valueItem.validationFilter)
         return true;
-    return PropertyFilter.isValid(false, pvsToCheck, valueItem.validationFilter);
+    return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter);
 
 }
