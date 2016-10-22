@@ -200,7 +200,7 @@ export function getProperties(propertiesToGet: Array<string>, set: PropertyValue
 export function toString(set: PropertyValueSet): string {
     let sb = "";
     for (let name of Object.keys(set)) {
-        sb += `${name} = ${set[name]}`;
+        sb += `${name}=${PropertyValue.toString(set[name])}`;
     }
     return sb;
 }
@@ -208,7 +208,7 @@ export function toString(set: PropertyValueSet): string {
 export function toStringInSpecifiedOrder(order: Array<string>): string {
     let sb = "";
     for (let name of order) {
-        sb += `${name} = ${set[name]}`;
+        sb += `${name}=${PropertyValue.toString(set[name])}`;
     }
     return sb;
 }

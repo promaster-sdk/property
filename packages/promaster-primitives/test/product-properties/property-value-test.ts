@@ -112,8 +112,19 @@ describe('property_value_test', () => {
   it('should make a correct string from an amount value', () => {
     const pv1 = PropertyValue.fromString("20.03:Celsius");
     const pv1string = PropertyValue.toString(pv1);
-    assert.equal(pv1, pv1string);
+    assert.equal(pv1string, "20.03:celsius");
+  });
+
+  it('should make a correct string from an integer value', () => {
+    const pv1 = PropertyValue.fromInteger(123);
+    const pv1string = PropertyValue.toString(pv1);
+    assert.equal(pv1string, "123");
+  });
+
+  it('should make a correct string from an text value', () => {
+    const pv1 = PropertyValue.fromText("TextValue");
+    const pv1string = PropertyValue.toString(pv1);
+    assert.equal(pv1string, '"TextValue"');
   });
 
 });
-

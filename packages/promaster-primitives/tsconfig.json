@@ -1,4 +1,5 @@
-// This file is just for running the tests
+// This file is just for running the tests since they need to
+// compile both the test folder and the src folder.
 // The actual tsconfig.json is located under src
 {
   "compilerOptions": {
