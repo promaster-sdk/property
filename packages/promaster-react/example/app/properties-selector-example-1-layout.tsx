@@ -1,8 +1,7 @@
 import * as React from "react";
-import {PropertySelectorRow} from "./properties-selector-example-1-row";
 import {PropertiesSelector} from "promaster-react";
 
-export type TranslatePropertyLabelHover = () => string;
+export type TranslatePropertyLabelHover = (propertyName: string) => string;
 export type TranslateGroupName = (groupName: string) => string;
 export type OnToggleGroupClosed = (groupName: string) => void;
 
@@ -16,7 +15,6 @@ export interface PropertiesSelectorLayoutProps {
 
 export function PropertiesSelectorLayout({
   renderedPropertySelectors,
-
   translatePropertyLabelHover,
   translateGroupName,
   closedGroups,
@@ -40,15 +38,16 @@ export function PropertiesSelectorLayout({
                 {translateGroupName(groupName)}
               </div>
               {
-                renderedSelectorsForGroup.map((selector) =>
-                  <PropertySelectorRow key={selector.propertyName}
-                                       propertyName={selector.propertyName}
-                                       isHidden={selector.isHidden}
-                                       renderedSelectorElement={selector.renderedSelectorElement}
-                                       label={selector.label}
-                                       isValid={selector.isValid}
-                                       translatePropertyLabelHover={translatePropertyLabelHover}
-                                       translateHiddenProperty={() => "Hidden_Property_Translation"}/>
+                renderedSelectorsForGroup.map((selector) => (
+                    <div key={selector.propertyName}
+                         className="property-selector-row">
+                      <label className={ !selector.isValid	? 'invalid'	: undefined}
+                             title={translatePropertyLabelHover(selector.propertyName)}>
+                        <span className={selector.isHidden ? "hidden-property" : ""}>{selector.label}</span>
+                      </label>
+                      {selector.renderedSelectorElement}
+                    </div>
+                  )
                 )
               }
             </div>
