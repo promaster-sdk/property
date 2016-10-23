@@ -58,11 +58,11 @@ export interface RenderPropertySelectorsParameters {
   readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage
 
   // Specifies property names of properties that should be read-only
-  readonly readOnlyProperties: Set<string>,
+  readonly readOnlyProperties: Array<string>,
   // Specifies property names of properties that should be optional (only for amounts for now)
-  readonly optionalProperties: Set<string>,
+  readonly optionalProperties: Array<string>,
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly inputFormats: Map<string, AmountFormat>,
+  readonly inputFormats: {[key: string]: AmountFormat},
 
   readonly classNames: RenderPropertySelectorsParametersClassNames,
 }
@@ -124,9 +124,9 @@ export function renderPropertySelectors({
           isValid = true;
       }
 
-      const isReadOnly = readOnlyProperties.has(property.name);
+      const isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
       // TODO: Better handling of format to use when the format is missing in the map
-      const inputFormat = inputFormats.get(property.name) || {unit: Units.One, decimalCount: 2};
+      const inputFormat = inputFormats[property.name] || {unit: Units.One, decimalCount: 2};
 
 
       return {
@@ -176,7 +176,7 @@ function renderPropertySelector(propertyName: string,
                                 selectedValue: PropertyValue.PropertyValue,
                                 selectedProperties: PropertyValueSet.PropertyValueSet,
                                 includeCodes: boolean,
-                                optionalProperties: Set<string>,
+                                optionalProperties: Array<string>,
                                 onChange: PropertySelectionOnChange,
                                 onPropertyFormatChanged: OnPropertyFormatChanged,
                                 filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
@@ -236,7 +236,7 @@ function renderPropertySelector(propertyName: string,
         notNumericMessage: translateNotNumericMessage(),
 
         // If it is optional then use blank required message
-        isRequiredMessage: optionalProperties && optionalProperties.has(propertyName) ? "" : translateValueIsRequiredMessage(),
+        isRequiredMessage: optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage(),
 
         validationFilter: validationFilter,
         filterPrettyPrint: filterPrettyPrint,

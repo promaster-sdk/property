@@ -24,8 +24,8 @@ export function renderPropertySelectors({ productProperties, selectedProperties,
             default:
                 isValid = true;
         }
-        const isReadOnly = readOnlyProperties.has(property.name);
-        const inputFormat = inputFormats.get(property.name) || { unit: Units.One, decimalCount: 2 };
+        const isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
+        const inputFormat = inputFormats[property.name] || { unit: Units.One, decimalCount: 2 };
         return {
             sortNo: property.sortNo,
             propertyName: property.name,
@@ -84,7 +84,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 onFormatChanged: (unit, decimalCount) => onPropertyFormatChanged(propertyName, unit, decimalCount),
                 onValueChange: onValueChange,
                 notNumericMessage: translateNotNumericMessage(),
-                isRequiredMessage: optionalProperties && optionalProperties.has(propertyName) ? "" : translateValueIsRequiredMessage(),
+                isRequiredMessage: optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage(),
                 validationFilter: validationFilter,
                 filterPrettyPrint: filterPrettyPrint,
                 readOnly: readOnly,

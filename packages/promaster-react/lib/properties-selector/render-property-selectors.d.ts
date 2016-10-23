@@ -15,9 +15,11 @@ export interface RenderPropertySelectorsParameters {
     readonly translatePropertyValue: TranslatePropertyValue;
     readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage;
     readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage;
-    readonly readOnlyProperties: Set<string>;
-    readonly optionalProperties: Set<string>;
-    readonly inputFormats: Map<string, AmountFormat>;
+    readonly readOnlyProperties: Array<string>;
+    readonly optionalProperties: Array<string>;
+    readonly inputFormats: {
+        [key: string]: AmountFormat;
+    };
     readonly classNames: RenderPropertySelectorsParametersClassNames;
 }
 export interface RenderPropertySelectorsParametersClassNames {
