@@ -37,6 +37,7 @@
   },
   "jspm": {
     "dependencies": {},
-    "format": "cjs"
+    "format": "cjs",
+    "registry": "jspm"
   }
 }
