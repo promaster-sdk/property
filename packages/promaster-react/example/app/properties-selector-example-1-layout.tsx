@@ -33,7 +33,7 @@ export function PropertiesSelectorLayout({
           return (
             <div key={groupName} className={className1}>
               <div className="group-container-header"
-                   onClick={ () => onToggleGroupClosed(groupName)}>
+                   onClick={() => onToggleGroupClosed(groupName)}>
                 <button className="expand-collapse">&nbsp;</button>
                 {translateGroupName(groupName)}
               </div>

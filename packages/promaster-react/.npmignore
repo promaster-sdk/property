@@ -1,12 +1,7 @@
-lib/test/
 .idea/
-src/
-test/
 example/
-typings/
+test/
 .editorconfig
 .gitattributes
+.gitignore
 .npmignore
-tsd.json
-tsconfig.json
-/*.ts
