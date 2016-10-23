@@ -1,6 +1,6 @@
 {
   "name": "promaster-primitives",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "lib/index.js",
   "description": "Promster SDK Primitives",
   "author": "Divid AB",
@@ -36,7 +36,6 @@
     "typescript": "^2.0.3"
   },
   "jspm": {
-    "dependencies": {
-    }
+    "dependencies": {}
   }
 }
