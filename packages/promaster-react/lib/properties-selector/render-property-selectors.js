@@ -144,3 +144,4 @@ function handleChange(externalOnChange, productProperties, autoSelectSingleValid
         externalOnChange(properties);
     };
 }
+//# sourceMappingURL=render-property-selectors.js.map

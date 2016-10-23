@@ -54,3 +54,4 @@ function _onUnitChange(e, units, selectedDecimalCount, onFormatChanged) {
     var selectedUnit = units[selectedIndex];
     onFormatChanged(selectedUnit, selectedDecimalCount);
 }
+//# sourceMappingURL=amount-format-selector.js.map
