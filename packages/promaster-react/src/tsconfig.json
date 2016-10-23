@@ -2,7 +2,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "skipLibCheck": false,
-    "declaration": false,
     "jsx": "react",
     "module": "es6",
     "target": "es6",
@@ -14,6 +13,7 @@
     "noUnusedParameters": true,
     "noResolve": false,
     "outDir": "../lib",
+    "declaration": true,
     "preserveConstEnums": true,
     "pretty": false,
     "removeComments": true,
