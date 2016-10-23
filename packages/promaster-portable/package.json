@@ -18,7 +18,7 @@
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
   "dependencies": {
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.1.3",
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.1.4",
     "node-uuid": "^1.4.7",
     "react": "^15.3.2"
   },
@@ -37,7 +37,7 @@
   },
   "jspm": {
     "dependencies": {
-      "promaster-primitives": "promaster:promaster-primitives@^0.1.3",
+      "promaster-primitives": "promaster:promaster-primitives@^0.1.4",
       "node-uuid": "npm:node-uuid@^1.4.7",
       "react": "npm:react@^15.3.2"
     }
