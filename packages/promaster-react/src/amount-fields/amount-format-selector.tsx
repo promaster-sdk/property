@@ -20,7 +20,7 @@ export interface AmountFormatSelectorClassNames {
     readonly cancel: string,
 }
 
-interface State {
+export interface State {
     readonly active: boolean
 }
 

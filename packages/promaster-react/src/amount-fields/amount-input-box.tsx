@@ -26,7 +26,7 @@ export interface AmountInputBoxClassNames {
     readonly inputInvalid: string,
 }
 
-interface State {
+export interface State {
     readonly textValue: string,
     readonly isValid: boolean,
     readonly effectiveErrorMessage: string

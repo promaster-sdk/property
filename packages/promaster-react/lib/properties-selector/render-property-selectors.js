@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Units, PropertyValueSet, PropertyValue, PropertyFilter } from "promaster-primitives";
 import { ComboboxPropertySelector, TextboxPropertySelector, AmountPropertySelector } from "../property-selectors/index";
-export const amountPropertySelector = React.createFactory(AmountPropertySelector);
-export const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
-export const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
+const amountPropertySelector = React.createFactory(AmountPropertySelector);
+const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
+const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
 export function renderPropertySelectors({ productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, inputFormats, classNames, }) {
     autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
     const sortedArray = productProperties.slice().sort((a, b) => a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0);

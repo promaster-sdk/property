@@ -7,11 +7,11 @@ export interface TextboxPropertySelectorProps {
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void
 }
 
-interface TextboxPropertySelectorState {
+export interface State {
     readonly textValue: string,
 }
 
-export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, TextboxPropertySelectorState> {
+export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> {
 
     constructor() {
         super();

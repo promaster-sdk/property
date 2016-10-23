@@ -29,9 +29,9 @@ import {
   PropertyValueItem,
 } from "./types";
 
-export const amountPropertySelector = React.createFactory(AmountPropertySelector);
-export const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
-export const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
+const amountPropertySelector = React.createFactory(AmountPropertySelector);
+const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
+const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
 
 export interface RenderPropertySelectorsParameters {
 
@@ -67,7 +67,7 @@ export interface RenderPropertySelectorsParameters {
   readonly classNames: RenderPropertySelectorsParametersClassNames,
 }
 
-interface RenderPropertySelectorsParametersClassNames {
+export interface RenderPropertySelectorsParametersClassNames {
   amountPropertySelectorClassNames: AmountPropertySelectorClassNames,
   comboboxPropertySelectorClassNames: ComboboxPropertySelectorClassNames,
 }
