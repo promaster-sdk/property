@@ -14,7 +14,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish, 2, " ", propertyFilter);
 
-const validationFilter = PropertyFilter.fromString("a<100:Celsius");
+const validationFilter = PropertyFilter.fromString("a<100:Celsius") as PropertyFilter.PropertyFilter;
 
 export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
 

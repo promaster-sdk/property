@@ -1,7 +1,7 @@
 import * as React from "react";
 import {PropertySelectors as Selectors} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
-import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
+import {PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
 import {merge} from "./utils";
 
 interface State {
@@ -39,13 +39,13 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
         value: PropertyValue.create("integer", 1),
         sortNo: 1,
         text: "Alternative 1",
-        validationFilter: PropertyFilter.Empty
+        validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter
       },
       {
         value: PropertyValue.create("integer", 2),
         sortNo: 2,
         text: "Alternative 2",
-        validationFilter: PropertyFilter.fromString("b=2")
+        validationFilter: PropertyFilter.fromString("b=2") as PropertyFilter.PropertyFilter
       }
     ];
 

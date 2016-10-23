@@ -1,14 +1,12 @@
 import * as React from "react";
 import {PropertiesSelector} from "promaster-react";
 import {PropertyFiltering} from "promaster-portable";
-import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
+import {Unit, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
 import {merge} from "./utils";
 import {PropertiesSelectorLayout} from "./properties-selector-example-1-layout";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet
-  readonly selectedUnit: Unit.Unit<any>,
-  readonly selectedDecimalCount: number,
   readonly closedGroups: Array<string>,
   readonly amountFormats: {[key: string]: PropertiesSelector.AmountFormat},
 }
@@ -23,8 +21,6 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     super();
     this.state = {
       propertyValueSet: PropertyValueSet.fromString("a=10:Celsius;b=1;"),
-      selectedUnit: Units.Celsius,
-      selectedDecimalCount: 2,
       closedGroups: [],
       amountFormats: {},
     };
