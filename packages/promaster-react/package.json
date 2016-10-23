@@ -1,6 +1,6 @@
 {
   "name": "promaster-react",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "React components for applications that use Promaster.",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
   "main": "index.js",
