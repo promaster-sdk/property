@@ -1,9 +1,12 @@
 {
   "name": "promaster-react",
   "version": "0.1.6",
-  "description": "React components for applications that use Promaster.",
-  "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
   "main": "index.js",
+  "description": "React components for applications that use Promaster.",
+  "author": "Divid AB",
+  "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
+  "typings": "lib/index",
+  "license": "UNLICENSED",
   "scripts": {
     "start": "http-server",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,8 +17,6 @@
     "publish:minor": "npm run build && node scripts/publish.js minor",
     "publish:patch": "npm run build && node scripts/publish.js patch"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
