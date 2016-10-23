@@ -1,4 +1,7 @@
-import * as AmountFields from "./amount-fields/index";
-import * as PropertySelectors from "./property-selectors/index";
-import * as PropertiesSelector from "./properties-selector/index";
-export { AmountFields, PropertySelectors, PropertiesSelector };
+"use strict";
+var AmountFields = require("./amount-fields/index");
+exports.AmountFields = AmountFields;
+var PropertySelectors = require("./property-selectors/index");
+exports.PropertySelectors = PropertySelectors;
+var PropertiesSelector = require("./properties-selector/index");
+exports.PropertiesSelector = PropertiesSelector;

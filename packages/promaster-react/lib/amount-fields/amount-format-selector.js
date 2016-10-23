@@ -1,46 +1,56 @@
-import * as React from "react";
-import { Units, Unit } from "promaster-primitives";
-export class AmountFormatSelector extends React.Component {
-    constructor(props) {
-        super(props);
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = require("react");
+var promaster_primitives_1 = require("promaster-primitives");
+var AmountFormatSelector = (function (_super) {
+    __extends(AmountFormatSelector, _super);
+    function AmountFormatSelector(props) {
+        _super.call(this, props);
         this.state = { active: false };
     }
-    render() {
-        const { selectedUnit, selectedDecimalCount, onFormatChanged, classNames } = this.props;
-        const className = classNames.format;
+    AmountFormatSelector.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, selectedUnit = _a.selectedUnit, selectedDecimalCount = _a.selectedDecimalCount, onFormatChanged = _a.onFormatChanged, classNames = _a.classNames;
+        var className = classNames.format;
         if (!this.state.active || !onFormatChanged) {
-            return (React.createElement("span", {className: className, onClick: (_) => this.setState({ active: true })}, Unit.getLabel(selectedUnit)));
+            return (React.createElement("span", {className: className, onClick: function (_) { return _this.setState({ active: true }); }}, promaster_primitives_1.Unit.getLabel(selectedUnit)));
         }
-        const quantity = Unit.getQuantityType(selectedUnit);
-        const units = Units.getUnitsForQuantity(quantity);
-        const unitNames = units.map((u) => Units.getStringFromUnit(u));
-        const selectedUnitName = Units.getStringFromUnit(selectedUnit);
-        const decimalCounts = [0, 1, 2, 3, 4, 5];
+        var quantity = promaster_primitives_1.Unit.getQuantityType(selectedUnit);
+        var units = promaster_primitives_1.Units.getUnitsForQuantity(quantity);
+        var unitNames = units.map(function (u) { return promaster_primitives_1.Units.getStringFromUnit(u); });
+        var selectedUnitName = promaster_primitives_1.Units.getStringFromUnit(selectedUnit);
+        var decimalCounts = [0, 1, 2, 3, 4, 5];
         if (decimalCounts.indexOf(selectedDecimalCount) === -1)
             decimalCounts.push(selectedDecimalCount);
-        const classNameToUse = this.state.active ? classNames.formatActive : classNames.format;
+        var classNameToUse = this.state.active ? classNames.formatActive : classNames.format;
         return (React.createElement("span", {className: classNameToUse}, 
-            React.createElement("select", {className: classNames.unit, value: selectedUnitName, onChange: (e) => {
-                this.setState({ active: false });
+            React.createElement("select", {className: classNames.unit, value: selectedUnitName, onChange: function (e) {
+                _this.setState({ active: false });
                 _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
-            }}, units.map((u, index) => React.createElement("option", {key: unitNames[index], value: unitNames[index]}, 
+            }}, units.map(function (u, index) { return React.createElement("option", {key: unitNames[index], value: unitNames[index]}, 
                 " ", 
-                Unit.getLabel(u), 
-                " "))), 
-            React.createElement("select", {className: classNames.precision, value: selectedDecimalCount.toString(), onChange: (e) => {
-                this.setState({ active: false });
+                promaster_primitives_1.Unit.getLabel(u), 
+                " "); })), 
+            React.createElement("select", {className: classNames.precision, value: selectedDecimalCount.toString(), onChange: function (e) {
+                _this.setState({ active: false });
                 _onDecimalCountChange(e, selectedUnit, onFormatChanged);
-            }}, decimalCounts.map((dc) => React.createElement("option", {key: dc.toString(), value: dc.toString()}, dc))), 
-            React.createElement("button", {className: classNames.cancel, onClick: (_) => this.setState({ active: false })}, "\u00A0")));
-    }
-}
+            }}, decimalCounts.map(function (dc) { return React.createElement("option", {key: dc.toString(), value: dc.toString()}, dc); })), 
+            React.createElement("button", {className: classNames.cancel, onClick: function (_) { return _this.setState({ active: false }); }}, "\u00A0")));
+    };
+    return AmountFormatSelector;
+}(React.Component));
+exports.AmountFormatSelector = AmountFormatSelector;
 function _onDecimalCountChange(e, selectedUnit, onFormatChanged) {
-    const selectedIndex = e.target.selectedIndex;
-    const selectedDecimalCount = selectedIndex;
+    var selectedIndex = e.target.selectedIndex;
+    var selectedDecimalCount = selectedIndex;
     onFormatChanged(selectedUnit, selectedDecimalCount);
 }
 function _onUnitChange(e, units, selectedDecimalCount, onFormatChanged) {
-    const selectedIndex = e.target.selectedIndex;
-    const selectedUnit = units[selectedIndex];
+    var selectedIndex = e.target.selectedIndex;
+    var selectedUnit = units[selectedIndex];
     onFormatChanged(selectedUnit, selectedDecimalCount);
 }

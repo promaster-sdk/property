@@ -1,42 +1,52 @@
-import * as React from "react";
-import { PropertyValue } from "promaster-primitives";
-export class TextboxPropertySelector extends React.Component {
-    constructor() {
-        super();
+"use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = require("react");
+var promaster_primitives_1 = require("promaster-primitives");
+var TextboxPropertySelector = (function (_super) {
+    __extends(TextboxPropertySelector, _super);
+    function TextboxPropertySelector() {
+        _super.call(this);
         this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, 350);
     }
-    componentWillMount() {
-        const { value } = this.props;
+    TextboxPropertySelector.prototype.componentWillMount = function () {
+        var value = this.props.value;
         this.setState({ textValue: value });
-    }
-    componentWillReceiveProps(nextProps) {
-        const { value } = nextProps;
+    };
+    TextboxPropertySelector.prototype.componentWillReceiveProps = function (nextProps) {
+        var value = nextProps.value;
         this.setState({ textValue: value });
-    }
-    render() {
-        const { onValueChange, readOnly } = this.props;
-        const { textValue } = this.state;
-        return (React.createElement("input", {type: 'text', value: textValue, readOnly: readOnly, onChange: (e) => this._onChange(e, onValueChange)}));
-    }
-    _debouncedOnValueChange(newValue, onValueChange) {
+    };
+    TextboxPropertySelector.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, onValueChange = _a.onValueChange, readOnly = _a.readOnly;
+        var textValue = this.state.textValue;
+        return (React.createElement("input", {type: 'text', value: textValue, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }}));
+    };
+    TextboxPropertySelector.prototype._debouncedOnValueChange = function (newValue, onValueChange) {
         onValueChange(newValue);
-    }
-    _onChange(e, onValueChange) {
-        let newStringValue = e.target.value;
+    };
+    TextboxPropertySelector.prototype._onChange = function (e, onValueChange) {
+        var newStringValue = e.target.value;
         this.setState({ textValue: newStringValue });
-        this._debouncedOnValueChange(PropertyValue.create("text", newStringValue), onValueChange);
-    }
-}
+        this._debouncedOnValueChange(promaster_primitives_1.PropertyValue.create("text", newStringValue), onValueChange);
+    };
+    return TextboxPropertySelector;
+}(React.Component));
+exports.TextboxPropertySelector = TextboxPropertySelector;
 function debounce(func, wait, immediate) {
-    let timeout;
+    var timeout;
     return function () {
-        const context = this, args = arguments;
-        const later = function () {
+        var context = this, args = arguments;
+        var later = function () {
             timeout = null;
             if (!immediate)
                 func.apply(context, args);
         };
-        const callNow = immediate && !timeout;
+        var callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
         if (callNow)
