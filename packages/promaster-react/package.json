@@ -20,7 +20,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.1.3",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.1.3"
+    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.1.4"
   },
   "devDependencies": {
     "@types/react": "^0.14.41",
@@ -29,5 +29,12 @@
     "plugin-typescript": "^5.2.7",
     "shelljs": "^0.7.4",
     "typescript": "^2.0.3"
+  },
+  "jspm": {
+    "dependencies": {
+      "promaster-primitives": "promaster:promaster-primitives@^0.1.3",
+      "promaster-portable": "promaster:promaster-portable@^0.1.4",
+      "react": "npm:react@^0.15.0"
+    }
   }
 }
