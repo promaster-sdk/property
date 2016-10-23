@@ -1,6 +1,6 @@
 {
   "name": "promaster-portable",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster_portable_ts",
   "main": "lib/index.js",
