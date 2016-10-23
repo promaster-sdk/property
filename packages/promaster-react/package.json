@@ -1,7 +1,7 @@
 {
   "name": "promaster-react",
   "version": "0.1.9",
-  "main": "index.js",
+  "main": "lib/index.js",
   "description": "React components for applications that use Promaster.",
   "author": "Divid AB",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
