@@ -8,7 +8,7 @@ import {PropertiesSelectorLayout} from "./properties-selector-example-1-layout";
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet
   readonly closedGroups: Array<string>,
-  readonly inputFormats: {[key: string]: PropertiesSelector.AmountFormat},
+  readonly propertyFormats: {[key: string]: PropertiesSelector.AmountFormat},
 }
 
 const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
@@ -22,7 +22,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     this.state = {
       propertyValueSet: PropertyValueSet.fromString("a=10:Celsius;b=1;"),
       closedGroups: [],
-      inputFormats: {},
+      propertyFormats: {},
     };
   }
 
@@ -95,12 +95,12 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       includeCodes: true,
       includeHiddenProperties: true,
       filterPrettyPrint: filterPrettyPrint,
-      inputFormats: this.state.inputFormats,
+      propertyFormats: this.state.propertyFormats,
       readOnlyProperties: [],
       optionalProperties: [],
       onPropertyFormatChanged: (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) =>
         this.setState(merge(this.state, {
-          inputFormats: merge(this.state.inputFormats, {
+          propertyFormats: merge(this.state.propertyFormats, {
             [propertyName]: {unit, decimalCount}
           })
         })),

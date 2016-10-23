@@ -62,7 +62,7 @@ export interface RenderPropertySelectorsParameters {
   // Specifies property names of properties that should be optional (only for amounts for now)
   readonly optionalProperties: Array<string>,
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly inputFormats: {[key: string]: AmountFormat},
+  readonly propertyFormats: {[key: string]: AmountFormat},
 
   readonly classNames: RenderPropertySelectorsParametersClassNames,
 }
@@ -91,7 +91,7 @@ export function renderPropertySelectors({
 
   readOnlyProperties,
   optionalProperties,
-  inputFormats,
+  propertyFormats,
 
   classNames,
 
@@ -126,7 +126,7 @@ export function renderPropertySelectors({
 
       const isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
       // TODO: Better handling of format to use when the format is missing in the map
-      const inputFormat = inputFormats[property.name] || {unit: Units.One, decimalCount: 2};
+      const propertyFormat = propertyFormats[property.name] || {unit: Units.One, decimalCount: 2};
 
 
       return {
@@ -151,7 +151,7 @@ export function renderPropertySelectors({
           handleChange(onChange, productProperties, autoSelectSingleValidValue),
           onPropertyFormatChanged,
           filterPrettyPrint,
-          inputFormat,
+          propertyFormat,
           isReadOnly,
           autoSelectSingleValidValue
             ? !!getSingleValidValueOrNull(property, selectedProperties)
@@ -180,7 +180,7 @@ function renderPropertySelector(propertyName: string,
                                 onChange: PropertySelectionOnChange,
                                 onPropertyFormatChanged: OnPropertyFormatChanged,
                                 filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-                                inputFormat: AmountFormat,
+                                propertyFormat: AmountFormat,
                                 readOnly: boolean,
                                 locked: boolean,
                                 translatePropertyValue: TranslatePropertyValue,
@@ -229,8 +229,8 @@ function renderPropertySelector(propertyName: string,
       return amountPropertySelector({
         propertyName: propertyName,
         propertyValueSet: selectedProperties,
-        inputUnit: inputFormat.unit,
-        inputDecimalCount: inputFormat.decimalCount,
+        inputUnit: propertyFormat.unit,
+        inputDecimalCount: propertyFormat.decimalCount,
         onFormatChanged: (unit: Unit.Unit<any>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount),
         onValueChange: onValueChange,
         notNumericMessage: translateNotNumericMessage(),

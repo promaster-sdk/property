@@ -17,7 +17,7 @@ export interface RenderPropertySelectorsParameters {
     readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage;
     readonly readOnlyProperties: Array<string>;
     readonly optionalProperties: Array<string>;
-    readonly inputFormats: {
+    readonly propertyFormats: {
         [key: string]: AmountFormat;
     };
     readonly classNames: RenderPropertySelectorsParametersClassNames;
@@ -26,4 +26,4 @@ export interface RenderPropertySelectorsParametersClassNames {
     amountPropertySelectorClassNames: AmountPropertySelectorClassNames;
     comboboxPropertySelectorClassNames: ComboboxPropertySelectorClassNames;
 }
-export declare function renderPropertySelectors({productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, inputFormats, classNames}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector>;
+export declare function renderPropertySelectors({productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, propertyFormats, classNames}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector>;

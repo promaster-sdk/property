@@ -4,7 +4,7 @@ import { ComboboxPropertySelector, TextboxPropertySelector, AmountPropertySelect
 const amountPropertySelector = React.createFactory(AmountPropertySelector);
 const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
 const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
-export function renderPropertySelectors({ productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, inputFormats, classNames, }) {
+export function renderPropertySelectors({ productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, propertyFormats, classNames, }) {
     autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
     const sortedArray = productProperties.slice().sort((a, b) => a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0);
     const selectorDefinitions = sortedArray
@@ -25,7 +25,7 @@ export function renderPropertySelectors({ productProperties, selectedProperties,
                 isValid = true;
         }
         const isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
-        const inputFormat = inputFormats[property.name] || { unit: Units.One, decimalCount: 2 };
+        const propertyFormat = propertyFormats[property.name] || { unit: Units.One, decimalCount: 2 };
         return {
             sortNo: property.sortNo,
             propertyName: property.name,
@@ -33,14 +33,14 @@ export function renderPropertySelectors({ productProperties, selectedProperties,
             isValid: isValid,
             isHidden: !PropertyFilter.isValid(selectedProperties, property.visibilityFilter),
             label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
-            renderedSelectorElement: renderPropertySelector(property.name, property.quantity, property.validationFilter, property.valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, handleChange(onChange, productProperties, autoSelectSingleValidValue), onPropertyFormatChanged, filterPrettyPrint, inputFormat, isReadOnly, autoSelectSingleValidValue
+            renderedSelectorElement: renderPropertySelector(property.name, property.quantity, property.validationFilter, property.valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, handleChange(onChange, productProperties, autoSelectSingleValidValue), onPropertyFormatChanged, filterPrettyPrint, propertyFormat, isReadOnly, autoSelectSingleValidValue
                 ? !!getSingleValidValueOrNull(property, selectedProperties)
                 : false, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, classNames)
         };
     });
     return selectorDefinitions;
 }
-function renderPropertySelector(propertyName, quantity, validationFilter, valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, onChange, onPropertyFormatChanged, filterPrettyPrint, inputFormat, readOnly, locked, translatePropertyValue, translateNotNumericMessage, translateValueIsRequiredMessage, classNames) {
+function renderPropertySelector(propertyName, quantity, validationFilter, valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, onChange, onPropertyFormatChanged, filterPrettyPrint, propertyFormat, readOnly, locked, translatePropertyValue, translateNotNumericMessage, translateValueIsRequiredMessage, classNames) {
     function onValueChange(newValue) {
         onChange(newValue
             ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
@@ -79,8 +79,8 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
             return amountPropertySelector({
                 propertyName: propertyName,
                 propertyValueSet: selectedProperties,
-                inputUnit: inputFormat.unit,
-                inputDecimalCount: inputFormat.decimalCount,
+                inputUnit: propertyFormat.unit,
+                inputDecimalCount: propertyFormat.decimalCount,
                 onFormatChanged: (unit, decimalCount) => onPropertyFormatChanged(propertyName, unit, decimalCount),
                 onValueChange: onValueChange,
                 notNumericMessage: translateNotNumericMessage(),
