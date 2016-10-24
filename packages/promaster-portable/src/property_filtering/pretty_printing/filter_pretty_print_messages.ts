@@ -1,4 +1,4 @@
-import {PropertyFilterAst as Ast, PropertyValue} from "promaster-sdk/promaster-primitives";
+import {PropertyFilterAst as Ast, PropertyValue} from "promaster-primitives";
 
 export interface FilterPrettyPrintMessages {
 

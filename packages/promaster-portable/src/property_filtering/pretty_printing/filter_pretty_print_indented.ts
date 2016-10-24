@@ -1,4 +1,4 @@
-import {PropertyFilter, PropertyFilterAst as Ast, PropertyValue, Units, Unit} from "promaster-sdk/promaster-primitives";
+import {PropertyFilter, PropertyFilterAst as Ast, PropertyValue, Units, Unit} from "promaster-primitives";
 import {inferTypeMap} from "../type_inference/filter_type_inferrer";
 import {ExprType, ExprTypeEnum} from "../type_inference/expr_type";
 import {FilterPrettyPrintMessages} from "./filter_pretty_print_messages";
