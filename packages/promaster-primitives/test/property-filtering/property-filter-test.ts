@@ -203,7 +203,7 @@ describe('main', () => {
         it('should_support_properties_on_right_hand', () => {
             const pvs = PropertyValueSet.fromString("a=10;b=2;");
             const f = PropertyFilter.fromString("a>=b");
-            assert.equal(PropertyFilter.isValid(pvs, f), false);
+            assert.equal(PropertyFilter.isValid(pvs, f), true);
         });
 
         it('should_support_not_present_properties', () => {
