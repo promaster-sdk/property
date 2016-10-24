@@ -1,6 +1,6 @@
 {
   "name": "promaster-portable",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster_portable_ts",
   "main": "lib/index.js",
@@ -18,7 +18,7 @@
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
   "dependencies": {
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.1.4",
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.1.7",
     "node-uuid": "^1.4.7",
     "react": "^15.3.2"
   },
