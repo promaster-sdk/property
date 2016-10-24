@@ -26,7 +26,7 @@ export declare function getText(value: PropertyValue): string | undefined;
 export declare function valueAs<T extends Quantity>(unit: Unit<T>, value: PropertyValue): number | undefined;
 export declare function toString(value: PropertyValue): string;
 export declare function compareTo(left: PropertyValue, right: PropertyValue): number;
-export declare function equals(other: PropertyValue, value: PropertyValue): boolean;
+export declare function equals(left: PropertyValue, right: PropertyValue): boolean;
 export declare function lessThan(left: PropertyValue, right: PropertyValue): boolean;
 export declare function lessOrEqualTo(left: PropertyValue, right: PropertyValue): boolean;
 export declare function greaterThan(left: PropertyValue, right: PropertyValue): boolean;

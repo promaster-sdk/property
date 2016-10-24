@@ -116,29 +116,44 @@ function compareTo(left, right) {
     }
 }
 exports.compareTo = compareTo;
-function equals(other, value) {
-    return compareTo(value, other) === 0;
+function equals(left, right) {
+    if (left === undefined || right === undefined) {
+        return false;
+    }
+    return compareTo(left, right) === 0;
 }
 exports.equals = equals;
 function lessThan(left, right) {
+    if (left === undefined || right === undefined) {
+        return false;
+    }
     if (right.type != left.type)
         return false;
     return compareTo(left, right) < 0;
 }
 exports.lessThan = lessThan;
 function lessOrEqualTo(left, right) {
+    if (left === undefined || right === undefined) {
+        return false;
+    }
     if (right.type != left.type)
         return false;
     return compareTo(left, right) <= 0;
 }
 exports.lessOrEqualTo = lessOrEqualTo;
 function greaterThan(left, right) {
+    if (left === undefined || right === undefined) {
+        return false;
+    }
     if (right.type != left.type)
         return false;
     return compareTo(left, right) > 0;
 }
 exports.greaterThan = greaterThan;
 function greaterOrEqualTo(left, right) {
+    if (left === undefined || right === undefined) {
+        return false;
+    }
     if (right.type != left.type)
         return false;
     return compareTo(left, right) >= 0;
