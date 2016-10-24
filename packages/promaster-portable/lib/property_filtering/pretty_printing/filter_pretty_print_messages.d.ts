@@ -1,4 +1,4 @@
-import { PropertyFilterAst as Ast, PropertyValue } from "promaster-primitives";
+import { PropertyFilterAst as Ast, PropertyValue } from "promaster-sdk/promaster-primitives";
 export interface FilterPrettyPrintMessages {
     comparisionOperationMessage(op: Ast.ComparisonOperationType, left: string, right: string): string;
     equalsOperationMessage(op: Ast.EqualsOperationType, left: string, right: string): string;
