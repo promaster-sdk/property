@@ -1,4 +1,4 @@
-import {PropertyFilterAst as Ast, PropertyFilter} from "promaster-primitives";
+import {PropertyFilterAst as Ast, PropertyFilter} from "promaster-sdk/promaster-primitives";
 import {ExprType, ExprTypeEnum} from "./expr_type";
 
 export function inferTypeMap(filter: PropertyFilter.PropertyFilter):Map<Ast.Expr, ExprType> {

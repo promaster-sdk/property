@@ -10,7 +10,7 @@ import {Expr,
 	NullExpr,
 	AndExpr,
 	ComparisonOperationType,
-	EqualsOperationType} from "promaster-primitives/lib/fun";
+	EqualsOperationType} from "promaster-sdk-primitives/lib/fun";
 
 export class FilterPrinter {
 
