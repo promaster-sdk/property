@@ -8,7 +8,7 @@ export declare type AmountFormat = {
 export declare type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet) => void;
 export declare type OnPropertyFormatChanged = (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) => void;
 export declare type TranslatePropertyName = (propertyName: string) => string;
-export declare type TranslatePropertyValue = (propertyName: string, value: number | null) => string;
+export declare type TranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
 export declare type TranslateNotNumericMessage = () => string;
 export declare type TranslateValueIsRequiredMessage = () => string;
 export interface RenderedPropertySelector {

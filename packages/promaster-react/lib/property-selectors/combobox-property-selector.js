@@ -10,9 +10,9 @@ function ComboboxPropertySelector(_a) {
     var selectedValueItem;
     if (!selectedValueItemOrUndefined) {
         selectedValueItem = {
-            value: null,
+            value: undefined,
             sortNo: -1,
-            text: value == null ? "" : value.toString(),
+            text: value === undefined ? "" : value.toString(),
             validationFilter: promaster_primitives_1.PropertyFilter.Empty
         };
         valueItems = [selectedValueItem].concat(valueItems);
@@ -31,21 +31,18 @@ function ComboboxPropertySelector(_a) {
             toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint)
         };
     }).sort(function (a, b) {
+        if (sortValidFirst) {
+            if (a.isItemValid && !b.isItemValid) {
+                return -1;
+            }
+            if (!a.isItemValid && b.isItemValid) {
+                return 1;
+            }
+        }
         if (a.sortNo < b.sortNo) {
             return -1;
         }
         if (a.sortNo > b.sortNo) {
-            return 1;
-        }
-        return 0;
-    }).sort(function (a, b) {
-        if (!sortValidFirst) {
-            return 0;
-        }
-        if (a.isItemValid && !b.isItemValid) {
-            return -1;
-        }
-        if (!a.isItemValid && b.isItemValid) {
             return 1;
         }
         return 0;
@@ -70,24 +67,24 @@ function ComboboxPropertySelector(_a) {
 }
 exports.ComboboxPropertySelector = ComboboxPropertySelector;
 function _getItemLabel(valueItem, showCodes) {
-    return valueItem.text + (showCodes ? " (" + (valueItem.value !== null ? promaster_primitives_1.PropertyValue.toString(valueItem.value) : "null") + ")" : '');
+    return valueItem.text + (showCodes ? " (" + (valueItem.value !== undefined ? promaster_primitives_1.PropertyValue.toString(valueItem.value) : "undefined") + ")" : '');
 }
 function _doOnChange(newValue, onValueChange) {
-    if (newValue === "") {
-        onValueChange(null);
+    if (newValue === "undefined") {
+        onValueChange(undefined);
     }
     else {
         onValueChange(promaster_primitives_1.PropertyValue.create("integer", parseInt(newValue)));
     }
 }
 function _getItemValue(valueItem) {
-    return valueItem.value == null ? "" : promaster_primitives_1.PropertyValue.toString(valueItem.value);
+    return valueItem.value === undefined ? "undefined" : promaster_primitives_1.PropertyValue.toString(valueItem.value);
 }
 function _getItemInvalidMessage(valueItem, filterPrettyPrint) {
     return filterPrettyPrint(valueItem.validationFilter);
 }
 function _isValueItemValid(propertyName, propertyValueSet, valueItem) {
-    if (valueItem.value === null)
+    if (valueItem.value === undefined)
         return true;
     var pvsToCheck = promaster_primitives_1.PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
     if (!valueItem.validationFilter)

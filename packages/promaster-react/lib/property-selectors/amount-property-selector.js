@@ -19,7 +19,7 @@ var AmountPropertySelector = (function (_super) {
             throw new Error("Value is undefined");
         return (React.createElement("span", {className: classNames.amount}, 
             React.createElement(index_1.AmountInputBox, {value: value, inputUnit: inputUnit, inputDecimalCount: inputDecimalCount, notNumericMessage: notNumericMessage, isRequiredMessage: isRequiredMessage, errorMessage: _getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint), readOnly: readOnly, onValueChange: function (newAmount) {
-                return onValueChange(newAmount !== null ? promaster_primitives_1.PropertyValue.create("amount", newAmount) : null);
+                return onValueChange(newAmount !== undefined ? promaster_primitives_1.PropertyValue.create("amount", newAmount) : undefined);
             }, classNames: classNames.amountInputBoxClassNames}), 
             React.createElement(index_1.AmountFormatSelector, {selectedUnit: inputUnit, selectedDecimalCount: inputDecimalCount, onFormatChanged: onFormatChanged, classNames: classNames.amountFormatSelectorClassNames})));
     };

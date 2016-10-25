@@ -15,7 +15,7 @@ function renderPropertySelectors(_a) {
         var selectedValue = promaster_primitives_1.PropertyValueSet.getValue(property.name, selectedProperties);
         var selectedValueItem = property.valueItems && property.valueItems
             .find(function (value) {
-            return (value.value === null && selectedValue === null) || (value.value && promaster_primitives_1.PropertyValue.equals(selectedValue, value.value));
+            return (value.value === undefined && selectedValue === undefined) || (value.value && promaster_primitives_1.PropertyValue.equals(selectedValue, value.value));
         });
         var isValid;
         switch (getPropertyType(property.quantity)) {
@@ -38,7 +38,7 @@ function renderPropertySelectors(_a) {
             isHidden: !promaster_primitives_1.PropertyFilter.isValid(selectedProperties, property.visibilityFilter),
             label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
             renderedSelectorElement: renderPropertySelector(property.name, property.quantity, property.validationFilter, property.valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, handleChange(onChange, productProperties, autoSelectSingleValidValue), onPropertyFormatChanged, filterPrettyPrint, propertyFormat, isReadOnly, autoSelectSingleValidValue
-                ? !!getSingleValidValueOrNull(property, selectedProperties)
+                ? !!getSingleValidValueOrUndefined(property, selectedProperties)
                 : false, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, classNames)
         };
     });
@@ -68,7 +68,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 propertyValueSet: selectedProperties,
                 valueItems: valueItems && valueItems.map(function (vi) { return ({
                     value: vi.value,
-                    text: translatePropertyValue(propertyName, (vi.value ? promaster_primitives_1.PropertyValue.getInteger(vi.value) : null)),
+                    text: translatePropertyValue(propertyName, (vi.value ? promaster_primitives_1.PropertyValue.getInteger(vi.value) : undefined)),
                     sortNo: vi.sortNo,
                     validationFilter: vi.validationFilter
                 }); }),
@@ -107,7 +107,7 @@ function getPropertyType(quantity) {
             return "amount";
     }
 }
-function getSingleValidValueOrNull(productProperty, properties) {
+function getSingleValidValueOrUndefined(productProperty, properties) {
     if (productProperty.quantity === "Discrete") {
         var validPropertyValueItems = [];
         for (var _i = 0, _a = productProperty.valueItems; _i < _a.length; _i++) {
@@ -117,9 +117,9 @@ function getSingleValidValueOrNull(productProperty, properties) {
                 validPropertyValueItems.push(productValueItem);
             }
         }
-        return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : null;
+        return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : undefined;
     }
-    return null;
+    return undefined;
 }
 function handleChange(externalOnChange, productProperties, autoSelectSingleValidValue) {
     return function (properties) {
@@ -131,7 +131,7 @@ function handleChange(externalOnChange, productProperties, autoSelectSingleValid
         for (var i = 0; i < 4; i++) {
             for (var _i = 0, productProperties_1 = productProperties; _i < productProperties_1.length; _i++) {
                 var productProperty = productProperties_1[_i];
-                var propertyValueItem = getSingleValidValueOrNull(productProperty, properties);
+                var propertyValueItem = getSingleValidValueOrUndefined(productProperty, properties);
                 if (propertyValueItem) {
                     properties = promaster_primitives_1.PropertyValueSet.set(productProperty.name, propertyValueItem.value, properties);
                 }

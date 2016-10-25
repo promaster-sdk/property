@@ -17,7 +17,7 @@ export interface AmountPropertySelectorProps {
     readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
     readonly readOnly: boolean,
     readonly onFormatChanged: OnFormatChanged,
-    readonly onValueChange: (newValue: PropertyValue.PropertyValue | null) => void,
+    readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void,
     readonly classNames: AmountPropertySelectorClassNames,
 }
 
@@ -51,7 +51,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
                                 errorMessage={_getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint)}
                                 readOnly={readOnly}
                                 onValueChange={(newAmount) =>
-								onValueChange(newAmount !== null ? PropertyValue.create("amount", newAmount): null)}
+								onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount): undefined)}
                                 classNames={classNames.amountInputBoxClassNames}/>
 				<AmountFormatSelector selectedUnit={inputUnit}
                                       selectedDecimalCount={inputDecimalCount}

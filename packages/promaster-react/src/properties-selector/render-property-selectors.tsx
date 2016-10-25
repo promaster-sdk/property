@@ -110,7 +110,7 @@ export function renderPropertySelectors({
       const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
       const selectedValueItem = property.valueItems && property.valueItems
           .find((value: PropertyValueItem) =>
-          (value.value === null && selectedValue === null) || (value.value && PropertyValue.equals(selectedValue, value.value)));
+          (value.value === undefined && selectedValue === undefined) || (value.value && PropertyValue.equals(selectedValue, value.value)));
 
       let isValid: boolean;
       switch (getPropertyType(property.quantity)) {
@@ -154,7 +154,7 @@ export function renderPropertySelectors({
           propertyFormat,
           isReadOnly,
           autoSelectSingleValidValue
-            ? !!getSingleValidValueOrNull(property, selectedProperties)
+            ? !!getSingleValidValueOrUndefined(property, selectedProperties)
             : false,
           translatePropertyValue,
           translateValueMustBeNumericMessage,
@@ -213,7 +213,7 @@ function renderPropertySelector(propertyName: string,
         propertyValueSet: selectedProperties,
         valueItems: valueItems && valueItems.map((vi) => ({
           value: vi.value,
-          text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : null) as number),
+          text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
           sortNo: vi.sortNo,
           validationFilter: vi.validationFilter
         })),
@@ -260,7 +260,7 @@ function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyTyp
 
 }
 
-function getSingleValidValueOrNull(productProperty: Property, properties: PropertyValueSet.PropertyValueSet): PropertyValueItem | null {
+function getSingleValidValueOrUndefined(productProperty: Property, properties: PropertyValueSet.PropertyValueSet): PropertyValueItem | undefined {
   // if (Units.getStringFromQuantityType(productProperty.quantity).toLocaleLowerCase() === 'discrete') {
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: PropertyValueItem[] = [];
@@ -272,10 +272,10 @@ function getSingleValidValueOrNull(productProperty: Property, properties: Proper
       }
     }
 
-    return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : null;
+    return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : undefined;
   }
 
-  return null;
+  return undefined;
 }
 
 function handleChange(externalOnChange: PropertySelectionOnChange, productProperties: Array<Property>, autoSelectSingleValidValue: boolean) {
@@ -291,7 +291,7 @@ function handleChange(externalOnChange: PropertySelectionOnChange, productProper
     for (let i = 0; i < 4; i++) {
 
       for (let productProperty of productProperties) {
-        const propertyValueItem = getSingleValidValueOrNull(productProperty, properties);
+        const propertyValueItem = getSingleValidValueOrUndefined(productProperty, properties);
         if (propertyValueItem) {
           properties = PropertyValueSet.set(productProperty.name, propertyValueItem.value, properties);
         }

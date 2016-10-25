@@ -70,7 +70,7 @@ function getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, n
     if (newStringValue.trim() !== "" && !newAmount) {
         return notNumericMessage;
     }
-    return null;
+    return undefined;
 }
 function _formatWithUnitAndDecimalCount(amount, unit, decimalCount) {
     if (!amount)
@@ -90,10 +90,10 @@ function _formatWithUnitAndDecimalCount(amount, unit, decimalCount) {
 }
 function _unformatWithUnitAndDecimalCount(text, unit, inputDecimalCount) {
     if (!text || text.length === 0)
-        return null;
+        return undefined;
     var parsedFloatValue = _filterFloat(text);
     if (isNaN(parsedFloatValue))
-        return null;
+        return undefined;
     var textDecimalCount = _getDecimalCountFromString(text);
     var finalDecimalCount = textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
     var finalFloatValue = textDecimalCount > inputDecimalCount ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount)) : parsedFloatValue;

@@ -3,7 +3,7 @@ import {PropertyFilter, PropertyValue, PropertyValueSet} from "promaster-primiti
 import {PropertyFiltering} from "promaster-portable";
 
 export interface ComboBoxPropertyValueItem {
-    readonly value: PropertyValue.PropertyValue | null,
+    readonly value: PropertyValue.PropertyValue | undefined,
     readonly sortNo: number,
     readonly text: string,
     readonly validationFilter: PropertyFilter.PropertyFilter
@@ -52,9 +52,9 @@ export function ComboboxPropertySelector({
     let selectedValueItem: ComboBoxPropertyValueItem;
     if (!selectedValueItemOrUndefined) {
         selectedValueItem = {
-            value: null,
+            value: undefined,
             sortNo: -1,
-            text: value == null ? "" : value.toString(),
+            text: value === undefined ? "" : value.toString(),
             validationFilter: PropertyFilter.Empty
         };
         // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
@@ -85,21 +85,19 @@ export function ComboboxPropertySelector({
                 toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint)
             };
         }).sort((a, b) => {
+            if (sortValidFirst) {
+              if (a.isItemValid && !b.isItemValid) {
+                return -1;
+              }
+              if (!a.isItemValid && b.isItemValid) {
+                return 1;
+              }
+            }
+
             if (a.sortNo < b.sortNo) {
                 return -1;
             }
             if (a.sortNo > b.sortNo) {
-                return 1;
-            }
-            return 0;
-        }).sort((a, b) => {
-            if (!sortValidFirst) {
-                return 0;
-            }
-            if (a.isItemValid && !b.isItemValid) {
-                return -1;
-            }
-            if (!a.isItemValid && b.isItemValid) {
                 return 1;
             }
             return 0;
@@ -144,12 +142,12 @@ export function ComboboxPropertySelector({
 }
 
 function _getItemLabel(valueItem: ComboBoxPropertyValueItem, showCodes: boolean) {
-    return valueItem.text + (showCodes ? ` (${valueItem.value !== null ? PropertyValue.toString(valueItem.value) : "null"})` : '');
+    return valueItem.text + (showCodes ? ` (${valueItem.value !== undefined ? PropertyValue.toString(valueItem.value) : "undefined"})` : '');
 }
 
-function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.PropertyValue | null) => void) {
-    if (newValue === "") {
-        onValueChange(null);
+function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void) {
+    if (newValue === "undefined") {
+        onValueChange(undefined);
     }
     else {
         onValueChange(PropertyValue.create("integer", parseInt(newValue)));
@@ -157,7 +155,7 @@ function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.Prop
 }
 
 function _getItemValue(valueItem: ComboBoxPropertyValueItem) {
-    return valueItem.value == null ? "" : PropertyValue.toString(valueItem.value);
+    return valueItem.value === undefined ? "undefined" : PropertyValue.toString(valueItem.value);
 }
 
 function _getItemInvalidMessage(valueItem: ComboBoxPropertyValueItem, filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {
@@ -166,7 +164,7 @@ function _getItemInvalidMessage(valueItem: ComboBoxPropertyValueItem, filterPret
 
 function _isValueItemValid(propertyName: string, propertyValueSet: PropertyValueSet.PropertyValueSet, valueItem: ComboBoxPropertyValueItem): boolean {
 
-    if (valueItem.value === null)
+    if (valueItem.value === undefined)
         return true;
     let pvsToCheck = PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
     if (!valueItem.validationFilter)

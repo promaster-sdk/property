@@ -14,7 +14,7 @@ export interface AmountPropertySelectorProps {
     readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
     readonly readOnly: boolean;
     readonly onFormatChanged: OnFormatChanged;
-    readonly onValueChange: (newValue: PropertyValue.PropertyValue | null) => void;
+    readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
     readonly classNames: AmountPropertySelectorClassNames;
 }
 export interface AmountPropertySelectorClassNames {

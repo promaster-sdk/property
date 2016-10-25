@@ -3,7 +3,7 @@ import * as React from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "promaster-primitives";
 import { PropertyFiltering } from "promaster-portable";
 export interface ComboBoxPropertyValueItem {
-    readonly value: PropertyValue.PropertyValue | null;
+    readonly value: PropertyValue.PropertyValue | undefined;
     readonly sortNo: number;
     readonly text: string;
     readonly validationFilter: PropertyFilter.PropertyFilter;

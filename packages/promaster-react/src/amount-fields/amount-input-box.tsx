@@ -2,7 +2,7 @@
  UI to enter an Amount. It will be entered in a specified unit and decimal count.
  The passed Amount value will be converted to the specified unit and decimal count if needed.
  The UI will ensure that the value is numeric before emitting a change event.
- It is also allowed to have a blank input in which case a change event with value of NULL will be emitted.
+ It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
 import * as React from "react";
 import {Amount, Unit} from "promaster-primitives";
@@ -102,7 +102,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
     }
 
     // We need to return a boolean is the new value is valid or not because state is not immidiately mutated
-    updateState(newAmount: Amount.Amount<any> | null, newStringValue: string): boolean {
+    updateState(newAmount: Amount.Amount<any> | undefined, newStringValue: string): boolean {
         const {isRequiredMessage, notNumericMessage, errorMessage} = this.props;
         const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
         if (internalErrorMessage) {
@@ -118,10 +118,10 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 }
 
 
-function getInternalErrorMessage(newAmount: Amount.Amount<any> | null,
+function getInternalErrorMessage(newAmount: Amount.Amount<any> | undefined,
 																 newStringValue: string,
 																 isRequiredMessage: string,
-																 notNumericMessage: string): string | null {
+																 notNumericMessage: string): string | undefined {
 
     // Check if blank and if required or not
     if (newStringValue.trim() === "" && isRequiredMessage) {
@@ -132,7 +132,7 @@ function getInternalErrorMessage(newAmount: Amount.Amount<any> | null,
         // The user has entered something, but it could not be converted to an amount (=was not numeric)
         return notNumericMessage;
     }
-    return null;
+    return undefined;
 
 }
 
@@ -159,12 +159,12 @@ function _formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amo
     }
 }
 
-function _unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(text: string, unit: Unit.Unit<T>, inputDecimalCount: number): Amount.Amount<T> | null {
+function _unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(text: string, unit: Unit.Unit<T>, inputDecimalCount: number): Amount.Amount<T> | undefined {
     if (!text || text.length === 0)
-        return null;
+        return undefined;
     const parsedFloatValue = _filterFloat(text);
     if (isNaN(parsedFloatValue))
-        return null;
+        return undefined;
     // Keep number of decimals from the entered text except if they are more than the formats decimal count
     const textDecimalCount = _getDecimalCountFromString(text);
     const finalDecimalCount = textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
