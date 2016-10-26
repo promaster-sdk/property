@@ -11,7 +11,7 @@ function _register(unit, label) {
     UnitName.registerLabel(label, unit);
     return unit;
 }
-exports.One = _register(Unit.createOne(), " ");
+exports.One = _register(Unit.One, " ");
 exports.Percent = _register(Unit.divideNumber(100.0, exports.One), "%");
 exports.PPM = _register(Unit.divideNumber(1000000.0, exports.One), "ppm");
 ///////////////////

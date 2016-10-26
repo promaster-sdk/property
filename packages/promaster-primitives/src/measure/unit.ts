@@ -145,11 +145,6 @@ export function createAlternate<T extends Quantity>(symbol: string, parent: Unit
   return create(parent.quantity, {type: "alternate", symbol, parent} as AlternateUnit<T>);
 }
 
-// Used solely to create ONE instance.
-function createOne(): Unit<Dimensionless> {
-  return create("Dimensionless", {type: "product", elements: []} as ProductUnit<Dimensionless>);
-}
-
 // Creates a ProductUnit.
 export function times<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
   return product(quantity, left, right);
@@ -160,22 +155,18 @@ export function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, ri
   return quotient(quantity, left, right);
 }
 
-// Simulate operator overload
 export function timesNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
   return transform(createFactorConverter(factor), unit);
 }
 
-// Simulate operator overload
 export function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
   return transform(createFactorConverter(1.0 / factor), unit);
 }
 
-// Simulate operator overload
 export function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
   return transform(createOffsetConverter(offset), unit);
 }
 
-// Simulate operator overload
 export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
   return transform(createOffsetConverter(-offset), unit);
 }
@@ -218,13 +209,13 @@ function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>):
   if (operation === identityConverter) {
     return unit;
   }
-  return createTransformed(unit, operation);
+  return createTransformedUnit(unit, operation);
 }
 
 /// Creates a transformed unit from the specified parent unit.
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
-function createTransformed<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter): Unit<T> {
+function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter): Unit<T> {
   return create(parentUnit.quantity, {type: "transformed", parentUnit, toParentUnitConverter} as TransformedUnit<T>);
 }
 
@@ -390,4 +381,9 @@ function convertWithConverter(value: number, converter: UnitConverter): number {
 /// <returns>the concatenation of this converter with the other converter.</returns>
 function concatenateConverters(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
   return concatConverter === identityConverter ? converter : createCompoundConverter(concatConverter, converter);
+}
+
+// Used solely to create ONE instance.
+function createOne(): Unit<Dimensionless> {
+  return create("Dimensionless", {type: "product", elements: []} as ProductUnit<Dimensionless>);
 }
