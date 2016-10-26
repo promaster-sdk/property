@@ -9,7 +9,7 @@ export interface OffsetConverter {
 
 const EPSILON: number = 4.94065645841247E-324;
 
-export function create(offset: number): OffsetConverter {
+export function createOffsetConverter(offset: number): OffsetConverter {
 	return {type: "offset", offset};
 }
 
@@ -18,6 +18,6 @@ export function convert(value: number, converter: OffsetConverter): number {
 }
 
 export function inverse(converter: OffsetConverter): UnitConverter.UnitConverter {
-	return create(-converter.offset);
+	return createOffsetConverter(-converter.offset);
 }
 

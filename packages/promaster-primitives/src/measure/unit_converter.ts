@@ -17,7 +17,7 @@ export type UnitConverter = OffsetConverter.OffsetConverter | Compound.Compound 
 
 /// Holds the identity converter (unique). This converter does nothing
 /// (ONE.convert(x) == x).
-export const Identity: UnitConverter = IdentityConverter.create();
+export const Identity: UnitConverter = IdentityConverter.createIdentityConverter();
 
 /// Returns the inverse of this converter. If x is a valid
 /// value, then x == inverse().convert(convert(x)) to within
@@ -64,13 +64,13 @@ export function convert(value: number, converter: UnitConverter): number {
 /// <returns>the concatenation of this converter with the other converter.</returns>
 export function concatenate(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
 	//return identical(converter, Identity) ? this : new Compound(converter, this);
-	return concatConverter === Identity ? converter : Compound.create(concatConverter, converter);
+	return concatConverter === Identity ? converter : Compound.createCompoundConverter(concatConverter, converter);
 }
 
 export function offset(off: number): UnitConverter {
-	return OffsetConverter.create(off);
+	return OffsetConverter.createOffsetConverter(off);
 }
 
 export function factor(f: number): UnitConverter {
-	return FactorConverter.create(f);
+	return FactorConverter.createFactorConverter(f);
 }

@@ -6,7 +6,7 @@ export interface IdentityConverter {
 
 /// This inner class represents the identity converter (singleton).
 
-export function create(): IdentityConverter {
+export function createIdentityConverter(): IdentityConverter {
 	return {type: "identity"};
 }
 

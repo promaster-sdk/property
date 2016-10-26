@@ -1,14 +1,9 @@
 "use strict";
 /// This inner class represents the identity converter (singleton).
-function create() {
+function createIdentityConverter() {
     return { type: "identity" };
 }
-exports.create = create;
-/// Implements abstract method.
-function concatenate(converter) {
-    return converter;
-}
-exports.concatenate = concatenate;
+exports.createIdentityConverter = createIdentityConverter;
 /// Implements abstract method.
 function convert(value) {
     return value;

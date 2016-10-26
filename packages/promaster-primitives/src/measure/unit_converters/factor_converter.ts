@@ -6,11 +6,9 @@ export interface FactorConverter {
 }
 
 /// Inner class FactorConverter
-export function create(factor: number): FactorConverter {
-
+export function createFactorConverter(factor: number): FactorConverter {
 	if (factor === 1.0)
 		throw new Error("Argument: factor " + factor.toString());
-
 	return {type: "factor", factor};
 }
 
@@ -19,5 +17,5 @@ export function convert(value: number, converter: FactorConverter): number {
 }
 
 export function inverse(converter: FactorConverter): UnitConverter.UnitConverter {
-	return create(1.0 / converter.factor);
+	return createFactorConverter(1.0 / converter.factor);
 }
