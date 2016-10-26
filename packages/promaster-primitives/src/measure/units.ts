@@ -14,7 +14,7 @@ function _register<T extends q.Quantity>(unit: Unit.Unit<T>, label: string = "")
   return unit;
 }
 
-export const One: Unit.Unit<q.Dimensionless> = _register(Unit.createOne(), " ");
+export const One: Unit.Unit<q.Dimensionless> = _register(Unit.One, " ");
 export const Percent: Unit.Unit<q.Dimensionless> = _register(Unit.divideNumber(100.0, One), "%");
 export const PPM: Unit.Unit<q.Dimensionless> = _register(Unit.divideNumber(1000000.0, One), "ppm");
 

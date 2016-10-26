@@ -17,7 +17,6 @@ import {Quantity, Dimensionless} from "./quantity";
 // is a unit compatible with meter.
 export interface Unit<T extends Quantity> {
   readonly quantity: Quantity,
-  // readonly elements: Array<Element>,
   readonly innerUnit: InnerUnit<T>,
 }
 
@@ -26,9 +25,6 @@ export type InnerUnit<T extends Quantity> =
     | BaseUnit<T>
     | ProductUnit<T>
     | TransformedUnit<T>;
-
-/// Holds the dimensionless unit ONE
-//public static readonly Unit<T> One = new ProductUnit<T>();
 
 // This record represents the building blocks on top of which all others
 // units are created.
@@ -128,8 +124,11 @@ export interface OffsetConverter {
   readonly offset: number,
 }
 
-/// Holds the identity converter (unique). This converter does nothing
-/// (ONE.convert(x) == x).
+// Holds the dimensionless unit ONE
+export const One: Unit<Dimensionless> = createOne();
+
+// Holds the identity converter (unique). This converter does nothing
+// (ONE.convert(x) == x).
 const identityConverter: UnitConverter = createIdentityConverter();
 
 /// Creates a base unit having the specified symbol.
@@ -147,7 +146,7 @@ export function createAlternate<T extends Quantity>(symbol: string, parent: Unit
 }
 
 // Used solely to create ONE instance.
-export function createOne(): Unit<Dimensionless> {
+function createOne(): Unit<Dimensionless> {
   return create("Dimensionless", {type: "product", elements: []} as ProductUnit<Dimensionless>);
 }
 

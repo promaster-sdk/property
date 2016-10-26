@@ -1,4 +1,9 @@
 "use strict";
+// Holds the dimensionless unit ONE
+exports.One = createOne();
+// Holds the identity converter (unique). This converter does nothing
+// (ONE.convert(x) == x).
+var identityConverter = createIdentityConverter();
 /// Creates a base unit having the specified symbol.
 /// <param name="symbol">the symbol of this base unit.</param>
 function createBase(quantity, symbol) {
@@ -17,7 +22,6 @@ exports.createAlternate = createAlternate;
 function createOne() {
     return create("Dimensionless", { type: "product", elements: [] });
 }
-exports.createOne = createOne;
 // Creates a ProductUnit.
 function times(quantity, left, right) {
     return product(quantity, left, right);
@@ -48,12 +52,17 @@ function minus(offset, unit) {
     return transform(createOffsetConverter(-offset), unit);
 }
 exports.minus = minus;
+function convert(value, fromUnit, toUnit) {
+    var converter = getConverterTo(toUnit, fromUnit);
+    return convertWithConverter(value, converter);
+}
+exports.convert = convert;
 /// Returns a converter of numeric values from this unit to another unit.
 /// <param name="that">the unit to which to convert the numeric values.</param>
 /// <returns>the converter from this unit to <code>that</code> unit.</returns>
 function getConverterTo(toUnit, unit) {
     if (unit == toUnit) {
-        return Identity;
+        return identityConverter;
     }
     return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(toUnit)));
 }
@@ -63,7 +72,7 @@ function toStandardUnit(unit) {
         case "alternate":
             return toStandardUnit(unit.innerUnit.parent);
         case "base":
-            return Identity;
+            return identityConverter;
         case "product":
             return productUnitToStandardUnit(unit);
         case "transformed":
@@ -76,7 +85,7 @@ function toStandardUnit(unit) {
 /// <param name="operation">the converter from the transformed unit to this unit.</param>
 /// <returns>the unit after the specified transformation.</returns>
 function transform(operation, unit) {
-    if (operation === Identity) {
+    if (operation === identityConverter) {
         return unit;
     }
     return createTransformed(unit, operation);
@@ -149,7 +158,7 @@ function getElements(unit) {
     return [];
 }
 function productUnitToStandardUnit(unit) {
-    var converter = Identity;
+    var converter = identityConverter;
     for (var _i = 0, _a = getElements(unit); _i < _a.length; _i++) {
         var element = _a[_i];
         var conv = toStandardUnit(element.unit);
@@ -169,9 +178,16 @@ function productUnitToStandardUnit(unit) {
 function createProductUnit(quantity, elements) {
     return create(quantity, { type: "product", elements: elements });
 }
-/// Holds the identity converter (unique). This converter does nothing
-/// (ONE.convert(x) == x).
-var Identity = createIdentityConverter();
+/// Creates a compound converter resulting from the combined
+/// transformation of the specified converters.
+/// <param name="first">the first converter.</param>
+/// <param name="second">second the second converter.</param>
+function createCompoundConverter(first, second) {
+    return { type: "compound", first: first, second: second };
+}
+function createIdentityConverter() {
+    return { type: "identity" };
+}
 function createOffsetConverter(offset) {
     return { type: "offset", offset: offset };
 }
@@ -196,11 +212,6 @@ function inverseConverter(converter) {
     }
     throw new Error("Unknown unit converter");
 }
-function convert(value, fromUnit, toUnit) {
-    var converter = getConverterTo(toUnit, fromUnit);
-    return convertWithConverter(value, converter);
-}
-exports.convert = convert;
 /// Converts a double value.
 /// <param name="x">the numeric value to convert.</param>
 /// <returns>the converted numeric value.</returns>
@@ -227,16 +238,6 @@ function convertWithConverter(value, converter) {
 /// <param name="converter">the other converter.</param>
 /// <returns>the concatenation of this converter with the other converter.</returns>
 function concatenateConverters(concatConverter, converter) {
-    return concatConverter === Identity ? converter : createCompoundConverter(concatConverter, converter);
-}
-/// Creates a compound converter resulting from the combined
-/// transformation of the specified converters.
-/// <param name="first">the first converter.</param>
-/// <param name="second">second the second converter.</param>
-function createCompoundConverter(first, second) {
-    return { type: "compound", first: first, second: second };
-}
-function createIdentityConverter() {
-    return { type: "identity" };
+    return concatConverter === identityConverter ? converter : createCompoundConverter(concatConverter, converter);
 }
 //# sourceMappingURL=unit.js.map

@@ -26,15 +26,6 @@ export interface Element {
     readonly unit: Unit<any>;
     readonly pow: number;
 }
-export declare function createBase<T extends Quantity>(quantity: T, symbol: string): Unit<T>;
-export declare function createAlternate<T extends Quantity>(symbol: string, parent: Unit<any>): Unit<T>;
-export declare function createOne(): Unit<Dimensionless>;
-export declare function times<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T>;
-export declare function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T>;
-export declare function timesNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T>;
-export declare function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T>;
-export declare function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
-export declare function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
 export declare type UnitConverter = OffsetConverter | CompoundConverter | FactorConverter | IdentityConverter;
 export interface CompoundConverter {
     readonly type: "compound";
@@ -52,4 +43,13 @@ export interface OffsetConverter {
     readonly type: "offset";
     readonly offset: number;
 }
+export declare const One: Unit<Dimensionless>;
+export declare function createBase<T extends Quantity>(quantity: T, symbol: string): Unit<T>;
+export declare function createAlternate<T extends Quantity>(symbol: string, parent: Unit<any>): Unit<T>;
+export declare function times<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T>;
+export declare function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T>;
+export declare function timesNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T>;
+export declare function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T>;
+export declare function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
+export declare function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
 export declare function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number;
