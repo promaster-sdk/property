@@ -146,11 +146,11 @@ export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T
 /// Returns a converter of numeric values from this unit to another unit.
 /// <param name="that">the unit to which to convert the numeric values.</param>
 /// <returns>the converter from this unit to <code>that</code> unit.</returns>
-export function getConverterTo<T extends Quantity>(that: Unit<any>, unit: Unit<T>): UnitConverter {
-  if (unit == that) {
+function getConverterTo<T extends Quantity>(toUnit: Unit<any>, unit: Unit<T>): UnitConverter {
+  if (unit == toUnit) {
     return Identity;
   }
-  return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(that)));
+  return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(toUnit)));
 }
 
 
@@ -283,14 +283,6 @@ function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Elem
 }
 
 
-
-
-
-
-
-
-
-
 /// This class represents a converter of numeric values.
 ///
 /// It is not required for sub-classes to be immutable
@@ -330,13 +322,13 @@ export interface OffsetConverter {
 
 /// Holds the identity converter (unique). This converter does nothing
 /// (ONE.convert(x) == x).
-export const Identity: UnitConverter = createIdentityConverter();
+const Identity: UnitConverter = createIdentityConverter();
 
-export function createOffsetConverter(offset: number): OffsetConverter {
+function createOffsetConverter(offset: number): OffsetConverter {
   return {type: "offset", offset};
 }
 
-export function createFactorConverter(factor: number): FactorConverter {
+function createFactorConverter(factor: number): FactorConverter {
   if (factor === 1.0)
     throw new Error("Argument: factor " + factor.toString());
   return {type: "factor", factor};
@@ -345,7 +337,7 @@ export function createFactorConverter(factor: number): FactorConverter {
 /// Returns the inverse of this converter. If x is a valid
 /// value, then x == inverse().convert(convert(x)) to within
 /// the accuracy of computer arithmetic.
-export function inverseConverter(converter: UnitConverter): UnitConverter {
+function inverseConverter(converter: UnitConverter): UnitConverter {
   switch (converter.type) {
     case "compound":
       return createCompoundConverter(inverseConverter(converter.second), inverseConverter(converter.first));
@@ -359,13 +351,19 @@ export function inverseConverter(converter: UnitConverter): UnitConverter {
   throw new Error("Unknown unit converter");
 }
 
+export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number {
+  const converter = getConverterTo(toUnit, fromUnit);
+  return convertWithConverter(value, converter);
+
+}
+
 /// Converts a double value.
 /// <param name="x">the numeric value to convert.</param>
 /// <returns>the converted numeric value.</returns>
-export function convert(value: number, converter: UnitConverter): number {
+function convertWithConverter(value: number, converter: UnitConverter): number {
   switch (converter.type) {
     case "compound":
-      return convert(convert(value, converter.first), converter.second);
+      return convertWithConverter(convertWithConverter(value, converter.first), converter.second);
     case "factor":
       return value * converter.factor;
     case "identity":
@@ -385,7 +383,7 @@ export function convert(value: number, converter: UnitConverter): number {
 ///       converter.
 /// <param name="converter">the other converter.</param>
 /// <returns>the concatenation of this converter with the other converter.</returns>
-export function concatenateConverters(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
+function concatenateConverters(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
   return concatConverter === Identity ? converter : createCompoundConverter(concatConverter, converter);
 }
 

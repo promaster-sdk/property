@@ -111,7 +111,8 @@ export function abs<T extends Quantity>(amount: Amount<T>): Amount<T> {
 }
 
 export function valueAs<T extends Quantity>(toUnit: Unit.Unit<T>, amount: Amount<T>): number {
-  return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
+  // return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
+  return Unit.convert(amount.value, amount.unit, toUnit);
 }
 
 function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount: number | undefined = undefined): Amount<T> {

@@ -98,7 +98,8 @@ function abs(amount) {
 }
 exports.abs = abs;
 function valueAs(toUnit, amount) {
-    return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
+    // return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
+    return Unit.convert(amount.value, amount.unit, toUnit);
 }
 exports.valueAs = valueAs;
 function _factory(value, unit, decimalCount) {

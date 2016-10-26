@@ -51,20 +51,19 @@ exports.minus = minus;
 /// Returns a converter of numeric values from this unit to another unit.
 /// <param name="that">the unit to which to convert the numeric values.</param>
 /// <returns>the converter from this unit to <code>that</code> unit.</returns>
-function getConverterTo(that, unit) {
-    if (unit == that) {
-        return exports.Identity;
+function getConverterTo(toUnit, unit) {
+    if (unit == toUnit) {
+        return Identity;
     }
-    return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(that)));
+    return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(toUnit)));
 }
-exports.getConverterTo = getConverterTo;
 // Returns the converter from this unit to its system unit.
 function toStandardUnit(unit) {
     switch (unit.innerUnit.type) {
         case "alternate":
             return toStandardUnit(unit.innerUnit.parent);
         case "base":
-            return exports.Identity;
+            return Identity;
         case "product":
             return productUnitToStandardUnit(unit);
         case "transformed":
@@ -77,7 +76,7 @@ function toStandardUnit(unit) {
 /// <param name="operation">the converter from the transformed unit to this unit.</param>
 /// <returns>the unit after the specified transformation.</returns>
 function transform(operation, unit) {
-    if (operation === exports.Identity) {
+    if (operation === Identity) {
         return unit;
     }
     return createTransformed(unit, operation);
@@ -150,7 +149,7 @@ function getElements(unit) {
     return [];
 }
 function productUnitToStandardUnit(unit) {
-    var converter = exports.Identity;
+    var converter = Identity;
     for (var _i = 0, _a = getElements(unit); _i < _a.length; _i++) {
         var element = _a[_i];
         var conv = toStandardUnit(element.unit);
@@ -172,17 +171,15 @@ function createProductUnit(quantity, elements) {
 }
 /// Holds the identity converter (unique). This converter does nothing
 /// (ONE.convert(x) == x).
-exports.Identity = createIdentityConverter();
+var Identity = createIdentityConverter();
 function createOffsetConverter(offset) {
     return { type: "offset", offset: offset };
 }
-exports.createOffsetConverter = createOffsetConverter;
 function createFactorConverter(factor) {
     if (factor === 1.0)
         throw new Error("Argument: factor " + factor.toString());
     return { type: "factor", factor: factor };
 }
-exports.createFactorConverter = createFactorConverter;
 /// Returns the inverse of this converter. If x is a valid
 /// value, then x == inverse().convert(convert(x)) to within
 /// the accuracy of computer arithmetic.
@@ -199,14 +196,18 @@ function inverseConverter(converter) {
     }
     throw new Error("Unknown unit converter");
 }
-exports.inverseConverter = inverseConverter;
+function convert(value, fromUnit, toUnit) {
+    var converter = getConverterTo(toUnit, fromUnit);
+    return convertWithConverter(value, converter);
+}
+exports.convert = convert;
 /// Converts a double value.
 /// <param name="x">the numeric value to convert.</param>
 /// <returns>the converted numeric value.</returns>
-function convert(value, converter) {
+function convertWithConverter(value, converter) {
     switch (converter.type) {
         case "compound":
-            return convert(convert(value, converter.first), converter.second);
+            return convertWithConverter(convertWithConverter(value, converter.first), converter.second);
         case "factor":
             return value * converter.factor;
         case "identity":
@@ -216,7 +217,6 @@ function convert(value, converter) {
     }
     throw new Error("Unknown unit converter");
 }
-exports.convert = convert;
 /// Concatenates this converter with another converter. The resulting
 /// converter is equivalent to first converting by the specified converter,
 /// and then converting by this converter.
@@ -227,9 +227,8 @@ exports.convert = convert;
 /// <param name="converter">the other converter.</param>
 /// <returns>the concatenation of this converter with the other converter.</returns>
 function concatenateConverters(concatConverter, converter) {
-    return concatConverter === exports.Identity ? converter : createCompoundConverter(concatConverter, converter);
+    return concatConverter === Identity ? converter : createCompoundConverter(concatConverter, converter);
 }
-exports.concatenateConverters = concatenateConverters;
 /// Creates a compound converter resulting from the combined
 /// transformation of the specified converters.
 /// <param name="first">the first converter.</param>

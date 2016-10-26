@@ -35,7 +35,6 @@ export declare function timesNumber<T extends Quantity>(factor: number, unit: Un
 export declare function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T>;
 export declare function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
 export declare function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
-export declare function getConverterTo<T extends Quantity>(that: Unit<any>, unit: Unit<T>): UnitConverter;
 export declare type UnitConverter = OffsetConverter | CompoundConverter | FactorConverter | IdentityConverter;
 export interface CompoundConverter {
     readonly type: "compound";
@@ -53,9 +52,4 @@ export interface OffsetConverter {
     readonly type: "offset";
     readonly offset: number;
 }
-export declare const Identity: UnitConverter;
-export declare function createOffsetConverter(offset: number): OffsetConverter;
-export declare function createFactorConverter(factor: number): FactorConverter;
-export declare function inverseConverter(converter: UnitConverter): UnitConverter;
-export declare function convert(value: number, converter: UnitConverter): number;
-export declare function concatenateConverters(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter;
+export declare function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number;
