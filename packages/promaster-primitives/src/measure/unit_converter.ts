@@ -1,8 +1,7 @@
 import * as OffsetConverter from "./unit_converters/offset_converter";
-import * as FactorConverter from "./unit_converters/factor_converter";
 import * as IdentityConverter from "./unit_converters/identity_converter";
 
-export type UnitConverter = OffsetConverter.OffsetConverter | Compound | FactorConverter.FactorConverter | IdentityConverter.IdentityConverter;
+export type UnitConverter = OffsetConverter.OffsetConverter | Compound | FactorConverter | IdentityConverter.IdentityConverter;
 
 // This record represents a compound converter.
 export interface Compound {
@@ -13,6 +12,10 @@ export interface Compound {
   readonly second: UnitConverter,
 }
 
+export interface FactorConverter {
+  readonly type: "factor",
+  readonly factor: number,
+}
 
 /// This class represents a converter of numeric values.
 ///
@@ -33,7 +36,7 @@ export function offset(off: number): UnitConverter {
 }
 
 export function factor(f: number): UnitConverter {
-  return FactorConverter.createFactorConverter(f);
+  return createFactorConverter(f);
 }
 
 /// Returns the inverse of this converter. If x is a valid
@@ -45,7 +48,8 @@ export function inverse(converter: UnitConverter): UnitConverter {
 			// return Compound.inverse(converter);
       return createCompoundConverter(inverse(converter.second), inverse(converter.first));
 		case "factor":
-			return FactorConverter.inverse(converter);
+			// return FactorConverter.inverse(converter);
+      return createFactorConverter(1.0 / converter.factor);
 		case "identity":
 			return IdentityConverter.inverse(converter);
 		case "offset":
@@ -60,10 +64,9 @@ export function inverse(converter: UnitConverter): UnitConverter {
 export function convert(value: number, converter: UnitConverter): number {
 	switch (converter.type) {
 		case "compound":
-			// return Compound.convert(value, converter);
       return convert(convert(value, converter.first), converter.second);
 		case "factor":
-			return FactorConverter.convert(value, converter);
+      return value * converter.factor;
 		case "identity":
 			return IdentityConverter.convert(value);
 		case "offset":
@@ -94,4 +97,11 @@ export function concatenate(concatConverter: UnitConverter, converter: UnitConve
 /// <param name="second">second the second converter.</param>
 function createCompoundConverter(first: UnitConverter, second: UnitConverter): Compound {
   return {type: "compound", first, second};
+}
+
+/// Inner class FactorConverter
+function createFactorConverter(factor: number): FactorConverter {
+  if (factor === 1.0)
+    throw new Error("Argument: factor " + factor.toString());
+  return {type: "factor", factor};
 }
