@@ -3,6 +3,7 @@ import * as Amount from "./measure/amount";
 import * as Quantity from "./measure/quantity";
 import * as Unit from "./measure/unit";
 import * as Units from "./measure/units";
+import * as UnitName from "./measure/unit-name";
 import * as UnitDivide from "./measure/unit-divide";
 import * as UnitTimes from "./measure/unit-times";
 // property-filtering
@@ -18,6 +19,7 @@ export {
     Quantity,
     Unit,
     Units,
+    UnitName,
     UnitDivide,
     UnitTimes,
     // property-filtering
