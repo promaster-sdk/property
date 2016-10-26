@@ -1,5 +1,5 @@
 import { Quantity, Dimensionless } from "./quantity";
-import * as UnitConverter from "./unit_converter";
+import * as UnitConverter from "./unit-converter";
 export interface Unit<T extends Quantity> {
     readonly quantity: Quantity;
     readonly innerUnit: InnerUnit<T>;

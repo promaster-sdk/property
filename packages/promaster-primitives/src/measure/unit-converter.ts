@@ -116,6 +116,6 @@ function createIdentityConverter(): IdentityConverter {
   return {type: "identity"};
 }
 
-export function createOffsetConverter(offset: number): OffsetConverter {
+function createOffsetConverter(offset: number): OffsetConverter {
   return {type: "offset", offset};
 }
