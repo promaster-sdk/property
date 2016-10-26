@@ -195,21 +195,11 @@ function getProperties(propertiesToGet, set) {
 }
 exports.getProperties = getProperties;
 function toString(set) {
-    var sb = "";
-    for (var _i = 0, _a = Object.keys(set); _i < _a.length; _i++) {
-        var name_7 = _a[_i];
-        sb += name_7 + "=" + PropertyValue.toString(set[name_7]);
-    }
-    return sb;
+    return Object.keys(set).map(function (p) { return (p + "=" + PropertyValue.toString(set[p])); }).join(";");
 }
 exports.toString = toString;
 function toStringInSpecifiedOrder(order) {
-    var sb = "";
-    for (var _i = 0, order_1 = order; _i < order_1.length; _i++) {
-        var name_8 = order_1[_i];
-        sb += name_8 + "=" + PropertyValue.toString(set[name_8]);
-    }
-    return sb;
+    return order.map(function (p) { return (p + "=" + PropertyValue.toString(set[p])); }).join(";");
 }
 exports.toStringInSpecifiedOrder = toStringInSpecifiedOrder;
 function equals(other, set) {
@@ -220,8 +210,8 @@ function equals(other, set) {
     if (Object.keys(set).length !== Object.keys(other).length)
         return false;
     for (var _i = 0, _a = Object.keys(set); _i < _a.length; _i++) {
-        var name_9 = _a[_i];
-        if (!PropertyValue.equals(other[name_9], set[name_9])) {
+        var name_7 = _a[_i];
+        if (!PropertyValue.equals(other[name_7], set[name_7])) {
             return false;
         }
     }
