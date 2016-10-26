@@ -8,7 +8,7 @@ export interface Amount<T extends Quantity> {
 export declare function create<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount?: number | undefined): Amount<T>;
 export declare function toString<T extends Quantity>(amount: Amount<T>): string;
 export declare function neg<T extends Quantity>(amount: Amount<T>): Amount<T>;
-export declare function isQuantity<T extends Quantity>(quantityType: T, amount: Amount<T>): boolean;
+export declare function isQuantity<T extends Quantity>(quantity: T, amount: Amount<T>): boolean;
 export declare function plus<T extends Quantity>(left: Amount<T>, right: Amount<T>): Amount<T>;
 export declare function minus<T extends Quantity>(left: Amount<T>, right: Amount<T>): Amount<T>;
 export declare function times<T extends Quantity>(left: Amount<T>, right: number | Amount<Dimensionless>): Amount<T>;

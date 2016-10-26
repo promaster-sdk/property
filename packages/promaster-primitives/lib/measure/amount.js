@@ -23,9 +23,10 @@ function neg(amount) {
     return create(-amount.value, amount.unit);
 }
 exports.neg = neg;
-function isQuantity(quantityType, amount) {
+function isQuantity(quantity, amount) {
     // Amount does not store the quanitty but Unit does
-    return Unit.getQuantityType(amount.unit) === quantityType;
+    // return Unit.getQuantityType(amount.unit) === quantityType;
+    return amount.unit.quantity === quantity;
 }
 exports.isQuantity = isQuantity;
 // Aritmetic operators
@@ -40,7 +41,7 @@ exports.minus = minus;
 function times(left, right) {
     if (typeof right === "number")
         return _factory(left.value * right, left.unit);
-    else if (Unit.getQuantityType(right.unit) === "Dimensionless")
+    else if (right.unit.quantity === "Dimensionless")
         return _factory(left.value * valueAs(Units.One, right), left.unit);
     else
         throw new Error("Cannot perform '*' operation with value of type '" + right + "'.");
@@ -49,7 +50,7 @@ exports.times = times;
 function divide(left, right) {
     if (typeof right === "number")
         return _factory(left.value / right, left.unit);
-    else if (Unit.getQuantityType(right.unit) === "Dimensionless")
+    else if (right.unit.quantity === "Dimensionless")
         return _factory(left.value / valueAs(Units.One, right), left.unit);
     else
         throw new Error("Cannot perform '*' operation with value of type '" + right + "'.");
@@ -100,9 +101,6 @@ function valueAs(toUnit, amount) {
     return UnitConverter.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
 }
 exports.valueAs = valueAs;
-function _getQuantityType(unit) {
-    return Unit.getQuantityType(unit);
-}
 function _factory(value, unit, decimalCount) {
     if (decimalCount === void 0) { decimalCount = undefined; }
     if (decimalCount === undefined) {

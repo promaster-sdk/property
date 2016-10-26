@@ -1,8 +1,5 @@
 "use strict";
-var BaseUnit = require("./units/base_unit");
 var Unit = require("./unit");
-var ProductUnit = require("./units/product_unit");
-var AlternateUnit = require('./units/alternate_unit');
 var UnitDivide = require('./unit-divide');
 var UnitTimes = require('./unit-times');
 var _unitToString = new Map();
@@ -12,7 +9,7 @@ function _register(unit, label) {
     if (label === void 0) { label = ""; }
     return Unit.withLabel(label, unit);
 }
-exports.One = _register(ProductUnit.create("Dimensionless", []), " ");
+exports.One = _register(Unit.createOne(), " ");
 exports.Percent = _register(Unit.divideNumber(100.0, exports.One), "%");
 exports.PPM = _register(Unit.divideNumber(1000000.0, exports.One), "ppm");
 ///////////////////
@@ -29,20 +26,20 @@ exports.PPM = _register(Unit.divideNumber(1000000.0, exports.One), "ppm");
 /// mole for the amount of substance
 /// BEGIN: System of Units - SI
 /// The base unit for electric current quantities ( <code>A</code> ). The Ampere is that export constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 metre apart in vacuum, would produce between these conductors a force equal to 2 × 10-7 newton per metre of length. It is named after the French physicist Andre Ampere (1775-1836).
-exports.Ampere = _register(BaseUnit.create("ElectricCurrent", "A"), "A");
+exports.Ampere = _register(Unit.createBase("ElectricCurrent", "A"), "A");
 /// The base unit for luminous intensity quantities ( <code>cd</code> ). The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 × 1012 hertz and that has a radiant intensity in that direction of 1/683 watt per steradian @see <a
 /// href="http://en.wikipedia.org/wiki/Candela">Wikipedia: Candela</a>
-exports.Candela = _register(Si(BaseUnit.create("LuminousIntensity", "cd")), "cd");
+exports.Candela = _register(Si(Unit.createBase("LuminousIntensity", "cd")), "cd");
 /// The base unit for thermodynamic temperature quantities ( <code>K</code> ). The kelvin is the 1/273.16th of the thermodynamic temperature of the triple point of water. It is named after the Scottish mathematician and physicist William Thomson 1st Lord Kelvin (1824-1907)
-exports.Kelvin = _register(BaseUnit.create("Temperature", "K"), "K");
+exports.Kelvin = _register(Unit.createBase("Temperature", "K"), "K");
 /// The base unit for mass quantities ( <code>kg</code> ). It is the only SI unit with a prefix as part of its name and symbol. The kilogram is equal to the mass of an international prototype in the form of a platinum-iridium cylinder kept at Sevres in France. @see #GRAM
-exports.Kilogram = _register(BaseUnit.create("Mass", "kg"), "kg");
+exports.Kilogram = _register(Unit.createBase("Mass", "kg"), "kg");
 /// The base unit for length quantities ( <code>m</code> ). One meter was redefined in 1983 as the distance traveled by light in a vacuum in 1/299,792,458 of a second.
-exports.Meter = _register(BaseUnit.create("Length", "m"), "m");
+exports.Meter = _register(Unit.createBase("Length", "m"), "m");
 /// The base unit for amount of substance quantities ( <code>mol</code> ). The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12.
-exports.Mole = _register(Si(BaseUnit.create("AmountOfSubstance", "mol")), "mol");
+exports.Mole = _register(Si(Unit.createBase("AmountOfSubstance", "mol")), "mol");
 /// The base unit for duration quantities ( <code>s</code> ). It is defined as the duration of 9,192,631,770 cycles of radiation corresponding to the transition between two hyperfine levels of the ground state of cesium (1967 Standard).
-exports.Second = _register(BaseUnit.create("Duration", "s"), "s");
+exports.Second = _register(Unit.createBase("Duration", "s"), "s");
 //////////////////////////////
 /// SI DERIVED PRODUCT UNITS //
 //////////////////////////////
@@ -67,51 +64,51 @@ exports.Millimeter = _register(Milli(exports.Meter), "mm");
 /// The derived unit for mass quantities ( <code>g</code> ). The base unit for mass quantity is {@link #KILOGRAM}.
 exports.Gram = _register(Unit.divideNumber(1000.0, exports.Kilogram), "g");
 /// The unit for plane angle quantities ( <code>rad</code> ). One radian is the angle between two radii of a circle such that the length of the arc between them is equal to the radius.
-exports.Radian = _register(AlternateUnit.create("rad", exports.One), "rad");
+exports.Radian = _register(Unit.createAlternate("rad", exports.One), "rad");
 /// The unit for solid angle quantities ( <code>sr</code> ). One steradian is the solid angle subtended at the center of a sphere by an area on the surface of the sphere that is equal to the radius squared. The total solid angle of a sphere is 4*Pi steradians.
-exports.Steradian = _register(AlternateUnit.create("sr", exports.One), "sr");
+exports.Steradian = _register(Unit.createAlternate("sr", exports.One), "sr");
 /// The unit for binary information ( <code>bit</code> ).
-exports.Bit = _register(AlternateUnit.create("bit", exports.One), "bit");
+exports.Bit = _register(Unit.createAlternate("bit", exports.One), "bit");
 /// The derived unit for frequency ( <code>Hz</code> ). A unit of frequency equal to one cycle per second. After Heinrich Rudolf Hertz (1857-1894), German physicist who was the first to produce radio waves artificially.
-exports.Hertz = _register(AlternateUnit.create("Hz", UnitDivide.dimentionlessByDuration(exports.One, exports.Second)), "Hz");
+exports.Hertz = _register(Unit.createAlternate("Hz", UnitDivide.dimentionlessByDuration(exports.One, exports.Second)), "Hz");
 /// The derived unit for force ( <code>N</code> ). One newton is the force required to give a mass of 1 kilogram an Force of 1 metre per second per second. It is named after the English mathematician and physicist Sir Isaac Newton (1642-1727).
-exports.Newton = _register(AlternateUnit.create("N", UnitTimes.massByAcceleration(exports.Kilogram, exports.MeterPerSquareSecond)), "N");
+exports.Newton = _register(Unit.createAlternate("N", UnitTimes.massByAcceleration(exports.Kilogram, exports.MeterPerSquareSecond)), "N");
 /// The derived unit for pressure, stress ( <code>Pa</code> ). One pascal is equal to one newton per square meter. It is named after the French philosopher and mathematician Blaise Pascal (1623-1662).
-exports.Pascal = _register(AlternateUnit.create("Pa", UnitDivide.forceByArea(exports.Newton, Squared(exports.Meter))), "Pa");
+exports.Pascal = _register(Unit.createAlternate("Pa", UnitDivide.forceByArea(exports.Newton, Squared(exports.Meter))), "Pa");
 /// The derived unit for energy, work, quantity of heat ( <code>J</code> ). One joule is the amount of work done when an applied force of 1 newton moves through a distance of 1 metre in the direction of the force. It is named after the English physicist James Prescott Joule (1818-1889).
-exports.Joule = _register(AlternateUnit.create("J", UnitTimes.forceByLength(exports.Newton, exports.Meter)), "J");
+exports.Joule = _register(Unit.createAlternate("J", UnitTimes.forceByLength(exports.Newton, exports.Meter)), "J");
 /// The derived unit for power, radiant, flux ( <code>W</code> ). One watt is equal to one joule per second. It is named after the British scientist James Watt (1736-1819).
-exports.Watt = _register(AlternateUnit.create("W", UnitDivide.energyByDuration(exports.Joule, exports.Second)), "W");
+exports.Watt = _register(Unit.createAlternate("W", UnitDivide.energyByDuration(exports.Joule, exports.Second)), "W");
 /// The derived unit for electric charge, quantity of electricity ( <code>C</code> ). One Coulomb is equal to the quantity of charge transferred in one second by a steady current of one ampere. It is named after the French physicist Charles Augustin de Coulomb (1736-1806).
-exports.Coulomb = _register(AlternateUnit.create("C", UnitTimes.durationByElectricCurrent(exports.Second, exports.Ampere)), "C");
+exports.Coulomb = _register(Unit.createAlternate("C", UnitTimes.durationByElectricCurrent(exports.Second, exports.Ampere)), "C");
 /// The derived unit for electric potential difference, electromotive force ( <code>V</code> ). One Volt is equal to the difference of electric potential between two points on a conducting wire carrying a export constant current of one ampere when the power dissipated between the points is one watt. It is named after the Italian physicist Count Alessandro Volta (1745-1827).
-exports.Volt = _register(AlternateUnit.create("V", UnitDivide.powerByElectricalCurrent(exports.Watt, exports.Ampere)), "V");
+exports.Volt = _register(Unit.createAlternate("V", UnitDivide.powerByElectricalCurrent(exports.Watt, exports.Ampere)), "V");
 /// The derived unit for capacitance ( <code>F</code> ). One Farad is equal to the capacitance of a capacitor having an equal and opposite charge of 1 coulomb on each plate and a potential difference of 1 volt between the plates. It is named after the British physicist and chemist Michael Faraday (1791-1867).
-exports.Farad = _register(AlternateUnit.create("F", UnitDivide.electricChargeByElectricPotential(exports.Coulomb, exports.Volt)), "F");
+exports.Farad = _register(Unit.createAlternate("F", UnitDivide.electricChargeByElectricPotential(exports.Coulomb, exports.Volt)), "F");
 /// The derived unit for electric resistance ( <code>Ω</code> or <code>Ohm</code> ). One Ohm is equal to the resistance of a conductor in which a current of one ampere is produced by a potential of one volt across its terminals. It is named after the German physicist Georg Simon Ohm (1789-1854).
-exports.Ohm = _register(Si(AlternateUnit.create("Ω", UnitDivide.electricalPotentialByElectricalCurrent(exports.Volt, exports.Ampere))));
+exports.Ohm = _register(Si(Unit.createAlternate("Ω", UnitDivide.electricalPotentialByElectricalCurrent(exports.Volt, exports.Ampere))));
 /// The derived unit for electric conductance ( <code>S</code> ). One Siemens is equal to one ampere per volt. It is named after the German engineer Ernst Werner von Siemens (1816-1892).
-exports.Siemens = _register(Si(AlternateUnit.create("S", UnitDivide.electricalCurrentByElectricalPotential(exports.Ampere, exports.Volt))));
+exports.Siemens = _register(Si(Unit.createAlternate("S", UnitDivide.electricalCurrentByElectricalPotential(exports.Ampere, exports.Volt))));
 /// The derived unit for magnetic flux ( <code>Wb</code> ). One Weber is equal to the magnetic flux that in linking a circuit of one turn produces in it an electromotive force of one volt as it is uniformly reduced to zero within one second. It is named after the German physicist Wilhelm Eduard Weber (1804-1891).
-exports.Weber = _register(Si(AlternateUnit.create("Wb", UnitTimes.electricalPotentialByDuration(exports.Volt, exports.Second))));
+exports.Weber = _register(Si(Unit.createAlternate("Wb", UnitTimes.electricalPotentialByDuration(exports.Volt, exports.Second))));
 /// The derived unit for magnetic flux density ( <code>T</code> ). One Tesla is equal equal to one weber per square meter. It is named after the Serbian-born American electrical engineer and physicist Nikola Tesla (1856-1943).
-exports.Tesla = _register(Si(AlternateUnit.create("T", UnitDivide.magneticFluxByArea(exports.Weber, Squared(exports.Meter)))));
+exports.Tesla = _register(Si(Unit.createAlternate("T", UnitDivide.magneticFluxByArea(exports.Weber, Squared(exports.Meter)))));
 /// The derived unit for inductance ( <code>H</code> ). One Henry is equal to the inductance for which an induced electromotive force of one volt is produced when the current is varied at the rate of one ampere per second. It is named after the American physicist Joseph Henry (1791-1878).
-exports.Henry = _register(Si(AlternateUnit.create("H", UnitDivide.magneticFluxByElectricalCurrent(exports.Weber, exports.Ampere))));
+exports.Henry = _register(Si(Unit.createAlternate("H", UnitDivide.magneticFluxByElectricalCurrent(exports.Weber, exports.Ampere))));
 /// The derived unit for Celsius temperature ( <code>℃</code> ). This is a unit of temperature such as the freezing point of water (at one atmosphere of pressure) is 0 ℃, while the boiling point is 100 ℃.
 exports.Celsius = _register(Si(Unit.plus(273.15, exports.Kelvin)), "°C");
 /// The derived unit for luminous flux ( <code>lm</code> ). One Lumen is equal to the amount of light given out through a solid angle by a source of one candela intensity radiating equally in all directions.
-exports.Lumen = _register(Si(AlternateUnit.create("lm", UnitTimes.luminousIntensityBySolidAngle(exports.Candela, exports.Steradian))));
+exports.Lumen = _register(Si(Unit.createAlternate("lm", UnitTimes.luminousIntensityBySolidAngle(exports.Candela, exports.Steradian))));
 /// The derived unit for illuminance ( <code>lx</code> ). One Lux is equal to one lumen per square meter.
-exports.Lux = _register(Si(AlternateUnit.create("lx", UnitDivide.luminousFluxByArea(exports.Lumen, Squared(exports.Meter)))));
+exports.Lux = _register(Si(Unit.createAlternate("lx", UnitDivide.luminousFluxByArea(exports.Lumen, Squared(exports.Meter)))));
 /// The derived unit for activity of a radionuclide ( <code>Bq</code> ). One becquerel is the radiation caused by one disintegration per second. It is named after the French physicist, Antoine-Henri Becquerel (1852-1908).
-exports.Becquerel = _register(Si(AlternateUnit.create("Bq", UnitDivide.dimentionlessByDuration(exports.One, exports.Second))));
+exports.Becquerel = _register(Si(Unit.createAlternate("Bq", UnitDivide.dimentionlessByDuration(exports.One, exports.Second))));
 /// The derived unit for absorbed dose, specific energy (imparted), kerma ( <code>Gy</code> ). One gray is equal to the dose of one joule of energy absorbed per one kilogram of matter. It is named after the British physician L. H. Gray (1905-1965).
-exports.Gray = _register(Si(AlternateUnit.create("Gy", UnitDivide.energyByMass(exports.Joule, exports.Kilogram))));
+exports.Gray = _register(Si(Unit.createAlternate("Gy", UnitDivide.energyByMass(exports.Joule, exports.Kilogram))));
 /// The derived unit for dose equivalent ( <code>Sv</code> ). One Sievert is equal is equal to the actual dose, in grays, multiplied by a "quality factor" which is larger for more dangerous forms of radiation. It is named after the Swedish physicist Rolf Sievert (1898-1966).
-exports.Sievert = _register(Si(AlternateUnit.create("Sv", UnitDivide.energyByMass(exports.Joule, exports.Kilogram))));
+exports.Sievert = _register(Si(Unit.createAlternate("Sv", UnitDivide.energyByMass(exports.Joule, exports.Kilogram))));
 /// The derived unit for catalytic activity ( <code>kat</code> ).
-exports.Katal = _register(Si(AlternateUnit.create("kat", UnitDivide.amountOfSubstanceByDuration(exports.Mole, exports.Second))));
+exports.Katal = _register(Si(Unit.createAlternate("kat", UnitDivide.amountOfSubstanceByDuration(exports.Mole, exports.Second))));
 /////////////////
 /// SI PREFIXES //
 /////////////////
@@ -168,14 +165,15 @@ function Cubed(u) {
 /// END: System of Units - SI
 ////////////////////////////////////////////////////////////////////////////
 /// Alternative Quantities for Humidity
-exports.HumidityFactor = _register(ProductUnit.create("RelativeHumidity", []), "r.H. factor");
+// export const HumidityFactor: Unit.Unit<q.RelativeHumidity> = _register(Unit.createProductUnit<q.RelativeHumidity>("RelativeHumidity", []), "r.H. factor");
+exports.HumidityFactor = _register(Unit.createAlternate("r.H.", exports.One), "r.H. factor");
 /// Factor of humidity, eg., 0.01 means 1%
 exports.PercentHumidity = _register((Unit.divideNumber(100.0, exports.HumidityFactor)), "% r.H.");
 /// Percent of humidity, eg., 10.0 means 10%
-exports.CelsiusWet = _register(BaseUnit.create("WetTemperature", "wb°C"), "wb°C");
+exports.CelsiusWet = _register(Unit.createBase("WetTemperature", "wb°C"), "wb°C");
 exports.FahrenheitWet = _register((Unit.minus(32.0, Unit.timesNumber((5.0 / 9.0), exports.CelsiusWet))), "wb°F");
 exports.KelvinWet = _register((Unit.minus(273.15, exports.CelsiusWet)), "wb°K");
-exports.CelsiusDewPoint = _register(BaseUnit.create("DewPointTemperature", "dp°C"), "dp°C");
+exports.CelsiusDewPoint = _register(Unit.createBase("DewPointTemperature", "dp°C"), "dp°C");
 exports.FahrenheitDewPoint = _register((Unit.minus(32.0, Unit.timesNumber((5.0 / 9.0), exports.CelsiusDewPoint))), "dp°F");
 exports.KelvinDewPoint = _register((Unit.minus(273.15, exports.CelsiusDewPoint)), "dp°K");
 /// Mass
@@ -199,7 +197,7 @@ exports.Decimeter = _register(Deci(exports.Meter), "dm");
 exports.Rankine = _register(Unit.divideNumber(9.0, Unit.timesNumber(5.0, exports.Kelvin)), "Rankine");
 exports.Fahrenheit = _register(Unit.plus(459.67, Unit.divideNumber(9.0, Unit.timesNumber(5.0, exports.Kelvin))), "°F");
 /// Delta temperature
-exports.DeltaCelsius = _register(BaseUnit.create("DeltaTemperature", "°C"), "°C");
+exports.DeltaCelsius = _register(Unit.createBase("DeltaTemperature", "°C"), "°C");
 exports.DeltaFahrenheit = _register(Unit.timesNumber((5.0 / 9.0), exports.DeltaCelsius), "°F");
 /// Duration / Time
 exports.Minute = _register(Unit.timesNumber(60.0, exports.Second), "min");
@@ -208,8 +206,8 @@ exports.Day = _register(Unit.timesNumber(24.0, exports.Hour), "days");
 exports.Week = _register(Unit.timesNumber(7.0, exports.Day), "weeks");
 exports.Year = _register(Unit.timesNumber(8760.0, exports.Hour), "year");
 /// Frequency
-exports.RevolutionsPerMinute = _register(AlternateUnit.create("rpm", UnitDivide.dimentionlessByDuration(exports.One, exports.Minute)), "rpm");
-exports.RevolutionsPerHour = _register(AlternateUnit.create("rph", UnitDivide.dimentionlessByDuration(exports.One, exports.Hour)), "rph");
+exports.RevolutionsPerMinute = _register(Unit.createAlternate("rpm", UnitDivide.dimentionlessByDuration(exports.One, exports.Minute)), "rpm");
+exports.RevolutionsPerHour = _register(Unit.createAlternate("rph", UnitDivide.dimentionlessByDuration(exports.One, exports.Hour)), "rph");
 /// Area
 exports.SquareInch = _register(Squared(exports.Inch), "in²");
 exports.SquareFeet = _register(Squared(exports.Foot), "ft²");
@@ -258,7 +256,7 @@ exports.BtuPerHour = _register(Unit.divideNumber(3600.0, Unit.timesNumber(527527
 exports.TonCooling = _register(Unit.timesNumber(12000.0, exports.BtuPerHour), "tons");
 exports.KiloBtuPerHour = _register(Kilo(exports.BtuPerHour), "MBH");
 exports.HorsePower = _register(Unit.timesNumber(745.699872, exports.Watt), "hp");
-exports.VoltAmpere = _register(AlternateUnit.create("VA", exports.Watt), "VA");
+exports.VoltAmpere = _register(Unit.createAlternate("VA", exports.Watt), "VA");
 /// Energy
 exports.NewtonMeter = _register(UnitTimes.forceByLength(exports.Newton, exports.Meter), "Nm");
 exports.Kilojoule = _register(Kilo(exports.Joule), "kJ");
@@ -339,23 +337,25 @@ exports.WattPerSquareMeter = _register(UnitDivide.powerByArea(exports.Watt, expo
 exports.KiloWattPerCubicMeterPerSecond = _register(UnitDivide.powerByVolumeFlow(exports.KiloWatt, exports.CubicMeterPerSecond), "kW/m³/s");
 exports.WattPerCubicMeterPerSecond = _register(UnitDivide.powerByVolumeFlow(exports.Watt, exports.CubicMeterPerSecond), "W/m³/s");
 /// Sound pressure level
-exports.Decibel = _register(AlternateUnit.create("dB", UnitTimes.dimensionlessByDimensionless(exports.One, exports.One)), "dB");
+exports.Decibel = _register(Unit.createAlternate("dB", UnitTimes.dimensionlessByDimensionless(exports.One, exports.One)), "dB");
 /// Sound power level
-exports.DecibelLw = _register(AlternateUnit.create("dB", UnitTimes.dimensionlessByDimensionless(exports.One, exports.One)), "dB");
+exports.DecibelLw = _register(Unit.createAlternate("dB", UnitTimes.dimensionlessByDimensionless(exports.One, exports.One)), "dB");
 /// Water hardness
-exports.MilliGramCalciumPerLiter = _register(BaseUnit.create("WaterHardness", "mg Ca²⁺/l"), "mg Ca²⁺/l");
+exports.MilliGramCalciumPerLiter = _register(Unit.createBase("WaterHardness", "mg Ca²⁺/l"), "mg Ca²⁺/l");
 exports.FrenchDegree = _register(Unit.timesNumber(4.0043, exports.MilliGramCalciumPerLiter), "°f");
 /// ElectricPotential
 exports.MilliVolt = _register(Milli(exports.Volt), "mV");
 exports.KiloVolt = _register(Kilo(exports.Volt), "kV");
 /// Discrete
-exports.Integer = _register(ProductUnit.create("Discrete", []), " ");
+// export const Integer: Unit.Unit<q.Discrete> = _register(Unit.createProductUnit<q.Discrete>("Discrete", []), " ");
+exports.Integer = _register(Unit.createBase("Discrete", " "), " ");
 /// Text
-exports.Text = _register(ProductUnit.create("Text", []), " ");
+// export const Text: Unit.Unit<q.Text> = _register(Unit.createProductUnit<q.Text>("Text", []), " ");
+exports.Text = _register(Unit.createBase("Text", " "), " ");
 /// Alkalinity
-exports.MilliGramHydrogenCarbonatePerLiter = _register(BaseUnit.create("Alkalinity", "mg HCO₃⁻/l"), "mg HCO₃⁻/l");
+exports.MilliGramHydrogenCarbonatePerLiter = _register(Unit.createBase("Alkalinity", "mg HCO₃⁻/l"), "mg HCO₃⁻/l");
 /// Viscosity
-exports.PascalSecond = _register(BaseUnit.create("Viscosity", "Pa·s"));
+exports.PascalSecond = _register(Unit.createBase("Viscosity", "Pa·s"));
 /// Volume flow per cooling power
 exports.GallonsPerMinutePerTonCooling = _register(UnitDivide.volumeFlowByPower(exports.GallonsPerMinute, exports.TonCooling), "gpm/ton");
 exports.LiterPerSecondPerKiloWatt = _register(UnitDivide.volumeFlowByPower(exports.LiterPerSecond, exports.KiloWatt), "l/s/kW");

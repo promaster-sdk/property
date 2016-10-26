@@ -1,146 +1,51 @@
 "use strict";
 var UnitConverter = require("./unit_converters/unit_converter");
-var TransformedUnit = require("./units/transformed_unit");
-var ProductUnit = require("./units/product_unit");
-var AlternateUnit = require("./units/alternate_unit");
-var BaseUnit = require("./units/base_unit");
-/// This class represents a determinate quantity (as of length, time, heat, or value)
-/// adopted as a standard of measurement.
-///
-/// It is helpful to think of instances of this class as recording the history by which
-/// they are created. Thus, for example, the string "g/kg" (which is a dimensionless unit)
-/// would result from invoking the method toString() on a unit that was created by
-/// dividing a gram unit by a kilogram unit. Yet, "kg" divided by "kg" returns ONE and
-/// not "kg/kg" due to automatic unit factorization.
-///
-/// This class supports the multiplication of offsets units. The result is usually a unit
-/// not convertible to its standard unit. Such units may appear in derivative quantities.
-/// For example °C/m is an unit of gradient, which is common in atmospheric and oceanographic research.
-///
-/// Units raised at rational powers are also supported. For example the cubic root of liter
-/// is a unit compatible with meter.
-///
-/// Instances of this class and sub-classes are immutable.
 /// Holds the dimensionless unit ONE
 //public static readonly Unit<T> One = new ProductUnit<T>();
-/// We keep a global repository of Labels becasue if a Unit object is derived from arithmetic operations
-/// it may still be considered equal to an existing unit and thus should have the same label.
+// We keep a global repository of Labels becasue if a Unit object is derived from arithmetic operations
+// it may still be considered equal to an existing unit and thus should have the same label.
 var _typeLabels = new Map();
-function create(quantity, elements, innerUnit) {
-    return {
-        quantity: quantity,
-        // // Init elements to standard, some other constructors can override this by re-setting _elements
-        // elements: [createElement(this, 1)],
-        elements: elements,
-        innerUnit: innerUnit
-    };
-}
-exports.create = create;
-function getLabel(unit) {
-    var label = _typeLabels.get(unit);
-    if (label === undefined)
-        return "";
-    return label;
-}
-exports.getLabel = getLabel;
-/// Creates a ProductUnit.
-function times(quantity, u) {
-    return ProductUnit.Product(quantity, this, u);
-}
-exports.times = times;
-/// Creates a ProductUnit.
-function divide(quantity, u) {
-    return ProductUnit.Quotient(quantity, this, u);
-}
-exports.divide = divide;
-/// Returns the BaseUnit, AlternateUnit or product of base units
-/// and alternate units this unit is derived
-/// from. The standard unit identifies the "type" of
-/// Quantity for which this unit is employed.
-// TYPESCRIPT DOES NOT SUPPORT abstract getters
-// TODO: Make this an abstract method instead of a getter...
-function getStandardUnit(unit) {
-    throw new Error("This is abstract (which is not supported by TS).");
-}
-exports.getStandardUnit = getStandardUnit;
-// /// Returns the converter from this unit to its system unit.
-// abstract toStandardUnit():UnitConverter;
-function toStandardUnit(unit) {
-    switch (unit.innerUnit.type) {
-        case "alternate":
-            return AlternateUnit.toStandardUnit(unit.innerUnit);
-        case "base":
-            return BaseUnit.toStandardUnit();
-        case "product":
-            return ProductUnit.toStandardUnit(unit);
-        case "transformed":
-            return TransformedUnit.toStandardUnit(unit.innerUnit);
-    }
-    throw new Error("Unknown innerUnit " + JSON.stringify(unit));
-}
-exports.toStandardUnit = toStandardUnit;
-/// Indicates if this unit is a standard unit (base units and
-/// alternate units are standard units). The standard unit identifies
-/// the "type" of {@link javax.measure.quantity.Quantity quantity} for
-/// which the unit is employed.
-/// <returns><code>getStandardUnit().equals(this)</code></returns>
-function isStandardUnit(unit) {
-    return getStandardUnit(unit) === unit;
-}
-exports.isStandardUnit = isStandardUnit;
-/// Returns a converter of numeric values from this unit to another unit.
-/// <param name="that">the unit to which to convert the numeric values.</param>
-/// <returns>the converter from this unit to <code>that</code> unit.</returns>
-function getConverterTo(that, unit) {
-    if (this == that) {
-        return UnitConverter.Identity;
-    }
-    return UnitConverter.concatenate(toStandardUnit(unit), UnitConverter.inverse(toStandardUnit(that)));
-}
-exports.getConverterTo = getConverterTo;
-/// ProductUnit overrides this because it has multiple elements
-function getElements(unit) {
-    return unit.elements;
-}
-exports.getElements = getElements;
-function toString(unit) {
-    return getName(unit);
-}
-exports.toString = toString;
-function getQuantityType(unit) {
-    return unit.quantity;
-}
-exports.getQuantityType = getQuantityType;
-function getName(unit) {
-    var label = getLabel(unit);
-    if (label === undefined)
-        return buildDerivedName(unit);
-    return label;
-}
-exports.getName = getName;
-function buildDerivedName(unit) {
-    return "";
-}
-exports.buildDerivedName = buildDerivedName;
 function withLabel(label, unit) {
     _typeLabels.set(unit, label);
     return unit;
 }
 exports.withLabel = withLabel;
-/// Returns the unit derived from this unit using the specified converter.
-/// The converter does not need to be linear.
-/// <param name="operation">the converter from the transformed unit to this unit.</param>
-/// <returns>the unit after the specified transformation.</returns>
-function transform(operation, unit) {
-    //if (identical(operation, UnitConverter.Identity)) {
-    //  return this;
-    //}
-    if (operation === UnitConverter.Identity) {
-        return this;
-    }
-    return TransformedUnit.create(unit, operation);
+function getName(unit) {
+    var label = _typeLabels.get(unit);
+    if (label === undefined)
+        return buildDerivedName(unit);
+    return label;
 }
-exports.transform = transform;
+exports.getName = getName;
+/// Creates a base unit having the specified symbol.
+/// <param name="symbol">the symbol of this base unit.</param>
+function createBase(quantity, symbol) {
+    return create(quantity, { type: "base", symbol: symbol });
+}
+exports.createBase = createBase;
+/// Creates an alternate unit for the specified unit identified by the
+/// specified symbol.
+/// <param name="symbol">the symbol for this alternate unit.</param>
+/// <param name="parent">parent the system unit from which this alternate unit is derived.</param>
+function createAlternate(symbol, parent) {
+    return create(parent.quantity, { type: "alternate", symbol: symbol, parent: parent });
+}
+exports.createAlternate = createAlternate;
+// Used solely to create ONE instance.
+function createOne() {
+    return create("Dimensionless", { type: "product", elements: [] });
+}
+exports.createOne = createOne;
+// Creates a ProductUnit.
+function times(quantity, left, right) {
+    return product(quantity, left, right);
+}
+exports.times = times;
+// Creates a ProductUnit.
+function divide(quantity, left, right) {
+    return quotient(quantity, left, right);
+}
+exports.divide = divide;
 // Simulate operator overload
 function timesNumber(factor, unit) {
     return transform(UnitConverter.factor(factor), unit);
@@ -161,4 +66,184 @@ function minus(offset, unit) {
     return transform(UnitConverter.offset(-offset), unit);
 }
 exports.minus = minus;
+/// Returns a converter of numeric values from this unit to another unit.
+/// <param name="that">the unit to which to convert the numeric values.</param>
+/// <returns>the converter from this unit to <code>that</code> unit.</returns>
+function getConverterTo(that, unit) {
+    if (unit == that) {
+        return UnitConverter.Identity;
+    }
+    return UnitConverter.concatenate(toStandardUnit(unit), UnitConverter.inverse(toStandardUnit(that)));
+}
+exports.getConverterTo = getConverterTo;
+// Returns the converter from this unit to its system unit.
+function toStandardUnit(unit) {
+    switch (unit.innerUnit.type) {
+        case "alternate":
+            return toStandardUnit(unit.innerUnit.parent);
+        case "base":
+            return UnitConverter.Identity;
+        case "product":
+            return productUnitToStandardUnit(unit);
+        case "transformed":
+            return UnitConverter.concatenate(unit.innerUnit.toParentUnitConverter, toStandardUnit(unit.innerUnit.parentUnit));
+    }
+    throw new Error("Unknown innerUnit " + JSON.stringify(unit));
+}
+/// Returns the unit derived from this unit using the specified converter.
+/// The converter does not need to be linear.
+/// <param name="operation">the converter from the transformed unit to this unit.</param>
+/// <returns>the unit after the specified transformation.</returns>
+function transform(operation, unit) {
+    if (operation === UnitConverter.Identity) {
+        return unit;
+    }
+    return createTransformed(unit, operation);
+}
+/// Creates a transformed unit from the specified parent unit.
+/// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
+/// <param name="toParentUnitConverter">the converter to the parent units.</param>
+function createTransformed(parentUnit, toParentUnitConverter) {
+    return create(parentUnit.quantity, { type: "transformed", parentUnit: parentUnit, toParentUnitConverter: toParentUnitConverter });
+}
+function buildDerivedName(unit) {
+    switch (unit.innerUnit.type) {
+        case "alternate":
+            return unit.innerUnit.symbol;
+        case "base":
+            return unit.innerUnit.symbol;
+        case "product":
+            return productUnitBuildDerivedName(unit);
+        case "transformed":
+            return "";
+    }
+    throw new Error("Unknown innerUnit " + JSON.stringify(unit));
+}
+function create(quantity, innerUnit) {
+    return { quantity: quantity, innerUnit: innerUnit };
+}
+/// Creates the unit defined from the product of the specifed elements.
+/// <param name="leftElems">left multiplicand elements</param>
+/// <param name="rightElems">right multiplicand elements.</param>
+function fromProduct(quantity, leftElems, rightElems) {
+    // If we have several elements of the same unit then we can merge them by summing their power
+    var allElements = [];
+    allElements.push.apply(allElements, leftElems);
+    allElements.push.apply(allElements, rightElems);
+    var resultElements = [];
+    var unitGroups = new Map();
+    allElements.forEach(function (v) {
+        var group = unitGroups.get(v.unit);
+        if (group === undefined)
+            unitGroups.set(v.unit, [v]);
+        else
+            group.push(v);
+    });
+    unitGroups.forEach(function (unitGroup, unit) {
+        var sumpow = unitGroup.reduce(function (prev, element) { return prev + element.pow; }, 0);
+        if (sumpow != 0) {
+            resultElements.push(createElement(unit, sumpow));
+        }
+    });
+    return createProductUnit(quantity, resultElements);
+}
+function createElement(unit, pow) {
+    return { unit: unit, pow: pow };
+}
+/// <summary>
+/// Returns the product of the specified units.
+/// </summary>
+/// <param name="left">the left unit operand.</param>
+/// <param name="right">the right unit operand.</param>
+/// <returns>left * right</returns>
+function product(quantity, left, right) {
+    var leftelements = getElements(left);
+    var rightelements = getElements(right);
+    return fromProduct(quantity, leftelements, rightelements);
+}
+/// Returns the quotient of the specified units.
+/// <param name="left">the dividend unit operand.</param>
+/// <param name="right">right the divisor unit operand.</param>
+/// <returns>dividend / divisor</returns>
+function quotient(quantity, left, right) {
+    var leftelements = getElements(left);
+    var invertedRightelements = [];
+    for (var _i = 0, _a = getElements(right); _i < _a.length; _i++) {
+        var element = _a[_i];
+        invertedRightelements.push(createElement(element.unit, -element.pow));
+    }
+    return fromProduct(quantity, leftelements, invertedRightelements);
+}
+function getElements(unit) {
+    if (unit.innerUnit.type === "product") {
+        return unit.innerUnit.elements;
+    }
+    return [];
+}
+function productUnitBuildNameFromElements(elements) {
+    var name = "";
+    for (var _i = 0, elements_1 = elements; _i < elements_1.length; _i++) {
+        var e = elements_1[_i];
+        name += getName(e.unit);
+        switch (Math.abs(e.pow)) {
+            case 1:
+                break;
+            case 2:
+                name += "²";
+                break;
+            case 3:
+                name += "³";
+                break;
+            default:
+                name += "^" + Math.abs(e.pow).toString();
+                break;
+        }
+    }
+    return name;
+}
+function productUnitBuildDerivedName(unit) {
+    var comparePow = function (a, b) {
+        if (a.pow > b.pow)
+            return 1;
+        else if (a.pow < b.pow)
+            return -1;
+        else
+            return 0;
+    };
+    var pospow = getElements(unit).filter(function (e) { return e.pow > 0; });
+    pospow.sort(comparePow); // orderby e.Pow descending select e;
+    var posname = productUnitBuildNameFromElements(pospow);
+    var negpow = getElements(unit).filter(function (e) { return e.pow < 0; });
+    negpow.sort(comparePow); // orderby e.Pow ascending select e;
+    var negname = productUnitBuildNameFromElements(negpow);
+    var name = posname;
+    if (negname.length > 0) {
+        if (name.length == 0) {
+            name += "1";
+        }
+        name += "/" + negname;
+    }
+    return name;
+}
+function productUnitToStandardUnit(unit) {
+    var converter = UnitConverter.Identity;
+    for (var _i = 0, _a = getElements(unit); _i < _a.length; _i++) {
+        var element = _a[_i];
+        var conv = toStandardUnit(element.unit);
+        var pow = element.pow;
+        if (pow < 0) {
+            pow = -pow;
+            conv = UnitConverter.inverse(conv);
+        }
+        for (var i = 1; i <= pow; i++) {
+            converter = UnitConverter.concatenate(conv, converter);
+        }
+    }
+    return converter;
+}
+/// Product unit constructor.
+/// <param name="elements">the product elements.</param>
+function createProductUnit(quantity, elements) {
+    return create(quantity, { type: "product", elements: elements });
+}
 //# sourceMappingURL=unit.js.map
