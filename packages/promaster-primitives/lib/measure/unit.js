@@ -31,22 +31,22 @@ function divide(quantity, left, right) {
 exports.divide = divide;
 // Simulate operator overload
 function timesNumber(factor, unit) {
-    return transform(UnitConverter.factor(factor), unit);
+    return transform(UnitConverter.createFactorConverter(factor), unit);
 }
 exports.timesNumber = timesNumber;
 // Simulate operator overload
 function divideNumber(factor, unit) {
-    return transform(UnitConverter.factor(1.0 / factor), unit);
+    return transform(UnitConverter.createFactorConverter(1.0 / factor), unit);
 }
 exports.divideNumber = divideNumber;
 // Simulate operator overload
 function plus(offset, unit) {
-    return transform(UnitConverter.offset(offset), unit);
+    return transform(UnitConverter.createOffsetConverter(offset), unit);
 }
 exports.plus = plus;
 // Simulate operator overload
 function minus(offset, unit) {
-    return transform(UnitConverter.offset(-offset), unit);
+    return transform(UnitConverter.createOffsetConverter(-offset), unit);
 }
 exports.minus = minus;
 /// Returns a converter of numeric values from this unit to another unit.

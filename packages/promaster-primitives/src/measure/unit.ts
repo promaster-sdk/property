@@ -126,22 +126,22 @@ export function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, ri
 
 // Simulate operator overload
 export function timesNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.factor(factor), unit);
+  return transform(UnitConverter.createFactorConverter(factor), unit);
 }
 
 // Simulate operator overload
 export function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.factor(1.0 / factor), unit);
+  return transform(UnitConverter.createFactorConverter(1.0 / factor), unit);
 }
 
 // Simulate operator overload
 export function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.offset(offset), unit);
+  return transform(UnitConverter.createOffsetConverter(offset), unit);
 }
 
 // Simulate operator overload
 export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.offset(-offset), unit);
+  return transform(UnitConverter.createOffsetConverter(-offset), unit);
 }
 
 /// Returns a converter of numeric values from this unit to another unit.

@@ -7,10 +7,10 @@
 /// converter. In other words, if the result of an operation is equivalent
 /// to the identity converter, then the unique IDENTITY instance
 /// should be returned.
-export type UnitConverter = OffsetConverter | Compound | FactorConverter | IdentityConverter;
+export type UnitConverter = OffsetConverter | CompoundConverter | FactorConverter | IdentityConverter;
 
 // This record represents a compound converter.
-export interface Compound {
+export interface CompoundConverter {
   readonly type: "compound",
   // Holds the first converter.
   readonly first: UnitConverter,
@@ -38,14 +38,6 @@ export interface OffsetConverter {
 /// Holds the identity converter (unique). This converter does nothing
 /// (ONE.convert(x) == x).
 export const Identity: UnitConverter = createIdentityConverter();
-
-export function offset(off: number): UnitConverter {
-  return createOffsetConverter(off);
-}
-
-export function factor(f: number): UnitConverter {
-  return createFactorConverter(f);
-}
 
 /// Returns the inverse of this converter. If x is a valid
 /// value, then x == inverse().convert(convert(x)) to within
@@ -98,11 +90,11 @@ export function concatenate(concatConverter: UnitConverter, converter: UnitConve
 /// transformation of the specified converters.
 /// <param name="first">the first converter.</param>
 /// <param name="second">second the second converter.</param>
-function createCompoundConverter(first: UnitConverter, second: UnitConverter): Compound {
+function createCompoundConverter(first: UnitConverter, second: UnitConverter): CompoundConverter {
   return {type: "compound", first, second};
 }
 
-function createFactorConverter(factor: number): FactorConverter {
+export function createFactorConverter(factor: number): FactorConverter {
   if (factor === 1.0)
     throw new Error("Argument: factor " + factor.toString());
   return {type: "factor", factor};
@@ -112,6 +104,6 @@ function createIdentityConverter(): IdentityConverter {
   return {type: "identity"};
 }
 
-function createOffsetConverter(offset: number): OffsetConverter {
+export function createOffsetConverter(offset: number): OffsetConverter {
   return {type: "offset", offset};
 }
