@@ -5,9 +5,8 @@ import * as Unit from "./unit";
 // it may still be considered equal to an existing unit and thus should have the same label.
 const _typeLabels: Map<Unit.Unit<Quantity>, string> = new Map();
 
-export function withLabel<T extends Quantity>(label: string, unit: Unit.Unit<T>): Unit.Unit<T> {
+export function registerLabel<T extends Quantity>(label: string, unit: Unit.Unit<T>): void {
   _typeLabels.set(unit, label);
-  return unit;
 }
 
 export function getName<T extends Quantity>(unit: Unit.Unit<T>): string {
