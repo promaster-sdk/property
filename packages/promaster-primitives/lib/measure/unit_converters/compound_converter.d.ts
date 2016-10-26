@@ -1,4 +1,4 @@
-import * as UnitConverter from "./unit_converter";
+import * as UnitConverter from "../unit_converter";
 export interface Compound {
     readonly type: "compound";
     readonly first: UnitConverter.UnitConverter;

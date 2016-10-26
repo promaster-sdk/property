@@ -8,7 +8,8 @@ var _stringToUnit = new Map();
 var _quantityToUnits = new Map();
 function _register(unit, label) {
     if (label === void 0) { label = ""; }
-    return UnitName.withLabel(label, unit);
+    UnitName.registerLabel(label, unit);
+    return unit;
 }
 exports.One = _register(Unit.createOne(), " ");
 exports.Percent = _register(Unit.divideNumber(100.0, exports.One), "%");

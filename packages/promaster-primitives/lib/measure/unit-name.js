@@ -2,11 +2,10 @@
 // We keep a global repository of Labels becasue if a Unit object is derived from arithmetic operations
 // it may still be considered equal to an existing unit and thus should have the same label.
 var _typeLabels = new Map();
-function withLabel(label, unit) {
+function registerLabel(label, unit) {
     _typeLabels.set(unit, label);
-    return unit;
 }
-exports.withLabel = withLabel;
+exports.registerLabel = registerLabel;
 function getName(unit) {
     var label = _typeLabels.get(unit);
     if (label === undefined)

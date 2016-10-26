@@ -1,7 +1,7 @@
-import * as OffsetConverter from "./offset_converter";
-import * as Compound from "./compound_converter";
-import * as FactorConverter from "./factor_converter";
-import * as IdentityConverter from "./identity_converter";
+import * as OffsetConverter from "./unit_converters/offset_converter";
+import * as Compound from "./unit_converters/compound_converter";
+import * as FactorConverter from "./unit_converters/factor_converter";
+import * as IdentityConverter from "./unit_converters/identity_converter";
 
 export type UnitConverter = OffsetConverter.OffsetConverter | Compound.Compound | FactorConverter.FactorConverter | IdentityConverter.IdentityConverter;
 

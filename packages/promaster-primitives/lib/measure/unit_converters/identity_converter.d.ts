@@ -1,4 +1,4 @@
-import { UnitConverter } from "./unit_converter";
+import { UnitConverter } from "../unit_converter";
 export interface IdentityConverter {
     readonly type: "identity";
 }

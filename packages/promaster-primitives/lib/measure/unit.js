@@ -1,5 +1,5 @@
 "use strict";
-var UnitConverter = require("./unit_converters/unit_converter");
+var UnitConverter = require("./unit_converter");
 /// Creates a base unit having the specified symbol.
 /// <param name="symbol">the symbol of this base unit.</param>
 function createBase(quantity, symbol) {

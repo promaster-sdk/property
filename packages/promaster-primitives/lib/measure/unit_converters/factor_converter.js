@@ -1,5 +1,5 @@
 "use strict";
-var UnitConverter = require("./unit_converter");
+var UnitConverter = require("../unit_converter");
 /// Inner class FactorConverter
 function create(factor) {
     if (factor === 1.0)

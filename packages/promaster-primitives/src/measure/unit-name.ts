@@ -32,7 +32,7 @@ function buildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): string {
 
 function productUnitBuildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): string {
 
-  let comparePow = (a: Unit.Element, b: Unit.Element) => {
+  const comparePow = (a: Unit.Element, b: Unit.Element) => {
     if (a.pow > b.pow)
       return 1;
     else if (a.pow < b.pow)

@@ -1,4 +1,4 @@
-import * as UnitConverter from "./unit_converter";
+import * as UnitConverter from "../unit_converter";
 
 export interface Compound {
 	readonly type: "compound",
@@ -24,7 +24,6 @@ export function create(first: UnitConverter.UnitConverter, second: UnitConverter
 
 /// Implements abstract method.
 export function convert(value: number, converter: Compound): number {
-	// return this._second.convert(this._first.convert(value));
 	return UnitConverter.convert(UnitConverter.convert(value, converter.first), converter.second);
 }
 

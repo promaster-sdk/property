@@ -1,5 +1,5 @@
 "use strict";
-var UnitConverter = require("./unit_converter");
+var UnitConverter = require("../unit_converter");
 /// Inner class OffsetConverter
 var EPSILON = 4.94065645841247E-324;
 function create(offset) {
