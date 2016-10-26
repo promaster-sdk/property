@@ -1,5 +1,3 @@
-import * as OffsetConverter from "./unit_converters/offset_converter";
-
 /// This class represents a converter of numeric values.
 ///
 /// It is not required for sub-classes to be immutable
@@ -9,7 +7,7 @@ import * as OffsetConverter from "./unit_converters/offset_converter";
 /// converter. In other words, if the result of an operation is equivalent
 /// to the identity converter, then the unique IDENTITY instance
 /// should be returned.
-export type UnitConverter = OffsetConverter.OffsetConverter | Compound | FactorConverter | IdentityConverter;
+export type UnitConverter = OffsetConverter | Compound | FactorConverter | IdentityConverter;
 
 // This record represents a compound converter.
 export interface Compound {
@@ -31,13 +29,18 @@ export interface IdentityConverter {
   readonly type: "identity",
 }
 
+// Record OffsetConverter
+export interface OffsetConverter {
+  readonly type: "offset",
+  readonly offset: number,
+}
 
 /// Holds the identity converter (unique). This converter does nothing
 /// (ONE.convert(x) == x).
 export const Identity: UnitConverter = createIdentityConverter();
 
 export function offset(off: number): UnitConverter {
-  return OffsetConverter.createOffsetConverter(off);
+  return createOffsetConverter(off);
 }
 
 export function factor(f: number): UnitConverter {
@@ -50,16 +53,13 @@ export function factor(f: number): UnitConverter {
 export function inverse(converter: UnitConverter): UnitConverter {
 	switch (converter.type) {
 		case "compound":
-			// return Compound.inverse(converter);
       return createCompoundConverter(inverse(converter.second), inverse(converter.first));
 		case "factor":
-			// return FactorConverter.inverse(converter);
       return createFactorConverter(1.0 / converter.factor);
 		case "identity":
-			// return IdentityConverter.inverse(converter);
       return converter;
 		case "offset":
-			return OffsetConverter.inverse(converter);
+      return createOffsetConverter(-converter.offset);
 	}
 	throw new Error("Unknown unit converter");
 }
@@ -74,10 +74,9 @@ export function convert(value: number, converter: UnitConverter): number {
 		case "factor":
       return value * converter.factor;
 		case "identity":
-			// return IdentityConverter.convert(value);
       return value;
 		case "offset":
-			return OffsetConverter.convert(value, converter);
+      return value + converter.offset;
 	}
 	throw new Error("Unknown unit converter");
 }
@@ -115,4 +114,8 @@ function createFactorConverter(factor: number): FactorConverter {
 
 function createIdentityConverter(): IdentityConverter {
   return {type: "identity"};
+}
+
+export function createOffsetConverter(offset: number): OffsetConverter {
+  return {type: "offset", offset};
 }
