@@ -17,16 +17,6 @@ export function convert(value: number, converter: OffsetConverter): number {
 	return value + converter.offset;
 }
 
-export function concatenate(concatConverter: UnitConverter.UnitConverter, converter: OffsetConverter): UnitConverter.UnitConverter {
-	if (concatConverter.type === "offset") {
-		if (Math.abs(converter.offset - concatConverter.offset) > EPSILON) {
-			return create(converter.offset + concatConverter.offset);
-		}
-		return UnitConverter.Identity;
-	}
-	return UnitConverter.concatenate(concatConverter, converter);
-}
-
 export function inverse(converter: OffsetConverter): UnitConverter.UnitConverter {
 	return create(-converter.offset);
 }

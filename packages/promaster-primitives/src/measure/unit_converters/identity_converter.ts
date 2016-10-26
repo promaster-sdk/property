@@ -11,11 +11,6 @@ export function create(): IdentityConverter {
 }
 
 /// Implements abstract method.
-export function concatenate(converter: UnitConverter): UnitConverter {
-	return converter;
-}
-
-/// Implements abstract method.
 export function convert(value: number): number {
 	return value;
 }
