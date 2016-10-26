@@ -1,5 +1,6 @@
 "use strict";
 var PropertyValue = require("./property-value");
+exports.Empty = {};
 // Functions
 function fromMap(map) {
     var newSet = {};

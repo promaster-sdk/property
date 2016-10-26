@@ -26,6 +26,14 @@ function fromString(filter) {
     return _cache[filter];
 }
 exports.fromString = fromString;
+function fromStringOrEmpty(filterString) {
+    var filter = fromString(filterString);
+    if (filter === undefined) {
+        return exports.Empty;
+    }
+    return filter;
+}
+exports.fromStringOrEmpty = fromStringOrEmpty;
 function isSyntaxValid(filter, propertyNames) {
     if (propertyNames === void 0) { propertyNames = undefined; }
     if (filter === null || filter === undefined) {

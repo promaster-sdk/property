@@ -5,6 +5,7 @@ import { Quantity } from "../measure/quantity";
 export interface PropertyValueSet {
     readonly [key: string]: PropertyValue.PropertyValue;
 }
+export declare const Empty: PropertyValueSet;
 export declare function fromMap(map: Map<string, number | string | Amount.Amount<any>>): PropertyValueSet;
 export declare function fromObject(obj: any): PropertyValueSet;
 export declare function fromString(encodedValueSet: string): PropertyValueSet;

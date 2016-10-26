@@ -6,6 +6,7 @@ export interface PropertyFilter {
 }
 export declare const Empty: PropertyFilter;
 export declare function fromString(filter: string): PropertyFilter | undefined;
+export declare function fromStringOrEmpty(filterString: string): PropertyFilter;
 export declare function isSyntaxValid(filter: string, propertyNames?: Array<string> | undefined): boolean;
 export declare function isValid(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean;
 export declare function isValidMatchMissing(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean;

@@ -10,6 +10,8 @@ export interface PropertyValueSet {
     readonly [key: string]: PropertyValue.PropertyValue;
 }
 
+export const Empty: PropertyValueSet = {};
+
 // Functions
 
 export function fromMap(map: Map<string, number | string | Amount.Amount<any>>): PropertyValueSet {

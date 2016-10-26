@@ -35,6 +35,14 @@ export function fromString(filter: string): PropertyFilter | undefined {
 	return _cache[filter];
 }
 
+export function fromStringOrEmpty(filterString: string): PropertyFilter {
+  const filter = fromString(filterString);
+  if (filter === undefined) {
+    return Empty;
+  }
+  return filter;
+}
+
 export function isSyntaxValid(filter: string, propertyNames: Array<string> | undefined = undefined): boolean {
 	if (filter === null || filter === undefined) {
 		throw new Error("Argument 'filter' must be defined.");
