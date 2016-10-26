@@ -3,7 +3,7 @@ import * as UnitName from './unit-name';
 import {Dimensionless, Quantity} from "./quantity";
 import * as Units from "./units";
 import {compareNumbers} from "../utils/compare_utils";
-import * as UnitConverter from "./unit_converter";
+import * as UnitConverter from "./unit-converter";
 
 export interface Amount<T extends Quantity> {
   value: number;

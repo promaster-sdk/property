@@ -1,5 +1,5 @@
 import {Quantity, Dimensionless} from "./quantity";
-import * as UnitConverter from "./unit_converter";
+import * as UnitConverter from "./unit-converter";
 
 // This record represents a determinate quantity (as of length, time, heat, or value)
 // adopted as a standard of measurement.
