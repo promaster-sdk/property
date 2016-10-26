@@ -5,8 +5,6 @@ export interface Unit<T extends Quantity> {
     readonly innerUnit: InnerUnit<T>;
 }
 export declare type InnerUnit<T extends Quantity> = AlternateUnit<T> | BaseUnit<T> | ProductUnit<T> | TransformedUnit<T>;
-export declare function withLabel<T extends Quantity>(label: string, unit: Unit<T>): Unit<T>;
-export declare function getName<T extends Quantity>(unit: Unit<T>): string;
 export interface BaseUnit<T extends Quantity> {
     readonly type: "base";
     readonly symbol: string;

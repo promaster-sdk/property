@@ -1,5 +1,6 @@
 "use strict";
 var Unit = require("./unit");
+var UnitName = require("./unit-name");
 var UnitDivide = require('./unit-divide');
 var UnitTimes = require('./unit-times');
 var _unitToString = new Map();
@@ -7,7 +8,7 @@ var _stringToUnit = new Map();
 var _quantityToUnits = new Map();
 function _register(unit, label) {
     if (label === void 0) { label = ""; }
-    return Unit.withLabel(label, unit);
+    return UnitName.withLabel(label, unit);
 }
 exports.One = _register(Unit.createOne(), " ");
 exports.Percent = _register(Unit.divideNumber(100.0, exports.One), "%");

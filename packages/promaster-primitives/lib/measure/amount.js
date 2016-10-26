@@ -1,5 +1,6 @@
 "use strict";
 var Unit = require('./unit');
+var UnitName = require('./unit-name');
 var Units = require("./units");
 var compare_utils_1 = require("../utils/compare_utils");
 var UnitConverter = require("./unit_converters/unit_converter");
@@ -12,7 +13,7 @@ function create(value, unit, decimalCount) {
 }
 exports.create = create;
 function toString(amount) {
-    var unitname = Unit.getName(amount.unit);
+    var unitname = UnitName.getName(amount.unit);
     if (unitname.length > 0)
         return amount.value.toString() + " " + unitname;
     return amount.value.toString();

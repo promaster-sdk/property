@@ -1,4 +1,5 @@
 import * as Unit from './unit';
+import * as UnitName from './unit-name';
 import {Dimensionless, Quantity} from "./quantity";
 import * as Units from "./units";
 import {compareNumbers} from "../utils/compare_utils";
@@ -18,7 +19,7 @@ export function create<T extends Quantity>(value: number, unit: Unit.Unit<T>, de
 }
 
 export function toString<T extends Quantity>(amount: Amount<T>): string {
-  let unitname = Unit.getName(amount.unit);
+  let unitname = UnitName.getName(amount.unit);
   if (unitname.length > 0)
     return amount.value.toString() + " " + unitname;
   return amount.value.toString();

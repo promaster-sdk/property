@@ -31,23 +31,6 @@ export type InnerUnit<T extends Quantity> =
 /// Holds the dimensionless unit ONE
 //public static readonly Unit<T> One = new ProductUnit<T>();
 
-
-// We keep a global repository of Labels becasue if a Unit object is derived from arithmetic operations
-// it may still be considered equal to an existing unit and thus should have the same label.
-const _typeLabels: Map<Unit<Quantity>, string> = new Map();
-
-export function withLabel<T extends Quantity>(label: string, unit: Unit<T>): Unit<T> {
-  _typeLabels.set(unit, label);
-  return unit;
-}
-
-export function getName<T extends Quantity>(unit: Unit<T>): string {
-  const label = _typeLabels.get(unit);
-  if (label === undefined)
-    return buildDerivedName(unit);
-  return label;
-}
-
 // This record represents the building blocks on top of which all others
 // units are created.
 // This record represents the "standard base units" which includes SI base
@@ -205,20 +188,6 @@ function createTransformed<T extends Quantity>(parentUnit: Unit<T>, toParentUnit
   return create(parentUnit.quantity, {type: "transformed", parentUnit, toParentUnitConverter} as TransformedUnit<T>);
 }
 
-function buildDerivedName<T extends Quantity>(unit: Unit<T>): string {
-  switch (unit.innerUnit.type) {
-    case "alternate":
-      return unit.innerUnit.symbol;
-    case "base":
-      return unit.innerUnit.symbol;
-    case "product":
-      return productUnitBuildDerivedName(unit);
-    case "transformed":
-      return "";
-  }
-  throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
-}
-
 function create<T extends Quantity>(quantity: T, innerUnit: InnerUnit<T>): Unit<T> {
   return {quantity, innerUnit}
 }
@@ -290,60 +259,6 @@ function getElements(unit: Unit<any>) {
     return unit.innerUnit.elements;
   }
   return [];
-}
-
-
-function productUnitBuildNameFromElements(elements: Array<Element>): string {
-  let name: string = "";
-  for (let e of elements) {
-    name += getName(e.unit);
-
-    switch (Math.abs(e.pow)) {
-      case 1:
-        break;
-      case 2:
-        name += "²";
-        break;
-      case 3:
-        name += "³";
-        break;
-      default:
-        name += "^" + Math.abs(e.pow).toString();
-        break;
-    }
-  }
-
-  return name;
-}
-
-function productUnitBuildDerivedName<T extends Quantity>(unit: Unit<T>): string {
-
-  let comparePow = (a: Element, b: Element) => {
-    if (a.pow > b.pow)
-      return 1;
-    else if (a.pow < b.pow)
-      return -1;
-    else
-      return 0;
-  };
-
-  var pospow = getElements(unit).filter((e) => e.pow > 0);
-  pospow.sort(comparePow); // orderby e.Pow descending select e;
-  var posname = productUnitBuildNameFromElements(pospow);
-  var negpow = getElements(unit).filter((e) => e.pow < 0);
-  negpow.sort(comparePow); // orderby e.Pow ascending select e;
-  var negname = productUnitBuildNameFromElements(negpow);
-
-  let name: string = posname;
-  if (negname.length > 0) {
-    if (name.length == 0) {
-      name += "1";
-    }
-
-    name += "/" + negname;
-  }
-
-  return name;
 }
 
 function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter.UnitConverter {

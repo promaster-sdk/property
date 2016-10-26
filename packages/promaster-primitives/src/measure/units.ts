@@ -1,4 +1,5 @@
 import * as Unit from "./unit";
+import * as UnitName from "./unit-name";
 import * as UnitDivide from './unit-divide';
 import * as UnitTimes from './unit-times';
 import * as q from "./quantity";
@@ -9,7 +10,7 @@ const _stringToUnit: Map<string, Unit.Unit<any>> = new Map();
 const _quantityToUnits: Map<q.Quantity, Array<Unit.Unit<any>>> = new Map();
 
 function _register<T extends q.Quantity>(unit: Unit.Unit<T>, label: string = ""): Unit.Unit<T> {
-    return Unit.withLabel(label, unit);
+    return UnitName.withLabel(label, unit);
 }
 
 export const One: Unit.Unit<q.Dimensionless> = _register(Unit.createOne(), " ");
