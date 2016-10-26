@@ -1,4 +1,4 @@
-import {PropertyFilter, PropertyFilterAst as Ast, PropertyValue, Units, Unit} from "promaster-primitives";
+import {PropertyFilter, PropertyFilterAst as Ast, PropertyValue, Units, UnitName} from "promaster-primitives";
 import {inferTypeMap} from "../type_inference/filter_type_inferrer";
 import {ExprType, ExprTypeEnum} from "../type_inference/expr_type";
 import {FilterPrettyPrintMessages} from "./filter_pretty_print_messages";
@@ -96,7 +96,7 @@ function visit(e: Ast.Expr, indentationDepth: number,
         else if (e.parsed.type == "amount") {
             const split = e.unParsed.split(':');
             if (split.length == 2)
-                stack.push(split[0] + " " + Unit.getLabel(Units.getUnitFromString(split[1])));
+                stack.push(split[0] + " " + UnitName.getName(Units.getUnitFromString(split[1])));
             else
                 stack.push(split[0]);
         }
