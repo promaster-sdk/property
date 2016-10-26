@@ -86,7 +86,7 @@ function visit(e, indentationDepth, indentionString, messages, stack, typeMap) {
         else if (e.parsed.type == "amount") {
             var split = e.unParsed.split(':');
             if (split.length == 2)
-                stack.push(split[0] + " " + promaster_primitives_1.Unit.getLabel(promaster_primitives_1.Units.getUnitFromString(split[1])));
+                stack.push(split[0] + " " + promaster_primitives_1.UnitName.getName(promaster_primitives_1.Units.getUnitFromString(split[1])));
             else
                 stack.push(split[0]);
         }
