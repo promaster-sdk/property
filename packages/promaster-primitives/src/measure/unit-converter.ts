@@ -94,9 +94,6 @@ export function concatenate(concatConverter: UnitConverter, converter: UnitConve
 	return concatConverter === Identity ? converter : createCompoundConverter(concatConverter, converter);
 }
 
-
-
-
 /// Creates a compound converter resulting from the combined
 /// transformation of the specified converters.
 /// <param name="first">the first converter.</param>
@@ -105,7 +102,6 @@ function createCompoundConverter(first: UnitConverter, second: UnitConverter): C
   return {type: "compound", first, second};
 }
 
-/// Inner class FactorConverter
 function createFactorConverter(factor: number): FactorConverter {
   if (factor === 1.0)
     throw new Error("Argument: factor " + factor.toString());
