@@ -132,6 +132,17 @@ describe('property_value_set_test', () => {
 
 	});
 
+  describe('toString', () => {
+
+    it('toString should result in a valid set, equal to the original', ()=> {
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const str1 = PropertyValueSet.toString(pvs1);
+      const pvs2 = PropertyValueSet.fromString(str1);
+      assert.equal(PropertyValueSet.equals(pvs1, pvs2), true);
+    });
+
+  });
+
 	// describe('fromProperty', () => {
 	//
 	// 	it('should not accept plain string', ()=> {

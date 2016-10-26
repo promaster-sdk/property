@@ -198,19 +198,11 @@ export function getProperties(propertiesToGet: Array<string>, set: PropertyValue
 }
 
 export function toString(set: PropertyValueSet): string {
-    let sb = "";
-    for (let name of Object.keys(set)) {
-        sb += `${name}=${PropertyValue.toString(set[name])}`;
-    }
-    return sb;
+    return Object.keys(set).map((p) => `${p}=${PropertyValue.toString(set[p])}`).join(";");
 }
 
 export function toStringInSpecifiedOrder(order: Array<string>): string {
-    let sb = "";
-    for (let name of order) {
-        sb += `${name}=${PropertyValue.toString(set[name])}`;
-    }
-    return sb;
+  return order.map((p) => `${p}=${PropertyValue.toString(set[p])}`).join(";");
 }
 
 export function equals(other: PropertyValueSet, set: PropertyValueSet) {
