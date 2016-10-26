@@ -1,5 +1,4 @@
 import { Quantity, Dimensionless } from "./quantity";
-import * as UnitConverter from "./unit-converter";
 export interface Unit<T extends Quantity> {
     readonly quantity: Quantity;
     readonly innerUnit: InnerUnit<T>;
@@ -17,7 +16,7 @@ export interface AlternateUnit<T extends Quantity> {
 export interface TransformedUnit<T extends Quantity> {
     readonly type: "transformed";
     readonly parentUnit: Unit<T>;
-    readonly toParentUnitConverter: UnitConverter.UnitConverter;
+    readonly toParentUnitConverter: UnitConverter;
 }
 export interface ProductUnit<T extends Quantity> {
     readonly type: "product";
@@ -36,4 +35,27 @@ export declare function timesNumber<T extends Quantity>(factor: number, unit: Un
 export declare function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T>;
 export declare function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
 export declare function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T>;
-export declare function getConverterTo<T extends Quantity>(that: Unit<any>, unit: Unit<T>): UnitConverter.UnitConverter;
+export declare function getConverterTo<T extends Quantity>(that: Unit<any>, unit: Unit<T>): UnitConverter;
+export declare type UnitConverter = OffsetConverter | CompoundConverter | FactorConverter | IdentityConverter;
+export interface CompoundConverter {
+    readonly type: "compound";
+    readonly first: UnitConverter;
+    readonly second: UnitConverter;
+}
+export interface FactorConverter {
+    readonly type: "factor";
+    readonly factor: number;
+}
+export interface IdentityConverter {
+    readonly type: "identity";
+}
+export interface OffsetConverter {
+    readonly type: "offset";
+    readonly offset: number;
+}
+export declare const Identity: UnitConverter;
+export declare function createOffsetConverter(offset: number): OffsetConverter;
+export declare function createFactorConverter(factor: number): FactorConverter;
+export declare function inverseConverter(converter: UnitConverter): UnitConverter;
+export declare function convert(value: number, converter: UnitConverter): number;
+export declare function concatenateConverters(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter;

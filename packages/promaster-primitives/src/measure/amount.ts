@@ -3,7 +3,6 @@ import * as UnitName from './unit-name';
 import {Dimensionless, Quantity} from "./quantity";
 import * as Units from "./units";
 import {compareNumbers} from "../utils/compare_utils";
-import * as UnitConverter from "./unit-converter";
 
 export interface Amount<T extends Quantity> {
   value: number;
@@ -112,7 +111,7 @@ export function abs<T extends Quantity>(amount: Amount<T>): Amount<T> {
 }
 
 export function valueAs<T extends Quantity>(toUnit: Unit.Unit<T>, amount: Amount<T>): number {
-  return UnitConverter.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
+  return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
 }
 
 function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount: number | undefined = undefined): Amount<T> {

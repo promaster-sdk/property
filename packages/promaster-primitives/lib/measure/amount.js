@@ -3,7 +3,6 @@ var Unit = require('./unit');
 var UnitName = require('./unit-name');
 var Units = require("./units");
 var compare_utils_1 = require("../utils/compare_utils");
-var UnitConverter = require("./unit-converter");
 /// Creates an amount that represents the an exact/absolute value in the specified
 /// unit. For example if you create an exact amount of 2 degrees Fahrenheit that
 /// will represent -16.6666667 degrees Celsius.
@@ -99,7 +98,7 @@ function abs(amount) {
 }
 exports.abs = abs;
 function valueAs(toUnit, amount) {
-    return UnitConverter.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
+    return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
 }
 exports.valueAs = valueAs;
 function _factory(value, unit, decimalCount) {

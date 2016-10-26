@@ -1,5 +1,4 @@
 import {Quantity, Dimensionless} from "./quantity";
-import * as UnitConverter from "./unit-converter";
 
 // This record represents a determinate quantity (as of length, time, heat, or value)
 // adopted as a standard of measurement.
@@ -72,7 +71,7 @@ export interface TransformedUnit<T extends Quantity> {
   /// Holds the parent unit (not a transformed unit).
   readonly parentUnit: Unit<T>,
   /// Holds the converter to the parent unit.
-  readonly toParentUnitConverter: UnitConverter.UnitConverter,
+  readonly toParentUnitConverter: UnitConverter,
 }
 
 // This record represents units formed by the product of rational powers of
@@ -126,46 +125,46 @@ export function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, ri
 
 // Simulate operator overload
 export function timesNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.createFactorConverter(factor), unit);
+  return transform(createFactorConverter(factor), unit);
 }
 
 // Simulate operator overload
 export function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.createFactorConverter(1.0 / factor), unit);
+  return transform(createFactorConverter(1.0 / factor), unit);
 }
 
 // Simulate operator overload
 export function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.createOffsetConverter(offset), unit);
+  return transform(createOffsetConverter(offset), unit);
 }
 
 // Simulate operator overload
 export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
-  return transform(UnitConverter.createOffsetConverter(-offset), unit);
+  return transform(createOffsetConverter(-offset), unit);
 }
 
 /// Returns a converter of numeric values from this unit to another unit.
 /// <param name="that">the unit to which to convert the numeric values.</param>
 /// <returns>the converter from this unit to <code>that</code> unit.</returns>
-export function getConverterTo<T extends Quantity>(that: Unit<any>, unit: Unit<T>): UnitConverter.UnitConverter {
+export function getConverterTo<T extends Quantity>(that: Unit<any>, unit: Unit<T>): UnitConverter {
   if (unit == that) {
-    return UnitConverter.Identity;
+    return Identity;
   }
-  return UnitConverter.concatenate(toStandardUnit(unit), UnitConverter.inverse(toStandardUnit(that)));
+  return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(that)));
 }
 
 
 // Returns the converter from this unit to its system unit.
-function toStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter.UnitConverter {
+function toStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter {
   switch (unit.innerUnit.type) {
     case "alternate":
       return toStandardUnit(unit.innerUnit.parent);
     case "base":
-      return UnitConverter.Identity;
+      return Identity;
     case "product":
       return productUnitToStandardUnit(unit);
     case "transformed":
-      return UnitConverter.concatenate(unit.innerUnit.toParentUnitConverter, toStandardUnit(unit.innerUnit.parentUnit));
+      return concatenateConverters(unit.innerUnit.toParentUnitConverter, toStandardUnit(unit.innerUnit.parentUnit));
   }
   throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
 }
@@ -174,8 +173,8 @@ function toStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter.UnitCo
 /// The converter does not need to be linear.
 /// <param name="operation">the converter from the transformed unit to this unit.</param>
 /// <returns>the unit after the specified transformation.</returns>
-function transform<T extends Quantity>(operation: UnitConverter.UnitConverter, unit: Unit<T>): Unit<T> {
-  if (operation === UnitConverter.Identity) {
+function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>): Unit<T> {
+  if (operation === Identity) {
     return unit;
   }
   return createTransformed(unit, operation);
@@ -261,17 +260,17 @@ function getElements(unit: Unit<any>) {
   return [];
 }
 
-function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter.UnitConverter {
-  let converter = UnitConverter.Identity;
+function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter {
+  let converter = Identity;
   for (let element of getElements(unit)) {
     let conv = toStandardUnit(element.unit);
     let pow = element.pow;
     if (pow < 0) {
       pow = -pow;
-      conv = UnitConverter.inverse(conv);
+      conv = inverseConverter(conv);
     }
     for (let i = 1; i <= pow; i++) {
-      converter = UnitConverter.concatenate(conv, converter);
+      converter = concatenateConverters(conv, converter);
     }
   }
   return converter;
@@ -282,3 +281,123 @@ function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConve
 function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Element>): Unit<T> {
   return create(quantity, {type: "product", elements} as ProductUnit<T>);
 }
+
+
+
+
+
+
+
+
+
+
+/// This class represents a converter of numeric values.
+///
+/// It is not required for sub-classes to be immutable
+/// (e.g. currency converter).
+///
+/// Sub-classes must ensure unicity of the identity
+/// converter. In other words, if the result of an operation is equivalent
+/// to the identity converter, then the unique IDENTITY instance
+/// should be returned.
+export type UnitConverter = OffsetConverter | CompoundConverter | FactorConverter | IdentityConverter;
+
+// This record represents a compound converter.
+export interface CompoundConverter {
+  readonly type: "compound",
+  // Holds the first converter.
+  readonly first: UnitConverter,
+  // Holds the second converter.
+  readonly second: UnitConverter,
+}
+
+// Record FactorConverter
+export interface FactorConverter {
+  readonly type: "factor",
+  readonly factor: number,
+}
+
+// This record represents the identity converter (singleton).
+export interface IdentityConverter {
+  readonly type: "identity",
+}
+
+// Record OffsetConverter
+export interface OffsetConverter {
+  readonly type: "offset",
+  readonly offset: number,
+}
+
+/// Holds the identity converter (unique). This converter does nothing
+/// (ONE.convert(x) == x).
+export const Identity: UnitConverter = createIdentityConverter();
+
+export function createOffsetConverter(offset: number): OffsetConverter {
+  return {type: "offset", offset};
+}
+
+export function createFactorConverter(factor: number): FactorConverter {
+  if (factor === 1.0)
+    throw new Error("Argument: factor " + factor.toString());
+  return {type: "factor", factor};
+}
+
+/// Returns the inverse of this converter. If x is a valid
+/// value, then x == inverse().convert(convert(x)) to within
+/// the accuracy of computer arithmetic.
+export function inverseConverter(converter: UnitConverter): UnitConverter {
+  switch (converter.type) {
+    case "compound":
+      return createCompoundConverter(inverseConverter(converter.second), inverseConverter(converter.first));
+    case "factor":
+      return createFactorConverter(1.0 / converter.factor);
+    case "identity":
+      return converter;
+    case "offset":
+      return createOffsetConverter(-converter.offset);
+  }
+  throw new Error("Unknown unit converter");
+}
+
+/// Converts a double value.
+/// <param name="x">the numeric value to convert.</param>
+/// <returns>the converted numeric value.</returns>
+export function convert(value: number, converter: UnitConverter): number {
+  switch (converter.type) {
+    case "compound":
+      return convert(convert(value, converter.first), converter.second);
+    case "factor":
+      return value * converter.factor;
+    case "identity":
+      return value;
+    case "offset":
+      return value + converter.offset;
+  }
+  throw new Error("Unknown unit converter");
+}
+
+/// Concatenates this converter with another converter. The resulting
+/// converter is equivalent to first converting by the specified converter,
+/// and then converting by this converter.
+///
+/// Note: Implementations must ensure that the IDENTITY instance
+///       is returned if the resulting converter is an identity
+///       converter.
+/// <param name="converter">the other converter.</param>
+/// <returns>the concatenation of this converter with the other converter.</returns>
+export function concatenateConverters(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
+  return concatConverter === Identity ? converter : createCompoundConverter(concatConverter, converter);
+}
+
+/// Creates a compound converter resulting from the combined
+/// transformation of the specified converters.
+/// <param name="first">the first converter.</param>
+/// <param name="second">second the second converter.</param>
+function createCompoundConverter(first: UnitConverter, second: UnitConverter): CompoundConverter {
+  return {type: "compound", first, second};
+}
+
+function createIdentityConverter(): IdentityConverter {
+  return {type: "identity"};
+}
+
