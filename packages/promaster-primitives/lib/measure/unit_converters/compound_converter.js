@@ -5,14 +5,10 @@ var UnitConverter = require("../unit_converter");
 /// transformation of the specified converters.
 /// <param name="first">the first converter.</param>
 /// <param name="second">second the second converter.</param>
-function create(first, second) {
-    return {
-        type: "compound",
-        first: first,
-        second: second,
-    };
+function createCompoundConverter(first, second) {
+    return { type: "compound", first: first, second: second };
 }
-exports.create = create;
+exports.createCompoundConverter = createCompoundConverter;
 /// Implements abstract method.
 function convert(value, converter) {
     return UnitConverter.convert(UnitConverter.convert(value, converter.first), converter.second);
@@ -20,7 +16,7 @@ function convert(value, converter) {
 exports.convert = convert;
 /// Implements abstract method.
 function inverse(converter) {
-    return create(UnitConverter.inverse(converter.second), UnitConverter.inverse(converter.first));
+    return createCompoundConverter(UnitConverter.inverse(converter.second), UnitConverter.inverse(converter.first));
 }
 exports.inverse = inverse;
 //# sourceMappingURL=compound_converter.js.map

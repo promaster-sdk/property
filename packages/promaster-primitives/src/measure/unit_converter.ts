@@ -19,6 +19,14 @@ export type UnitConverter = OffsetConverter.OffsetConverter | Compound.Compound 
 /// (ONE.convert(x) == x).
 export const Identity: UnitConverter = IdentityConverter.createIdentityConverter();
 
+export function offset(off: number): UnitConverter {
+  return OffsetConverter.createOffsetConverter(off);
+}
+
+export function factor(f: number): UnitConverter {
+  return FactorConverter.createFactorConverter(f);
+}
+
 /// Returns the inverse of this converter. If x is a valid
 /// value, then x == inverse().convert(convert(x)) to within
 /// the accuracy of computer arithmetic.
@@ -63,14 +71,5 @@ export function convert(value: number, converter: UnitConverter): number {
 /// <param name="converter">the other converter.</param>
 /// <returns>the concatenation of this converter with the other converter.</returns>
 export function concatenate(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
-	//return identical(converter, Identity) ? this : new Compound(converter, this);
 	return concatConverter === Identity ? converter : Compound.createCompoundConverter(concatConverter, converter);
-}
-
-export function offset(off: number): UnitConverter {
-	return OffsetConverter.createOffsetConverter(off);
-}
-
-export function factor(f: number): UnitConverter {
-	return FactorConverter.createFactorConverter(f);
 }
