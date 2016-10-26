@@ -1,9 +1,18 @@
 import * as OffsetConverter from "./unit_converters/offset_converter";
-import * as Compound from "./unit_converters/compound_converter";
 import * as FactorConverter from "./unit_converters/factor_converter";
 import * as IdentityConverter from "./unit_converters/identity_converter";
 
-export type UnitConverter = OffsetConverter.OffsetConverter | Compound.Compound | FactorConverter.FactorConverter | IdentityConverter.IdentityConverter;
+export type UnitConverter = OffsetConverter.OffsetConverter | Compound | FactorConverter.FactorConverter | IdentityConverter.IdentityConverter;
+
+// This record represents a compound converter.
+export interface Compound {
+  readonly type: "compound",
+  // Holds the first converter.
+  readonly first: UnitConverter,
+  // Holds the second converter.
+  readonly second: UnitConverter,
+}
+
 
 /// This class represents a converter of numeric values.
 ///
@@ -33,7 +42,8 @@ export function factor(f: number): UnitConverter {
 export function inverse(converter: UnitConverter): UnitConverter {
 	switch (converter.type) {
 		case "compound":
-			return Compound.inverse(converter);
+			// return Compound.inverse(converter);
+      return createCompoundConverter(inverse(converter.second), inverse(converter.first));
 		case "factor":
 			return FactorConverter.inverse(converter);
 		case "identity":
@@ -50,7 +60,8 @@ export function inverse(converter: UnitConverter): UnitConverter {
 export function convert(value: number, converter: UnitConverter): number {
 	switch (converter.type) {
 		case "compound":
-			return Compound.convert(value, converter);
+			// return Compound.convert(value, converter);
+      return convert(convert(value, converter.first), converter.second);
 		case "factor":
 			return FactorConverter.convert(value, converter);
 		case "identity":
@@ -71,5 +82,16 @@ export function convert(value: number, converter: UnitConverter): number {
 /// <param name="converter">the other converter.</param>
 /// <returns>the concatenation of this converter with the other converter.</returns>
 export function concatenate(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
-	return concatConverter === Identity ? converter : Compound.createCompoundConverter(concatConverter, converter);
+	return concatConverter === Identity ? converter : createCompoundConverter(concatConverter, converter);
+}
+
+
+
+
+/// Creates a compound converter resulting from the combined
+/// transformation of the specified converters.
+/// <param name="first">the first converter.</param>
+/// <param name="second">second the second converter.</param>
+function createCompoundConverter(first: UnitConverter, second: UnitConverter): Compound {
+  return {type: "compound", first, second};
 }
