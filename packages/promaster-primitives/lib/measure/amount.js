@@ -3,9 +3,11 @@ var Unit = require('./unit');
 var UnitName = require('./unit-name');
 var Units = require("./units");
 var compare_utils_1 = require("../utils/compare_utils");
-/// Creates an amount that represents the an exact/absolute value in the specified
-/// unit. For example if you create an exact amount of 2 degrees Fahrenheit that
-/// will represent -16.6666667 degrees Celsius.
+/**
+ * Creates an amount that represents the an exact/absolute value in the specified
+ * unit. For example if you create an exact amount of 2 degrees Fahrenheit that
+ * will represent -16.6666667 degrees Celsius.
+ */
 function create(value, unit, decimalCount) {
     if (decimalCount === void 0) { decimalCount = undefined; }
     return _factory(value, unit, decimalCount);
@@ -18,7 +20,7 @@ function toString(amount) {
     return amount.value.toString();
 }
 exports.toString = toString;
-/// Simulate negation unary operator
+/** Simulate negation unary operator. */
 function neg(amount) {
     return create(-amount.value, amount.unit);
 }
@@ -29,7 +31,14 @@ function isQuantity(quantity, amount) {
     return amount.unit.quantity === quantity;
 }
 exports.isQuantity = isQuantity;
-// Aritmetic operators
+/**
+ * Adds two amounts together.
+ * The two amounts amounts must have the same quantity.
+ * The resulting amount will be of the same quantity as the two amounts.
+ * @param left The left-hand amount.
+ * @param right The right-hand
+ * @returns left + right
+ */
 function plus(left, right) {
     return _factory(left.value + valueAs(left.unit, right), left.unit);
 }
@@ -92,16 +101,26 @@ function compareTo(other, amount) {
     return _comparison(amount, other, true);
 }
 exports.compareTo = compareTo;
-/// Get the absolute amount (equivalent of Math.Abs())
+/**
+ * Gets the absolute amount (equivalent of Math.Abs())
+ * @param amount The amount to get the aboslute amount from.
+ */
 function abs(amount) {
     return _factory(Math.abs(amount.value), amount.unit);
 }
 exports.abs = abs;
+/**
+ * Gets the value of the amount as a number in the specified unit
+ * @param toUnit The unit to get the amount in.
+ * @param amount The amount to get the value from.
+ */
 function valueAs(toUnit, amount) {
-    // return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
     return Unit.convert(amount.value, amount.unit, toUnit);
 }
 exports.valueAs = valueAs;
+///////////////////////////////
+/// BEGIN PRIVATE DECLARATIONS
+///////////////////////////////
 function _factory(value, unit, decimalCount) {
     if (decimalCount === void 0) { decimalCount = undefined; }
     if (decimalCount === undefined) {
