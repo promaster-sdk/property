@@ -1,25 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>ICD Client</title>
-  <style>
-
-    html, body, #root, #app-wrapper {
-      height: 100%;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-
-      background-color: #ffffff;
-    }
-
-  </style>
+  <meta charset="UTF-8">
+  <title>Example</title>
 </head>
 <body>
-<div id="root">
-</div>
-<script src="/static/bundle.js"></script>
+
+<div id="root"></div>
+
+<!-- body bottom scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.39/system.js"></script>
+<script src="system.config.js"></script>
+<script>
+  SystemJS.import('app/start.tsx');
+</script>
+
 </body>
 </html>

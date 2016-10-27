@@ -8,19 +8,21 @@
   "license": "UNLICENSED",
   "author": "Divid Promaster AB",
   "scripts": {
+    "start": "http-server",
     "build": "rm -rf lib && tsc --version && tsc -p src",
     "publish:major": "npm run build && node scripts/publish.js major",
     "publish:minor": "npm run build && node scripts/publish.js minor",
     "publish:patch": "npm run build && node scripts/publish.js patch",
     "tsc:watch": "tsc --watch -p src",
+    "tsc:example": "tsc -p example",
+    "tsc:example:watch": "tsc --watch -p example",
     "NOTpretest": "tsc -p test --module commonjs",
     "NOTtest": "cd test && mocha --compilers",
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
   "dependencies": {
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.2.1",
-    "node-uuid": "^1.4.7",
-    "react": "^15.3.2"
+    "node-uuid": "^1.4.7"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
@@ -28,18 +30,22 @@
     "@types/node": "^6.0.45",
     "@types/node-uuid": "0.0.28",
     "@types/react": "^0.14.41",
+    "@types/react-dom": "^0.14.18",
     "chai": "^3.5.0",
+    "http-server": "^0.9.0",
     "mocha": "^3.1.2",
+    "plugin-typescript": "^5.2.7",
+    "react-dom": "^15.3.2",
+    "shelljs": "^0.7.4",
     "ts-loader": "^0.9.5",
     "ts-node": "^1.6.0",
     "typescript": "^2.0.3",
-    "shelljs": "^0.7.4"
+    "react": "^15.3.2"
   },
   "jspm": {
     "dependencies": {
       "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.2.1",
-      "node-uuid": "npm:node-uuid@^1.4.7",
-      "react": "npm:react@^15.3.2"
+      "node-uuid": "npm:node-uuid@^1.4.7"
     }
   }
 }
