@@ -36,7 +36,7 @@ exports.times = times;
 /**
  * Returns the quotient of the specified units.
  * @param quantity The quantity of the resulting unit.
-§* * @param left The dividend unit operand.
+ * @param left The dividend unit operand.
  * @param right The divisor unit operand.
  * @returns left / right
  */
@@ -95,10 +95,13 @@ function toStandardUnit(unit) {
     }
     throw new Error("Unknown innerUnit " + JSON.stringify(unit));
 }
-/// Returns the unit derived from this unit using the specified converter.
-/// The converter does not need to be linear.
-/// <param name="operation">the converter from the transformed unit to this unit.</param>
-/// <returns>the unit after the specified transformation.</returns>
+/**
+ * Returns the unit derived from the specified unit using the specified converter.
+ * The converter does not need to be linear.
+ * @param operation The converter from the transformed unit to this unit.
+ * @param unit The unit.
+ * @returns The unit after the specified transformation.
+ */
 function transform(operation, unit) {
     if (operation === identityConverter) {
         return unit;
@@ -114,9 +117,12 @@ function createTransformedUnit(parentUnit, toParentUnitConverter) {
 function create(quantity, innerUnit) {
     return { quantity: quantity, innerUnit: innerUnit };
 }
-/// Creates the unit defined from the product of the specifed elements.
-/// <param name="leftElems">left multiplicand elements</param>
-/// <param name="rightElems">right multiplicand elements.</param>
+/**
+ * Creates the unit defined from the product of the specifed elements.
+ * @param quantity Quantity of the resulting unit.
+ * @param leftElems Left multiplicand elements.
+ * @param rightElems Right multiplicand elements.
+ */
 function fromProduct(quantity, leftElems, rightElems) {
     // If we have several elements of the same unit then we can merge them by summing their power
     var allElements = [];
@@ -178,15 +184,15 @@ function productUnitToStandardUnit(unit) {
     }
     return converter;
 }
-/// Product unit constructor.
-/// <param name="elements">the product elements.</param>
 function createProductUnit(quantity, elements) {
     return create(quantity, { type: "product", elements: elements });
 }
-/// Creates a compound converter resulting from the combined
-/// transformation of the specified converters.
-/// <param name="first">the first converter.</param>
-/// <param name="second">second the second converter.</param>
+/**
+ * Creates a compound converter resulting from the combined
+ * transformation of the specified converters.
+ * @param first The first converter.
+ * @param second Second the second converter.
+ */
 function createCompoundConverter(first, second) {
     return { type: "compound", first: first, second: second };
 }
@@ -201,9 +207,11 @@ function createFactorConverter(factor) {
         throw new Error("Argument: factor " + factor.toString());
     return { type: "factor", factor: factor };
 }
-/// Returns the inverse of this converter. If x is a valid
-/// value, then x == inverse().convert(convert(x)) to within
-/// the accuracy of computer arithmetic.
+/**
+ * Returns the inverse of this converter. If x is a valid
+ * value, then x == inverse().convert(convert(x)) to within
+ * the accuracy of computer arithmetic.
+ */
 function inverseConverter(converter) {
     switch (converter.type) {
         case "compound":
@@ -217,9 +225,6 @@ function inverseConverter(converter) {
     }
     throw new Error("Unknown unit converter");
 }
-/// Converts a double value.
-/// <param name="x">the numeric value to convert.</param>
-/// <returns>the converted numeric value.</returns>
 function convertWithConverter(value, converter) {
     switch (converter.type) {
         case "compound":
@@ -233,19 +238,22 @@ function convertWithConverter(value, converter) {
     }
     throw new Error("Unknown unit converter");
 }
-/// Concatenates this converter with another converter. The resulting
-/// converter is equivalent to first converting by the specified converter,
-/// and then converting by this converter.
-///
-/// Note: Implementations must ensure that the IDENTITY instance
-///       is returned if the resulting converter is an identity
-///       converter.
-/// <param name="converter">the other converter.</param>
-/// <returns>the concatenation of this converter with the other converter.</returns>
+/**
+ * Concatenates this converter with another converter. The resulting
+ * converter is equivalent to first converting by the specified converter,
+ * and then converting by this converter.
+ *
+ * Note: Implementations must ensure that the IDENTITY instance
+ *       is returned if the resulting converter is an identity
+ *       converter.
+ * @param concatConverter This converter.
+ * @param converter The other converter.
+ * @returns The concatenation of this converter with the other converter.
+ */
 function concatenateConverters(concatConverter, converter) {
     return concatConverter === identityConverter ? converter : createCompoundConverter(concatConverter, converter);
 }
-// Used solely to create ONE instance.
+/** Used solely to create ONE instance. */
 function createOne() {
     return create("Dimensionless", { type: "product", elements: [] });
 }

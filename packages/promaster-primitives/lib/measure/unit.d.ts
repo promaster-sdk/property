@@ -44,7 +44,8 @@ export interface AlternateUnit<T extends Quantity> {
     /** Holds the parent unit (a system unit). */
     readonly parent: Unit<any>;
 }
-/** This record represents the units derived from other units using
+/**
+ * This record represents the units derived from other units using
  * UnitConverter converters.
  *
  * Examples of transformed units:
@@ -139,7 +140,7 @@ export declare function times<T extends Quantity>(quantity: T, left: Unit<Quanti
 /**
  * Returns the quotient of the specified units.
  * @param quantity The quantity of the resulting unit.
-§* * @param left The dividend unit operand.
+ * @param left The dividend unit operand.
  * @param right The divisor unit operand.
  * @returns left / right
  */

@@ -10,21 +10,23 @@ export interface Amount<T extends Quantity> {
   decimalCount: number;
 }
 
-/// Creates an amount that represents the an exact/absolute value in the specified
-/// unit. For example if you create an exact amount of 2 degrees Fahrenheit that
-/// will represent -16.6666667 degrees Celsius.
+/**
+ * Creates an amount that represents the an exact/absolute value in the specified
+ * unit. For example if you create an exact amount of 2 degrees Fahrenheit that
+ * will represent -16.6666667 degrees Celsius.
+ */
 export function create<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount: number | undefined = undefined): Amount<T> {
   return _factory<T>(value, unit, decimalCount);
 }
 
 export function toString<T extends Quantity>(amount: Amount<T>): string {
-  let unitname = UnitName.getName(amount.unit);
+  const unitname = UnitName.getName(amount.unit);
   if (unitname.length > 0)
     return amount.value.toString() + " " + unitname;
   return amount.value.toString();
 }
 
-/// Simulate negation unary operator
+/** Simulate negation unary operator. */
 export function neg<T extends Quantity>(amount: Amount<T>): Amount<T> {
   return create<T>(-amount.value, amount.unit);
 }
@@ -35,8 +37,14 @@ export function isQuantity<T extends Quantity>(quantity: T, amount: Amount<T>): 
   return amount.unit.quantity === quantity;
 }
 
-// Aritmetic operators
-
+/**
+ * Adds two amounts together.
+ * The two amounts amounts must have the same quantity.
+ * The resulting amount will be of the same quantity as the two amounts.
+ * @param left The left-hand amount.
+ * @param right The right-hand
+ * @returns left + right
+ */
 export function plus<T extends Quantity>(left: Amount<T>, right: Amount<T>): Amount<T> {
   return _factory<T>(left.value + valueAs<T>(left.unit, right), left.unit);
 }
@@ -92,12 +100,12 @@ export function min<T extends Quantity>(a2: Amount<T>, amount: Amount<T>): Amoun
 }
 
 export function roundDown<T extends Quantity>(step: Amount<T>, amount: Amount<T>): Amount<T> {
-  let div = amount.value / step.value;
+  const div = amount.value / step.value;
   return _factory<T>(Math.floor(div) * step.value, amount.unit);
 }
 
 export function roundUp<T extends Quantity>(step: Amount<T>, amount: Amount<T>): Amount<T> {
-  let div = amount.value / step.value;
+  const div = amount.value / step.value;
   return _factory<T>(Math.ceil(div) * step.value, amount.unit);
 }
 
@@ -105,15 +113,26 @@ export function compareTo<T extends Quantity>(other: Amount<T>, amount: Amount<T
   return _comparison(amount, other, true);
 }
 
-/// Get the absolute amount (equivalent of Math.Abs())
+/**
+ * Gets the absolute amount (equivalent of Math.Abs())
+ * @param amount The amount to get the aboslute amount from.
+ */
 export function abs<T extends Quantity>(amount: Amount<T>): Amount<T> {
   return _factory<T>(Math.abs(amount.value), amount.unit);
 }
 
+/**
+ * Gets the value of the amount as a number in the specified unit
+ * @param toUnit The unit to get the amount in.
+ * @param amount The amount to get the value from.
+ */
 export function valueAs<T extends Quantity>(toUnit: Unit.Unit<T>, amount: Amount<T>): number {
-  // return Unit.convert(amount.value, Unit.getConverterTo(toUnit, amount.unit));
   return Unit.convert(amount.value, amount.unit, toUnit);
 }
+
+///////////////////////////////
+/// BEGIN PRIVATE DECLARATIONS
+///////////////////////////////
 
 function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount: number | undefined = undefined): Amount<T> {
   if (decimalCount === undefined) {
@@ -147,8 +166,8 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(a1: Amount<T1>, a
   }
 
   // Convert the second amount to the same unit as the first and compare the values
-  let a1Value = a1.value;
-  let a2Value = valueAs<T2>(a1.unit, a2);
+  const a1Value = a1.value;
+  const a2Value = valueAs<T2>(a1.unit, a2);
 
   return compareNumbers(a1Value, a2Value, Math.max(a1.decimalCount, a2.decimalCount));
 }
