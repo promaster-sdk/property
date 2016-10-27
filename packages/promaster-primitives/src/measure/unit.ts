@@ -1,20 +1,22 @@
 import {Quantity, Dimensionless} from "./quantity";
 
-// This record represents a determinate quantity (as of length, time, heat, or value)
-// adopted as a standard of measurement.
-//
-// It is helpful to think of instances of this record as recording the history by which
-// they are created. Thus, for example, the string "g/kg" (which is a dimensionless unit)
-// would result from invoking the method toString() on a unit that was created by
-// dividing a gram unit by a kilogram unit. Yet, "kg" divided by "kg" returns ONE and
-// not "kg/kg" due to automatic unit factorization.
-//
-// This record supports the multiplication of offsets units. The result is usually a unit
-// not convertible to its standard unit. Such units may appear in derivative quantities.
-// For example °C/m is an unit of gradient, which is common in atmospheric and oceanographic research.
-//
-// Units raised at rational powers are also supported. For example the cubic root of liter
-// is a unit compatible with meter.
+/**
+* This record represents a determinate quantity (as of length, time, heat, or value)
+* adopted as a standard of measurement.
+*
+* It is helpful to think of instances of this record as recording the history by which
+* they are created. Thus, for example, the string "g/kg" (which is a dimensionless unit)
+* would result from invoking the method toString() on a unit that was created by
+* dividing a gram unit by a kilogram unit. Yet, "kg" divided by "kg" returns ONE and
+* not "kg/kg" due to automatic unit factorization.
+*
+* This record supports the multiplication of offsets units. The result is usually a unit
+* not convertible to its standard unit. Such units may appear in derivative quantities.
+* For example °C/m is an unit of gradient, which is common in atmospheric and oceanographic research.
+*
+* Units raised at rational powers are also supported. For example the cubic root of liter
+* is a unit compatible with meter.
+*/
 export interface Unit<T extends Quantity> {
   readonly quantity: Quantity,
   readonly innerUnit: InnerUnit<T>,
@@ -82,75 +84,90 @@ export interface ProductUnit<T extends Quantity> {
   readonly elements: Array<Element>,
 }
 
-/// Inner product element represents a rational power of a single unit.
+/** Represents a rational power of a single unit. */
 export interface Element {
-  /// Holds the single unit.
+  /** Holds the single unit. */
   readonly unit: Unit<any>;
-  /// Holds the power exponent.
+  /** Holds the power exponent. */
   readonly pow: number;
 }
 
-/// This type represents a converter of numeric values.
-///
-/// Sub-types must ensure unicity of the identity
-/// converter. In other words, if the result of an operation is equivalent
-/// to the identity converter, then the unique IDENTITY instance
-/// should be returned.
+/**
+ * This type represents a converter of numeric values.
+ * Sub-types must ensure unicity of the identity
+ * converter. In other words, if the result of an operation is equivalent
+ * to the identity converter, then the unique IDENTITY instance
+ * should be returned.
+ */
 export type UnitConverter = OffsetConverter | CompoundConverter | FactorConverter | IdentityConverter;
 
-// This record represents a compound converter.
+/** This record represents a compound converter. */
 export interface CompoundConverter {
   readonly type: "compound",
-  // Holds the first converter.
+  /** Holds the first converter. */
   readonly first: UnitConverter,
-  // Holds the second converter.
+  /** Holds the second converter. */
   readonly second: UnitConverter,
 }
-
-// Record FactorConverter
+*
 export interface FactorConverter {
   readonly type: "factor",
   readonly factor: number,
 }
 
-// This record represents the identity converter (singleton).
+/** This record represents the identity converter (singleton). */
 export interface IdentityConverter {
   readonly type: "identity",
 }
 
-// Record OffsetConverter
 export interface OffsetConverter {
   readonly type: "offset",
   readonly offset: number,
 }
 
-// Holds the dimensionless unit ONE
+/** Holds the dimensionless unit ONE */
 export const One: Unit<Dimensionless> = createOne();
 
-// Holds the identity converter (unique). This converter does nothing
-// (ONE.convert(x) == x).
+/** Holds the identity converter (unique). This converter does nothing (ONE.convert(x) == x). */
 const identityConverter: UnitConverter = createIdentityConverter();
 
-/// Creates a base unit having the specified symbol.
-/// <param name="symbol">the symbol of this base unit.</param>
+/**
+ * Creates a base unit having the specified symbol.
+ * @param quantity The quantity of the resulting unit.
+ * @param symbol The symbol of this base unit.
+ */
 export function createBase<T extends Quantity>(quantity: T, symbol: string): Unit<T> {
   return create(quantity, {type: "base", symbol} as BaseUnit<T>);
 }
 
-/// Creates an alternate unit for the specified unit identified by the
-/// specified symbol.
-/// <param name="symbol">the symbol for this alternate unit.</param>
-/// <param name="parent">parent the system unit from which this alternate unit is derived.</param>
+/**
+ * Creates an alternate unit for the specified unit identified by the
+ * specified symbol.
+ * @param symbol The symbol for this alternate unit.
+ * @param parent Parent the system unit from which this alternate unit is derived.
+ */
 export function createAlternate<T extends Quantity>(symbol: string, parent: Unit<any>): Unit<T> {
   return create(parent.quantity, {type: "alternate", symbol, parent} as AlternateUnit<T>);
 }
 
-// Creates a ProductUnit.
+/**
+ * Returns the product of the specified units.
+ * @param quantity The quantity of the resulting unit.
+ * @param left The left unit operand.
+ * @param right The right unit operand.</param>
+ * @returns left * right
+*/
 export function times<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
   return product(quantity, left, right);
 }
 
-// Creates a ProductUnit.
+/**
+ * Returns the quotient of the specified units.
+ * @param quantity The quantity of the resulting unit.
+§* * @param left The dividend unit operand.
+ * @param right The divisor unit operand.
+ * @returns left / right
+ */
 export function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
   return quotient(quantity, left, right);
 }
@@ -171,14 +188,22 @@ export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T
   return transform(createOffsetConverter(-offset), unit);
 }
 
+/**
+ * Converts numeric values from a unit to another unit.
+ * @param value The numeric value to convert.
+ * @param fromUnit The unit from which to convert the numeric value.
+ * @param toUnit The unit to which to convert the numeric value.
+ * @returns The converted numeric value.
+ */
 export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number {
   const converter = getConverterTo(toUnit, fromUnit);
   return convertWithConverter(value, converter);
 }
 
-/// Returns a converter of numeric values from this unit to another unit.
-/// <param name="that">the unit to which to convert the numeric values.</param>
-/// <returns>the converter from this unit to <code>that</code> unit.</returns>
+///////////////////////////////
+/// BEGIN PRIVATE DECLARATIONS
+///////////////////////////////
+
 function getConverterTo<T extends Quantity>(toUnit: Unit<any>, unit: Unit<T>): UnitConverter {
   if (unit == toUnit) {
     return identityConverter;
@@ -258,22 +283,12 @@ function createElement(unit: Unit<any>, pow: number): Element {
   return {unit, pow};
 }
 
-/// <summary>
-/// Returns the product of the specified units.
-/// </summary>
-/// <param name="left">the left unit operand.</param>
-/// <param name="right">the right unit operand.</param>
-/// <returns>left * right</returns>
 function product<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
   const leftelements = getElements(left);
   const rightelements = getElements(right);
   return fromProduct<T>(quantity, leftelements, rightelements);
 }
 
-/// Returns the quotient of the specified units.
-/// <param name="left">the dividend unit operand.</param>
-/// <param name="right">right the divisor unit operand.</param>
-/// <returns>dividend / divisor</returns>
 function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
 
   const leftelements = getElements(left);
