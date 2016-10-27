@@ -28,56 +28,62 @@ export type InnerUnit<T extends Quantity> =
     | ProductUnit<T>
     | TransformedUnit<T>;
 
-// This record represents the building blocks on top of which all others
-// units are created.
-// This record represents the "standard base units" which includes SI base
-// units and possibly others user-defined base units. It does not represent
-// the base units of any specific System Of Units (they would have
-// be base units accross all possible systems otherwise).
+/**
+ * This record represents the building blocks on top of which all others
+ * units are created.
+ * This record represents the "standard base units" which includes SI base
+ * units and possibly others user-defined base units. It does not represent
+ * the base units of any specific System Of Units (they would have
+ * be base units accross all possible systems otherwise).
+ */
 export interface BaseUnit<T extends Quantity> {
   readonly type: "base",
-  /// Holds the unique symbol for this base unit.
+  /** Holds the unique symbol for this base unit. */
   readonly symbol: string,
 }
 
-// This record represents the units used in expressions to distinguish
-// between quantities of a different nature but of the same dimensions.
+/**
+ * This record represents the units used in expressions to distinguish
+ * between quantities of a different nature but of the same dimensions.
+*/
 export interface AlternateUnit<T extends Quantity> {
   readonly type: "alternate",
   readonly symbol: string,
-  /// Holds the parent unit (a system unit).
+  /** Holds the parent unit (a system unit). */
   readonly parent: Unit<any>,
 }
 
-/// This record represents the units derived from other units using
-/// UnitConverter converters.
-///
-/// Examples of transformed units:
-///       CELSIUS = KELVIN.add(273.15);
-///       FOOT = METER.multiply(0.3048);
-///       MILLISECOND = MILLI(SECOND);
-///
-/// Transformed units have no label. But like any other units,
-///  they may have labels attached to them:
-///       UnitFormat.getStandardInstance().label(FOOT, "ft");
-///
-///   or aliases:
-///       UnitFormat.getStandardInstance().alias(CENTI(METER)), "centimeter");
-///       UnitFormat.getStandardInstance().alias(CENTI(METER)), "centimetre");
+/** This record represents the units derived from other units using
+ * UnitConverter converters.
+ *
+ * Examples of transformed units:
+ *       CELSIUS = KELVIN.add(273.15);
+ *       FOOT = METER.multiply(0.3048);
+ *       MILLISECOND = MILLI(SECOND);
+ *
+ * Transformed units have no label. But like any other units,
+ *  they may have labels attached to them:
+ *       UnitFormat.getStandardInstance().label(FOOT, "ft");
+ *
+ *   or aliases:
+ *       UnitFormat.getStandardInstance().alias(CENTI(METER)), "centimeter");
+ *       UnitFormat.getStandardInstance().alias(CENTI(METER)), "centimetre");
+ */
 export interface TransformedUnit<T extends Quantity> {
   readonly type: "transformed",
-  /// Holds the parent unit (not a transformed unit).
+  /** Holds the parent unit (not a transformed unit). */
   readonly parentUnit: Unit<T>,
-  /// Holds the converter to the parent unit.
+  /** Holds the converter to the parent unit. */
   readonly toParentUnitConverter: UnitConverter,
 }
 
-// This record represents units formed by the product of rational powers of
-// existing units.
-//
-// This record maintains the canonical form of this product (simplest
-// form after factorization). For example:
-// METER.pow(2).divide(METER) returns METER.
+/**
+ * This record represents units formed by the product of rational powers of
+ * existing units.
+ * This record maintains the canonical form of this product (simplest
+ * form after factorization). For example:
+ * METER.pow(2).divide(METER) returns METER.
+ */
 export interface ProductUnit<T extends Quantity> {
   readonly type: "product",
   /// Holds the units composing this product unit.
@@ -109,7 +115,7 @@ export interface CompoundConverter {
   /** Holds the second converter. */
   readonly second: UnitConverter,
 }
-*
+
 export interface FactorConverter {
   readonly type: "factor",
   readonly factor: number,

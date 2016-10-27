@@ -1,65 +1,80 @@
 "use strict";
-// Holds the dimensionless unit ONE
+/** Holds the dimensionless unit ONE */
 exports.One = createOne();
-// Holds the identity converter (unique). This converter does nothing
-// (ONE.convert(x) == x).
+/** Holds the identity converter (unique). This converter does nothing (ONE.convert(x) == x). */
 var identityConverter = createIdentityConverter();
-/// Creates a base unit having the specified symbol.
-/// <param name="symbol">the symbol of this base unit.</param>
+/**
+ * Creates a base unit having the specified symbol.
+ * @param quantity The quantity of the resulting unit.
+ * @param symbol The symbol of this base unit.
+ */
 function createBase(quantity, symbol) {
     return create(quantity, { type: "base", symbol: symbol });
 }
 exports.createBase = createBase;
-/// Creates an alternate unit for the specified unit identified by the
-/// specified symbol.
-/// <param name="symbol">the symbol for this alternate unit.</param>
-/// <param name="parent">parent the system unit from which this alternate unit is derived.</param>
+/**
+ * Creates an alternate unit for the specified unit identified by the
+ * specified symbol.
+ * @param symbol The symbol for this alternate unit.
+ * @param parent Parent the system unit from which this alternate unit is derived.
+ */
 function createAlternate(symbol, parent) {
     return create(parent.quantity, { type: "alternate", symbol: symbol, parent: parent });
 }
 exports.createAlternate = createAlternate;
-// Used solely to create ONE instance.
-function createOne() {
-    return create("Dimensionless", { type: "product", elements: [] });
-}
-// Creates a ProductUnit.
+/**
+ * Returns the product of the specified units.
+ * @param quantity The quantity of the resulting unit.
+ * @param left The left unit operand.
+ * @param right The right unit operand.</param>
+ * @returns left * right
+*/
 function times(quantity, left, right) {
     return product(quantity, left, right);
 }
 exports.times = times;
-// Creates a ProductUnit.
+/**
+ * Returns the quotient of the specified units.
+ * @param quantity The quantity of the resulting unit.
+§* * @param left The dividend unit operand.
+ * @param right The divisor unit operand.
+ * @returns left / right
+ */
 function divide(quantity, left, right) {
     return quotient(quantity, left, right);
 }
 exports.divide = divide;
-// Simulate operator overload
 function timesNumber(factor, unit) {
     return transform(createFactorConverter(factor), unit);
 }
 exports.timesNumber = timesNumber;
-// Simulate operator overload
 function divideNumber(factor, unit) {
     return transform(createFactorConverter(1.0 / factor), unit);
 }
 exports.divideNumber = divideNumber;
-// Simulate operator overload
 function plus(offset, unit) {
     return transform(createOffsetConverter(offset), unit);
 }
 exports.plus = plus;
-// Simulate operator overload
 function minus(offset, unit) {
     return transform(createOffsetConverter(-offset), unit);
 }
 exports.minus = minus;
+/**
+ * Converts numeric values from a unit to another unit.
+ * @param value The numeric value to convert.
+ * @param fromUnit The unit from which to convert the numeric value.
+ * @param toUnit The unit to which to convert the numeric value.
+ * @returns The converted numeric value.
+ */
 function convert(value, fromUnit, toUnit) {
     var converter = getConverterTo(toUnit, fromUnit);
     return convertWithConverter(value, converter);
 }
 exports.convert = convert;
-/// Returns a converter of numeric values from this unit to another unit.
-/// <param name="that">the unit to which to convert the numeric values.</param>
-/// <returns>the converter from this unit to <code>that</code> unit.</returns>
+///////////////////////////////
+/// BEGIN PRIVATE DECLARATIONS
+///////////////////////////////
 function getConverterTo(toUnit, unit) {
     if (unit == toUnit) {
         return identityConverter;
@@ -88,12 +103,12 @@ function transform(operation, unit) {
     if (operation === identityConverter) {
         return unit;
     }
-    return createTransformed(unit, operation);
+    return createTransformedUnit(unit, operation);
 }
 /// Creates a transformed unit from the specified parent unit.
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
-function createTransformed(parentUnit, toParentUnitConverter) {
+function createTransformedUnit(parentUnit, toParentUnitConverter) {
     return create(parentUnit.quantity, { type: "transformed", parentUnit: parentUnit, toParentUnitConverter: toParentUnitConverter });
 }
 function create(quantity, innerUnit) {
@@ -127,21 +142,11 @@ function fromProduct(quantity, leftElems, rightElems) {
 function createElement(unit, pow) {
     return { unit: unit, pow: pow };
 }
-/// <summary>
-/// Returns the product of the specified units.
-/// </summary>
-/// <param name="left">the left unit operand.</param>
-/// <param name="right">the right unit operand.</param>
-/// <returns>left * right</returns>
 function product(quantity, left, right) {
     var leftelements = getElements(left);
     var rightelements = getElements(right);
     return fromProduct(quantity, leftelements, rightelements);
 }
-/// Returns the quotient of the specified units.
-/// <param name="left">the dividend unit operand.</param>
-/// <param name="right">right the divisor unit operand.</param>
-/// <returns>dividend / divisor</returns>
 function quotient(quantity, left, right) {
     var leftelements = getElements(left);
     var invertedRightelements = [];
@@ -239,5 +244,9 @@ function convertWithConverter(value, converter) {
 /// <returns>the concatenation of this converter with the other converter.</returns>
 function concatenateConverters(concatConverter, converter) {
     return concatConverter === identityConverter ? converter : createCompoundConverter(concatConverter, converter);
+}
+// Used solely to create ONE instance.
+function createOne() {
+    return create("Dimensionless", { type: "product", elements: [] });
 }
 //# sourceMappingURL=unit.js.map
