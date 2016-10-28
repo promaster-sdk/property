@@ -7,6 +7,10 @@ var compare_utils_1 = require("../utils/compare_utils");
  * Creates an amount that represents the an exact/absolute value in the specified
  * unit. For example if you create an exact amount of 2 degrees Fahrenheit that
  * will represent -16.6666667 degrees Celsius.
+ * @param value {number} The numeric value of the amount.
+ * @param unit {Unit<T>} The unit of the amount.
+ * @param decimalCount {number | undefined} The decimalCount of the amount.
+ * @returns {Amount<T>} The created amount.
  */
 function create(value, unit, decimalCount) {
     if (decimalCount === void 0) { decimalCount = undefined; }

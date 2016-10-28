@@ -14,7 +14,7 @@
     "publish:patch": "npm run build && node scripts/publish.js patch",
     "tsc:src": "tsc -p src",
     "tsc:test": "tsc",
-    "gen-doc": "node scripts/gen-doc.js",
+    "gen-doc": "npm run build && node scripts/gen-doc.js",
     "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
     "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
     "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",

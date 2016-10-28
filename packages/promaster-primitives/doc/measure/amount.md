@@ -1,7 +1,7 @@
 ## Functions
 
 <dl>
-<dt><a href="#create">create()</a></dt>
+<dt><a href="#create">create(value, unit, decimalCount)</a> ⇒ <code>Amount.&lt;T&gt;</code></dt>
 <dd><p>Creates an amount that represents the an exact/absolute value in the specified
 unit. For example if you create an exact amount of 2 degrees Fahrenheit that
 will represent -16.6666667 degrees Celsius.</p>
@@ -24,12 +24,20 @@ The resulting amount will be of the same quantity as the two amounts.</p>
 
 <a name="create"></a>
 
-## create()
+## create(value, unit, decimalCount) ⇒ <code>Amount.&lt;T&gt;</code>
 Creates an amount that represents the an exact/absolute value in the specified
 unit. For example if you create an exact amount of 2 degrees Fahrenheit that
 will represent -16.6666667 degrees Celsius.
 
 **Kind**: global function  
+**Returns**: <code>Amount.&lt;T&gt;</code> - The created amount.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| value | <code>number</code> | The numeric value of the amount. |
+| unit | <code>Unit.&lt;T&gt;</code> | The unit of the amount. |
+| decimalCount | <code>number</code> &#124; <code>undefined</code> | The decimalCount of the amount. |
+
 <a name="neg"></a>
 
 ## neg()
