@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "skipLibCheck": false,
-    "jsx": "react",
     "newLine": "LF",
-    "noEmit": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -16,7 +14,6 @@
     "isolatedModules": false,
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false,
-    "moduleResolution": "node",
     "allowUnusedLabels": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
