@@ -25,7 +25,7 @@ for(let file of filelist) {
   const source = fs.readFileSync(file, "utf8");
   //console.log("source", source);
   const data = jsdoc2md.renderSync({ source: source });
-  if(source !== "") {
+  if(data !== "") {
     const relativePath = path.relative(libPath, file);
     console.log(relativePath);
     const outFile = path.join(docPath, relativePath.substring(0, relativePath.length - path.extname(relativePath).length)) + ".md";
