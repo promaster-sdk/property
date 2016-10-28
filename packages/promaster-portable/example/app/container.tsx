@@ -1,6 +1,6 @@
 import * as React from "react";
 import {merge} from "./utils";
-import {HelloWorld} from "./hello-world";
+import {AbstractImageExample} from "./abstract-image-example";
 
 interface Example {
   readonly name: string;
@@ -20,8 +20,8 @@ export class Container extends React.Component<void, State> {
       selectedExample: 0,
       examples: [
         {
-          name: "Test",
-          component: HelloWorld
+          name: "AbstractImage",
+          component: AbstractImageExample
         }
       ]
     };

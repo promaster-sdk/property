@@ -36,8 +36,8 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "promaster-react": ["../src"],
-      "promaster-react/*": ["../src/*"]
+      "promaster-portable": ["../src"],
+      "promaster-portable/*": ["../src/*"]
     }
   },
   "include": [
