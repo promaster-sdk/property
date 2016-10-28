@@ -6,6 +6,13 @@ to keep this single repo well maintained, documented, and tested.
 This implementaiton uses a functional approach with pure data-records and functions that operates on those data-records.
 If desired, other approches such as class-based can be built on top by combining the data-records and functions into classes. 
 
+# Libraries
+## Measure
+
+* [Amount](./doc/measure/amount.md)
+* [Unit](./doc/measure/unit.md)
+* [Units](./doc/measure/units.md)
+
 # Scripts
 
 To publish do npm run publish:patch
