@@ -21,22 +21,23 @@ if(fs.existsSync(docPath))
 fs.mkdirSync(docPath);
 
 for(let file of filelist) {
-  //console.log(file);
+  //console.log("file", file);
   const source = fs.readFileSync(file, "utf8");
   //console.log("source", source);
-  const data = jsdoc2md.renderSync({ source: source });
+  const data = jsdoc2md.renderSync({ files: file });
   if(data !== "") {
     const relativePath = path.relative(libPath, file);
-    console.log(relativePath);
+    //console.log(relativePath);
     const outFile = path.join(docPath, relativePath.substring(0, relativePath.length - path.extname(relativePath).length)) + ".md";
     const outDir = path.dirname(outFile);
     console.log("outFile", outFile);
-    console.log("outDir", outDir);
+    //console.log("outDir", outDir);
     mkdirp.sync(outDir);
     fs.writeFileSync(outFile, data);
   }
 }
 
+console.log("DONE!");
 
 // List all files in a directory in Node.js recursively in a synchronous fashion
 function walkSync(dir, filelist) {
