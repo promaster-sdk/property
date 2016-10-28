@@ -8,7 +8,7 @@
   "typings": "lib/index",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "http-server",
+    "start": "http-server -c-1",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --version && tsc -p src",
     "tsc:example": "tsc -p example",
@@ -21,7 +21,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.2.1",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.1.13"
+    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.4.1"
   },
   "devDependencies": {
     "@types/react": "^0.14.41",
@@ -34,7 +34,7 @@
   "jspm": {
     "dependencies": {
       "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.2.1",
-      "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.1.13",
+      "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.4.1",
       "react": "npm:react@^15.3.2"
     }
   }

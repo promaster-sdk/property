@@ -106,7 +106,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
         })),
       autoSelectSingleValidValue: true,
       translatePropertyName: (propertyName: string) => `${propertyName}_Translation`,
-      translatePropertyValue: (propertyName: string, value: number | null) => `${propertyName}_${value}_Translation`,
+      translatePropertyValue: (propertyName: string, value: number | undefined) => `${propertyName}_${value}_Translation`,
       translateValueMustBeNumericMessage: () => "value_must_be_numeric",
       translateValueIsRequiredMessage: () => "value_is_required",
       classNames: classNames

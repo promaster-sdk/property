@@ -2,7 +2,7 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import * as React from "react";
-import {Units, Unit} from "promaster-primitives";
+import {Units, Unit, UnitName} from "promaster-primitives";
 
 export interface AmountFormatSelectorProps {
     readonly key?: string,
@@ -44,15 +44,14 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
 
             return (
                 <span className={className} onClick={(_:any) => this.setState({active: true})}>
-                    {Unit.getLabel(selectedUnit)}
+                    {UnitName.getName(selectedUnit)}
 			    </span>
             );
 
         }
 
         // Get a list of all units within the quantity
-        const quantity = Unit.getQuantityType(selectedUnit);
-        const units = Units.getUnitsForQuantity(quantity);
+        const units = Units.getUnitsForQuantity(selectedUnit.quantity);
         const unitNames = units.map((u) => Units.getStringFromUnit(u));
         const selectedUnitName = Units.getStringFromUnit(selectedUnit);
 
@@ -73,7 +72,7 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
                         }}>
                     {
                         units.map((u, index) => <option key={unitNames[index]}
-                                                        value={unitNames[index]}> {Unit.getLabel(u)} </option>)
+                                                        value={unitNames[index]}> {UnitName.getName(u)} </option>)
                     }
                 </select>
                 <select className={classNames.precision}
