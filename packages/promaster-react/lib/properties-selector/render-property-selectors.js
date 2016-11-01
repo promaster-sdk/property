@@ -18,18 +18,21 @@ function renderPropertySelectors(_a) {
             return (value.value === undefined && selectedValue === undefined) || (value.value && promaster_primitives_1.PropertyValue.equals(selectedValue, value.value));
         });
         var isValid;
+        var defaultFormat = { unit: promaster_primitives_1.Units.One, decimalCount: 2 };
         switch (getPropertyType(property.quantity)) {
             case "integer":
                 isValid = selectedValueItem ? promaster_primitives_1.PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter) : false;
                 break;
             case "amount":
+                defaultFormat = selectedValue && selectedValue.type === "amount" ?
+                    { unit: selectedValue.value.unit, decimalCount: selectedValue.value.decimalCount } : defaultFormat;
                 isValid = property.validationFilter && promaster_primitives_1.PropertyFilter.isValid(selectedProperties, property.validationFilter);
                 break;
             default:
                 isValid = true;
         }
         var isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
-        var propertyFormat = propertyFormats[property.name] || { unit: promaster_primitives_1.Units.One, decimalCount: 2 };
+        var propertyFormat = propertyFormats[property.name] || defaultFormat;
         return {
             sortNo: property.sortNo,
             propertyName: property.name,

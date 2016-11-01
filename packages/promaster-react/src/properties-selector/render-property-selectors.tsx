@@ -113,11 +113,14 @@ export function renderPropertySelectors({
           (value.value === undefined && selectedValue === undefined) || (value.value && PropertyValue.equals(selectedValue, value.value)));
 
       let isValid: boolean;
+      let defaultFormat: AmountFormat = {unit: Units.One, decimalCount: 2};
       switch (getPropertyType(property.quantity)) {
         case "integer":
           isValid = selectedValueItem ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter) : false;
           break;
         case "amount":
+          defaultFormat = selectedValue && selectedValue.type === "amount" ?
+            {unit: selectedValue.value.unit, decimalCount: selectedValue.value.decimalCount } : defaultFormat;
           isValid = property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter);
           break;
         default:
@@ -126,8 +129,7 @@ export function renderPropertySelectors({
 
       const isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
       // TODO: Better handling of format to use when the format is missing in the map
-      const propertyFormat = propertyFormats[property.name] || {unit: Units.One, decimalCount: 2};
-
+      const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
       return {
         sortNo: property.sortNo,
