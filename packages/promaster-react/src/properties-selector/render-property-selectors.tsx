@@ -200,7 +200,7 @@ function renderPropertySelector(propertyName: string,
   switch (getPropertyType(quantity)) {
     case "text":
       const value: string | undefined = selectedValue && PropertyValue.getText(selectedValue);
-      if (!value)
+      if (value === undefined)
         throw new Error("No value!");
       return textboxPropertySelector({
         value: value,

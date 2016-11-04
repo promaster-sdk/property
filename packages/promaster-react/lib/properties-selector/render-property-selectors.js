@@ -57,7 +57,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
     switch (getPropertyType(quantity)) {
         case "text":
             var value = selectedValue && promaster_primitives_1.PropertyValue.getText(selectedValue);
-            if (!value)
+            if (value === undefined)
                 throw new Error("No value!");
             return textboxPropertySelector({
                 value: value,
