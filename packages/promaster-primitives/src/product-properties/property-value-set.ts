@@ -177,7 +177,7 @@ export function getValuesWithPrefix(prefix: string, removePrefix: boolean, set: 
 export function getValuesWithoutPrefix(prefix: string, removePrefix: boolean, set: PropertyValueSet): PropertyValueSet {
   let newSet = {};
   for (let name of Object.keys(set)) {
-    if (!name.startsWith(prefix)) {
+    if (name.substr(0, prefix.length) !== prefix) {
       newSet[removePrefix ? name.substring(prefix.length) : name] = set[name];
     }
   }
@@ -232,7 +232,7 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
   var entries = {};
   // Add extra semicolon on the end to close last name/value pair
   var toParse = encodedValueSet;
-  if (!toParse.endsWith(";"))
+  if (toParse.charAt(toParse.length - 1) !== ";")
     toParse += ";";
   //StringBuffer name = new StringBuffer();
   let name: string = "";

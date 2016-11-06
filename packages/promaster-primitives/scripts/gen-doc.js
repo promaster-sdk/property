@@ -16,16 +16,16 @@ const filelist = walkSync(libPath);
 const docPath = path.join(basePath, "doc");
 //const docPath = "doc";
 console.log("docPath", docPath);
-if(fs.existsSync(docPath))
+if (fs.existsSync(docPath))
   rimfaf.sync(docPath);
 fs.mkdirSync(docPath);
 
-for(let file of filelist) {
+for (let file of filelist) {
   //console.log("file", file);
   const source = fs.readFileSync(file, "utf8");
   //console.log("source", source);
-  const data = jsdoc2md.renderSync({ files: file });
-  if(data !== "") {
+  const data = jsdoc2md.renderSync({files: file});
+  if (data !== "") {
     const relativePath = path.relative(libPath, file);
     //console.log(relativePath);
     const outFile = path.join(docPath, relativePath.substring(0, relativePath.length - path.extname(relativePath).length)) + ".md";
@@ -43,14 +43,14 @@ console.log("DONE!");
 function walkSync(dir, filelist) {
   const files = fs.readdirSync(dir);
   filelist = filelist || [];
-  for(let file of files) {
-    if(!file.startsWith(".")) {
+  for (let file of files) {
+    if (file.charAt(0) !== ".") {
       const nextPath = path.join(dir, file);
       if (fs.statSync(nextPath).isDirectory()) {
         filelist = walkSync(nextPath, filelist);
       }
       else {
-        if(file.endsWith(".js"))
+        if (file.endsWith(".js"))
           filelist.push(nextPath);
       }
     }

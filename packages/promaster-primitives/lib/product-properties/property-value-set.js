@@ -161,7 +161,7 @@ function getValuesWithPrefix(prefix, removePrefix, set) {
     var newSet = {};
     for (var _i = 0, _a = Object.keys(set); _i < _a.length; _i++) {
         var name_4 = _a[_i];
-        if (name_4.startsWith(prefix)) {
+        if (name_4.length > 0 && name_4.substr(0, prefix.length) === prefix) {
             newSet[removePrefix ? name_4.substring(prefix.length) : name_4] = set[name_4];
         }
     }
@@ -172,7 +172,7 @@ function getValuesWithoutPrefix(prefix, removePrefix, set) {
     var newSet = {};
     for (var _i = 0, _a = Object.keys(set); _i < _a.length; _i++) {
         var name_5 = _a[_i];
-        if (!name_5.startsWith(prefix)) {
+        if (name_5.substr(0, prefix.length) !== prefix) {
             newSet[removePrefix ? name_5.substring(prefix.length) : name_5] = set[name_5];
         }
     }
@@ -227,7 +227,7 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet) {
     var entries = {};
     // Add extra semicolon on the end to close last name/value pair
     var toParse = encodedValueSet;
-    if (!toParse.endsWith(";"))
+    if (toParse.charAt(toParse.length - 1) !== ";")
         toParse += ";";
     //StringBuffer name = new StringBuffer();
     var name = "";

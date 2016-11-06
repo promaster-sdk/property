@@ -174,7 +174,7 @@ function _fromSerializedStringOrUndefinedIfInvalidString(encodedValue) {
     if (encodedValue == null)
         return undefined;
     var deserializedValue;
-    if (encodedValue.startsWith("\"") && encodedValue.endsWith("\"")) {
+    if (encodedValue.charAt(0) === "\"" && encodedValue.charAt(encodedValue.length - 1) === "\"") {
         var valueString = _decodeFromSafeString(encodedValue);
         deserializedValue = fromText(valueString);
     }
@@ -223,9 +223,9 @@ function _decodeFromSafeString(safeString) {
     // We use '"' to enclose a string so it must be encoded as %22 inside strings
     //    var unsafeString = safeString.Trim('"');
     var unsafeString = safeString;
-    while (unsafeString.startsWith('"') && unsafeString.length > 0)
+    while (unsafeString.length > 0 && unsafeString.charAt(0) === '"')
         unsafeString = unsafeString.substring(1);
-    while (unsafeString.endsWith('"') && unsafeString.length > 0)
+    while (unsafeString.length > 0 && unsafeString.charAt(unsafeString.length - 1) === '"')
         unsafeString = unsafeString.substring(0, unsafeString.length - 1);
     unsafeString = unsafeString.replace(/%22/g, "\"");
     //// **** OBSOLETE BEGIN - WE ONLY SUPPORT DECODING OF THESE CHARS FOR BACKWARDS COMPABILITY ****
