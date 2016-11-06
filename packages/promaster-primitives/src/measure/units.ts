@@ -6,7 +6,8 @@ import * as q from "./quantity";
 import {Quantity} from "./quantity";
 
 const _unitToString: Map<Unit.Unit<any>, string> = new Map();
-const _stringToUnit: Map<string, Unit.Unit<any>> = new Map();
+// const _stringToUnit: Map<string, Unit.Unit<any>> = new Map();
+const _stringToUnit: {[key: string]: Unit.Unit<any>} = {};
 const _quantityToUnits: Map<q.Quantity, Array<Unit.Unit<any>>> = new Map();
 
 function _register<T extends q.Quantity>(unit: Unit.Unit<T>, label: string = ""): Unit.Unit<T> {
@@ -612,12 +613,12 @@ export const LiterPerSecondPerKiloWatt: Unit.Unit<q.VolumeFlowPerPower> = _regis
 
 export function isUnit(unit: string): boolean {
   _ensureMetaAdded();
-  return _stringToUnit.has(unit.trim().toLowerCase());
+  return _stringToUnit.hasOwnProperty(unit.trim().toLowerCase());
 }
 
 export function getUnitFromString(unitString: string, onError?: (unitString: string) => Unit.Unit<any>): Unit.Unit<any> {
   _ensureMetaAdded();
-  let unit = _stringToUnit.get(unitString.trim().toLowerCase());
+  let unit = _stringToUnit[unitString.trim().toLowerCase()];
   if (unit === undefined) {
     if (onError == null)
       throw new Error("Unknown unit " + unitString);
@@ -658,7 +659,7 @@ export function getUnitsForQuantity(quantityType: q.Quantity): Array<Unit.Unit<a
 
 export function getAllUnits(): Array<Unit.Unit<any>> {
   _ensureMetaAdded();
-  const unitsArray = Array.from(_stringToUnit.values());
+  var unitsArray = Object.keys(_stringToUnit).map((key) => _stringToUnit[key]);
   return unitsArray;
 }
 
@@ -675,7 +676,7 @@ let _metaAdded: boolean = false;
 function _addMeta(quantity: q.Quantity, name: string, unit: Unit.Unit<any>): void {
   let lowerName = name.toLowerCase();
   _unitToString.set(unit, lowerName);
-  _stringToUnit.set(lowerName, unit);
+  _stringToUnit[lowerName] = unit;
   let quantityUnits = _quantityToUnits.get(quantity);
   if (quantityUnits === undefined) {
     quantityUnits = [];
