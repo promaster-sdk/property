@@ -3,9 +3,9 @@ var Unit = require("./unit");
 var UnitName = require("./unit-name");
 var UnitDivide = require('./unit-divide');
 var UnitTimes = require('./unit-times');
-var _unitToString = new Map();
+// const _unitToString: Map<Unit.Unit<any>, string> = new Map();
+var _unitToString = {};
 var _stringToUnit = {};
-// const _quantityToUnits: Map<q.Quantity, Array<Unit.Unit<any>>> = new Map();
 var _quantityToUnits = {};
 function _register(unit, label) {
     if (label === void 0) { label = ""; }
@@ -519,7 +519,7 @@ function getUnitFromString(unitString, onError) {
 exports.getUnitFromString = getUnitFromString;
 function getStringFromUnit(unit) {
     _ensureMetaAdded();
-    var name = _unitToString.get(unit);
+    var name = _unitToString[JSON.stringify(unit)];
     if (name === undefined)
         throw new Error("Unknown Unit " + unit);
     return name;
@@ -562,7 +562,7 @@ exports.getAllQuantities = getAllQuantities;
 var _metaAdded = false;
 function _addMeta(quantity, name, unit) {
     var lowerName = name.toLowerCase();
-    _unitToString.set(unit, lowerName);
+    _unitToString[JSON.stringify(unit)] = lowerName;
     _stringToUnit[lowerName] = unit;
     var quantityUnits = _quantityToUnits[quantity];
     if (quantityUnits === undefined) {

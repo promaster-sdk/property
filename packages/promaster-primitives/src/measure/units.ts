@@ -5,7 +5,7 @@ import * as UnitTimes from './unit-times';
 import * as q from "./quantity";
 import {Quantity} from "./quantity";
 
-const _unitToString: Map<Unit.Unit<any>, string> = new Map();
+const _unitToString: {[key: string]: string} = {};
 const _stringToUnit: {[key: string]: Unit.Unit<any>} = {};
 const _quantityToUnits: {[key: string]: Array<Unit.Unit<any>>} = {};
 
@@ -629,7 +629,7 @@ export function getUnitFromString(unitString: string, onError?: (unitString: str
 
 export function getStringFromUnit(unit: Unit.Unit<any>): string {
   _ensureMetaAdded();
-  let name = _unitToString.get(unit);
+  const name = _unitToString[JSON.stringify(unit)];
   if (name === undefined)
     throw new Error("Unknown Unit " + unit);
   return name;
@@ -674,7 +674,7 @@ let _metaAdded: boolean = false;
 
 function _addMeta(quantity: q.Quantity, name: string, unit: Unit.Unit<any>): void {
   let lowerName = name.toLowerCase();
-  _unitToString.set(unit, lowerName);
+  _unitToString[JSON.stringify(unit)] = lowerName;
   _stringToUnit[lowerName] = unit;
   let quantityUnits = _quantityToUnits[quantity];
   if (quantityUnits === undefined) {
