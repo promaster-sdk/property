@@ -1,3 +1,4 @@
+/// <reference types="lodash" />
 import * as PropertyValue from "./property-value";
 import * as Amount from "../measure/amount";
 import { PropertyType } from "./property-value";

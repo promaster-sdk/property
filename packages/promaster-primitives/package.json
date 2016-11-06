@@ -37,6 +37,7 @@
     "rimraf": "^2.5.4",
     "shelljs": "^0.7.4",
     "ts-node": "^1.6.0",
+    "typedoc": "^0.5.1",
     "typescript": "^2.0.3"
   },
   "jspm": {

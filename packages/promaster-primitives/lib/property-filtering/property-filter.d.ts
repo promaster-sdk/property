@@ -1,3 +1,4 @@
+/// <reference types="lodash" />
 import * as PropertyValueSet from "../product-properties/property-value-set";
 import * as Ast from "./property-filter-ast";
 export interface PropertyFilter {
