@@ -6,9 +6,8 @@ import * as q from "./quantity";
 import {Quantity} from "./quantity";
 
 const _unitToString: Map<Unit.Unit<any>, string> = new Map();
-// const _stringToUnit: Map<string, Unit.Unit<any>> = new Map();
 const _stringToUnit: {[key: string]: Unit.Unit<any>} = {};
-const _quantityToUnits: Map<q.Quantity, Array<Unit.Unit<any>>> = new Map();
+const _quantityToUnits: {[key: string]: Array<Unit.Unit<any>>} = {};
 
 function _register<T extends q.Quantity>(unit: Unit.Unit<T>, label: string = ""): Unit.Unit<T> {
   UnitName.registerLabel(label, unit);
@@ -638,7 +637,7 @@ export function getStringFromUnit(unit: Unit.Unit<any>): string {
 
 export function getQuantityTypeFromString(quantityString: string, onError?: (quantityString: string) => q.Quantity): q.Quantity {
   _ensureMetaAdded();
-  const quantityArray = Array.from(_quantityToUnits.keys());
+  const quantityArray = Object.keys(_quantityToUnits);
   const foundIndex = quantityArray.indexOf(quantityString as Quantity);
   if (foundIndex < 0)
     throw new Error(`Unknown quantity '${quantityString}'`);
@@ -651,7 +650,7 @@ export function getStringFromQuantityType(quantity: Quantity): string {
 
 export function getUnitsForQuantity(quantityType: q.Quantity): Array<Unit.Unit<any>> {
   _ensureMetaAdded();
-  const units = _quantityToUnits.get(quantityType);
+  const units = _quantityToUnits[quantityType];
   if (units === undefined)
     throw new Error("Unknown quantity type");
   return units;
@@ -665,7 +664,7 @@ export function getAllUnits(): Array<Unit.Unit<any>> {
 
 export function getAllQuantities(): Array<Quantity> {
   _ensureMetaAdded();
-  const quantityArray = Array.from(_quantityToUnits.keys());
+  const quantityArray = Object.keys(_quantityToUnits) as Array<q.Quantity>;
   return quantityArray;
 }
 
@@ -677,10 +676,10 @@ function _addMeta(quantity: q.Quantity, name: string, unit: Unit.Unit<any>): voi
   let lowerName = name.toLowerCase();
   _unitToString.set(unit, lowerName);
   _stringToUnit[lowerName] = unit;
-  let quantityUnits = _quantityToUnits.get(quantity);
+  let quantityUnits = _quantityToUnits[quantity];
   if (quantityUnits === undefined) {
     quantityUnits = [];
-    _quantityToUnits.set(quantity, quantityUnits);
+    _quantityToUnits[quantity] = quantityUnits;
   }
   quantityUnits.push(unit);
 }

@@ -4,8 +4,9 @@ var UnitName = require("./unit-name");
 var UnitDivide = require('./unit-divide');
 var UnitTimes = require('./unit-times');
 var _unitToString = new Map();
-var _stringToUnit = new Map();
-var _quantityToUnits = new Map();
+var _stringToUnit = {};
+// const _quantityToUnits: Map<q.Quantity, Array<Unit.Unit<any>>> = new Map();
+var _quantityToUnits = {};
 function _register(unit, label) {
     if (label === void 0) { label = ""; }
     UnitName.registerLabel(label, unit);
@@ -501,12 +502,12 @@ exports.GallonsPerMinutePerTonCooling = _register(UnitDivide.volumeFlowByPower(e
 exports.LiterPerSecondPerKiloWatt = _register(UnitDivide.volumeFlowByPower(exports.LiterPerSecond, exports.KiloWatt), "l/s/kW");
 function isUnit(unit) {
     _ensureMetaAdded();
-    return _stringToUnit.has(unit.trim().toLowerCase());
+    return _stringToUnit.hasOwnProperty(unit.trim().toLowerCase());
 }
 exports.isUnit = isUnit;
 function getUnitFromString(unitString, onError) {
     _ensureMetaAdded();
-    var unit = _stringToUnit.get(unitString.trim().toLowerCase());
+    var unit = _stringToUnit[unitString.trim().toLowerCase()];
     if (unit === undefined) {
         if (onError == null)
             throw new Error("Unknown unit " + unitString);
@@ -526,7 +527,7 @@ function getStringFromUnit(unit) {
 exports.getStringFromUnit = getStringFromUnit;
 function getQuantityTypeFromString(quantityString, onError) {
     _ensureMetaAdded();
-    var quantityArray = Array.from(_quantityToUnits.keys());
+    var quantityArray = Object.keys(_quantityToUnits);
     var foundIndex = quantityArray.indexOf(quantityString);
     if (foundIndex < 0)
         throw new Error("Unknown quantity '" + quantityString + "'");
@@ -539,7 +540,7 @@ function getStringFromQuantityType(quantity) {
 exports.getStringFromQuantityType = getStringFromQuantityType;
 function getUnitsForQuantity(quantityType) {
     _ensureMetaAdded();
-    var units = _quantityToUnits.get(quantityType);
+    var units = _quantityToUnits[quantityType];
     if (units === undefined)
         throw new Error("Unknown quantity type");
     return units;
@@ -547,13 +548,13 @@ function getUnitsForQuantity(quantityType) {
 exports.getUnitsForQuantity = getUnitsForQuantity;
 function getAllUnits() {
     _ensureMetaAdded();
-    var unitsArray = Array.from(_stringToUnit.values());
+    var unitsArray = Object.keys(_stringToUnit).map(function (key) { return _stringToUnit[key]; });
     return unitsArray;
 }
 exports.getAllUnits = getAllUnits;
 function getAllQuantities() {
     _ensureMetaAdded();
-    var quantityArray = Array.from(_quantityToUnits.keys());
+    var quantityArray = Object.keys(_quantityToUnits);
     return quantityArray;
 }
 exports.getAllQuantities = getAllQuantities;
@@ -562,11 +563,11 @@ var _metaAdded = false;
 function _addMeta(quantity, name, unit) {
     var lowerName = name.toLowerCase();
     _unitToString.set(unit, lowerName);
-    _stringToUnit.set(lowerName, unit);
-    var quantityUnits = _quantityToUnits.get(quantity);
+    _stringToUnit[lowerName] = unit;
+    var quantityUnits = _quantityToUnits[quantity];
     if (quantityUnits === undefined) {
         quantityUnits = [];
-        _quantityToUnits.set(quantity, quantityUnits);
+        _quantityToUnits[quantity] = quantityUnits;
     }
     quantityUnits.push(unit);
 }
