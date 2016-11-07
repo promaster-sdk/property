@@ -297,6 +297,6 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
 
 }
 
-function amend<T1, T2>(obj1: T1, obj2: T2): T1 & T2 {
+function amend<PropertyValueSet, T2>(obj1: PropertyValueSet, obj2: T2): PropertyValueSet {
   return Object.assign({}, obj1, obj2);
 }
