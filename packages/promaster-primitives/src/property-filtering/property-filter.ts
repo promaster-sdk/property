@@ -64,7 +64,7 @@ export function isSyntaxValid(filter: string, propertyNames: Array<string> | und
 	var parsed = create(filter, ast);
 
 	const properties = getReferencedProperties(parsed);
-	for (let p of Array.from(properties)) {
+	for (let p of properties) {
 		if (propertyNames.indexOf(p) === -1)
 			return false;
 	}
