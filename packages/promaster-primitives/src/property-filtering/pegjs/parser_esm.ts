@@ -31,8 +31,8 @@
     this.location = location;
     this.name     = "SyntaxError";
 
-    if (typeof Error.captureStackTrace === "function") {
-      Error.captureStackTrace(this, peg$SyntaxError);
+    if (typeof (Error as any).captureStackTrace === "function") {
+      (Error as any).captureStackTrace(this, peg$SyntaxError);
     }
   }
 
