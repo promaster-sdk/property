@@ -3,14 +3,15 @@ import * as Unit from "./unit";
 
 // We keep a global repository of Labels becasue if a Unit object is derived from arithmetic operations
 // it may still be considered equal to an existing unit and thus should have the same label.
-const _typeLabels: Map<Unit.Unit<Quantity>, string> = new Map();
+// const _typeLabels: Map<Unit.Unit<Quantity>, string> = new Map();
+const _typeLabels: {[unit: string]: string} = {};
 
 export function registerLabel<T extends Quantity>(label: string, unit: Unit.Unit<T>): void {
-  _typeLabels.set(unit, label);
+  _typeLabels[JSON.stringify(unit)] = label;
 }
 
 export function getName<T extends Quantity>(unit: Unit.Unit<T>): string {
-  const label = _typeLabels.get(unit);
+  const label = _typeLabels[JSON.stringify(unit)];
   if (label === undefined)
     return buildDerivedName(unit);
   return label;
