@@ -1,21 +1,18 @@
 import * as Unit from "./unit";
 import * as Units from "./units";
 
+export type MeasureSystem = "SI" | "IP";
+
 export interface UnitInfo {
+  readonly measureSystem: MeasureSystem,
   readonly decimalCount: number,
   readonly coUnit: Unit.Unit<any>
 }
 
-export type MeasureSystem = "SI" | "IP";
-
 const units = new Map<Unit.Unit<any>, UnitInfo>();
-const siUnits = new Map<Unit.Unit<any>, UnitInfo>();
-const ipUnits = new Map<Unit.Unit<any>, UnitInfo>();
 
 // Our objects are readonly so it is OK to return them since their state cannot be mutated
 export const getUnitInfo = ((unit: Unit.Unit<any>) => units.get(unit));
-export const getSiUnitInfo = ((unit: Unit.Unit<any>) => siUnits.get(unit));
-export const getIpUnitInfo = ((unit: Unit.Unit<any>) => ipUnits.get(unit));
 
 addUnit(Units.Ampere, "SI", 2);
 addUnit(Units.Bar, "SI", 2);
@@ -166,9 +163,5 @@ addUnit(Units.Year, null, 0);
 
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
 function addUnit(unit: Unit.Unit<any>, measureSystem: MeasureSystem, decimalCount: number, coUnit?: Unit.Unit<any>) {
-  units.set(unit, {decimalCount, coUnit});
-  if (measureSystem === "SI")
-    siUnits.set(unit, {decimalCount, coUnit});
-  else if (measureSystem === "IP")
-    ipUnits.set(unit, {decimalCount, coUnit});
+  units.set(unit, {measureSystem, decimalCount, coUnit});
 }
