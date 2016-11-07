@@ -8,7 +8,8 @@ export interface PropertyFilter {
 	ast: Ast.Expr;
 }
 
-const _cache: Map<String, PropertyFilter> = new Map<String, PropertyFilter>();
+//const _cache: Map<String, PropertyFilter> = new Map<String, PropertyFilter>();
+const _cache: {[key:string]: PropertyFilter} = {};
 
 export const Empty: PropertyFilter = {text: "", ast: Ast.newEmptyExpr()};
 
@@ -21,7 +22,7 @@ export function fromString(filter: string): PropertyFilter | undefined {
 		throw new Error("Argument 'filter' must be defined.");
 	}
 
-	if (!_cache.has(filter)) {
+	if (!_cache.hasOwnProperty(filter)) {
 		var adjustedFilter = _preProcessString(filter);
 		if (adjustedFilter === "")
 			return Empty;
