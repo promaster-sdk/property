@@ -99,7 +99,7 @@ export function setText(propertyName: string, textValue: string, set: PropertyVa
 /// If a property exists with the same name in the PropertyValueSet as in the
 // replacement set then the value of that property will be replaced.
 export function setValues(replacementSet: PropertyValueSet, set: PropertyValueSet): PropertyValueSet {
-  return Object.assign({}, set, replacementSet);
+  return amend(set, replacementSet);
 
 }
 
