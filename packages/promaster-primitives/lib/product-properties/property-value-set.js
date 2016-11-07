@@ -91,7 +91,7 @@ exports.setText = setText;
 /// If a property exists with the same name in the PropertyValueSet as in the
 // replacement set then the value of that property will be replaced.
 function setValues(replacementSet, set) {
-    return Object.assign({}, set, replacementSet);
+    return amend(set, replacementSet);
 }
 exports.setValues = setValues;
 function keepProperties(propertyNames, set) {

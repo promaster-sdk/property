@@ -3,7 +3,8 @@ var PropertyValue = require("../product-properties/property-value");
 var PropertyValueSet = require("../product-properties/property-value-set");
 var Ast = require("./property-filter-ast");
 var Parser = require("./pegjs/property-filter-parser");
-var _cache = new Map();
+//const _cache: Map<String, PropertyFilter> = new Map<String, PropertyFilter>();
+var _cache = {};
 exports.Empty = { text: "", ast: Ast.newEmptyExpr() };
 function create(text, ast) {
     return { text: text, ast: ast };
@@ -12,7 +13,7 @@ function fromString(filter) {
     if (filter === null || filter === undefined) {
         throw new Error("Argument 'filter' must be defined.");
     }
-    if (!_cache.has(filter)) {
+    if (!_cache.hasOwnProperty(filter)) {
         var adjustedFilter = _preProcessString(filter);
         if (adjustedFilter === "")
             return exports.Empty;
@@ -83,7 +84,7 @@ function getReferencedProperties(filter) {
     if (filter === null || filter === undefined) {
         throw new Error("Argument 'filter' must be defined.");
     }
-    var properties = new Set();
+    var properties = [];
     _findProperties(filter.ast, properties);
     return properties;
 }
@@ -147,7 +148,7 @@ function _findProperties(e, properties) {
             }
             break;
         case "IdentifierExpr": {
-            properties.add(e.name);
+            properties.push(e.name);
             break;
         }
         case "OrExpr":

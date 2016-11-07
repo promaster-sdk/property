@@ -91,11 +91,11 @@ export function isValidMatchMissing(properties: PropertyValueSet.PropertyValueSe
 	return _evaluate(filter.ast, properties, true);
 }
 
-export function getReferencedProperties(filter: PropertyFilter): Set<string> {
+export function getReferencedProperties(filter: PropertyFilter): Array<string> {
 	if (filter === null || filter === undefined) {
 		throw new Error("Argument 'filter' must be defined.");
 	}
-	let properties = new Set<string>();
+	let properties: Array<string> = [];
 	_findProperties(filter.ast, properties);
 	return properties;
 }
@@ -138,7 +138,7 @@ function _preProcessString(filter: string): string {
 	return filter;
 }
 
-function _findProperties(e: any, properties: Set<string>): void {
+function _findProperties(e: any, properties: Array<string>): void {
 
 	switch (e.type) {
 		case "AndExpr":
@@ -158,7 +158,7 @@ function _findProperties(e: any, properties: Set<string>): void {
 				_findProperties(range, properties);
 			break;
 		case "IdentifierExpr": {
-			properties.add(e.name);
+			properties.push(e.name);
 			break;
 		}
 		case "OrExpr":
