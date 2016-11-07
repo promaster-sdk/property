@@ -77,23 +77,23 @@ export function getPropertyNames(set: PropertyValueSet): Array<string> {
 }
 
 export function merge(mergeWith: PropertyValueSet, set: PropertyValueSet): PropertyValueSet {
-  return Object.assign({}, set, mergeWith);
+  return amend(set, mergeWith);
 }
 
 export function set(propertyName: string, propertyValue: PropertyValue.PropertyValue, set: PropertyValueSet): PropertyValueSet {
-  return Object.assign({}, set, {[propertyName]: propertyValue});
+  return amend(set, {[propertyName]: propertyValue});
 }
 
 export function setAmount<T extends Quantity>(propertyName: string, amountValue: Amount.Amount<T>, set: PropertyValueSet): PropertyValueSet {
-  return Object.assign({}, set, {[propertyName]: PropertyValue.fromAmount(amountValue)});
+  return amend(set, {[propertyName]: PropertyValue.fromAmount(amountValue)});
 }
 
 export function setInteger(propertyName: string, integerValue: number, set: PropertyValueSet): PropertyValueSet {
-  return Object.assign({}, set, {[propertyName]: PropertyValue.fromInteger(integerValue)});
+  return amend(set, {[propertyName]: PropertyValue.fromInteger(integerValue)});
 }
 
 export function setText(propertyName: string, textValue: string, set: PropertyValueSet): PropertyValueSet {
-  return Object.assign({}, set, {[propertyName]: PropertyValue.fromText(textValue)});
+  return amend(set, {[propertyName]: PropertyValue.fromText(textValue)});
 }
 
 /// If a property exists with the same name in the PropertyValueSet as in the
@@ -297,4 +297,6 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
 
 }
 
-
+function amend<T1, T2>(obj1: T1, obj2: T2): T1 & T2 {
+  return Object.assign({}, obj1, obj2);
+}
