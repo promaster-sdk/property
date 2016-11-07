@@ -1,13 +1,14 @@
 "use strict";
 // We keep a global repository of Labels becasue if a Unit object is derived from arithmetic operations
 // it may still be considered equal to an existing unit and thus should have the same label.
-var _typeLabels = new Map();
+// const _typeLabels: Map<Unit.Unit<Quantity>, string> = new Map();
+var _typeLabels = {};
 function registerLabel(label, unit) {
-    _typeLabels.set(unit, label);
+    _typeLabels[JSON.stringify(unit)] = label;
 }
 exports.registerLabel = registerLabel;
 function getName(unit) {
-    var label = _typeLabels.get(unit);
+    var label = _typeLabels[JSON.stringify(unit)];
     if (label === undefined)
         return buildDerivedName(unit);
     return label;

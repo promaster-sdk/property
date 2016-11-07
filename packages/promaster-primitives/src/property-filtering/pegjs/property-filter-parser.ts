@@ -9,10 +9,10 @@ export type ParserCallbacks = {
 	createNullExpr(): Ast.NullExpr,
 	createIdentifierExpr(identToken:string): Ast.IdentifierExpr,
 	createValueRangeExpr(v1: Ast.Expr, v2: Ast.Expr): Ast.ValueRangeExpr,
-	createEqualsExpr(leftValue: Ast.Expr, operationType: Ast.EqualsOperationType, rightValueRanges:Iterable<Ast.Expr>): Ast.EqualsExpr,
+	createEqualsExpr(leftValue: Ast.Expr, operationType: Ast.EqualsOperationType, rightValueRanges:Array<Ast.Expr>): Ast.EqualsExpr,
 	createComparisonExpr(leftValue: Ast.Expr, operationType: Ast.ComparisonOperationType, rightValue: Ast.Expr): Ast.ComparisonExpr,
-	createAndExpr(children:Iterable<Ast.Expr>): Ast.AndExpr,
-	createOrExpr(children:Iterable<Ast.Expr>): Ast.OrExpr,
+	createAndExpr(children:Array<Ast.Expr>): Ast.AndExpr,
+	createOrExpr(children:Array<Ast.Expr>): Ast.OrExpr,
 }
 
 export const parserCallbacks:ParserCallbacks = {
