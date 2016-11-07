@@ -300,7 +300,7 @@ describe('main', () => {
         it('should return referenced properties', () => {
             const filter = PropertyFilter.fromString("a>b&c=1|d<2");
             const references = PropertyFilter.getReferencedProperties(filter);
-            assert.equal(references.size, 4);
+            assert.equal(references.length, 4);
         });
 
     });
