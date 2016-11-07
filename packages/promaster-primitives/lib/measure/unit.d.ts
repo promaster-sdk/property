@@ -1,21 +1,21 @@
 import { Quantity, Dimensionless } from "./quantity";
 /**
-* This record represents a determinate quantity (as of length, time, heat, or value)
-* adopted as a standard of measurement.
-*
-* It is helpful to think of instances of this record as recording the history by which
-* they are created. Thus, for example, the string "g/kg" (which is a dimensionless unit)
-* would result from invoking the method toString() on a unit that was created by
-* dividing a gram unit by a kilogram unit. Yet, "kg" divided by "kg" returns ONE and
-* not "kg/kg" due to automatic unit factorization.
-*
-* This record supports the multiplication of offsets units. The result is usually a unit
-* not convertible to its standard unit. Such units may appear in derivative quantities.
-* For example °C/m is an unit of gradient, which is common in atmospheric and oceanographic research.
-*
-* Units raised at rational powers are also supported. For example the cubic root of liter
-* is a unit compatible with meter.
-*/
+ * This record represents a determinate quantity (as of length, time, heat, or value)
+ * adopted as a standard of measurement.
+ *
+ * It is helpful to think of instances of this record as recording the history by which
+ * they are created. Thus, for example, the string "g/kg" (which is a dimensionless unit)
+ * would result from invoking the method toString() on a unit that was created by
+ * dividing a gram unit by a kilogram unit. Yet, "kg" divided by "kg" returns ONE and
+ * not "kg/kg" due to automatic unit factorization.
+ *
+ * This record supports the multiplication of offsets units. The result is usually a unit
+ * not convertible to its standard unit. Such units may appear in derivative quantities.
+ * For example °C/m is an unit of gradient, which is common in atmospheric and oceanographic research.
+ *
+ * Units raised at rational powers are also supported. For example the cubic root of liter
+ * is a unit compatible with meter.
+ */
 export interface Unit<T extends Quantity> {
     readonly quantity: Quantity;
     readonly innerUnit: InnerUnit<T>;
@@ -37,7 +37,7 @@ export interface BaseUnit<T extends Quantity> {
 /**
  * This record represents the units used in expressions to distinguish
  * between quantities of a different nature but of the same dimensions.
-*/
+ */
 export interface AlternateUnit<T extends Quantity> {
     readonly type: "alternate";
     readonly symbol: string;
@@ -135,7 +135,7 @@ export declare function createAlternate<T extends Quantity>(symbol: string, pare
  * @param left The left unit operand.
  * @param right The right unit operand.</param>
  * @returns left * right
-*/
+ */
 export declare function times<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T>;
 /**
  * Returns the quotient of the specified units.

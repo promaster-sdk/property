@@ -65,26 +65,26 @@ function getPropertyNames(set) {
 }
 exports.getPropertyNames = getPropertyNames;
 function merge(mergeWith, set) {
-    return Object.assign({}, set, mergeWith);
+    return amend(set, mergeWith);
 }
 exports.merge = merge;
 function set(propertyName, propertyValue, set) {
-    return Object.assign({}, set, (_a = {}, _a[propertyName] = propertyValue, _a));
+    return amend(set, (_a = {}, _a[propertyName] = propertyValue, _a));
     var _a;
 }
 exports.set = set;
 function setAmount(propertyName, amountValue, set) {
-    return Object.assign({}, set, (_a = {}, _a[propertyName] = PropertyValue.fromAmount(amountValue), _a));
+    return amend(set, (_a = {}, _a[propertyName] = PropertyValue.fromAmount(amountValue), _a));
     var _a;
 }
 exports.setAmount = setAmount;
 function setInteger(propertyName, integerValue, set) {
-    return Object.assign({}, set, (_a = {}, _a[propertyName] = PropertyValue.fromInteger(integerValue), _a));
+    return amend(set, (_a = {}, _a[propertyName] = PropertyValue.fromInteger(integerValue), _a));
     var _a;
 }
 exports.setInteger = setInteger;
 function setText(propertyName, textValue, set) {
-    return Object.assign({}, set, (_a = {}, _a[propertyName] = PropertyValue.fromText(textValue), _a));
+    return amend(set, (_a = {}, _a[propertyName] = PropertyValue.fromText(textValue), _a));
     var _a;
 }
 exports.setText = setText;
@@ -289,5 +289,8 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet) {
         }
     }
     return entries;
+}
+function amend(obj1, obj2) {
+    return Object.assign({}, obj1, obj2);
 }
 //# sourceMappingURL=property-value-set.js.map

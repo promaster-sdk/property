@@ -28,7 +28,7 @@ exports.createAlternate = createAlternate;
  * @param left The left unit operand.
  * @param right The right unit operand.</param>
  * @returns left * right
-*/
+ */
 function times(quantity, left, right) {
     return product(quantity, left, right);
 }
@@ -129,15 +129,32 @@ function fromProduct(quantity, leftElems, rightElems) {
     allElements.push.apply(allElements, leftElems);
     allElements.push.apply(allElements, rightElems);
     var resultElements = [];
-    var unitGroups = new Map();
-    allElements.forEach(function (v) {
-        var group = unitGroups.get(v.unit);
+    // let unitGroups: Map<Unit<any>, Array<Element>> = new Map<Unit<any>, Array<Element>>();
+    // allElements.forEach((v: Element) => {
+    //   const group = unitGroups.get(v.unit);
+    //   if (group === undefined)
+    //     unitGroups.set(v.unit, [v]);
+    //   else
+    //     group.push(v);
+    // });
+    // unitGroups.forEach((unitGroup: Array<Element>, unit: Unit<any>)=> {
+    //   let sumpow: number = unitGroup.reduce((prev: number, element: Element) => prev + element.pow, 0);
+    //   if (sumpow != 0) {
+    //     resultElements.push(createElement(unit, sumpow));
+    //   }
+    // });
+    var unitGroups = {};
+    for (var _i = 0, allElements_1 = allElements; _i < allElements_1.length; _i++) {
+        var v = allElements_1[_i];
+        var group = unitGroups[JSON.stringify(v.unit)];
         if (group === undefined)
-            unitGroups.set(v.unit, [v]);
+            unitGroups[JSON.stringify(v.unit)] = [v];
         else
             group.push(v);
-    });
-    unitGroups.forEach(function (unitGroup, unit) {
+    }
+    Object.keys(unitGroups).forEach(function (unitJson) {
+        var unit = JSON.parse(unitJson);
+        var unitGroup = unitGroups[unitJson];
         var sumpow = unitGroup.reduce(function (prev, element) { return prev + element.pow; }, 0);
         if (sumpow != 0) {
             resultElements.push(createElement(unit, sumpow));

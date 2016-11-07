@@ -3,7 +3,6 @@ var Unit = require("./unit");
 var UnitName = require("./unit-name");
 var UnitDivide = require('./unit-divide');
 var UnitTimes = require('./unit-times');
-// const _unitToString: Map<Unit.Unit<any>, string> = new Map();
 var _unitToString = {};
 var _stringToUnit = {};
 var _quantityToUnits = {};
