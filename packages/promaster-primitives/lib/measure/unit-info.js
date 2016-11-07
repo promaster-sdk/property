@@ -1,12 +1,8 @@
 "use strict";
 var Units = require("./units");
-var units = new Map();
-var siUnits = new Map();
-var ipUnits = new Map();
+var units = {};
 // Our objects are readonly so it is OK to return them since their state cannot be mutated
-exports.getUnitInfo = (function (unit) { return units.get(unit); });
-exports.getSiUnitInfo = (function (unit) { return siUnits.get(unit); });
-exports.getIpUnitInfo = (function (unit) { return ipUnits.get(unit); });
+exports.getUnitInfo = (function (unit) { return units[JSON.stringify(unit)]; });
 addUnit(Units.Ampere, "SI", 2);
 addUnit(Units.Bar, "SI", 2);
 addUnit(Units.BtuPerHour, "IP", 0);
@@ -155,10 +151,6 @@ addUnit(Units.Yard, "IP", 2, Units.Meter);
 addUnit(Units.Year, null, 0);
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
 function addUnit(unit, measureSystem, decimalCount, coUnit) {
-    units.set(unit, { decimalCount: decimalCount, coUnit: coUnit });
-    if (measureSystem === "SI")
-        siUnits.set(unit, { decimalCount: decimalCount, coUnit: coUnit });
-    else if (measureSystem === "IP")
-        ipUnits.set(unit, { decimalCount: decimalCount, coUnit: coUnit });
+    units[JSON.stringify(unit)] = { measureSystem: measureSystem, decimalCount: decimalCount, coUnit: coUnit };
 }
 //# sourceMappingURL=unit-info.js.map

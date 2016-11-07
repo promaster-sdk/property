@@ -9,10 +9,10 @@ export interface UnitInfo {
   readonly coUnit: Unit.Unit<any>
 }
 
-const units = new Map<Unit.Unit<any>, UnitInfo>();
+const units: {[key: string]: UnitInfo} = {};
 
 // Our objects are readonly so it is OK to return them since their state cannot be mutated
-export const getUnitInfo = ((unit: Unit.Unit<any>) => units.get(unit));
+export const getUnitInfo = ((unit: Unit.Unit<any>) => units[JSON.stringify(unit)]);
 
 addUnit(Units.Ampere, "SI", 2);
 addUnit(Units.Bar, "SI", 2);
@@ -163,5 +163,5 @@ addUnit(Units.Year, null, 0);
 
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
 function addUnit(unit: Unit.Unit<any>, measureSystem: MeasureSystem, decimalCount: number, coUnit?: Unit.Unit<any>) {
-  units.set(unit, {measureSystem, decimalCount, coUnit});
+  units[JSON.stringify(unit)] = {measureSystem, decimalCount, coUnit};
 }
