@@ -18,10 +18,11 @@
     "publish:patch": "npm run build && node scripts/publish.js patch"
   },
   "dependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "csjs": "^1.0.6",
+    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.4.1",
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.2.1",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.4.1"
+    "react": "^15.3.2",
+    "react-csjs": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^0.14.41",
@@ -29,10 +30,12 @@
     "http-server": "^0.9.0",
     "plugin-typescript": "^5.2.7",
     "shelljs": "^0.7.4",
-    "typescript": "^2.0.3"
+    "typescript": "^2.0.3",
+    "react-dom": "^15.3.2"
   },
   "jspm": {
     "dependencies": {
+      "csjs": "npm:csjs^1.0.6",
       "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.2.1",
       "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.4.1",
       "react": "npm:react@^15.3.2"

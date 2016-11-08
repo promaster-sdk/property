@@ -39,6 +39,16 @@ SystemJS.config({
     "promaster-portable": {
       "main": "lib/index.js",
       "format": "cjs"
+    },
+    "csjs": {
+      "main": "index.js",
+      "defaultExtension": "js",
+      "format": "cjs"
+    },
+    "react-csjs": {
+      "main": "lib/index.js",
+      "defaultExtension": "js",
+      "format": "cjs"
     }
   },
   map: {
@@ -46,6 +56,8 @@ SystemJS.config({
     "typescript": "../node_modules/typescript/",
     "react": "../node_modules/react/dist/react.js",
     "react-dom": "../node_modules/react-dom/dist/react-dom.js",
+    "csjs": "../node_modules/csjs/",
+    "react-csjs": "../node_modules/react-csjs/",
     "app": "./app",
     "promaster-react": "../src",
     "promaster-primitives": "../node_modules/promaster-primitives",

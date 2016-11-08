@@ -1,6 +1,55 @@
 import * as React from "react";
 import {PropertyFilter, PropertyValue, PropertyValueSet} from "promaster-primitives";
 import {PropertyFiltering} from "promaster-portable";
+import csjs from "csjs";
+import withStyles from "react-csjs";
+
+console.log("withStyles", withStyles);
+
+const styles2 = csjs`
+  .panel {
+    border: 1px solid black;
+    background-color: green;
+  }
+ 
+  .title {
+    padding: 4px;
+    font-size: 15px;
+  }
+ 
+  .select {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+
+		background: yellow;
+
+  }
+
+  .selectInvalid: {
+    border-color: red;
+  }
+
+  .selectLocked: {
+  		&.locked {
+			background: linear-gradient(to bottom, @select-background-gradient-top-color 0%, @select-background-gradient-bottom-color 100%);
+			color: @text-color;
+			border: none;
+		}
+
+  }
+
+  .selectInvalidLocked: {
+  }
+
+  .option: {
+  }
+
+  .optionInvalid: {
+  }
+`;
+
+console.log("styles", styles2);
+console.log("styles", styles2.panel.toString());
 
 export interface ComboBoxPropertyValueItem {
     readonly value: PropertyValue.PropertyValue | undefined,
@@ -118,7 +167,7 @@ export function ComboboxPropertySelector({
         selectClassName = styles.selectLocked;
     }
     else {
-        selectClassName = styles.select;
+        selectClassName = styles2.select;
     }
 
     return (
