@@ -20,7 +20,7 @@ var AmountPropertySelector = (function (_super) {
         return (React.createElement("span", {className: classNames.amount}, 
             React.createElement(index_1.AmountInputBox, {value: value, inputUnit: inputUnit, inputDecimalCount: inputDecimalCount, notNumericMessage: notNumericMessage, isRequiredMessage: isRequiredMessage, errorMessage: _getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint), readOnly: readOnly, onValueChange: function (newAmount) {
                 return onValueChange(newAmount !== undefined ? promaster_primitives_1.PropertyValue.create("amount", newAmount) : undefined);
-            }, classNames: classNames.amountInputBoxClassNames}), 
+            }, styles: classNames.amountInputBoxClassNames}), 
             React.createElement(index_1.AmountFormatSelector, {selectedUnit: inputUnit, selectedDecimalCount: inputDecimalCount, onFormatChanged: onFormatChanged, styles: classNames.amountFormatSelectorClassNames})));
     };
     return AmountPropertySelector;

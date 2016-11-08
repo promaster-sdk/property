@@ -3,7 +3,7 @@ import {Amount, PropertyValueSet, PropertyFilter, PropertyValue, Unit} from "pro
 import {PropertyFiltering} from "promaster-portable";
 import {
     AmountInputBox, AmountFormatSelector, OnFormatChanged,
-    AmountFormatSelectorStyles, AmountInputBoxClassNames
+    AmountFormatSelectorStyles, AmountInputBoxStyles
 } from "../amount-fields/index";
 
 export interface AmountPropertySelectorProps {
@@ -24,7 +24,7 @@ export interface AmountPropertySelectorProps {
 export interface AmountPropertySelectorStyles {
     readonly amount: string,
     readonly amountFormatSelectorClassNames: AmountFormatSelectorStyles,
-    readonly amountInputBoxClassNames: AmountInputBoxClassNames,
+    readonly amountInputBoxClassNames: AmountInputBoxStyles,
 }
 
 export class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, any> {
@@ -52,7 +52,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
                                 readOnly={readOnly}
                                 onValueChange={(newAmount) =>
 								onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount): undefined)}
-                                classNames={classNames.amountInputBoxClassNames}/>
+                                styles={classNames.amountInputBoxClassNames}/>
 				<AmountFormatSelector selectedUnit={inputUnit}
                                       selectedDecimalCount={inputDecimalCount}
                                       onFormatChanged={onFormatChanged}

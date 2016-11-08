@@ -11,9 +11,9 @@ export interface AmountInputBoxProps {
     readonly errorMessage: string;
     readonly readOnly: boolean;
     readonly onValueChange: (newAmount: Amount.Amount<any>) => void;
-    readonly classNames: AmountInputBoxClassNames;
+    readonly styles: AmountInputBoxStyles;
 }
-export interface AmountInputBoxClassNames {
+export interface AmountInputBoxStyles {
     readonly input: string;
     readonly inputInvalid: string;
 }

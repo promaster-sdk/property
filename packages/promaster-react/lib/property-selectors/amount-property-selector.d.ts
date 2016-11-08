@@ -2,7 +2,7 @@
 import * as React from "react";
 import { PropertyValueSet, PropertyFilter, PropertyValue, Unit } from "promaster-primitives";
 import { PropertyFiltering } from "promaster-portable";
-import { OnFormatChanged, AmountFormatSelectorStyles, AmountInputBoxClassNames } from "../amount-fields/index";
+import { OnFormatChanged, AmountFormatSelectorStyles, AmountInputBoxStyles } from "../amount-fields/index";
 export interface AmountPropertySelectorProps {
     readonly propertyName: string;
     readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -20,7 +20,7 @@ export interface AmountPropertySelectorProps {
 export interface AmountPropertySelectorStyles {
     readonly amount: string;
     readonly amountFormatSelectorClassNames: AmountFormatSelectorStyles;
-    readonly amountInputBoxClassNames: AmountInputBoxClassNames;
+    readonly amountInputBoxClassNames: AmountInputBoxStyles;
 }
 export declare class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, any> {
     render(): JSX.Element;

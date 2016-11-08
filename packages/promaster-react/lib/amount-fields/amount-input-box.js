@@ -29,9 +29,9 @@ var AmountInputBox = (function (_super) {
     };
     AmountInputBox.prototype.render = function () {
         var _this = this;
-        var _a = this.props, onValueChange = _a.onValueChange, readOnly = _a.readOnly, classNames = _a.classNames;
+        var _a = this.props, onValueChange = _a.onValueChange, readOnly = _a.readOnly, styles = _a.styles;
         var _b = this.state, effectiveErrorMessage = _b.effectiveErrorMessage, textValue = _b.textValue;
-        return (React.createElement("input", {key: "input", type: "text", value: textValue, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }, title: effectiveErrorMessage, className: effectiveErrorMessage ? classNames.inputInvalid : classNames.input}));
+        return (React.createElement("input", {key: "input", type: "text", value: textValue, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }, title: effectiveErrorMessage, className: effectiveErrorMessage ? styles.inputInvalid : styles.input}));
     };
     AmountInputBox.prototype._debouncedOnValueChange = function (newAmount, onValueChange) {
         if (this.state.isValid)

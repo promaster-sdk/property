@@ -18,10 +18,10 @@ export interface AmountInputBoxProps {
     readonly errorMessage: string,
     readonly readOnly: boolean,
     readonly onValueChange: (newAmount: Amount.Amount<any>) => void,
-    readonly classNames: AmountInputBoxClassNames,
+    readonly styles: AmountInputBoxStyles,
 }
 
-export interface AmountInputBoxClassNames {
+export interface AmountInputBoxStyles {
     readonly input: string,
     readonly inputInvalid: string,
 }
@@ -60,7 +60,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     render() {
 
-        const {onValueChange, readOnly, classNames} = this.props;
+        const {onValueChange, readOnly, styles} = this.props;
         const {effectiveErrorMessage, textValue} = this.state;
 
         return (
@@ -70,7 +70,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
                    readOnly={readOnly}
                    onChange={(e:any) => this._onChange(e, onValueChange)}
                    title={effectiveErrorMessage}
-                   className={effectiveErrorMessage ? classNames.inputInvalid : classNames.input}/>
+                   className={effectiveErrorMessage ? styles.inputInvalid : styles.input}/>
         );
 
     }
