@@ -23,8 +23,8 @@ export interface AmountPropertySelectorProps {
 
 export interface AmountPropertySelectorStyles {
     readonly amount: string,
-    readonly amountFormatSelectorClassNames: AmountFormatSelectorStyles,
-    readonly amountInputBoxClassNames: AmountInputBoxStyles,
+    readonly amountFormatSelectorStyles: AmountFormatSelectorStyles,
+    readonly amountInputBoxStyles: AmountInputBoxStyles,
 }
 
 export class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, any> {
@@ -52,11 +52,11 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
                                 readOnly={readOnly}
                                 onValueChange={(newAmount) =>
 								onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount): undefined)}
-                                styles={styles.amountInputBoxClassNames}/>
+                                styles={styles.amountInputBoxStyles}/>
 				<AmountFormatSelector selectedUnit={inputUnit}
                                       selectedDecimalCount={inputDecimalCount}
                                       onFormatChanged={onFormatChanged}
-                                      styles={styles.amountFormatSelectorClassNames}/>
+                                      styles={styles.amountFormatSelectorStyles}/>
 			</span>
         );
 

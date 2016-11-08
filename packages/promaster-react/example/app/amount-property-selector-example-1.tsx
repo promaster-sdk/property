@@ -47,8 +47,8 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
     const propSelStyles =
     {
       amount: "amount",
-      amountFormatSelectorClassNames: selectorClassNames,
-      amountInputBoxClassNames: boxClassNames,
+      amountFormatSelectorStyles: selectorClassNames,
+      amountInputBoxStyles: boxClassNames,
     };
 
     // console.log("state", this.state);

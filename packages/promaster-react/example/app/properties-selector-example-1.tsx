@@ -31,14 +31,14 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     const styles = {
       amountPropertySelectorStyles: {
         amount: "amount",
-        amountFormatSelectorClassNames: {
+        amountFormatSelectorStyles: {
           format: "format",
           formatActive: "format active",
           unit: "unit",
           precision: "precision",
           cancel: "cancel",
         },
-        amountInputBoxClassNames: {
+        amountInputBoxStyles: {
           input: '',
           inputInvalid: "invalid",
         }

@@ -19,8 +19,8 @@ export interface AmountPropertySelectorProps {
 }
 export interface AmountPropertySelectorStyles {
     readonly amount: string;
-    readonly amountFormatSelectorClassNames: AmountFormatSelectorStyles;
-    readonly amountInputBoxClassNames: AmountInputBoxStyles;
+    readonly amountFormatSelectorStyles: AmountFormatSelectorStyles;
+    readonly amountInputBoxStyles: AmountInputBoxStyles;
 }
 export declare class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, any> {
     render(): JSX.Element;
