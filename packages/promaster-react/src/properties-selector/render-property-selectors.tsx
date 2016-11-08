@@ -224,7 +224,7 @@ function renderPropertySelector(propertyName: string,
         onValueChange: onValueChange,
         readOnly: readOnly,
         locked: locked,
-        classNames: styles.comboboxPropertySelectorStyles
+        styles: styles.comboboxPropertySelectorStyles
       });
     }
     default:

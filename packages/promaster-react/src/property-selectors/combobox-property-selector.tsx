@@ -19,7 +19,7 @@ export interface ComboboxPropertySelectorProps {
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
     readonly readOnly: boolean,
     readonly locked: boolean,
-    readonly classNames: ComboboxPropertySelectorStyles,
+    readonly styles: ComboboxPropertySelectorStyles,
 }
 
 export interface ComboboxPropertySelectorStyles {
@@ -41,7 +41,7 @@ export function ComboboxPropertySelector({
     filterPrettyPrint,
     readOnly,
     locked,
-    classNames
+    styles
 }: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps> {
 
     const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
@@ -109,16 +109,16 @@ export function ComboboxPropertySelector({
 
     let selectClassName: string; //= "property-selector" + (selectedOption.isItemValid ? "" : " invalid") + (locked ? " locked" : '');
     if (!selectedOption.isItemValid && locked) {
-        selectClassName = classNames.selectInvalidLocked;
+        selectClassName = styles.selectInvalidLocked;
     }
     else if (!selectedOption.isItemValid) {
-        selectClassName = classNames.selectInvalid;
+        selectClassName = styles.selectInvalid;
     }
     else if (locked) {
-        selectClassName = classNames.selectLocked;
+        selectClassName = styles.selectLocked;
     }
     else {
-        selectClassName = classNames.select;
+        selectClassName = styles.select;
     }
 
     return (
@@ -132,7 +132,7 @@ export function ComboboxPropertySelector({
                     <option key={option.value}
                             value={option.value}
                             title={option.toolTip}
-                            className={option.isItemValid ? classNames.option : classNames.optionInvalid}>
+                            className={option.isItemValid ? styles.option : styles.optionInvalid}>
                         {(option.isItemValid ? '' : '✘ ') + option.label}
                     </option>)
                 )

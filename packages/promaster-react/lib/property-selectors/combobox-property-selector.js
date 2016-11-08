@@ -2,7 +2,7 @@
 var React = require("react");
 var promaster_primitives_1 = require("promaster-primitives");
 function ComboboxPropertySelector(_a) {
-    var sortValidFirst = _a.sortValidFirst, propertyName = _a.propertyName, propertyValueSet = _a.propertyValueSet, valueItems = _a.valueItems, showCodes = _a.showCodes, onValueChange = _a.onValueChange, filterPrettyPrint = _a.filterPrettyPrint, readOnly = _a.readOnly, locked = _a.locked, classNames = _a.classNames;
+    var sortValidFirst = _a.sortValidFirst, propertyName = _a.propertyName, propertyValueSet = _a.propertyValueSet, valueItems = _a.valueItems, showCodes = _a.showCodes, onValueChange = _a.onValueChange, filterPrettyPrint = _a.filterPrettyPrint, readOnly = _a.readOnly, locked = _a.locked, styles = _a.styles;
     var value = promaster_primitives_1.PropertyValueSet.getInteger(propertyName, propertyValueSet);
     if (!valueItems)
         valueItems = [];
@@ -52,18 +52,18 @@ function ComboboxPropertySelector(_a) {
         throw new Error("Could not find..");
     var selectClassName;
     if (!selectedOption.isItemValid && locked) {
-        selectClassName = classNames.selectInvalidLocked;
+        selectClassName = styles.selectInvalidLocked;
     }
     else if (!selectedOption.isItemValid) {
-        selectClassName = classNames.selectInvalid;
+        selectClassName = styles.selectInvalid;
     }
     else if (locked) {
-        selectClassName = classNames.selectLocked;
+        selectClassName = styles.selectLocked;
     }
     else {
-        selectClassName = classNames.select;
+        selectClassName = styles.select;
     }
-    return (React.createElement("select", {className: selectClassName, disabled: readOnly || locked, value: selectedOption.value, title: selectedOption.toolTip, onChange: function (event) { return _doOnChange(event.target.value, onValueChange); }}, options.map(function (option) { return (React.createElement("option", {key: option.value, value: option.value, title: option.toolTip, className: option.isItemValid ? classNames.option : classNames.optionInvalid}, (option.isItemValid ? '' : '✘ ') + option.label)); })));
+    return (React.createElement("select", {className: selectClassName, disabled: readOnly || locked, value: selectedOption.value, title: selectedOption.toolTip, onChange: function (event) { return _doOnChange(event.target.value, onValueChange); }}, options.map(function (option) { return (React.createElement("option", {key: option.value, value: option.value, title: option.toolTip, className: option.isItemValid ? styles.option : styles.optionInvalid}, (option.isItemValid ? '' : '✘ ') + option.label)); })));
 }
 exports.ComboboxPropertySelector = ComboboxPropertySelector;
 function _getItemLabel(valueItem, showCodes) {

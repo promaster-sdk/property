@@ -80,7 +80,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 onValueChange: onValueChange,
                 readOnly: readOnly,
                 locked: locked,
-                classNames: styles.comboboxPropertySelectorStyles
+                styles: styles.comboboxPropertySelectorStyles
             });
         }
         default:

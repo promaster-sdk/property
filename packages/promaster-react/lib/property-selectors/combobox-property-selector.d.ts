@@ -18,7 +18,7 @@ export interface ComboboxPropertySelectorProps {
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
     readonly readOnly: boolean;
     readonly locked: boolean;
-    readonly classNames: ComboboxPropertySelectorStyles;
+    readonly styles: ComboboxPropertySelectorStyles;
 }
 export interface ComboboxPropertySelectorStyles {
     readonly select: string;
@@ -28,4 +28,4 @@ export interface ComboboxPropertySelectorStyles {
     readonly option: string;
     readonly optionInvalid: string;
 }
-export declare function ComboboxPropertySelector({sortValidFirst, propertyName, propertyValueSet, valueItems, showCodes, onValueChange, filterPrettyPrint, readOnly, locked, classNames}: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps>;
+export declare function ComboboxPropertySelector({sortValidFirst, propertyName, propertyValueSet, valueItems, showCodes, onValueChange, filterPrettyPrint, readOnly, locked, styles}: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps>;
