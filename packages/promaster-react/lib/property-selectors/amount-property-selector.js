@@ -13,15 +13,15 @@ var AmountPropertySelector = (function (_super) {
         _super.apply(this, arguments);
     }
     AmountPropertySelector.prototype.render = function () {
-        var _a = this.props, onValueChange = _a.onValueChange, onFormatChanged = _a.onFormatChanged, notNumericMessage = _a.notNumericMessage, isRequiredMessage = _a.isRequiredMessage, validationFilter = _a.validationFilter, propertyValueSet = _a.propertyValueSet, propertyName = _a.propertyName, filterPrettyPrint = _a.filterPrettyPrint, inputUnit = _a.inputUnit, inputDecimalCount = _a.inputDecimalCount, readOnly = _a.readOnly, classNames = _a.classNames;
+        var _a = this.props, onValueChange = _a.onValueChange, onFormatChanged = _a.onFormatChanged, notNumericMessage = _a.notNumericMessage, isRequiredMessage = _a.isRequiredMessage, validationFilter = _a.validationFilter, propertyValueSet = _a.propertyValueSet, propertyName = _a.propertyName, filterPrettyPrint = _a.filterPrettyPrint, inputUnit = _a.inputUnit, inputDecimalCount = _a.inputDecimalCount, readOnly = _a.readOnly, styles = _a.styles;
         var value = promaster_primitives_1.PropertyValueSet.getAmount(propertyName, propertyValueSet);
         if (!value)
             throw new Error("Value is undefined");
-        return (React.createElement("span", {className: classNames.amount}, 
+        return (React.createElement("span", {className: styles.amount}, 
             React.createElement(index_1.AmountInputBox, {value: value, inputUnit: inputUnit, inputDecimalCount: inputDecimalCount, notNumericMessage: notNumericMessage, isRequiredMessage: isRequiredMessage, errorMessage: _getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint), readOnly: readOnly, onValueChange: function (newAmount) {
                 return onValueChange(newAmount !== undefined ? promaster_primitives_1.PropertyValue.create("amount", newAmount) : undefined);
-            }, styles: classNames.amountInputBoxClassNames}), 
-            React.createElement(index_1.AmountFormatSelector, {selectedUnit: inputUnit, selectedDecimalCount: inputDecimalCount, onFormatChanged: onFormatChanged, styles: classNames.amountFormatSelectorClassNames})));
+            }, styles: styles.amountInputBoxClassNames}), 
+            React.createElement(index_1.AmountFormatSelector, {selectedUnit: inputUnit, selectedDecimalCount: inputDecimalCount, onFormatChanged: onFormatChanged, styles: styles.amountFormatSelectorClassNames})));
     };
     return AmountPropertySelector;
 }(React.Component));

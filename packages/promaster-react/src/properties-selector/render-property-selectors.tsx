@@ -243,7 +243,7 @@ function renderPropertySelector(propertyName: string,
         validationFilter: validationFilter,
         filterPrettyPrint: filterPrettyPrint,
         readOnly: readOnly,
-        classNames: styles.amountPropertySelectorStyles
+        styles: styles.amountPropertySelectorStyles
       });
   }
 }

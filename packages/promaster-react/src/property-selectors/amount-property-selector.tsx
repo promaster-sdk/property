@@ -18,7 +18,7 @@ export interface AmountPropertySelectorProps {
     readonly readOnly: boolean,
     readonly onFormatChanged: OnFormatChanged,
     readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void,
-    readonly classNames: AmountPropertySelectorStyles,
+    readonly styles: AmountPropertySelectorStyles,
 }
 
 export interface AmountPropertySelectorStyles {
@@ -34,7 +34,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
         const {
             onValueChange, onFormatChanged, notNumericMessage, isRequiredMessage,
             validationFilter, propertyValueSet, propertyName, filterPrettyPrint, inputUnit,
-            inputDecimalCount, readOnly, classNames
+            inputDecimalCount, readOnly, styles
         } = this.props;
 
         const value: Amount.Amount<any> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
@@ -42,7 +42,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
             throw new Error("Value is undefined");
 
         return (
-            <span className={classNames.amount}>
+            <span className={styles.amount}>
 				<AmountInputBox value={value}
                                 inputUnit={inputUnit}
                                 inputDecimalCount={inputDecimalCount}
@@ -52,11 +52,11 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
                                 readOnly={readOnly}
                                 onValueChange={(newAmount) =>
 								onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount): undefined)}
-                                styles={classNames.amountInputBoxClassNames}/>
+                                styles={styles.amountInputBoxClassNames}/>
 				<AmountFormatSelector selectedUnit={inputUnit}
                                       selectedDecimalCount={inputDecimalCount}
                                       onFormatChanged={onFormatChanged}
-                                      styles={classNames.amountFormatSelectorClassNames}/>
+                                      styles={styles.amountFormatSelectorClassNames}/>
 			</span>
         );
 

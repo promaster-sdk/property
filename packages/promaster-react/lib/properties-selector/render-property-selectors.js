@@ -96,7 +96,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 validationFilter: validationFilter,
                 filterPrettyPrint: filterPrettyPrint,
                 readOnly: readOnly,
-                classNames: styles.amountPropertySelectorStyles
+                styles: styles.amountPropertySelectorStyles
             });
     }
 }

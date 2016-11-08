@@ -44,7 +44,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
       inputInvalid: "inputInvalid"
     };
 
-    const propSelClassNames =
+    const propSelStyles =
     {
       amount: "amount",
       amountFormatSelectorClassNames: selectorClassNames,
@@ -77,7 +77,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
             isRequiredMessage="Is required"
             notNumericMessage="Not numeric"
             onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
-            classNames={propSelClassNames}/>
+            styles={propSelStyles}/>
         </div>
       </div>
     );
