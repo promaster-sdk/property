@@ -1,2 +1,2 @@
 export { AmountInputBox, AmountInputBoxProps, AmountInputBoxClassNames } from "./amount-input-box";
-export { AmountFormatSelector, AmountFormatSelectorProps, AmountFormatSelectorClassNames, OnFormatChanged } from "./amount-format-selector";
+export { AmountFormatSelector, AmountFormatSelectorProps, AmountFormatSelectorStyles, OnFormatChanged } from "./amount-format-selector";

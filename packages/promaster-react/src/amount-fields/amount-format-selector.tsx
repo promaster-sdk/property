@@ -9,10 +9,10 @@ export interface AmountFormatSelectorProps {
     readonly selectedUnit: Unit.Unit<any>,
     readonly selectedDecimalCount: number,
     readonly onFormatChanged?: OnFormatChanged,
-    readonly classNames: AmountFormatSelectorClassNames,
+    readonly styles: AmountFormatSelectorStyles,
 }
 
-export interface AmountFormatSelectorClassNames {
+export interface AmountFormatSelectorStyles {
     readonly format: string,
     readonly formatActive: string,
     readonly unit: string,
@@ -35,9 +35,9 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
 
     render() {
 
-        const {selectedUnit, selectedDecimalCount, onFormatChanged, classNames} = this.props;
+        const {selectedUnit, selectedDecimalCount, onFormatChanged, styles} = this.props;
 
-        const className = classNames.format;
+        const className = styles.format;
 
         // If there is no handler for onFormatChanged then the user should not be able to change the format
         if (!this.state.active || !onFormatChanged) {
@@ -60,11 +60,11 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
             decimalCounts.push(selectedDecimalCount);
 
         // const classNameToUse = className + (this.state.active? ' active' : '');
-        const classNameToUse = this.state.active ? classNames.formatActive : classNames.format;
+        const classNameToUse = this.state.active ? styles.formatActive : styles.format;
 
         return (
             <span className={classNameToUse}>
-                <select className={classNames.unit}
+                <select className={styles.unit}
                         value={selectedUnitName}
                         onChange={(e) => {
                             this.setState({active: false});
@@ -75,7 +75,7 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
                                                         value={unitNames[index]}> {UnitName.getName(u)} </option>)
                     }
                 </select>
-                <select className={classNames.precision}
+                <select className={styles.precision}
                         value={selectedDecimalCount.toString()}
                         onChange={(e) => {
                             this.setState({active: false});
@@ -83,7 +83,7 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
                         }}>
                     {decimalCounts.map((dc) => <option key={dc.toString()} value={dc.toString()}>{dc}</option>)}
                 </select>
-                <button className={classNames.cancel}
+                <button className={styles.cancel}
                         onClick={(_: any) => this.setState({active: false})}>
                     {
                         // &nbsp; or the vertical alignment breaks. Like, *why*, though?

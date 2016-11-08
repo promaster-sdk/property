@@ -6,9 +6,9 @@ export interface AmountFormatSelectorProps {
     readonly selectedUnit: Unit.Unit<any>;
     readonly selectedDecimalCount: number;
     readonly onFormatChanged?: OnFormatChanged;
-    readonly classNames: AmountFormatSelectorClassNames;
+    readonly styles: AmountFormatSelectorStyles;
 }
-export interface AmountFormatSelectorClassNames {
+export interface AmountFormatSelectorStyles {
     readonly format: string;
     readonly formatActive: string;
     readonly unit: string;
