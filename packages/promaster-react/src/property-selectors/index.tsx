@@ -6,9 +6,11 @@ export {
 export {
   ComboboxPropertySelector,
   ComboboxPropertySelectorProps,
-  ComboboxPropertySelectorStyles,
   ComboBoxPropertyValueItem
 } from "./combobox-property-selector";
+export {
+  ComboboxPropertySelectorStyles,
+} from "./combobox-property-selector-styles";
 export {
   TextboxPropertySelector,
   TextboxPropertySelectorProps

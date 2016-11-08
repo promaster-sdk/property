@@ -28,7 +28,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const styles = {
+    const styles: PropertiesSelector.RenderPropertySelectorsParametersStyles = {
       amountPropertySelectorStyles: {
         amount: "amount",
         amountFormatSelectorStyles: {
@@ -42,8 +42,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
           input: '',
           inputInvalid: "invalid",
         }
-      },
-      //= "property-selector" + (selectedOption.isItemValid ? "" : " invalid") + (locked ? " locked" : '');
+      },/*
       comboboxPropertySelectorStyles: {
         select: "property-selector",
         selectInvalid: "property-selector invalid",
@@ -51,7 +50,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
         selectInvalidLocked: "property-selector invalid locked",
         option: "",
         optionInvalid: "invalid",
-      }
+      }*/
     };
 
     const productProperties: Array<PropertiesSelector.Property> = [

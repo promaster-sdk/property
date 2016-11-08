@@ -1,4 +1,4 @@
-export interface Styles {
+export interface ComboboxPropertySelectorStyles {
     readonly select: string;
     readonly selectInvalid: string;
     readonly selectLocked: string;
@@ -6,4 +6,4 @@ export interface Styles {
     readonly option: string;
     readonly optionInvalid: string;
 }
-export declare const styles: Styles;
+export declare const comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles;

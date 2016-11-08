@@ -68,8 +68,8 @@ export interface RenderPropertySelectorsParameters {
 }
 
 export interface RenderPropertySelectorsParametersStyles {
-  amountPropertySelectorStyles: AmountPropertySelectorStyles,
-  comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles,
+  amountPropertySelectorStyles?: AmountPropertySelectorStyles,
+  comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles,
 }
 
 export function renderPropertySelectors({

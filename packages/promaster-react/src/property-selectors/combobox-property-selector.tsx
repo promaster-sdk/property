@@ -1,7 +1,7 @@
 import * as React from "react";
 import {PropertyFilter, PropertyValue, PropertyValueSet} from "promaster-primitives";
 import {PropertyFiltering} from "promaster-portable";
-import {styles, Styles} from "./combobox-property-selector-styles";
+import {comboboxPropertySelectorStyles, ComboboxPropertySelectorStyles} from "./combobox-property-selector-styles";
 
 export interface ComboBoxPropertyValueItem {
     readonly value: PropertyValue.PropertyValue | undefined,
@@ -20,7 +20,7 @@ export interface ComboboxPropertySelectorProps {
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
     readonly readOnly: boolean,
     readonly locked: boolean,
-    readonly classes: Styles,
+    readonly styles?: ComboboxPropertySelectorStyles,
 }
 
 export function ComboboxPropertySelector({
@@ -33,7 +33,7 @@ export function ComboboxPropertySelector({
     filterPrettyPrint,
     readOnly,
     locked,
-    classes = styles
+    styles = comboboxPropertySelectorStyles
 }: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps> {
 
     const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
@@ -101,16 +101,16 @@ export function ComboboxPropertySelector({
 
     let selectClassName: string;
     if (!selectedOption.isItemValid && locked) {
-        selectClassName = classes.selectInvalidLocked;
+        selectClassName = styles.selectInvalidLocked;
     }
     else if (!selectedOption.isItemValid) {
-        selectClassName = classes.selectInvalid;
+        selectClassName = styles.selectInvalid;
     }
     else if (locked) {
-        selectClassName = classes.selectLocked;
+        selectClassName = styles.selectLocked;
     }
     else {
-        selectClassName = classes.select;
+        selectClassName = styles.select;
     }
 
     return (

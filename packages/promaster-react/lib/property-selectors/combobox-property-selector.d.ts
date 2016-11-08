@@ -2,7 +2,7 @@
 import * as React from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "promaster-primitives";
 import { PropertyFiltering } from "promaster-portable";
-import { Styles } from "./combobox-property-selector-styles";
+import { ComboboxPropertySelectorStyles } from "./combobox-property-selector-styles";
 export interface ComboBoxPropertyValueItem {
     readonly value: PropertyValue.PropertyValue | undefined;
     readonly sortNo: number;
@@ -19,6 +19,6 @@ export interface ComboboxPropertySelectorProps {
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
     readonly readOnly: boolean;
     readonly locked: boolean;
-    readonly classes: Styles;
+    readonly styles?: ComboboxPropertySelectorStyles;
 }
-export declare function ComboboxPropertySelector({sortValidFirst, propertyName, propertyValueSet, valueItems, showCodes, onValueChange, filterPrettyPrint, readOnly, locked, classes}: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps>;
+export declare function ComboboxPropertySelector({sortValidFirst, propertyName, propertyValueSet, valueItems, showCodes, onValueChange, filterPrettyPrint, readOnly, locked, styles}: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps>;

@@ -1,7 +1,7 @@
 import csjs from "csjs";
 import insertCss from "insert-css";
 
-export interface Styles {
+export interface ComboboxPropertySelectorStyles {
   readonly select: string,
   readonly selectInvalid: string,
   readonly selectLocked: string,
@@ -14,7 +14,7 @@ const borderColor = "#b4b4b4";
 //const borderColor = "#00ff00";
 const subtleBorderRadius = "3px";
 
-export const styles: Styles = csjs`
+export const comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles = csjs`
   .select {
     color: black;
     height: 30px;
@@ -52,4 +52,4 @@ export const styles: Styles = csjs`
   }
 `;
 
-insertCss(csjs.getCss(styles));
+insertCss(csjs.getCss(comboboxPropertySelectorStyles));

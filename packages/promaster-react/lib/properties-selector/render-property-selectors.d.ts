@@ -24,6 +24,6 @@ export interface RenderPropertySelectorsParameters {
 }
 export interface RenderPropertySelectorsParametersStyles {
     amountPropertySelectorStyles: AmountPropertySelectorStyles;
-    comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles;
+    comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles;
 }
 export declare function renderPropertySelectors({productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, propertyFormats, styles}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector>;
