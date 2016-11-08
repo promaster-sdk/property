@@ -37,7 +37,8 @@
     "baseUrl": ".",
     "paths": {
       "promaster-react": ["../src"],
-      "promaster-react/*": ["../src/*"]
+      "promaster-react/*": ["../src/*"],
+      "*": ["../src/custom-typings/*"]
     }
   },
   "include": [

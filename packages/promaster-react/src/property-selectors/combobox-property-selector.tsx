@@ -1,55 +1,7 @@
 import * as React from "react";
 import {PropertyFilter, PropertyValue, PropertyValueSet} from "promaster-primitives";
 import {PropertyFiltering} from "promaster-portable";
-import csjs from "csjs";
-import withStyles from "react-csjs";
-
-console.log("withStyles", withStyles);
-
-const styles2 = csjs`
-  .panel {
-    border: 1px solid black;
-    background-color: green;
-  }
- 
-  .title {
-    padding: 4px;
-    font-size: 15px;
-  }
- 
-  .select {
-		-webkit-appearance: none;
-		-moz-appearance: none;
-
-		background: yellow;
-
-  }
-
-  .selectInvalid: {
-    border-color: red;
-  }
-
-  .selectLocked: {
-  		&.locked {
-			background: linear-gradient(to bottom, @select-background-gradient-top-color 0%, @select-background-gradient-bottom-color 100%);
-			color: @text-color;
-			border: none;
-		}
-
-  }
-
-  .selectInvalidLocked: {
-  }
-
-  .option: {
-  }
-
-  .optionInvalid: {
-  }
-`;
-
-console.log("styles", styles2);
-console.log("styles", styles2.panel.toString());
+import {styles, Styles} from "./combobox-property-selector-styles";
 
 export interface ComboBoxPropertyValueItem {
     readonly value: PropertyValue.PropertyValue | undefined,
@@ -68,16 +20,7 @@ export interface ComboboxPropertySelectorProps {
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
     readonly readOnly: boolean,
     readonly locked: boolean,
-    readonly styles: ComboboxPropertySelectorStyles,
-}
-
-export interface ComboboxPropertySelectorStyles {
-    readonly select: string,
-    readonly selectInvalid: string,
-    readonly selectLocked: string,
-    readonly selectInvalidLocked: string,
-    readonly option: string,
-    readonly optionInvalid: string,
+    readonly classes: Styles,
 }
 
 export function ComboboxPropertySelector({
@@ -90,7 +33,7 @@ export function ComboboxPropertySelector({
     filterPrettyPrint,
     readOnly,
     locked,
-    styles
+    classes = styles
 }: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps> {
 
     const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
@@ -158,16 +101,16 @@ export function ComboboxPropertySelector({
 
     let selectClassName: string; //= "property-selector" + (selectedOption.isItemValid ? "" : " invalid") + (locked ? " locked" : '');
     if (!selectedOption.isItemValid && locked) {
-        selectClassName = styles.selectInvalidLocked;
+        selectClassName = classes.selectInvalidLocked;
     }
     else if (!selectedOption.isItemValid) {
-        selectClassName = styles.selectInvalid;
+        selectClassName = classes.selectInvalid;
     }
     else if (locked) {
-        selectClassName = styles.selectLocked;
+        selectClassName = classes.selectLocked;
     }
     else {
-        selectClassName = styles2.select;
+        selectClassName = classes.select;
     }
 
     return (

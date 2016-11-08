@@ -1,14 +1,9 @@
 "use strict";
 var React = require("react");
 var promaster_primitives_1 = require("promaster-primitives");
-var csjs_1 = require("csjs");
-var react_csjs_1 = require("react-csjs");
-console.log("withStyles", react_csjs_1.default);
-var styles2 = (_a = ["\n  .panel {\n    border: 1px solid black;\n    background-color: green;\n  }\n \n  .title {\n    padding: 4px;\n    font-size: 15px;\n  }\n \n  .select {\n\t\t-webkit-appearance: none;\n\t\t-moz-appearance: none;\n\n\t\tbackground: yellow;\n\n  }\n\n  .selectInvalid: {\n    border-color: red;\n  }\n\n  .selectLocked: {\n  \t\t&.locked {\n\t\t\tbackground: linear-gradient(to bottom, @select-background-gradient-top-color 0%, @select-background-gradient-bottom-color 100%);\n\t\t\tcolor: @text-color;\n\t\t\tborder: none;\n\t\t}\n\n  }\n\n  .selectInvalidLocked: {\n  }\n\n  .option: {\n  }\n\n  .optionInvalid: {\n  }\n"], _a.raw = ["\n  .panel {\n    border: 1px solid black;\n    background-color: green;\n  }\n \n  .title {\n    padding: 4px;\n    font-size: 15px;\n  }\n \n  .select {\n\t\t-webkit-appearance: none;\n\t\t-moz-appearance: none;\n\n\t\tbackground: yellow;\n\n  }\n\n  .selectInvalid: {\n    border-color: red;\n  }\n\n  .selectLocked: {\n  \t\t&.locked {\n\t\t\tbackground: linear-gradient(to bottom, @select-background-gradient-top-color 0%, @select-background-gradient-bottom-color 100%);\n\t\t\tcolor: @text-color;\n\t\t\tborder: none;\n\t\t}\n\n  }\n\n  .selectInvalidLocked: {\n  }\n\n  .option: {\n  }\n\n  .optionInvalid: {\n  }\n"], csjs_1.default(_a));
-console.log("styles", styles2);
-console.log("styles", styles2.panel.toString());
+var combobox_property_selector_styles_1 = require("./combobox-property-selector-styles");
 function ComboboxPropertySelector(_a) {
-    var sortValidFirst = _a.sortValidFirst, propertyName = _a.propertyName, propertyValueSet = _a.propertyValueSet, valueItems = _a.valueItems, showCodes = _a.showCodes, onValueChange = _a.onValueChange, filterPrettyPrint = _a.filterPrettyPrint, readOnly = _a.readOnly, locked = _a.locked, styles = _a.styles;
+    var sortValidFirst = _a.sortValidFirst, propertyName = _a.propertyName, propertyValueSet = _a.propertyValueSet, valueItems = _a.valueItems, showCodes = _a.showCodes, onValueChange = _a.onValueChange, filterPrettyPrint = _a.filterPrettyPrint, readOnly = _a.readOnly, locked = _a.locked, _b = _a.classes, classes = _b === void 0 ? combobox_property_selector_styles_1.styles : _b;
     var value = promaster_primitives_1.PropertyValueSet.getInteger(propertyName, propertyValueSet);
     if (!valueItems)
         valueItems = [];
@@ -58,18 +53,18 @@ function ComboboxPropertySelector(_a) {
         throw new Error("Could not find..");
     var selectClassName;
     if (!selectedOption.isItemValid && locked) {
-        selectClassName = styles.selectInvalidLocked;
+        selectClassName = classes.selectInvalidLocked;
     }
     else if (!selectedOption.isItemValid) {
-        selectClassName = styles.selectInvalid;
+        selectClassName = classes.selectInvalid;
     }
     else if (locked) {
-        selectClassName = styles.selectLocked;
+        selectClassName = classes.selectLocked;
     }
     else {
-        selectClassName = styles2.select;
+        selectClassName = classes.select;
     }
-    return (React.createElement("select", {className: selectClassName, disabled: readOnly || locked, value: selectedOption.value, title: selectedOption.toolTip, onChange: function (event) { return _doOnChange(event.target.value, onValueChange); }}, options.map(function (option) { return (React.createElement("option", {key: option.value, value: option.value, title: option.toolTip, className: option.isItemValid ? styles.option : styles.optionInvalid}, (option.isItemValid ? '' : '✘ ') + option.label)); })));
+    return (React.createElement("select", {className: selectClassName, disabled: readOnly || locked, value: selectedOption.value, title: selectedOption.toolTip, onChange: function (event) { return _doOnChange(event.target.value, onValueChange); }}, options.map(function (option) { return (React.createElement("option", {key: option.value, value: option.value, title: option.toolTip, className: option.isItemValid ? combobox_property_selector_styles_1.styles.option : combobox_property_selector_styles_1.styles.optionInvalid}, (option.isItemValid ? '' : '✘ ') + option.label)); })));
 }
 exports.ComboboxPropertySelector = ComboboxPropertySelector;
 function _getItemLabel(valueItem, showCodes) {
@@ -97,5 +92,4 @@ function _isValueItemValid(propertyName, propertyValueSet, valueItem) {
         return true;
     return promaster_primitives_1.PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter);
 }
-var _a;
 //# sourceMappingURL=combobox-property-selector.js.map
