@@ -1,6 +1,6 @@
 import { PropertyValueSet } from "promaster-primitives";
 import { PropertyFiltering } from "promaster-portable";
-import { AmountPropertySelectorClassNames, ComboboxPropertySelectorClassNames } from "../property-selectors/index";
+import { AmountPropertySelectorStyles, ComboboxPropertySelectorStyles } from "../property-selectors/index";
 import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, RenderedPropertySelector, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, TranslatePropertyName, Property } from "./types";
 export interface RenderPropertySelectorsParameters {
     readonly productProperties: Array<Property>;
@@ -20,10 +20,10 @@ export interface RenderPropertySelectorsParameters {
     readonly propertyFormats: {
         [key: string]: AmountFormat;
     };
-    readonly classNames: RenderPropertySelectorsParametersClassNames;
+    readonly classNames: RenderPropertySelectorsParametersStyles;
 }
-export interface RenderPropertySelectorsParametersClassNames {
-    amountPropertySelectorClassNames: AmountPropertySelectorClassNames;
-    comboboxPropertySelectorClassNames: ComboboxPropertySelectorClassNames;
+export interface RenderPropertySelectorsParametersStyles {
+    amountPropertySelectorStyles: AmountPropertySelectorStyles;
+    comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles;
 }
 export declare function renderPropertySelectors({productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, propertyFormats, classNames}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector>;

@@ -80,7 +80,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 onValueChange: onValueChange,
                 readOnly: readOnly,
                 locked: locked,
-                classNames: classNames.comboboxPropertySelectorClassNames
+                classNames: classNames.comboboxPropertySelectorStyles
             });
         }
         default:
@@ -96,7 +96,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 validationFilter: validationFilter,
                 filterPrettyPrint: filterPrettyPrint,
                 readOnly: readOnly,
-                classNames: classNames.amountPropertySelectorClassNames
+                classNames: classNames.amountPropertySelectorStyles
             });
     }
 }

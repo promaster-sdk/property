@@ -15,9 +15,9 @@ export interface AmountPropertySelectorProps {
     readonly readOnly: boolean;
     readonly onFormatChanged: OnFormatChanged;
     readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
-    readonly classNames: AmountPropertySelectorClassNames;
+    readonly classNames: AmountPropertySelectorStyles;
 }
-export interface AmountPropertySelectorClassNames {
+export interface AmountPropertySelectorStyles {
     readonly amount: string;
     readonly amountFormatSelectorClassNames: AmountFormatSelectorClassNames;
     readonly amountInputBoxClassNames: AmountInputBoxClassNames;

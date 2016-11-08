@@ -29,7 +29,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
   render() {
 
     const classNames = {
-      amountPropertySelectorClassNames: {
+      amountPropertySelectorStyles: {
         amount: "amount",
         amountFormatSelectorClassNames: {
           format: "format",
@@ -44,7 +44,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
         }
       },
       //= "property-selector" + (selectedOption.isItemValid ? "" : " invalid") + (locked ? " locked" : '');
-      comboboxPropertySelectorClassNames: {
+      comboboxPropertySelectorStyles: {
         select: "property-selector",
         selectInvalid: "property-selector invalid",
         selectLocked: "property-selector locked",

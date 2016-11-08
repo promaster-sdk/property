@@ -13,8 +13,8 @@ import {
   ComboboxPropertySelector,
   TextboxPropertySelector,
   AmountPropertySelector,
-  AmountPropertySelectorClassNames,
-  ComboboxPropertySelectorClassNames
+  AmountPropertySelectorStyles,
+  ComboboxPropertySelectorStyles
 } from "../property-selectors/index";
 import {
   PropertySelectionOnChange,
@@ -64,12 +64,12 @@ export interface RenderPropertySelectorsParameters {
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
   readonly propertyFormats: {[key: string]: AmountFormat},
 
-  readonly classNames: RenderPropertySelectorsParametersClassNames,
+  readonly classNames: RenderPropertySelectorsParametersStyles,
 }
 
-export interface RenderPropertySelectorsParametersClassNames {
-  amountPropertySelectorClassNames: AmountPropertySelectorClassNames,
-  comboboxPropertySelectorClassNames: ComboboxPropertySelectorClassNames,
+export interface RenderPropertySelectorsParametersStyles {
+  amountPropertySelectorStyles: AmountPropertySelectorStyles,
+  comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles,
 }
 
 export function renderPropertySelectors({
@@ -188,7 +188,7 @@ function renderPropertySelector(propertyName: string,
                                 translatePropertyValue: TranslatePropertyValue,
                                 translateNotNumericMessage: TranslateNotNumericMessage,
                                 translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-                                classNames: RenderPropertySelectorsParametersClassNames): any {
+                                classNames: RenderPropertySelectorsParametersStyles): any {
 
   function onValueChange(newValue: PropertyValue.PropertyValue) {
     onChange(newValue
@@ -224,7 +224,7 @@ function renderPropertySelector(propertyName: string,
         onValueChange: onValueChange,
         readOnly: readOnly,
         locked: locked,
-        classNames: classNames.comboboxPropertySelectorClassNames
+        classNames: classNames.comboboxPropertySelectorStyles
       });
     }
     default:
@@ -243,7 +243,7 @@ function renderPropertySelector(propertyName: string,
         validationFilter: validationFilter,
         filterPrettyPrint: filterPrettyPrint,
         readOnly: readOnly,
-        classNames: classNames.amountPropertySelectorClassNames
+        classNames: classNames.amountPropertySelectorStyles
       });
   }
 }

@@ -1,12 +1,12 @@
 export {
   AmountPropertySelector,
   AmountPropertySelectorProps,
-  AmountPropertySelectorClassNames
+  AmountPropertySelectorStyles
 } from "./amount-property-selector";
 export {
   ComboboxPropertySelector,
   ComboboxPropertySelectorProps,
-  ComboboxPropertySelectorClassNames,
+  ComboboxPropertySelectorStyles,
   ComboBoxPropertyValueItem
 } from "./combobox-property-selector";
 export {

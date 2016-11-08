@@ -18,9 +18,9 @@ export interface ComboboxPropertySelectorProps {
     readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
     readonly readOnly: boolean;
     readonly locked: boolean;
-    readonly classNames: ComboboxPropertySelectorClassNames;
+    readonly classNames: ComboboxPropertySelectorStyles;
 }
-export interface ComboboxPropertySelectorClassNames {
+export interface ComboboxPropertySelectorStyles {
     readonly select: string;
     readonly selectInvalid: string;
     readonly selectLocked: string;
