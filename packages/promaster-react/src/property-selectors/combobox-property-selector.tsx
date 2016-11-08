@@ -99,7 +99,7 @@ export function ComboboxPropertySelector({
     if (!selectedOption)
         throw new Error("Could not find..");
 
-    let selectClassName: string; //= "property-selector" + (selectedOption.isItemValid ? "" : " invalid") + (locked ? " locked" : '');
+    let selectClassName: string;
     if (!selectedOption.isItemValid && locked) {
         selectClassName = classes.selectInvalidLocked;
     }

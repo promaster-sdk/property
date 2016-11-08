@@ -83,6 +83,31 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
             validationFilter: PropertyFilter.Empty,
           }
         ],
+      },
+      {
+        sortNo: 3,
+        name: "c",
+        group: "Group1",
+        quantity: "Discrete",
+        validationFilter: PropertyFilter.Empty,
+        visibilityFilter: PropertyFilter.Empty,
+        valueItems: [
+          {
+            value: PropertyValue.fromInteger(1),
+            sortNo: 10,
+            validationFilter: PropertyFilter.fromString("b=1"),
+          },
+          {
+            value: PropertyValue.fromInteger(2),
+            sortNo: 20,
+            validationFilter: PropertyFilter.Empty,
+          },
+          {
+            value: PropertyValue.fromInteger(3),
+            sortNo: 30,
+            validationFilter: PropertyFilter.Empty,
+          }
+        ],
       }
     ];
 
