@@ -28,7 +28,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const classNames = {
+    const styles = {
       amountPropertySelectorStyles: {
         amount: "amount",
         amountFormatSelectorClassNames: {
@@ -109,7 +109,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       translatePropertyValue: (propertyName: string, value: number | undefined) => `${propertyName}_${value}_Translation`,
       translateValueMustBeNumericMessage: () => "value_must_be_numeric",
       translateValueIsRequiredMessage: () => "value_is_required",
-      classNames: classNames
+      styles: styles
     };
     const renderedPropertySelectors = PropertiesSelector.renderPropertySelectors(renderPropertySelectorParams);
 

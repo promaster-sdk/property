@@ -6,7 +6,7 @@ var amountPropertySelector = React.createFactory(index_1.AmountPropertySelector)
 var comboboxPropertySelector = React.createFactory(index_1.ComboboxPropertySelector);
 var textboxPropertySelector = React.createFactory(index_1.TextboxPropertySelector);
 function renderPropertySelectors(_a) {
-    var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, classNames = _a.classNames;
+    var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, styles = _a.styles;
     autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
     var sortedArray = productProperties.slice().sort(function (a, b) { return a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0; });
     var selectorDefinitions = sortedArray
@@ -42,13 +42,13 @@ function renderPropertySelectors(_a) {
             label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
             renderedSelectorElement: renderPropertySelector(property.name, property.quantity, property.validationFilter, property.valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, handleChange(onChange, productProperties, autoSelectSingleValidValue), onPropertyFormatChanged, filterPrettyPrint, propertyFormat, isReadOnly, autoSelectSingleValidValue
                 ? !!getSingleValidValueOrUndefined(property, selectedProperties)
-                : false, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, classNames)
+                : false, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, styles)
         };
     });
     return selectorDefinitions;
 }
 exports.renderPropertySelectors = renderPropertySelectors;
-function renderPropertySelector(propertyName, quantity, validationFilter, valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, onChange, onPropertyFormatChanged, filterPrettyPrint, propertyFormat, readOnly, locked, translatePropertyValue, translateNotNumericMessage, translateValueIsRequiredMessage, classNames) {
+function renderPropertySelector(propertyName, quantity, validationFilter, valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, onChange, onPropertyFormatChanged, filterPrettyPrint, propertyFormat, readOnly, locked, translatePropertyValue, translateNotNumericMessage, translateValueIsRequiredMessage, styles) {
     function onValueChange(newValue) {
         onChange(newValue
             ? promaster_primitives_1.PropertyValueSet.set(propertyName, newValue, selectedProperties)
@@ -80,7 +80,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 onValueChange: onValueChange,
                 readOnly: readOnly,
                 locked: locked,
-                classNames: classNames.comboboxPropertySelectorStyles
+                classNames: styles.comboboxPropertySelectorStyles
             });
         }
         default:
@@ -96,7 +96,7 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                 validationFilter: validationFilter,
                 filterPrettyPrint: filterPrettyPrint,
                 readOnly: readOnly,
-                classNames: classNames.amountPropertySelectorStyles
+                classNames: styles.amountPropertySelectorStyles
             });
     }
 }

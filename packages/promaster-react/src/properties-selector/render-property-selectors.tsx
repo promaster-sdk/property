@@ -64,7 +64,7 @@ export interface RenderPropertySelectorsParameters {
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
   readonly propertyFormats: {[key: string]: AmountFormat},
 
-  readonly classNames: RenderPropertySelectorsParametersStyles,
+  readonly styles: RenderPropertySelectorsParametersStyles,
 }
 
 export interface RenderPropertySelectorsParametersStyles {
@@ -93,7 +93,7 @@ export function renderPropertySelectors({
   optionalProperties,
   propertyFormats,
 
-  classNames,
+  styles,
 
 }: RenderPropertySelectorsParameters): Array<RenderedPropertySelector> {
 
@@ -161,7 +161,7 @@ export function renderPropertySelectors({
           translatePropertyValue,
           translateValueMustBeNumericMessage,
           translateValueIsRequiredMessage,
-          classNames
+          styles
         )
 
       };
@@ -188,7 +188,7 @@ function renderPropertySelector(propertyName: string,
                                 translatePropertyValue: TranslatePropertyValue,
                                 translateNotNumericMessage: TranslateNotNumericMessage,
                                 translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-                                classNames: RenderPropertySelectorsParametersStyles): any {
+                                styles: RenderPropertySelectorsParametersStyles): any {
 
   function onValueChange(newValue: PropertyValue.PropertyValue) {
     onChange(newValue
@@ -224,7 +224,7 @@ function renderPropertySelector(propertyName: string,
         onValueChange: onValueChange,
         readOnly: readOnly,
         locked: locked,
-        classNames: classNames.comboboxPropertySelectorStyles
+        classNames: styles.comboboxPropertySelectorStyles
       });
     }
     default:
@@ -243,7 +243,7 @@ function renderPropertySelector(propertyName: string,
         validationFilter: validationFilter,
         filterPrettyPrint: filterPrettyPrint,
         readOnly: readOnly,
-        classNames: classNames.amountPropertySelectorStyles
+        classNames: styles.amountPropertySelectorStyles
       });
   }
 }
