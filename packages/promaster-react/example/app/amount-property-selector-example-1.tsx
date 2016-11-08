@@ -29,7 +29,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const selectorClassNames = {
+    const selectorStyles = {
       input: "input",
       inputInvalid: "inputInvalid",
       format: "format",
@@ -39,7 +39,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
       cancel: "cancel"
     };
 
-    const boxClassNames = {
+    const boxStyles = {
       input: "input",
       inputInvalid: "inputInvalid"
     };
@@ -47,8 +47,8 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
     const propSelStyles =
     {
       amount: "amount",
-      amountFormatSelectorStyles: selectorClassNames,
-      amountInputBoxStyles: boxClassNames,
+      amountFormatSelectorStyles: selectorStyles,
+      amountInputBoxStyles: boxStyles,
     };
 
     // console.log("state", this.state);
