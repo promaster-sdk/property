@@ -1,0 +1,8 @@
+<component name="libraryTable">
+  <library name="tsconfig$roots" type="javaScript">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/node_modules/promaster-primitives/lib/index.d.ts" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

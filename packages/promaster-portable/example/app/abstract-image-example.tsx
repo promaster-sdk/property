@@ -12,6 +12,7 @@ export function AbstractImageExample() {
   return (
     <div>
       <h1>Svg</h1>
+      <p>Test</p>
       <pre>{svg}</pre>
       <img width="400" height="400" src={`data:image/svg+xml;base64,${base64}`} />
     </div>);
