@@ -1,4 +1,4 @@
-import csjs from "csjs";
+import {csjs} from "csjs";
 import insertCss from "insert-css";
 
 export interface AmountFormatSelectorStyles {
