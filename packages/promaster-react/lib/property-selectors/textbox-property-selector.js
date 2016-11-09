@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var React = require("react");
 var promaster_primitives_1 = require("promaster-primitives");
+var textbox_property_selector_styles_1 = require("./textbox-property-selector-styles");
 var TextboxPropertySelector = (function (_super) {
     __extends(TextboxPropertySelector, _super);
     function TextboxPropertySelector() {
@@ -22,9 +23,9 @@ var TextboxPropertySelector = (function (_super) {
     };
     TextboxPropertySelector.prototype.render = function () {
         var _this = this;
-        var _a = this.props, onValueChange = _a.onValueChange, readOnly = _a.readOnly;
+        var _a = this.props, onValueChange = _a.onValueChange, readOnly = _a.readOnly, _b = _a.styles, styles = _b === void 0 ? textbox_property_selector_styles_1.textboxPropertySelectorStyles : _b;
         var textValue = this.state.textValue;
-        return (React.createElement("input", {type: 'text', value: textValue, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }}));
+        return (React.createElement("input", {type: 'text', value: textValue, className: styles.textbox, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }}));
     };
     TextboxPropertySelector.prototype._debouncedOnValueChange = function (newValue, onValueChange) {
         onValueChange(newValue);

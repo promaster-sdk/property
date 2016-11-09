@@ -10,16 +10,12 @@ export interface ComboboxPropertySelectorStyles {
   readonly optionInvalid: string,
 }
 
-const borderColor = "#b4b4b4";
-//const borderColor = "#00ff00";
-const subtleBorderRadius = "3px";
-
 export const comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles = csjs`
   .select {
     color: black;
     height: 30px;
-    border: 1px solid ${borderColor};
-    border-radius: ${subtleBorderRadius};
+    border: 1px solid #b4b4b4;
+    border-radius: 3px;
     font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
     outline: rgb(131, 131, 131) none 0px;
     padding: 1px 30px 0px 10px;
@@ -29,13 +25,16 @@ export const comboboxPropertySelectorStyles: ComboboxPropertySelectorStyles = cs
     color: red;
   }
 
-  .selectLocked {
+  .selectLocked extends .select {
     background: lightgray;
     color: darkgray;
     border: none;
   }
 
-  .selectInvalidLocked {
+  .selectInvalidLocked extends .select {
+    background: lightgray;
+    color: red;
+    border: none;    
   }
 
   .option {

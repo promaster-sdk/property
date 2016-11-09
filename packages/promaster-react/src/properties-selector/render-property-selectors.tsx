@@ -9,12 +9,11 @@ import {
   PropertyFilter
 } from "promaster-primitives";
 import {PropertyFiltering} from "promaster-portable";
+import {RenderPropertySelectorsParametersStyles} from "./render-property-selectors-styles";
 import {
   ComboboxPropertySelector,
   TextboxPropertySelector,
   AmountPropertySelector,
-  AmountPropertySelectorStyles,
-  ComboboxPropertySelectorStyles
 } from "../property-selectors/index";
 import {
   PropertySelectionOnChange,
@@ -65,11 +64,6 @@ export interface RenderPropertySelectorsParameters {
   readonly propertyFormats: {[key: string]: AmountFormat},
 
   readonly styles: RenderPropertySelectorsParametersStyles,
-}
-
-export interface RenderPropertySelectorsParametersStyles {
-  amountPropertySelectorStyles?: AmountPropertySelectorStyles,
-  comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles,
 }
 
 export function renderPropertySelectors({
@@ -205,7 +199,8 @@ function renderPropertySelector(propertyName: string,
       return textboxPropertySelector({
         value: value,
         readOnly: readOnly,
-        onValueChange: onValueChange
+        onValueChange: onValueChange,
+        styles: styles.textboxPropertySelectorStyles
       });
     case "integer": {
 

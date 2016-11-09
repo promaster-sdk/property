@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var React = require("react");
 var promaster_primitives_1 = require("promaster-primitives");
+var amount_format_selector_styles_1 = require("./amount-format-selector-styles");
 var AmountFormatSelector = (function (_super) {
     __extends(AmountFormatSelector, _super);
     function AmountFormatSelector(props) {
@@ -14,7 +15,7 @@ var AmountFormatSelector = (function (_super) {
     }
     AmountFormatSelector.prototype.render = function () {
         var _this = this;
-        var _a = this.props, selectedUnit = _a.selectedUnit, selectedDecimalCount = _a.selectedDecimalCount, onFormatChanged = _a.onFormatChanged, styles = _a.styles;
+        var _a = this.props, selectedUnit = _a.selectedUnit, selectedDecimalCount = _a.selectedDecimalCount, onFormatChanged = _a.onFormatChanged, _b = _a.styles, styles = _b === void 0 ? amount_format_selector_styles_1.amountFormatSelectorStyles : _b;
         var className = styles.format;
         if (!this.state.active || !onFormatChanged) {
             return (React.createElement("span", {className: className, onClick: function (_) { return _this.setState({ active: true }); }}, promaster_primitives_1.UnitName.getName(selectedUnit)));

@@ -29,28 +29,6 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const selectorStyles = {
-      input: "input",
-      inputInvalid: "inputInvalid",
-      format: "format",
-      formatActive: "formatActive",
-      unit: "unit",
-      precision: "precision",
-      cancel: "cancel"
-    };
-
-    const boxStyles = {
-      input: "input",
-      inputInvalid: "inputInvalid"
-    };
-
-    const propSelStyles =
-    {
-      amount: "amount",
-      amountFormatSelectorStyles: selectorStyles,
-      amountInputBoxStyles: boxStyles,
-    };
-
     // console.log("state", this.state);
 
     return (
@@ -76,8 +54,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
             readOnly={false}
             isRequiredMessage="Is required"
             notNumericMessage="Not numeric"
-            onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
-            styles={propSelStyles}/>
+            onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}/>
         </div>
       </div>
     );

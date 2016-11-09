@@ -1,19 +1,13 @@
 /// <reference types="react" />
 import * as React from "react";
 import { Unit } from "promaster-primitives";
+import { AmountFormatSelectorStyles } from "./amount-format-selector-styles";
 export interface AmountFormatSelectorProps {
     readonly key?: string;
     readonly selectedUnit: Unit.Unit<any>;
     readonly selectedDecimalCount: number;
     readonly onFormatChanged?: OnFormatChanged;
-    readonly styles: AmountFormatSelectorStyles;
-}
-export interface AmountFormatSelectorStyles {
-    readonly format: string;
-    readonly formatActive: string;
-    readonly unit: string;
-    readonly precision: string;
-    readonly cancel: string;
+    readonly styles?: AmountFormatSelectorStyles;
 }
 export interface State {
     readonly active: boolean;

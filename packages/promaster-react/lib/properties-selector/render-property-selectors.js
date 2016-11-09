@@ -62,7 +62,8 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
             return textboxPropertySelector({
                 value: value,
                 readOnly: readOnly,
-                onValueChange: onValueChange
+                onValueChange: onValueChange,
+                styles: styles.textboxPropertySelectorStyles
             });
         case "integer": {
             return comboboxPropertySelector({

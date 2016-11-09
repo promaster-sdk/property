@@ -23,17 +23,6 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
 
   render() {
 
-    const propSelStyles: Selectors.ComboboxPropertySelectorStyles = {
-      select: "select",
-      selectInvalid: "selectInvalid",
-      selectLocked: "selectLocked",
-      selectInvalidLocked: "selectInvalidLocked",
-      option: "option",
-      optionInvalid: "optionInvalid",
-    };
-
-    // console.log("state", this.state);
-
     const valueItems: Array<Selectors.ComboBoxPropertyValueItem> = [
       {
         value: PropertyValue.create("integer", 1),
@@ -70,8 +59,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
               propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, this.state.propertyValueSet)
             }))}
             filterPrettyPrint={filterPrettyPrint}
-            readOnly={false}
-            styles={propSelStyles}/>
+            readOnly={false}/>
         </div>
       </div>
     );

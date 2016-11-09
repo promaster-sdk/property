@@ -7,6 +7,7 @@
 import * as React from "react";
 import {Amount, Unit} from "promaster-primitives";
 import {Quantity} from "promaster-primitives";
+import {amountInputBoxStyles, AmountInputBoxStyles} from "./amount-input-box-styles";
 
 export interface AmountInputBoxProps {
     readonly key?: string,
@@ -18,12 +19,7 @@ export interface AmountInputBoxProps {
     readonly errorMessage: string,
     readonly readOnly: boolean,
     readonly onValueChange: (newAmount: Amount.Amount<any>) => void,
-    readonly styles: AmountInputBoxStyles,
-}
-
-export interface AmountInputBoxStyles {
-    readonly input: string,
-    readonly inputInvalid: string,
+    readonly styles?: AmountInputBoxStyles,
 }
 
 export interface State {
@@ -60,7 +56,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     render() {
 
-        const {onValueChange, readOnly, styles} = this.props;
+        const {onValueChange, readOnly, styles = amountInputBoxStyles} = this.props;
         const {effectiveErrorMessage, textValue} = this.state;
 
         return (

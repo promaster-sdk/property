@@ -1,10 +1,12 @@
 import * as React from "react";
 import {PropertyValue} from "promaster-primitives";
+import {textboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "./textbox-property-selector-styles";
 
 export interface TextboxPropertySelectorProps {
-    readonly value: string,
-    readonly readOnly: boolean,
-    readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void
+  readonly value: string,
+  readonly readOnly: boolean,
+  readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
+  readonly styles?: TextboxPropertySelectorStyles,
 }
 
 export interface State {
@@ -31,12 +33,13 @@ export class TextboxPropertySelector extends React.Component<TextboxPropertySele
 
     render() {
 
-        const {onValueChange, readOnly} = this.props;
+        const {onValueChange, readOnly, styles = textboxPropertySelectorStyles} = this.props;
         const {textValue} = this.state;
 
         return (
             <input type='text'
                    value={textValue}
+                   className={styles.textbox}
                    readOnly={readOnly}
                    onChange={(e:any) => this._onChange(e, onValueChange)}/>
         );

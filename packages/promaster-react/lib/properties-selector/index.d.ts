@@ -1,2 +1,3 @@
-export { renderPropertySelectors, RenderPropertySelectorsParameters, RenderPropertySelectorsParametersStyles } from "./render-property-selectors";
+export { renderPropertySelectors, RenderPropertySelectorsParameters } from "./render-property-selectors";
+export { RenderPropertySelectorsParametersStyles } from "./render-property-selectors-styles";
 export * from "./types";

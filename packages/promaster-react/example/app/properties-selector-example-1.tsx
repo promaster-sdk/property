@@ -28,30 +28,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const styles: PropertiesSelector.RenderPropertySelectorsParametersStyles = {
-      amountPropertySelectorStyles: {
-        amount: "amount",
-        amountFormatSelectorStyles: {
-          format: "format",
-          formatActive: "format active",
-          unit: "unit",
-          precision: "precision",
-          cancel: "cancel",
-        },
-        amountInputBoxStyles: {
-          input: '',
-          inputInvalid: "invalid",
-        }
-      },/*
-      comboboxPropertySelectorStyles: {
-        select: "property-selector",
-        selectInvalid: "property-selector invalid",
-        selectLocked: "property-selector locked",
-        selectInvalidLocked: "property-selector invalid locked",
-        option: "",
-        optionInvalid: "invalid",
-      }*/
-    };
+    const styles: PropertiesSelector.RenderPropertySelectorsParametersStyles = {};
 
     const productProperties: Array<PropertiesSelector.Property> = [
       {
@@ -59,7 +36,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
         name: "a",
         group: "Group1",
         quantity: "Temperature",
-        validationFilter: PropertyFilter.fromString("a>100:Celsius") as PropertyFilter.PropertyFilter,
+        validationFilter: PropertyFilter.fromString("a>100:Celsius") || PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         valueItems: [],
       },
@@ -94,7 +71,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
           {
             value: PropertyValue.fromInteger(1),
             sortNo: 10,
-            validationFilter: PropertyFilter.fromString("b=1"),
+            validationFilter: PropertyFilter.fromString("b=1") || PropertyFilter.Empty,
           },
           {
             value: PropertyValue.fromInteger(2),

@@ -1,8 +1,11 @@
 export {
   AmountPropertySelector,
   AmountPropertySelectorProps,
-  AmountPropertySelectorStyles
 } from "./amount-property-selector";
+export {
+  AmountPropertySelectorStyles,
+  amountPropertySelectorStyles
+} from "./amount-property-selector-styles";
 export {
   ComboboxPropertySelector,
   ComboboxPropertySelectorProps,
@@ -16,3 +19,7 @@ export {
   TextboxPropertySelector,
   TextboxPropertySelectorProps
 } from "./textbox-property-selector";
+export {
+  TextboxPropertySelectorStyles,
+  textboxPropertySelectorStyles
+} from "./textbox-property-selector-styles";

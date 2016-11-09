@@ -22,21 +22,6 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const boxStyles = {
-      input: "input",
-      inputInvalid: "inputInvalid"
-    };
-
-    const selectorStyles = {
-      format: "format",
-      formatActive: "formatActive",
-      unit: "unit",
-      precision: "precision",
-      cancel: "cancel"
-    };
-
-    // console.log("state", this.state);
-
     return (
       <div>
         <div>
@@ -51,14 +36,13 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
                           inputDecimalCount={this.state.selectedDecimalCount}
                           onValueChange={(amount) => this.setState(merge(this.state, {amount}))}
                           readOnly={false}
-                          styles={boxStyles}
                           errorMessage=""
                           isRequiredMessage="Is required"
                           notNumericMessage="Not numeric"/>
           <AmountFormatSelector selectedUnit={this.state.selectedUnit}
                                 selectedDecimalCount={this.state.selectedDecimalCount}
                                 onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
-                                styles={selectorStyles}/>
+                                />
         </div>
       </div>
     );
