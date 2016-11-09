@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "csjs": "^1.0.6",
-    "insert-css": "^1.0.0",
+    "insert-css": "git+https://github.com/jonaskello/insert-css.git#named_export",
     "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.4.2",
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.3.0",
     "react": "^15.3.2"

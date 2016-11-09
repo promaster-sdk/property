@@ -1,7 +1,7 @@
 "use strict";
 var csjs_1 = require("csjs");
-var insert_css_1 = require("insert-css");
+var insert_css_1 = require("../utils/insert-css");
 exports.textboxPropertySelectorStyles = (_a = ["\n  .textbox {\n    color: black;\n    height: 30px;\n    border: 1px solid #b4b4b4;\n    border-radius: 3px;\n    font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;\n    outline: rgb(131, 131, 131) none 0px;\n    padding: 1px 30px 0px 10px;\n  }\n\n  .textboxInvalid extends .textbox {\n    color: red;\n  }\n\n  .textboxLocked extends .textbox {\n    background: lightgray;\n    color: darkgray;\n    border: none;\n  }\n\n  .textboxInvalidLocked extends .textbox {\n    background: lightgray;\n    color: red;\n    border: none;    \n  }\n"], _a.raw = ["\n  .textbox {\n    color: black;\n    height: 30px;\n    border: 1px solid #b4b4b4;\n    border-radius: 3px;\n    font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;\n    outline: rgb(131, 131, 131) none 0px;\n    padding: 1px 30px 0px 10px;\n  }\n\n  .textboxInvalid extends .textbox {\n    color: red;\n  }\n\n  .textboxLocked extends .textbox {\n    background: lightgray;\n    color: darkgray;\n    border: none;\n  }\n\n  .textboxInvalidLocked extends .textbox {\n    background: lightgray;\n    color: red;\n    border: none;    \n  }\n"], csjs_1.csjs(_a));
-insert_css_1.default(csjs_1.csjs.getCss(exports.textboxPropertySelectorStyles));
+insert_css_1.insertCss(csjs_1.csjs.getCss(exports.textboxPropertySelectorStyles));
 var _a;
 //# sourceMappingURL=textbox-property-selector-styles.js.map
