@@ -1,6 +1,6 @@
 {
   "name": "promaster-react",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "main": "lib/index.js",
   "description": "React components for applications that use Promaster.",
   "author": "Divid AB",
