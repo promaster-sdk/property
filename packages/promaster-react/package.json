@@ -35,7 +35,7 @@
   },
   "jspm": {
     "dependencies": {
-      "csjs": "npm:csjs^1.0.6",
+      "csjs": "npm:csjs@^1.0.6",
       "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.3.0",
       "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.4.2",
       "react": "npm:react@^15.3.2"
