@@ -36,7 +36,7 @@
   "jspm": {
     "dependencies": {
       "csjs": "npm:csjs@^1.0.6",
-      "insert-css": "npm:insert-css@^1.0.0",
+      "insert-css": "github:jonaskello/insert-css@named_export",
       "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.3.0",
       "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.4.2",
       "react": "npm:react@^15.3.2"
