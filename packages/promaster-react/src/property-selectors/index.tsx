@@ -10,6 +10,7 @@ export {
 } from "./combobox-property-selector";
 export {
   ComboboxPropertySelectorStyles,
+  comboboxPropertySelectorStyles
 } from "./combobox-property-selector-styles";
 export {
   TextboxPropertySelector,
