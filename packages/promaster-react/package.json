@@ -20,8 +20,8 @@
   "dependencies": {
     "csjs": "^1.0.6",
     "insert-css": "^1.0.0",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.4.1",
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.2.1",
+    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.4.2",
+    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.3.0",
     "react": "^15.3.2"
   },
   "devDependencies": {
@@ -36,8 +36,8 @@
   "jspm": {
     "dependencies": {
       "csjs": "npm:csjs^1.0.6",
-      "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.2.1",
-      "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.4.1",
+      "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.3.0",
+      "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.4.2",
       "react": "npm:react@^15.3.2"
     }
   }
