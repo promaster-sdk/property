@@ -1,4 +1,3 @@
-/// <reference types="lodash" />
 import * as PropertyValue from "./property-value";
 import * as Amount from "../measure/amount";
 import { PropertyType } from "./property-value";
@@ -7,8 +6,6 @@ export interface PropertyValueSet {
     readonly [key: string]: PropertyValue.PropertyValue;
 }
 export declare const Empty: PropertyValueSet;
-export declare function fromMap(map: Map<string, number | string | Amount.Amount<any>>): PropertyValueSet;
-export declare function fromObject(obj: any): PropertyValueSet;
 export declare function fromString(encodedValueSet: string): PropertyValueSet;
 export declare function fromStringOrError(onError: (encodedValueSet: string) => PropertyValueSet, encodedValueSet: string): PropertyValueSet;
 export declare function fromProperty(propertyName: string, propertyValue: PropertyValue.PropertyValue): {

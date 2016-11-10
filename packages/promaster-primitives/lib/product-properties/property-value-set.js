@@ -2,18 +2,6 @@
 var PropertyValue = require("./property-value");
 exports.Empty = {};
 // Functions
-function fromMap(map) {
-    var newSet = {};
-    map.forEach(function (value, key) {
-        newSet[key] = value;
-    });
-    return newSet;
-}
-exports.fromMap = fromMap;
-function fromObject(obj) {
-    return obj;
-}
-exports.fromObject = fromObject;
 function fromString(encodedValueSet) {
     var err = function () {
         throw new Error(encodedValueSet + " is not a valid PropertyValueSet");

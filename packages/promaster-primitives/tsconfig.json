@@ -9,7 +9,7 @@
     "outDir": "../test_js_out",
     "noEmit": true,
     "sourceMap": true,
-    "lib": ["es5", "dom", "es2015", "es2015.promise", "es2015.iterable", "es2015.symbol"],
+    "lib": ["es5"],
     "types": ["mocha", "node"]
   },
   "exclude": [
