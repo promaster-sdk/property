@@ -14,19 +14,6 @@ export const Empty: PropertyValueSet = {};
 
 // Functions
 
-export function fromMap(map: Map<string, number | string | Amount.Amount<any>>): PropertyValueSet {
-  let newSet = {};
-  map.forEach((value, key)=> {
-    newSet[key] = value;
-  });
-  return newSet;
-}
-
-export function fromObject(obj: any): PropertyValueSet {
-  return obj as PropertyValueSet;
-}
-
-
 export function fromString(encodedValueSet: string): PropertyValueSet {
   const err = () => {
     throw new Error(`${encodedValueSet} is not a valid PropertyValueSet`);
