@@ -5,11 +5,10 @@
     "declaration": true,
     "outDir": "../lib",
     "sourceMap": true,
-    "lib": ["dom", "es5", "es2015"]
+    "lib": ["es5", "dom"]
   },
   "exclude": [
     "node_modules",
     "lib"
   ]
 }
-
