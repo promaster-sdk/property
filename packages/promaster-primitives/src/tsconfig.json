@@ -8,7 +8,6 @@
     "lib": ["es5", "dom"]
   },
   "exclude": [
-    "node_modules",
-    "lib"
+    "node_modules"
   ]
 }
