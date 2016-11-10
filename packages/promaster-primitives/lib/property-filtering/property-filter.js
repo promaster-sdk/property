@@ -52,8 +52,8 @@ function isSyntaxValid(filter, propertyNames) {
     }
     var parsed = create(filter, ast);
     var properties = getReferencedProperties(parsed);
-    for (var _i = 0, _a = Array.from(properties); _i < _a.length; _i++) {
-        var p = _a[_i];
+    for (var _i = 0, properties_1 = properties; _i < properties_1.length; _i++) {
+        var p = properties_1[_i];
         if (propertyNames.indexOf(p) === -1)
             return false;
     }

@@ -68,32 +68,28 @@ function merge(mergeWith, set) {
     return amend(set, mergeWith);
 }
 exports.merge = merge;
-function set(propertyName, propertyValue, set) {
-    return amend(set, (_a = {}, _a[propertyName] = propertyValue, _a));
-    var _a;
-}
-exports.set = set;
-function setAmount(propertyName, amountValue, set) {
-    return amend(set, (_a = {}, _a[propertyName] = PropertyValue.fromAmount(amountValue), _a));
-    var _a;
-}
-exports.setAmount = setAmount;
-function setInteger(propertyName, integerValue, set) {
-    return amend(set, (_a = {}, _a[propertyName] = PropertyValue.fromInteger(integerValue), _a));
-    var _a;
-}
-exports.setInteger = setInteger;
-function setText(propertyName, textValue, set) {
-    return amend(set, (_a = {}, _a[propertyName] = PropertyValue.fromText(textValue), _a));
-    var _a;
-}
-exports.setText = setText;
 /// If a property exists with the same name in the PropertyValueSet as in the
 // replacement set then the value of that property will be replaced.
 function setValues(replacementSet, set) {
     return amend(set, replacementSet);
 }
 exports.setValues = setValues;
+function set(propertyName, propertyValue, set) {
+    return amendProperty(set, propertyName, propertyValue);
+}
+exports.set = set;
+function setAmount(propertyName, amountValue, set) {
+    return amendProperty(set, propertyName, PropertyValue.fromAmount(amountValue));
+}
+exports.setAmount = setAmount;
+function setInteger(propertyName, integerValue, set) {
+    return amendProperty(set, propertyName, PropertyValue.fromInteger(integerValue));
+}
+exports.setInteger = setInteger;
+function setText(propertyName, textValue, set) {
+    return amendProperty(set, propertyName, PropertyValue.fromText(textValue));
+}
+exports.setText = setText;
 function keepProperties(propertyNames, set) {
     var newSet = {};
     for (var _i = 0, propertyNames_1 = propertyNames; _i < propertyNames_1.length; _i++) {
@@ -291,6 +287,19 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet) {
     return entries;
 }
 function amend(obj1, obj2) {
-    return Object.assign({}, obj1, obj2);
+    // return Object.assign({}, obj1, obj2);
+    return extend(extend({}, obj1), obj2);
+}
+function amendProperty(set, name, value) {
+    return amend(set, (_a = {}, _a[name] = value, _a));
+    var _a;
+}
+function extend(origin, add) {
+    var keys = Object.keys(add);
+    var i = keys.length;
+    while (i--) {
+        origin[keys[i]] = add[keys[i]];
+    }
+    return origin;
 }
 //# sourceMappingURL=property-value-set.js.map

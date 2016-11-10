@@ -80,27 +80,26 @@ export function merge(mergeWith: PropertyValueSet, set: PropertyValueSet): Prope
   return amend(set, mergeWith);
 }
 
-export function set(propertyName: string, propertyValue: PropertyValue.PropertyValue, set: PropertyValueSet): PropertyValueSet {
-  return amend(set, {[propertyName]: propertyValue});
-}
-
-export function setAmount<T extends Quantity>(propertyName: string, amountValue: Amount.Amount<T>, set: PropertyValueSet): PropertyValueSet {
-  return amend(set, {[propertyName]: PropertyValue.fromAmount(amountValue)});
-}
-
-export function setInteger(propertyName: string, integerValue: number, set: PropertyValueSet): PropertyValueSet {
-  return amend(set, {[propertyName]: PropertyValue.fromInteger(integerValue)});
-}
-
-export function setText(propertyName: string, textValue: string, set: PropertyValueSet): PropertyValueSet {
-  return amend(set, {[propertyName]: PropertyValue.fromText(textValue)});
-}
-
 /// If a property exists with the same name in the PropertyValueSet as in the
 // replacement set then the value of that property will be replaced.
 export function setValues(replacementSet: PropertyValueSet, set: PropertyValueSet): PropertyValueSet {
   return amend(set, replacementSet);
+}
 
+export function set(propertyName: string, propertyValue: PropertyValue.PropertyValue, set: PropertyValueSet): PropertyValueSet {
+  return amendProperty(set, propertyName, propertyValue);
+}
+
+export function setAmount<T extends Quantity>(propertyName: string, amountValue: Amount.Amount<T>, set: PropertyValueSet): PropertyValueSet {
+  return amendProperty(set, propertyName, PropertyValue.fromAmount(amountValue));
+}
+
+export function setInteger(propertyName: string, integerValue: number, set: PropertyValueSet): PropertyValueSet {
+  return amendProperty(set, propertyName, PropertyValue.fromInteger(integerValue));
+}
+
+export function setText(propertyName: string, textValue: string, set: PropertyValueSet): PropertyValueSet {
+  return amendProperty(set, propertyName, PropertyValue.fromText(textValue));
 }
 
 export function keepProperties(propertyNames: Array<string>, set: PropertyValueSet): PropertyValueSet {
@@ -298,5 +297,19 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
 }
 
 function amend<PropertyValueSet, T2>(obj1: PropertyValueSet, obj2: T2): PropertyValueSet {
-  return Object.assign({}, obj1, obj2);
+  // return Object.assign({}, obj1, obj2);
+  return extend(extend({}, obj1), obj2);
+}
+
+function amendProperty<PropertyValueSet, T2>(set: PropertyValueSet, name: string, value: T2): PropertyValueSet {
+  return amend(set, {[name]: value});
+}
+
+function extend<TOrigin, TAdd>(origin: TOrigin, add: TAdd): TOrigin & TAdd {
+  var keys = Object.keys(add);
+  var i = keys.length;
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+  return origin as TOrigin & TAdd;
 }

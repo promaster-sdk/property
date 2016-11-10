@@ -20,11 +20,11 @@ export declare function get(propertyName: string, set: PropertyValueSet): Proper
 export declare function hasProperty(propertyName: string, set: PropertyValueSet): boolean;
 export declare function getPropertyNames(set: PropertyValueSet): Array<string>;
 export declare function merge(mergeWith: PropertyValueSet, set: PropertyValueSet): PropertyValueSet;
+export declare function setValues(replacementSet: PropertyValueSet, set: PropertyValueSet): PropertyValueSet;
 export declare function set(propertyName: string, propertyValue: PropertyValue.PropertyValue, set: PropertyValueSet): PropertyValueSet;
 export declare function setAmount<T extends Quantity>(propertyName: string, amountValue: Amount.Amount<T>, set: PropertyValueSet): PropertyValueSet;
 export declare function setInteger(propertyName: string, integerValue: number, set: PropertyValueSet): PropertyValueSet;
 export declare function setText(propertyName: string, textValue: string, set: PropertyValueSet): PropertyValueSet;
-export declare function setValues(replacementSet: PropertyValueSet, set: PropertyValueSet): PropertyValueSet;
 export declare function keepProperties(propertyNames: Array<string>, set: PropertyValueSet): PropertyValueSet;
 export declare function removeProperties(propertyNames: Array<string>, set: PropertyValueSet): PropertyValueSet;
 export declare function removeProperty(propertyName: string, set: PropertyValueSet): PropertyValueSet;
