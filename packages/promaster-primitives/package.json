@@ -15,7 +15,7 @@
     "tsc": "tsc -p src",
     "tsc:test": "tsc",
     "gen-doc": "npm run build && node scripts/gen-doc.js",
-    "gen-doc2": "typedoc --mode modules --excludeNotExported --out ./doc/typedoc ./src",
+    "gen-typedoc": "typedoc --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
     "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
     "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
     "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
@@ -39,6 +39,7 @@
     "shelljs": "^0.7.4",
     "ts-node": "^1.6.0",
     "typedoc": "^0.5.1",
+    "typedoc-markdown-theme": "0.0.4",
     "typescript": "^2.0.3"
   },
   "jspm": {
