@@ -9,11 +9,11 @@ function createBitmapImage(topLeft, format, data) {
     };
 }
 exports.createBitmapImage = createBitmapImage;
-function createEllipse(topLeft, size, strokeColor, strokeThickness, fillColor) {
+function createEllipse(topLeft, bottomRight, strokeColor, strokeThickness, fillColor) {
     return {
         type: "ellipse",
         topLeft: topLeft,
-        size: size,
+        bottomRight: bottomRight,
         strokeColor: strokeColor,
         strokeThickness: strokeThickness,
         fillColor: fillColor,
@@ -40,11 +40,11 @@ function createPolygon(points, strokeColor, strokeThickness, fillColor) {
     };
 }
 exports.createPolygon = createPolygon;
-function createRectangle(topLeft, size, strokeColor, strokeThickness, fillColor) {
+function createRectangle(topLeft, bottomRight, strokeColor, strokeThickness, fillColor) {
     return {
         type: "rectangle",
         topLeft: topLeft,
-        size: size,
+        bottomRight: bottomRight,
         strokeColor: strokeColor,
         strokeThickness: strokeThickness,
         fillColor: fillColor,
@@ -52,15 +52,11 @@ function createRectangle(topLeft, size, strokeColor, strokeThickness, fillColor)
 }
 exports.createRectangle = createRectangle;
 function corners(rectangle) {
-    var top = rectangle.topLeft.y;
-    var bottom = rectangle.topLeft.y + rectangle.size.height;
-    var left = rectangle.topLeft.x;
-    var right = rectangle.topLeft.x + rectangle.size.width;
     return [
-        Point.createPoint(left, top),
-        Point.createPoint(right, top),
-        Point.createPoint(right, bottom),
-        Point.createPoint(left, bottom),
+        rectangle.topLeft,
+        Point.createPoint(rectangle.bottomRight.x, rectangle.topLeft.y),
+        rectangle.bottomRight,
+        Point.createPoint(rectangle.topLeft.x, rectangle.bottomRight.y),
     ];
 }
 exports.corners = corners;

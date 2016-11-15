@@ -1,5 +1,4 @@
 import * as Point from "./point";
-import * as Size from "./size";
 import * as Color from "./color";
 export declare type Component = BitmapImage | Ellipse | Line | Polygon | Rectangle | Text | VectorImage;
 export interface BitmapImage {
@@ -12,12 +11,12 @@ export declare function createBitmapImage(topLeft: Point.Point, format: string, 
 export interface Ellipse {
     readonly type: "ellipse";
     readonly topLeft: Point.Point;
-    readonly size: Size.Size;
+    readonly bottomRight: Point.Point;
     readonly strokeColor: Color.Color;
     readonly strokeThickness: number;
     readonly fillColor: Color.Color;
 }
-export declare function createEllipse(topLeft: Point.Point, size: Size.Size, strokeColor: Color.Color, strokeThickness: number, fillColor: Color.Color): Ellipse;
+export declare function createEllipse(topLeft: Point.Point, bottomRight: Point.Point, strokeColor: Color.Color, strokeThickness: number, fillColor: Color.Color): Ellipse;
 export interface Line {
     readonly type: "line";
     readonly start: Point.Point;
@@ -37,12 +36,12 @@ export declare function createPolygon(points: Array<Point.Point>, strokeColor: C
 export interface Rectangle {
     readonly type: "rectangle";
     readonly topLeft: Point.Point;
-    readonly size: Size.Size;
+    readonly bottomRight: Point.Point;
     readonly strokeColor: Color.Color;
     readonly strokeThickness: number;
     readonly fillColor: Color.Color;
 }
-export declare function createRectangle(topLeft: Point.Point, size: Size.Size, strokeColor: Color.Color, strokeThickness: number, fillColor: Color.Color): Rectangle;
+export declare function createRectangle(topLeft: Point.Point, bottomRight: Point.Point, strokeColor: Color.Color, strokeThickness: number, fillColor: Color.Color): Rectangle;
 export declare function corners(rectangle: Rectangle): Array<Point.Point>;
 export declare type AbstractFontWeight = "normal" | "bold";
 export declare type TextAlignment = "left" | "center" | "right";

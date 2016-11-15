@@ -1,5 +1,4 @@
 import * as Point from "./point";
-import * as Size from "./size";
 import * as Color from "./color";
 
 export type Component = BitmapImage | Ellipse | Line | Polygon | Rectangle | Text | VectorImage;
@@ -23,18 +22,18 @@ export function	createBitmapImage(topLeft: Point.Point, format: string, data: Ui
 export interface Ellipse {
   readonly type: "ellipse",
   readonly topLeft: Point.Point,
-  readonly size: Size.Size,
+  readonly bottomRight: Point.Point,
   readonly strokeColor: Color.Color,
   readonly strokeThickness: number,
   readonly fillColor: Color.Color,
 }
 
-export function	createEllipse(topLeft: Point.Point, size: Size.Size, strokeColor: Color.Color,
+export function	createEllipse(topLeft: Point.Point, bottomRight: Point.Point, strokeColor: Color.Color,
                         strokeThickness: number, fillColor: Color.Color): Ellipse {
   return {
     type: "ellipse",
     topLeft: topLeft,
-    size: size,
+    bottomRight: bottomRight,
     strokeColor: strokeColor,
     strokeThickness: strokeThickness,
     fillColor: fillColor,
@@ -82,18 +81,18 @@ export function createPolygon(points: Array<Point.Point>, strokeColor: Color.Col
 export interface Rectangle {
   readonly type: "rectangle",
   readonly topLeft: Point.Point,
-  readonly size: Size.Size,
+  readonly bottomRight: Point.Point,
   readonly strokeColor: Color.Color,
   readonly strokeThickness: number,
   readonly fillColor: Color.Color,
 }
 
-export function createRectangle(topLeft: Point.Point, size: Size.Size, strokeColor: Color.Color,
+export function createRectangle(topLeft: Point.Point, bottomRight: Point.Point, strokeColor: Color.Color,
                        strokeThickness: number, fillColor: Color.Color): Rectangle {
   return {
     type: "rectangle",
     topLeft: topLeft,
-    size: size,
+    bottomRight: bottomRight,
     strokeColor: strokeColor,
     strokeThickness: strokeThickness,
     fillColor: fillColor,
@@ -101,15 +100,11 @@ export function createRectangle(topLeft: Point.Point, size: Size.Size, strokeCol
 }
 
 export function corners(rectangle: Rectangle): Array<Point.Point> {
-  const top = rectangle.topLeft.y;
-  const bottom = rectangle.topLeft.y + rectangle.size.height;
-  const left = rectangle.topLeft.x;
-  const right = rectangle.topLeft.x + rectangle.size.width;
   return [
-    Point.createPoint(left, top),
-    Point.createPoint(right, top),
-    Point.createPoint(right, bottom),
-    Point.createPoint(left, bottom),
+    rectangle.topLeft,
+    Point.createPoint(rectangle.bottomRight.x, rectangle.topLeft.y),
+    rectangle.bottomRight,
+    Point.createPoint(rectangle.topLeft.x, rectangle.bottomRight.y),
   ];
 }
 

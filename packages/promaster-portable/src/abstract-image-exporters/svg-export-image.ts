@@ -82,10 +82,10 @@ function abstractComponentToSVG(component: AbstractImage.Component) {
 
       return flattenElements(cs);
     case "ellipse":
-      const rx = component.size.width * 0.5;
-      const ry = component.size.width * 0.5;
-      const cx = component.topLeft.x + rx;
-      const cy = component.topLeft.y + ry;
+      const rx = Math.abs(component.bottomRight.x - component.topLeft.x) * 0.5;
+      const ry = Math.abs(component.bottomRight.y - component.topLeft.y) * 0.5;
+      const cx = (component.bottomRight.x + component.topLeft.x) * 0.5;
+      const cy = (component.bottomRight.y + component.topLeft.y) * 0.5;
       return createElement("ellipse", {
         cx: cx.toString(),
         cy: cy.toString(),
@@ -107,8 +107,8 @@ function abstractComponentToSVG(component: AbstractImage.Component) {
       return createElement("rect", {
         x: component.topLeft.x.toString(),
         y: component.topLeft.y.toString(),
-        width: component.size.width.toString(),
-        height: component.size.height.toString(),
+        width: Math.abs(component.bottomRight.x - component.topLeft.x).toString(),
+        height: Math.abs(component.bottomRight.y - component.topLeft.y).toString(),
         stroke: colorToRgb(component.strokeColor),
         strokeWidth: component.strokeThickness.toString(),
         fill: colorToRgb(component.fillColor)
