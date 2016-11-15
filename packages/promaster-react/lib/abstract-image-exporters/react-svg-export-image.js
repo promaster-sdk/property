@@ -43,16 +43,16 @@ function _visit(component) {
             cs.push(React.createElement("text", {x: component.position.x, y: component.position.y, dy: dy_1.toString() + "em", style: style, transform: transform_1}, tSpans));
             return cs;
         case "ellipse":
-            var rx = component.size.width * 0.5;
-            var ry = component.size.width * 0.5;
-            var cx = component.topLeft.x + rx;
-            var cy = component.topLeft.y + ry;
+            var rx = Math.abs(component.bottomRight.x - component.topLeft.x) * 0.5;
+            var ry = Math.abs(component.bottomRight.y - component.topLeft.y) * 0.5;
+            var cx = (component.bottomRight.x + component.topLeft.x) * 0.5;
+            var cy = (component.bottomRight.y + component.topLeft.y) * 0.5;
             return [React.createElement("ellipse", {cx: cx, cy: cy, rx: rx, ry: ry, stroke: colorToRgb(component.strokeColor), strokeWidth: component.strokeThickness, fill: colorToRgb(component.fillColor)})];
         case "polygon":
             var points = component.points.map(function (p) { return p.x.toString() + "," + p.y.toString(); }).join(' ');
             return [React.createElement("polygon", {points: points, stroke: colorToRgb(component.strokeColor), strokeWidth: component.strokeThickness, fill: colorToRgb(component.fillColor)})];
         case "rectangle":
-            return [React.createElement("rect", {x: component.topLeft.x, y: component.topLeft.y, width: component.size.width, height: component.size.height, stroke: colorToRgb(component.strokeColor), strokeWidth: component.strokeThickness, fill: colorToRgb(component.fillColor)})];
+            return [React.createElement("rect", {x: component.topLeft.x, y: component.topLeft.y, width: Math.abs(component.bottomRight.x - component.topLeft.x), height: Math.abs(component.bottomRight.y - component.topLeft.y), stroke: colorToRgb(component.strokeColor), strokeWidth: component.strokeThickness, fill: colorToRgb(component.fillColor)})];
         default:
             return [];
     }

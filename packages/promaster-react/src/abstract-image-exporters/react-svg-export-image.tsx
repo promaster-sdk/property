@@ -64,10 +64,10 @@ function _visit(component: AbstractImage.Component): Array<React.ReactElement<an
                     transform={transform}>{tSpans}</text>);
       return cs;
     case "ellipse":
-      const rx = component.size.width * 0.5;
-      const ry = component.size.width * 0.5;
-      const cx = component.topLeft.x + rx;
-      const cy = component.topLeft.y + ry;
+      const rx = Math.abs(component.bottomRight.x - component.topLeft.x) * 0.5;
+      const ry = Math.abs(component.bottomRight.y - component.topLeft.y) * 0.5;
+      const cx = (component.bottomRight.x + component.topLeft.x) * 0.5;
+      const cy = (component.bottomRight.y + component.topLeft.y) * 0.5;
       return [<ellipse cx={cx} cy={cy} rx={rx} ry={ry}
                        stroke={colorToRgb(component.strokeColor)}
                        strokeWidth={component.strokeThickness}
@@ -79,8 +79,8 @@ function _visit(component: AbstractImage.Component): Array<React.ReactElement<an
     case "rectangle":
       return [<rect x={component.topLeft.x}
                     y={component.topLeft.y}
-                    width={component.size.width}
-                    height={component.size.height}
+                    width={Math.abs(component.bottomRight.x - component.topLeft.x)}
+                    height={Math.abs(component.bottomRight.y - component.topLeft.y)}
                     stroke={colorToRgb(component.strokeColor)}
                     strokeWidth={component.strokeThickness}
                     fill={colorToRgb(component.fillColor)} />];
