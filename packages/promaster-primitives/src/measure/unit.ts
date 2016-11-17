@@ -204,6 +204,10 @@ export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T
  */
 export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number {
   const converter = getConverterTo(toUnit, fromUnit);
+
+  console.log("toUnit, fromUnit, converter", toUnit, fromUnit, converter);
+
+
   return convertWithConverter(value, converter);
 }
 

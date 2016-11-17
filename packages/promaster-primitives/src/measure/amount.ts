@@ -143,6 +143,12 @@ function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimal
   if(typeof value !== "number")
     throw new Error("value must be a number.");
 
+  if(typeof unit !== "object")
+    throw new Error("unit must be an object.");
+
+  if(decimalCount !== undefined && typeof decimalCount !== "number")
+    throw new Error("decimalCount must be an undefined or a number.");
+
   if (decimalCount === undefined) {
     decimalCount = 0;
     const stringValue = value.toString();
