@@ -69,6 +69,7 @@ exports.minus = minus;
  */
 function convert(value, fromUnit, toUnit) {
     var converter = getConverterTo(toUnit, fromUnit);
+    console.log("toUnit, fromUnit, converter", toUnit, fromUnit, converter);
     return convertWithConverter(value, converter);
 }
 exports.convert = convert;

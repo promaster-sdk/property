@@ -14,7 +14,7 @@ describe('unit_tests', () => {
     // console.log("Units.CubicMeterPerSecond", Units.CubicMeterPerSecond);
 		//
 
-    const b; BaseUnit<"VolumeFlow"> = {type: "base"};
+    const b: BaseUnit<"VolumeFlow"> = {type: "base", symbol: "aaa"};
     //const x: InnerUnit<"VolumeFlow"> =
 
 

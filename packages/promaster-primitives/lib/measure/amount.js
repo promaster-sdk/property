@@ -2,7 +2,7 @@
 var Unit = require('./unit');
 var UnitName = require('./unit-name');
 var Units = require("./units");
-var compare_utils_1 = require("../utils/compare_utils");
+var CompareUtils = require("../utils/compare_utils");
 /**
  * Creates an amount that represents the an exact/absolute value in the specified
  * unit. For example if you create an exact amount of 2 degrees Fahrenheit that
@@ -127,6 +127,12 @@ exports.valueAs = valueAs;
 ///////////////////////////////
 function _factory(value, unit, decimalCount) {
     if (decimalCount === void 0) { decimalCount = undefined; }
+    if (typeof value !== "number")
+        throw new Error("value must be a number.");
+    if (typeof unit !== "object")
+        throw new Error("unit must be an object.");
+    if (decimalCount !== undefined && typeof decimalCount !== "number")
+        throw new Error("decimalCount must be an undefined or a number.");
     if (decimalCount === undefined) {
         decimalCount = 0;
         var stringValue = value.toString();
@@ -160,6 +166,6 @@ function _comparison(a1, a2, allowNullOrUndefined) {
     // Convert the second amount to the same unit as the first and compare the values
     var a1Value = a1.value;
     var a2Value = valueAs(a1.unit, a2);
-    return compare_utils_1.compareNumbers(a1Value, a2Value, Math.max(a1.decimalCount, a2.decimalCount));
+    return CompareUtils.compareNumbers(a1Value, a2Value, Math.max(a1.decimalCount, a2.decimalCount));
 }
 //# sourceMappingURL=amount.js.map
