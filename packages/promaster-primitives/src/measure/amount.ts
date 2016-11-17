@@ -2,7 +2,7 @@ import * as Unit from './unit';
 import * as UnitName from './unit-name';
 import {Dimensionless, Quantity} from "./quantity";
 import * as Units from "./units";
-import {compareNumbers} from "../utils/compare_utils";
+import * as CompareUtils from "../utils/compare_utils";
 
 export interface Amount<T extends Quantity> {
   value: number;
@@ -139,6 +139,10 @@ export function valueAs<T extends Quantity>(toUnit: Unit.Unit<T>, amount: Amount
 ///////////////////////////////
 
 function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount: number | undefined = undefined): Amount<T> {
+
+  if(typeof value !== "number")
+    throw new Error("value must be a number.");
+
   if (decimalCount === undefined) {
     decimalCount = 0;
     const stringValue = value.toString();
@@ -173,5 +177,5 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(a1: Amount<T1>, a
   const a1Value = a1.value;
   const a2Value = valueAs<T2>(a1.unit, a2);
 
-  return compareNumbers(a1Value, a2Value, Math.max(a1.decimalCount, a2.decimalCount));
+  return CompareUtils.compareNumbers(a1Value, a2Value, Math.max(a1.decimalCount, a2.decimalCount));
 }
