@@ -1,24 +1,34 @@
-# Introduction
+# promaster-primitives
+## Introduction
 
-This is the main implementation of Promaster Primitives. There are other ports and clones but the goal is 
+This is the main implementation of `promaster-primitives`. There are other ports and clones but the goal is 
 to keep this single repo well maintained, documented, and tested.
 
-This implementaiton uses a functional approach with pure data-records and functions that operates on those data-records.
+This implementaiton uses a functional approach with data-records and pure functions that uses those data-records.
 If desired, other approches such as class-based can be built on top by combining the data-records and functions into classes. 
 
-# Run-time requirements
+## Run-time requirements
 
-This libarary is compiled to ES5 and does not require any polyfills. Specifically it does not use
-ES6 specific API:s like ´Map´ or ´Set´.
+This libarary is compiled to ES5 and does not require any polyfills. It does not use any
+ES6 specific API:s like `Map` or `Set`.
 
-# Libraries
-## Measure
+## Libraries
+### Measure
 
 * [Amount](./doc/measure/amount.md)
 * [Unit](./doc/measure/unit.md)
 * [Units](./doc/measure/units.md)
 
-# Scripts
+## How to test
 
-To publish do npm run publish:patch
-TODO: Document all npm scripts
+Run `npm test`.
+
+## How to publish
+
+To publish patch (`0.0.x`), minor (`0.x.0`), or major (`x.0.0`) run the corresponding script:
+```
+  npm run publish:patch
+  npm run publish:minor
+  npm run publish:major
+```
+
