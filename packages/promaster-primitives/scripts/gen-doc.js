@@ -4,7 +4,7 @@ var path = require('path');
 const rimfaf = require("rimraf");
 const mkdirp = require("mkdirp");
 
-const basePath = path.normalize(path.join(__dirname, ".."))
+const basePath = path.normalize(path.join(__dirname, ".."));
 console.log("basePath", basePath);
 const libPath = path.join(basePath, "lib");
 console.log("libPath", libPath);

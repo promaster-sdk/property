@@ -15,7 +15,7 @@
     "tsc": "tsc -p src",
     "tsc:test": "tsc",
     "gen-doc": "npm run build && node scripts/gen-doc.js",
-    "gen-typedoc": "typedoc --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
+    "gen-typedoc": "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
     "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
     "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
     "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
