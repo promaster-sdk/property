@@ -203,10 +203,9 @@ export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T
  * @returns The converted numeric value.
  */
 export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number {
-  const converter = getConverterTo(toUnit, fromUnit);
+  const converter = getConverter(fromUnit, toUnit);
 
-  console.log("toUnit, fromUnit, converter", toUnit, fromUnit, converter);
-
+  // console.log("converter", converter);
 
   return convertWithConverter(value, converter);
 }
@@ -215,24 +214,27 @@ export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Qu
 /// BEGIN PRIVATE DECLARATIONS
 ///////////////////////////////
 
-function getConverterTo<T extends Quantity>(toUnit: Unit<any>, unit: Unit<T>): UnitConverter {
-  if (unit == toUnit) {
+function getConverter<T extends Quantity>(fromUnit: Unit<T>, toUnit: Unit<any>): UnitConverter {
+  if (fromUnit === toUnit) {
     return identityConverter;
   }
-  return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(toUnit)));
+  const standardFromUnit = toStandardUnitConverter(fromUnit);
+  const standardToUnit = toStandardUnitConverter(toUnit);
+  return concatenateConverters(standardFromUnit, inverseConverter(standardToUnit));
 }
 
 // Returns the converter from this unit to its system unit.
-function toStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter {
+function toStandardUnitConverter<T extends Quantity>(unit: Unit<T>): UnitConverter {
+
   switch (unit.innerUnit.type) {
     case "alternate":
-      return toStandardUnit(unit.innerUnit.parent);
+      return toStandardUnitConverter(unit.innerUnit.parent);
     case "base":
       return identityConverter;
     case "product":
       return productUnitToStandardUnit(unit);
     case "transformed":
-      return concatenateConverters(unit.innerUnit.toParentUnitConverter, toStandardUnit(unit.innerUnit.parentUnit));
+      return concatenateConverters(unit.innerUnit.toParentUnitConverter, toStandardUnitConverter(unit.innerUnit.parentUnit));
   }
   throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
 }
@@ -337,13 +339,13 @@ function getElements(unit: Unit<any>) {
   if (unit.innerUnit.type === "product") {
     return unit.innerUnit.elements;
   }
-  else if (unit.innerUnit.type === "base") {
+  else if (unit.innerUnit.type === "base" || unit.innerUnit.type === "transformed" || unit.innerUnit.type == "alternate") {
     // Base units has one implicit element of the unit which they describe
     return [createElement(unit, 1)];
   }
-  else if (unit.innerUnit.type === "transformed" || unit.innerUnit.type == "alternate") {
-    return [];
-  }
+  // else if () {
+  //   return [];
+  // }
   else {
     const _exhaustiveCheck: never = unit.innerUnit;
   }
@@ -352,7 +354,7 @@ function getElements(unit: Unit<any>) {
 function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter {
   let converter = identityConverter;
   for (let element of getElements(unit)) {
-    let conv = toStandardUnit(element.unit);
+    let conv = toStandardUnitConverter(element.unit);
     let pow = element.pow;
     if (pow < 0) {
       pow = -pow;

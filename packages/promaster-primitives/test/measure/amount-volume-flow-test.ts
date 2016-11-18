@@ -14,12 +14,9 @@ describe('amount_volume_flow_test', () => {
 		assert.closeTo(convertedAmount, VolumeFlowConversion.M3PerSec2M3PerHour(value), 0.00001);
 	});
 
-	it.only('For_Value_2_m3persec_we_should_get_value_7200_m3perhour', () => {
+	it('For_Value_2_m3persec_we_should_get_value_7200_m3perhour', () => {
 		const value: number = 2.0;
 		const amountToTest = Amount.create(value, Units.CubicMeterPerSecond);
-
-		console.log("Units.CubicMeterPerSecond", Units.CubicMeterPerSecond);
-
 		const convertedAmount: number = Amount.valueAs(Units.CubicMeterPerHour, amountToTest);
 		assert.closeTo(convertedAmount, VolumeFlowConversion.M3PerSec2M3PerHour(value), 0.00001);
 	});
