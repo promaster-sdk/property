@@ -300,7 +300,7 @@ function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>,
       group.push(v);
   }
 
-  Object.keys(unitGroups).forEach((unitJson: string)=> {
+  Object.keys(unitGroups).forEach((unitJson: string) => {
     const unit: Unit<any> = JSON.parse(unitJson);
     const unitGroup: Array<Element> = unitGroups[unitJson];
     let sumpow: number = unitGroup.reduce((prev: number, element: Element) => prev + element.pow, 0);
@@ -337,7 +337,16 @@ function getElements(unit: Unit<any>) {
   if (unit.innerUnit.type === "product") {
     return unit.innerUnit.elements;
   }
-  return [];
+  else if (unit.innerUnit.type === "base") {
+    // Base units has one implicit element of the unit which they describe
+    return [createElement(unit, 1)];
+  }
+  else if (unit.innerUnit.type === "transformed" || unit.innerUnit.type == "alternate") {
+    return [];
+  }
+  else {
+    const _exhaustiveCheck: never = unit.innerUnit;
+  }
 }
 
 function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter {
