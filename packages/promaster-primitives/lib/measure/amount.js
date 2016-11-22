@@ -101,8 +101,8 @@ function roundUp(step, amount) {
     return _factory(Math.ceil(div) * step.value, amount.unit);
 }
 exports.roundUp = roundUp;
-function compareTo(other, amount) {
-    return _comparison(amount, other, true);
+function compareTo(left, right) {
+    return _comparison(left, right, true);
 }
 exports.compareTo = compareTo;
 /**
@@ -146,26 +146,26 @@ function _factory(value, unit, decimalCount) {
         decimalCount: decimalCount
     };
 }
-function _comparison(a1, a2, allowNullOrUndefined) {
+function _comparison(left, right, allowNullOrUndefined) {
     if (!allowNullOrUndefined) {
         // We don't allow nulls for < and > because it would cause strange behavior, e.g. 1 < null would work which it shouldn't
-        if (a1 === null || a1 === undefined)
-            throw new Error("ArgumentNull: a1");
-        if (a2 === null || a2 === undefined)
-            throw new Error("ArgumentNull: a2");
+        if (left === null || left === undefined)
+            throw new Error("ArgumentNull: left");
+        if (right === null || right === undefined)
+            throw new Error("ArgumentNull: right");
     }
     else {
         // Handle nulls
-        if ((a1 === null && a2 === null) || (a1 === undefined && a2 === undefined))
+        if ((left === null && right === null) || (left === undefined && right === undefined))
             return 0;
-        if (a1 === null || a1 === undefined)
+        if (left === null || left === undefined)
             return 1;
-        if (a2 === null || a2 === undefined)
+        if (right === null || right === undefined)
             return 2;
     }
     // Convert the second amount to the same unit as the first and compare the values
-    var a1Value = a1.value;
-    var a2Value = valueAs(a1.unit, a2);
-    return CompareUtils.compareNumbers(a1Value, a2Value, Math.max(a1.decimalCount, a2.decimalCount));
+    var a1Value = left.value;
+    var a2Value = valueAs(left.unit, right);
+    return CompareUtils.compareNumbers(a1Value, a2Value, Math.max(left.decimalCount, right.decimalCount));
 }
 //# sourceMappingURL=amount.js.map

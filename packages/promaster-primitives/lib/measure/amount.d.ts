@@ -41,7 +41,7 @@ export declare function max<T extends Quantity>(a2: Amount<T>, amount: Amount<T>
 export declare function min<T extends Quantity>(a2: Amount<T>, amount: Amount<T>): Amount<T>;
 export declare function roundDown<T extends Quantity>(step: Amount<T>, amount: Amount<T>): Amount<T>;
 export declare function roundUp<T extends Quantity>(step: Amount<T>, amount: Amount<T>): Amount<T>;
-export declare function compareTo<T extends Quantity>(other: Amount<T>, amount: Amount<T>): number;
+export declare function compareTo<T extends Quantity>(left: Amount<T>, right: Amount<T>): number;
 /**
  * Gets the absolute amount (equivalent of Math.Abs())
  * @param amount The amount to get the aboslute amount from.

@@ -68,31 +68,33 @@ exports.minus = minus;
  * @returns The converted numeric value.
  */
 function convert(value, fromUnit, toUnit) {
-    var converter = getConverterTo(toUnit, fromUnit);
-    console.log("toUnit, fromUnit, converter", toUnit, fromUnit, converter);
+    var converter = getConverter(fromUnit, toUnit);
+    // console.log("converter", converter);
     return convertWithConverter(value, converter);
 }
 exports.convert = convert;
 ///////////////////////////////
 /// BEGIN PRIVATE DECLARATIONS
 ///////////////////////////////
-function getConverterTo(toUnit, unit) {
-    if (unit == toUnit) {
+function getConverter(fromUnit, toUnit) {
+    if (fromUnit === toUnit) {
         return identityConverter;
     }
-    return concatenateConverters(toStandardUnit(unit), inverseConverter(toStandardUnit(toUnit)));
+    var standardFromUnit = toStandardUnitConverter(fromUnit);
+    var standardToUnit = toStandardUnitConverter(toUnit);
+    return concatenateConverters(standardFromUnit, inverseConverter(standardToUnit));
 }
 // Returns the converter from this unit to its system unit.
-function toStandardUnit(unit) {
+function toStandardUnitConverter(unit) {
     switch (unit.innerUnit.type) {
         case "alternate":
-            return toStandardUnit(unit.innerUnit.parent);
+            return toStandardUnitConverter(unit.innerUnit.parent);
         case "base":
             return identityConverter;
         case "product":
             return productUnitToStandardUnit(unit);
         case "transformed":
-            return concatenateConverters(unit.innerUnit.toParentUnitConverter, toStandardUnit(unit.innerUnit.parentUnit));
+            return concatenateConverters(unit.innerUnit.toParentUnitConverter, toStandardUnitConverter(unit.innerUnit.parentUnit));
     }
     throw new Error("Unknown innerUnit " + JSON.stringify(unit));
 }
@@ -184,13 +186,19 @@ function getElements(unit) {
     if (unit.innerUnit.type === "product") {
         return unit.innerUnit.elements;
     }
-    return [];
+    else if (unit.innerUnit.type === "base" || unit.innerUnit.type === "transformed" || unit.innerUnit.type == "alternate") {
+        // Base units has one implicit element of the unit which they describe
+        return [createElement(unit, 1)];
+    }
+    else {
+        var _exhaustiveCheck = unit.innerUnit;
+    }
 }
 function productUnitToStandardUnit(unit) {
     var converter = identityConverter;
     for (var _i = 0, _a = getElements(unit); _i < _a.length; _i++) {
         var element = _a[_i];
-        var conv = toStandardUnit(element.unit);
+        var conv = toStandardUnitConverter(element.unit);
         var pow = element.pow;
         if (pow < 0) {
             pow = -pow;
