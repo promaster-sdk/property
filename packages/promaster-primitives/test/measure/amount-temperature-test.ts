@@ -538,5 +538,17 @@ describe('amount_temperature_test', () => {
 		assert.closeTo(result, 96.0, 0.1);
 	});
 
+  it('Compare greater than', () => {
+    // Arrange
+    const a = Amount.create(5.0, Units.Celsius);
+    const b = Amount.create(2.0, Units.Celsius);
+
+    // Act
+    const result = Amount.greaterThan(a, b);
+
+    // Assert
+    assert.isTrue(result);
+  });
+
 });
 
