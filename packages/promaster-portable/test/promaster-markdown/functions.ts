@@ -1,9 +1,9 @@
 import {assert} from "chai";
 import {makeHtml} from "../../src/promaster-markdown/index";
 
-describe('filterPrettyPrintSimple', () => {
+describe('makeHtml', () => {
 
-  it('should print a must be 1', () => {
+  it("should convert correctly", () => {
     const text = `sadfdf`;
     const markdown = makeHtml(text);
     assert.equal(markdown, "sadfdf");
