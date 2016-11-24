@@ -235,8 +235,8 @@ describe('main', () => {
     it('supports_settings1', () => {
       const pvs = PropertyValueSet.fromString("a=5:Celsius");
       const f = PropertyFilter.fromString("a>2:Celsius");
-      console.log(pvs);
-      console.log(f);
+      //console.log(pvs);
+      //console.log(f);
       assert.equal(PropertyFilter.isValid(pvs, f), true);
     });
 
