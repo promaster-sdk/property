@@ -13,6 +13,7 @@
     "publish:major": "npm run build && node scripts/publish.js major",
     "publish:minor": "npm run build && node scripts/publish.js minor",
     "publish:patch": "npm run build && node scripts/publish.js patch",
+    "tsc": "tsc -p src",
     "tsc:watch": "tsc --watch -p src",
     "tsc:example": "tsc -p example",
     "tsc:example:watch": "tsc --watch -p example",
