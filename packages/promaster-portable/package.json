@@ -22,8 +22,9 @@
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
   "dependencies": {
+    "node-uuid": "^1.4.7",
     "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.3.1",
-    "node-uuid": "^1.4.7"
+    "showdown": "^1.5.0"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
@@ -32,16 +33,17 @@
     "@types/node-uuid": "0.0.28",
     "@types/react": "^0.14.41",
     "@types/react-dom": "^0.14.18",
+    "@types/showdown": "^1.4.31",
     "chai": "^3.5.0",
     "http-server": "^0.9.0",
     "mocha": "^3.1.2",
     "plugin-typescript": "^5.2.7",
+    "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "shelljs": "^0.7.4",
     "ts-loader": "^0.9.5",
     "ts-node": "^1.6.0",
-    "typescript": "^2.0.3",
-    "react": "^15.3.2"
+    "typescript": "^2.0.3"
   },
   "jspm": {
     "dependencies": {
