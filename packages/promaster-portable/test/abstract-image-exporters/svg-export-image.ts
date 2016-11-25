@@ -3,7 +3,7 @@ import * as AbstractImage from "../../src/abstract-image/index";
 import * as AbstractImageExporters from "../../src/abstract-image-exporters/index";
 
 describe('svg export', () => {
-
+/*
   it('doesnt throw exception and produces output', () => {
     const components = [
       AbstractImage.createLine(AbstractImage.createPoint(25, 25), AbstractImage.createPoint(80, 60), AbstractImage.black, 2),
@@ -14,6 +14,6 @@ describe('svg export', () => {
     console.log(svg);
     assert.equal(svg !== "", true);
   });
-
+*/
 });
 
