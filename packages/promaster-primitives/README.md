@@ -27,6 +27,7 @@ All private packages are in a separate [scope](https://docs.npmjs.com/misc/scope
 You can also set the registry withtout logging in using one of these command:
 
 For all packages: `npm set registry https://npm.divid.se`
+
 For @promaster only: `npm config set @promaster:registry https://npm.divid.se`
 
 > NOTE: All settngs will be stored in the [.npmrc](https://docs.npmjs.com/files/npmrc) file in your home directory.
