@@ -1,5 +1,5 @@
 {
-  "name": "promaster-primitives",
+  "name": "@promaster/promaster-primitives",
   "version": "0.3.1",
   "main": "lib/index.js",
   "description": "Promster SDK Primitives",
@@ -7,6 +7,9 @@
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-primitives",
   "typings": "lib/index",
   "license": "UNLICENSED",
+  "publishConfig":{
+    "registry": "https://npm.divid.se"
+  },
   "scripts": {
     "build": "rm -rf lib && tsc --version && tsc -p src",
     "publish:major": "npm run build && node scripts/publish.js major",
