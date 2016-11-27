@@ -14,21 +14,25 @@ This libarary is compiled to ES5 and does not require any polyfills. It does not
 
 ### npm registry
 
-To use this package you need to have a user for the npm registry [npm.divid.se](https://npm.divid.se). This registry acts both as a proxy for the public packages at [npmjs.org](http://npmjs.org) and as a private registry. To [login](https://docs.npmjs.com/cli/adduser) and use it for all packages (public and private) use this command:
+The promaster packages reside on a private npm registry at [npm.divid.se](https://npm.divid.se). To use this registry you need to have an account and add two things to your [.npmrc](https://docs.npmjs.com/files/npmrc) file:
+
+1. Authentication information for your registry account.
+2. Config for which packages to fetch from the registry.
+
+The registry acts both as a private registry and as a proxy for the public packages at [npmjs.org](http://npmjs.org). To [add authentication information](https://docs.npmjs.com/cli/adduser) and use it for all packages (private and public) use these commands:
 
 `npm adduser --registry=https://npm.divid.se`
+`npm set registry https://npm.divid.se`
 
 > NOTE: `npm login` is an alias to `npm adduser` and behaves exactly the same way.
 
-All private packages are in a separate [scope](https://docs.npmjs.com/misc/scope). The promaster packages are in the @promaster [scope](https://docs.npmjs.com/getting-started/scoped-packages). If you only want to use npm.divid.se for the @promaster scope use this command:
+All private packages exists in a [scope](https://docs.npmjs.com/misc/scope). The promaster packages are in the @promaster [scope](https://docs.npmjs.com/getting-started/scoped-packages). If you only want to use the registry for that scope use this command:
 
 `npm adduser --registry=https://npm.divid.se --scope=@promaster`
 
-You can also set the registry withtout logging in using one of these command:
+The above command will add both authentication information and config to use the registry for only the @promaster scope. If you already have the authentication set and just want to add the registry you can use:
 
-For all packages: `npm set registry https://npm.divid.se`
-
-For @promaster only: `npm config set @promaster:registry https://npm.divid.se`
+`npm config set @promaster:registry https://npm.divid.se`
 
 > NOTE: All settngs will be stored in the [.npmrc](https://docs.npmjs.com/files/npmrc) file in your home directory.
 
