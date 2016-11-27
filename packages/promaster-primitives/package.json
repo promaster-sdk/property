@@ -44,10 +44,5 @@
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
     "typescript": "^2.0.10"
-  },
-  "jspm": {
-    "dependencies": {},
-    "format": "cjs",
-    "registry": "jspm"
   }
 }
