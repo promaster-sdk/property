@@ -1,13 +1,13 @@
 {
   "name": "@promaster/promaster-primitives",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "main": "lib/index.js",
   "description": "Promster SDK Primitives",
   "author": "Divid AB",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-primitives",
   "typings": "lib/index",
   "license": "UNLICENSED",
-  "publishConfig":{
+  "publishConfig": {
     "registry": "https://npm.divid.se"
   },
   "scripts": {
