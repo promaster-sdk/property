@@ -1,5 +1,5 @@
 "use strict";
-var promaster_primitives_1 = require("promaster-primitives");
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var filter_type_inferrer_1 = require("../type-inference/filter-type-inferrer");
 var expr_type_1 = require("../type-inference/expr-type");
 function filterPrettyPrintIndented(messages, indentationDepth, indentionString, f) {

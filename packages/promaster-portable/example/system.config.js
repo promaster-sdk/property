@@ -32,7 +32,7 @@ SystemJS.config({
         }
       }
     },
-    "promaster-primitives": {
+    "@promaster/promaster-primitives": {
       "main": "lib/index.js",
       "format": "cjs"
     },
@@ -43,7 +43,7 @@ SystemJS.config({
     "react": "../node_modules/react/dist/react.js",
     "react-dom": "../node_modules/react-dom/dist/react-dom.js",
     "app": "./app",
-    "promaster-primitives": "../node_modules/promaster-primitives",
+    "@promaster/promaster-primitives": "../node_modules/@promaster/promaster-primitives",
     "promaster-portable": "../src"
   },
   typescriptOptions: {

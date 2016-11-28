@@ -1,4 +1,4 @@
-import {Quantity, PropertyFilter, PropertyValue} from "promaster-primitives";
+import {Quantity, PropertyFilter, PropertyValue} from "@promaster/promaster-primitives";
 
 export interface Property {
   readonly sortNo: number,

@@ -1,4 +1,4 @@
-import {PropertyFilterAst as Ast, PropertyValue} from "promaster-primitives";
+import {PropertyFilterAst as Ast, PropertyValue} from "@promaster/promaster-primitives";
 
 export function comparisionOperationMessage(op: Ast.ComparisonOperationType, left: string, right: string): string {
     return `${left} ${_comparisonOperationTypeToString(op)} ${right}`;

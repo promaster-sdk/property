@@ -3,7 +3,7 @@ import {
   PropertyValueSet,
   PropertyFilter,
   Units
-} from "promaster-primitives";
+} from "@promaster/promaster-primitives";
 import {Property} from "./types";
 
 export function buildAllPropertyValueSets(explicitPropertyValueSet: PropertyValueSet.PropertyValueSet, variableProperties: Property[], allProperties: Property[]) {
@@ -93,7 +93,7 @@ export function buildAllPropertyValueSets(explicitPropertyValueSet: PropertyValu
     .map((property) => ({
       [property.name]: property.defaultValues[0].value
     }));
-  const defaults = defaults1.reduce((soFar, next) => PropertyValueSet.merge(soFar, next));
+  const defaults = defaults1.reduce((soFar, next) => PropertyValueSet.merge(soFar, next), PropertyValueSet.Empty);
 
   // const firstOptions = PropertyValueSet.fromMap(new Map(allProperties
   //   .filter(property => !!property.valueItems && !!property.valueItems.length)

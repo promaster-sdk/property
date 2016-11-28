@@ -1,5 +1,9 @@
 "use strict";
+<<<<<<< HEAD
 var promaster_primitives_1 = require("promaster-primitives");
+=======
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
+>>>>>>> d6a67ebc4d2fd52dcfdc3d9963e3aa00d0c40ad1
 function buildAllPropertyValueSets(explicitPropertyValueSet, variableProperties, allProperties) {
     if (variableProperties.find(function (property) { return promaster_primitives_1.Units.getStringFromQuantityType(property.quantity).toLocaleLowerCase() !== 'discrete'; })) {
         throw new Error('Can\'t build variants from non-discrete properties.');
@@ -41,7 +45,11 @@ function buildAllPropertyValueSets(explicitPropertyValueSet, variableProperties,
         _a[property.name] = property.defaultValues[0].value,
         _a
     )); var _a; });
+<<<<<<< HEAD
     var defaults = defaults1.reduce(function (soFar, next) { return promaster_primitives_1.PropertyValueSet.merge(soFar, next); });
+=======
+    var defaults = defaults1.reduce(function (soFar, next) { return promaster_primitives_1.PropertyValueSet.merge(soFar, next); }, promaster_primitives_1.PropertyValueSet.Empty);
+>>>>>>> d6a67ebc4d2fd52dcfdc3d9963e3aa00d0c40ad1
     var firstOptions1 = allProperties
         .filter(function (property) { return !!property.valueItems && !!property.valueItems.length; })
         .map(function (property) { return ((_a = {},

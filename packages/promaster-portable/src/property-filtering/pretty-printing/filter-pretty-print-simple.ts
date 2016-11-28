@@ -1,4 +1,4 @@
-import {PropertyFilter, PropertyFilterAst as Ast} from "promaster-primitives";
+import {PropertyFilter, PropertyFilterAst as Ast} from "@promaster/promaster-primitives";
 
 export function filterPrettyPrintSimple(f: PropertyFilter.PropertyFilter):string  {
 	if (f.ast == null)
