@@ -1,5 +1,5 @@
 import {csjs} from "csjs";
-import {insertCss} from "../utils/insert-css";
+import {insertCss} from "insert-css";
 
 export interface TextboxPropertySelectorStyles {
   readonly textbox: string,
