@@ -51,7 +51,8 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
     if (!(inputDecimalCount !== null && inputDecimalCount !== undefined))
       console.error("Missing inputDecimalCount");
     const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
-    const newState = this.calculateNewState(value, formattedValue);
+    const newState = calculateNewState(value, formattedValue,
+      initProps.isRequiredMessage, initProps.notNumericMessage, initProps.errorMessage);
     this.setState(newState);
   }
 
@@ -93,24 +94,26 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     // Update the internal state and if the change resulted in a valid value then emit a change with that value
     const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
-    const newState = this.calculateNewState(newAmount, newStringValue);
+    const newState = calculateNewState(newAmount, newStringValue,
+      this.props.isRequiredMessage, this.props.notNumericMessage, this.props.errorMessage);
     this.setState(newState);
     // We need to check isValid from the new state because state is not immidiately mutated
     if (newState.isValid && newAmount)
       this._debouncedOnValueChange(newAmount, onValueChange);
   }
 
-  calculateNewState(newAmount: Amount.Amount<any> | undefined, newStringValue: string): State {
-    const {isRequiredMessage, notNumericMessage, errorMessage} = this.props;
-    const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
-    if (internalErrorMessage) {
-      return {isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage};
-    }
-    else {
-      return {isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage};
-    }
-  }
+}
 
+function calculateNewState(newAmount: Amount.Amount<any> | undefined, newStringValue: string,
+  isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
+  // const {isRequiredMessage, notNumericMessage, errorMessage} = this.props;
+  const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
+  if (internalErrorMessage) {
+    return {isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage};
+  }
+  else {
+    return {isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage};
+  }
 }
 
 
