@@ -14,7 +14,11 @@ import {
   RenderedPropertyLabels,
 } from "./types";
 import {renderPropertySelectors} from "./render-property-selectors";
-import {PropertiesSelectorLayout} from "./properties-selector-layout";
+import {PropertiesSelectorLayout, PropertiesSelectorLayoutProps} from "./properties-selector-layout";
+import ComponentClass = React.ComponentClass;
+import StatelessComponent = React.StatelessComponent;
+import {PropertiesSelectorGroupProps, PropertiesSelectorGroup} from "./properties-selector-group";
+import {PropertiesSelectorGroupItemProps, PropertiesSelectorGroupItem} from "./properties-selector-group-item";
 
 export interface PropertiesSelectorProps {
 
@@ -50,19 +54,32 @@ export interface PropertiesSelectorProps {
   readonly propertyFormats: {[key: string]: AmountFormat},
 
   readonly styles: RenderPropertySelectorsParametersStyles,
+
+  // Override layout
+  readonly LayoutComponent?: ReactComponent<PropertiesSelectorLayoutProps>,
+  readonly GroupComponent?: ReactComponent<PropertiesSelectorGroupProps>,
+  readonly GroupItemComponent?: ReactComponent<PropertiesSelectorGroupItemProps>,
 }
+
+export type ReactComponent<T> = ComponentClass<T> | StatelessComponent<T>;
 
 export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
 
-  const {translatePropertyLabelHover, translateGroupName} = props;
+  const {
+    translatePropertyLabelHover, translateGroupName, LayoutComponent = PropertiesSelectorLayout,
+    GroupComponent = PropertiesSelectorGroup, GroupItemComponent = PropertiesSelectorGroupItem
+  } = props;
   const selectors = renderPropertySelectors(props);
   const labels = renderPropertyLabels(translatePropertyLabelHover, selectors);
 
-  return <PropertiesSelectorLayout selectors={selectors}
-                                   labels={labels}
-                                   translateGroupName={translateGroupName}
-                                   closedGroups={[]}
-                                   onToggleGroupClosed={() => ""}/>;
+  return <LayoutComponent selectors={selectors}
+                          labels={labels}
+                          translateGroupName={translateGroupName}
+                          closedGroups={[]}
+                          onToggleGroupClosed={() => ""}
+                          GroupComponent={GroupComponent}
+                          GroupItemComponent={GroupItemComponent}
+  />;
 
 }
 

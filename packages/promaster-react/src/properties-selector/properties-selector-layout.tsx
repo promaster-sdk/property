@@ -3,8 +3,9 @@ import {
   RenderedPropertySelector, RenderedPropertyLabels,
   TranslateGroupName, OnToggleGroupClosed
 } from "./types";
-import {PropertiesSelectorGroup} from "./properties-selector-group";
-import {PropertiesSelectorGroupItem} from "./properties-selector-group-item";
+import {PropertiesSelectorGroupProps} from "./properties-selector-group";
+import {PropertiesSelectorGroupItemProps} from "./properties-selector-group-item";
+import {ReactComponent} from "./properties-selector";
 
 export interface PropertiesSelectorLayoutProps {
   readonly selectors: Array<RenderedPropertySelector>,
@@ -12,6 +13,8 @@ export interface PropertiesSelectorLayoutProps {
   readonly translateGroupName: TranslateGroupName,
   readonly closedGroups: Array<string>,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
+  readonly GroupComponent: ReactComponent<PropertiesSelectorGroupProps>,
+  readonly GroupItemComponent: ReactComponent<PropertiesSelectorGroupItemProps>,
 }
 
 export function PropertiesSelectorLayout({
@@ -20,6 +23,8 @@ export function PropertiesSelectorLayout({
   translateGroupName,
   closedGroups,
   onToggleGroupClosed,
+  GroupComponent,
+  GroupItemComponent,
 }: PropertiesSelectorLayoutProps) {
 
   const groups = getDistinctGroupNames(selectors);
@@ -31,16 +36,16 @@ export function PropertiesSelectorLayout({
           const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
           const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ''));
           return (
-            <PropertiesSelectorGroup key={groupName}
+            <GroupComponent key={groupName}
                                      isClosedGroup={isClosedGroup}
                                      groupName={groupName}
                                      onToggleGroupClosed={onToggleGroupClosed}
                                      translateGroupName={translateGroupName}>
               {renderedSelectorsForGroup.map((selector) => (
-                <PropertiesSelectorGroupItem key={selector.propertyName} selector={selector}
+                <GroupItemComponent key={selector.propertyName} selector={selector}
                                              label={labels[selector.propertyName]}/>
               ))}
-            </PropertiesSelectorGroup>
+            </GroupComponent>
           );
         })
       }
