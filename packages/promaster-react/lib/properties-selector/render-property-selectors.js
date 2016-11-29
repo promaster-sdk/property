@@ -1,6 +1,6 @@
 "use strict";
 var React = require("react");
-var promaster_primitives_1 = require("promaster-primitives");
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var index_1 = require("../property-selectors/index");
 var amountPropertySelector = React.createFactory(index_1.AmountPropertySelector);
 var comboboxPropertySelector = React.createFactory(index_1.ComboboxPropertySelector);
@@ -74,7 +74,8 @@ function renderPropertySelector(propertyName, quantity, validationFilter, valueI
                     value: vi.value,
                     text: translatePropertyValue(propertyName, (vi.value ? promaster_primitives_1.PropertyValue.getInteger(vi.value) : undefined)),
                     sortNo: vi.sortNo,
-                    validationFilter: vi.validationFilter
+                    validationFilter: vi.validationFilter,
+                    image: vi.image,
                 }); }),
                 showCodes: includeCodes,
                 filterPrettyPrint: filterPrettyPrint,

@@ -1,12 +1,13 @@
 /// <reference types="react" />
 import * as React from "react";
-import { PropertyFilter, PropertyValue, PropertyValueSet } from "promaster-primitives";
-import { PropertyFiltering } from "promaster-portable";
+import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster/promaster-primitives";
+import { PropertyFiltering } from "@promaster/promaster-portable";
 import { ComboboxPropertySelectorStyles } from "./combobox-property-selector-styles";
 export interface ComboBoxPropertyValueItem {
     readonly value: PropertyValue.PropertyValue | undefined;
     readonly sortNo: number;
     readonly text: string;
+    readonly image?: string;
     readonly validationFilter: PropertyFilter.PropertyFilter;
 }
 export interface ComboboxPropertySelectorProps {

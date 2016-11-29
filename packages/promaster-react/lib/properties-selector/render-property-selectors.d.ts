@@ -1,5 +1,5 @@
-import { PropertyValueSet } from "promaster-primitives";
-import { PropertyFiltering } from "promaster-portable";
+import { PropertyValueSet } from "@promaster/promaster-primitives";
+import { PropertyFiltering } from "@promaster/promaster-portable";
 import { RenderPropertySelectorsParametersStyles } from "./render-property-selectors-styles";
 import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, RenderedPropertySelector, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, TranslatePropertyName, Property } from "./types";
 export interface RenderPropertySelectorsParameters {

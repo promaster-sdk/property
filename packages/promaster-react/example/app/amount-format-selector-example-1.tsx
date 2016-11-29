@@ -1,6 +1,6 @@
 import * as React from "react";
-import {AmountInputBox, AmountFormatSelector} from "promaster-react/amount-fields/index";
-import {Unit, Units, Amount} from "promaster-primitives";
+import {AmountInputBox, AmountFormatSelector} from "@promaster/promaster-react/amount-fields/index";
+import {Unit, Units, Amount} from "@promaster/promaster-primitives";
 import {merge} from "./utils";
 
 interface State {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {AbstractImage} from "promaster-portable";
+import {AbstractImage} from "@promaster/promaster-portable";
 
 export function createReactSvg(image: AbstractImage.AbstractImage): React.ReactElement<any> {
 	return (

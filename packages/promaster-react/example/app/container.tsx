@@ -5,6 +5,7 @@ import {ComboboxPropertySelectorExample1} from "./combobox-property-selector-exa
 import {TextboxPropertySelectorExample1} from "./textbox-property-selector-example-1";
 import {PropertiesSelectorExample1} from "./properties-selector-example-1";
 import {SvgExportExample1} from "./svg-export-example-1";
+import {DropdownExample1} from "./dropdown-example-1";
 import {ReactSvgExportExample1} from "./react-svg-export-example-1";
 import {merge} from "./utils";
 
@@ -32,6 +33,7 @@ export class Container extends React.Component<void, State> {
         {name: "PropertiesSelector #1", component: PropertiesSelectorExample1},
         {name: "SvgExport #1", component: SvgExportExample1},
         {name: "ReactSvgExport #1", component: ReactSvgExportExample1},
+        {name: "Dropdown #1", component: DropdownExample1},
       ]
     };
   }

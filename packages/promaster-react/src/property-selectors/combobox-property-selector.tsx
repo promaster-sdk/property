@@ -1,26 +1,28 @@
 import * as React from "react";
-import {PropertyFilter, PropertyValue, PropertyValueSet} from "promaster-primitives";
-import {PropertyFiltering} from "promaster-portable";
+import {PropertyFilter, PropertyValue, PropertyValueSet} from "@promaster/promaster-primitives";
+import {PropertyFiltering} from "@promaster/promaster-portable";
 import {comboboxPropertySelectorStyles, ComboboxPropertySelectorStyles} from "./combobox-property-selector-styles";
+import {Dropdown} from "../dropdown/index";
 
 export interface ComboBoxPropertyValueItem {
-    readonly value: PropertyValue.PropertyValue | undefined,
-    readonly sortNo: number,
-    readonly text: string,
-    readonly validationFilter: PropertyFilter.PropertyFilter
+  readonly value: PropertyValue.PropertyValue | undefined,
+  readonly sortNo: number,
+  readonly text: string,
+  readonly image?: string,
+  readonly validationFilter: PropertyFilter.PropertyFilter
 }
 
 export interface ComboboxPropertySelectorProps {
-    readonly sortValidFirst: boolean,
-    readonly propertyName: string,
-    readonly propertyValueSet: PropertyValueSet.PropertyValueSet,
-    readonly valueItems: ReadonlyArray<ComboBoxPropertyValueItem>,
-    readonly showCodes: boolean,
-    readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-    readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
-    readonly readOnly: boolean,
-    readonly locked: boolean,
-    readonly styles?: ComboboxPropertySelectorStyles,
+  readonly sortValidFirst: boolean,
+  readonly propertyName: string,
+  readonly propertyValueSet: PropertyValueSet.PropertyValueSet,
+  readonly valueItems: ReadonlyArray<ComboBoxPropertyValueItem>,
+  readonly showCodes: boolean,
+  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
+  readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
+  readonly readOnly: boolean,
+  readonly locked: boolean,
+  readonly styles?: ComboboxPropertySelectorStyles,
 }
 
 export function ComboboxPropertySelector({
@@ -46,7 +48,7 @@ export function ComboboxPropertySelector({
         selectedValueItem = {
             value: undefined,
             sortNo: -1,
-            text: value === undefined ? "" : value.toString(),
+            text: (value === undefined || value === null) ? "" : value.toString(),
             validationFilter: PropertyFilter.Empty
         };
         // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
@@ -61,6 +63,7 @@ export function ComboboxPropertySelector({
       value: string,
       label: string,
       isItemValid: boolean,
+      image: string | undefined,
       sortNo: number,
       toolTip: string
     }
@@ -73,6 +76,7 @@ export function ComboboxPropertySelector({
                 value: _getItemValue(valueItem),
                 label: _getItemLabel(valueItem, showCodes),
                 isItemValid: isItemValid,
+                image: valueItem.image,
                 sortNo: valueItem.sortNo,
                 toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint)
             };
@@ -111,6 +115,23 @@ export function ComboboxPropertySelector({
     }
     else {
         selectClassName = styles.select;
+    }
+
+    if (valueItems.some((i) => i.image !== undefined)) {
+      const dropdownOptions = options.map(option => (
+        {
+          value: option.value,
+          label: (option.isItemValid ? '' : '✘ ') + option.label,
+          tooltip: option.toolTip,
+          className: option.isItemValid ? styles.option : styles.optionInvalid,
+          imageUrl: option.image,
+        })
+      );
+      return (<Dropdown className={selectClassName}
+                        value={selectedOption.value}
+                        options={dropdownOptions}
+                        onChange={(e) => _doOnChange(e, onValueChange)} />);
+
     }
 
     return (

@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import * as React from "react";
-import { Amount, Unit } from "promaster-primitives";
+import { Amount, Unit } from "@promaster/promaster-primitives";
 import { AmountInputBoxStyles } from "./amount-input-box-styles";
 export interface AmountInputBoxProps {
     readonly key?: string;

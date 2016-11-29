@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = require("react");
-var promaster_primitives_1 = require("promaster-primitives");
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var amount_input_box_styles_1 = require("./amount-input-box-styles");
 var AmountInputBox = (function (_super) {
     __extends(AmountInputBox, _super);

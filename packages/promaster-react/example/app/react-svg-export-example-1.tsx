@@ -1,6 +1,6 @@
 import * as React from "react";
-import {AbstractImage} from "promaster-portable";
-import {AbstractImageExporters} from "promaster-react";
+import {AbstractImage} from "@promaster/promaster-portable";
+import {AbstractImageExporters} from "@promaster/promaster-react";
 
 export function ReactSvgExportExample1() {
   const components = [

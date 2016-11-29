@@ -36,8 +36,8 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "promaster-react": ["../src"],
-      "promaster-react/*": ["../src/*"],
+      "@promaster/promaster-react": ["../src"],
+      "@promaster/promaster-react/*": ["../src/*"],
       "*": ["../src/custom-typings/*"]
     }
   },

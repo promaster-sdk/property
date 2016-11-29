@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import * as React from "react";
-import { Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity } from "promaster-primitives";
+import { Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity } from "@promaster/promaster-primitives";
 export declare type AmountFormat = {
     unit: Unit.Unit<any>;
     decimalCount: number;
@@ -33,4 +33,5 @@ export interface PropertyValueItem {
     readonly value: PropertyValue.PropertyValue;
     readonly sortNo: number;
     readonly validationFilter: PropertyFilter.PropertyFilter;
+    readonly image?: string;
 }

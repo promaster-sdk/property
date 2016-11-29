@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = require("react");
-var promaster_primitives_1 = require("promaster-primitives");
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var textbox_property_selector_styles_1 = require("./textbox-property-selector-styles");
 var TextboxPropertySelector = (function (_super) {
     __extends(TextboxPropertySelector, _super);

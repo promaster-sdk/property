@@ -1,5 +1,4 @@
 import * as React from "react";
-// import * as R from "ramda";
 import {
   Unit,
   Units,
@@ -7,8 +6,8 @@ import {
   Quantity,
   PropertyValue,
   PropertyFilter
-} from "promaster-primitives";
-import {PropertyFiltering} from "promaster-portable";
+} from "@promaster/promaster-primitives";
+import {PropertyFiltering} from "@promaster/promaster-portable";
 import {RenderPropertySelectorsParametersStyles} from "./render-property-selectors-styles";
 import {
   ComboboxPropertySelector,
@@ -212,7 +211,8 @@ function renderPropertySelector(propertyName: string,
           value: vi.value,
           text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
           sortNo: vi.sortNo,
-          validationFilter: vi.validationFilter
+          validationFilter: vi.validationFilter,
+          image: vi.image,
         })),
         showCodes: includeCodes,
         filterPrettyPrint: filterPrettyPrint,

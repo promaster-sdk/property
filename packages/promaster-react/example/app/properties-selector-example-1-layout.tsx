@@ -1,5 +1,5 @@
 import * as React from "react";
-import {PropertiesSelector} from "promaster-react";
+import {PropertiesSelector} from "@promaster/promaster-react";
 
 export type TranslatePropertyLabelHover = (propertyName: string) => string;
 export type TranslateGroupName = (groupName: string) => string;

@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = require("react");
-var promaster_primitives_1 = require("promaster-primitives");
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var index_1 = require("../amount-fields/index");
 var amount_property_selector_styles_1 = require("./amount-property-selector-styles");
 var AmountPropertySelector = (function (_super) {

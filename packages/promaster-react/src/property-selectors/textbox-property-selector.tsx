@@ -1,5 +1,5 @@
 import * as React from "react";
-import {PropertyValue} from "promaster-primitives";
+import {PropertyValue} from "@promaster/promaster-primitives";
 import {textboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "./textbox-property-selector-styles";
 
 export interface TextboxPropertySelectorProps {

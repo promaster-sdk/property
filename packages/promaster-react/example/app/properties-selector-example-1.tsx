@@ -1,7 +1,7 @@
 import * as React from "react";
-import {PropertiesSelector} from "promaster-react";
-import {PropertyFiltering} from "promaster-portable";
-import {Unit, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
+import {PropertiesSelector} from "@promaster/promaster-react";
+import {PropertyFiltering} from "@promaster/promaster-portable";
+import {Unit, PropertyFilter, PropertyValueSet, PropertyValue} from "@promaster/promaster-primitives";
 import {merge} from "./utils";
 import {PropertiesSelectorLayout} from "./properties-selector-example-1-layout";
 

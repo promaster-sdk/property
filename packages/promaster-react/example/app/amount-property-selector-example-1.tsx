@@ -1,7 +1,7 @@
 import * as React from "react";
-import {PropertySelectors} from "promaster-react";
-import {PropertyFiltering} from "promaster-portable";
-import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "promaster-primitives";
+import {PropertySelectors} from "@promaster/promaster-react";
+import {PropertyFiltering} from "@promaster/promaster-portable";
+import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "@promaster/promaster-primitives";
 import {merge} from "./utils";
 
 interface State {

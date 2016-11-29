@@ -1,7 +1,8 @@
 "use strict";
 var React = require("react");
-var promaster_primitives_1 = require("promaster-primitives");
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var combobox_property_selector_styles_1 = require("./combobox-property-selector-styles");
+var index_1 = require("../dropdown/index");
 function ComboboxPropertySelector(_a) {
     var sortValidFirst = _a.sortValidFirst, propertyName = _a.propertyName, propertyValueSet = _a.propertyValueSet, valueItems = _a.valueItems, showCodes = _a.showCodes, onValueChange = _a.onValueChange, filterPrettyPrint = _a.filterPrettyPrint, readOnly = _a.readOnly, locked = _a.locked, _b = _a.styles, styles = _b === void 0 ? combobox_property_selector_styles_1.comboboxPropertySelectorStyles : _b;
     var value = promaster_primitives_1.PropertyValueSet.getInteger(propertyName, propertyValueSet);
@@ -13,7 +14,7 @@ function ComboboxPropertySelector(_a) {
         selectedValueItem = {
             value: undefined,
             sortNo: -1,
-            text: value === undefined ? "" : value.toString(),
+            text: (value === undefined || value === null) ? "" : value.toString(),
             validationFilter: promaster_primitives_1.PropertyFilter.Empty
         };
         valueItems = [selectedValueItem].concat(valueItems);
@@ -28,6 +29,7 @@ function ComboboxPropertySelector(_a) {
             value: _getItemValue(valueItem),
             label: _getItemLabel(valueItem, showCodes),
             isItemValid: isItemValid,
+            image: valueItem.image,
             sortNo: valueItem.sortNo,
             toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint)
         };
@@ -63,6 +65,16 @@ function ComboboxPropertySelector(_a) {
     }
     else {
         selectClassName = styles.select;
+    }
+    if (valueItems.some(function (i) { return i.image !== undefined; })) {
+        var dropdownOptions = options.map(function (option) { return ({
+            value: option.value,
+            label: (option.isItemValid ? '' : '✘ ') + option.label,
+            tooltip: option.toolTip,
+            className: option.isItemValid ? styles.option : styles.optionInvalid,
+            imageUrl: option.image,
+        }); });
+        return (React.createElement(index_1.Dropdown, {className: selectClassName, value: selectedOption.value, options: dropdownOptions, onChange: function (e) { return _doOnChange(e, onValueChange); }}));
     }
     return (React.createElement("select", {className: selectClassName, disabled: readOnly || locked, value: selectedOption.value, title: selectedOption.toolTip, onChange: function (event) { return _doOnChange(event.target.value, onValueChange); }}, options.map(function (option) { return (React.createElement("option", {key: option.value, value: option.value, title: option.toolTip, className: option.isItemValid ? styles.option : styles.optionInvalid}, (option.isItemValid ? '' : '✘ ') + option.label)); })));
 }

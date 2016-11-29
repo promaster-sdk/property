@@ -1,12 +1,15 @@
 {
-  "name": "promaster-react",
-  "version": "0.6.1",
+  "name": "@promaster/promaster-react",
+  "version": "0.6.14",
   "main": "lib/index.js",
   "description": "React components for applications that use Promaster.",
   "author": "Divid AB",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
   "typings": "lib/index",
   "license": "UNLICENSED",
+  "publishConfig": {
+    "registry": "https://npm.divid.se"
+  },
   "scripts": {
     "start": "http-server -c-1",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,11 +21,11 @@
     "publish:patch": "npm run build && node scripts/publish.js patch"
   },
   "dependencies": {
+    "@promaster/promaster-portable": "^0.6.2",
+    "@promaster/promaster-primitives": "^0.3.6",
     "csjs": "^1.0.6",
     "insert-css": "^2.0.0",
-    "promaster-portable": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-portable.git#0.5.0",
-    "promaster-primitives": "git+https://pm-sdk:pm-sdk-read@gitlab.divid.se/promaster-sdk/promaster-primitives.git#0.3.0",
-    "react": "^15.3.2"
+    "react": "^15.3.0"
   },
   "devDependencies": {
     "@types/react": "^0.14.41",
@@ -31,15 +34,6 @@
     "plugin-typescript": "^5.2.7",
     "shelljs": "^0.7.4",
     "typescript": "^2.0.3",
-    "react-dom": "^15.3.2"
-  },
-  "jspm": {
-    "dependencies": {
-      "csjs": "npm:csjs@^1.0.6",
-      "insert-css": "npm:insert-css@^2.0.0",
-      "promaster-primitives": "divid-gitlab:promaster-sdk/promaster-primitives@^0.3.0",
-      "promaster-portable": "divid-gitlab:promaster-sdk/promaster-portable@^0.5.0",
-      "react": "npm:react@^15.3.2"
-    }
+    "react-dom": "^15.3.0"
   }
 }

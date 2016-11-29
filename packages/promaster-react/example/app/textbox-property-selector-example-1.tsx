@@ -1,6 +1,6 @@
 import * as React from "react";
-import {PropertySelectors as Selectors} from "promaster-react";
-import {PropertyValueSet, PropertyValue} from "promaster-primitives";
+import {PropertySelectors as Selectors} from "@promaster/promaster-react";
+import {PropertyValueSet, PropertyValue} from "@promaster/promaster-primitives";
 import {merge} from "./utils";
 
 interface State {

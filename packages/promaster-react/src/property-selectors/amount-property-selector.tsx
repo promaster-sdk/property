@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Amount, PropertyValueSet, PropertyFilter, PropertyValue, Unit} from "promaster-primitives";
-import {PropertyFiltering} from "promaster-portable";
+import {Amount, PropertyValueSet, PropertyFilter, PropertyValue, Unit} from "@promaster/promaster-primitives";
+import {PropertyFiltering} from "@promaster/promaster-portable";
 import {AmountInputBox, AmountFormatSelector, OnFormatChanged} from "../amount-fields/index";
 import {amountPropertySelectorStyles, AmountPropertySelectorStyles} from "./amount-property-selector-styles";
 

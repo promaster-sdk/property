@@ -7,4 +7,6 @@ var PropertiesSelector = require("./properties-selector/index");
 exports.PropertiesSelector = PropertiesSelector;
 var AbstractImageExporters = require("./abstract-image-exporters/index");
 exports.AbstractImageExporters = AbstractImageExporters;
+var Dropdown = require("./dropdown/index");
+exports.Dropdown = Dropdown;
 //# sourceMappingURL=index.js.map

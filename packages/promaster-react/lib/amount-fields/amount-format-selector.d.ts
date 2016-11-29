@@ -1,6 +1,6 @@
 /// <reference types="react" />
 import * as React from "react";
-import { Unit } from "promaster-primitives";
+import { Unit } from "@promaster/promaster-primitives";
 import { AmountFormatSelectorStyles } from "./amount-format-selector-styles";
 export interface AmountFormatSelectorProps {
     readonly key?: string;

@@ -22,7 +22,7 @@ SystemJS.config({
         }
       }
     },
-    "promaster-react": {
+    "@promaster/promaster-react": {
       "main": "index.tsx",
       "defaultExtension": "tsx",
       "format": "system",
@@ -32,11 +32,11 @@ SystemJS.config({
         }
       }
     },
-    "promaster-primitives": {
+    "@promaster/promaster-primitives": {
       "main": "lib/index.js",
       "format": "cjs"
     },
-    "promaster-portable": {
+    "@promaster/promaster-portable": {
       "main": "lib/index.js",
       "format": "cjs"
     },
@@ -49,6 +49,9 @@ SystemJS.config({
       "main": "lib/index.js",
       "defaultExtension": "js",
       "format": "cjs"
+    },
+    "react-dom": {
+      "format": "cjs"
     }
   },
   map: {
@@ -59,9 +62,9 @@ SystemJS.config({
     "csjs": "../node_modules/csjs/",
     "insert-css": "../node_modules/insert-css/index.js",
     "app": "./app",
-    "promaster-react": "../src",
-    "promaster-primitives": "../node_modules/promaster-primitives",
-    "promaster-portable": "../node_modules/promaster-portable"
+    "@promaster/promaster-react": "../src",
+    "@promaster/promaster-primitives": "../node_modules/@promaster/promaster-primitives",
+    "@promaster/promaster-portable": "../node_modules/@promaster/promaster-portable"
   },
   typescriptOptions: {
     module: "system",

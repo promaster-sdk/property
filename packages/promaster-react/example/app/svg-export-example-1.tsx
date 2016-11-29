@@ -1,5 +1,5 @@
 import * as React from "react";
-import {AbstractImage, AbstractImageExporters} from "promaster-portable";
+import {AbstractImage, AbstractImageExporters} from "@promaster/promaster-portable";
 
 export function SvgExportExample1() {
   const components = [
