@@ -10,7 +10,7 @@ import {
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
   TranslatePropertyName,
-  Property, TranslatePropertyLabelHover, TranslateGroupName, RenderedPropertyLabel, RenderedPropertySelector,
+  Property, TranslatePropertyLabelHover, TranslateGroupName, RenderedPropertySelector,
   RenderedPropertyLabels,
 } from "./types";
 import {renderPropertySelectors} from "./render-property-selectors";
@@ -61,8 +61,8 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
   return <PropertiesSelectorDefaultLayout selectors={selectors}
                                           labels={labels}
                                           translateGroupName={translateGroupName}
-                                          closedGroups=""
-                                          onToggleGroupClosed=""/>;
+                                          closedGroups={[]}
+                                          onToggleGroupClosed={()=>""}/>;
 
 }
 
