@@ -1,4 +1,5 @@
 "use strict";
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 function comparisionOperationMessage(op, left, right) {
     return left + " " + _comparisonOperationTypeToString(op) + " " + right;
 }
@@ -23,8 +24,9 @@ function propertyNameMessage(propertyName) {
     return propertyName;
 }
 exports.propertyNameMessage = propertyNameMessage;
-function propertyValueItemMessage(propertyName, pv) {
-    return propertyName + "_" + pv;
+function propertyValueItemMessage(propertyName, propertyValue) {
+    var pvString = promaster_primitives_1.PropertyValue.toString(propertyValue);
+    return propertyName + "_" + pvString;
 }
 exports.propertyValueItemMessage = propertyValueItemMessage;
 function nullMessage() {
