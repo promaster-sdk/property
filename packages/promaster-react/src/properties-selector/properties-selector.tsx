@@ -10,8 +10,7 @@ import {
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
   TranslatePropertyName,
-  Property, TranslatePropertyLabelHover, TranslateGroupName, RenderedPropertySelector,
-  RenderedPropertyLabels,
+  Property, TranslatePropertyLabelHover, TranslateGroupName,
 } from "./types";
 import {renderPropertySelectors} from "./render-property-selectors";
 import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
@@ -66,40 +65,16 @@ export type ReactComponent<T> = ComponentClass<T> | StatelessComponent<T>;
 export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
 
   const {
-    translatePropertyLabelHover, translateGroupName, LayoutComponent = DefaultLayoutComponent,
+    translateGroupName, LayoutComponent = DefaultLayoutComponent,
     GroupComponent = DefaultGroupComponent, GroupItemComponent = DefaultGroupItemComponent
   } = props;
   const selectors = renderPropertySelectors(props);
-  const labels = renderPropertyLabels(translatePropertyLabelHover, selectors);
 
   return <LayoutComponent selectors={selectors}
-                          labels={labels}
                           translateGroupName={translateGroupName}
                           closedGroups={[]}
                           onToggleGroupClosed={() => ""}
                           GroupComponent={GroupComponent}
-                          GroupItemComponent={GroupItemComponent}
-  />;
+                          GroupItemComponent={GroupItemComponent} />;
 
-}
-
-function renderPropertyLabels(translatePropertyLabelHover: TranslatePropertyLabelHover,
-                              selectors: Array<RenderedPropertySelector>): RenderedPropertyLabels {
-
-  const labels: RenderedPropertyLabels = selectors
-    .map((selector) => ({
-      [selector.propertyName]: renderLabel(selector, translatePropertyLabelHover),
-    }))
-    .reduce((prev, curr) => Object.assign(prev, curr));
-  return labels;
-}
-
-function renderLabel(selector: RenderedPropertySelector,
-                     translatePropertyLabelHover: TranslatePropertyLabelHover) {
-  return (
-    <label className={ !selector.isValid	? 'invalid'	: undefined}
-           title={translatePropertyLabelHover(selector.propertyName)}>
-      <span className={selector.isHidden ? "hidden-property" : ""}>{selector.label}</span>
-    </label>
-  );
 }

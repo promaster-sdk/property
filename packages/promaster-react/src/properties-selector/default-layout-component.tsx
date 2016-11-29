@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-  RenderedPropertySelector, RenderedPropertyLabels,
+  RenderedPropertySelector,
   TranslateGroupName, OnToggleGroupClosed
 } from "./types";
 import {GroupComponentProps} from "./default-group-component";
@@ -9,7 +9,6 @@ import {ReactComponent} from "./properties-selector";
 
 export interface LayoutComponentProps {
   readonly selectors: Array<RenderedPropertySelector>,
-  readonly labels: RenderedPropertyLabels,
   readonly translateGroupName: TranslateGroupName,
   readonly closedGroups: Array<string>,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
@@ -19,7 +18,6 @@ export interface LayoutComponentProps {
 
 export function DefaultLayoutComponent({
   selectors,
-  labels,
   translateGroupName,
   closedGroups,
   onToggleGroupClosed,
@@ -42,8 +40,7 @@ export function DefaultLayoutComponent({
                                      onToggleGroupClosed={onToggleGroupClosed}
                                      translateGroupName={translateGroupName}>
               {renderedSelectorsForGroup.map((selector) => (
-                <GroupItemComponent key={selector.propertyName} selector={selector}
-                                             label={labels[selector.propertyName]}/>
+                <GroupItemComponent key={selector.propertyName} selector={selector}/>
               ))}
             </GroupComponent>
           );

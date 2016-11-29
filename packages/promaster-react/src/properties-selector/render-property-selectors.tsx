@@ -23,7 +23,7 @@ import {
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
   Property,
-  PropertyValueItem,
+  PropertyValueItem, TranslatePropertyLabelHover,
 } from "./types";
 import {PropertiesSelectorProps} from "./properties-selector";
 
@@ -47,6 +47,7 @@ export function renderPropertySelectors({
   translatePropertyValue,
   translateValueMustBeNumericMessage,
   translateValueIsRequiredMessage,
+  translatePropertyLabelHover,
 
   readOnlyProperties,
   optionalProperties,
@@ -79,7 +80,7 @@ export function renderPropertySelectors({
           break;
         case "amount":
           defaultFormat = selectedValue && selectedValue.type === "amount" ?
-            {unit: selectedValue.value.unit, decimalCount: selectedValue.value.decimalCount } : defaultFormat;
+            {unit: selectedValue.value.unit, decimalCount: selectedValue.value.decimalCount} : defaultFormat;
           isValid = property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter);
           break;
         default:
@@ -90,15 +91,18 @@ export function renderPropertySelectors({
       // TODO: Better handling of format to use when the format is missing in the map
       const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
+      const isHidden =!PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
+      const label =translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
+
       return {
         sortNo: property.sortNo,
         propertyName: property.name,
         groupName: property.group,
 
         isValid: isValid,
-        isHidden: !PropertyFilter.isValid(selectedProperties, property.visibilityFilter),
+        isHidden: isHidden,
 
-        label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
+        label: label,
 
         renderedSelectorElement: renderPropertySelector(
           property.name,
@@ -121,8 +125,9 @@ export function renderPropertySelectors({
           translateValueMustBeNumericMessage,
           translateValueIsRequiredMessage,
           styles
-        )
-
+        ),
+        renderedLabelElement: renderPropertyLabel(isValid, isHidden, label,
+          translatePropertyLabelHover, property.name),
       };
     });
 
@@ -270,3 +275,15 @@ function handleChange(externalOnChange: PropertySelectionOnChange, productProper
   };
 }
 
+function renderPropertyLabel(selectorIsValid: boolean,
+                             selectorIsHidden: boolean,
+                             selectorLabel: string,
+                             translatePropertyLabelHover: TranslatePropertyLabelHover,
+                             propertyName: string) {
+  return (
+    <label className={ !selectorIsValid	? 'invalid'	: undefined}
+           title={translatePropertyLabelHover(propertyName)}>
+      <span className={selectorIsHidden ? "hidden-property" : ""}>{selectorLabel}</span>
+    </label>
+  );
+}

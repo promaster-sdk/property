@@ -6,7 +6,7 @@ var amountPropertySelector = React.createFactory(index_1.AmountPropertySelector)
 var comboboxPropertySelector = React.createFactory(index_1.ComboboxPropertySelector);
 var textboxPropertySelector = React.createFactory(index_1.TextboxPropertySelector);
 function renderPropertySelectors(_a) {
-    var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, styles = _a.styles;
+    var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, translatePropertyLabelHover = _a.translatePropertyLabelHover, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, styles = _a.styles;
     autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
     var sortedArray = productProperties.slice().sort(function (a, b) { return a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0; });
     var selectorDefinitions = sortedArray
@@ -33,16 +33,19 @@ function renderPropertySelectors(_a) {
         }
         var isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
         var propertyFormat = propertyFormats[property.name] || defaultFormat;
+        var isHidden = !promaster_primitives_1.PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
+        var label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
         return {
             sortNo: property.sortNo,
             propertyName: property.name,
             groupName: property.group,
             isValid: isValid,
-            isHidden: !promaster_primitives_1.PropertyFilter.isValid(selectedProperties, property.visibilityFilter),
-            label: translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : ''),
+            isHidden: isHidden,
+            label: label,
             renderedSelectorElement: renderPropertySelector(property.name, property.quantity, property.validationFilter, property.valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, handleChange(onChange, productProperties, autoSelectSingleValidValue), onPropertyFormatChanged, filterPrettyPrint, propertyFormat, isReadOnly, autoSelectSingleValidValue
                 ? !!getSingleValidValueOrUndefined(property, selectedProperties)
-                : false, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, styles)
+                : false, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, styles),
+            renderedLabelElement: renderPropertyLabel(isValid, isHidden, label, translatePropertyLabelHover, property.name),
         };
     });
     return selectorDefinitions;
@@ -148,5 +151,10 @@ function handleChange(externalOnChange, productProperties, autoSelectSingleValid
         }
         externalOnChange(properties);
     };
+}
+function renderPropertyLabel(selectorIsValid, selectorIsHidden, selectorLabel, translatePropertyLabelHover, propertyName) {
+    return (React.createElement("label", {className: !selectorIsValid ? 'invalid' : undefined, title: translatePropertyLabelHover(propertyName)}, 
+        React.createElement("span", {className: selectorIsHidden ? "hidden-property" : ""}, selectorLabel)
+    ));
 }
 //# sourceMappingURL=render-property-selectors.js.map

@@ -14,16 +14,6 @@ export type TranslatePropertyLabelHover = (propertyName: string) => string;
 export type TranslateGroupName = (groupName: string) => string;
 export type OnToggleGroupClosed = (groupName: string) => void;
 
-// Defines one already rendered label that should be layed out by the
-// layout component. Technically it contains a react element and some
-// meta data.
-export type RenderedPropertyLabels = {readonly [propertyName: string]: RenderedPropertyLabel};
-// export interface RenderedPropertyLabel {
-//   readonly propertyName: string,
-//   readonly renderedLabelElement: React.ReactElement<{}>,
-// }
-export type RenderedPropertyLabel = React.ReactElement<{}>;
-
 // Defines one already rendered selector that should be layed out by the
 // layout component. Technically it contains a react element and some
 // meta data.
@@ -48,6 +38,8 @@ export interface RenderedPropertySelector {
 	// This is the property selector that should be
 	// layed out by the layout component
 	readonly renderedSelectorElement: React.ReactElement<{}>,
+
+  readonly renderedLabelElement: React.ReactElement<{}>,
 
 }
 
