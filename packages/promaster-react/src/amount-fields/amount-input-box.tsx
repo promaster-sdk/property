@@ -106,7 +106,6 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
 function calculateNewState(newAmount: Amount.Amount<any> | undefined, newStringValue: string,
   isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
-  // const {isRequiredMessage, notNumericMessage, errorMessage} = this.props;
   const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
   if (internalErrorMessage) {
     return {isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage};
