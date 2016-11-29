@@ -1,8 +1,6 @@
 import * as React from "react";
-import {
-  PropertiesSelectorLayoutProps, RenderedPropertySelector, OnToggleGroupClosed,
-  TranslateGroupName, RenderedPropertyLabels, RenderedPropertyLabel
-} from "./types";
+import {PropertiesSelectorLayoutProps, RenderedPropertySelector} from "./types";
+import {PropertiesSelectorGroup} from "./properties-selector-group";
 
 export function PropertiesSelectorLayoutDefault({
   selectors,
@@ -21,13 +19,13 @@ export function PropertiesSelectorLayoutDefault({
           const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
           const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ''));
           return (
-            <GroupComponent key={groupName}
-                            isClosedGroup={isClosedGroup}
-                            groupName={groupName}
-                            onToggleGroupClosed={onToggleGroupClosed}
-                            translateGroupName={translateGroupName}
-                            renderedSelectorsForGroup={renderedSelectorsForGroup}
-                            labels={labels}
+            <PropertiesSelectorGroup key={groupName}
+                                     isClosedGroup={isClosedGroup}
+                                     groupName={groupName}
+                                     onToggleGroupClosed={onToggleGroupClosed}
+                                     translateGroupName={translateGroupName}
+                                     renderedSelectorsForGroup={renderedSelectorsForGroup}
+                                     labels={labels}
             />
           );
         })
@@ -37,56 +35,6 @@ export function PropertiesSelectorLayoutDefault({
 
 }
 
-interface GroupComponentProps {
-  isClosedGroup: boolean,
-  groupName: string,
-  onToggleGroupClosed: OnToggleGroupClosed,
-  translateGroupName: TranslateGroupName,
-  renderedSelectorsForGroup: Array<RenderedPropertySelector>,
-  labels: RenderedPropertyLabels
-}
-
-function GroupComponent({
-  isClosedGroup,
-  groupName,
-  onToggleGroupClosed,
-  translateGroupName,
-  renderedSelectorsForGroup,
-  labels
-}:GroupComponentProps) {
-  const className1 = 'group-container' + (isClosedGroup || groupName === "Main" ? ' expanded' : ' collapsed'); // temp fix to hide on start
-  return (
-    <div key={groupName} className={className1}>
-      <div className="group-container-header" onClick={() => onToggleGroupClosed(groupName)}>
-        <button className="expand-collapse">&nbsp;>>&nbsp;</button>
-        {translateGroupName(groupName)}
-      </div>
-      {
-        renderedSelectorsForGroup.map((selector) => (
-            <GroupItemComponent key={selector.propertyName} selector={selector} label={labels[selector.propertyName]}/>
-          )
-        )
-      }
-    </div>
-  );
-}
-
-interface GroupItemComponentProps {
-  selector: RenderedPropertySelector,
-  label: RenderedPropertyLabel
-}
-
-function GroupItemComponent({
-  selector,
-  label
-}: GroupItemComponentProps): React.ReactElement<GroupItemComponentProps> {
-  return (
-    <div key={selector.propertyName} className="property-selector-row">
-      {label}
-      {selector.renderedSelectorElement}
-    </div>
-  );
-}
 
 function getDistinctGroupNames(productPropertiesArray: Array<RenderedPropertySelector>): Array<string> {
   const groupNames: Array<string> = [];
