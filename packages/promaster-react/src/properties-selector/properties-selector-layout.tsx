@@ -1,8 +1,19 @@
 import * as React from "react";
-import {PropertiesSelectorLayoutProps, RenderedPropertySelector} from "./types";
+import {
+  RenderedPropertySelector, RenderedPropertyLabels,
+  TranslateGroupName, OnToggleGroupClosed
+} from "./types";
 import {PropertiesSelectorGroup} from "./properties-selector-group";
 
-export function PropertiesSelectorLayoutDefault({
+export interface PropertiesSelectorLayoutProps {
+  readonly selectors: Array<RenderedPropertySelector>,
+  readonly labels: RenderedPropertyLabels,
+  readonly translateGroupName: TranslateGroupName,
+  readonly closedGroups: Array<string>,
+  readonly onToggleGroupClosed: OnToggleGroupClosed,
+}
+
+export function PropertiesSelectorLayout({
   selectors,
   labels,
   translateGroupName,

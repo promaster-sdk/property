@@ -14,13 +14,6 @@ export declare type TranslateValueIsRequiredMessage = () => string;
 export declare type TranslatePropertyLabelHover = (propertyName: string) => string;
 export declare type TranslateGroupName = (groupName: string) => string;
 export declare type OnToggleGroupClosed = (groupName: string) => void;
-export interface PropertiesSelectorLayoutProps {
-    readonly selectors: Array<RenderedPropertySelector>;
-    readonly labels: RenderedPropertyLabels;
-    readonly translateGroupName: TranslateGroupName;
-    readonly closedGroups: Array<string>;
-    readonly onToggleGroupClosed: OnToggleGroupClosed;
-}
 export declare type RenderedPropertyLabels = {
     readonly [propertyName: string]: RenderedPropertyLabel;
 };

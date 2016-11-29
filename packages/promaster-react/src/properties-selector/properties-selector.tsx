@@ -14,7 +14,7 @@ import {
   RenderedPropertyLabels,
 } from "./types";
 import {renderPropertySelectors} from "./render-property-selectors";
-import {PropertiesSelectorLayoutDefault} from "./properties-selector-layout-default";
+import {PropertiesSelectorLayout} from "./properties-selector-layout";
 
 export interface PropertiesSelectorProps {
 
@@ -58,11 +58,11 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
   const selectors = renderPropertySelectors(props);
   const labels = renderPropertyLabels(translatePropertyLabelHover, selectors);
 
-  return <PropertiesSelectorLayoutDefault selectors={selectors}
-                                          labels={labels}
-                                          translateGroupName={translateGroupName}
-                                          closedGroups={[]}
-                                          onToggleGroupClosed={() => ""}/>;
+  return <PropertiesSelectorLayout selectors={selectors}
+                                   labels={labels}
+                                   translateGroupName={translateGroupName}
+                                   closedGroups={[]}
+                                   onToggleGroupClosed={() => ""}/>;
 
 }
 
