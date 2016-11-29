@@ -1,19 +1,17 @@
 import { Quantity, PropertyFilter, PropertyValue } from "@promaster/promaster-primitives";
-export interface Property {
-    readonly sortNo: number;
+export interface ProductProperty {
+    readonly sort_no: number;
     readonly name: string;
     readonly quantity: Quantity.Quantity;
-    readonly validationFilter: PropertyFilter.PropertyFilter;
-    readonly valueItems: PropertyValueItem[];
-    readonly defaultValues: PropertyDefaultValue[];
+    readonly validation_filter: PropertyFilter.PropertyFilter;
+    readonly value: Array<ProductPropertyValue>;
+    readonly def_value: PropertyDefaultValue[];
 }
-export declare type PropertyValueItem = {
+export declare type ProductPropertyValue = {
     readonly value: PropertyValue.PropertyValue;
-    readonly sortNo: number;
-    readonly validationFilter: PropertyFilter.PropertyFilter;
+    readonly property_filter: PropertyFilter.PropertyFilter;
+    readonly description: string;
 };
 export declare type PropertyDefaultValue = {
     readonly value: PropertyValue.PropertyValue;
-    readonly sortNo: number;
-    readonly propertyFilter: PropertyFilter.PropertyFilter;
 };

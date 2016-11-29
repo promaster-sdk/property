@@ -1,33 +1,33 @@
 import {assert} from "chai";
-import {buildAllPropertyValueSets, Property, PropertyValueItem, PropertyDefaultValue} from "../../src/variant-listing";
+import {buildAllPropertyValueSets, ProductProperty, ProductPropertyValue, PropertyDefaultValue} from "../../src/variant-listing";
 import * as PromasterPrimitives from "@promaster/promaster-primitives";
 
 // Values
-function valueGenerator(iter: number): PropertyValueItem {
+function valueGenerator(iter: number): ProductPropertyValue {
   return {
     value: { type: "integer", value: iter },
-    sortNo: iter * 10,
-    validationFilter: PromasterPrimitives.PropertyFilter.Empty,
+    property_filter: PromasterPrimitives.PropertyFilter.Empty,
+    description: `integer no ${iter}`,
   };
 }
 
-// Property
-function propertyGenerator(name: string, count: number): Property {
+// ProductProperty
+function propertyGenerator(name: string, count: number): ProductProperty {
   return {
-    sortNo: 0,
+    sort_no: 0,
     name: name,
     quantity: "Discrete",
-    validationFilter: PromasterPrimitives.PropertyFilter.Empty,
-    valueItems: (Array.apply(null, {length: count}).map(Number.call, Number)).map((i) => valueGenerator(i)),
-    defaultValues: [],
+    validation_filter: PromasterPrimitives.PropertyFilter.Empty,
+    value: (Array.apply(null, {length: count}).map(Number.call, Number)).map((i) => valueGenerator(i)),
+    def_value: [],
   };
 }
 
 // Generate a list of properties
-const propertiesGenerator = (name: string, pcount: number, vcount: number): Property[] => (Array.apply(null, {length: pcount}).map(Number.call, Number)).map((i) => propertyGenerator(name + String(i), vcount));
+const propertiesGenerator = (name: string, pcount: number, vcount: number): ProductProperty[] => (Array.apply(null, {length: pcount}).map(Number.call, Number)).map((i) => propertyGenerator(name + String(i), vcount));
 
 // PropertyValueSet
-const propertyValueSetGenerator = (properties: Property[]): PromasterPrimitives.PropertyValueSet.PropertyValueSet => properties.reduce((acc, curr) => acc[curr.name] = curr.valueItems[0].value, {});
+const propertyValueSetGenerator = (properties: ProductProperty[]): PromasterPrimitives.PropertyValueSet.PropertyValueSet => properties.reduce((acc, curr) => acc[curr.name] = curr.value[0].value, {});
 
 describe("buildAllPropertyValueSets", () => {
   it("should generate all values", () => {
