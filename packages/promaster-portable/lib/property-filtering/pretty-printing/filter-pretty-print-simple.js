@@ -1,4 +1,5 @@
 "use strict";
+var promaster_primitives_1 = require("@promaster/promaster-primitives");
 function filterPrettyPrintSimple(f) {
     if (f.ast == null)
         return "";
@@ -45,7 +46,7 @@ function _print(e, s) {
         }
     }
     else if (e.type === "ValueExpr") {
-        s += e.parsed.toString();
+        s += promaster_primitives_1.PropertyValue.toString(e.parsed);
     }
     else if (e.type === "ValueRangeExpr") {
         s = _print(e.min, s);

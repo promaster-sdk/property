@@ -30,7 +30,7 @@ const propertiesGenerator = (name: string, pcount: number, vcount: number): Prop
 const propertyValueSetGenerator = (properties: Property[]): PromasterPrimitives.PropertyValueSet.PropertyValueSet => properties.reduce((acc, curr) => acc[curr.name] = curr.valueItems[0].value, {});
 
 describe("buildAllPropertyValueSets", () => {
-  it.only("should generate all values", () => {
+  it("should generate all values", () => {
     const properties = propertiesGenerator("test", 4, 2);
     const propertyValueSet = propertyValueSetGenerator(properties);
     const sets = buildAllPropertyValueSets(propertyValueSet, properties, properties);

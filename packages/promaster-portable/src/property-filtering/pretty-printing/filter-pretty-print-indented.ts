@@ -5,7 +5,8 @@ import {FilterPrettyPrintMessages} from "./filter-pretty-print-messages";
 
 export function filterPrettyPrintIndented(messages: FilterPrettyPrintMessages,
                                           indentationDepth: number,
-                                          indentionString: string, f: PropertyFilter.PropertyFilter): string {
+                                          indentionString: string,
+                                          f: PropertyFilter.PropertyFilter): string {
   const e = f.ast;
   if (e == null)
     return "";
@@ -23,11 +24,12 @@ function visit(e: Ast.Expr, indentationDepth: number,
   const innerVisit = (indent: number, expr: Ast.Expr): string => visit(expr, indent, indentionString, messages, typeMap);
 
   if (e.type === "AndExpr") {
+
     let s = "";
     for (let child of e.children) {
-      s += innerVisit(indentationDepth + 1, child);
+      s += innerVisit(indentationDepth, child);
       if (child !== e.children[e.children.length - 1]) {
-        s += "\n" + _generateIndention(indentationDepth, indentionString) + messages.andMessage() + "\n";
+        s += "\n" + _generateIndention(indentationDepth + 1, indentionString) + messages.andMessage() + "\n";
       }
     }
     return s;
@@ -43,8 +45,9 @@ function visit(e: Ast.Expr, indentationDepth: number,
   else if (e.type === "EqualsExpr") {
     const left = innerVisit(indentationDepth, e.leftValue);
     const builder: Array<string> = [];
-    for (let range of e.rightValueRanges) {
-      builder.push(innerVisit(indentationDepth, range));
+    for (const range of e.rightValueRanges) {
+      const rangeMessage = innerVisit(indentationDepth, range);
+      builder.push(rangeMessage);
       if (range != e.rightValueRanges[e.rightValueRanges.length - 1])
         builder.push(messages.orMessage());
     }
@@ -57,7 +60,7 @@ function visit(e: Ast.Expr, indentationDepth: number,
       if (i < reversed.length - 1)
         buf += " ";
     }
-    let joined = buf;
+    const joined = buf;
     return _generateIndention(indentationDepth, indentionString) + messages.equalsOperationMessage(e.operationType, left, joined);
   }
   else if (e.type === "IdentifierExpr") {

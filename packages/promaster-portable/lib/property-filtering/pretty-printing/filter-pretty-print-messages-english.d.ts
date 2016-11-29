@@ -5,5 +5,5 @@ export declare function rangeMessage(min: string, max: string): string;
 export declare function andMessage(): string;
 export declare function orMessage(): string;
 export declare function propertyNameMessage(propertyName: string): string;
-export declare function propertyValueItemMessage(propertyName: string, pv: PropertyValue.PropertyValue): string;
+export declare function propertyValueItemMessage(propertyName: string, propertyValue: PropertyValue.PropertyValue): string;
 export declare function nullMessage(): string;

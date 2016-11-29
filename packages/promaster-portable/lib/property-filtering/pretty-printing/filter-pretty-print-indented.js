@@ -16,9 +16,9 @@ function visit(e, indentationDepth, indentionString, messages, typeMap) {
         var s = "";
         for (var _i = 0, _a = e.children; _i < _a.length; _i++) {
             var child = _a[_i];
-            s += innerVisit(indentationDepth + 1, child);
+            s += innerVisit(indentationDepth, child);
             if (child !== e.children[e.children.length - 1]) {
-                s += "\n" + _generateIndention(indentationDepth, indentionString) + messages.andMessage() + "\n";
+                s += "\n" + _generateIndention(indentationDepth + 1, indentionString) + messages.andMessage() + "\n";
             }
         }
         return s;
@@ -36,7 +36,8 @@ function visit(e, indentationDepth, indentionString, messages, typeMap) {
         var builder = [];
         for (var _b = 0, _c = e.rightValueRanges; _b < _c.length; _b++) {
             var range = _c[_b];
-            builder.push(innerVisit(indentationDepth, range));
+            var rangeMessage = innerVisit(indentationDepth, range);
+            builder.push(rangeMessage);
             if (range != e.rightValueRanges[e.rightValueRanges.length - 1])
                 builder.push(messages.orMessage());
         }
