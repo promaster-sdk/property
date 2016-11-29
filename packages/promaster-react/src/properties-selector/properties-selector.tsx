@@ -1,0 +1,8 @@
+
+interface PropertiesSelectorProps {
+
+}
+
+function PropertiesSelector() {
+
+}
