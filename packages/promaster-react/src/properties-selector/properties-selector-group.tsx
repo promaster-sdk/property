@@ -1,17 +1,12 @@
 import * as React from "react";
-import {
-  RenderedPropertySelector, OnToggleGroupClosed,
-  TranslateGroupName, RenderedPropertyLabels
-} from "./types";
-import {PropertiesSelectorGroupItem} from "./properties-selector-group-item";
+import {OnToggleGroupClosed, TranslateGroupName} from "./types";
 
 export interface PropertiesSelectorGroupProps {
-  isClosedGroup: boolean,
-  groupName: string,
-  onToggleGroupClosed: OnToggleGroupClosed,
-  translateGroupName: TranslateGroupName,
-  renderedSelectorsForGroup: Array<RenderedPropertySelector>,
-  labels: RenderedPropertyLabels
+  readonly isClosedGroup: boolean,
+  readonly groupName: string,
+  readonly onToggleGroupClosed: OnToggleGroupClosed,
+  readonly translateGroupName: TranslateGroupName,
+  readonly children?: Array<React.ReactElement<{}>>,
 }
 
 export function PropertiesSelectorGroup({
@@ -19,8 +14,7 @@ export function PropertiesSelectorGroup({
   groupName,
   onToggleGroupClosed,
   translateGroupName,
-  renderedSelectorsForGroup,
-  labels
+  children
 }:PropertiesSelectorGroupProps) {
   const className1 = 'group-container' + (isClosedGroup || groupName === "Main" ? ' expanded' : ' collapsed'); // temp fix to hide on start
   return (
@@ -29,12 +23,7 @@ export function PropertiesSelectorGroup({
         <button className="expand-collapse">&nbsp;>>&nbsp;</button>
         {translateGroupName(groupName)}
       </div>
-      {
-        renderedSelectorsForGroup.map((selector) => (
-            <PropertiesSelectorGroupItem key={selector.propertyName} selector={selector} label={labels[selector.propertyName]}/>
-          )
-        )
-      }
+      {children}
     </div>
   );
 }

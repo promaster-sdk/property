@@ -4,6 +4,7 @@ import {
   TranslateGroupName, OnToggleGroupClosed
 } from "./types";
 import {PropertiesSelectorGroup} from "./properties-selector-group";
+import {PropertiesSelectorGroupItem} from "./properties-selector-group-item";
 
 export interface PropertiesSelectorLayoutProps {
   readonly selectors: Array<RenderedPropertySelector>,
@@ -34,10 +35,12 @@ export function PropertiesSelectorLayout({
                                      isClosedGroup={isClosedGroup}
                                      groupName={groupName}
                                      onToggleGroupClosed={onToggleGroupClosed}
-                                     translateGroupName={translateGroupName}
-                                     renderedSelectorsForGroup={renderedSelectorsForGroup}
-                                     labels={labels}
-            />
+                                     translateGroupName={translateGroupName}>
+              {renderedSelectorsForGroup.map((selector) => (
+                <PropertiesSelectorGroupItem key={selector.propertyName} selector={selector}
+                                             label={labels[selector.propertyName]}/>
+              ))}
+            </PropertiesSelectorGroup>
           );
         })
       }

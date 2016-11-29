@@ -2,8 +2,8 @@ import * as React from "react";
 import {RenderedPropertySelector, RenderedPropertyLabel} from "./types";
 
 export interface PropertiesSelectorGroupItemProps {
-  selector: RenderedPropertySelector,
-  label: RenderedPropertyLabel
+  readonly selector: RenderedPropertySelector,
+  readonly label: RenderedPropertyLabel
 }
 
 export function PropertiesSelectorGroupItem({
