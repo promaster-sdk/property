@@ -22,15 +22,15 @@ import {
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
-  TranslatePropertyName,
   Property,
   PropertyValueItem,
 } from "./types";
+import {PropertiesSelectorProps} from "./properties-selector";
 
 const amountPropertySelector = React.createFactory(AmountPropertySelector);
 const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
 const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
-
+/*
 export interface RenderPropertySelectorsParameters {
 
   // Required inputs
@@ -64,6 +64,7 @@ export interface RenderPropertySelectorsParameters {
 
   readonly styles: RenderPropertySelectorsParametersStyles,
 }
+*/
 
 export function renderPropertySelectors({
   productProperties,
@@ -88,7 +89,7 @@ export function renderPropertySelectors({
 
   styles,
 
-}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector> {
+}: PropertiesSelectorProps): Array<RenderedPropertySelector> {
 
   // Default true if not specified otherwise
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
