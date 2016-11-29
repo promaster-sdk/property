@@ -23,7 +23,7 @@ export function PropertiesSelectorDefaultLayout({
           return (
             <GroupComponent key={groupName}
                             isClosedGroup={isClosedGroup}
-                            groupName="sadf"
+                            groupName={groupName}
                             onToggleGroupClosed={onToggleGroupClosed}
                             translateGroupName={translateGroupName}
                             renderedSelectorsForGroup={renderedSelectorsForGroup}
