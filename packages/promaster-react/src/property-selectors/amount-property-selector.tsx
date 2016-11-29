@@ -58,18 +58,15 @@ function _getValidationMessage(propertyValueSet: PropertyValueSet.PropertyValueS
                                value: Amount.Amount<any>,
                                validationFilter: PropertyFilter.PropertyFilter,
                                filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {
-  console.log("_getValidationMessage", propertyValueSet);
 
   if (!value || !validationFilter) {
     return '';
   }
 
   if (PropertyFilter.isValid(propertyValueSet, validationFilter)) {
-    console.log("isValid", validationFilter);
     return '';
   }
   else {
-    console.log("NOT isValid", validationFilter);
     return filterPrettyPrint(validationFilter);
   }
 }

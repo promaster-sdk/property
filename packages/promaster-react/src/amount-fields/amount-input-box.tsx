@@ -50,7 +50,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
       console.error("Missing inputUnit");
     if (!(inputDecimalCount !== null && inputDecimalCount !== undefined))
       console.error("Missing inputDecimalCount");
-    const formattedValue = _formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
+    const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
     const newState = this.calculateNewState(value, formattedValue);
     this.setState(newState);
   }
@@ -87,12 +87,12 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
     const {inputUnit, inputDecimalCount} = this.props;
 
     // If the change would add more decimals than allowed then ignore the change
-    const stringDecimalCount = _getDecimalCountFromString(newStringValue);
+    const stringDecimalCount = getDecimalCountFromString(newStringValue);
     if (stringDecimalCount > inputDecimalCount)
       return;
 
     // Update the internal state and if the change resulted in a valid value then emit a change with that value
-    const newAmount = _unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
+    const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
     const newState = this.calculateNewState(newAmount, newStringValue);
     this.setState(newState);
     // We need to check isValid from the new state because state is not immidiately mutated
@@ -132,7 +132,7 @@ function getInternalErrorMessage(newAmount: Amount.Amount<any> | undefined,
 
 }
 
-function _formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amount.Amount<T>, unit: Unit.Unit<T>, decimalCount: number): string {
+function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amount.Amount<T>, unit: Unit.Unit<T>, decimalCount: number): string {
   if (!amount)
     return "";
 
@@ -155,27 +155,27 @@ function _formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amo
   }
 }
 
-function _unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(text: string, unit: Unit.Unit<T>, inputDecimalCount: number): Amount.Amount<T> | undefined {
+function unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(text: string, unit: Unit.Unit<T>, inputDecimalCount: number): Amount.Amount<T> | undefined {
   if (!text || text.length === 0)
     return undefined;
-  const parsedFloatValue = _filterFloat(text);
+  const parsedFloatValue = filterFloat(text);
   if (isNaN(parsedFloatValue))
     return undefined;
   // Keep number of decimals from the entered text except if they are more than the formats decimal count
-  const textDecimalCount = _getDecimalCountFromString(text);
+  const textDecimalCount = getDecimalCountFromString(text);
   const finalDecimalCount = textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
   const finalFloatValue = textDecimalCount > inputDecimalCount ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount)) : parsedFloatValue;
   return Amount.create(finalFloatValue, unit, finalDecimalCount);
 }
 
-function _getDecimalCountFromString(stringValue: string) {
+function getDecimalCountFromString(stringValue: string) {
   const pointIndex = stringValue.indexOf('.');
   if (pointIndex >= 0)
     return stringValue.length - pointIndex - 1;
   return 0;
 }
 
-function _filterFloat(value: string): number {
+function filterFloat(value: string): number {
   if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
       .test(value))
     return Number(value);
