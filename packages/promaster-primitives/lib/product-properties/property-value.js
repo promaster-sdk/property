@@ -84,7 +84,7 @@ function valueAs(unit, value) {
 exports.valueAs = valueAs;
 function toString(value) {
     if (value.type === "amount") {
-        var valueString = value.value.value.toString();
+        var valueString = value.value.value.toFixed(value.value.decimalCount);
         var unitString = Units.getStringFromUnit(value.value.unit);
         return valueString + ":" + unitString;
     }
