@@ -14,11 +14,11 @@ import {
   RenderedPropertyLabels,
 } from "./types";
 import {renderPropertySelectors} from "./render-property-selectors";
-import {PropertiesSelectorLayout, PropertiesSelectorLayoutProps} from "./properties-selector-layout";
+import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
 import ComponentClass = React.ComponentClass;
 import StatelessComponent = React.StatelessComponent;
-import {PropertiesSelectorGroupProps, PropertiesSelectorGroup} from "./properties-selector-group";
-import {PropertiesSelectorGroupItemProps, PropertiesSelectorGroupItem} from "./properties-selector-group-item";
+import {GroupComponentProps, DefaultGroupComponent} from "./default-group-component";
+import {GroupItemComponentProps, DefaultGroupItemComponent} from "./default-group-item-component";
 
 export interface PropertiesSelectorProps {
 
@@ -56,9 +56,9 @@ export interface PropertiesSelectorProps {
   readonly styles: RenderPropertySelectorsParametersStyles,
 
   // Override layout
-  readonly LayoutComponent?: ReactComponent<PropertiesSelectorLayoutProps>,
-  readonly GroupComponent?: ReactComponent<PropertiesSelectorGroupProps>,
-  readonly GroupItemComponent?: ReactComponent<PropertiesSelectorGroupItemProps>,
+  readonly LayoutComponent?: ReactComponent<LayoutComponentProps>,
+  readonly GroupComponent?: ReactComponent<GroupComponentProps>,
+  readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
 }
 
 export type ReactComponent<T> = ComponentClass<T> | StatelessComponent<T>;
@@ -66,8 +66,8 @@ export type ReactComponent<T> = ComponentClass<T> | StatelessComponent<T>;
 export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
 
   const {
-    translatePropertyLabelHover, translateGroupName, LayoutComponent = PropertiesSelectorLayout,
-    GroupComponent = PropertiesSelectorGroup, GroupItemComponent = PropertiesSelectorGroupItem
+    translatePropertyLabelHover, translateGroupName, LayoutComponent = DefaultLayoutComponent,
+    GroupComponent = DefaultGroupComponent, GroupItemComponent = DefaultGroupItemComponent
   } = props;
   const selectors = renderPropertySelectors(props);
   const labels = renderPropertyLabels(translatePropertyLabelHover, selectors);

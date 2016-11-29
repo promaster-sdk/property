@@ -3,21 +3,21 @@ import {
   RenderedPropertySelector, RenderedPropertyLabels,
   TranslateGroupName, OnToggleGroupClosed
 } from "./types";
-import {PropertiesSelectorGroupProps} from "./properties-selector-group";
-import {PropertiesSelectorGroupItemProps} from "./properties-selector-group-item";
+import {GroupComponentProps} from "./default-group-component";
+import {GroupItemComponentProps} from "./default-group-item-component";
 import {ReactComponent} from "./properties-selector";
 
-export interface PropertiesSelectorLayoutProps {
+export interface LayoutComponentProps {
   readonly selectors: Array<RenderedPropertySelector>,
   readonly labels: RenderedPropertyLabels,
   readonly translateGroupName: TranslateGroupName,
   readonly closedGroups: Array<string>,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
-  readonly GroupComponent: ReactComponent<PropertiesSelectorGroupProps>,
-  readonly GroupItemComponent: ReactComponent<PropertiesSelectorGroupItemProps>,
+  readonly GroupComponent: ReactComponent<GroupComponentProps>,
+  readonly GroupItemComponent: ReactComponent<GroupItemComponentProps>,
 }
 
-export function PropertiesSelectorLayout({
+export function DefaultLayoutComponent({
   selectors,
   labels,
   translateGroupName,
@@ -25,7 +25,7 @@ export function PropertiesSelectorLayout({
   onToggleGroupClosed,
   GroupComponent,
   GroupItemComponent,
-}: PropertiesSelectorLayoutProps) {
+}: LayoutComponentProps) {
 
   const groups = getDistinctGroupNames(selectors);
 

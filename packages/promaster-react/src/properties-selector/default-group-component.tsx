@@ -1,7 +1,7 @@
 import * as React from "react";
 import {OnToggleGroupClosed, TranslateGroupName} from "./types";
 
-export interface PropertiesSelectorGroupProps {
+export interface GroupComponentProps {
   readonly isClosedGroup: boolean,
   readonly groupName: string,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
@@ -9,13 +9,13 @@ export interface PropertiesSelectorGroupProps {
   readonly children?: Array<React.ReactElement<{}>>,
 }
 
-export function PropertiesSelectorGroup({
+export function DefaultGroupComponent({
   isClosedGroup,
   groupName,
   onToggleGroupClosed,
   translateGroupName,
   children
-}:PropertiesSelectorGroupProps) {
+}:GroupComponentProps) {
   const className1 = 'group-container' + (isClosedGroup || groupName === "Main" ? ' expanded' : ' collapsed'); // temp fix to hide on start
   return (
     <div key={groupName} className={className1}>
