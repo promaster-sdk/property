@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "node-uuid": "^1.4.7",
-    "@promaster/promaster-primitives": "^0.3.4",
+    "@promaster/promaster-primitives": "^0.3.6",
     "showdown": "^1.5.0"
   },
   "devDependencies": {
