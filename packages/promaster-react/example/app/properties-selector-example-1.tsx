@@ -90,8 +90,10 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     // Render the selectors
     const renderPropertySelectorParams: PropertiesSelector.RenderPropertySelectorsParameters = {
       selectedProperties: this.state.propertyValueSet,
-      onChange: (properties: PropertyValueSet.PropertyValueSet) =>
-        this.setState(merge(this.state, {propertyValueSet: properties})),
+      onChange: (properties: PropertyValueSet.PropertyValueSet) => {
+        //console.log("onChange", properties);
+        this.setState(merge(this.state, {propertyValueSet: properties}))
+      },
       productProperties: productProperties,
       includeCodes: true,
       includeHiddenProperties: true,

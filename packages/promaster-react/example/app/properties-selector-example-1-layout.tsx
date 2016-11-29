@@ -60,9 +60,8 @@ export function PropertiesSelectorLayout({
 }
 
 function getGroupDistinctNames(productPropertiesArray: Array<PropertiesSelector.RenderedPropertySelector>): Array<string> {
-  const sortedProperties = productPropertiesArray.sort((e) => e.sortNo);
   const groupNames: Array<string> = [];
-  for (let property of sortedProperties) {
+  for (let property of productPropertiesArray) {
     if (groupNames.indexOf(property.groupName) === -1 && !isNullOrWhiteSpace(property.groupName)) {
       groupNames.push(property.groupName);
     }
