@@ -108,8 +108,8 @@ export function valueAs<T extends Quantity>(unit: Unit<T>, value: PropertyValue)
 
 export function toString(value: PropertyValue): string {
   if (value.type === "amount") {
-    var valueString = value.value.value.toString();
-    var unitString = Units.getStringFromUnit(value.value.unit);
+    const valueString = value.value.value.toFixed(value.value.decimalCount);
+    const unitString = Units.getStringFromUnit(value.value.unit);
     return `${valueString}:${unitString}`;
   }
   else if (value.type === "text") {
