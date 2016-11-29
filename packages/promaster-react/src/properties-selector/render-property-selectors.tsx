@@ -23,48 +23,13 @@ import {
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
   Property,
-  PropertyValueItem, TranslatePropertyName,
+  PropertyValueItem,
 } from "./types";
 import {PropertiesSelectorProps} from "./properties-selector";
 
 const amountPropertySelector = React.createFactory(AmountPropertySelector);
 const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
 const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
-
-export interface RenderPropertySelectorsParameters {
-
-  // Required inputs
-  readonly productProperties: Array<Property>
-  readonly selectedProperties: PropertyValueSet.PropertyValueSet,
-  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-
-  // Includes the raw property name and value in paranthesis
-  readonly includeCodes: boolean,
-  // Will render properties that according to their rule should be hidden
-  readonly includeHiddenProperties: boolean,
-  // Will automatically select values for properties that have only one valid value
-  readonly autoSelectSingleValidValue: boolean
-
-  // Events
-  readonly onChange: PropertySelectionOnChange,
-  readonly onPropertyFormatChanged: OnPropertyFormatChanged,
-
-  // Translations
-  readonly translatePropertyName: TranslatePropertyName,
-  readonly translatePropertyValue: TranslatePropertyValue,
-  readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
-  readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage
-
-  // Specifies property names of properties that should be read-only
-  readonly readOnlyProperties: Array<string>,
-  // Specifies property names of properties that should be optional (only for amounts for now)
-  readonly optionalProperties: Array<string>,
-  // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly propertyFormats: {[key: string]: AmountFormat},
-
-  readonly styles: RenderPropertySelectorsParametersStyles,
-}
-
 
 export function renderPropertySelectors({
   productProperties,
@@ -89,7 +54,7 @@ export function renderPropertySelectors({
 
   styles,
 
-}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector> {
+}: PropertiesSelectorProps): Array<RenderedPropertySelector> {
 
   // Default true if not specified otherwise
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
@@ -259,7 +224,6 @@ function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyTyp
 }
 
 function getSingleValidValueOrUndefined(productProperty: Property, properties: PropertyValueSet.PropertyValueSet): PropertyValueItem | undefined {
-  // if (Units.getStringFromQuantityType(productProperty.quantity).toLocaleLowerCase() === 'discrete') {
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: PropertyValueItem[] = [];
     for (let productValueItem of productProperty.valueItems) {

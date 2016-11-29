@@ -62,10 +62,9 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
                                           labels={labels}
                                           translateGroupName={translateGroupName}
                                           closedGroups={[]}
-                                          onToggleGroupClosed={()=>""}/>;
+                                          onToggleGroupClosed={() => ""}/>;
 
 }
-
 
 function renderPropertyLabels(translatePropertyLabelHover: TranslatePropertyLabelHover,
                               selectors: Array<RenderedPropertySelector>): RenderedPropertyLabels {

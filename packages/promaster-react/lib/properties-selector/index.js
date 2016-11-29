@@ -1,4 +1,4 @@
 "use strict";
-var render_property_selectors_1 = require("./render-property-selectors");
-exports.renderPropertySelectors = render_property_selectors_1.renderPropertySelectors;
+var properties_selector_1 = require("./properties-selector");
+exports.PropertiesSelector = properties_selector_1.PropertiesSelector;
 //# sourceMappingURL=index.js.map
