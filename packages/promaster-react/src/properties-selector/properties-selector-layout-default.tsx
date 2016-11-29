@@ -4,7 +4,7 @@ import {
   TranslateGroupName, RenderedPropertyLabels, RenderedPropertyLabel
 } from "./types";
 
-export function PropertiesSelectorDefaultLayout({
+export function PropertiesSelectorLayoutDefault({
   selectors,
   labels,
   translateGroupName,
@@ -71,7 +71,7 @@ function GroupComponent({
   );
 }
 
-interface SelectorWithLabelComponentProps {
+interface GroupItemComponentProps {
   selector: RenderedPropertySelector,
   label: RenderedPropertyLabel
 }
@@ -79,7 +79,7 @@ interface SelectorWithLabelComponentProps {
 function GroupItemComponent({
   selector,
   label
-}: SelectorWithLabelComponentProps): React.ReactElement<SelectorWithLabelComponentProps> {
+}: GroupItemComponentProps): React.ReactElement<GroupItemComponentProps> {
   return (
     <div key={selector.propertyName} className="property-selector-row">
       {label}
