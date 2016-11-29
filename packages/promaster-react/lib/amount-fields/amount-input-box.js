@@ -25,8 +25,9 @@ var AmountInputBox = (function (_super) {
             console.error("Missing inputUnit");
         if (!(inputDecimalCount !== null && inputDecimalCount !== undefined))
             console.error("Missing inputDecimalCount");
-        var formattedValue = _formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
-        this.updateState(value, formattedValue);
+        var formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
+        var newState = calculateNewState(value, formattedValue, initProps.isRequiredMessage, initProps.notNumericMessage, initProps.errorMessage);
+        this.setState(newState);
     };
     AmountInputBox.prototype.render = function () {
         var _this = this;
@@ -41,29 +42,27 @@ var AmountInputBox = (function (_super) {
     AmountInputBox.prototype._onChange = function (e, onValueChange) {
         var newStringValue = e.target.value.replace(",", ".");
         var _a = this.props, inputUnit = _a.inputUnit, inputDecimalCount = _a.inputDecimalCount;
-        var stringDecimalCount = _getDecimalCountFromString(newStringValue);
+        var stringDecimalCount = getDecimalCountFromString(newStringValue);
         if (stringDecimalCount > inputDecimalCount)
             return;
-        var newAmount = _unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
-        var isValid = this.updateState(newAmount, newStringValue);
-        if (isValid && newAmount)
+        var newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
+        var newState = calculateNewState(newAmount, newStringValue, this.props.isRequiredMessage, this.props.notNumericMessage, this.props.errorMessage);
+        this.setState(newState);
+        if (newState.isValid && newAmount)
             this._debouncedOnValueChange(newAmount, onValueChange);
-    };
-    AmountInputBox.prototype.updateState = function (newAmount, newStringValue) {
-        var _a = this.props, isRequiredMessage = _a.isRequiredMessage, notNumericMessage = _a.notNumericMessage, errorMessage = _a.errorMessage;
-        var internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
-        if (internalErrorMessage) {
-            this.setState({ isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage });
-            return false;
-        }
-        else {
-            this.setState({ isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage });
-            return true;
-        }
     };
     return AmountInputBox;
 }(React.Component));
 exports.AmountInputBox = AmountInputBox;
+function calculateNewState(newAmount, newStringValue, isRequiredMessage, notNumericMessage, errorMessage) {
+    var internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
+    if (internalErrorMessage) {
+        return { isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage };
+    }
+    else {
+        return { isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage };
+    }
+}
 function getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage) {
     if (newStringValue.trim() === "" && isRequiredMessage) {
         return isRequiredMessage;
@@ -73,7 +72,7 @@ function getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, n
     }
     return undefined;
 }
-function _formatWithUnitAndDecimalCount(amount, unit, decimalCount) {
+function formatWithUnitAndDecimalCount(amount, unit, decimalCount) {
     if (!amount)
         return "";
     var valueToUse;
@@ -89,24 +88,24 @@ function _formatWithUnitAndDecimalCount(amount, unit, decimalCount) {
         return valueToUse.toFixed(decimalCount);
     }
 }
-function _unformatWithUnitAndDecimalCount(text, unit, inputDecimalCount) {
+function unformatWithUnitAndDecimalCount(text, unit, inputDecimalCount) {
     if (!text || text.length === 0)
         return undefined;
-    var parsedFloatValue = _filterFloat(text);
+    var parsedFloatValue = filterFloat(text);
     if (isNaN(parsedFloatValue))
         return undefined;
-    var textDecimalCount = _getDecimalCountFromString(text);
+    var textDecimalCount = getDecimalCountFromString(text);
     var finalDecimalCount = textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
     var finalFloatValue = textDecimalCount > inputDecimalCount ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount)) : parsedFloatValue;
     return promaster_primitives_1.Amount.create(finalFloatValue, unit, finalDecimalCount);
 }
-function _getDecimalCountFromString(stringValue) {
+function getDecimalCountFromString(stringValue) {
     var pointIndex = stringValue.indexOf('.');
     if (pointIndex >= 0)
         return stringValue.length - pointIndex - 1;
     return 0;
 }
-function _filterFloat(value) {
+function filterFloat(value) {
     if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
         .test(value))
         return Number(value);

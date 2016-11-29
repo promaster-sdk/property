@@ -27,5 +27,4 @@ export declare class AmountInputBox extends React.Component<AmountInputBoxProps,
     render(): JSX.Element;
     _debouncedOnValueChange(newAmount: Amount.Amount<any>, onValueChange: (newAmount: Amount.Amount<any>) => void): void;
     _onChange(e: React.SyntheticEvent<any>, onValueChange: (newAmount: Amount.Amount<any>) => void): void;
-    updateState(newAmount: Amount.Amount<any> | undefined, newStringValue: string): boolean;
 }

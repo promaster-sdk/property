@@ -11,6 +11,20 @@ export declare type TranslatePropertyName = (propertyName: string) => string;
 export declare type TranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
 export declare type TranslateNotNumericMessage = () => string;
 export declare type TranslateValueIsRequiredMessage = () => string;
+export declare type TranslatePropertyLabelHover = (propertyName: string) => string;
+export declare type TranslateGroupName = (groupName: string) => string;
+export declare type OnToggleGroupClosed = (groupName: string) => void;
+export interface PropertiesSelectorLayoutProps {
+    readonly selectors: Array<RenderedPropertySelector>;
+    readonly labels: RenderedPropertyLabels;
+    readonly translateGroupName: TranslateGroupName;
+    readonly closedGroups: Array<string>;
+    readonly onToggleGroupClosed: OnToggleGroupClosed;
+}
+export declare type RenderedPropertyLabels = {
+    readonly [propertyName: string]: RenderedPropertyLabel;
+};
+export declare type RenderedPropertyLabel = React.ReactElement<{}>;
 export interface RenderedPropertySelector {
     readonly sortNo: number;
     readonly groupName: string;

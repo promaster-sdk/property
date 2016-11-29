@@ -89,7 +89,7 @@ export function renderPropertySelectors({
 
   styles,
 
-}: PropertiesSelectorProps): Array<RenderedPropertySelector> {
+}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector> {
 
   // Default true if not specified otherwise
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;

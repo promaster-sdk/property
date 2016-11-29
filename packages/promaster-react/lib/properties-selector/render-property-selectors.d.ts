@@ -1,7 +1,8 @@
 import { PropertyValueSet } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import { RenderPropertySelectorsParametersStyles } from "./render-property-selectors-styles";
-import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, RenderedPropertySelector, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, TranslatePropertyName, Property } from "./types";
+import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, RenderedPropertySelector, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, Property, TranslatePropertyName } from "./types";
+import { PropertiesSelectorProps } from "./properties-selector";
 export interface RenderPropertySelectorsParameters {
     readonly productProperties: Array<Property>;
     readonly selectedProperties: PropertyValueSet.PropertyValueSet;
@@ -22,4 +23,4 @@ export interface RenderPropertySelectorsParameters {
     };
     readonly styles: RenderPropertySelectorsParametersStyles;
 }
-export declare function renderPropertySelectors({productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, propertyFormats, styles}: RenderPropertySelectorsParameters): Array<RenderedPropertySelector>;
+export declare function renderPropertySelectors({productProperties, selectedProperties, filterPrettyPrint, includeCodes, includeHiddenProperties, autoSelectSingleValidValue, onChange, onPropertyFormatChanged, translatePropertyName, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, readOnlyProperties, optionalProperties, propertyFormats, styles}: PropertiesSelectorProps): Array<RenderedPropertySelector>;

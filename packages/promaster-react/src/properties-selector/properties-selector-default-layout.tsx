@@ -21,7 +21,8 @@ export function PropertiesSelectorDefaultLayout({
           const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
           const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ''));
           return (
-            <GroupComponent isClosedGroup={isClosedGroup}
+            <GroupComponent key={groupName}
+                            isClosedGroup={isClosedGroup}
                             groupName="sadf"
                             onToggleGroupClosed={onToggleGroupClosed}
                             translateGroupName={translateGroupName}
@@ -62,7 +63,7 @@ function GroupComponent({
       </div>
       {
         renderedSelectorsForGroup.map((selector) => (
-            <GroupItemComponent selector={selector} label={labels[selector.propertyName]}/>
+            <GroupItemComponent key={selector.propertyName} selector={selector} label={labels[selector.propertyName]}/>
           )
         )
       }
