@@ -7,7 +7,6 @@ import {
   PropertyFilter
 } from "@promaster/promaster-primitives";
 import {PropertyFiltering} from "@promaster/promaster-portable";
-import {RenderPropertySelectorsParametersStyles} from "./render-property-selectors-styles";
 import {
   ComboboxPropertySelector,
   TextboxPropertySelector,
@@ -22,6 +21,7 @@ import {
   TranslateValueIsRequiredMessage,
   PropertyValueItem,
 } from "./types";
+import {RenderPropertySelectorsParametersStyles} from "./properties-selector";
 
 const amountPropertySelector = React.createFactory(AmountPropertySelector);
 const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
