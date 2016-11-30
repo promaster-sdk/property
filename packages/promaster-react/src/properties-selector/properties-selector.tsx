@@ -30,7 +30,7 @@ import {PropertiesSelectorProps} from "./properties-selector";
 import {RenderPropertySelectorComponent} from "./render-property-selector-component";
 import {RenderPropertyLabelComponent, RenderPropertyLabelComponentProps} from "./render-property-label-component";
 
-export interface RenderPropertySelectorsParametersStyles {
+export interface PropertySelectorStyles {
   amountPropertySelectorStyles?: AmountPropertySelectorStyles,
   comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles,
   textboxPropertySelectorStyles?: TextboxPropertySelectorStyles
@@ -69,7 +69,7 @@ export interface PropertiesSelectorProps {
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
   readonly propertyFormats: {[key: string]: AmountFormat},
 
-  readonly styles: RenderPropertySelectorsParametersStyles,
+  readonly styles: PropertySelectorStyles,
 
   // Override layout
   readonly LayoutComponent?: ReactComponent<LayoutComponentProps>,

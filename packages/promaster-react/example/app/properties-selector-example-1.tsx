@@ -27,7 +27,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
 
   render() {
 
-    const styles: PropertiesSelector.RenderPropertySelectorsParametersStyles = {};
+    const styles: PropertiesSelector.PropertySelectorStyles = {};
     const productProperties = buildProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,

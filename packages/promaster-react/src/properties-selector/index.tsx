@@ -1,6 +1,6 @@
 export {
   PropertiesSelector,
   PropertiesSelectorProps,
-  RenderPropertySelectorsParametersStyles
+  PropertySelectorStyles
 } from "./properties-selector"
 export * from "./types";

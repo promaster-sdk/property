@@ -21,7 +21,7 @@ import {
   TranslateValueIsRequiredMessage,
   PropertyValueItem,
 } from "./types";
-import {RenderPropertySelectorsParametersStyles} from "./properties-selector";
+import {PropertySelectorStyles} from "./properties-selector";
 
 const amountPropertySelector = React.createFactory(AmountPropertySelector);
 const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
@@ -45,7 +45,7 @@ export interface RenderPropertySelectorComponentProps {
   translatePropertyValue: TranslatePropertyValue,
   translateValueMustBeNumericMessage: TranslateNotNumericMessage,
   translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  styles: RenderPropertySelectorsParametersStyles
+  styles: PropertySelectorStyles
 }
 
 export function RenderPropertySelectorComponent({
