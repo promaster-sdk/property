@@ -18,7 +18,7 @@ import {
   TranslatePropertyName,
   Property, TranslatePropertyLabelHover, TranslateGroupName,
   PropertySelectorRenderInfo,
-  PropertyValueItem, ReactComponent,
+  PropertyValueItem, ReactComponent, OnToggleGroupClosed,
 } from "./types";
 import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
 import {GroupComponentProps, DefaultGroupComponent} from "./default-group-component";
@@ -69,6 +69,9 @@ export interface PropertiesSelectorProps {
 
   readonly styles: PropertySelectorStyles,
 
+  readonly closedGroups: Array<string>,
+  readonly onToggleGroupClosed: OnToggleGroupClosed,
+
   // Override layout
   readonly LayoutComponent?: ReactComponent<LayoutComponentProps>,
   readonly GroupComponent?: ReactComponent<GroupComponentProps>,
@@ -81,6 +84,8 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
 
   const {
     translateGroupName,
+    closedGroups,
+    onToggleGroupClosed,
     LayoutComponent = DefaultLayoutComponent,
     GroupComponent = DefaultGroupComponent,
     GroupItemComponent = DefaultGroupItemComponent,
@@ -92,8 +97,8 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
 
   return <LayoutComponent selectors={selectors}
                           translateGroupName={translateGroupName}
-                          closedGroups={[]}
-                          onToggleGroupClosed={() => ""}
+                          closedGroups={closedGroups}
+                          onToggleGroupClosed={onToggleGroupClosed}
                           GroupComponent={GroupComponent}
                           GroupItemComponent={GroupItemComponent}
                           PropertySelectorComponent={PropertySelectorComponent}

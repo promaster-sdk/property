@@ -55,7 +55,9 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       translateValueIsRequiredMessage: () => "value_is_required",
       translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: () => "translateGroupName",
-      styles: styles
+      styles: styles,
+      closedGroups: [],
+      onToggleGroupClosed: () => "",
     };
 
     return <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
