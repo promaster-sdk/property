@@ -27,7 +27,7 @@ const amountPropertySelector = React.createFactory(AmountPropertySelector);
 const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
 const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
 
-export interface RenderPropertySelectorComponentProps {
+export interface PropertySelectorComponentProps {
   propertyName: string,
   quantity: Quantity.Quantity,
   validationFilter: PropertyFilter.PropertyFilter,
@@ -48,7 +48,7 @@ export interface RenderPropertySelectorComponentProps {
   styles: PropertySelectorStyles
 }
 
-export function RenderPropertySelectorComponent({
+export function DefaultPropertySelectorComponent({
   propertyName,
   quantity,
   validationFilter,
@@ -67,7 +67,7 @@ export function RenderPropertySelectorComponent({
   translateValueMustBeNumericMessage,
   translateValueIsRequiredMessage,
   styles
-}:RenderPropertySelectorComponentProps): any {
+}:PropertySelectorComponentProps): any {
 
   function onValueChange(newValue: PropertyValue.PropertyValue) {
     onChange(newValue

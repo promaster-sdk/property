@@ -27,8 +27,8 @@ import {GroupComponentProps, DefaultGroupComponent} from "./default-group-compon
 import {GroupItemComponentProps, DefaultGroupItemComponent} from "./default-group-item-component";
 import {AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "../property-selectors/index";
 import {PropertiesSelectorProps} from "./properties-selector";
-import {RenderPropertySelectorComponent} from "./render-property-selector-component";
-import {RenderPropertyLabelComponent, RenderPropertyLabelComponentProps} from "./render-property-label-component";
+import {DefaultPropertySelectorComponent} from "./default-property-selector-component";
+import {DefaultPropertyLabelComponent, PropertyLabelComponentProps} from "./default-property-label-component";
 
 export interface PropertySelectorStyles {
   amountPropertySelectorStyles?: AmountPropertySelectorStyles,
@@ -183,7 +183,7 @@ function renderPropertySelectors({
         styles
       };
 
-      const renderPropertyLabelComponentProps: RenderPropertyLabelComponentProps = {
+      const renderPropertyLabelComponentProps: PropertyLabelComponentProps = {
         propertyName: property.name,
         selectorIsValid: isValid,
         selectorIsHidden: isHidden,
@@ -201,8 +201,8 @@ function renderPropertySelectors({
 
         label: label,
 
-        renderedSelectorElement: <RenderPropertySelectorComponent {...renderPropertySelectorComponentProps} />,
-        renderedLabelElement: <RenderPropertyLabelComponent {...renderPropertyLabelComponentProps} />,
+        renderedSelectorElement: <DefaultPropertySelectorComponent {...renderPropertySelectorComponentProps} />,
+        renderedLabelElement: <DefaultPropertyLabelComponent {...renderPropertyLabelComponentProps} />,
       };
     });
 

@@ -1,20 +1,20 @@
 import * as React from "react";
 import {TranslatePropertyLabelHover} from "./types";
 
-export interface RenderPropertyLabelComponentProps {selectorIsValid: boolean,
+export interface PropertyLabelComponentProps {selectorIsValid: boolean,
   selectorIsHidden: boolean,
   selectorLabel: string,
   translatePropertyLabelHover: TranslatePropertyLabelHover,
   propertyName: string
 }
 
-export function RenderPropertyLabelComponent({
+export function DefaultPropertyLabelComponent({
   selectorIsValid,
   selectorIsHidden,
   selectorLabel,
   translatePropertyLabelHover,
   propertyName
-}:RenderPropertyLabelComponentProps) {
+}:PropertyLabelComponentProps) {
   return (
     <label className={ !selectorIsValid	? 'invalid'	: undefined}
            title={translatePropertyLabelHover(propertyName)}>
