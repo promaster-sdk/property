@@ -104,27 +104,27 @@ export function renderPropertySelectors({
 
         label: label,
 
-        renderedSelectorElement: renderPropertySelector(
-          property.name,
-          property.quantity,
-          property.validationFilter,
-          property.valueItems,
+        renderedSelectorElement: renderPropertySelector({
+            propertyName: property.name,
+            quantity: property.quantity,
+            validationFilter: property.validationFilter,
+            valueItems:property.valueItems,
           selectedValue,
           selectedProperties,
           includeCodes,
           optionalProperties,
-          handleChange(onChange, productProperties, autoSelectSingleValidValue),
+          onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue),
           onPropertyFormatChanged,
           filterPrettyPrint,
           propertyFormat,
-          isReadOnly,
-          autoSelectSingleValidValue
+          readOnly: isReadOnly,
+          locked: autoSelectSingleValidValue
             ? !!getSingleValidValueOrUndefined(property, selectedProperties)
             : false,
           translatePropertyValue,
-          translateValueMustBeNumericMessage,
+          translateNotNumericMessage: translateValueMustBeNumericMessage,
           translateValueIsRequiredMessage,
-          styles
+          styles}
         ),
         renderedLabelElement: renderPropertyLabel(isValid, isHidden, label,
           translatePropertyLabelHover, property.name),
@@ -135,24 +135,45 @@ export function renderPropertySelectors({
 
 }
 
-function renderPropertySelector(propertyName: string,
-                                quantity: Quantity.Quantity,
-                                validationFilter: PropertyFilter.PropertyFilter,
-                                valueItems: Array<PropertyValueItem>,
-                                selectedValue: PropertyValue.PropertyValue,
-                                selectedProperties: PropertyValueSet.PropertyValueSet,
-                                includeCodes: boolean,
-                                optionalProperties: Array<string>,
-                                onChange: PropertySelectionOnChange,
-                                onPropertyFormatChanged: OnPropertyFormatChanged,
-                                filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-                                propertyFormat: AmountFormat,
-                                readOnly: boolean,
-                                locked: boolean,
-                                translatePropertyValue: TranslatePropertyValue,
-                                translateNotNumericMessage: TranslateNotNumericMessage,
-                                translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-                                styles: RenderPropertySelectorsParametersStyles): any {
+interface RenderPropertySelectorParams {
+  propertyName: string,
+  quantity: Quantity.Quantity,
+  validationFilter: PropertyFilter.PropertyFilter,
+  valueItems: Array<PropertyValueItem>,
+  selectedValue: PropertyValue.PropertyValue,
+  selectedProperties: PropertyValueSet.PropertyValueSet,
+  includeCodes: boolean,
+  optionalProperties: Array<string>,
+  onChange: PropertySelectionOnChange,
+  onPropertyFormatChanged: OnPropertyFormatChanged,
+  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
+  propertyFormat: AmountFormat,
+  readOnly: boolean,
+  locked: boolean,
+  translatePropertyValue: TranslatePropertyValue,
+  translateNotNumericMessage: TranslateNotNumericMessage,
+  translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
+  styles: RenderPropertySelectorsParametersStyles
+}
+
+function renderPropertySelector({propertyName,
+                                quantity,
+                                validationFilter,
+                                valueItems,
+                                selectedValue,
+                                selectedProperties,
+                                includeCodes,
+                                optionalProperties,
+                                onChange,
+                                onPropertyFormatChanged,
+                                filterPrettyPrint,
+                                propertyFormat,
+                                readOnly,
+                                locked,
+                                translatePropertyValue,
+                                translateNotNumericMessage,
+                                translateValueIsRequiredMessage,
+                                styles}:RenderPropertySelectorParams): any {
 
   function onValueChange(newValue: PropertyValue.PropertyValue) {
     onChange(newValue
