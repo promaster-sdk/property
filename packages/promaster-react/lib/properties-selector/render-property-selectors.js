@@ -1,10 +1,16 @@
 "use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var React = require("react");
 var promaster_primitives_1 = require("@promaster/promaster-primitives");
-var index_1 = require("../property-selectors/index");
-var amountPropertySelector = React.createFactory(index_1.AmountPropertySelector);
-var comboboxPropertySelector = React.createFactory(index_1.ComboboxPropertySelector);
-var textboxPropertySelector = React.createFactory(index_1.TextboxPropertySelector);
+var render_property_selector_component_1 = require("./render-property-selector-component");
+var render_property_label_component_1 = require("./render-property-label-component");
 function renderPropertySelectors(_a) {
     var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, translatePropertyLabelHover = _a.translatePropertyLabelHover, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, styles = _a.styles;
     autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
@@ -35,6 +41,35 @@ function renderPropertySelectors(_a) {
         var propertyFormat = propertyFormats[property.name] || defaultFormat;
         var isHidden = !promaster_primitives_1.PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
         var label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
+        var renderPropertySelectorComponentProps = {
+            propertyName: property.name,
+            quantity: property.quantity,
+            validationFilter: property.validationFilter,
+            valueItems: property.valueItems,
+            selectedValue: selectedValue,
+            selectedProperties: selectedProperties,
+            includeCodes: includeCodes,
+            optionalProperties: optionalProperties,
+            onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue),
+            onPropertyFormatChanged: onPropertyFormatChanged,
+            filterPrettyPrint: filterPrettyPrint,
+            propertyFormat: propertyFormat,
+            readOnly: isReadOnly,
+            locked: autoSelectSingleValidValue
+                ? !!getSingleValidValueOrUndefined(property, selectedProperties)
+                : false,
+            translatePropertyValue: translatePropertyValue,
+            translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
+            translateValueIsRequiredMessage: translateValueIsRequiredMessage,
+            styles: styles
+        };
+        var renderPropertyLabelComponentProps = {
+            propertyName: property.name,
+            selectorIsValid: isValid,
+            selectorIsHidden: isHidden,
+            selectorLabel: label,
+            translatePropertyLabelHover: translatePropertyLabelHover,
+        };
         return {
             sortNo: property.sortNo,
             propertyName: property.name,
@@ -42,69 +77,13 @@ function renderPropertySelectors(_a) {
             isValid: isValid,
             isHidden: isHidden,
             label: label,
-            renderedSelectorElement: renderPropertySelector(property.name, property.quantity, property.validationFilter, property.valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, handleChange(onChange, productProperties, autoSelectSingleValidValue), onPropertyFormatChanged, filterPrettyPrint, propertyFormat, isReadOnly, autoSelectSingleValidValue
-                ? !!getSingleValidValueOrUndefined(property, selectedProperties)
-                : false, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, styles),
-            renderedLabelElement: renderPropertyLabel(isValid, isHidden, label, translatePropertyLabelHover, property.name),
+            renderedSelectorElement: React.createElement(render_property_selector_component_1.RenderPropertySelectorComponent, __assign({}, renderPropertySelectorComponentProps)),
+            renderedLabelElement: React.createElement(render_property_label_component_1.RenderPropertyLabelComponent, __assign({}, renderPropertyLabelComponentProps)),
         };
     });
     return selectorDefinitions;
 }
 exports.renderPropertySelectors = renderPropertySelectors;
-function renderPropertySelector(propertyName, quantity, validationFilter, valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, onChange, onPropertyFormatChanged, filterPrettyPrint, propertyFormat, readOnly, locked, translatePropertyValue, translateNotNumericMessage, translateValueIsRequiredMessage, styles) {
-    function onValueChange(newValue) {
-        onChange(newValue
-            ? promaster_primitives_1.PropertyValueSet.set(propertyName, newValue, selectedProperties)
-            : promaster_primitives_1.PropertyValueSet.removeProperty(propertyName, selectedProperties));
-    }
-    switch (getPropertyType(quantity)) {
-        case "text":
-            var value = selectedValue && promaster_primitives_1.PropertyValue.getText(selectedValue);
-            if (value === undefined)
-                throw new Error("No value!");
-            return textboxPropertySelector({
-                value: value,
-                readOnly: readOnly,
-                onValueChange: onValueChange,
-                styles: styles.textboxPropertySelectorStyles
-            });
-        case "integer": {
-            return comboboxPropertySelector({
-                sortValidFirst: true,
-                propertyName: propertyName,
-                propertyValueSet: selectedProperties,
-                valueItems: valueItems && valueItems.map(function (vi) { return ({
-                    value: vi.value,
-                    text: translatePropertyValue(propertyName, (vi.value ? promaster_primitives_1.PropertyValue.getInteger(vi.value) : undefined)),
-                    sortNo: vi.sortNo,
-                    validationFilter: vi.validationFilter,
-                    image: vi.image,
-                }); }),
-                showCodes: includeCodes,
-                filterPrettyPrint: filterPrettyPrint,
-                onValueChange: onValueChange,
-                readOnly: readOnly,
-                locked: locked,
-                styles: styles.comboboxPropertySelectorStyles
-            });
-        }
-        default:
-            return amountPropertySelector({
-                propertyName: propertyName,
-                propertyValueSet: selectedProperties,
-                inputUnit: propertyFormat.unit,
-                inputDecimalCount: propertyFormat.decimalCount,
-                onFormatChanged: function (unit, decimalCount) { return onPropertyFormatChanged(propertyName, unit, decimalCount); },
-                onValueChange: onValueChange,
-                notNumericMessage: translateNotNumericMessage(),
-                isRequiredMessage: optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage(),
-                validationFilter: validationFilter,
-                filterPrettyPrint: filterPrettyPrint,
-                readOnly: readOnly,
-                styles: styles.amountPropertySelectorStyles
-            });
-    }
-}
 function getPropertyType(quantity) {
     switch (quantity) {
         case "Text":
@@ -151,10 +130,5 @@ function handleChange(externalOnChange, productProperties, autoSelectSingleValid
         }
         externalOnChange(properties);
     };
-}
-function renderPropertyLabel(selectorIsValid, selectorIsHidden, selectorLabel, translatePropertyLabelHover, propertyName) {
-    return (React.createElement("label", {className: !selectorIsValid ? 'invalid' : undefined, title: translatePropertyLabelHover(propertyName)}, 
-        React.createElement("span", {className: selectorIsHidden ? "hidden-property" : ""}, selectorLabel)
-    ));
 }
 //# sourceMappingURL=render-property-selectors.js.map

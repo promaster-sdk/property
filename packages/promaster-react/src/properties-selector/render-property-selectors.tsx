@@ -1,35 +1,21 @@
 import * as React from "react";
 import {
-  Unit,
   Units,
   PropertyValueSet,
   Quantity,
   PropertyValue,
   PropertyFilter
 } from "@promaster/promaster-primitives";
-import {PropertyFiltering} from "@promaster/promaster-portable";
-import {RenderPropertySelectorsParametersStyles} from "./render-property-selectors-styles";
-import {
-  ComboboxPropertySelector,
-  TextboxPropertySelector,
-  AmountPropertySelector,
-} from "../property-selectors/index";
 import {
   PropertySelectionOnChange,
   AmountFormat,
-  OnPropertyFormatChanged,
   RenderedPropertySelector,
-  TranslatePropertyValue,
-  TranslateNotNumericMessage,
-  TranslateValueIsRequiredMessage,
   Property,
-  PropertyValueItem, TranslatePropertyLabelHover,
+  PropertyValueItem,
 } from "./types";
 import {PropertiesSelectorProps} from "./properties-selector";
-
-const amountPropertySelector = React.createFactory(AmountPropertySelector);
-const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
-const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
+import {RenderPropertySelectorComponent} from "./render-property-selector-component";
+import {RenderPropertyLabelComponent, RenderPropertyLabelComponentProps} from "./render-property-label-component";
 
 export function renderPropertySelectors({
   productProperties,
@@ -91,8 +77,39 @@ export function renderPropertySelectors({
       // TODO: Better handling of format to use when the format is missing in the map
       const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
-      const isHidden =!PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
-      const label =translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
+      const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
+      const label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
+
+      const renderPropertySelectorComponentProps = {
+        propertyName: property.name,
+        quantity: property.quantity,
+        validationFilter: property.validationFilter,
+        valueItems: property.valueItems,
+        selectedValue,
+        selectedProperties,
+        includeCodes,
+        optionalProperties,
+        onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue),
+        onPropertyFormatChanged,
+        filterPrettyPrint,
+        propertyFormat,
+        readOnly: isReadOnly,
+        locked: autoSelectSingleValidValue
+          ? !!getSingleValidValueOrUndefined(property, selectedProperties)
+          : false,
+        translatePropertyValue,
+        translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
+        translateValueIsRequiredMessage,
+        styles
+      };
+
+      const renderPropertyLabelComponentProps: RenderPropertyLabelComponentProps = {
+        propertyName: property.name,
+        selectorIsValid: isValid,
+        selectorIsHidden: isHidden,
+        selectorLabel: label,
+        translatePropertyLabelHover,
+      };
 
       return {
         sortNo: property.sortNo,
@@ -104,137 +121,14 @@ export function renderPropertySelectors({
 
         label: label,
 
-        renderedSelectorElement: renderPropertySelector({
-            propertyName: property.name,
-            quantity: property.quantity,
-            validationFilter: property.validationFilter,
-            valueItems:property.valueItems,
-          selectedValue,
-          selectedProperties,
-          includeCodes,
-          optionalProperties,
-          onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue),
-          onPropertyFormatChanged,
-          filterPrettyPrint,
-          propertyFormat,
-          readOnly: isReadOnly,
-          locked: autoSelectSingleValidValue
-            ? !!getSingleValidValueOrUndefined(property, selectedProperties)
-            : false,
-          translatePropertyValue,
-          translateNotNumericMessage: translateValueMustBeNumericMessage,
-          translateValueIsRequiredMessage,
-          styles}
-        ),
-        renderedLabelElement: renderPropertyLabel(isValid, isHidden, label,
-          translatePropertyLabelHover, property.name),
+        renderedSelectorElement: <RenderPropertySelectorComponent {...renderPropertySelectorComponentProps} />,
+        renderedLabelElement: <RenderPropertyLabelComponent {...renderPropertyLabelComponentProps} />,
       };
     });
 
   return selectorDefinitions;
 
 }
-
-interface RenderPropertySelectorParams {
-  propertyName: string,
-  quantity: Quantity.Quantity,
-  validationFilter: PropertyFilter.PropertyFilter,
-  valueItems: Array<PropertyValueItem>,
-  selectedValue: PropertyValue.PropertyValue,
-  selectedProperties: PropertyValueSet.PropertyValueSet,
-  includeCodes: boolean,
-  optionalProperties: Array<string>,
-  onChange: PropertySelectionOnChange,
-  onPropertyFormatChanged: OnPropertyFormatChanged,
-  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-  propertyFormat: AmountFormat,
-  readOnly: boolean,
-  locked: boolean,
-  translatePropertyValue: TranslatePropertyValue,
-  translateNotNumericMessage: TranslateNotNumericMessage,
-  translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  styles: RenderPropertySelectorsParametersStyles
-}
-
-function renderPropertySelector({propertyName,
-                                quantity,
-                                validationFilter,
-                                valueItems,
-                                selectedValue,
-                                selectedProperties,
-                                includeCodes,
-                                optionalProperties,
-                                onChange,
-                                onPropertyFormatChanged,
-                                filterPrettyPrint,
-                                propertyFormat,
-                                readOnly,
-                                locked,
-                                translatePropertyValue,
-                                translateNotNumericMessage,
-                                translateValueIsRequiredMessage,
-                                styles}:RenderPropertySelectorParams): any {
-
-  function onValueChange(newValue: PropertyValue.PropertyValue) {
-    onChange(newValue
-      ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-      : PropertyValueSet.removeProperty(propertyName, selectedProperties)
-    );
-  }
-
-  switch (getPropertyType(quantity)) {
-    case "text":
-      const value: string | undefined = selectedValue && PropertyValue.getText(selectedValue);
-      if (value === undefined)
-        throw new Error("No value!");
-      return textboxPropertySelector({
-        value: value,
-        readOnly: readOnly,
-        onValueChange: onValueChange,
-        styles: styles.textboxPropertySelectorStyles
-      });
-    case "integer": {
-
-      return comboboxPropertySelector({
-        sortValidFirst: true,
-        propertyName: propertyName,
-        propertyValueSet: selectedProperties,
-        valueItems: valueItems && valueItems.map((vi) => ({
-          value: vi.value,
-          text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
-          sortNo: vi.sortNo,
-          validationFilter: vi.validationFilter,
-          image: vi.image,
-        })),
-        showCodes: includeCodes,
-        filterPrettyPrint: filterPrettyPrint,
-        onValueChange: onValueChange,
-        readOnly: readOnly,
-        locked: locked,
-        styles: styles.comboboxPropertySelectorStyles
-      });
-    }
-    default:
-      return amountPropertySelector({
-        propertyName: propertyName,
-        propertyValueSet: selectedProperties,
-        inputUnit: propertyFormat.unit,
-        inputDecimalCount: propertyFormat.decimalCount,
-        onFormatChanged: (unit: Unit.Unit<any>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount),
-        onValueChange: onValueChange,
-        notNumericMessage: translateNotNumericMessage(),
-
-        // If it is optional then use blank required message
-        isRequiredMessage: optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage(),
-
-        validationFilter: validationFilter,
-        filterPrettyPrint: filterPrettyPrint,
-        readOnly: readOnly,
-        styles: styles.amountPropertySelectorStyles
-      });
-  }
-}
-
 
 function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyType {
 
@@ -296,6 +190,7 @@ function handleChange(externalOnChange: PropertySelectionOnChange, productProper
   };
 }
 
+/*
 function renderPropertyLabel(selectorIsValid: boolean,
                              selectorIsHidden: boolean,
                              selectorLabel: string,
@@ -308,3 +203,4 @@ function renderPropertyLabel(selectorIsValid: boolean,
     </label>
   );
 }
+*/
