@@ -2,7 +2,6 @@ import * as React from "react";
 import {Expander} from "./expander";
 import {propertiesSelectorLayoutStyles as styles} from "./properties-selector-example-2-layout-styles";
 import {PropertiesSelector} from "@promaster/promaster-react";
-import {PropertySelectorComponentProps} from "@promaster/promaster-react/properties-selector";
 
 export function PropertiesSelectorExample2Layout({
   selectors,
@@ -33,7 +32,7 @@ export function PropertiesSelectorExample2Layout({
 }
 
 function selectorRow(selector: PropertiesSelector.PropertySelectorRenderInfo,
-                     PropertySelectorComponent: PropertiesSelector.ReactComponent<PropertySelectorComponentProps>): React.ReactElement<{}> {
+                     PropertySelectorComponent: PropertiesSelector.ReactComponent<PropertiesSelector.PropertySelectorComponentProps>): React.ReactElement<{}> {
   const className = [
     styles.property,
     selector.isValid ? "" : styles.invalid,
