@@ -69,7 +69,7 @@ function visit(e, indentationDepth, indentionString, messages, typeMap) {
     else if (e.type === "ValueExpr") {
         var type = typeMap.get(e);
         if (type && type.exprTypeEnum == expr_type_1.ExprTypeEnum.Property && type.propertyName != null) {
-            return messages.propertyValueItemMessage(type.propertyName, e.parsed);
+            return messages.propertyValueMessage(type.propertyName, e.parsed);
         }
         else if (e.parsed.type === "integer") {
             var integer = promaster_primitives_1.PropertyValue.getInteger(e.parsed);

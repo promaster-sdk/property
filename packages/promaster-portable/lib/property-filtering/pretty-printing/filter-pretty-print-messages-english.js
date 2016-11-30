@@ -24,11 +24,18 @@ function propertyNameMessage(propertyName) {
     return propertyName;
 }
 exports.propertyNameMessage = propertyNameMessage;
-function propertyValueItemMessage(propertyName, propertyValue) {
-    var pvString = promaster_primitives_1.PropertyValue.toString(propertyValue);
-    return propertyName + "_" + pvString;
+function propertyValueMessage(propertyName, propertyValue) {
+    switch (propertyValue.type) {
+        case "amount":
+            return propertyValue.value.value + " " + promaster_primitives_1.UnitName.getName(propertyValue.value.unit);
+        case "integer":
+            var pvString = promaster_primitives_1.PropertyValue.toString(propertyValue);
+            return propertyName + "_" + pvString;
+        case "text":
+            return propertyValue.value;
+    }
 }
-exports.propertyValueItemMessage = propertyValueItemMessage;
+exports.propertyValueMessage = propertyValueMessage;
 function nullMessage() {
     return "null";
 }

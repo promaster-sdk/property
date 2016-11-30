@@ -57,7 +57,7 @@ function _visit(e, lastPropertyType, typeMap) {
                 typeMap.set(e, lastPropertyType);
                 break;
             case "amount":
-                typeMap.set(e, new expr_type_1.ExprType(expr_type_1.ExprTypeEnum.Amount));
+                typeMap.set(e, lastPropertyType);
                 break;
             case "text":
                 typeMap.set(e, new expr_type_1.ExprType(expr_type_1.ExprTypeEnum.Text));

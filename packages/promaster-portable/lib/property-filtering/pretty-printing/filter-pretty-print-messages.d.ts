@@ -6,6 +6,6 @@ export interface FilterPrettyPrintMessages {
     andMessage(): string;
     orMessage(): string;
     propertyNameMessage(propertyName: string): string;
-    propertyValueItemMessage(propertyName: string, pv: PropertyValue.PropertyValue): string;
+    propertyValueMessage(propertyName: string, pv: PropertyValue.PropertyValue): string;
     nullMessage(): string;
 }
