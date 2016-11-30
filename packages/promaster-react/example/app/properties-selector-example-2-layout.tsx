@@ -1,9 +1,8 @@
 import * as React from "react";
-import {PropertiesSelector} from "@promaster/promaster-react";
 import {Expander} from "./expander";
-
 import {propertiesSelectorLayoutStyles as styles} from "./properties-selector-example-2-layout-styles";
-import {LayoutComponentProps, ReactComponent, PropertySelectorComponentProps} from "@promaster/promaster-react/properties-selector";
+import {PropertiesSelector} from "@promaster/promaster-react";
+import {PropertySelectorComponentProps} from "@promaster/promaster-react/properties-selector";
 
 export function PropertiesSelectorExample2Layout({
   selectors,
@@ -11,7 +10,7 @@ export function PropertiesSelectorExample2Layout({
   closedGroups,
   onToggleGroupClosed,
   PropertySelectorComponent,
-}: LayoutComponentProps): React.ReactElement<LayoutComponentProps> {
+}: PropertiesSelector.LayoutComponentProps): React.ReactElement<PropertiesSelector.LayoutComponentProps> {
 
   const groups = getGroupDistinctNames(selectors);
 
@@ -34,7 +33,7 @@ export function PropertiesSelectorExample2Layout({
 }
 
 function selectorRow(selector: PropertiesSelector.PropertySelectorRenderInfo,
-                     PropertySelectorComponent: ReactComponent<PropertySelectorComponentProps>): React.ReactElement<{}> {
+                     PropertySelectorComponent: PropertiesSelector.ReactComponent<PropertySelectorComponentProps>): React.ReactElement<{}> {
   const className = [
     styles.property,
     selector.isValid ? "" : styles.invalid,
