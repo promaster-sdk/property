@@ -5,8 +5,6 @@ import {Expander} from "./expander";
 import {propertiesSelectorLayoutStyles as styles} from "./properties-selector-example-2-layout-styles";
 import {LayoutComponentProps, ReactComponent, PropertySelectorComponentProps} from "@promaster/promaster-react/properties-selector";
 
-export type TranslatePropertyLabelHover = (propertyName: string) => string;
-
 export function PropertiesSelectorExample2Layout({
   selectors,
   translateGroupName,
