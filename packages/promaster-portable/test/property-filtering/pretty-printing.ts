@@ -31,6 +31,11 @@ describe('filterPrettyPrintIndented', () => {
     assert.equal(pretty, "min must be less than max");
   });
 
+  it('should for min<10:Celsius print min must be less than 10 °C', () => {
+    const pretty = PrettyPrinting.filterPrettyPrintIndented(messages, 0, "*", PropertyFilter.fromString('min<10:Celsius'));
+    assert.equal(pretty, "min must be less than 10 °C");
+  });
+
   it('should print b must be 2\\n**and\\na must be 1', () => {
     const pretty = PrettyPrinting.filterPrettyPrintIndented(messages, 0, "**", PropertyFilter.fromString('a=1&b=2'));
     assert.equal(pretty, "a must be a_1\n**and\nb must be b_2");

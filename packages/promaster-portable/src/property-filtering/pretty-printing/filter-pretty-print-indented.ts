@@ -80,7 +80,7 @@ function visit(e: Ast.Expr, indentationDepth: number,
   else if (e.type === "ValueExpr") {
     const type = typeMap.get(e);
     if (type && type.exprTypeEnum == ExprTypeEnum.Property && type.propertyName != null) {
-      return messages.propertyValueItemMessage(type.propertyName, e.parsed);
+      return messages.propertyValueMessage(type.propertyName, e.parsed);
     }
     else if (e.parsed.type === "integer") {
       const integer = PropertyValue.getInteger(e.parsed);

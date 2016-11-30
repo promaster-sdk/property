@@ -1,4 +1,4 @@
-import {PropertyFilterAst as Ast, PropertyValue} from "@promaster/promaster-primitives";
+import {PropertyFilterAst as Ast, PropertyValue, UnitName} from "@promaster/promaster-primitives";
 
 export function comparisionOperationMessage(op: Ast.ComparisonOperationType, left: string, right: string): string {
   return `${left} ${_comparisonOperationTypeToString(op)} ${right}`;
@@ -24,9 +24,16 @@ export function propertyNameMessage(propertyName: string): string {
   return propertyName;
 }
 
-export function propertyValueItemMessage(propertyName: string, propertyValue: PropertyValue.PropertyValue): string {
-  const pvString = PropertyValue.toString(propertyValue);
-  return `${propertyName}_${pvString}`;
+export function propertyValueMessage(propertyName: string, propertyValue: PropertyValue.PropertyValue): string {
+  switch (propertyValue.type) {
+    case "amount":
+      return propertyValue.value.value + " " + UnitName.getName(propertyValue.value.unit);
+    case "integer":
+      const pvString = PropertyValue.toString(propertyValue);
+      return `${propertyName}_${pvString}`;
+    case "text":
+      return propertyValue.value;
+  }
 }
 
 export function nullMessage(): string {

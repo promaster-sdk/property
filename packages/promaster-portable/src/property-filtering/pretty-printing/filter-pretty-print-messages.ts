@@ -14,7 +14,7 @@ export interface FilterPrettyPrintMessages {
 
     propertyNameMessage(propertyName: string): string ;
 
-    propertyValueItemMessage(propertyName: string, pv: PropertyValue.PropertyValue): string ;
+    propertyValueMessage(propertyName: string, pv: PropertyValue.PropertyValue): string ;
 
     nullMessage(): string ;
 
