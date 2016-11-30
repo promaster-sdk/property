@@ -15,7 +15,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish, 2, " ", propertyFilter);
 
-export class PropertiesSelectorExample1 extends React.Component<{}, State> {
+export class PropertiesSelectorExample2 extends React.Component<{}, State> {
 
   constructor() {
     super();
@@ -61,8 +61,12 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       onToggleGroupClosed: () => "",
     };
 
-    return <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
+    return (
+      <div>
+        <div style={{margin: 20}}>This example shows how the whole layout can be overridden</div>
+        <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
+      </div>
+    );
 
   }
 }
-

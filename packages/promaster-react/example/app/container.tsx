@@ -8,6 +8,7 @@ import {SvgExportExample1} from "./svg-export-example-1";
 import {DropdownExample1} from "./dropdown-example-1";
 import {ReactSvgExportExample1} from "./react-svg-export-example-1";
 import {merge} from "./utils";
+import {PropertiesSelectorExample2} from "./properties-selector-example-2";
 
 interface Example {
   readonly name: string;
@@ -24,13 +25,14 @@ export class Container extends React.Component<void, State> {
   constructor() {
     super();
     this.state = {
-      selectedExample: 4,
+      selectedExample: 5,
       examples: [
         {name: "AmountFormatSelector #1", component: AmountFormatSelectorExample1},
         {name: "AmountPropertySelector #1", component: AmountPropertySelectorExample1},
         {name: "ComboboxPropertySelector #1", component: ComboboxPropertySelectorExample1},
         {name: "TextboxPropertySelector #1", component: TextboxPropertySelectorExample1},
         {name: "PropertiesSelector #1", component: PropertiesSelectorExample1},
+        {name: "PropertiesSelector #2", component: PropertiesSelectorExample2},
         {name: "SvgExport #1", component: SvgExportExample1},
         {name: "ReactSvgExport #1", component: ReactSvgExportExample1},
         {name: "Dropdown #1", component: DropdownExample1},

@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  Units,
-  PropertyValueSet,
-  Quantity,
-  PropertyValue,
-  PropertyFilter
-} from "@promaster/promaster-primitives";
-
+import {Units, PropertyValueSet, Quantity, PropertyValue, PropertyFilter} from "@promaster/promaster-primitives";
 import {PropertyFiltering} from "@promaster/promaster-portable";
 import {
   PropertySelectionOnChange,
@@ -16,9 +9,13 @@ import {
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
   TranslatePropertyName,
-  Property, TranslatePropertyLabelHover, TranslateGroupName,
+  Property,
+  TranslatePropertyLabelHover,
+  TranslateGroupName,
   PropertySelectorRenderInfo,
-  PropertyValueItem, ReactComponent, OnToggleGroupClosed,
+  PropertyValueItem,
+  ReactComponent,
+  OnToggleGroupClosed
 } from "./types";
 import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
 import {GroupComponentProps, DefaultGroupComponent} from "./default-group-component";
