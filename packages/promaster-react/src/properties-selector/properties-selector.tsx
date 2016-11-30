@@ -17,7 +17,7 @@ import {
   TranslateValueIsRequiredMessage,
   TranslatePropertyName,
   Property, TranslatePropertyLabelHover, TranslateGroupName,
-  RenderedPropertySelector,
+  PropertySelectorRenderInfo,
   PropertyValueItem,
 } from "./types";
 import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
@@ -86,7 +86,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     GroupComponent = DefaultGroupComponent, GroupItemComponent = DefaultGroupItemComponent
   } = props;
 
-  const selectors = renderPropertySelectors(props);
+  const selectors = createPropertySelectorRenderInfos(props);
 
   return <LayoutComponent selectors={selectors}
                           translateGroupName={translateGroupName}
@@ -97,7 +97,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
 
 }
 
-function renderPropertySelectors({
+function createPropertySelectorRenderInfos({
   productProperties,
   selectedProperties,
   filterPrettyPrint,
@@ -121,7 +121,7 @@ function renderPropertySelectors({
 
   styles,
 
-}: PropertiesSelectorProps): Array<RenderedPropertySelector> {
+}: PropertiesSelectorProps): Array<PropertySelectorRenderInfo> {
 
   // Default true if not specified otherwise
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
@@ -129,7 +129,7 @@ function renderPropertySelectors({
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
   const sortedArray = productProperties.slice().sort((a, b) => a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0);
 
-  const selectorDefinitions: Array<RenderedPropertySelector> = sortedArray
+  const selectorDefinitions: Array<PropertySelectorRenderInfo> = sortedArray
     .filter((property: Property) => includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter))
     .map((property: Property) => {
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-  RenderedPropertySelector,
+  PropertySelectorRenderInfo,
   TranslateGroupName, OnToggleGroupClosed
 } from "./types";
 import {GroupComponentProps} from "./default-group-component";
@@ -8,7 +8,7 @@ import {GroupItemComponentProps} from "./default-group-item-component";
 import {ReactComponent} from "./properties-selector";
 
 export interface LayoutComponentProps {
-  readonly selectors: Array<RenderedPropertySelector>,
+  readonly selectors: Array<PropertySelectorRenderInfo>,
   readonly translateGroupName: TranslateGroupName,
   readonly closedGroups: Array<string>,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
@@ -52,7 +52,7 @@ export function DefaultLayoutComponent({
 }
 
 
-function getDistinctGroupNames(productPropertiesArray: Array<RenderedPropertySelector>): Array<string> {
+function getDistinctGroupNames(productPropertiesArray: Array<PropertySelectorRenderInfo>): Array<string> {
   const groupNames: Array<string> = [];
   for (let property of productPropertiesArray) {
     if (groupNames.indexOf(property.groupName) === -1 && !isNullOrWhiteSpace(property.groupName)) {

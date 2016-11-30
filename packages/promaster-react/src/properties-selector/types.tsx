@@ -15,10 +15,8 @@ export type TranslatePropertyLabelHover = (propertyName: string) => string;
 export type TranslateGroupName = (groupName: string) => string;
 export type OnToggleGroupClosed = (groupName: string) => void;
 
-// Defines one already rendered selector that should be layed out by the
-// layout component. Technically it contains a react element and some
-// meta data.
-export interface RenderedPropertySelector {
+// Defines information to render one selector
+export interface PropertySelectorRenderInfo {
 
 	// This is information that the layout component can use
 	readonly sortNo: number,

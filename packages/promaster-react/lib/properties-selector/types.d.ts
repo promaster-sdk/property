@@ -1,6 +1,6 @@
-/// <reference types="react" />
-import * as React from "react";
 import { Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity } from "@promaster/promaster-primitives";
+import { PropertySelectorComponentProps } from "./default-property-selector-component";
+import { PropertyLabelComponentProps } from "./default-property-label-component";
 export declare type AmountFormat = {
     unit: Unit.Unit<any>;
     decimalCount: number;
@@ -14,15 +14,15 @@ export declare type TranslateValueIsRequiredMessage = () => string;
 export declare type TranslatePropertyLabelHover = (propertyName: string) => string;
 export declare type TranslateGroupName = (groupName: string) => string;
 export declare type OnToggleGroupClosed = (groupName: string) => void;
-export interface RenderedPropertySelector {
+export interface PropertySelectorRenderInfo {
     readonly sortNo: number;
     readonly groupName: string;
     readonly propertyName: string;
     readonly isValid: boolean;
     readonly isHidden: boolean;
     readonly label: string;
-    readonly renderedSelectorElement: React.ReactElement<{}>;
-    readonly renderedLabelElement: React.ReactElement<{}>;
+    readonly selectorComponentProps: PropertySelectorComponentProps;
+    readonly labelComponentProps: PropertyLabelComponentProps;
 }
 export interface Property {
     readonly sortNo: number;
