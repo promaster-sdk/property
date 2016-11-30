@@ -1,17 +1,18 @@
 "use strict";
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 var React = require("react");
 var promaster_primitives_1 = require("@promaster/promaster-primitives");
-var render_property_selector_component_1 = require("./render-property-selector-component");
-var render_property_label_component_1 = require("./render-property-label-component");
-function renderPropertySelectors(_a) {
+var default_layout_component_1 = require("./default-layout-component");
+var default_group_component_1 = require("./default-group-component");
+var default_group_item_component_1 = require("./default-group-item-component");
+var default_property_label_component_1 = require("./default-property-label-component");
+var default_property_selector_component_1 = require("./default-property-selector-component");
+function PropertiesSelector(props) {
+    var translateGroupName = props.translateGroupName, closedGroups = props.closedGroups, onToggleGroupClosed = props.onToggleGroupClosed, _a = props.LayoutComponent, LayoutComponent = _a === void 0 ? default_layout_component_1.DefaultLayoutComponent : _a, _b = props.GroupComponent, GroupComponent = _b === void 0 ? default_group_component_1.DefaultGroupComponent : _b, _c = props.GroupItemComponent, GroupItemComponent = _c === void 0 ? default_group_item_component_1.DefaultGroupItemComponent : _c, _d = props.PropertySelectorComponent, PropertySelectorComponent = _d === void 0 ? default_property_selector_component_1.DefaultPropertySelectorComponent : _d, _e = props.PropertyLabelComponent, PropertyLabelComponent = _e === void 0 ? default_property_label_component_1.DefaultPropertyLabelComponent : _e;
+    var selectors = createPropertySelectorRenderInfos(props);
+    return React.createElement(LayoutComponent, {selectors: selectors, translateGroupName: translateGroupName, closedGroups: closedGroups, onToggleGroupClosed: onToggleGroupClosed, GroupComponent: GroupComponent, GroupItemComponent: GroupItemComponent, PropertySelectorComponent: PropertySelectorComponent, PropertyLabelComponent: PropertyLabelComponent});
+}
+exports.PropertiesSelector = PropertiesSelector;
+function createPropertySelectorRenderInfos(_a) {
     var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, translatePropertyLabelHover = _a.translatePropertyLabelHover, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, styles = _a.styles;
     autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
     var sortedArray = productProperties.slice().sort(function (a, b) { return a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0; });
@@ -41,7 +42,8 @@ function renderPropertySelectors(_a) {
         var propertyFormat = propertyFormats[property.name] || defaultFormat;
         var isHidden = !promaster_primitives_1.PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
         var label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
-        var renderPropertySelectorComponentProps = {
+        var labelHover = translatePropertyLabelHover(property.name);
+        var propertySelectorComponentProps = {
             propertyName: property.name,
             quantity: property.quantity,
             validationFilter: property.validationFilter,
@@ -63,7 +65,7 @@ function renderPropertySelectors(_a) {
             translateValueIsRequiredMessage: translateValueIsRequiredMessage,
             styles: styles
         };
-        var renderPropertyLabelComponentProps = {
+        var propertyLabelComponentProps = {
             propertyName: property.name,
             selectorIsValid: isValid,
             selectorIsHidden: isHidden,
@@ -77,13 +79,13 @@ function renderPropertySelectors(_a) {
             isValid: isValid,
             isHidden: isHidden,
             label: label,
-            renderedSelectorElement: React.createElement(render_property_selector_component_1.RenderPropertySelectorComponent, __assign({}, renderPropertySelectorComponentProps)),
-            renderedLabelElement: React.createElement(render_property_label_component_1.RenderPropertyLabelComponent, __assign({}, renderPropertyLabelComponentProps)),
+            labelHover: labelHover,
+            selectorComponentProps: propertySelectorComponentProps,
+            labelComponentProps: propertyLabelComponentProps,
         };
     });
     return selectorDefinitions;
 }
-exports.renderPropertySelectors = renderPropertySelectors;
 function getPropertyType(quantity) {
     switch (quantity) {
         case "Text":
@@ -131,4 +133,4 @@ function handleChange(externalOnChange, productProperties, autoSelectSingleValid
         externalOnChange(properties);
     };
 }
-//# sourceMappingURL=render-property-selectors.js.map
+//# sourceMappingURL=properties-selector.js.map
