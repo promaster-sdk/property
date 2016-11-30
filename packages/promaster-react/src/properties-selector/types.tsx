@@ -2,6 +2,7 @@ import * as React from "react";
 import {Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity} from "@promaster/promaster-primitives";
 import {PropertySelectorComponentProps} from "./default-property-selector-component";
 import {PropertyLabelComponentProps} from "./default-property-label-component";
+import {AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "../property-selectors/index";
 
 export type AmountFormat = {unit: Unit.Unit<any>, decimalCount: number};
 export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet) => void;
@@ -36,6 +37,7 @@ export interface PropertySelectorRenderInfo {
 	// A default label is provided here that adheres to showCodes,
 	// the layout component can of course choose not to use this label
 	readonly label: string,
+  readonly labelHover: string,
 
   // Props that are used by the components that render the actual property selector and it's label
   readonly selectorComponentProps: PropertySelectorComponentProps,
@@ -61,3 +63,8 @@ export interface PropertyValueItem {
 }
 
 
+export interface PropertySelectorStyles {
+  amountPropertySelectorStyles?: AmountPropertySelectorStyles,
+  comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles,
+  textboxPropertySelectorStyles?: TextboxPropertySelectorStyles
+}

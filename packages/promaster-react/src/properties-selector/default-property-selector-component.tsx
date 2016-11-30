@@ -19,9 +19,8 @@ import {
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
-  PropertyValueItem,
+  PropertyValueItem, PropertySelectorStyles,
 } from "./types";
-import {PropertySelectorStyles} from "./properties-selector";
 
 const amountPropertySelector = React.createFactory(AmountPropertySelector);
 const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);

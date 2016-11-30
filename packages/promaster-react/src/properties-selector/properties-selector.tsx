@@ -15,21 +15,15 @@ import {
   PropertySelectorRenderInfo,
   PropertyValueItem,
   ReactComponent,
-  OnToggleGroupClosed
+  OnToggleGroupClosed,
+  PropertySelectorStyles
 } from "./types";
 import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
 import {GroupComponentProps, DefaultGroupComponent} from "./default-group-component";
 import {GroupItemComponentProps, DefaultGroupItemComponent} from "./default-group-item-component";
-import {AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "../property-selectors/index";
 import {PropertiesSelectorProps} from "./properties-selector";
 import {PropertyLabelComponentProps, DefaultPropertyLabelComponent} from "./default-property-label-component";
 import {PropertySelectorComponentProps, DefaultPropertySelectorComponent} from "./default-property-selector-component";
-
-export interface PropertySelectorStyles {
-  amountPropertySelectorStyles?: AmountPropertySelectorStyles,
-  comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles,
-  textboxPropertySelectorStyles?: TextboxPropertySelectorStyles
-}
 
 export interface PropertiesSelectorProps {
 
@@ -165,6 +159,7 @@ function createPropertySelectorRenderInfos({
 
       const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
       const label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
+      const labelHover = translatePropertyLabelHover(property.name);
 
       const propertySelectorComponentProps: PropertySelectorComponentProps = {
         propertyName: property.name,
@@ -206,6 +201,7 @@ function createPropertySelectorRenderInfos({
         isHidden: isHidden,
 
         label: label,
+        labelHover: labelHover,
 
         // renderedSelectorElement: <DefaultPropertySelectorComponent {...propertySelectorComponentProps} />,
         // renderedLabelElement: <DefaultPropertyLabelComponent {...propertyLabelComponentProps} />,

@@ -3,6 +3,7 @@ import * as React from "react";
 import { Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity } from "@promaster/promaster-primitives";
 import { PropertySelectorComponentProps } from "./default-property-selector-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
+import { AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPropertySelectorStyles } from "../property-selectors/index";
 export declare type AmountFormat = {
     unit: Unit.Unit<any>;
     decimalCount: number;
@@ -24,6 +25,7 @@ export interface PropertySelectorRenderInfo {
     readonly isValid: boolean;
     readonly isHidden: boolean;
     readonly label: string;
+    readonly labelHover: string;
     readonly selectorComponentProps: PropertySelectorComponentProps;
     readonly labelComponentProps: PropertyLabelComponentProps;
 }
@@ -41,4 +43,9 @@ export interface PropertyValueItem {
     readonly sortNo: number;
     readonly validationFilter: PropertyFilter.PropertyFilter;
     readonly image?: string;
+}
+export interface PropertySelectorStyles {
+    amountPropertySelectorStyles?: AmountPropertySelectorStyles;
+    comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles;
+    textboxPropertySelectorStyles?: TextboxPropertySelectorStyles;
 }
