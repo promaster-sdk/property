@@ -27,8 +27,8 @@ import {GroupComponentProps, DefaultGroupComponent} from "./default-group-compon
 import {GroupItemComponentProps, DefaultGroupItemComponent} from "./default-group-item-component";
 import {AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "../property-selectors/index";
 import {PropertiesSelectorProps} from "./properties-selector";
-import {DefaultPropertySelectorComponent} from "./default-property-selector-component";
-import {DefaultPropertyLabelComponent, PropertyLabelComponentProps} from "./default-property-label-component";
+import {PropertyLabelComponentProps} from "./default-property-label-component";
+import {PropertySelectorComponentProps} from "./default-property-selector-component";
 
 export interface PropertySelectorStyles {
   amountPropertySelectorStyles?: AmountPropertySelectorStyles,
@@ -93,7 +93,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
                           closedGroups={[]}
                           onToggleGroupClosed={() => ""}
                           GroupComponent={GroupComponent}
-                          GroupItemComponent={GroupItemComponent} />;
+                          GroupItemComponent={GroupItemComponent}/>;
 
 }
 
@@ -160,7 +160,7 @@ function renderPropertySelectors({
       const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
       const label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
 
-      const renderPropertySelectorComponentProps = {
+      const propertySelectorComponentProps: PropertySelectorComponentProps = {
         propertyName: property.name,
         quantity: property.quantity,
         validationFilter: property.validationFilter,
@@ -183,7 +183,7 @@ function renderPropertySelectors({
         styles
       };
 
-      const renderPropertyLabelComponentProps: PropertyLabelComponentProps = {
+      const propertyLabelComponentProps: PropertyLabelComponentProps = {
         propertyName: property.name,
         selectorIsValid: isValid,
         selectorIsHidden: isHidden,
@@ -201,8 +201,12 @@ function renderPropertySelectors({
 
         label: label,
 
-        renderedSelectorElement: <DefaultPropertySelectorComponent {...renderPropertySelectorComponentProps} />,
-        renderedLabelElement: <DefaultPropertyLabelComponent {...renderPropertyLabelComponentProps} />,
+        // renderedSelectorElement: <DefaultPropertySelectorComponent {...propertySelectorComponentProps} />,
+        // renderedLabelElement: <DefaultPropertyLabelComponent {...propertyLabelComponentProps} />,
+
+        selectorComponentProps: propertySelectorComponentProps,
+        labelComponentProps: propertyLabelComponentProps,
+
       };
     });
 

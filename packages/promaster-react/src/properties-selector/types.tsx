@@ -1,5 +1,6 @@
-import * as React from "react";
 import {Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity} from "@promaster/promaster-primitives";
+import {PropertySelectorComponentProps} from "./default-property-selector-component";
+import {PropertyLabelComponentProps} from "./default-property-label-component";
 
 export type AmountFormat = {unit: Unit.Unit<any>, decimalCount: number};
 export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet) => void;
@@ -35,11 +36,9 @@ export interface RenderedPropertySelector {
 	// the layout component can of course choose not to use this label
 	readonly label: string,
 
-	// This is the property selector that should be
-	// layed out by the layout component
-	readonly renderedSelectorElement: React.ReactElement<{}>,
-
-  readonly renderedLabelElement: React.ReactElement<{}>,
+  // Props that are used by the components that render the actual property selector and it's label
+  readonly selectorComponentProps: PropertySelectorComponentProps,
+  readonly labelComponentProps: PropertyLabelComponentProps,
 
 }
 
