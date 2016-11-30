@@ -18,17 +18,15 @@ import {
   TranslatePropertyName,
   Property, TranslatePropertyLabelHover, TranslateGroupName,
   PropertySelectorRenderInfo,
-  PropertyValueItem,
+  PropertyValueItem, ReactComponent,
 } from "./types";
 import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
-import ComponentClass = React.ComponentClass;
-import StatelessComponent = React.StatelessComponent;
 import {GroupComponentProps, DefaultGroupComponent} from "./default-group-component";
 import {GroupItemComponentProps, DefaultGroupItemComponent} from "./default-group-item-component";
 import {AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "../property-selectors/index";
 import {PropertiesSelectorProps} from "./properties-selector";
-import {PropertyLabelComponentProps} from "./default-property-label-component";
-import {PropertySelectorComponentProps} from "./default-property-selector-component";
+import {PropertyLabelComponentProps, DefaultPropertyLabelComponent} from "./default-property-label-component";
+import {PropertySelectorComponentProps, DefaultPropertySelectorComponent} from "./default-property-selector-component";
 
 export interface PropertySelectorStyles {
   amountPropertySelectorStyles?: AmountPropertySelectorStyles,
@@ -75,15 +73,19 @@ export interface PropertiesSelectorProps {
   readonly LayoutComponent?: ReactComponent<LayoutComponentProps>,
   readonly GroupComponent?: ReactComponent<GroupComponentProps>,
   readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
+  readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
+  readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
 }
-
-export type ReactComponent<T> = ComponentClass<T> | StatelessComponent<T>;
 
 export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
 
   const {
-    translateGroupName, LayoutComponent = DefaultLayoutComponent,
-    GroupComponent = DefaultGroupComponent, GroupItemComponent = DefaultGroupItemComponent
+    translateGroupName,
+    LayoutComponent = DefaultLayoutComponent,
+    GroupComponent = DefaultGroupComponent,
+    GroupItemComponent = DefaultGroupItemComponent,
+    PropertySelectorComponent = DefaultPropertySelectorComponent,
+    PropertyLabelComponent = DefaultPropertyLabelComponent,
   } = props;
 
   const selectors = createPropertySelectorRenderInfos(props);
@@ -93,7 +95,9 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
                           closedGroups={[]}
                           onToggleGroupClosed={() => ""}
                           GroupComponent={GroupComponent}
-                          GroupItemComponent={GroupItemComponent}/>;
+                          GroupItemComponent={GroupItemComponent}
+                          PropertySelectorComponent={PropertySelectorComponent}
+                          PropertyLabelComponent={PropertyLabelComponent} />;
 
 }
 

@@ -1,3 +1,4 @@
+import * as React from "react";
 import {Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity} from "@promaster/promaster-primitives";
 import {PropertySelectorComponentProps} from "./default-property-selector-component";
 import {PropertyLabelComponentProps} from "./default-property-label-component";
@@ -14,6 +15,8 @@ export type TranslateValueIsRequiredMessage = () => string;
 export type TranslatePropertyLabelHover = (propertyName: string) => string;
 export type TranslateGroupName = (groupName: string) => string;
 export type OnToggleGroupClosed = (groupName: string) => void;
+
+export type ReactComponent<T> = React.ComponentClass<T> | React.StatelessComponent<T>;
 
 // Defines information to render one selector
 export interface PropertySelectorRenderInfo {

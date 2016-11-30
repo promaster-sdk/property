@@ -1,11 +1,9 @@
 import * as React from "react";
-import {
-  PropertySelectorRenderInfo,
-  TranslateGroupName, OnToggleGroupClosed
-} from "./types";
+import {PropertySelectorRenderInfo, TranslateGroupName, OnToggleGroupClosed, ReactComponent} from "./types";
 import {GroupComponentProps} from "./default-group-component";
 import {GroupItemComponentProps} from "./default-group-item-component";
-import {ReactComponent} from "./properties-selector";
+import {PropertyLabelComponentProps} from "./default-property-label-component";
+import {PropertySelectorComponentProps} from "./default-property-selector-component";
 
 export interface LayoutComponentProps {
   readonly selectors: Array<PropertySelectorRenderInfo>,
@@ -14,6 +12,8 @@ export interface LayoutComponentProps {
   readonly onToggleGroupClosed: OnToggleGroupClosed,
   readonly GroupComponent: ReactComponent<GroupComponentProps>,
   readonly GroupItemComponent: ReactComponent<GroupItemComponentProps>,
+  readonly PropertySelectorComponent: ReactComponent<PropertySelectorComponentProps>,
+  readonly PropertyLabelComponent: ReactComponent<PropertyLabelComponentProps>,
 }
 
 export function DefaultLayoutComponent({
@@ -23,6 +23,8 @@ export function DefaultLayoutComponent({
   onToggleGroupClosed,
   GroupComponent,
   GroupItemComponent,
+  PropertySelectorComponent,
+  PropertyLabelComponent
 }: LayoutComponentProps) {
 
   const groups = getDistinctGroupNames(selectors);
@@ -35,12 +37,15 @@ export function DefaultLayoutComponent({
           const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ''));
           return (
             <GroupComponent key={groupName}
-                                     isClosedGroup={isClosedGroup}
-                                     groupName={groupName}
-                                     onToggleGroupClosed={onToggleGroupClosed}
-                                     translateGroupName={translateGroupName}>
+                            isClosedGroup={isClosedGroup}
+                            groupName={groupName}
+                            onToggleGroupClosed={onToggleGroupClosed}
+                            translateGroupName={translateGroupName}>
               {renderedSelectorsForGroup.map((selector) => (
-                <GroupItemComponent key={selector.propertyName} selector={selector}/>
+                <GroupItemComponent key={selector.propertyName}
+                                    selector={selector}
+                                    PropertySelectorComponent={PropertySelectorComponent}
+                                    PropertyLabelComponent={PropertyLabelComponent}/>
               ))}
             </GroupComponent>
           );
