@@ -1,8 +1,9 @@
 ﻿import {Section, createSection} from "../model/page/section";
 import {MasterPage} from "../model/page/master-page";
 import {SectionElement} from "../model/section-elements/section-element";
+import {IBuilder} from "./i-builder";
 
-export class SectionBuilder //: List<ISectionElement>, IBuilder<ISectionElement>
+export class SectionBuilder implements IBuilder<SectionElement> //: List<ISectionElement>,
 {
   page: MasterPage;
   private readonly list: Array<SectionElement> = [];

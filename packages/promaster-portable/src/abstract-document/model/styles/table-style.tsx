@@ -5,8 +5,9 @@ export interface TableStyle extends Style {
   tableProperties: TableProperties,
 }
 
-export function createTableStyle(basedOn: string, tableProperties: TableProperties): TableStyle {
+export function createTableStyle(basedOn: string | undefined, tableProperties: TableProperties): TableStyle {
   return {
+    type: "TableStyle",
     basedOn,
     tableProperties,
   }

@@ -7,6 +7,7 @@ export interface TableCellStyle extends Style {
 
 export function createTableCellStyle(basedOn: string | undefined, tableCellProperties: TableCellProperties): TableCellStyle {
   return {
+    type: "TableCellStyle",
     basedOn,
     tableCellProperties,
   };

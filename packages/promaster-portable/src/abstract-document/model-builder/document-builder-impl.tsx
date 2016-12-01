@@ -35,8 +35,8 @@ import {Atom} from "../model/atoms/atom";
 import {TextFieldBuilder} from "./text-field-builder";
 import {createTableCellStyle} from "../model/styles/table-cell-style";
 import {createTableProperties} from "../model/properties/table-properties";
-
-type IBuilder<T> = Array<T>;
+import {IBuilder} from "./i-builder";
+import {getEffectiveTextProperties} from "../model/section-elements/paragraph";
 
 
 export class DocumentBuilder implements DocumentBuilder {
@@ -48,7 +48,7 @@ export class DocumentBuilder implements DocumentBuilder {
   private readonly _numberings: Indexer<string, Numbering> = {};
   private readonly _numberingDefinitions: Indexer<string, NumberingDefinition> = {};
 
-  private readonly _stack: Stack<IBuilder> = new Stack<IBuilder>();
+  private readonly _stack: Array<IBuilder<{}>> = [];
 
   constructor() {
     this.AddDefaultStyles();
@@ -67,10 +67,10 @@ export class DocumentBuilder implements DocumentBuilder {
 
   public SetStyleName(name: string, style: Style): void {
     const key = createStyleKey(style.GetType(), name);
-    if (this._styles.ContainsKey(key))
-      this._styles[key] = style;
-    else
-      this._styles.Add(key, style);
+    // if (this._styles.ContainsKey(key))
+    this._styles[key] = style;
+    // else
+    //   this._styles.Add(key, style);
   }
 
   public AddImageResource(id: Guid, abstractImage: AbstractImage, renderScale: number): void {
@@ -86,9 +86,9 @@ export class DocumentBuilder implements DocumentBuilder {
   }
 
   public BeginSection(page: MasterPage): void {
-    if (this._stack.Any())
+    if (this._stack.length > 0)
       throw new Error("Sections can only be root elements");
-    this._stack.Push(new SectionBuilder(page));
+    this._stack.push(new SectionBuilder(page));
   }
 
   public EndSection(): void {
@@ -99,7 +99,7 @@ export class DocumentBuilder implements DocumentBuilder {
     const builder = new TableBuilder();
     builder.columns = columns;
     builder.keepTogether = keepTogether;
-    this._stack.Push(builder);
+    this._stack.push(builder);
     return builder;
   }
 
@@ -111,16 +111,16 @@ export class DocumentBuilder implements DocumentBuilder {
     }
     else {
       throw new Error("TODO!!");
-       // paragraphBuilder.AddRange(
-       // tableBuilder.Select(
-       // (r) => new Table(tableBuilder.StyleName, tableBuilder.TableProperties.Build(), tableBuilder.TableCellProperties.Build(),
-       // tableBuilder.Columns, new SafeList < TableRow > {r})));
+      // paragraphBuilder.AddRange(
+      // tableBuilder.Select(
+      // (r) => new Table(tableBuilder.StyleName, tableBuilder.TableProperties.Build(), tableBuilder.TableCellProperties.Build(),
+      // tableBuilder.Columns, new SafeList < TableRow > {r})));
     }
   }
 
   public BeginTableRow(height: number): void {
     this.Peek<TableBuilder>();
-    this._stack.Push(new TableRowBuilder(height));
+    this._stack.push(new TableRowBuilder(height));
   }
 
   public EndTableRow(): void {
@@ -133,7 +133,7 @@ export class DocumentBuilder implements DocumentBuilder {
     this.Peek<TableRowBuilder>();
     const builder = new TableCellBuilder();
     builder.columnSpan = columnSpan;
-    this._stack.Push(builder);
+    this._stack.push(builder);
     return builder;
   }
 
@@ -145,7 +145,7 @@ export class DocumentBuilder implements DocumentBuilder {
 
   public BeginKeepTogether(): void {
     this.Peek<IBuilder<SectionElement>>();
-    this._stack.Push(new KeepTogetherBuilder());
+    this._stack.push(new KeepTogetherBuilder());
   }
 
   public EndKeepTogether(): void {
@@ -157,7 +157,7 @@ export class DocumentBuilder implements DocumentBuilder {
   public BeginParagraph(): ParagraphBuilder {
     this.Peek<IBuilder<SectionElement>>();
     const builder = new ParagraphBuilder();
-    this._stack.Push(builder);
+    this._stack.push(builder);
     return builder;
   }
 
@@ -165,7 +165,7 @@ export class DocumentBuilder implements DocumentBuilder {
     this.Peek<IBuilder<SectionElement>>();
     const builder = new ParagraphBuilder();
     builder.styleName = styleBasedOn;
-    this._stack.Push(builder);
+    this._stack.push(builder);
     return builder;
   }
 
@@ -178,7 +178,7 @@ export class DocumentBuilder implements DocumentBuilder {
   InsertImage(imageResourceId: Guid, width: number, height: number): void {
     if (!this._imageResources[imageResourceId])
       throw new Error(`Tried to add a reference to image resouce but that resource dose not exist (id=${imageResourceId}).`);
-    const itemContainer = this.Peek<IBuilder<IAtom>>();
+    const itemContainer = this.Peek<IBuilder<Atom>>();
     itemContainer.add(createImage(this._imageResources[imageResourceId], width, height));
   }
 
@@ -191,7 +191,7 @@ export class DocumentBuilder implements DocumentBuilder {
   InsertTextRun(text: string): void {
     const paragraphBuilder = this.Peek<ParagraphBuilder>();
     const p = paragraphBuilder.build();
-    const textProps = p.GetEffectiveTextProperties(this._styles);
+    const textProps = getEffectiveTextProperties(this._styles, p);
     this.InsertTextRun2(text, textProps);
   }
 
@@ -227,18 +227,19 @@ export class DocumentBuilder implements DocumentBuilder {
   // #endregion
 
   private Peek<T>(): T {
-    if (!this._stack.Any())
+    if (this._stack.length === 0)
       throw new Error("Expected " + typeof(T).Name + ", found null");
-    const top = this._stack.Peek();
+    // const top = this._stack.peek();
+    const top = this._stack[this._stack.length - 1];
     if (!(top instanceof T))
       throw new Error("Expected " + typeof(T).Name + ", found " + top.GetType().Name);
     return top as T;
   }
 
   private Pop<T>(): T {
-    if (!this._stack.Any())
+    if (this._stack.length === 0)
       throw new Error("Expected " + typeof(T).Name + ", found null");
-    const top = this._stack.Pop();
+    const top = this._stack.pop();
     if (!(top instanceof T))
       throw new Error("Found + " + top.GetType().Name + ", expected " + typeof(T).Name);
     return top as T;
@@ -292,11 +293,11 @@ export class DocumentBuilder implements DocumentBuilder {
     )));
 
     // Default style need to have all properties set to a value (NULL is now allowed)
-    this._styles.add(createStyleKey(typeof(TableStyle), "Default"), createTableStyle
+    this._styles[createStyleKey("TableStyle", "Default")] = createTableStyle
     (
       undefined,
       createTableProperties("Left")
-    ));
+    );
 
     // Default style need to have all properties set to a value (NULL is now allowed)
     this.AddStyle("Default", createTableCellStyle(
@@ -329,9 +330,8 @@ export class DocumentBuilder implements DocumentBuilder {
   }
 
   private AddStyle<TStyle extends Style>(name: string, style: TStyle): void {
-    this._styles.add(createStyleKey(typeof(TStyle), name), style);
+    this._styles[createStyleKey(typeof(TStyle), name)] = style;
   }
 
 }
-
 */
