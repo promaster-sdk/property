@@ -5,3 +5,10 @@ export interface Section {
   page: MasterPage,
   sectionElements: SectionElement[],
 }
+
+export function createSection(page: MasterPage, sectionElements: Array<SectionElement>): Section {
+  return {
+    page,
+    sectionElements,
+  };
+}

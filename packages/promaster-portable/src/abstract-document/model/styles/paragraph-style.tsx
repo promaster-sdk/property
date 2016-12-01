@@ -6,3 +6,11 @@ export interface ParagraphStyle extends Style {
   paragraphProperties: ParagraphProperties,
   textProperties: TextProperties,
 }
+
+export function createParagraphStyle(basedOn: string, paragraphProperties: ParagraphProperties, textProperties: TextProperties): ParagraphStyle {
+  return {
+    basedOn,
+    paragraphProperties,
+    textProperties,
+  };
+}

@@ -11,3 +11,15 @@ export interface Paragraph {
   styleName: string,
   textProperties: TextProperties,
 }
+
+export function createParagraph(styleName: string, paragraphProperties: ParagraphProperties, textProperties: TextProperties,
+                                atoms: Array<Atom>, numbering: ParagraphNumbering): Paragraph {
+  return {
+    type: "Paragraph",
+    styleName,
+    paragraphProperties,
+    textProperties,
+    atoms,
+    numbering,
+  };
+}

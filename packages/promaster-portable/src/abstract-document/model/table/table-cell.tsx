@@ -7,3 +7,13 @@ export interface TableCell {
   styleName: string,
   tableCellProperties: TableCellProperties,
 }
+
+export function createTableCell(styleName: string, tableCellProperties: TableCellProperties,
+                                columnSpan: number, elements: Array<SectionElement>): TableCell {
+  return {
+    styleName,
+    tableCellProperties,
+    columnSpan,
+    elements,
+  }
+}
