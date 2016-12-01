@@ -101,7 +101,7 @@ function compareTo(left, right) {
     switch (left.type) {
         case "integer":
             if (right.type === "integer")
-                return compare_utils_1.compareNumbers(left.value, right.value, 0);
+                return compare_utils_1.compareNumbers(left.value, right.value, 0, 0);
             throw new Error("Unexpected error comparing integers");
         case "amount":
             if (right.type === "amount")

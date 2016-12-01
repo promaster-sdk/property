@@ -125,7 +125,7 @@ export function compareTo(left: PropertyValue, right: PropertyValue): number {
   switch (left.type) {
     case "integer":
       if (right.type === "integer")
-        return compareNumbers(left.value, right.value, 0);
+        return compareNumbers(left.value, right.value, 0, 0);
       throw new Error("Unexpected error comparing integers");
     case "amount":
       if (right.type === "amount")

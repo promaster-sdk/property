@@ -295,6 +295,12 @@ describe('main', () => {
       assert.equal(PropertyFilter.isValid(pvs, f), false);
     });
 
+    it('should not assert 0 m3/s as valid for 36 m3/h to 163 m3/h range', () => {
+      const pvs = PropertyValueSet.fromString("a=0:CubicMeterPerSecond");
+      const f = PropertyFilter.fromString("a=36:CubicMeterPerHour~163:CubicMeterPerHour");
+      assert.equal(PropertyFilter.isValid(pvs, f), false);
+    });
+
   });
 
   describe('getReferencedProperties', () => {

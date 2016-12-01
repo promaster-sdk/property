@@ -164,8 +164,16 @@ function _comparison(left, right, allowNullOrUndefined) {
             return 2;
     }
     // Convert the second amount to the same unit as the first and compare the values
-    var a1Value = left.value;
-    var a2Value = valueAs(left.unit, right);
-    return CompareUtils.compareNumbers(a1Value, a2Value, Math.max(left.decimalCount, right.decimalCount));
+    // NOTE: The converted amount may have more decimals, eg. when comparing
+    // 0:CubicMeterPerSecond with 36:CubicMeterPerHour, both with 0 decimal places,
+    // then 36:CubicMeterPerHour gets converted to 0:CubicMeterPerSecond if the same
+    // decimal places are used as in the original amounts
+    // Therefore we need to use all decimals for the converted value.
+    // Buf if both are of the same unit then no conversion is needed so we can use decimal places from both
+    if (Unit.equals(left.unit, right.unit)) {
+        return CompareUtils.compareNumbers(left.value, right.value, left.decimalCount, right.decimalCount);
+    }
+    var rightValue = valueAs(left.unit, right);
+    return CompareUtils.compareNumbers(left.value, rightValue, left.decimalCount, undefined);
 }
 //# sourceMappingURL=amount.js.map

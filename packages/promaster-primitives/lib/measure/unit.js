@@ -73,6 +73,10 @@ function convert(value, fromUnit, toUnit) {
     return convertWithConverter(value, converter);
 }
 exports.convert = convert;
+function equals(left, right) {
+    return left === right;
+}
+exports.equals = equals;
 ///////////////////////////////
 /// BEGIN PRIVATE DECLARATIONS
 ///////////////////////////////

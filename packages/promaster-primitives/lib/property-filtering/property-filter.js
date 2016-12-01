@@ -227,6 +227,21 @@ function _evaluate(e, properties, matchMissingIdentifiers) {
             var rangeResult = _evaluate(range, properties, matchMissingIdentifiers);
             var min = rangeResult[0];
             var max = rangeResult[1];
+            // console.log("left", JSON.stringify(left));
+            // console.log("min", JSON.stringify(min));
+            // console.log("max", JSON.stringify(max));
+            // console.log("left unit is m3/s", (left as any).value.unit === Units.CubicMeterPerSecond);
+            // console.log("min unit is m3/h", (min as any).value.unit === Units.CubicMeterPerHour);
+            //
+            // const pv1 = PropertyValue.fromString("0:CubicMeterPerSecond");
+            // console.log("NISSE", JSON.stringify(pv1) === JSON.stringify(left));
+            // console.log("pv1", JSON.stringify(pv1));
+            // console.log("left", JSON.stringify(left));
+            //
+            // const pv2 = PropertyValue.fromText("16:CubicMeterPerHour");
+            // console.log("OLLE", PropertyValue.greaterOrEqualTo(pv1, pv2));
+            // console.log("greaterOrEqualTo(left, min)", PropertyValue.greaterOrEqualTo(left, min));
+            // console.log("PropertyValue.lessOrEqualTo(left, max)", PropertyValue.lessOrEqualTo(left, max));
             // Match on NULL or inclusive in range
             if (((max === null || min === null) && left === null) ||
                 (left !== null && min !== null && max !== null && (PropertyValue.greaterOrEqualTo(left, min) && PropertyValue.lessOrEqualTo(left, max)))) {

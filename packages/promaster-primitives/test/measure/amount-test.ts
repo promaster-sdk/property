@@ -101,11 +101,11 @@ describe('amount_test', () => {
 		assert.closeTo(valueRight, Amount.valueAs(Units.Hour, amountRight), 0.0001);
 	});
 
-	it('Operator_Equals', () => {
+	it('0.8 Celisius should equal 0.8 Celsius', () => {
 		const valueLeft = Amount.create(0.8, Units.Celsius);
 		const valueRight = Amount.create(0.8, Units.Celsius);
 
-		assert.equal(true, Amount.equals(valueLeft, valueRight));
+		assert.equal(Amount.equals(valueLeft, valueRight), true);
 	});
 
 	it('should equal 1 m with 100 cm', () => {
@@ -148,19 +148,25 @@ describe('amount_test', () => {
 	 });
 	 */
 
-	it('Operator_GraterThan_Positive_and_Negative', () => {
+	it('Assert true for 16.2 Celsius > -200.0 Celsius', () => {
 		const left = Amount.create(16.2, Units.Celsius);
 		const right = Amount.create(-200.0, Units.Celsius);
 		assert.equal(Amount.greaterThan(left, right), true);
 	});
 
-	it('Operator_LessThan_Negative_and_Positive', () => {
+	it('Assert true for -200.0 Celsius < 16.2 Celsius', () => {
 		const left = Amount.create(-200.0, Units.Celsius);
 		const right = Amount.create(16.2, Units.Celsius);
 		assert.equal(Amount.lessThan(left, right), true);
 	});
 
-	/*
+  it('Assert true for 0 CubicMeterPerSecond < 36 CubicMeterPerHour', () => {
+    const left = Amount.create(0, Units.CubicMeterPerSecond);
+    const right = Amount.create(36, Units.CubicMeterPerHour);
+    assert.equal(Amount.lessThan(left, right), true);
+  });
+
+  /*
 	 it('Operator_Equals_Tolerance', () => {
 	 const x1 = Amount.create(44000.000000000065, Units.Celsius);
 	 const x2 = Amount.create(44000.000000000007, Units.Celsius);

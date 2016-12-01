@@ -2,6 +2,7 @@ import * as PropertyValue from "../product-properties/property-value";
 import * as PropertyValueSet from "../product-properties/property-value-set";
 import * as Ast from "./property-filter-ast";
 import * as Parser from "./pegjs/property-filter-parser";
+import {Units} from "../index"
 
 export interface PropertyFilter {
 	text: string;
@@ -23,10 +24,10 @@ export function fromString(filter: string): PropertyFilter | undefined {
 	}
 
 	if (!_cache.hasOwnProperty(filter)) {
-		var adjustedFilter = _preProcessString(filter);
+		const adjustedFilter = _preProcessString(filter);
 		if (adjustedFilter === "")
 			return Empty;
-		var ast = _buildAst(adjustedFilter, false);
+		const ast = _buildAst(adjustedFilter, false);
 		if (ast === undefined) {
 			console.log("Invalid property filter syntax: " + adjustedFilter);
 			return undefined;
@@ -61,7 +62,7 @@ export function isSyntaxValid(filter: string, propertyNames: Array<string> | und
 	if (propertyNames === undefined) {
 		return true;
 	}
-	var parsed = create(filter, ast);
+	const parsed = create(filter, ast);
 
 	const properties = getReferencedProperties(parsed);
 	for (let p of properties) {
@@ -72,7 +73,8 @@ export function isSyntaxValid(filter: string, propertyNames: Array<string> | und
 }
 
 export function isValid(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean {
-	if (properties === null || properties === undefined) {
+
+  if (properties === null || properties === undefined) {
 		throw new Error("Argument 'properties' must be defined.");
 	}
 	if (filter === null || filter === undefined) {
@@ -126,7 +128,7 @@ function _preProcessString(filter: string): string {
 
 	filter = filter.trim();
 	let inString: boolean = false;
-	var newFilter = "";
+	let newFilter = "";
 	for (let char of filter.split('')) {
 		if (char == '"')
 			inString = !inString;
@@ -185,7 +187,7 @@ function _buildAst(text: string, throwOnInvalidSyntax: boolean): Ast.Expr | unde
 
 export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValueSet, matchMissingIdentifiers: boolean): any {
 
-	if (e.type === "AndExpr") {
+  if (e.type === "AndExpr") {
 		for (let child of e.children) {
 			if (!_evaluate(child, properties, matchMissingIdentifiers))
 				return false;
@@ -193,7 +195,8 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
 		return true;
 	}
 	else if (e.type === "ComparisonExpr") {
-		// Handle match missing identifier
+
+    // Handle match missing identifier
 		if (matchMissingIdentifiers && (_isMissingIdent(e.leftValue, properties)
 			|| _isMissingIdent(e.rightValue, properties))) {
 			return true;
@@ -224,7 +227,8 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
 		return true;
 	}
 	else if (e.type === "EqualsExpr") {
-		// Handle match missing identifier
+
+    // Handle match missing identifier
 		if (matchMissingIdentifiers) {
 			if (_isMissingIdent(e.leftValue, properties) ||
 				e.rightValueRanges.filter((vr: Ast.ValueRangeExpr) =>
@@ -237,12 +241,30 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
 
 		const left: PropertyValue.PropertyValue = _evaluate(e.leftValue, properties, matchMissingIdentifiers);
 
-		for (let range of e.rightValueRanges) {
+    for (let range of e.rightValueRanges) {
 			let rangeResult = _evaluate(range, properties, matchMissingIdentifiers);
 			let min: PropertyValue.PropertyValue = rangeResult[0];
 			let max: PropertyValue.PropertyValue = rangeResult[1];
 
-			// Match on NULL or inclusive in range
+      // console.log("left", JSON.stringify(left));
+      // console.log("min", JSON.stringify(min));
+      // console.log("max", JSON.stringify(max));
+
+      // console.log("left unit is m3/s", (left as any).value.unit === Units.CubicMeterPerSecond);
+      // console.log("min unit is m3/h", (min as any).value.unit === Units.CubicMeterPerHour);
+			//
+      // const pv1 = PropertyValue.fromString("0:CubicMeterPerSecond");
+      // console.log("NISSE", JSON.stringify(pv1) === JSON.stringify(left));
+      // console.log("pv1", JSON.stringify(pv1));
+      // console.log("left", JSON.stringify(left));
+			//
+      // const pv2 = PropertyValue.fromText("16:CubicMeterPerHour");
+      // console.log("OLLE", PropertyValue.greaterOrEqualTo(pv1, pv2));
+
+      // console.log("greaterOrEqualTo(left, min)", PropertyValue.greaterOrEqualTo(left, min));
+      // console.log("PropertyValue.lessOrEqualTo(left, max)", PropertyValue.lessOrEqualTo(left, max));
+
+      // Match on NULL or inclusive in range
 			if (((max === null || min === null) && left === null) ||
 				(left !== null && min !== null && max !== null && (PropertyValue.greaterOrEqualTo(left, min) && PropertyValue.lessOrEqualTo(left, max)))) {
 				return e.operationType == "equals";
@@ -289,4 +311,3 @@ function _isMissingIdent(e: Ast.Expr, properties: PropertyValueSet.PropertyValue
 	}
 	return false;
 }
-

@@ -157,3 +157,4 @@ export declare function minus<T extends Quantity>(offset: number, unit: Unit<T>)
  * @returns The converted numeric value.
  */
 export declare function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number;
+export declare function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>, right: Unit<T2>): boolean;

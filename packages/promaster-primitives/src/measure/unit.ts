@@ -210,6 +210,10 @@ export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Qu
   return convertWithConverter(value, converter);
 }
 
+export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>, right: Unit<T2>) {
+  return left === right;
+}
+
 ///////////////////////////////
 /// BEGIN PRIVATE DECLARATIONS
 ///////////////////////////////

@@ -1,7 +1,7 @@
 "use strict";
-function compareNumbers(first, second, decimals) {
-    var f = Math.round(first * Math.pow(10, decimals));
-    var s = Math.round(second * Math.pow(10, decimals));
+function compareNumbers(first, second, firstDecimals, secondDecimals) {
+    var f = firstDecimals ? Math.round(first * Math.pow(10, firstDecimals)) : first;
+    var s = secondDecimals ? Math.round(second * Math.pow(10, secondDecimals)) : second;
     if (f === s)
         return 0;
     if (f < s)
