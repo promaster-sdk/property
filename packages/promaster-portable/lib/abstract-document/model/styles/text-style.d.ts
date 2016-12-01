@@ -3,3 +3,7 @@ import { TextProperties } from "../properties/text-properties";
 export interface TextStyle extends Style {
     textProperties: TextProperties;
 }
+export declare function createTextStyle(basedOn: string | undefined, textProperties: TextProperties): {
+    basedOn: string | undefined;
+    textProperties: TextProperties;
+};

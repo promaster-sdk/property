@@ -1,6 +1,6 @@
 export interface TextProperties {
     bold: boolean | undefined;
-    color: string;
+    color: string | undefined;
     fontFamily: string;
     fontSize: number | undefined;
     italic: boolean | undefined;
@@ -8,4 +8,4 @@ export interface TextProperties {
     superScript: boolean | undefined;
     underline: boolean | undefined;
 }
-export declare function createTextProperties(fontFamily: string, fontSize: number | undefined, underline: boolean | undefined, bold: boolean | undefined, italic: boolean | undefined, color: string, subScript: boolean | undefined, superScript: boolean | undefined): TextProperties;
+export declare function createTextProperties(fontFamily: string, fontSize: number | undefined, underline: boolean | undefined, bold: boolean | undefined, italic: boolean | undefined, color: string | undefined, subScript: boolean | undefined, superScript: boolean | undefined): TextProperties;

@@ -6,6 +6,10 @@ export class TableRowBuilder //: List<TableCell>, IBuilder<TableCell>
   height: number;
   private readonly list: Array<TableCell> = [];
 
+  constructor(height: number) {
+    this.height = height;
+  }
+
   add(child: TableCell): void {
     this.list.push(child);
   }

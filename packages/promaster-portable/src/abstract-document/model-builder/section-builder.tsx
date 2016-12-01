@@ -7,11 +7,15 @@ export class SectionBuilder //: List<ISectionElement>, IBuilder<ISectionElement>
   page: MasterPage;
   private readonly list: Array<SectionElement> = [];
 
+  constructor(page: MasterPage) {
+    this.page = page;
+  }
+
   add(child: SectionElement): void {
     this.list.push(child);
   }
 
-  Build(): Section {
+  build(): Section {
     return createSection(this.page, this.list);
   }
 }

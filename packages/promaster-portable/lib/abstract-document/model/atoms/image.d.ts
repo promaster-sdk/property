@@ -5,3 +5,4 @@ export interface Image {
     imageResource: ImageResource;
     width: number;
 }
+export declare function createImage(imageResource: ImageResource, width: number, height: number): Image;

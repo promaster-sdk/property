@@ -5,7 +5,7 @@ export interface TextStyle extends Style {
   textProperties: TextProperties,
 }
 
-export function createTextStyle(basedOn: string, textProperties: TextProperties) {
+export function createTextStyle(basedOn: string | undefined, textProperties: TextProperties) {
   return {
     basedOn,
     textProperties

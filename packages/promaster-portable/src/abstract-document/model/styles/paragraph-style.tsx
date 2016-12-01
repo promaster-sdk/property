@@ -7,7 +7,7 @@ export interface ParagraphStyle extends Style {
   textProperties: TextProperties,
 }
 
-export function createParagraphStyle(basedOn: string, paragraphProperties: ParagraphProperties, textProperties: TextProperties): ParagraphStyle {
+export function createParagraphStyle(basedOn: string | undefined, paragraphProperties: ParagraphProperties, textProperties: TextProperties): ParagraphStyle {
   return {
     basedOn,
     paragraphProperties,

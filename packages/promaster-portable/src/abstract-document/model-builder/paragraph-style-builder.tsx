@@ -8,7 +8,7 @@ export class ParagraphStyleBuilder {
   readonly paragraphProperties: ParagraphPropertiesBuilder = new ParagraphPropertiesBuilder();
   readonly textProperties: TextPropertiesBuilder = new TextPropertiesBuilder();
 
-  public Build(): ParagraphStyle {
+  public build(): ParagraphStyle {
     return createParagraphStyle(this.basedOn, this.paragraphProperties.build(), this.textProperties.build());
   }
 

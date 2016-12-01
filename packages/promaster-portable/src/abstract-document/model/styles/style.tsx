@@ -1,3 +1,3 @@
 export interface Style {
-  basedOn: string,
+  basedOn: string | undefined,
 }

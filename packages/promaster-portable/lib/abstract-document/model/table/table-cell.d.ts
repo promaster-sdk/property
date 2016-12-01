@@ -6,3 +6,4 @@ export interface TableCell {
     styleName: string;
     tableCellProperties: TableCellProperties;
 }
+export declare function createTableCell(styleName: string, tableCellProperties: TableCellProperties, columnSpan: number, elements: Array<SectionElement>): TableCell;

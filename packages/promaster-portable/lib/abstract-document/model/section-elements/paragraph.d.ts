@@ -10,3 +10,4 @@ export interface Paragraph {
     styleName: string;
     textProperties: TextProperties;
 }
+export declare function createParagraph(styleName: string, paragraphProperties: ParagraphProperties, textProperties: TextProperties, atoms: Array<Atom>, numbering: ParagraphNumbering): Paragraph;

@@ -5,13 +5,14 @@ import { Section } from "./page/section";
 import { StyleKey } from "./styles/style-key";
 import { Style } from "./styles/style";
 export declare type Indexer<T1, T2> = {
-    readonly [key: string]: T2;
+    [key: string]: T2;
 };
 export declare type Guid = string;
 export interface AbstractDoc {
-    imageResources: Indexer<Guid, ImageResource>[];
-    numberingDefinitions: Indexer<string, NumberingDefinition>[];
-    numberings: Indexer<string, Numbering>[];
     sections: Section[];
-    styles: Indexer<StyleKey, Style>[];
+    imageResources: Indexer<Guid, ImageResource>;
+    styles: Indexer<StyleKey, Style>;
+    numberings: Indexer<string, Numbering>;
+    numberingDefinitions: Indexer<string, NumberingDefinition>;
 }
+export declare function createAbstractDoc(sections: Array<Section>, imageResources: Indexer<Guid, ImageResource>, styles: Indexer<StyleKey, Style>, numberings: Indexer<string, Numbering>, numberingDefinitions: Indexer<string, NumberingDefinition>): AbstractDoc;

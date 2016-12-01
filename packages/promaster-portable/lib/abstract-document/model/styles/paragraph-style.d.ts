@@ -5,3 +5,4 @@ export interface ParagraphStyle extends Style {
     paragraphProperties: ParagraphProperties;
     textProperties: TextProperties;
 }
+export declare function createParagraphStyle(basedOn: string | undefined, paragraphProperties: ParagraphProperties, textProperties: TextProperties): ParagraphStyle;

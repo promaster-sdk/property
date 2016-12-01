@@ -1,1 +1,1 @@
-{"version":3,"file":"table-cell.js","sourceRoot":"","sources":["../../../../src/abstract-document/model/table/table-cell.tsx"],"names":[],"mappings":""}
+{"version":3,"file":"table-cell.js","sourceRoot":"","sources":["../../../../src/abstract-document/model/table/table-cell.tsx"],"names":[],"mappings":";AAUA,yBAAgC,SAAiB,EAAE,mBAAwC,EAC3D,UAAkB,EAAE,QAA+B;IACjF,MAAM,CAAC;QACL,oBAAS;QACT,wCAAmB;QACnB,sBAAU;QACV,kBAAQ;KACT,CAAA;AACH,CAAC;AARe,uBAAe,kBAQ9B,CAAA"}

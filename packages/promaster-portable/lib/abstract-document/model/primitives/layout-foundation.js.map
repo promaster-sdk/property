@@ -1,1 +1,1 @@
-{"version":3,"file":"layout-foundation.js","sourceRoot":"","sources":["../../../../src/abstract-document/model/primitives/layout-foundation.tsx"],"names":[],"mappings":""}
+{"version":3,"file":"layout-foundation.js","sourceRoot":"","sources":["../../../../src/abstract-document/model/primitives/layout-foundation.tsx"],"names":[],"mappings":";AAOA,gCAA0C,GAAM,EAAE,MAAS,EAAE,IAAO,EAAE,KAAQ;IAC5E,MAAM,CAAC;QACL,QAAG;QACH,cAAM;QACN,UAAI;QACJ,YAAK;KACN,CAAA;AACH,CAAC;AAPe,8BAAsB,yBAOrC,CAAA"}

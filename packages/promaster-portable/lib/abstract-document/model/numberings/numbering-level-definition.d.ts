@@ -1,9 +1,12 @@
 import { NumberingFormat } from "./numbering-format";
 import { TextProperties } from "../properties/text-properties";
+import { AbstractLength } from "../primitives/abstract-length";
 export interface NumberingLevelDefinition {
-    format: NumberingFormat;
     level: number;
-    levelText: string;
+    format: NumberingFormat;
     start: number;
-    textProperties: TextProperties;
+    levelText: string;
+    levelIndention: AbstractLength;
+    textProperties: TextProperties | undefined;
 }
+export declare function createNumberingLevelDefinition(level: number, format: NumberingFormat, start: number, levelText: string, levelIndention: AbstractLength, textProperties: TextProperties | undefined): NumberingLevelDefinition;

@@ -1,1 +1,1 @@
-{"version":3,"file":"paragraph-style.js","sourceRoot":"","sources":["../../../../src/abstract-document/model/styles/paragraph-style.tsx"],"names":[],"mappings":""}
+{"version":3,"file":"paragraph-style.js","sourceRoot":"","sources":["../../../../src/abstract-document/model/styles/paragraph-style.tsx"],"names":[],"mappings":";AASA,8BAAqC,OAA2B,EAAE,mBAAwC,EAAE,cAA8B;IACxI,MAAM,CAAC;QACL,gBAAO;QACP,wCAAmB;QACnB,8BAAc;KACf,CAAC;AACJ,CAAC;AANe,4BAAoB,uBAMnC,CAAA"}

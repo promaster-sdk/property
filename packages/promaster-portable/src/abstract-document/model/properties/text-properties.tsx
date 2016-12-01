@@ -1,6 +1,6 @@
 export interface TextProperties {
   bold: boolean | undefined,
-  color: string,
+  color: string | undefined,
   fontFamily: string,
   fontSize: number  | undefined,
   italic: boolean | undefined,
@@ -14,7 +14,7 @@ export function createTextProperties(fontFamily: string,
                                      underline: boolean | undefined,
                                      bold: boolean | undefined,
                                      italic: boolean | undefined,
-                                     color: string,
+                                     color: string | undefined,
                                      subScript: boolean | undefined,
                                      superScript: boolean | undefined): TextProperties {
   return {
