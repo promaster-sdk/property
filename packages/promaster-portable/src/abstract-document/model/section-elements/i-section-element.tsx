@@ -1,0 +1,2 @@
+export interface ISectionElement {
+}

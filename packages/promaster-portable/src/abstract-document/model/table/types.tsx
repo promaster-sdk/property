@@ -1,5 +1,5 @@
-import {TableCellProperties} from "../properties/types";
-import {ISectionElement} from "../section-elements/types";
+import {ISectionElement} from "../section-elements/i-section-element";
+import {TableCellProperties} from "../properties/table-cell-properties";
 
 export interface TableCell {
   columnSpan: number;

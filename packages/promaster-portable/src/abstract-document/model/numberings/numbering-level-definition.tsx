@@ -1,13 +1,5 @@
-import {TextProperties} from "../properties/types";
 import {NumberingFormat} from "./numbering-format";
-
-export interface Numbering {
-  definitionId: string;
-}
-
-export interface NumberingDefinition {
-  levels: NumberingLevelDefinition[];
-}
+import {TextProperties} from "../properties/text-properties";
 
 export interface NumberingLevelDefinition {
   format: NumberingFormat;
