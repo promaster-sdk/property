@@ -1,7 +1,7 @@
 import {MasterPage} from "./master-page";
-import {ISectionElement} from "../section-elements/i-section-element";
+import {SectionElement} from "../section-elements/section-element";
 
 export interface Section {
-  page: MasterPage;
-  sectionElements: ISectionElement[];
+  page: MasterPage,
+  sectionElements: SectionElement[],
 }

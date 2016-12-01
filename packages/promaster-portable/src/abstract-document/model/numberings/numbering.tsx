@@ -1,3 +1,3 @@
 export interface Numbering {
-  definitionId: string;
+  definitionId: string,
 }

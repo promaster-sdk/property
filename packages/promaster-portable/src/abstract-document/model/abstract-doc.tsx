@@ -9,9 +9,9 @@ export type Indexer<T1, T2> = { readonly [key: string]: T2};
 export type Guid = string;
 
 export interface AbstractDoc {
-  imageResources: Indexer<Guid, ImageResource>[];
-  numberingDefinitions: Indexer<string, NumberingDefinition>[];
-  numberings: Indexer<string, Numbering>[];
-  sections: Section[];
-  styles: Indexer<StyleKey, Style>[];
+  imageResources: Indexer<Guid, ImageResource>[],
+  numberingDefinitions: Indexer<string, NumberingDefinition>[],
+  numberings: Indexer<string, Numbering>[],
+  sections: Section[],
+  styles: Indexer<StyleKey, Style>[],
 }

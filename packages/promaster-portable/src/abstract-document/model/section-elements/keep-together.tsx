@@ -1,5 +1,6 @@
-import {ISectionElement} from "./i-section-element";
+import {SectionElement} from "./section-element";
 
 export interface KeepTogether {
-  sectionElements: ISectionElement[];
+  type: "KeepTogether",
+  sectionElements: SectionElement[],
 }

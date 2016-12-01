@@ -3,6 +3,6 @@ import {ParagraphProperties} from "../properties/paragraph-properties";
 import {Style} from "./style";
 
 export interface ParagraphStyle extends Style {
-  paragraphProperties: ParagraphProperties;
-  textProperties: TextProperties;
+  paragraphProperties: ParagraphProperties,
+  textProperties: TextProperties,
 }

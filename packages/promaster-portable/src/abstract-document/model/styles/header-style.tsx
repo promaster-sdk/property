@@ -1,4 +1,4 @@
 export interface HeaderStyle {
-  fixedHeight: number;
-  marginBottom: number;
+  fixedHeight: number,
+  marginBottom: number,
 }
