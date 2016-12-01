@@ -3,9 +3,12 @@ import {ParagraphPropertiesBuilder} from "./paragraph-properties-builder";
 import {TextPropertiesBuilder} from "./text-properties-builder";
 import {Paragraph, createParagraph} from "../model/section-elements/paragraph";
 import {Atom} from "../model/atoms/atom";
+import {IBuilder} from "./i-builder";
 
-export class ParagraphBuilder //: List<IAtom>, IBuilder<IAtom>
+export class ParagraphBuilder implements IBuilder<Atom> //: List<IAtom>
 {
+  builderType: "ParagraphBuilder" = "ParagraphBuilder";
+  builtType: "Atom" = "Atom";
   styleName: string;
   numbering: ParagraphNumbering;
   private readonly list: Array<Atom> = [];

@@ -2,9 +2,12 @@
 import {TableCellPropertiesBuilder} from "./table-cell-properties-builder";
 import {Table, createTable} from "../model/section-elements/table";
 import {TableRow} from "../model/table/table-row";
+import {IBuilder} from "./i-builder";
 
-export class TableBuilder //: List<TableRow>, IBuilder<TableRow>
+export class TableBuilder implements  IBuilder<TableRow> //: List<TableRow>
 {
+  builderType: "TableBuilder" = "TableBuilder";
+  builtType: "TableRow" = "TableRow";
   columns: number[];
   keepTogether: boolean;
   styleName: string;

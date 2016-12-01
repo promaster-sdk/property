@@ -1,9 +1,12 @@
 ﻿import {TableCell, createTableCell} from "../model/table/table-cell";
 import {TableCellPropertiesBuilder} from "./table-cell-properties-builder";
 import {SectionElement} from "../model/section-elements/section-element";
+import {IBuilder} from "./i-builder";
 
-export class TableCellBuilder //: List<ISectionElement>, IBuilder<ISectionElement>
+export class TableCellBuilder implements IBuilder<SectionElement> //: List<ISectionElement>
 {
+  builderType: "TableCellBuilder" = "TableCellBuilder";
+  builtType: "SectionElement" = "SectionElement";
   styleName: string;
   columnSpan: number;
   readonly tableCellProperties: TableCellPropertiesBuilder = new TableCellPropertiesBuilder();

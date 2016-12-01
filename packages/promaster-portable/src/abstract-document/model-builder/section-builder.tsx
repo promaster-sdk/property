@@ -5,6 +5,8 @@ import {IBuilder} from "./i-builder";
 
 export class SectionBuilder implements IBuilder<SectionElement> //: List<ISectionElement>,
 {
+  builderType: "SectionBuilder" = "SectionBuilder";
+  builtType: "SectionElement" = "SectionElement";
   page: MasterPage;
   private readonly list: Array<SectionElement> = [];
 

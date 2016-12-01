@@ -1,8 +1,11 @@
 ﻿import {TableRow, createTableRow} from "../model/table/table-row";
 import {TableCell} from "../model/table/table-cell";
+import {IBuilder} from "./i-builder";
 
-export class TableRowBuilder //: List<TableCell>, IBuilder<TableCell>
+export class TableRowBuilder implements IBuilder<TableCell> //: List<TableCell>,
 {
+  builderType: "TableRowBuilder" = "TableRowBuilder";
+  builtType: "TableCell" = "TableCell";
   height: number;
   private readonly list: Array<TableCell> = [];
 
