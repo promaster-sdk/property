@@ -1,10 +1,11 @@
-import {Quantity, PropertyFilter, PropertyValue} from "@promaster/promaster-primitives";
+import {Quantity, PropertyValueSet, PropertyFilter, PropertyValue} from "@promaster/promaster-primitives";
 
 export interface ProductProperty {
   readonly sort_no: number;
   readonly name: string;
   readonly quantity: Quantity.Quantity;
   readonly validation_filter: PropertyFilter.PropertyFilter;
+  readonly visibility_filter: PropertyFilter.PropertyFilter;
   readonly value: Array<ProductPropertyValue>;
   readonly def_value: PropertyDefaultValue[];
 }
@@ -17,4 +18,14 @@ export type ProductPropertyValue = {
 
 export type PropertyDefaultValue = {
   readonly value: PropertyValue.PropertyValue,
+}
+
+export interface VariantUrlList {
+    readonly variants: PropertyValueSet.PropertyValueSet;
+    readonly url: string;
+}
+
+export interface ExtendedVariants {
+  variants: VariantUrlList[];
+  pruned: boolean;
 }

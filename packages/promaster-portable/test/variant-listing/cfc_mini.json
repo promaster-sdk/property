@@ -1,0 +1,113 @@
+{
+  "resultCount": 1,
+  "explicitPropertyValueSet": {
+    "surface_finish": {
+      "value": {
+        "type": "integer",
+        "value": 0
+      },
+      "property_filter": {
+        "text": "",
+        "ast": {
+          "type": "EmptyExpr"
+        }
+      },
+      "description": "White (RAL9010, gloss 30%)"
+    }
+  },
+  "variableProperties": [
+    {
+      "sort_no": 9,
+      "name": "surface_finish",
+      "group": "",
+      "validation_filter": {
+        "text": "",
+        "ast": {
+          "type": "EmptyExpr"
+        }
+      },
+      "visibility_filter": {
+        "text": "",
+        "ast": {
+          "type": "EmptyExpr"
+        }
+      },
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 0
+          },
+          "property_filter": {
+            "text": "",
+            "ast": {
+              "type": "EmptyExpr"
+            }
+          },
+          "description": "White (RAL9010, gloss 30%)"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": {
+            "text": "",
+            "ast": {
+              "type": "EmptyExpr"
+            }
+          },
+          "description": "Other RAL colour"
+        }
+      ]
+    },
+    {
+      "sort_no": 10,
+      "name": "ral_colour",
+      "group": "",
+      "validation_filter": {
+        "text": "",
+        "ast": {
+          "type": "EmptyExpr"
+        }
+      },
+      "visibility_filter": {
+        "text": "surface_finish=1",
+        "ast": {
+          "type": "EqualsExpr",
+          "leftValue": {
+            "type": "IdentifierExpr",
+            "name": "surface_finish"
+          },
+          "operationType": "equals",
+          "rightValueRanges": [
+            {
+              "type": "ValueRangeExpr",
+              "min": {
+                "type": "ValueExpr",
+                "unParsed": "1",
+                "parsed": {
+                  "type": "integer",
+                  "value": 1
+                }
+              },
+              "max": {
+                "type": "ValueExpr",
+                "unParsed": "1",
+                "parsed": {
+                  "type": "integer",
+                  "value": 1
+                }
+              }
+            }
+          ]
+        }
+      },
+      "quantity": "Text",
+      "def_value": [],
+      "value": []
+    }
+  ]
+}

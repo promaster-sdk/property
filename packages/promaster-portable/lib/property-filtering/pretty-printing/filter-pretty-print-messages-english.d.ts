@@ -1,9 +1,0 @@
-import { PropertyFilterAst as Ast, PropertyValue } from "@promaster/promaster-primitives";
-export declare function comparisionOperationMessage(op: Ast.ComparisonOperationType, left: string, right: string): string;
-export declare function equalsOperationMessage(op: Ast.EqualsOperationType, left: string, right: string): string;
-export declare function rangeMessage(min: string, max: string): string;
-export declare function andMessage(): string;
-export declare function orMessage(): string;
-export declare function propertyNameMessage(propertyName: string): string;
-export declare function propertyValueMessage(propertyName: string, propertyValue: PropertyValue.PropertyValue): string;
-export declare function nullMessage(): string;
