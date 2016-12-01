@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-portable",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib/index.js",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "node-uuid": "^1.4.7",
-    "@promaster/promaster-primitives": "^0.3.6",
+    "@promaster/promaster-primitives": "^0.3.8",
     "showdown": "^1.5.0"
   },
   "devDependencies": {
