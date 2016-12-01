@@ -1,11 +1,30 @@
-
 export interface TextProperties {
-  bold: boolean,
+  bold: boolean | undefined,
   color: string,
   fontFamily: string,
-  fontSize: number,
-  italic: boolean,
-  subScript: boolean,
-  superScript: boolean,
-  underline: boolean,
+  fontSize: number  | undefined,
+  italic: boolean | undefined,
+  subScript: boolean | undefined,
+  superScript: boolean | undefined,
+  underline: boolean | undefined,
+}
+
+export function createTextProperties(fontFamily: string,
+                                     fontSize: number | undefined,
+                                     underline: boolean | undefined,
+                                     bold: boolean | undefined,
+                                     italic: boolean | undefined,
+                                     color: string,
+                                     subScript: boolean | undefined,
+                                     superScript: boolean | undefined): TextProperties {
+  return {
+    fontFamily,
+    fontSize,
+    underline,
+    bold,
+    italic,
+    color,
+    subScript,
+    superScript,
+  }
 }
