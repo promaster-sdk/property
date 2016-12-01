@@ -52,20 +52,20 @@ export class DocumentBuilder implements DocumentBuilder {
 
   constructor() {
     this.AddDefaultStyles();
-    this.AddStandardStyles();
+    this.addStandardStyles();
   }
 
   // #region IDocumentBuilder Members
 
-  public Build(): AbstractDoc {
+  build(): AbstractDoc {
     return createAbstractDoc(this._sections, this._imageResources, this._styles, this._numberings, this._numberingDefinitions);
   }
 
-  // public GetLocalName(reportType: string, name: string): string {
+  // GetLocalName(reportType: string, name: string): string {
   //   return reportType + "_" + name;
   // }
 
-  public SetStyleName(name: string, style: Style): void {
+  setStyleName(name: string, style: Style): void {
     const key = createStyleKey(style.type, name);
     // if (this._styles.ContainsKey(key))
     this._styles[key] = style;
@@ -73,29 +73,29 @@ export class DocumentBuilder implements DocumentBuilder {
     //   this._styles.Add(key, style);
   }
 
-  public AddImageResource(id: Guid, abstractImage: AbstractImage, renderScale: number): void {
+  addImageResource(id: Guid, abstractImage: AbstractImage, renderScale: number): void {
     this._imageResources[id] = createImageResource(id, abstractImage, renderScale);
   }
 
-  public SetNumbering(numberingId: string, numbering: Numbering): void {
+  setNumbering(numberingId: string, numbering: Numbering): void {
     this._numberings[numberingId] = numbering;
   }
 
-  public SetNumberingDefinition(numberingDefinitionId: string, definition: NumberingDefinition): void {
+  setNumberingDefinition(numberingDefinitionId: string, definition: NumberingDefinition): void {
     this._numberingDefinitions[numberingDefinitionId] = definition;
   }
 
-  public BeginSection(page: MasterPage): void {
+  beginSection(page: MasterPage): void {
     if (this._stack.length > 0)
       throw new Error("Sections can only be root elements");
     this._stack.push(new SectionBuilder(page));
   }
 
-  public EndSection(): void {
+  endSection(): void {
     this._sections.push(this.pop<SectionBuilder>("SectionBuilder", undefined).build());
   }
 
-  public BeginTable(columns: number[], keepTogether: boolean): TableBuilder {
+  beginTable(columns: number[], keepTogether: boolean): TableBuilder {
     const builder = new TableBuilder();
     builder.columns = columns;
     builder.keepTogether = keepTogether;
@@ -103,7 +103,7 @@ export class DocumentBuilder implements DocumentBuilder {
     return builder;
   }
 
-  public EndTable(): void {
+  endTable(): void {
     const tableBuilder = this.pop<TableBuilder>("TableBuilder", undefined);
     const paragraphBuilder = this.peek<IBuilder<SectionElement>>(undefined, "SectionElement");
     if (tableBuilder.keepTogether) {
@@ -118,18 +118,18 @@ export class DocumentBuilder implements DocumentBuilder {
     }
   }
 
-  public BeginTableRow(height: number): void {
+  beginTableRow(height: number): void {
     this.peek<TableBuilder>("TableBuilder", undefined);
     this._stack.push(new TableRowBuilder(height));
   }
 
-  public EndTableRow(): void {
+  endTableRow(): void {
     const rowBuilder = this.pop<TableRowBuilder>("TableRowBuilder", undefined);
     const tableBuilder = this.peek<TableBuilder>("TableBuilder", undefined);
     tableBuilder.add(rowBuilder.build());
   }
 
-  public BeginTableCell(columnSpan: number): TableCellBuilder {
+  beginTableCell(columnSpan: number): TableCellBuilder {
     this.peek<TableRowBuilder>("TableRowBuilder", undefined);
     const builder = new TableCellBuilder();
     builder.columnSpan = columnSpan;
@@ -137,31 +137,31 @@ export class DocumentBuilder implements DocumentBuilder {
     return builder;
   }
 
-  public EndTableCell(): void {
+  endTableCell(): void {
     const cellBuilder = this.pop<TableCellBuilder>("TableCellBuilder", undefined);
     const rowBuilder = this.peek<TableRowBuilder>("TableRowBuilder", undefined);
     rowBuilder.add(cellBuilder.build());
   }
 
-  public BeginKeepTogether(): void {
+  beginKeepTogether(): void {
     this.peek<IBuilder<SectionElement>>(undefined, "SectionElement");
     this._stack.push(new KeepTogetherBuilder());
   }
 
-  public EndKeepTogether(): void {
+  endKeepTogether(): void {
     const keepTogetherBuilder = this.pop<KeepTogetherBuilder>("KeepTogetherBuilder", undefined);
     const sectionElementContainer = this.peek<IBuilder<SectionElement>>(undefined, "SectionElement");
     sectionElementContainer.add(keepTogetherBuilder.build());
   }
 
-  public BeginParagraph(): ParagraphBuilder {
+  beginParagraph(): ParagraphBuilder {
     this.peek<IBuilder<SectionElement>>(undefined, "SectionElement");
     const builder = new ParagraphBuilder();
     this._stack.push(builder);
     return builder;
   }
 
-  BeginParagraph2(styleBasedOn: string): ParagraphBuilder {
+  beginParagraph2(styleBasedOn: string): ParagraphBuilder {
     this.peek<IBuilder<SectionElement>>(undefined, "SectionElement");
     const builder = new ParagraphBuilder();
     builder.styleName = styleBasedOn;
@@ -169,39 +169,39 @@ export class DocumentBuilder implements DocumentBuilder {
     return builder;
   }
 
-  EndParagraph(): void {
+  endParagraph(): void {
     const paragraphBuilder = this.pop<ParagraphBuilder>("ParagraphBuilder", undefined);
     const paragraphContainer = this.peek<IBuilder<SectionElement>>(undefined, "SectionElement");
     paragraphContainer.add(paragraphBuilder.build());
   }
 
-  InsertImage(imageResourceId: Guid, width: number, height: number): void {
+  insertImage(imageResourceId: Guid, width: number, height: number): void {
     if (!this._imageResources[imageResourceId])
       throw new Error(`Tried to add a reference to image resouce but that resource dose not exist (id=${imageResourceId}).`);
     const itemContainer = this.peek<IBuilder<Atom>>(undefined, "Atom");
     itemContainer.add(createImage(this._imageResources[imageResourceId], width, height));
   }
 
-  InsertImageWithResource(imageResourceId: Guid, abstractImage: AbstractImage, width: number,
+  insertImageWithResource(imageResourceId: Guid, abstractImage: AbstractImage, width: number,
                           height: number, renderScale: number = 1.0): void {
-    this.AddImageResource(imageResourceId, abstractImage, renderScale);
-    this.InsertImage(imageResourceId, width, height);
+    this.addImageResource(imageResourceId, abstractImage, renderScale);
+    this.insertImage(imageResourceId, width, height);
   }
 
-  InsertTextRun(text: string): void {
+  insertTextRun(text: string): void {
     const paragraphBuilder = this.peek<ParagraphBuilder>("ParagraphBuilder", undefined);
     const p = paragraphBuilder.build();
     const textProps = getEffectiveTextProperties(this._styles, p);
-    this.InsertTextRun2(text, textProps);
+    this.insertTextRun2(text, textProps);
   }
 
-  InsertTextRun2(text: string, textProperties: TextProperties): void {
+  insertTextRun2(text: string, textProperties: TextProperties): void {
     const itemContainer = this.peek<IBuilder<Atom>>(undefined, "Atom");
     const textRun = createTextRun(text, undefined, textProperties);
     itemContainer.add(textRun);
   }
 
-  InsertTextRun3(text: string, styleName: string): void {
+  insertTextRun3(text: string, styleName: string): void {
     const itemContainer = this.peek<IBuilder<Atom>>(undefined, "Atom");
     const builder = new TextRunBuilder();
     builder.text = text;
@@ -210,13 +210,13 @@ export class DocumentBuilder implements DocumentBuilder {
     itemContainer.add(builder.build());
   }
 
-  public InsertField(type: FieldType, textProperties: TextProperties): void {
+  insertField(type: FieldType, textProperties: TextProperties): void {
     const style = createTextStyle(undefined, textProperties);
     const itemContainer = this.peek<IBuilder<Atom>>(undefined, "Atom");
     itemContainer.add(createTextField(type, style));
   }
 
-  public InsertField2(type: FieldType, styleName: string): void {
+  insertField2(type: FieldType, styleName: string): void {
     const itemContainer = this.peek<IBuilder<Atom>>(undefined, "Atom");
     const builder = new TextFieldBuilder();
     builder.textStyle.basedOn = styleName;
@@ -264,7 +264,7 @@ export class DocumentBuilder implements DocumentBuilder {
     //  Alignment = TextAlignment.Start
     //}).Build());
 
-    this.AddStyle(
+    this.addStyle(
       "Default", createParagraphStyle(
         undefined,
         createParagraphProperties(
@@ -283,7 +283,7 @@ export class DocumentBuilder implements DocumentBuilder {
         )));
 
     // Default style need to have all properties set to a value (NULL is now allowed)
-    this.AddStyle("Default", createTextStyle(undefined, createTextProperties(
+    this.addStyle("Default", createTextStyle(undefined, createTextProperties(
       "Lucida Grande/Lucida Sans Unicode",
       10,
       false,
@@ -302,7 +302,7 @@ export class DocumentBuilder implements DocumentBuilder {
     );
 
     // Default style need to have all properties set to a value (NULL is now allowed)
-    this.AddStyle("Default", createTableCellStyle(
+    this.addStyle("Default", createTableCellStyle(
       undefined,
       createTableCellProperties(
         createLayoutFoundation<number | undefined>(0, 0, 0, 0),
@@ -311,27 +311,27 @@ export class DocumentBuilder implements DocumentBuilder {
     ));
   }
 
-  private  AddStandardStyles(): void {
-    this.AddTextAndParagraphStyle("Heading1", true, 12);
-    this.AddTextAndParagraphStyle("Heading2", true, 10);
-    this.AddTextAndParagraphStyle("HeaderHeading", true, undefined, "Center");
+  private  addStandardStyles(): void {
+    this.addTextAndParagraphStyle("Heading1", true, 12);
+    this.addTextAndParagraphStyle("Heading2", true, 10);
+    this.addTextAndParagraphStyle("HeaderHeading", true, undefined, "Center");
   }
 
-  private AddTextAndParagraphStyle(styleName: string, bold: boolean, fontSize: number | undefined,
+  private addTextAndParagraphStyle(styleName: string, bold: boolean, fontSize: number | undefined,
                                    alignment: TextAlignment | undefined = undefined): void {
     const heading1TextStyle = new TextStyleBuilder();
     heading1TextStyle.textProperties.bold = bold;
     heading1TextStyle.textProperties.fontSize = fontSize;
-    this.AddStyle(styleName, heading1TextStyle.build());
+    this.addStyle(styleName, heading1TextStyle.build());
 
     const heading1ParaStyle = new ParagraphStyleBuilder();
     heading1ParaStyle.textProperties.bold = bold;
     heading1ParaStyle.textProperties.fontSize = fontSize;
     heading1ParaStyle.paragraphProperties.alignment = alignment;
-    this.AddStyle(styleName, heading1ParaStyle.build());
+    this.addStyle(styleName, heading1ParaStyle.build());
   }
 
-  private AddStyle<TStyle extends Style>(name: string, style: TStyle): void {
+  private addStyle<TStyle extends Style>(name: string, style: TStyle): void {
     this._styles[createStyleKey(style.type, name)] = style;
   }
 
