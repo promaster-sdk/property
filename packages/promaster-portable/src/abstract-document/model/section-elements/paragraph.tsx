@@ -3,8 +3,9 @@ import {ParagraphProperties} from "../properties/paragraph-properties";
 import {Atom} from "../atoms/atom";
 import {ParagraphNumbering} from "./paragraph-numbering";
 import {StyleKey} from "../styles/style-key";
-import {Style, GetEffectiveStyle2} from "../styles/style";
+import {Style, getEffectiveStyle2} from "../styles/style";
 import {ParagraphStyle, createParagraphStyle} from "../styles/paragraph-style";
+import {Indexer} from "../abstract-doc";
 
 export interface Paragraph {
   type: "Paragraph",
@@ -27,18 +28,18 @@ export function createParagraph(styleName: string, paragraphProperties: Paragrap
   };
 }
 
-export function getEffectiveParagraphProperties(styles: Map<StyleKey, Style>, p:Paragraph): ParagraphProperties {
+export function getEffectiveParagraphProperties(styles: Indexer<StyleKey, Style>, p:Paragraph): ParagraphProperties {
   const effectiveStyle = getEffectiveStyle(styles, p);
   return effectiveStyle.paragraphProperties;
 }
 
-export function getEffectiveTextProperties(styles: Map<StyleKey, Style>, p:Paragraph): TextProperties {
+export function getEffectiveTextProperties(styles: Indexer<StyleKey, Style>, p:Paragraph): TextProperties {
   const effectiveStyle = getEffectiveStyle(styles, p);
   return effectiveStyle.textProperties;
 }
 
-function getEffectiveStyle(styles: Map<StyleKey, Style>, p:Paragraph): ParagraphStyle {
+function getEffectiveStyle(styles: Indexer<StyleKey, Style>, p:Paragraph): ParagraphStyle {
   const localStyle = createParagraphStyle(p.styleName, p.paragraphProperties, p.textProperties);
-  const effectiveStyle = GetEffectiveStyle2<ParagraphStyle>(styles, localStyle);
+  const effectiveStyle = getEffectiveStyle2<ParagraphStyle>(styles, localStyle);
   return effectiveStyle;
 }

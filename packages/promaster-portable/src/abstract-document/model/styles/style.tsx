@@ -1,4 +1,5 @@
 import {StyleKey} from "./style-key";
+import {Indexer} from "../abstract-doc";
 
 export interface Style {
   type: string,
@@ -6,7 +7,7 @@ export interface Style {
 }
 
 
-export function GetEffectiveStyle2<TStyle extends Style>(styles: Map<StyleKey, Style>, style: Style): TStyle {
+export function getEffectiveStyle2<TStyle extends Style>(styles: Indexer<StyleKey, Style>, style: Style): TStyle {
   throw new Error(`TODO!! ${styles} ${style}`);
   /*
    const styleType = style.type;

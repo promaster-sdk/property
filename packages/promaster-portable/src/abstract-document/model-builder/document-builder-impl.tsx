@@ -22,7 +22,7 @@ import {TextStyleBuilder} from "./text-style-builder";
 import {ParagraphStyleBuilder} from "./paragraph-style-builder";
 import {fromTwips} from "../model/primitives/abstract-length";
 import {createParagraphStyle} from "../model/styles/paragraph-style";
-import {createTableStyle, TableStyle} from "../model/styles/table-style";
+import {createTableStyle} from "../model/styles/table-style";
 import {createTableCellProperties} from "../model/properties/table-cell-properties";
 import {createLayoutFoundation} from "../model/primitives/layout-foundation";
 import {createParagraphProperties} from "../model/properties/paragraph-properties";
@@ -66,7 +66,7 @@ export class DocumentBuilder implements DocumentBuilder {
   // }
 
   public SetStyleName(name: string, style: Style): void {
-    const key = createStyleKey(style.GetType(), name);
+    const key = createStyleKey(style.type, name);
     // if (this._styles.ContainsKey(key))
     this._styles[key] = style;
     // else
