@@ -4,7 +4,7 @@ import * as PromasterPrimitives from "@promaster/promaster-primitives";
 import {readFileSync} from "fs";
 import * as Path from "path";
 
-describe.only("buildAllPropertyValueSets", () => {
+describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {
     const cfcData = JSON.parse(readFileSync(Path.join(__dirname, "./cfc.json")).toString());
     const sets = buildAllPropertyValueSetsExtended(cfcData.explicitPropertyValueSet, cfcData.variableProperties, cfcData.variableProperties, -1);

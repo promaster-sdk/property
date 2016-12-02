@@ -1,15 +1,15 @@
 import {ShowdownExtension} from "showdown";
 
-export function myext(): ShowdownExtension[] {
+export function supsub(): ShowdownExtension[] {
   const superscript = {
-    type: 'superscript',
-    regex: /olle/g,
-    replace: 'hejhej'
+    type: 'lang',
+    regex: /\^([^\r]*)\^/g,
+    replace: '<sup>$1</sup>'
   };
   const subscript = {
-    type: 'subscript',
-    regex: /kalle/g,
-    replace: 'hello'
+    type: 'lang',
+    regex: /~T([^\r]*)~T/g,
+    replace: '<sub>$1</sub>'
   };
   return [superscript, subscript];
 }

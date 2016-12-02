@@ -1,0 +1,27 @@
+"use strict";
+exports.WordNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+exports.WordPrefix = "w";
+exports.VmlNamespace = "urn:schemas-microsoft-com:vml";
+exports.VmlPrefix = "v";
+exports.OfficeNamespace = "urn:schemas-microsoft-com:office:office";
+exports.OfficePrefix = "o";
+exports.HeadRelXml = "<?xml version=\'1.0\' encoding=\'utf-8\'?><Relationships xmlns=\'http://schemas.openxmlformats.org/package/2006/relationships\'><Relationship Type=\'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\' Target=\'/word/document.xml\' Id=\'Rac2f7d58837f4830\'/></Relationships>";
+exports.RelNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+exports.RelPrefix = "r";
+exports.PointOoXmlFactor = 20;
+exports.ImageStyle = "width:{0}pt;height:{1}pt;mso-position-horizontal-relative:char;mso-position-vertical-relative:line;v-text-anchor:middle";
+exports.ContentTypeNamespace = "http://schemas.openxmlformats.org/package/2006/content-types";
+exports.HeaderNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header";
+exports.ImageNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image";
+exports.RelationNamespace = "http://schemas.openxmlformats.org/package/2006/relationships";
+exports.NumberingNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
+exports.DocumentPath = "word\\";
+exports.RefPath = "_rels\\";
+exports.ImagePath = "media\\";
+exports.ContentTypesPath = "";
+exports.NumberingPath = "word\\";
+exports.HeaderContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml";
+exports.MainContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml";
+exports.RelationContentType = "application/vnd.openxmlformats-package.relationships+xml";
+exports.NumberingContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml";
+//# sourceMappingURL=docx-constants.js.map

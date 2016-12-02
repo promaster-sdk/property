@@ -1,8 +1,8 @@
 import {Converter, extension} from "showdown";
-import {myext} from "./extension";
+import {supsub} from "./extension";
 
 export function makeHtml(text: string) {
-  const converter = new Converter();
-  extension('myext', myext);
+  extension('subsup', supsub);
+  const converter = new Converter({extensions: ['subsup']});
   return converter.makeHtml(text);
 }
