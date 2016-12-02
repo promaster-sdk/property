@@ -1,6 +1,5 @@
 import {AbstractDoc} from "../../abstract-document/model/abstract-doc";
 import {DocumentContainer} from "./document-container";
-import {XmlWriter} from "./xml-container";
 import * as Table from "../../abstract-document/model/section-elements/table";
 import * as Paragraph from "../../abstract-document/model/section-elements/paragraph";
 import * as DocxConstants from "./docx-constants";
@@ -19,6 +18,21 @@ import {TextAlignment} from "../../abstract-document/model/enums/text-alignment"
 import {NumberingFormat} from "../../abstract-document/model/numberings/numbering-format";
 import {AbstractImage} from "../../abstract-image/abstract-image";
 import * as Color from "../../abstract-image/color";
+
+export interface XmlWriter {
+  WriteStartDocument(standalone?: boolean): void,
+  WriteComment(text: string): void,
+  WriteStartElement(localName: string, ns: string): void,
+  WriteStartElement(prefix: string, localName: string, ns: string): void,
+  WriteEndElement(): void,
+  Flush(): void,
+  WriteAttributeString(prefix: string, localName: string, ns: string, value: string): void,
+  WriteAttributeString(localName: string, ns: string, value: string): void,
+  WriteString(text: string): void,
+  WriteElementString(prefix: string, localName: string, ns: string, value: string): void,
+  WriteAttributeString(localName: string, value: string): void,
+  WriteStartElement(localName: string): void,
+}
 
 export interface IZipService {
   CreateZipFile(zipFiles: Map<string, Uint8Array>): Uint8Array,

@@ -1,13 +1,12 @@
 ﻿//En basklass som kapslar in information om en xmlström. De andra
 //container-klasserna ärver ifrån denna
 
-export type MemoryStream = any;
-export type XmlWriter = any;
+import {XmlWriter} from "./docx-document-renderer";
 
 export class XMLContainer {
 
   private m_XMLWriter: XmlWriter;
-  private m_MemStream: MemoryStream;
+  private m_MemStream: any; //MemoryStream;
 
 /*
   get  MemStream(): MemoryStream {
