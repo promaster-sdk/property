@@ -97,8 +97,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       for (const key of Object.keys(abstractDoc.numberingDefinitions)) {
         const numDef = abstractDoc.numberingDefinitions[key];
         numberingDoc.XMLWriter.WriteStartElement("abstractNum", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "abstractNumId", DocxConstants.WordNamespace,
-          wordNumberingDefinitionId.toString());
+        numberingDoc.XMLWriter.WriteAttributeString("abstractNumId", wordNumberingDefinitionId.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
 
         // <w:lvl>
         for (const numDefLevel of numDef.levels) {
@@ -112,30 +111,26 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
           //  </w:pPr>
           //</w:lvl>
           numberingDoc.XMLWriter.WriteStartElement("lvl", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "ilvl", DocxConstants.WordNamespace,
-            numDefLevel.level.toString());
+          numberingDoc.XMLWriter.WriteAttributeString("ilvl", numDefLevel.level.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
           numberingDoc.XMLWriter.WriteStartElement("start", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace,
-            numDefLevel.start.toString());
+          numberingDoc.XMLWriter.WriteAttributeString("val", numDefLevel.start.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
           numberingDoc.XMLWriter.WriteEndElement();
           const numFmt = DocxDocumentRenderer.ConvertNumFormat(numDefLevel.format);
           numberingDoc.XMLWriter.WriteStartElement("numFmt", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace,
-            numFmt);
+          numberingDoc.XMLWriter.WriteAttributeString("val", numFmt, DocxConstants.WordNamespace, DocxConstants.WordPrefix);
           numberingDoc.XMLWriter.WriteEndElement();
           numberingDoc.XMLWriter.WriteStartElement("lvlText", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace, numDefLevel.levelText);
+          numberingDoc.XMLWriter.WriteAttributeString("val", numDefLevel.levelText, DocxConstants.WordNamespace, DocxConstants.WordPrefix);
           numberingDoc.XMLWriter.WriteEndElement();
 
           numberingDoc.XMLWriter.WriteStartElement("lvlJc", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace, "left");
+          numberingDoc.XMLWriter.WriteAttributeString("val", "left", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
           numberingDoc.XMLWriter.WriteEndElement();
 
           numberingDoc.XMLWriter.WriteStartElement("pPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
           numberingDoc.XMLWriter.WriteStartElement("ind", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "left", DocxConstants.WordNamespace,
-            numDefLevel.levelIndention.twips.toString());
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "hanging", DocxConstants.WordNamespace, "800");
+          numberingDoc.XMLWriter.WriteAttributeString("left", numDefLevel.levelIndention.twips.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+          numberingDoc.XMLWriter.WriteAttributeString("hanging", "800", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
           numberingDoc.XMLWriter.WriteEndElement();
           numberingDoc.XMLWriter.WriteEndElement();
 
@@ -163,12 +158,10 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       for (const key of Object.keys(abstractDoc.numberings)) {
         const value = abstractDoc.numberings[key];
         numberingDoc.XMLWriter.WriteStartElement("num", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "numId", DocxConstants.WordNamespace,
-          wordNumberingId.toString());
+        numberingDoc.XMLWriter.WriteAttributeString("numId", wordNumberingId.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
         numberingDoc.XMLWriter.WriteStartElement("abstractNumId", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
         const wordDefinitionId = this._numberingDefinitionIdTranslation.get(value.definitionId) as number;
-        numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace,
-          wordDefinitionId.toString());
+        numberingDoc.XMLWriter.WriteAttributeString("val", wordDefinitionId.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
         numberingDoc.XMLWriter.WriteEndElement();
         numberingDoc.XMLWriter.WriteEndElement();
         this._numberingIdTranslation.set(key, wordNumberingId++);
@@ -436,33 +429,27 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("sectPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("footnotePr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("pos", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace, "beneathText");
+    xmlWriter.WriteAttributeString("val", "beneathText", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     if (lastHeader != null) {
       xmlWriter.WriteStartElement("headerReference", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-      xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "type", DocxConstants.WordNamespace, "default");
-      xmlWriter.WriteAttributeString("id", DocxConstants.RelNamespace, lastHeader.refId);
+      xmlWriter.WriteAttributeString("type", "default", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+      xmlWriter.WriteAttributeString("id", lastHeader.refId, DocxConstants.RelNamespace);
       xmlWriter.WriteEndElement();
     }
     xmlWriter.WriteStartElement("pgSz", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "w", DocxConstants.WordNamespace,
-      (ps.style.width * DocxConstants.PointOoXmlFactor).toString());
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "h", DocxConstants.WordNamespace,
-      (ps.style.height * DocxConstants.PointOoXmlFactor).toString());
+    xmlWriter.WriteAttributeString("w", (ps.style.width * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("h", (ps.style.height * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     if (ps.style.orientation == "Landscape")
-      xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "orient", DocxConstants.WordNamespace, "landscape");
+      xmlWriter.WriteAttributeString("orient", "landscape", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("pgMar", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "top", DocxConstants.WordNamespace,
-      ((ps.style.margins.top * DocxConstants.PointOoXmlFactor)).toString());
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "bottom", DocxConstants.WordNamespace,
-      ((ps.style.margins.bottom * DocxConstants.PointOoXmlFactor)).toString());
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "left", DocxConstants.WordNamespace,
-      ((ps.style.margins.left * DocxConstants.PointOoXmlFactor)).toString());
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "right", DocxConstants.WordNamespace,
-      ((ps.style.margins.right * DocxConstants.PointOoXmlFactor)).toString());
-    xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "footer", DocxConstants.WordNamespace, "100");
+    xmlWriter.WriteAttributeString("top", ((ps.style.margins.top * DocxConstants.PointOoXmlFactor)).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("bottom", ((ps.style.margins.bottom * DocxConstants.PointOoXmlFactor)).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("left", ((ps.style.margins.left * DocxConstants.PointOoXmlFactor)).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("right", ((ps.style.margins.right * DocxConstants.PointOoXmlFactor)).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("footer", "100", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
   }
@@ -474,13 +461,13 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
     DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement("fldChar", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("fldCharType", DocxConstants.WordNamespace, "begin");
+    xmlWriter.WriteAttributeString("fldCharType", "begin", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement("instrText", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("xml", "space", "", "preserve");
+    xmlWriter.WriteAttributeString("space", "preserve", "", "xml");
     xmlWriter.WriteString(" DATE \\@YYYY/MM/DD ");
     //var fcText = new TextRun("{ DATE \\@YYYY/MM/DD }", tf.GetEffectiveStyle(doc.Styles));
     const fcText = TextRun.createTextRun("{ DATE \\@YYYY/MM/DD }", undefined, TextField.getEffectiveStyle(doc.styles, tf).textProperties);
@@ -490,7 +477,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement("fldChar", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("fldCharType", DocxConstants.WordNamespace, "separate");
+    xmlWriter.WriteAttributeString("fldCharType", "separate", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     const effectiveStyle = TextField.getEffectiveStyle(doc.styles, tf);
@@ -498,7 +485,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement("fldChar", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("fldCharType", DocxConstants.WordNamespace, "end");
+    xmlWriter.WriteAttributeString("fldCharType", "end", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
   }
@@ -534,7 +521,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
 
     xmlWriter.WriteStartElement("t", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("xml", "space", "", "preserve");
+    xmlWriter.WriteAttributeString("space", "preserve", "", "xml");
     xmlWriter.WriteString(text);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
@@ -569,22 +556,22 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("p", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("pPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("wordWrap", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "on");
+    xmlWriter.WriteAttributeString("val", "on", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
 
     xmlWriter.WriteStartElement("spacing", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("before", DocxConstants.WordNamespace, effectiveParaProps.spacingBefore.twips().toString());
-    xmlWriter.WriteAttributeString("after", DocxConstants.WordNamespace, effectiveParaProps.spacingAfter.twips().toString());
+    xmlWriter.WriteAttributeString("before", effectiveParaProps.spacingBefore.twips().toString(), DocxConstants.WordNamespace);
+    xmlWriter.WriteAttributeString("after", effectiveParaProps.spacingAfter.twips().toString(), DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
 
     if (para.numbering != null) {
       xmlWriter.WriteStartElement("numPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
       xmlWriter.WriteStartElement("ilvl", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, para.numbering.level.toString());
+      xmlWriter.WriteAttributeString("val", para.numbering.level.toString(), DocxConstants.WordNamespace);
       xmlWriter.WriteEndElement();
       xmlWriter.WriteStartElement("numId", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
       const wordNumberingId = this.GetWordNumberingId(para.numbering.numberingId);
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, wordNumberingId.toString());
+      xmlWriter.WriteAttributeString("val", wordNumberingId.toString(), DocxConstants.WordNamespace);
       xmlWriter.WriteEndElement();
       xmlWriter.WriteEndElement();
     }
@@ -609,7 +596,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("p", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("pPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("spacing", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("after", DocxConstants.WordNamespace, "0");
+    xmlWriter.WriteAttributeString("after", "0", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
@@ -624,19 +611,18 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("tbl", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("tblPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("tblW", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, "0");
-    xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "auto");
+    xmlWriter.WriteAttributeString("w", "0", DocxConstants.WordNamespace);
+    xmlWriter.WriteAttributeString("type", "auto", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("tblLayout", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "fixed");
+    xmlWriter.WriteAttributeString("type", "fixed", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
 
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("tblGrid", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     for (const w of tPara.columnWidths) {
       xmlWriter.WriteStartElement("gridCol", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-      xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace,
-        ((w * DocxConstants.PointOoXmlFactor)).toString());
+      xmlWriter.WriteAttributeString("w", ((w * DocxConstants.PointOoXmlFactor)).toString(), DocxConstants.WordNamespace);
       xmlWriter.WriteEndElement();
     }
     xmlWriter.WriteEndElement();
@@ -647,9 +633,8 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
       if (!isNaN(tPara.rows[r].height)) {
         xmlWriter.WriteStartElement("trHeight", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-          ((tPara.rows[r].height * DocxConstants.PointOoXmlFactor)).toString());
-        xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "atLeast");
+        xmlWriter.WriteAttributeString("val", ((tPara.rows[r].height * DocxConstants.PointOoXmlFactor)).toString(), DocxConstants.WordNamespace);
+        xmlWriter.WriteAttributeString("type", "atLeast", DocxConstants.WordNamespace);
         xmlWriter.WriteEndElement();
       }
       xmlWriter.WriteStartElement("cantSplit", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -681,17 +666,14 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
         xmlWriter.WriteStartElement("tcPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
         if (effectiveCellProps.background && effectiveCellProps.background.a > 0) {
           xmlWriter.WriteStartElement("shd", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-          xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "clear");
-          xmlWriter.WriteAttributeString("color", DocxConstants.WordNamespace, "auto");
-          xmlWriter.WriteAttributeString("fill", DocxConstants.WordNamespace,
-            Color.toString6Hex(effectiveCellProps.background)
-          );
+          xmlWriter.WriteAttributeString("val", "clear", DocxConstants.WordNamespace);
+          xmlWriter.WriteAttributeString("color", "auto", DocxConstants.WordNamespace);
+          xmlWriter.WriteAttributeString("fill", Color.toString6Hex(effectiveCellProps.background), DocxConstants.WordNamespace);
           xmlWriter.WriteEndElement();
         }
 
         xmlWriter.WriteStartElement("gridSpan", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-          ptc.columnSpan.toString());
+        xmlWriter.WriteAttributeString("val", ptc.columnSpan.toString(), DocxConstants.WordNamespace);
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement("tcBorders", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
         if (effectiveCellProps.borders.bottom || 0 > 0)
@@ -720,21 +702,20 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
           mRight = effectiveCellProps.padding.right;
 
         xmlWriter.WriteStartElement("top", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mTop.toString());
-        xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
+        xmlWriter.WriteAttributeString("w", mTop.toString(), DocxConstants.WordNamespace);
+        xmlWriter.WriteAttributeString("type", "dxa", DocxConstants.WordNamespace);
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement("bottom", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace,
-          mBottom.toString());
-        xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
+        xmlWriter.WriteAttributeString("w", mBottom.toString(), DocxConstants.WordNamespace);
+        xmlWriter.WriteAttributeString("type", "dxa", DocxConstants.WordNamespace);
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement("right", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mRight.toString());
-        xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
+        xmlWriter.WriteAttributeString("w", mRight.toString(), DocxConstants.WordNamespace);
+        xmlWriter.WriteAttributeString("type", "dxa", DocxConstants.WordNamespace);
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement("left", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mLeft.toString());
-        xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
+        xmlWriter.WriteAttributeString("w", mLeft.toString(), DocxConstants.WordNamespace);
+        xmlWriter.WriteAttributeString("type", "dxa", DocxConstants.WordNamespace);
         xmlWriter.WriteEndElement();
         xmlWriter.WriteEndElement();
         xmlWriter.WriteEndElement();
@@ -786,24 +767,23 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   private static AddBordersToCell(xmlWriter: XmlWriter, borderdef: number, borderLocation: string): void {
     xmlWriter.WriteStartElement(borderLocation, DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "single");
-    xmlWriter.WriteAttributeString("sz", DocxConstants.WordNamespace,
-      (borderdef * DocxConstants.PointOoXmlFactor).toString());
-    xmlWriter.WriteAttributeString("space", DocxConstants.WordNamespace, "0");
-    xmlWriter.WriteAttributeString("color", DocxConstants.WordNamespace, "000000");
+    xmlWriter.WriteAttributeString("val", "single", DocxConstants.WordNamespace);
+    xmlWriter.WriteAttributeString("sz", (borderdef * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace);
+    xmlWriter.WriteAttributeString("space", "0", DocxConstants.WordNamespace);
+    xmlWriter.WriteAttributeString("color", "000000", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
   }
 
   private static InsertJc(xmlWriter: XmlWriter, ta: TextAlignment | undefined): void {
     xmlWriter.WriteStartElement("jc", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     if (ta == "Center")
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "center");
+      xmlWriter.WriteAttributeString("val", "center", DocxConstants.WordNamespace);
     else if (ta == "Start")
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "left");
+      xmlWriter.WriteAttributeString("val", "left", DocxConstants.WordNamespace);
     else if (ta == "End")
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "right");
+      xmlWriter.WriteAttributeString("val", "right", DocxConstants.WordNamespace);
     else
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "left");
+      xmlWriter.WriteAttributeString("val", "left", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement(); //jc
   }
 
@@ -811,29 +791,25 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("rPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     if (textProperties.subScript || textProperties.superScript) {
       xmlWriter.WriteStartElement("vertAlign", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-        textProperties.subScript ? "subscript" : "superscript");
+      xmlWriter.WriteAttributeString("val", textProperties.subScript ? "subscript" : "superscript", DocxConstants.WordNamespace);
       xmlWriter.WriteEndElement();
     }
 
     xmlWriter.WriteStartElement("rFonts", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("ascii", DocxConstants.WordNamespace, "Arial");
-    xmlWriter.WriteAttributeString("hAnsi", DocxConstants.WordNamespace, "Arial");
+    xmlWriter.WriteAttributeString("ascii", "Arial", DocxConstants.WordNamespace);
+    xmlWriter.WriteAttributeString("hAnsi", "Arial", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("sz", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-      ((((textProperties.fontSize) + 0.5)) * 2).toString());
+    xmlWriter.WriteAttributeString("val", ((((textProperties.fontSize) + 0.5)) * 2).toString(), DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("szCs", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-      ((((textProperties.fontSize) + 0.5)) * 2).toString());
+    xmlWriter.WriteAttributeString("val", ((((textProperties.fontSize) + 0.5)) * 2).toString(), DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("color", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-      textProperties.color != null ? textProperties.color.replace("#", "").substring(2, 6) : "000000");
+    xmlWriter.WriteAttributeString("val", textProperties.color != null ? textProperties.color.replace("#", "").substring(2, 6) : "000000", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("noProof", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "true");
+    xmlWriter.WriteAttributeString("val", "true", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     if (textProperties.bold) {
       xmlWriter.WriteElementString(DocxConstants.WordPrefix, "b", DocxConstants.WordNamespace, "");
@@ -845,12 +821,12 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     }
     if (textProperties.underline) {
       xmlWriter.WriteStartElement("u", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "single");
+      xmlWriter.WriteAttributeString("val", "single", DocxConstants.WordNamespace);
       xmlWriter.WriteEndElement();
     }
 
     xmlWriter.WriteStartElement("lang", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("eastAsia", DocxConstants.WordNamespace, "en-US");
+    xmlWriter.WriteAttributeString("eastAsia", "en-US", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
   }
@@ -859,8 +835,8 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteStartElement("pict", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("shapetype", DocxConstants.VmlNamespace, DocxConstants.VmlPrefix);
     xmlWriter.WriteAttributeString("coordsize", "21600,21600");
-    xmlWriter.WriteAttributeString(DocxConstants.OfficePrefix, "spt", DocxConstants.OfficeNamespace, "75");
-    xmlWriter.WriteAttributeString(DocxConstants.OfficePrefix, "preferrelative", DocxConstants.OfficeNamespace, "t");
+    xmlWriter.WriteAttributeString("spt", "75", DocxConstants.OfficeNamespace, DocxConstants.OfficePrefix);
+    xmlWriter.WriteAttributeString("preferrelative", "t", DocxConstants.OfficeNamespace, DocxConstants.OfficePrefix);
     xmlWriter.WriteAttributeString("path", "m@4@5l@4@11@9@11@9@5xe");
     xmlWriter.WriteAttributeString("filled", "f");
     xmlWriter.WriteAttributeString("stroked", "f");
@@ -906,12 +882,12 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("path", DocxConstants.VmlNamespace, DocxConstants.VmlPrefix);
-    xmlWriter.WriteAttributeString(DocxConstants.OfficePrefix, "extrusionok", DocxConstants.OfficeNamespace, "f");
+    xmlWriter.WriteAttributeString("extrusionok", "f", DocxConstants.OfficeNamespace, DocxConstants.OfficePrefix);
     xmlWriter.WriteAttributeString("gradientshapeok", "t");
-    xmlWriter.WriteAttributeString(DocxConstants.OfficePrefix, "connecttype", DocxConstants.OfficeNamespace, "rect");
+    xmlWriter.WriteAttributeString("connecttype", "rect", DocxConstants.OfficeNamespace, DocxConstants.OfficePrefix);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement("lock", DocxConstants.OfficeNamespace, DocxConstants.OfficePrefix);
-    xmlWriter.WriteAttributeString(DocxConstants.VmlPrefix, "ext", DocxConstants.VmlNamespace, "edit");
+    xmlWriter.WriteAttributeString("ext", "edit", DocxConstants.VmlNamespace, DocxConstants.VmlPrefix);
     xmlWriter.WriteAttributeString("aspectratio", "t");
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
@@ -921,8 +897,8 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       DocxDocumentRenderer.stringFormat(DocxConstants.ImageStyle, width.toFixed(2), height.toFixed(2))
     );
     xmlWriter.WriteStartElement("imagedata", DocxConstants.VmlNamespace, DocxConstants.VmlPrefix);
-    xmlWriter.WriteAttributeString(DocxConstants.RelPrefix, "id", DocxConstants.RelNamespace, rid);
-    xmlWriter.WriteAttributeString(DocxConstants.OfficePrefix, "title", DocxConstants.OfficeNamespace, "");
+    xmlWriter.WriteAttributeString("id", rid, DocxConstants.RelNamespace, DocxConstants.RelPrefix);
+    xmlWriter.WriteAttributeString("title", "", DocxConstants.OfficeNamespace, DocxConstants.OfficePrefix);
     xmlWriter.WriteEndElement();
 
     xmlWriter.WriteEndElement();

@@ -10,8 +10,8 @@ export interface XmlWriter {
   WriteElementString(prefix: string, localName: string, ns: string, value: string): void,
 
   WriteAttributeString(localName: string, value: string): void,
-  WriteAttributeString(localName: string, ns: string, value: string): void,
-  WriteAttributeString(prefix: string, localName: string, ns: string, value: string): void,
+  WriteAttributeString(localName: string, value: string, ns: string): void,
+  WriteAttributeString(localName: string, value: string, ns: string, prefix: string): void,
 
   WriteEndElement(): void,
   Flush(): void,
