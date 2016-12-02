@@ -1,45 +1,57 @@
-/*
 import {AbstractDoc} from "../../abstract-document/model/abstract-doc";
 import {DocumentContainer} from "./document-container";
-import {XmlWriter, MemoryStream} from "./xml-container";
-import {Table} from "../../abstract-document/model/section-elements/table";
+import {XmlWriter} from "./xml-container";
+import * as Table from "../../abstract-document/model/section-elements/table";
+import * as Paragraph from "../../abstract-document/model/section-elements/paragraph";
+import * as DocxConstants from "./docx-constants";
+import * as TextField from "../../abstract-document/model/atoms/text-field";
+import * as TextRun from "../../abstract-document/model/atoms/text-run";
+import * as TableCell from "../../abstract-document/model/table/table-cell";
 import {KeepTogether} from "../../abstract-document/model/section-elements/keep-together";
-import {Paragraph} from "../../abstract-document/model/section-elements/paragraph";
 import {SectionElement} from "../../abstract-document/model/section-elements/section-element";
 import {Image} from "../../abstract-document/model/atoms/image";
 import {MasterPage} from "../../abstract-document/model/page/master-page";
-import {PageOrientation} from "../../abstract-document/model/enums/page-orientation";
-import * as DocxConstants from "./docx-constants";
-import {TextField} from "../../abstract-document/model/atoms/text-field";
-import {createTextRun, TextRun} from "../../abstract-document/model/atoms/text-run";
-import {FieldType} from "../../abstract-document/model/enums/field-type";
 import {TextProperties} from "../../abstract-document/model/properties/text-properties";
 import {Atom} from "../../abstract-document/model/atoms/atom";
 import {TableCellProperties} from "../../abstract-document/model/properties/table-cell-properties";
-import {TableCell, createTableCell} from "../../abstract-document/model/table/table-cell";
 import {TableCellPropertiesBuilder} from "../../abstract-document/model-builder/table-cell-properties-builder";
 import {TextAlignment} from "../../abstract-document/model/enums/text-alignment";
 import {NumberingFormat} from "../../abstract-document/model/numberings/numbering-format";
+import {AbstractImage} from "../../abstract-image/abstract-image";
+import * as Color from "../../abstract-image/color";
 
 export interface ILogWriter {
 }
 export interface IAbstractImageExporterFactory {
 }
 export interface IZipService {
-  CreateZipFile(zipFiles: Map<string, Uint8Array>): void,
+  CreateZipFile(zipFiles: Map<string, Uint8Array>): Uint8Array,
 }
 export interface Stream {
+}
+export interface MemoryStream {
+}
+
+export interface ExportedImage<T> {
+  output: T,
+  format: string,
+}
+
+export interface AbstractImageExportFunc {
+  <T>(format: string, image: AbstractImage, scale: number): ExportedImage<T>;
 }
 
 export class DocxDocumentRenderer //extends IDocumentRenderer
 {
-  private static readonly LogCategory: string = "typeof(DocxDocumentRenderer).Name";
 
   private readonly _logWriter: ILogWriter;
-  private readonly _zipService: ILogWriter;
+  private readonly _zipService: IZipService;
+
   private readonly _abstractImageExporterFactory: IAbstractImageExporterFactory;
 
-  private readonly _imageContentTypesAdded: Array<any> = [];
+  private readonly _abstractImageExportFunc: AbstractImageExportFunc;
+
+  private _imageContentTypesAdded: Array<any> = [];
   private readonly _imageHash: Map<string, any> = new Map<string, any>();
 
   private readonly _numberingDefinitionIdTranslation: Map<string, number> = new Map<string, number>();
@@ -48,25 +60,30 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   private _referenceId: number = 0;
 
   constructor(logWriter: ILogWriter, zipService: IZipService,
-              abstractImageExporterFactory: IAbstractImageExporterFactory) {
+              abstractImageExporterFactory: IAbstractImageExporterFactory,
+              abstractImageExportFunc: AbstractImageExportFunc) {
     this._logWriter = logWriter;
     this._zipService = zipService;
     this._abstractImageExporterFactory = abstractImageExporterFactory;
+    this._abstractImageExportFunc = abstractImageExportFunc;
   }
 
   //    #region IDocumentRenderer Members
 
-  public RenderDocumentToStreamAsync(doc: AbstractDoc, outputStream: Stream): Promise<any> {
-    this.WriteResultToStream(doc, outputStream);
-    return TaskEx.FromResult<object>(null);
-  }
+  public RenderDocumentToStreamAsync(doc: AbstractDoc): Uint8Array {
+    const zipFiles = this.WriteResultToStream(doc);
 
+    // Write the zip
+    const zipBytes = this._zipService.CreateZipFile(zipFiles);
+    return zipBytes;
+  }
 
   //    #endregion
 
-  private WriteResultToStream(abstractDoc: AbstractDoc, resultStream: Stream): void {
-    this._imageContentTypesAdded.Clear();
-    this._imageHash.Clear();
+  private WriteResultToStream(abstractDoc: AbstractDoc): Map<string, Uint8Array> {
+
+    this._imageContentTypesAdded = [];
+    this._imageHash.clear();
 
     const zipFiles = new Map<string, Uint8Array>();
 
@@ -85,7 +102,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     mainDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "document", DocxConstants.WordNamespace);
     mainDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "body", DocxConstants.WordNamespace);
 
-    if (abstractDoc.numberings.Count > 0) {
+    if (Object.keys(abstractDoc.numberings).length > 0) {
       const numberingDoc = new DocumentContainer();
       numberingDoc.filePath = DocxConstants.NumberingPath;
       numberingDoc.fileName = "numbering.xml";
@@ -95,13 +112,14 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
       // <w:abstractNum>
       let wordNumberingDefinitionId: number = 1;
-      for (const kvp of abstractDoc.numberingDefinitions) {
-        const numDef = kvp.Value;
+      for (const key of Object.keys(abstractDoc.numberingDefinitions)) {
+        const numDef = abstractDoc.numberingDefinitions[key];
         numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "abstractNum", DocxConstants.WordNamespace);
-        numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "abstractNumId", DocxConstants.WordNamespace, wordNumberingDefinitionId.ToString());
+        numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "abstractNumId", DocxConstants.WordNamespace,
+          wordNumberingDefinitionId.toString());
 
         // <w:lvl>
-        for (const numDefLevel of numDef.Levels) {
+        for (const numDefLevel of numDef.levels) {
           //<w:lvl w:ilvl="0" w:tplc="041D0019">
           //  <w:start w:val="1"/>
           //  <w:numFmt w:val="lowerLetter"/>
@@ -112,17 +130,19 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
           //  </w:pPr>
           //</w:lvl>
           numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "lvl", DocxConstants.WordNamespace);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "ilvl", DocxConstants.WordNamespace, numDefLevel.Level.ToString());
+          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "ilvl", DocxConstants.WordNamespace,
+            numDefLevel.level.toString());
           numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "start", DocxConstants.WordNamespace);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace, numDefLevel.Start.ToString());
+          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace,
+            numDefLevel.start.toString());
           numberingDoc.XMLWriter.WriteEndElement();
-          const numFmt = ConvertNumFormat(numDefLevel.Format);
+          const numFmt = DocxDocumentRenderer.ConvertNumFormat(numDefLevel.format);
           numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "numFmt", DocxConstants.WordNamespace);
           numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace,
             numFmt);
           numberingDoc.XMLWriter.WriteEndElement();
           numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "lvlText", DocxConstants.WordNamespace);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace, numDefLevel.LevelText);
+          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace, numDefLevel.levelText);
           numberingDoc.XMLWriter.WriteEndElement();
 
           numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "lvlJc", DocxConstants.WordNamespace);
@@ -131,18 +151,19 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
           numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "pPr", DocxConstants.WordNamespace);
           numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "ind", DocxConstants.WordNamespace);
-          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "left", DocxConstants.WordNamespace, numDefLevel.LevelIndention.Twips().ToString());
+          numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "left", DocxConstants.WordNamespace,
+            numDefLevel.levelIndention.twips.toString());
           numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "hanging", DocxConstants.WordNamespace, "800");
           numberingDoc.XMLWriter.WriteEndElement();
           numberingDoc.XMLWriter.WriteEndElement();
 
           //<w:rPr>
           //var effectiveStyle = numDefLevel.GetEffectiveTextStyle(abstractDoc.Styles);
-          const textProperties = numDefLevel.TextProperties;
+          const textProperties = numDefLevel.textProperties;
           if (textProperties != null) {
             numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "rPr", DocxConstants.WordNamespace);
             //  <w:b/>
-            if (textProperties.Bold.GetValueOrDefault(false) == true)
+            if (textProperties.bold)
               numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "b", DocxConstants.WordNamespace);
             numberingDoc.XMLWriter.WriteEndElement();
             numberingDoc.XMLWriter.WriteEndElement();
@@ -151,30 +172,31 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
           numberingDoc.XMLWriter.WriteEndElement();
         }
-        this._numberingDefinitionIdTranslation.set(kvp.Key, wordNumberingDefinitionId++);
+        this._numberingDefinitionIdTranslation.set(key, wordNumberingDefinitionId++);
       }
 
       numberingDoc.XMLWriter.WriteEndElement(); // abstractNum
 
       let wordNumberingId: number = 1;
-      for (const kvp of abstractDoc.numberings) {
+      for (const key of Object.keys(abstractDoc.numberings)) {
+        const value = abstractDoc.numberings[key];
         numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "num", DocxConstants.WordNamespace);
         numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "numId", DocxConstants.WordNamespace,
           wordNumberingId.toString());
         numberingDoc.XMLWriter.WriteStartElement(DocxConstants.WordPrefix, "abstractNumId",
           DocxConstants.WordNamespace);
-        const wordDefinitionId = this._numberingDefinitionIdTranslation.get(kvp.Value.DefinitionId);
+        const wordDefinitionId = this._numberingDefinitionIdTranslation.get(value.definitionId) as number;
         numberingDoc.XMLWriter.WriteAttributeString(DocxConstants.WordPrefix, "val", DocxConstants.WordNamespace,
           wordDefinitionId.toString());
         numberingDoc.XMLWriter.WriteEndElement();
         numberingDoc.XMLWriter.WriteEndElement();
-        this._numberingIdTranslation.Add(kvp.Key, wordNumberingId++);
+        this._numberingIdTranslation.set(key, wordNumberingId++);
       }
       numberingDoc.XMLWriter.WriteEndElement();
       const refid = this.GetNewReferenceId();
-      mainDoc.References.AddReference(refid, numberingDoc.filePath + numberingDoc.fileName,
+      mainDoc.references.AddReference(refid, numberingDoc.filePath + numberingDoc.fileName,
         DocxConstants.NumberingNamespace);
-      //mainDoc.References.AddReference2("rId1",  numberingDoc.FileName, DocxConstants.NumberingNamespace);
+      //mainDoc.references.AddReference2("rId1",  numberingDoc.FileName, DocxConstants.NumberingNamespace);
 
       DocxDocumentRenderer.AddDocumentToArchive(zipFiles, numberingDoc, contentTypesDoc, true);
     }
@@ -247,7 +269,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
         mainDoc.references.AddReference(refid, currentHeader.filePath + currentHeader.fileName,
           DocxConstants.HeaderNamespace);
 
-        this.AddDocumentToArchive(zipFiles, currentHeader, contentTypesDoc, true);
+        DocxDocumentRenderer.AddDocumentToArchive(zipFiles, currentHeader, contentTypesDoc, true);
       }
       else {
         lastHeader = currentHeader;
@@ -264,14 +286,14 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
         currentHeader.filePath = DocxConstants.DocumentPath;
         currentHeader.fileName = "Header_" + refid + ".xml";
         currentHeader.contentType = DocxConstants.HeaderContentType;
-        mainDoc.References.AddReference(refid, currentHeader.filePath + currentHeader.fileName,
+        mainDoc.references.AddReference(refid, currentHeader.filePath + currentHeader.fileName,
           DocxConstants.HeaderNamespace);
 
-        this.AddDocumentToArchive(zipFiles, currentHeader, contentTypesDoc, true);
+        DocxDocumentRenderer.AddDocumentToArchive(zipFiles, currentHeader, contentTypesDoc, true);
       }
 
       if (lastMasterPage != null) {
-        this.InsertPageSettingsParagraph(mainDoc.XMLWriter, lastMasterPage, lastHeader);
+        DocxDocumentRenderer.InsertPageSettingsParagraph(mainDoc.XMLWriter, lastMasterPage, lastHeader as DocumentContainer);
         pages++;
       }
 
@@ -283,22 +305,21 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
     if (lastMasterPage != null) {
       lastHeader = currentHeader;
-      this.InsertPageSettings(mainDoc.XMLWriter, lastMasterPage, lastHeader);
+      DocxDocumentRenderer.InsertPageSettings(mainDoc.XMLWriter, lastMasterPage, lastHeader as DocumentContainer);
     }
 
     if (mainDoc.XMLWriter != null) {
       mainDoc.XMLWriter.WriteEndElement();
       mainDoc.XMLWriter.WriteEndElement();
       mainDoc.XMLWriter.Flush();
-      this.AddDocumentToArchive(zipFiles, mainDoc, contentTypesDoc, false);
+      DocxDocumentRenderer.AddDocumentToArchive(zipFiles, mainDoc, contentTypesDoc, false);
       this.AddSupportFilesContents(zipFiles, contentTypesDoc);
     }
 
-
-    // Write the zip
-    const zipStream = this._zipService.CreateZipFile(zipFiles);
-    const zipBytes = zipStream.ToArray();
-    resultStream.Write(zipBytes, 0, zipBytes.Length);
+    return zipFiles;
+    // // Write the zip
+    // const zipBytes = this._zipService.CreateZipFile(zipFiles);
+    // resultStream.Write(zipBytes, 0, zipBytes.length);
   }
 
   private static ConvertNumFormat(format: NumberingFormat): string {
@@ -327,14 +348,14 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   }
 
   private AddSupportFilesContents(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
-    this.AddHeadRef(zip);
+    DocxDocumentRenderer.AddHeadRef(zip);
     this.AddContentTypes(zip, contentTypesDoc);
   }
 
   private AddContentTypes(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
-    this.InsertDefaultContentTypes(contentTypesDoc);
+    DocxDocumentRenderer.InsertDefaultContentTypes(contentTypesDoc);
     contentTypesDoc.XMLWriter.WriteEndElement(); //Avslutar types
-    this.AddDocumentToArchive(zip, contentTypesDoc, contentTypesDoc, false);
+    DocxDocumentRenderer.AddDocumentToArchive(zip, contentTypesDoc, contentTypesDoc, false);
   }
 
   private  AddBaseParagraphDocX(doc: AbstractDoc,
@@ -344,7 +365,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
                                 contentTypesDoc: DocumentContainer,
                                 newSectionElement: SectionElement,
                                 inTable: boolean): void {
-    const para = newSectionElement as Table;
+    const para = newSectionElement as Table.Table;
     if (para != null) {
       this.InsertTable(doc, xmlWriter, zip, currentDocument, contentTypesDoc, para);
       //Om man l�gger in en tabell i en tabell s� m�ste man l�gga till en tom paragraf under...
@@ -352,7 +373,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
         DocxDocumentRenderer.InsertEmptyParagraph(xmlWriter);
       return;
     }
-    const paragraph = newSectionElement as Paragraph;
+    const paragraph = newSectionElement as Paragraph.Paragraph;
     if (paragraph != null) {
       this.InsertParagraph(doc, xmlWriter, zip, currentDocument, contentTypesDoc, paragraph);
       return;
@@ -384,7 +405,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
     //  //Beh�ver komma �t dokumentet som bilden tillh�r
     //  var filePath = DocxConstants.ImagePath + "image_" + rid + "." + imageElement.Picture.GetFileExtension();
-    //  currentDocument.References.AddReference(rid, filePath, DocxConstants.ImageNamespace);
+    //  currentDocument.references.AddReference(rid, filePath, DocxConstants.ImageNamespace);
 
     //  //L�gg till i MainPart
     //  //L�gg till bilden i en run
@@ -396,38 +417,41 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     //else
     //{
     // Render the image
-    const renderer = this._abstractImageExporterFactory.Create<byte[]>("PNG");
-    const renderedImage = renderer.Render(image.imageResource.abstractImage,
+    // const renderer = this._abstractImageExporterFactory.Create<byte[]>("PNG");
+    // const renderedImage = renderer.Render(image.imageResource.abstractImage,
+    //   image.imageResource.renderScale);
+
+    const renderedImage = this._abstractImageExportFunc("PNG", image.imageResource.abstractImage,
       image.imageResource.renderScale);
 
-    // L�gg till referens
-    if (!this._imageHash.ContainsKey(image.imageResource.id.toString()))
-      this.AddImageReference2(zip, contentTypesDoc, image, renderedImage);
+    // Lägg till referens
+    if (!this._imageHash.has(image.imageResource.id.toString()))
+      this.AddImageReference2(zip, contentTypesDoc, image, renderedImage as ExportedImage<Uint8Array>);
 
-    //L�gg till bilden i dokumentet
+    //Lägg till bilden i dokumentet
     const rid = this._imageHash.get(image.imageResource.id.toString()).toString();
 
-    //Beh�ver komma �t dokumentet som bilden tillh�r
-    const filePath = DocxConstants.ImagePath + "image_" + rid + "." + renderedImage.Format;
-    currentDocument.References.AddReference(rid, filePath, DocxConstants.ImageNamespace);
+    //Behöver komma åt dokumentet som bilden tillhör
+    const filePath = DocxConstants.ImagePath + "image_" + rid + "." + renderedImage.format;
+    currentDocument.references.AddReference(rid, filePath, DocxConstants.ImageNamespace);
 
-    //L�gg till i MainPart
-    //L�gg till bilden i en run
+    //Lägg till i MainPart
+    //Lägg till bilden i en run
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
-    this.InsertImage(xmlWriter, rid, Math.round(image.Width, 2), Math.Round(image.Height, 2));
+    DocxDocumentRenderer.InsertImage(xmlWriter, rid, image.width, image.height);
     xmlWriter.WriteEndElement();
     //}
   }
 
-  private InsertPageSettingsParagraph(xmlWriter: XmlWriter, ps: MasterPage, lastHeader: DocumentContainer): void {
+  private static InsertPageSettingsParagraph(xmlWriter: XmlWriter, ps: MasterPage, lastHeader: DocumentContainer): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "p", DocxConstants.WordNamespace);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "pPr", DocxConstants.WordNamespace);
-    this.InsertPageSettings(xmlWriter, ps, lastHeader);
+    DocxDocumentRenderer.InsertPageSettings(xmlWriter, ps, lastHeader);
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
   }
 
-  private  InsertPageSettings(xmlWriter: XmlWriter, ps: MasterPage, lastHeader: DocumentContainer): void {
+  private static InsertPageSettings(xmlWriter: XmlWriter, ps: MasterPage, lastHeader: DocumentContainer): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "sectPr", DocxConstants.WordNamespace);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "footnotePr", DocxConstants.WordNamespace);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "pos", DocxConstants.WordNamespace);
@@ -437,77 +461,77 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     if (lastHeader != null) {
       xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "headerReference", DocxConstants.WordNamespace);
       xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "type", DocxConstants.WordNamespace, "default");
-      xmlWriter.WriteAttributeString("id", DocxConstants.RelNamespace, lastHeader.RefId);
+      xmlWriter.WriteAttributeString("id", DocxConstants.RelNamespace, lastHeader.refId);
       xmlWriter.WriteEndElement();
     }
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "pgSz", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "w", DocxConstants.WordNamespace,
-      Convert.ToString(ps.style.width * DocxConstants.PointOoXmlFactor));
+      (ps.style.width * DocxConstants.PointOoXmlFactor).toString());
     xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "h", DocxConstants.WordNamespace,
-      Convert.ToString(ps.style.height * DocxConstants.PointOoXmlFactor));
-    if (ps.style.orientation == PageOrientation.Landscape)
+      (ps.style.height * DocxConstants.PointOoXmlFactor).toString());
+    if (ps.style.orientation == "Landscape")
       xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "orient", DocxConstants.WordNamespace, "landscape");
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "pgMar", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "top", DocxConstants.WordNamespace,
-      ((ps.style.margins.top * DocxConstants.PointOoXmlFactor)).ToString(CultureInfo.InvariantCulture));
+      ((ps.style.margins.top * DocxConstants.PointOoXmlFactor)).toString());
     xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "bottom", DocxConstants.WordNamespace,
-      ((ps.style.margins.bottom * DocxConstants.PointOoXmlFactor)).ToString(CultureInfo.InvariantCulture));
+      ((ps.style.margins.bottom * DocxConstants.PointOoXmlFactor)).toString());
     xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "left", DocxConstants.WordNamespace,
-      ((ps.style.margins.left * DocxConstants.PointOoXmlFactor)).ToString(CultureInfo.InvariantCulture));
+      ((ps.style.margins.left * DocxConstants.PointOoXmlFactor)).toString());
     xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "right", DocxConstants.WordNamespace,
-      ((ps.style.margins.right * DocxConstants.PointOoXmlFactor)).ToString(CultureInfo.InvariantCulture));
+      ((ps.style.margins.right * DocxConstants.PointOoXmlFactor)).toString());
     xmlWriter.WriteAttributeString(DocxConstants.WordPrefix, "footer", DocxConstants.WordNamespace, "100");
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
   }
 
-  private  InsertDateComponent(doc: AbstractDoc, xmlWriter: XmlWriter, tf: TextField): void {
+  private  InsertDateComponent(doc: AbstractDoc, xmlWriter: XmlWriter, tf: TextField.TextField): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
     //var style = fc.GetEffectiveStyle(doc.Styles) ?? ps.TextProperties;
-    const textProperties = tf.GetEffectiveStyle(doc.Styles).TextProperties;
+    const textProperties = TextField.getEffectiveStyle(doc.styles, tf).textProperties;
 
-    this.InsertRunProperty(xmlWriter, textProperties);
+    DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "fldChar", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("fldCharType", DocxConstants.WordNamespace, "begin");
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
-    this.InsertRunProperty(xmlWriter, textProperties);
+    DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "instrText", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("xml", "space", "", "preserve");
     xmlWriter.WriteString(" DATE \\@YYYY/MM/DD ");
     //var fcText = new TextRun("{ DATE \\@YYYY/MM/DD }", tf.GetEffectiveStyle(doc.Styles));
-    const fcText = createTextRun("{ DATE \\@YYYY/MM/DD }", null, tf.GetEffectiveStyle(doc.Styles).TextProperties);
+    const fcText = TextRun.createTextRun("{ DATE \\@YYYY/MM/DD }", undefined, TextField.getEffectiveStyle(doc.styles, tf).textProperties);
 
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
-    this.InsertRunProperty(xmlWriter, textProperties);
+    DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "fldChar", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("fldCharType", DocxConstants.WordNamespace, "separate");
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
-    const effectiveStyle = tf.GetEffectiveStyle(doc.styles);
-    this.InsertTextComponent(doc, xmlWriter, fcText, effectiveStyle.TextProperties);
+    const effectiveStyle = TextField.getEffectiveStyle(doc.styles, tf);
+    DocxDocumentRenderer.InsertTextComponent(/*doc,*/ xmlWriter, fcText, effectiveStyle.textProperties);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
-    this.InsertRunProperty(xmlWriter, textProperties);
+    DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "fldChar", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("fldCharType", DocxConstants.WordNamespace, "end");
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
   }
 
-  private  InsertFieldComponent(doc: AbstractDoc, xmlWriter: XmlWriter, fc: TextField): void {
-    switch (fc.type) {
-      case FieldType.Date:
+  private  InsertFieldComponent(doc: AbstractDoc, xmlWriter: XmlWriter, fc: TextField.TextField): void {
+    switch (fc.fieldType) {
+      case "Date":
         this.InsertDateComponent(doc, xmlWriter, fc);
         break;
-      case FieldType.PageNumber:
+      case "PageNumber":
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
         //var style = fc.GetEffectiveStyle(doc.Styles) ?? ps.TextProperties;
-        const style = fc.GetEffectiveStyle(doc.styles).TextProperties;
-        this.InsertRunProperty(xmlWriter, style);
+        const style = TextField.getEffectiveStyle(doc.styles, fc).textProperties;
+        DocxDocumentRenderer.InsertRunProperty(xmlWriter, style);
         xmlWriter.WriteElementString(DocxConstants.WordPrefix, "pgNum", DocxConstants.WordNamespace, "");
         xmlWriter.WriteEndElement();
         break;
@@ -516,17 +540,17 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     }
   }
 
-  private InsertTextComponent(doc: AbstractDoc, xmlWriter: XmlWriter, tr: TextRun, textProperties: TextProperties): void {
+  private static InsertTextComponent(/*doc: AbstractDoc, */xmlWriter: XmlWriter, tr: TextRun.TextRun, textProperties: TextProperties): void {
     //var effectiveStyle = tc.GetEffectiveStyle(doc.Styles);
-    this.InsertText(xmlWriter, tr.text, textProperties);
+    DocxDocumentRenderer.InsertText(xmlWriter, tr.text, textProperties);
   }
 
-  private InsertText(xmlWriter: XmlWriter, text: string, textProperties: TextProperties): void {
+  private static InsertText(xmlWriter: XmlWriter, text: string, textProperties: TextProperties): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
 
     //var style = componentStyle ?? ps.TextProperties;
     //var style = textProperties.TextProperties;
-    this.InsertRunProperty(xmlWriter, textProperties);
+    DocxDocumentRenderer.InsertRunProperty(xmlWriter, textProperties);
 
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "t", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("xml", "space", "", "preserve");
@@ -537,14 +561,14 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   private  InsertComponent(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
                            currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, bc: Atom): void {
-    const fc = bc as TextField;
+    const fc = bc as TextField.TextField;
     if (fc != null)
       this.InsertFieldComponent(doc, xmlWriter, fc);
     else {
-      const tr = bc as TextRun;
+      const tr = bc as TextRun.TextRun;
       if (tr != null) {
-        const effectiveTextProps = tr.GetEffectiveTextProperties(doc.styles);
-        this.InsertTextComponent(doc, xmlWriter, tr, effectiveTextProps);
+        const effectiveTextProps = TextRun.getEffectiveTextProperties(doc.styles, tr);
+        DocxDocumentRenderer.InsertTextComponent(/*doc,*/ xmlWriter, tr, effectiveTextProps);
       }
       else {
         const im = bc as Image;
@@ -557,9 +581,9 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   }
 
   private InsertParagraph(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
-                          currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, para: Paragraph): void {
+                          currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, para: Paragraph.Paragraph): void {
 
-    const effectiveParaProps = para.GetEffectiveParagraphProperties(doc.styles);
+    const effectiveParaProps = Paragraph.getEffectiveParagraphProperties(doc.styles, para);
 
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "p", DocxConstants.WordNamespace);
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "pPr", DocxConstants.WordNamespace);
@@ -568,8 +592,8 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
 
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "spacing", DocxConstants.WordNamespace);
-    xmlWriter.WriteAttributeString("before", DocxConstants.WordNamespace, effectiveParaProps.SpacingBefore.Value.Twips().ToString());
-    xmlWriter.WriteAttributeString("after", DocxConstants.WordNamespace, effectiveParaProps.SpacingAfter.Value.Twips().ToString());
+    xmlWriter.WriteAttributeString("before", DocxConstants.WordNamespace, effectiveParaProps.spacingBefore.twips().toString());
+    xmlWriter.WriteAttributeString("after", DocxConstants.WordNamespace, effectiveParaProps.spacingAfter.twips().toString());
     xmlWriter.WriteEndElement();
 
     if (para.numbering != null) {
@@ -579,14 +603,14 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       xmlWriter.WriteEndElement();
       xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "numId", DocxConstants.WordNamespace);
       const wordNumberingId = this.GetWordNumberingId(para.numbering.numberingId);
-      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, wordNumberingId.ToString());
+      xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, wordNumberingId.toString());
       xmlWriter.WriteEndElement();
       xmlWriter.WriteEndElement();
     }
 
     xmlWriter.WriteElementString(DocxConstants.WordPrefix, "keepLines", DocxConstants.WordNamespace, "");
     //var effectiveStyle = para.GetEffectiveStyle(doc.Styles);
-    this.InsertJc(xmlWriter, effectiveParaProps.Alignment.Value);
+    DocxDocumentRenderer.InsertJc(xmlWriter, effectiveParaProps.alignment);
     xmlWriter.WriteEndElement();
 
     for (const comp of para.atoms) {
@@ -597,7 +621,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   }
 
   private GetWordNumberingId(numberingId: string): number {
-    return this._numberingIdTranslation.get(numberingId);
+    return this._numberingIdTranslation.get(numberingId) as number;
   }
 
   private static InsertEmptyParagraph(xmlWriter: XmlWriter): void {
@@ -612,7 +636,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   private InsertTable(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
                       currentDocument: DocumentContainer,
-                      contentTypesDoc: DocumentContainer, tPara: Table): void {
+                      contentTypesDoc: DocumentContainer, tPara: Table.Table): void {
 
     //var xml = doc.ToXml();
 
@@ -631,19 +655,19 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     for (const w of tPara.columnWidths) {
       xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "gridCol", DocxConstants.WordNamespace);
       xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace,
-        ((int)(w * DocxConstants.PointOoXmlFactor)).ToString(CultureInfo.InvariantCulture));
+        ((w * DocxConstants.PointOoXmlFactor)).toString());
       xmlWriter.WriteEndElement();
     }
     xmlWriter.WriteEndElement();
 
-    for (let r = 0; r <= tPara.NrOfRows - 1; r++) {
+    for (let r = 0; r <= Table.nrOfRows(tPara) - 1; r++) {
       xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "tr", DocxConstants.WordNamespace);
       xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "trPr", DocxConstants.WordNamespace);
 
       if (!isNaN(tPara.rows[r].height)) {
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "trHeight", DocxConstants.WordNamespace);
         xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-          (Convert.ToInt32(tPara.rows[r].height * DocxConstants.PointOoXmlFactor)).ToString(CultureInfo.InvariantCulture));
+          ((tPara.rows[r].height * DocxConstants.PointOoXmlFactor)).toString());
         xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "atLeast");
         xmlWriter.WriteEndElement();
       }
@@ -655,9 +679,11 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       let tc = 0;
       while (c < tPara.columnWidths.length) {
         //var ptc = tPara.GetCell(r, tc);
-        let ptc = this.GetCell(doc, tPara, r, tc);
-        let effectiveCellProps = ptc.GetEffectiveTableCellProperties(doc.styles, tPara);
-        let effectiveTableProps = tPara.GetEffectiveTableProperties(doc.styles);
+        let ptc = DocxDocumentRenderer.GetCell(/*doc,*/ tPara, r, tc) as TableCell.TableCell;
+        let effectiveCellProps = TableCell.getEffectiveTableCellProperties(/*doc.styles,*/ tPara, ptc);
+
+        // let effectiveTableProps = Table.getEffectiveTableProperties(doc.styles, tPara);
+
         //if (effectiveTableProps.BorderThickness.GetValueOrDefault(0) > double.Epsilon)
         //{
         //if (effectiveCellProps.Borders.Bottom == null)
@@ -672,28 +698,29 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "tc", DocxConstants.WordNamespace);
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "tcPr", DocxConstants.WordNamespace);
-        if (effectiveCellProps.Background.HasValue && effectiveCellProps.Background.Value.A > 0) {
+        if (effectiveCellProps.background && effectiveCellProps.background.a > 0) {
           xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "shd", DocxConstants.WordNamespace);
           xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "clear");
           xmlWriter.WriteAttributeString("color", DocxConstants.WordNamespace, "auto");
           xmlWriter.WriteAttributeString("fill", DocxConstants.WordNamespace,
-            effectiveCellProps.Background.Value.ToString6Hex());
+            Color.toString6Hex(effectiveCellProps.background)
+          );
           xmlWriter.WriteEndElement();
         }
 
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "gridSpan", DocxConstants.WordNamespace);
         xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-          ptc.columnSpan.ToString(CultureInfo.InvariantCulture));
+          ptc.columnSpan.toString());
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "tcBorders", DocxConstants.WordNamespace);
-        if (effectiveCellProps.Borders.Bottom.GetValueOrDefault(0) > 0)
-          this.AddBordersToCell(xmlWriter, effectiveCellProps.Borders.Bottom.Value, "bottom");
-        if (effectiveCellProps.Borders.Left.GetValueOrDefault(0) > 0)
-          this.AddBordersToCell(xmlWriter, effectiveCellProps.Borders.Left.Value, "left");
-        if (effectiveCellProps.Borders.Top.GetValueOrDefault(0) > 0)
-          this.AddBordersToCell(xmlWriter, effectiveCellProps.Borders.Top.Value, "top");
-        if (effectiveCellProps.Borders.Right.GetValueOrDefault(0) > 0)
-          this.AddBordersToCell(xmlWriter, effectiveCellProps.Borders.Right.Value, "right");
+        if (effectiveCellProps.borders.bottom || 0 > 0)
+          DocxDocumentRenderer.AddBordersToCell(xmlWriter, effectiveCellProps.borders.bottom as number, "bottom");
+        if (effectiveCellProps.borders.left || 0 > 0)
+          DocxDocumentRenderer.AddBordersToCell(xmlWriter, effectiveCellProps.borders.left as number, "left");
+        if (effectiveCellProps.borders.top || 0 > 0)
+          DocxDocumentRenderer.AddBordersToCell(xmlWriter, effectiveCellProps.borders.top as number, "top");
+        if (effectiveCellProps.borders.right || 0 > 0)
+          DocxDocumentRenderer.AddBordersToCell(xmlWriter, effectiveCellProps.borders.right as number, "right");
         xmlWriter.WriteEndElement();
 
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "tcMar", DocxConstants.WordNamespace);
@@ -702,30 +729,30 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
         let mLeft = 0;
         let mRight = 0;
 
-        if (effectiveCellProps.Padding.Top.HasValue)
-          mTop = effectiveCellProps.Padding.Top;
-        if (effectiveCellProps.Padding.Bottom.HasValue)
-          mBottom = effectiveCellProps.Padding.Bottom;
-        if (effectiveCellProps.Padding.Left.HasValue)
-          mLeft = effectiveCellProps.Padding.Left;
-        if (effectiveCellProps.Padding.Right.HasValue)
-          mRight = effectiveCellProps.Padding.Right;
+        if (effectiveCellProps.padding.top)
+          mTop = effectiveCellProps.padding.top;
+        if (effectiveCellProps.padding.bottom)
+          mBottom = effectiveCellProps.padding.bottom;
+        if (effectiveCellProps.padding.left)
+          mLeft = effectiveCellProps.padding.left;
+        if (effectiveCellProps.padding.right)
+          mRight = effectiveCellProps.padding.right;
 
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "top", DocxConstants.WordNamespace);
-        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mTop.toString(CultureInfo.InvariantCulture));
+        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mTop.toString());
         xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "bottom", DocxConstants.WordNamespace);
         xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace,
-          mBottom.toString(CultureInfo.InvariantCulture));
+          mBottom.toString());
         xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "right", DocxConstants.WordNamespace);
-        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mRight.ToString(CultureInfo.InvariantCulture));
+        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mRight.toString());
         xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
         xmlWriter.WriteEndElement();
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "left", DocxConstants.WordNamespace);
-        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mLeft.ToString(CultureInfo.InvariantCulture));
+        xmlWriter.WriteAttributeString("w", DocxConstants.WordNamespace, mLeft.toString());
         xmlWriter.WriteAttributeString("type", DocxConstants.WordNamespace, "dxa");
         xmlWriter.WriteEndElement();
         xmlWriter.WriteEndElement();
@@ -735,9 +762,9 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
           DocxDocumentRenderer.InsertEmptyParagraph(xmlWriter);
         }
         else {
-          for (const bp in ptc.elements) {
-            //TODO: Detta kan ge lite konstiga resultat om man har en tabell f�rst och sedan text...
-            //Borde kolla om det bara finns en och det �r en tabell eller om det finns tv� men b�ra �r tabeller osv.
+          for (const bp of ptc.elements) {
+            // TODO: Detta kan ge lite konstiga resultat om man har en tabell först och sedan text...
+            // Borde kolla om det bara finns en och det är en tabell eller om det finns två men båra är tabeller osv.
             this.AddBaseParagraphDocX(doc, xmlWriter, zip, currentDocument, contentTypesDoc, bp, true);
           }
         }
@@ -753,39 +780,40 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   }
 
 
-  private static GetCell(abstractDoc: AbstractDoc, table: Table, r: number, c: number): TableCell | null {
-    if (r >= table.NrOfRows)
+  private static GetCell(/*abstractDoc: AbstractDoc,*/ table: Table.Table, r: number, c: number): TableCell.TableCell | null {
+
+    if (r >= Table.nrOfRows(table))
       return null;
 
     const row = table.rows[r];
     if (c < row.cells.length)
       return row.cells[c];
 
-    //Denna rad inneh�ller inte alla kolumner...
-    //Kolla om n�got element i denna rad inneh�ller ett element
-    let cs: TableCellProperties = null;
+    // Denna rad innehåller inte alla kolumner...
+    // Kolla om något element i denna rad innehåller ett element
+    let cs: TableCellProperties | undefined;
     for (const ptc of row.cells) {
       if (ptc == null)
         break;
       //if (ptc.GetEffectiveStyle() != null)
-      cs = ptc.GetEffectiveTableCellProperties(abstractDoc.styles, table);
+      cs = TableCell.getEffectiveTableCellProperties(/*abstractDoc.styles,*/ table, ptc);
     }
-    if (cs == null)
+    if (!cs)
       cs = new TableCellPropertiesBuilder().build();
-    return createTableCell(undefined, cs, 1, []);
+    return TableCell.createTableCell(undefined, cs, 1, []);
   }
 
-  private AddBordersToCell(xmlWriter: XmlWriter, borderdef: number, borderLocation: string): void {
+  private static AddBordersToCell(xmlWriter: XmlWriter, borderdef: number, borderLocation: string): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, borderLocation, DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "single");
     xmlWriter.WriteAttributeString("sz", DocxConstants.WordNamespace,
-      (borderdef * DocxConstants.PointOoXmlFactor).ToString(CultureInfo.InvariantCulture));
+      (borderdef * DocxConstants.PointOoXmlFactor).toString());
     xmlWriter.WriteAttributeString("space", DocxConstants.WordNamespace, "0");
     xmlWriter.WriteAttributeString("color", DocxConstants.WordNamespace, "000000");
     xmlWriter.WriteEndElement();
   }
 
-  private static InsertJc(xmlWriter: XmlWriter, ta: TextAlignment): void {
+  private static InsertJc(xmlWriter: XmlWriter, ta: TextAlignment | undefined): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "jc", DocxConstants.WordNamespace);
     if (ta == "Center")
       xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "center");
@@ -798,7 +826,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement(); //jc
   }
 
-  private InsertRunProperty(xmlWriter: XmlWriter, textProperties: TextProperties): void {
+  private static InsertRunProperty(xmlWriter: XmlWriter, textProperties: TextProperties): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "rPr", DocxConstants.WordNamespace);
     if (textProperties.subScript || textProperties.superScript) {
       xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "vertAlign", DocxConstants.WordNamespace);
@@ -813,15 +841,15 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "sz", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-      Convert.ToString((((textProperties.fontSize) + 0.5)) * 2));
+      ((((textProperties.fontSize) + 0.5)) * 2).toString());
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "szCs", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-      Convert.ToString((((textProperties.fontSize) + 0.5)) * 2));
+      ((((textProperties.fontSize) + 0.5)) * 2).toString());
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "color", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace,
-      textProperties.Color != null ? textProperties.Color.Replace("#", "").Substring(2, 6) : "000000");
+      textProperties.color != null ? textProperties.color.replace("#", "").substring(2, 6) : "000000");
     xmlWriter.WriteEndElement();
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "noProof", DocxConstants.WordNamespace);
     xmlWriter.WriteAttributeString("val", DocxConstants.WordNamespace, "true");
@@ -846,7 +874,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
   }
 
-  private InsertImage(xmlWriter: XmlWriter, rid: string, width: number, height: number): void {
+  private static InsertImage(xmlWriter: XmlWriter, rid: string, width: number, height: number): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "pict", DocxConstants.WordNamespace);
     xmlWriter.WriteStartElement(DocxConstants.VmlPrefix, "shapetype", DocxConstants.VmlNamespace);
     xmlWriter.WriteAttributeString("coordsize", "21600,21600");
@@ -909,8 +937,8 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
     xmlWriter.WriteStartElement(DocxConstants.VmlPrefix, "shape", DocxConstants.VmlNamespace);
     xmlWriter.WriteAttributeString("style",
-      string.Format(DocxConstants.ImageStyle, width.ToString(CultureInfo.InvariantCulture),
-        height.ToString(CultureInfo.InvariantCulture)));
+      DocxDocumentRenderer.stringFormat(DocxConstants.ImageStyle, width.toFixed(2), height.toFixed(2))
+    );
     xmlWriter.WriteStartElement(DocxConstants.VmlPrefix, "imagedata", DocxConstants.VmlNamespace);
     xmlWriter.WriteAttributeString(DocxConstants.RelPrefix, "id", DocxConstants.RelNamespace, rid);
     xmlWriter.WriteAttributeString(DocxConstants.OfficePrefix, "title", DocxConstants.OfficeNamespace, "");
@@ -918,6 +946,14 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
+  }
+
+  private static stringFormat(s: string, ...rest: any[]): string {
+    let result = s;
+    for (let i = 0; i < rest.length; i++) {
+      result = result.replace("{" + i + "}", rest[i]);
+    }
+    return result;
   }
 
   private static InsertDocumentContent(filename: string, contentType: string, contentTypesDoc: DocumentContainer): void {
@@ -949,19 +985,17 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   }
 
   private AddImageReference2(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer,
-                             image: Image, renderedImage: RenderedImage<Uint8Array>): void {
+                             image: Image, renderedImage: ExportedImage<Uint8Array>): void {
     const refId = this.GetNewReferenceId();
-    const filePath = DocxConstants.ImagePath + "image_" + refId + "." + renderedImage.Format;
+    const filePath = DocxConstants.ImagePath + "image_" + refId + "." + renderedImage.format;
 
-    const mimeType = DocxDocumentRenderer.GetMimeType(renderedImage.Format);
+    const mimeType = DocxDocumentRenderer.GetMimeType(renderedImage.format);
     if (this._imageContentTypesAdded.indexOf(mimeType) === -1) {
-      DocxDocumentRenderer.InsertImageContent(contentTypesDoc, renderedImage.Format, mimeType);
+      DocxDocumentRenderer.InsertImageContent(contentTypesDoc, renderedImage.format, mimeType);
       this._imageContentTypesAdded.push(mimeType);
     }
 
-    const stream = new MemoryStream(renderedImage.Output);
-
-    this.AddToArchive(zip, filePath, stream);
+    DocxDocumentRenderer.AddToArchive(zip, filePath, renderedImage.output);
 
     this._imageHash.set(image.imageResource.id.toString(), refId);
   }
@@ -987,43 +1021,39 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     return "rId" + this._referenceId;
   }
 
-  private AddHeadRef(zip: Map<string, Uint8Array>): void {
-    const headref = new MemoryStream();
-    const contents = Encoding.UTF8.GetBytes(DocxConstants.HeadRelXml);
-    headref.Write(contents, 0, contents.Length);
+  private static AddHeadRef(zip: Map<string, Uint8Array>): void {
 
-    DocxDocumentRenderer.AddToArchive(zip, DocxConstants.RefPath + ".rels", headref);
-    //headref.Close();
-    headref.Dispose();
+    // const headref = new MemoryStream();
+    // const contents = Encoding.UTF8.GetBytes(DocxConstants.HeadRelXml);
+    // headref.Write(contents, 0, contents.Length);
+    //
+    // DocxDocumentRenderer.AddToArchive(zip, DocxConstants.RefPath + ".rels", headref);
+    // //headref.Close();
+    // headref.Dispose();
+
+    const contents = stringToUtf8ByteArray(DocxConstants.HeadRelXml);
+    DocxDocumentRenderer.AddToArchive(zip, DocxConstants.RefPath + ".rels", contents);
   }
 
-
-  private static AddToArchive(zip: Map<string, Uint8Array>, filePath: string, ms: Stream): void {
-
-    // ms.Flush();
-    // ms.Position = 0;
-    // var buffer = new byte[((int)ms.Length) - 1 + 1];
-    // ms.Read(buffer, 0, buffer.Length);
-    // zip.Add(filePath, buffer);
-
-    throw new Error("TODO!!");
-
+  private static AddToArchive(zip: Map<string, Uint8Array>, filePath: string, ms: Uint8Array): void {
+    zip.set(filePath, ms);
   }
 
   private static AddDocumentToArchive(zip: Map<string, Uint8Array>, docToAdd: DocumentContainer,
-                               contentTypesDoc: DocumentContainer, insertContents: boolean): void {
-    docToAdd.Finish();
+                                      contentTypesDoc: DocumentContainer, insertContents: boolean): void {
+
+    docToAdd.finish();
     DocxDocumentRenderer.AddToArchive(zip, docToAdd.filePath + docToAdd.fileName, docToAdd.memStream);
     if (insertContents)
       DocxDocumentRenderer.InsertDocumentContent(docToAdd.filePath + docToAdd.fileName, docToAdd.contentType, contentTypesDoc);
-    if (docToAdd.References.Count > 0) {
-      docToAdd.References.Finish();
+    if (docToAdd.references.count > 0) {
+      docToAdd.references.finish();
       DocxDocumentRenderer.AddToArchive(zip, docToAdd.filePath + DocxConstants.RefPath + docToAdd.fileName + ".rels",
-        docToAdd.References.MemStream);
-      docToAdd.References.Close();
+        docToAdd.references.memStream);
+      docToAdd.references.close();
     }
-    docToAdd.Close();
+    docToAdd.close();
+
   }
 
 }
-*/

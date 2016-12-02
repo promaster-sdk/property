@@ -1,4 +1,8 @@
 import {TextProperties} from "../properties/text-properties";
+import {Indexer} from "../abstract-doc";
+import * as Style from "../styles/style";
+import {StyleKey} from "../styles/style-key";
+import {TextStyle, createTextStyle} from "../styles/text-style";
 
 export interface TextRun {
   type: "TextRun",
@@ -14,4 +18,15 @@ export function createTextRun(text: string, styleName: string | undefined, textP
     styleName,
     textProperties,
   }
+}
+
+export function getEffectiveTextProperties(styles: Indexer<StyleKey, Style.Style>, tr: TextRun): TextProperties {
+  const effectiveStyle = getEffectiveStyle(styles, tr);
+  return effectiveStyle.textProperties;
+}
+
+function getEffectiveStyle(styles: Indexer<StyleKey, Style.Style>, tr: TextRun): TextStyle {
+  const localStyle = createTextStyle(tr.styleName, tr.textProperties);
+  const effectiveStyle = Style.getEffectiveStyle2<TextStyle>(styles, localStyle);
+  return effectiveStyle;
 }

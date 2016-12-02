@@ -9,6 +9,10 @@ export function fromArgb(a: number, r: number, g: number, b: number): Color {
   return {a: a, r: r, g: g, b: b};
 }
 
+export function toString6Hex(color: Color): string {
+  return color.r.toString(16) + color.g.toString(16) + color.b.toString(16);
+}
+
 export function fromString(s: string): Color | undefined {
   if (s === null || s === undefined || s.length !== 9 || s[0] !== "#") {
     return undefined;

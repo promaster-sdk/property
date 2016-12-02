@@ -36,7 +36,7 @@ export class RefContainer extends XMLContainer {
 
   finish(): void {
     this.XMLWriter.WriteEndElement();
-    super.Finish();
+    super.finish();
   }
 
   close(): void {

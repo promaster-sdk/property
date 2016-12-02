@@ -6,5 +6,5 @@ export class DocumentContainer extends XMLContainer {
   fileName: string;
   refId: string;
   contentType: string;
-  readonly _references: RefContainer = new RefContainer();
+  readonly references: RefContainer = new RefContainer();
 }

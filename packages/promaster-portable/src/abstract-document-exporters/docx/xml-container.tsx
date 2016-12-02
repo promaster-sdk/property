@@ -7,9 +7,8 @@ export type XmlWriter = any;
 export class XMLContainer {
 
   private m_XMLWriter: XmlWriter;
-/*
   private m_MemStream: MemoryStream;
-*/
+
 /*
   get  MemStream(): MemoryStream {
     if (this.m_MemStream == null) {
@@ -18,6 +17,11 @@ export class XMLContainer {
     return this.m_MemStream;
   }
 */
+
+  get memStream(): any {
+    return this.m_MemStream;
+  }
+
 
   get  XMLWriter(): XmlWriter {
     return this.m_XMLWriter;
@@ -42,7 +46,7 @@ export class XMLContainer {
     */
   }
 
-  Finish(): void {
+  finish(): void {
     this.XMLWriter.Flush();
   }
 }
