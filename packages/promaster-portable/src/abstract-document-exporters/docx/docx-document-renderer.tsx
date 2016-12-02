@@ -1,30 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Eligo.Core.Logging;
-using Eligo.Portable.AbstractDocument.Model;
-using Eligo.Portable.AbstractDocument.Model.Atoms;
-using Eligo.Portable.AbstractDocument.Model.Enums;
-using Eligo.Portable.AbstractDocument.Model.Numberings;
-using Eligo.Portable.AbstractDocument.Model.Page;
-using Eligo.Portable.AbstractDocument.Model.Properties;
-using Eligo.Portable.AbstractDocument.Model.SectionElements;
-using Eligo.Portable.AbstractDocument.Model.Styles;
-using Eligo.Portable.AbstractDocument.Model.Table;
-using Eligo.Portable.AbstractDocument.ModelBuilder;
-using Eligo.Portable.AbstractImage;
-using Eligo.Portable.Zipping;
-using Eligo.Primitives.Collections;
 
-namespace Eligo.Portable.AbstractDocument.Impl.Docx
-{
-  internal class DocxDocumentRenderer : IDocumentRenderer
+  export class DocxDocumentRenderer //extends IDocumentRenderer
   {
+  /*
     private static readonly string LogCategory = typeof(DocxDocumentRenderer).Name;
 
     private readonly ILogWriter _logWriter;
@@ -47,18 +24,15 @@ namespace Eligo.Portable.AbstractDocument.Impl.Docx
       _abstractImageExporterFactory = abstractImageExporterFactory;
     }
 
-    #region IDocumentRenderer Members
+//    #region IDocumentRenderer Members
 
     public Task RenderDocumentToStreamAsync(AbstractDoc doc, Stream outputStream)
     {
-      //var timer = Stopwatch.StartNew();
       WriteResultToStream(doc, outputStream);
-      //_logWriter.Info(LogCategory,
-      //  "Rendering with " + this.GetType().FullName + "  took " + timer.ElapsedMilliseconds + " ms");
       return TaskEx.FromResult<object>(null);
     }
 
-    #endregion
+//    #endregion
 
     private void WriteResultToStream(AbstractDoc abstractDoc, Stream resultStream)
     {
@@ -181,46 +155,45 @@ namespace Eligo.Portable.AbstractDocument.Impl.Docx
         AddDocumentToArchive(zipFiles, numberingDoc, contentTypesDoc, true);
       }
 
-      /*
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:numbering xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
-  <w:abstractNum w:abstractNumId="0">
-    <w:nsid w:val="00283020"/>
-    <w:multiLevelType w:val="hybridMultilevel"/>
-    <w:tmpl w:val="D6702D88"/>
-    <w:lvl w:ilvl="0" w:tplc="041D0019">
-      <w:start w:val="1"/>
-      <w:numFmt w:val="lowerLetter"/>
-      <w:lvlText w:val="%1."/>
-      <w:lvlJc w:val="left"/>
-      <w:pPr>
-        <w:ind w:left="1440" w:hanging="360"/>
-      </w:pPr>
-    </w:lvl>
-    <w:lvl w:ilvl="1" w:tplc="041D0019">
-      <w:start w:val="1"/>
-      <w:numFmt w:val="lowerLetter"/>
-      <w:lvlText w:val="%2."/>
-      <w:lvlJc w:val="left"/>
-      <w:pPr>
-        <w:ind w:left="2160" w:hanging="360"/>
-      </w:pPr>
-    </w:lvl>
-    <w:lvl w:ilvl="2" w:tplc="041D001B" w:tentative="1">
-      <w:start w:val="1"/>
-      <w:numFmt w:val="lowerRoman"/>
-      <w:lvlText w:val="%3."/>
-      <w:lvlJc w:val="right"/>
-      <w:pPr>
-        <w:ind w:left="2880" w:hanging="180"/>
-      </w:pPr>
-    </w:lvl>
-  </w:abstractNum>
-  <w:num w:numId="2">
-    <w:abstractNumId w:val="0"/>
-  </w:num>
-</w:numbering>
-      */
+
+//<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+//<w:numbering xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
+//  <w:abstractNum w:abstractNumId="0">
+//    <w:nsid w:val="00283020"/>
+//    <w:multiLevelType w:val="hybridMultilevel"/>
+//    <w:tmpl w:val="D6702D88"/>
+//    <w:lvl w:ilvl="0" w:tplc="041D0019">
+//      <w:start w:val="1"/>
+//      <w:numFmt w:val="lowerLetter"/>
+//      <w:lvlText w:val="%1."/>
+//      <w:lvlJc w:val="left"/>
+//      <w:pPr>
+//        <w:ind w:left="1440" w:hanging="360"/>
+//      </w:pPr>
+//    </w:lvl>
+//    <w:lvl w:ilvl="1" w:tplc="041D0019">
+//      <w:start w:val="1"/>
+//      <w:numFmt w:val="lowerLetter"/>
+//      <w:lvlText w:val="%2."/>
+//      <w:lvlJc w:val="left"/>
+//      <w:pPr>
+//        <w:ind w:left="2160" w:hanging="360"/>
+//      </w:pPr>
+//    </w:lvl>
+//    <w:lvl w:ilvl="2" w:tplc="041D001B" w:tentative="1">
+//      <w:start w:val="1"/>
+//      <w:numFmt w:val="lowerRoman"/>
+//      <w:lvlText w:val="%3."/>
+//      <w:lvlJc w:val="right"/>
+//      <w:pPr>
+//        <w:ind w:left="2880" w:hanging="180"/>
+//      </w:pPr>
+//    </w:lvl>
+//  </w:abstractNum>
+//  <w:num w:numId="2">
+//    <w:abstractNumId w:val="0"/>
+//  </w:num>
+//</w:numbering>
 
       MasterPage lastMasterPage = null;
       DocumentContainer currentHeader = null;
@@ -1085,7 +1058,5 @@ namespace Eligo.Portable.AbstractDocument.Impl.Docx
       }
       docToAdd.Close();
     }
-
+*/
   }
-
-}
