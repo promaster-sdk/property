@@ -5,7 +5,7 @@ export interface XmlWriter {
 
   WriteStartElement(localName: string): void,
   WriteStartElement(localName: string, ns: string): void,
-  WriteStartElement(prefix: string, localName: string, ns: string): void,
+  WriteStartElement(localName: string, ns: string, prefix: string): void,
 
   WriteElementString(prefix: string, localName: string, ns: string, value: string): void,
 
