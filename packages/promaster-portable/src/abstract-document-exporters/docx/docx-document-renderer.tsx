@@ -20,23 +20,13 @@ import {NumberingFormat} from "../../abstract-document/model/numberings/numberin
 import {AbstractImage} from "../../abstract-image/abstract-image";
 import * as Color from "../../abstract-image/color";
 
-export interface ILogWriter {
-}
-export interface IAbstractImageExporterFactory {
-}
 export interface IZipService {
   CreateZipFile(zipFiles: Map<string, Uint8Array>): Uint8Array,
 }
-export interface Stream {
-}
-export interface MemoryStream {
-}
-
 export interface ExportedImage<T> {
   output: T,
   format: string,
 }
-
 export interface AbstractImageExportFunc {
   <T>(format: string, image: AbstractImage, scale: number): ExportedImage<T>;
 }
@@ -44,10 +34,7 @@ export interface AbstractImageExportFunc {
 export class DocxDocumentRenderer //extends IDocumentRenderer
 {
 
-  private readonly _logWriter: ILogWriter;
   private readonly _zipService: IZipService;
-
-  private readonly _abstractImageExporterFactory: IAbstractImageExporterFactory;
 
   private readonly _abstractImageExportFunc: AbstractImageExportFunc;
 
@@ -59,20 +46,16 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   private _referenceId: number = 0;
 
-  constructor(logWriter: ILogWriter, zipService: IZipService,
-              abstractImageExporterFactory: IAbstractImageExporterFactory,
+  constructor(zipService: IZipService,
               abstractImageExportFunc: AbstractImageExportFunc) {
-    this._logWriter = logWriter;
     this._zipService = zipService;
-    this._abstractImageExporterFactory = abstractImageExporterFactory;
     this._abstractImageExportFunc = abstractImageExportFunc;
   }
 
   //    #region IDocumentRenderer Members
 
-  public RenderDocumentToStreamAsync(doc: AbstractDoc): Uint8Array {
+  public RenderDocument(doc: AbstractDoc): Uint8Array {
     const zipFiles = this.WriteResultToStream(doc);
-
     // Write the zip
     const zipBytes = this._zipService.CreateZipFile(zipFiles);
     return zipBytes;
@@ -486,7 +469,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
   }
 
-  private  InsertDateComponent(doc: AbstractDoc, xmlWriter: XmlWriter, tf: TextField.TextField): void {
+  private static InsertDateComponent(doc: AbstractDoc, xmlWriter: XmlWriter, tf: TextField.TextField): void {
     xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
     //var style = fc.GetEffectiveStyle(doc.Styles) ?? ps.TextProperties;
     const textProperties = TextField.getEffectiveStyle(doc.styles, tf).textProperties;
@@ -522,10 +505,10 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
   }
 
-  private  InsertFieldComponent(doc: AbstractDoc, xmlWriter: XmlWriter, fc: TextField.TextField): void {
+  private static InsertFieldComponent(doc: AbstractDoc, xmlWriter: XmlWriter, fc: TextField.TextField): void {
     switch (fc.fieldType) {
       case "Date":
-        this.InsertDateComponent(doc, xmlWriter, fc);
+        DocxDocumentRenderer.InsertDateComponent(doc, xmlWriter, fc);
         break;
       case "PageNumber":
         xmlWriter.WriteStartElement(DocxConstants.WordPrefix, "r", DocxConstants.WordNamespace);
@@ -563,7 +546,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
                            currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, bc: Atom): void {
     const fc = bc as TextField.TextField;
     if (fc != null)
-      this.InsertFieldComponent(doc, xmlWriter, fc);
+      DocxDocumentRenderer.InsertFieldComponent(doc, xmlWriter, fc);
     else {
       const tr = bc as TextRun.TextRun;
       if (tr != null) {
