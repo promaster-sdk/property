@@ -1000,13 +1000,13 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
                                       contentTypesDoc: DocumentContainer, insertContents: boolean): void {
 
     docToAdd.finish();
-    DocxDocumentRenderer.AddToArchive(zip, docToAdd.filePath + docToAdd.fileName, docToAdd.memStream);
+    DocxDocumentRenderer.AddToArchive(zip, docToAdd.filePath + docToAdd.fileName, docToAdd.getXmlAsUtf8ByteArray());
     if (insertContents)
       DocxDocumentRenderer.InsertDocumentContent(docToAdd.filePath + docToAdd.fileName, docToAdd.contentType, contentTypesDoc);
     if (docToAdd.references.count > 0) {
       docToAdd.references.finish();
       DocxDocumentRenderer.AddToArchive(zip, docToAdd.filePath + DocxConstants.RefPath + docToAdd.fileName + ".rels",
-        docToAdd.references.memStream);
+        docToAdd.references.getXmlAsUtf8ByteArray());
       docToAdd.references.close();
     }
     docToAdd.close();
