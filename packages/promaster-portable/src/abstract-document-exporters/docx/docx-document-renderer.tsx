@@ -18,25 +18,12 @@ import {TextAlignment} from "../../abstract-document/model/enums/text-alignment"
 import {NumberingFormat} from "../../abstract-document/model/numberings/numbering-format";
 import {AbstractImage} from "../../abstract-image/abstract-image";
 import * as Color from "../../abstract-image/color";
-
-export interface XmlWriter {
-  WriteStartDocument(standalone?: boolean): void,
-  WriteComment(text: string): void,
-  WriteStartElement(localName: string, ns: string): void,
-  WriteStartElement(prefix: string, localName: string, ns: string): void,
-  WriteEndElement(): void,
-  Flush(): void,
-  WriteAttributeString(prefix: string, localName: string, ns: string, value: string): void,
-  WriteAttributeString(localName: string, ns: string, value: string): void,
-  WriteString(text: string): void,
-  WriteElementString(prefix: string, localName: string, ns: string, value: string): void,
-  WriteAttributeString(localName: string, value: string): void,
-  WriteStartElement(localName: string): void,
-}
+import {XmlWriter} from "./xml-writer";
 
 export interface IZipService {
   CreateZipFile(zipFiles: Map<string, Uint8Array>): Uint8Array,
 }
+
 export interface ExportedImage<T> {
   output: T,
   format: string,
@@ -47,9 +34,7 @@ export interface AbstractImageExportFunc {
 
 export class DocxDocumentRenderer //extends IDocumentRenderer
 {
-
   private readonly _zipService: IZipService;
-
   private readonly _abstractImageExportFunc: AbstractImageExportFunc;
 
   private _imageContentTypesAdded: Array<any> = [];
@@ -310,7 +295,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       mainDoc.XMLWriter.WriteEndElement();
       mainDoc.XMLWriter.Flush();
       DocxDocumentRenderer.AddDocumentToArchive(zipFiles, mainDoc, contentTypesDoc, false);
-      this.AddSupportFilesContents(zipFiles, contentTypesDoc);
+      DocxDocumentRenderer.AddSupportFilesContents(zipFiles, contentTypesDoc);
     }
 
     return zipFiles;
@@ -344,12 +329,12 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     return wordNumFmt;
   }
 
-  private AddSupportFilesContents(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
+  private static AddSupportFilesContents(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
     DocxDocumentRenderer.AddHeadRef(zip);
-    this.AddContentTypes(zip, contentTypesDoc);
+    DocxDocumentRenderer.AddContentTypes(zip, contentTypesDoc);
   }
 
-  private AddContentTypes(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
+  private static AddContentTypes(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
     DocxDocumentRenderer.InsertDefaultContentTypes(contentTypesDoc);
     contentTypesDoc.XMLWriter.WriteEndElement(); //Avslutar types
     DocxDocumentRenderer.AddDocumentToArchive(zip, contentTypesDoc, contentTypesDoc, false);
