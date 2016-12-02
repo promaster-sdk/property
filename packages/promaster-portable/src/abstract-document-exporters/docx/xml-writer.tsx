@@ -1,27 +1,24 @@
 
-export interface XmlWriter {
-  WriteStartDocument(standalone?: boolean): void,
-  WriteComment(text: string): void,
+// export interface XmlWriter {
+//   WriteStartDocument(standalone?: boolean): void,
+//   WriteComment(text: string): void,
+//
+//   WriteStartElement(localName: string): void,
+//   WriteStartElement(localName: string, ns: string): void,
+//   WriteStartElement(localName: string, ns: string, prefix: string): void,
+//
+//   WriteElementString(prefix: string, localName: string, ns: string, value: string): void,
+//
+//   WriteAttributeString(localName: string, value: string): void,
+//   WriteAttributeString(localName: string, value: string, ns: string): void,
+//   WriteAttributeString(localName: string, value: string, ns: string, prefix: string): void,
+//
+//   WriteEndElement(): void,
+//   Flush(): void,
+//   WriteString(text: string): void,
+// }
 
-  WriteStartElement(localName: string): void,
-  WriteStartElement(localName: string, ns: string): void,
-  WriteStartElement(localName: string, ns: string, prefix: string): void,
-
-  WriteElementString(prefix: string, localName: string, ns: string, value: string): void,
-
-  WriteAttributeString(localName: string, value: string): void,
-  WriteAttributeString(localName: string, value: string, ns: string): void,
-  WriteAttributeString(localName: string, value: string, ns: string, prefix: string): void,
-
-  WriteEndElement(): void,
-  Flush(): void,
-  WriteString(text: string): void,
-}
-
-//console.log(`${prefix}, ${localName}, ${ns}, ${value}`);
-
-/*
-class XmlWriterImpl implements XmlWriter {
+export class XmlWriter {
 
   WriteStartDocument(standalone?: boolean): void {
     console.log(`${standalone}`);
@@ -33,9 +30,9 @@ class XmlWriterImpl implements XmlWriter {
 
   WriteStartElement(localName: string): void;
   WriteStartElement(localName: string, ns: string): void;
-  WriteStartElement(prefix: string, localName: string, ns: string): void;
-  WriteStartElement(localName: string, ns?: string, ns?: string): void {
-    console.log(`${prefix}, ${localName}, ${ns}, ${value}`);
+  WriteStartElement(localName: string, ns: string, prefix: string): void;
+  WriteStartElement(localName: string, ns?: string, prefix?: string): void {
+    console.log(`${localName}, ${ns}, ${prefix}`);
   }
 
   WriteElementString(prefix: string, localName: string, ns: string, value: string): void {
@@ -43,10 +40,10 @@ class XmlWriterImpl implements XmlWriter {
   }
 
   WriteAttributeString(localName: string, value: string): void;
-  WriteAttributeString(localName: string, ns: string, value: string): void;
-  WriteAttributeString(prefix: string, localName: string, ns: string, value: string): void;
-  WriteAttributeString(localName: string, value: string, value?: string, value?: string): void {
-    console.log(`${prefix}, ${localName}, ${ns}, ${value}`);
+  WriteAttributeString(localName: string, value: string, ns: string): void;
+  WriteAttributeString(localName: string, value: string, ns: string, prefix: string): void;
+  WriteAttributeString(localName: string, value: string, ns?: string, prefix?: string): void {
+    console.log(`${localName}, ${value}, ${ns}, ${prefix}`);
   }
 
   WriteEndElement(): void {
@@ -59,6 +56,5 @@ class XmlWriterImpl implements XmlWriter {
     console.log(`${text}`);
   }
 
-
 }
-  */
+
