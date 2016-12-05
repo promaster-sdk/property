@@ -10,3 +10,10 @@ export function createTableProperties(alignment: TableAlignment | undefined): Ta
   };
 }
 
+export function overrideWith(overrider: TableProperties, toOverride: TableProperties): TableProperties {
+  if (!overrider)
+    return toOverride;
+  return createTableProperties(
+    overrider.alignment || toOverride.alignment
+  );
+}

@@ -31,13 +31,13 @@ export function getEffectiveStyle2<TStyle extends Style>(styles: Indexer<StyleKe
         effective = ParagraphStyle.overrideWith(style, effective as ParagraphStyle.ParagraphStyle);
         break;
       case "TableCellStyle":
-        // effective = TableCellStyle.overrideWith(style, effective as TableCellStyle.TableCellStyle);
+        effective = TableCellStyle.overrideWith(style, effective as TableCellStyle.TableCellStyle);
         break;
       case "TableStyle":
-        // effective = TableStyle.overrideWith(style, effective as TableStyle.TableStyle);
+        effective = TableStyle.overrideWith(style, effective as TableStyle.TableStyle);
         break;
       case "TextStyle":
-        // effective = TextStyle.overrideWith(style, effective as TextStyle.TextStyle);
+        effective = TextStyle.overrideWith(style, effective as TextStyle.TextStyle);
         break;
       default:
         exhaustiveCheck(style);
