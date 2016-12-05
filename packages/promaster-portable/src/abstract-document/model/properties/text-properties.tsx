@@ -28,3 +28,19 @@ export function createTextProperties(fontFamily: string,
     superScript,
   }
 }
+
+export function overrideWith(overrider: TextProperties, toOverride: TextProperties): TextProperties {
+  if (!overrider)
+    return toOverride;
+  return createTextProperties(
+    overrider.fontFamily || toOverride.fontFamily,
+    overrider.fontSize || toOverride.fontSize,
+    overrider.underline || toOverride.underline,
+    overrider.bold || toOverride.bold,
+    overrider.italic || toOverride.italic,
+    overrider.color || toOverride.color,
+    overrider.subScript || toOverride.subScript,
+    overrider.superScript || toOverride.superScript
+  );
+}
+

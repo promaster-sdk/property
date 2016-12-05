@@ -15,3 +15,13 @@ export function createParagraphProperties(alignment: TextAlignment | undefined, 
     spacingAfter,
   }
 }
+
+export function overrideWith(overrider: ParagraphProperties, toOverride: ParagraphProperties): ParagraphProperties {
+  if (!overrider)
+    return toOverride;
+  return createParagraphProperties(
+    overrider.alignment || toOverride.alignment,
+    overrider.spacingBefore || toOverride.spacingBefore,
+    overrider.spacingAfter || toOverride.spacingAfter
+  );
+}
