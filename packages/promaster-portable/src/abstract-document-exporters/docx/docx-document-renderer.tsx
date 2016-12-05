@@ -500,7 +500,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
         //var style = fc.GetEffectiveStyle(doc.Styles) ?? ps.TextProperties;
         const style = TextField.getEffectiveStyle(doc.styles, fc).textProperties;
         DocxDocumentRenderer.InsertRunProperty(xmlWriter, style);
-        xmlWriter.WriteElementString(DocxConstants.WordPrefix, "pgNum", DocxConstants.WordNamespace, "");
+        xmlWriter.WriteElementString("pgNum", DocxConstants.WordNamespace, DocxConstants.WordPrefix, "");
         xmlWriter.WriteEndElement();
         break;
       default:
@@ -576,7 +576,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       xmlWriter.WriteEndElement();
     }
 
-    xmlWriter.WriteElementString(DocxConstants.WordPrefix, "keepLines", DocxConstants.WordNamespace, "");
+    xmlWriter.WriteElementString("keepLines", DocxConstants.WordNamespace, DocxConstants.WordPrefix, "");
     //var effectiveStyle = para.GetEffectiveStyle(doc.Styles);
     DocxDocumentRenderer.InsertJc(xmlWriter, effectiveParaProps.alignment);
     xmlWriter.WriteEndElement();
@@ -812,12 +812,12 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteAttributeString("val", "true", DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
     if (textProperties.bold) {
-      xmlWriter.WriteElementString(DocxConstants.WordPrefix, "b", DocxConstants.WordNamespace, "");
-      xmlWriter.WriteElementString(DocxConstants.WordPrefix, "bCs", DocxConstants.WordNamespace, "");
+      xmlWriter.WriteElementString("b", DocxConstants.WordNamespace, DocxConstants.WordPrefix, "");
+      xmlWriter.WriteElementString("bCs", DocxConstants.WordNamespace, DocxConstants.WordPrefix, "");
     }
     if (textProperties.italic) {
-      xmlWriter.WriteElementString(DocxConstants.WordPrefix, "i", DocxConstants.WordNamespace, "");
-      xmlWriter.WriteElementString(DocxConstants.WordPrefix, "iCs", DocxConstants.WordNamespace, "");
+      xmlWriter.WriteElementString("i", DocxConstants.WordNamespace, DocxConstants.WordPrefix, "");
+      xmlWriter.WriteElementString("iCs", DocxConstants.WordNamespace, DocxConstants.WordPrefix, "");
     }
     if (textProperties.underline) {
       xmlWriter.WriteStartElement("u", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
