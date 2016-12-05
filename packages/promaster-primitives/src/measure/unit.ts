@@ -17,12 +17,12 @@ import {Quantity, Dimensionless} from "./quantity";
  * Units raised at rational powers are also supported. For example the cubic root of liter
  * is a unit compatible with meter.
  */
-export interface Unit<T extends Quantity> {
-  readonly quantity: Quantity,
-  readonly innerUnit: InnerUnit<T>,
-}
+// export interface Unit<T extends Quantity> {
+//   readonly quantity: Quantity,
+//   readonly innerUnit: InnerUnit<T>,
+// }
 
-export type InnerUnit<T extends Quantity> =
+export type Unit<T extends Quantity> =
   AlternateUnit<T>
     | BaseUnit<T>
     | ProductUnit<T>
@@ -38,6 +38,7 @@ export type InnerUnit<T extends Quantity> =
  */
 export interface BaseUnit<T extends Quantity> {
   readonly type: "base",
+  readonly quantity: Quantity,
   /** Holds the unique symbol for this base unit. */
   readonly symbol: string,
 }
@@ -48,6 +49,7 @@ export interface BaseUnit<T extends Quantity> {
  */
 export interface AlternateUnit<T extends Quantity> {
   readonly type: "alternate",
+  readonly quantity: Quantity,
   readonly symbol: string,
   /** Holds the parent unit (a system unit). */
   readonly parent: Unit<any>,
@@ -72,6 +74,7 @@ export interface AlternateUnit<T extends Quantity> {
  */
 export interface TransformedUnit<T extends Quantity> {
   readonly type: "transformed",
+  readonly quantity: Quantity,
   /** Holds the parent unit (not a transformed unit). */
   readonly parentUnit: Unit<T>,
   /** Holds the converter to the parent unit. */
@@ -87,6 +90,7 @@ export interface TransformedUnit<T extends Quantity> {
  */
 export interface ProductUnit<T extends Quantity> {
   readonly type: "product",
+  readonly quantity: Quantity,
   /// Holds the units composing this product unit.
   readonly elements: Array<Element>,
 }
@@ -144,7 +148,7 @@ const identityConverter: UnitConverter = createIdentityConverter();
  * @param symbol The symbol of this base unit.
  */
 export function createBase<T extends Quantity>(quantity: T, symbol: string): Unit<T> {
-  return create(quantity, {type: "base", symbol} as BaseUnit<T>);
+  return {quantity, type: "base", symbol};
 }
 
 /**
@@ -154,7 +158,7 @@ export function createBase<T extends Quantity>(quantity: T, symbol: string): Uni
  * @param parent Parent the system unit from which this alternate unit is derived.
  */
 export function createAlternate<T extends Quantity>(symbol: string, parent: Unit<any>): Unit<T> {
-  return create(parent.quantity, {type: "alternate", symbol, parent} as AlternateUnit<T>);
+  return {quantity: parent.quantity, type: "alternate", symbol, parent};
 }
 
 /**
@@ -230,15 +234,15 @@ function getConverter<T extends Quantity>(fromUnit: Unit<T>, toUnit: Unit<any>):
 // Returns the converter from this unit to its system unit.
 function toStandardUnitConverter<T extends Quantity>(unit: Unit<T>): UnitConverter {
 
-  switch (unit.innerUnit.type) {
+  switch (unit.type) {
     case "alternate":
-      return toStandardUnitConverter(unit.innerUnit.parent);
+      return toStandardUnitConverter(unit.parent);
     case "base":
       return identityConverter;
     case "product":
       return productUnitToStandardUnit(unit);
     case "transformed":
-      return concatenateConverters(unit.innerUnit.toParentUnitConverter, toStandardUnitConverter(unit.innerUnit.parentUnit));
+      return concatenateConverters(unit.toParentUnitConverter, toStandardUnitConverter(unit.parentUnit));
   }
   throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
 }
@@ -261,12 +265,12 @@ function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>):
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
 function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter): Unit<T> {
-  return create(parentUnit.quantity, {type: "transformed", parentUnit, toParentUnitConverter} as TransformedUnit<T>);
+  return {quantity: parentUnit.quantity, type: "transformed", parentUnit, toParentUnitConverter};
 }
 
-function create<T extends Quantity>(quantity: T, innerUnit: InnerUnit<T>): Unit<T> {
-  return {quantity, innerUnit}
-}
+// function create<T extends Quantity>(quantity: T, innerUnit: Unit<T>): Unit<T> {
+//   return {quantity, innerUnit}
+// }
 
 /**
  * Creates the unit defined from the product of the specifed elements.
@@ -340,10 +344,10 @@ function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: 
 }
 
 function getElements(unit: Unit<any>) {
-  if (unit.innerUnit.type === "product") {
-    return unit.innerUnit.elements;
+  if (unit.type === "product") {
+    return unit.elements;
   }
-  else if (unit.innerUnit.type === "base" || unit.innerUnit.type === "transformed" || unit.innerUnit.type == "alternate") {
+  else if (unit.type === "base" || unit.type === "transformed" || unit.type == "alternate") {
     // Base units has one implicit element of the unit which they describe
     return [createElement(unit, 1)];
   }
@@ -351,7 +355,7 @@ function getElements(unit: Unit<any>) {
   //   return [];
   // }
   else {
-    const _exhaustiveCheck: never = unit.innerUnit;
+    const _exhaustiveCheck: never = unit;
   }
 }
 
@@ -372,7 +376,7 @@ function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConve
 }
 
 function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Element>): Unit<T> {
-  return create(quantity, {type: "product", elements} as ProductUnit<T>);
+  return {quantity, type: "product", elements};
 }
 
 /**
@@ -450,5 +454,5 @@ function concatenateConverters(concatConverter: UnitConverter, converter: UnitCo
 
 /** Used solely to create ONE instance. */
 function createOne(): Unit<Dimensionless> {
-  return create("Dimensionless", {type: "product", elements: []} as ProductUnit<Dimensionless>);
+  return {quantity: "Dimensionless", type: "product", elements: []};
 }

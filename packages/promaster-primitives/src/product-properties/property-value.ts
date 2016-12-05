@@ -54,7 +54,7 @@ export function fromAmount<T extends Quantity>(amountValue: Amount.Amount<T>): P
   let type;
   let value;
   if (Amount.isQuantity<Discrete>("Discrete", amountValue)) {
-    value = Amount.valueAs<Discrete>(Units.Integer, amountValue);
+    value = Amount.valueAs(Units.Integer, amountValue);
     type = "integer";
   }
   else {

@@ -9,7 +9,7 @@ var identityConverter = createIdentityConverter();
  * @param symbol The symbol of this base unit.
  */
 function createBase(quantity, symbol) {
-    return create(quantity, { type: "base", symbol: symbol });
+    return { quantity: quantity, type: "base", symbol: symbol };
 }
 exports.createBase = createBase;
 /**
@@ -19,7 +19,7 @@ exports.createBase = createBase;
  * @param parent Parent the system unit from which this alternate unit is derived.
  */
 function createAlternate(symbol, parent) {
-    return create(parent.quantity, { type: "alternate", symbol: symbol, parent: parent });
+    return { quantity: parent.quantity, type: "alternate", symbol: symbol, parent: parent };
 }
 exports.createAlternate = createAlternate;
 /**
@@ -90,15 +90,15 @@ function getConverter(fromUnit, toUnit) {
 }
 // Returns the converter from this unit to its system unit.
 function toStandardUnitConverter(unit) {
-    switch (unit.innerUnit.type) {
+    switch (unit.type) {
         case "alternate":
-            return toStandardUnitConverter(unit.innerUnit.parent);
+            return toStandardUnitConverter(unit.parent);
         case "base":
             return identityConverter;
         case "product":
             return productUnitToStandardUnit(unit);
         case "transformed":
-            return concatenateConverters(unit.innerUnit.toParentUnitConverter, toStandardUnitConverter(unit.innerUnit.parentUnit));
+            return concatenateConverters(unit.toParentUnitConverter, toStandardUnitConverter(unit.parentUnit));
     }
     throw new Error("Unknown innerUnit " + JSON.stringify(unit));
 }
@@ -119,11 +119,11 @@ function transform(operation, unit) {
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
 function createTransformedUnit(parentUnit, toParentUnitConverter) {
-    return create(parentUnit.quantity, { type: "transformed", parentUnit: parentUnit, toParentUnitConverter: toParentUnitConverter });
+    return { quantity: parentUnit.quantity, type: "transformed", parentUnit: parentUnit, toParentUnitConverter: toParentUnitConverter };
 }
-function create(quantity, innerUnit) {
-    return { quantity: quantity, innerUnit: innerUnit };
-}
+// function create<T extends Quantity>(quantity: T, innerUnit: Unit<T>): Unit<T> {
+//   return {quantity, innerUnit}
+// }
 /**
  * Creates the unit defined from the product of the specifed elements.
  * @param quantity Quantity of the resulting unit.
@@ -187,15 +187,15 @@ function quotient(quantity, left, right) {
     return fromProduct(quantity, leftelements, invertedRightelements);
 }
 function getElements(unit) {
-    if (unit.innerUnit.type === "product") {
-        return unit.innerUnit.elements;
+    if (unit.type === "product") {
+        return unit.elements;
     }
-    else if (unit.innerUnit.type === "base" || unit.innerUnit.type === "transformed" || unit.innerUnit.type == "alternate") {
+    else if (unit.type === "base" || unit.type === "transformed" || unit.type == "alternate") {
         // Base units has one implicit element of the unit which they describe
         return [createElement(unit, 1)];
     }
     else {
-        var _exhaustiveCheck = unit.innerUnit;
+        var _exhaustiveCheck = unit;
     }
 }
 function productUnitToStandardUnit(unit) {
@@ -215,7 +215,7 @@ function productUnitToStandardUnit(unit) {
     return converter;
 }
 function createProductUnit(quantity, elements) {
-    return create(quantity, { type: "product", elements: elements });
+    return { quantity: quantity, type: "product", elements: elements };
 }
 /**
  * Creates a compound converter resulting from the combined
@@ -285,6 +285,6 @@ function concatenateConverters(concatConverter, converter) {
 }
 /** Used solely to create ONE instance. */
 function createOne() {
-    return create("Dimensionless", { type: "product", elements: [] });
+    return { quantity: "Dimensionless", type: "product", elements: [] };
 }
 //# sourceMappingURL=unit.js.map

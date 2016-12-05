@@ -8,12 +8,12 @@ describe('derived units', () => {
   it('Meter times Meter should return unit with 1 element of pow 2', () => {
 
     const newUnit = Unit.times("Length", Units.Meter, Units.Meter);
-    if (newUnit.innerUnit.type === "product") {
-      assert.equal(newUnit.innerUnit.elements.length, 1, "Wrong elements length");
-      assert.equal(newUnit.innerUnit.elements[0].pow, 2, "Wrong pow");
+    if (newUnit.type === "product") {
+      assert.equal(newUnit.elements.length, 1, "Wrong elements length");
+      assert.equal(newUnit.elements[0].pow, 2, "Wrong pow");
     }
     else {
-      assert.fail(newUnit.innerUnit.type, "product", "Expected the type of unit to be 'product'");
+      assert.fail(newUnit.type, "product", "Expected the type of unit to be 'product'");
     }
 
   });
@@ -21,14 +21,14 @@ describe('derived units', () => {
   it("CubicMeter by Second should return correct product unit", () => {
 
     const newUnit = Unit.divide("VolumeFlow", Units.CubicMeter, Units.Second);
-    if (newUnit.innerUnit.type === "product") {
-      assert.deepEqual(newUnit.innerUnit.elements, [
-        {pow: 3, unit: {quantity: "Length", innerUnit: {type: "base", symbol: "m"}}},
-        {pow: -1, unit: {quantity: "Duration", innerUnit: {type: "base", symbol: "s"}}},
+    if (newUnit.type === "product") {
+      assert.deepEqual(newUnit.elements, [
+        {pow: 3, unit: {quantity: "Length", type: "base", symbol: "m"}},
+        {pow: -1, unit: {quantity: "Duration", type: "base", symbol: "s"}},
       ], "Wrong elements");
     }
     else {
-      assert.fail(newUnit.innerUnit.type, "product", "Expected the type of unit to be 'product'");
+      assert.fail(newUnit.type, "product", "Expected the type of unit to be 'product'");
     }
 
   });
@@ -36,40 +36,38 @@ describe('derived units', () => {
   it("CubicMeter by Hour should return correct product unit", () => {
 
     const newUnit = Unit.divide("VolumeFlow", Units.CubicMeter, Units.Hour);
-    if (newUnit.innerUnit.type === "product") {
-      assert.deepEqual(newUnit.innerUnit.elements, [
-        {pow: 3, unit: {quantity: "Length", innerUnit: {type: "base", symbol: "m"}}},
+    if (newUnit.type === "product") {
+      assert.deepEqual(newUnit.elements, [
+        {pow: 3, unit: {quantity: "Length", type: "base", symbol: "m"}},
         {
           pow: -1,
           unit: {
             quantity: "Duration",
-            innerUnit: {
+            type: "transformed",
+            parentUnit: {
+              quantity: "Duration",
               type: "transformed",
               parentUnit: {
                 quantity: "Duration",
-                innerUnit: {
-                  type: "transformed",
-                  parentUnit: {
-                    quantity: "Duration",
-                    innerUnit: {type: "base", symbol: "s"}
-                  },
-                  toParentUnitConverter: {
-                    type: "factor",
-                    factor: 60
-                  },
-                }
+                type: "base",
+                symbol: "s"
               },
               toParentUnitConverter: {
                 type: "factor",
                 factor: 60
-              }
+              },
+            },
+            toParentUnitConverter: {
+              type: "factor",
+              factor: 60
             }
+
           }
         }
       ], "Wrong elements");
     }
     else {
-      assert.fail(newUnit.innerUnit.type, "product", "Expected the type of unit to be 'product'");
+      assert.fail(newUnit.type, "product", "Expected the type of unit to be 'product'");
     }
 
   });

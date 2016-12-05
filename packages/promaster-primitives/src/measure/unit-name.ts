@@ -18,11 +18,11 @@ export function getName<T extends Quantity>(unit: Unit.Unit<T>): string {
 }
 
 function buildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): string {
-  switch (unit.innerUnit.type) {
+  switch (unit.type) {
     case "alternate":
-      return unit.innerUnit.symbol;
+      return unit.symbol;
     case "base":
-      return unit.innerUnit.symbol;
+      return unit.symbol;
     case "product":
       return productUnitBuildDerivedName(unit);
     case "transformed":
@@ -62,8 +62,8 @@ function productUnitBuildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): st
 }
 
 function getElements(unit: Unit.Unit<any>) {
-  if (unit.innerUnit.type === "product") {
-    return unit.innerUnit.elements;
+  if (unit.type === "product") {
+    return unit.elements;
   }
   return [];
 }

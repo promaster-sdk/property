@@ -16,11 +16,7 @@ import { Quantity, Dimensionless } from "./quantity";
  * Units raised at rational powers are also supported. For example the cubic root of liter
  * is a unit compatible with meter.
  */
-export interface Unit<T extends Quantity> {
-    readonly quantity: Quantity;
-    readonly innerUnit: InnerUnit<T>;
-}
-export declare type InnerUnit<T extends Quantity> = AlternateUnit<T> | BaseUnit<T> | ProductUnit<T> | TransformedUnit<T>;
+export declare type Unit<T extends Quantity> = AlternateUnit<T> | BaseUnit<T> | ProductUnit<T> | TransformedUnit<T>;
 /**
  * This record represents the building blocks on top of which all others
  * units are created.
@@ -31,6 +27,7 @@ export declare type InnerUnit<T extends Quantity> = AlternateUnit<T> | BaseUnit<
  */
 export interface BaseUnit<T extends Quantity> {
     readonly type: "base";
+    readonly quantity: Quantity;
     /** Holds the unique symbol for this base unit. */
     readonly symbol: string;
 }
@@ -40,6 +37,7 @@ export interface BaseUnit<T extends Quantity> {
  */
 export interface AlternateUnit<T extends Quantity> {
     readonly type: "alternate";
+    readonly quantity: Quantity;
     readonly symbol: string;
     /** Holds the parent unit (a system unit). */
     readonly parent: Unit<any>;
@@ -63,6 +61,7 @@ export interface AlternateUnit<T extends Quantity> {
  */
 export interface TransformedUnit<T extends Quantity> {
     readonly type: "transformed";
+    readonly quantity: Quantity;
     /** Holds the parent unit (not a transformed unit). */
     readonly parentUnit: Unit<T>;
     /** Holds the converter to the parent unit. */
@@ -77,6 +76,7 @@ export interface TransformedUnit<T extends Quantity> {
  */
 export interface ProductUnit<T extends Quantity> {
     readonly type: "product";
+    readonly quantity: Quantity;
     readonly elements: Array<Element>;
 }
 /** Represents a rational power of a single unit. */

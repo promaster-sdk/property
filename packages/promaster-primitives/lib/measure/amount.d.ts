@@ -52,4 +52,4 @@ export declare function abs<T extends Quantity>(amount: Amount<T>): Amount<T>;
  * @param toUnit The unit to get the amount in.
  * @param amount The amount to get the value from.
  */
-export declare function valueAs<T extends Quantity>(toUnit: Unit.Unit<T>, amount: Amount<T>): number;
+export declare function valueAs(toUnit: Unit.Unit<any>, amount: Amount<any>): number;

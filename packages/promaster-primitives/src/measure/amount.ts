@@ -50,18 +50,18 @@ export function isQuantity<T extends Quantity>(quantity: T, amount: Amount<T>): 
  * @returns left + right
  */
 export function plus<T extends Quantity>(left: Amount<T>, right: Amount<T>): Amount<T> {
-  return _factory<T>(left.value + valueAs<T>(left.unit, right), left.unit);
+  return _factory<T>(left.value + valueAs(left.unit, right), left.unit);
 }
 
 export function minus<T extends Quantity>(left: Amount<T>, right: Amount<T>): Amount<T> {
-  return _factory<T>(left.value - valueAs<T>(left.unit, right), left.unit);
+  return _factory<T>(left.value - valueAs(left.unit, right), left.unit);
 }
 
 export function times<T extends Quantity>(left: Amount<T>, right: number | Amount<Dimensionless>): Amount<T> {
   if (typeof right === "number")
     return _factory<T>(left.value * right, left.unit);
   else if (right.unit.quantity === "Dimensionless")
-    return _factory<T>(left.value * valueAs<T>(Units.One, right), left.unit);
+    return _factory<T>(left.value * valueAs(Units.One, right), left.unit);
   else
     throw new Error(`Cannot perform '*' operation with value of type '${right}'.`);
 }
@@ -70,7 +70,7 @@ export function divide<T extends Quantity>(left: Amount<T>, right: number | Amou
   if (typeof right === "number")
     return _factory<T>(left.value / right, left.unit);
   else if (right.unit.quantity === "Dimensionless")
-    return _factory<T>(left.value / valueAs<T>(Units.One, right), left.unit);
+    return _factory<T>(left.value / valueAs(Units.One, right), left.unit);
   else
     throw new Error(`Cannot perform '*' operation with value of type '${right}'.`);
 }
@@ -130,7 +130,7 @@ export function abs<T extends Quantity>(amount: Amount<T>): Amount<T> {
  * @param toUnit The unit to get the amount in.
  * @param amount The amount to get the value from.
  */
-export function valueAs<T extends Quantity>(toUnit: Unit.Unit<T>, amount: Amount<T>): number {
+export function valueAs(toUnit: Unit.Unit<any>, amount: Amount<any>): number {
   return Unit.convert(amount.value, amount.unit, toUnit);
 }
 
@@ -190,6 +190,6 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>,
   if(Unit.equals(left.unit, right.unit)) {
     return CompareUtils.compareNumbers(left.value, right.value, left.decimalCount, right.decimalCount);
   }
-  const rightValue = valueAs<T2>(left.unit, right);
+  const rightValue = valueAs(left.unit, right);
   return CompareUtils.compareNumbers(left.value, rightValue, left.decimalCount, undefined);
 }

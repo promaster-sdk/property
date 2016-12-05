@@ -15,11 +15,11 @@ function getName(unit) {
 }
 exports.getName = getName;
 function buildDerivedName(unit) {
-    switch (unit.innerUnit.type) {
+    switch (unit.type) {
         case "alternate":
-            return unit.innerUnit.symbol;
+            return unit.symbol;
         case "base":
-            return unit.innerUnit.symbol;
+            return unit.symbol;
         case "product":
             return productUnitBuildDerivedName(unit);
         case "transformed":
@@ -52,8 +52,8 @@ function productUnitBuildDerivedName(unit) {
     return name;
 }
 function getElements(unit) {
-    if (unit.innerUnit.type === "product") {
-        return unit.innerUnit.elements;
+    if (unit.type === "product") {
+        return unit.elements;
     }
     return [];
 }
