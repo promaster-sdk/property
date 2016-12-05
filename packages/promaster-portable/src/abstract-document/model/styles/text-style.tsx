@@ -1,8 +1,8 @@
-import {Style} from "./style";
 import {TextProperties} from "../properties/text-properties";
 
-export interface TextStyle extends Style {
+export interface TextStyle {
   type: "TextStyle",
+  basedOn: string | undefined,
   textProperties: TextProperties,
 }
 

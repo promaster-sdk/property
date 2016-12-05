@@ -1,8 +1,8 @@
 import {TableProperties} from "../properties/table-properties";
-import {Style} from "./style";
 
-export interface TableStyle extends Style {
+export interface TableStyle {
   type: "TableStyle",
+  basedOn: string | undefined,
   tableProperties: TableProperties,
 }
 

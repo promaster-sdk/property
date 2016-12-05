@@ -1,9 +1,9 @@
 import * as TextProperties from "../properties/text-properties";
 import * as ParagraphProperties from "../properties/paragraph-properties";
-import {Style} from "./style";
 
-export interface ParagraphStyle extends Style {
+export interface ParagraphStyle {
   type: "ParagraphStyle",
+  basedOn: string | undefined,
   paragraphProperties: ParagraphProperties.ParagraphProperties,
   textProperties: TextProperties.TextProperties,
 }
@@ -18,7 +18,7 @@ export function createParagraphStyle(basedOn: string | undefined, paragraphPrope
   };
 }
 
-export function overrideWith(overrider: ParagraphStyle, toOverride: ParagraphStyle): Style {
+export function overrideWith(overrider: ParagraphStyle, toOverride: ParagraphStyle): ParagraphStyle {
   return createParagraphStyle(
     undefined,
     ParagraphProperties.overrideWith(overrider.paragraphProperties, toOverride.paragraphProperties),

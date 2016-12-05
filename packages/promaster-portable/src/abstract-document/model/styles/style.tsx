@@ -1,19 +1,16 @@
 import {StyleKey, createStyleKey} from "./style-key";
 import {Indexer} from "../abstract-doc";
-// import * as ParagraphStyle from "./paragraph-style";
-// import * as TableCellStyle from "./table-cell-style";
-// import {TableStyle} from "./table-style";
+import * as ParagraphStyle from "./paragraph-style";
+import * as TableCellStyle from "./table-cell-style";
+import * as TableStyle from "./table-style";
+import * as TextStyle from "./text-style";
+import {exhaustiveCheck} from "../../../utils/index";
 
- export type StyleType = "ParagraphStyle" | "TableCellStyle" | "TableStyle" | "TextStyle";
-//
-// export type Style = ParagraphStyle.ParagraphStyle | TableCellStyle.TableCellStyle | TableStyle;
-// export type Style3 = ParagraphStyle.ParagraphStyle | TableCellStyle. | TableStyle;
-
-export interface Style {
-  type: StyleType,
-  basedOn: string | undefined,
-}
-
+export type Style =
+  ParagraphStyle.ParagraphStyle
+    | TableCellStyle.TableCellStyle
+    | TableStyle.TableStyle
+    | TextStyle.TextStyle;
 
 export function getEffectiveStyle2<TStyle extends Style>(styles: Indexer<StyleKey, Style>, style: Style): TStyle {
 
@@ -29,12 +26,21 @@ export function getEffectiveStyle2<TStyle extends Style>(styles: Indexer<StyleKe
   let effective: Style = styles[createStyleKey(styleType, "Default")];
   while (styleStack.length > 0) {
     style = styleStack.pop() as Style;
-    switch ((style as Style).type) {
+    switch (style.type) {
       case "ParagraphStyle":
-        //effective = ParagraphStyle.overrideWith(style, effective);
+        effective = ParagraphStyle.overrideWith(style, effective as ParagraphStyle.ParagraphStyle);
+        break;
+      case "TableCellStyle":
+        // effective = TableCellStyle.overrideWith(style, effective as TableCellStyle.TableCellStyle);
+        break;
+      case "TableStyle":
+        // effective = TableStyle.overrideWith(style, effective as TableStyle.TableStyle);
+        break;
+      case "TextStyle":
+        // effective = TextStyle.overrideWith(style, effective as TextStyle.TextStyle);
         break;
       default:
-        //effective = effective.OverrideWith(style, effective) as TStyle;
+        exhaustiveCheck(style);
     }
   }
   return effective as TStyle;
