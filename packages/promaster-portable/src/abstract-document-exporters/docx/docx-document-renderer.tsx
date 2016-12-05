@@ -6,6 +6,8 @@ import * as DocxConstants from "./docx-constants";
 import * as TextField from "../../abstract-document/model/atoms/text-field";
 import * as TextRun from "../../abstract-document/model/atoms/text-run";
 import * as TableCell from "../../abstract-document/model/table/table-cell";
+import * as Color from "../../abstract-image/color";
+import * as PageStyle from "../../abstract-document/model/styles/page-style";
 import {KeepTogether} from "../../abstract-document/model/section-elements/keep-together";
 import {SectionElement} from "../../abstract-document/model/section-elements/section-element";
 import {Image} from "../../abstract-document/model/atoms/image";
@@ -17,7 +19,6 @@ import {TableCellPropertiesBuilder} from "../../abstract-document/model-builder/
 import {TextAlignment} from "../../abstract-document/model/enums/text-alignment";
 import {NumberingFormat} from "../../abstract-document/model/numberings/numbering-format";
 import {AbstractImage} from "../../abstract-image/abstract-image";
-import * as Color from "../../abstract-image/color";
 import {XmlWriter} from "./xml-writer";
 
 export interface IZipService {
@@ -53,8 +54,8 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   //    #region IDocumentRenderer Members
 
-  public RenderDocument(doc: AbstractDoc): Uint8Array {
-    const zipFiles = this.WriteResultToStream(doc);
+  RenderDocument(doc: AbstractDoc): Uint8Array {
+    const zipFiles = this.WriteResultToZipDictionary(doc);
     // Write the zip
     const zipBytes = this._zipService.CreateZipFile(zipFiles);
     return zipBytes;
@@ -62,7 +63,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   //    #endregion
 
-  private WriteResultToStream(abstractDoc: AbstractDoc): Map<string, Uint8Array> {
+  WriteResultToZipDictionary(abstractDoc: AbstractDoc): Map<string, Uint8Array> {
 
     this._imageContentTypesAdded = [];
     this._imageHash.clear();
@@ -439,8 +440,8 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       xmlWriter.WriteEndElement();
     }
     xmlWriter.WriteStartElement("pgSz", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("w", (ps.style.width * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("h", (ps.style.height * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("w", (PageStyle.getWidth(ps.style)  * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("h", (PageStyle.getHeight(ps.style) * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     if (ps.style.orientation == "Landscape")
       xmlWriter.WriteAttributeString("orient", "landscape", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteEndElement();

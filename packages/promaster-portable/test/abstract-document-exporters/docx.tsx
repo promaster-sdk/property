@@ -1,5 +1,6 @@
 import {assert} from "chai";
 import {XmlWriter} from "../../src/abstract-document-exporters/docx/xml-writer";
+import {DocxDocumentRenderer} from "../../src/abstract-document-exporters/docx/docx-document-renderer";
 
 describe('XmlWriter', () => {
 
@@ -29,5 +30,16 @@ describe('XmlWriter', () => {
     writer.WriteEndElement();
     assert.equal(`<localName localName="value">Some content</localName>`, writer.getXml());
   });
+
+});
+
+describe('DocxDocumentRenderer', () => {
+
+  it("should write hello world document", () => {
+    const exporter = new DocxDocumentRenderer(null, null);
+    const doc = null;
+    exporter.WriteResultToZipDictionary(doc);
+  });
+
 
 });
