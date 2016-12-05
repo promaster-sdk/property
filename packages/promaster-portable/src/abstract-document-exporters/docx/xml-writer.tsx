@@ -33,6 +33,10 @@ interface XmlAttribute {
   prefix: string | undefined
 }
 
+interface XmlNamespaceIndexer {
+  [ns: string]: string,
+}
+
 type XmlWriterState = "Start" | "Prolog" | "Element" | "Attribute" | "Content" | "Error";
 
 export class XmlWriter {
@@ -50,21 +54,23 @@ export class XmlWriter {
 
    */
 
-  private _xml: string;
+  private _xml: string = "";
   private _state: XmlWriterState = "Start";
   private _elementNameStack: Array<string> = [];
   private static readonly quoteChar = "\"";
   private _encoding: string = "ENCODING TODO!";
+  private _namespaces: XmlNamespaceIndexer = {};
 
   WriteStartDocument(standalone?: boolean): void {
 
     try {
       console.log(`${standalone}`);
 
-      if (this._state !== "Start") {
-        throw new Error("Invalid state");
-      }
-      this._state = "Prolog";
+      this.changeState("Prolog");
+      // if (this._state !== "Start") {
+      //   throw new Error("Invalid state");
+      // }
+      // this._state = "Prolog";
 
       let bufBld: string = "";
       bufBld += ("version=" + XmlWriter.quoteChar + "1.0" + XmlWriter.quoteChar);
@@ -128,9 +134,15 @@ export class XmlWriter {
     const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
     this.write(elementName);
     if (ns) {
-      this.writeNamespaceAttribute(ns, prefix);
+      this.addNamespace(ns, prefix);
     }
     this._elementNameStack.push(elementName);
+  }
+
+  private addNamespace(ns: string, prefix: string | undefined) {
+    // Make sure we don't duplicate prefixes
+    prefix = prefix || "";
+    this._namespaces[prefix] = ns;
   }
 
   WriteString(text: string): void {
@@ -149,11 +161,22 @@ export class XmlWriter {
   WriteAttributeString(localName: string, value: string, ns: string, prefix: string): void;
   WriteAttributeString(localName: string, value: string, ns?: string, prefix?: string): void {
     this.changeState("Attribute");
-    const attributeName: string = XmlWriter.getPrefixedName(localName, prefix);
-    this.write(` ${attributeName}=${value}`);
     if (ns) {
-      this.writeNamespaceAttribute(ns, prefix);
+      // Seems like a prefix is always invented for attributes if not provided
+      // (but for elements it is OK to have blank prefix)
+      if (!prefix || prefix.length === 0) {
+        let i = 1;
+        while (i < 100) {
+          if (!this._namespaces.hasOwnProperty("p" + i))
+            break;
+          i++;
+        }
+        prefix = "p" + i;
+      }
+      this.addNamespace(ns, prefix);
     }
+    const attributeName: string = XmlWriter.getPrefixedName(localName, prefix);
+    this.write(` ${attributeName}=${XmlWriter.quoteChar}${value}${XmlWriter.quoteChar}`);
   }
 
   WriteEndElement(): void {
@@ -171,6 +194,15 @@ export class XmlWriter {
 
   private write(text: string) {
     this._xml += text;
+    console.log(`xml: '${this._xml}'`,);
+  }
+
+  private writeNamespaceAttributesAndClear(): void {
+    for (const prefix of Object.keys(this._namespaces)) {
+      this.writeNamespaceAttribute(this._namespaces[prefix], prefix);
+    }
+    // Clear for next time
+    this._namespaces = {};
   }
 
   private writeNamespaceAttribute(ns: string, prefix: string | undefined): void {
@@ -196,17 +228,35 @@ export class XmlWriter {
   private changeState(newState: XmlWriterState) {
 
     let ok: boolean = false;
-    if (this._state === "Start" && newState === "Element") {
-      this.write("<");
+    if (this._state === newState) {
+      // Same state is OK
       ok = true;
     }
-    else if (this._state === "Element" && newState === "Attribute") {
-      this.write(" ");
-      ok = true;
+    else if (this._state === "Start") {
+      if (newState === "Prolog") {
+        ok = true;
+      }
+      if (newState === "Element") {
+        this.write("<");
+        ok = true;
+      }
     }
-    else if ((this._state === "Element" || this._state === "Attribute") && newState === "Content") {
-      this.write(">");
-      ok = true;
+    else if (this._state === "Element") {
+      if (newState === "Attribute") {
+        ok = true;
+      }
+      else if (newState === "Content") {
+        this.writeNamespaceAttributesAndClear();
+        this.write(">");
+        ok = true;
+      }
+    }
+    else if (this._state === "Attribute") {
+      if (newState === "Content") {
+        this.writeNamespaceAttributesAndClear();
+        this.write(">");
+        ok = true;
+      }
     }
 
     if (ok) {
