@@ -21,4 +21,13 @@ describe('XmlWriter', () => {
     assert.equal(`<localName p1:localName="value" xmlns="ns" xmlns:p1="ns">Some content</localName>`, writer.getXml());
   });
 
+  it("should write without namespace", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("localName");
+    writer.WriteAttributeString("localName", "value");
+    writer.WriteString("Some content");
+    writer.WriteEndElement();
+    assert.equal(`<localName localName="value">Some content</localName>`, writer.getXml());
+  });
+
 });
