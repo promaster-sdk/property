@@ -1,6 +1,5 @@
 export const word_Header_rId1_xml = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<w:hdr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" />
-`;
+<w:hdr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" />`;
 
 export const word_document_xml = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--This file represents a print-->
@@ -34,15 +33,13 @@ export const word_document_xml = `<?xml version="1.0" encoding="utf-8" standalon
       <w:pgMar w:top="453" w:bottom="453" w:left="1133" w:right="850" w:footer="100" />
     </w:sectPr>
   </w:body>
-</w:document>
-`;
+</w:document>`;
 
 export const word_rels_document_xml_rels = `
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="/word/Header_rId1.xml" Id="rId1" />
-</Relationships>
-`;
+</Relationships>`;
 
 export const Content_Types_xml = `
 <?xml version="1.0" encoding="utf-8"?>
@@ -50,5 +47,4 @@ export const Content_Types_xml = `
   <Override PartName="/word/Header_rId1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml" />
   <Default Extension="xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" />
   <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />
-</Types>
-`;
+</Types>`;
