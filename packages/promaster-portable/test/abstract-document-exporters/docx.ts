@@ -65,6 +65,15 @@ describe('XmlWriter', () => {
     assert.equal(writer.getXml(), `<parent xmlns="ns">\n  <child>\n    <grandChild />\n  </child>\n</parent>`);
   });
 
+  it("should respect xml:space=preserve", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("root");
+    writer.WriteAttributeString("space", "preserve", "", "xml");
+    writer.WriteString(" Some content ");
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<root xml:space="preserve"> Some content </root>`);
+  });
+
 });
 
 describe('DocxDocumentRenderer', () => {
