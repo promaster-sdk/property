@@ -142,7 +142,7 @@ export class XmlWriter {
   WriteStartElement(localName: string, ns: string): void;
   WriteStartElement(localName: string, ns: string, prefix: string): void;
   WriteStartElement(localName: string, ns?: string, prefix?: string): void {
-    this.writeIndent();
+    this.writeIndent(!(this._state === "Start" || this._state === "Prolog"));
     this.changeState("Element");
     const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
     this.write(elementName);
