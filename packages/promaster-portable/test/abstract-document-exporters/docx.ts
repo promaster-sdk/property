@@ -81,6 +81,30 @@ describe('XmlWriter', () => {
     assert.equal(writer.getXml(), `<prefix:root prefix:foo="bar" xmlns:prefix="ns" />`);
   });
 
+  it("testing", () => {
+    const writer = new XmlWriter();
+    /*
+     <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+     <w:body>
+     <w:p>
+     <w:pPr>
+     <w:wordWrap w:val="on" />
+
+     */
+
+    const w = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+    writer.WriteStartElement("document", w, "w");
+    writer.WriteStartElement("body", w, "w");
+    writer.WriteStartElement("p", w, "w");
+    writer.WriteStartElement("wordWrap", w, "w");
+    writer.WriteAttributeString("val", "on", w, "w");
+    writer.WriteEndElement();
+    writer.WriteEndElement();
+    writer.WriteEndElement();
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<prefix:root prefix:foo="bar" xmlns:prefix="ns" />`);
+  });
+
 });
 
 describe('DocxDocumentRenderer', () => {
