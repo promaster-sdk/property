@@ -2,6 +2,7 @@
 //container-klasserna ärver ifrån denna
 
 import {XmlWriter} from "./xml-writer";
+import {stringToUtf8ByteArray} from "./string-utils";
 
 export class XMLContainer {
 

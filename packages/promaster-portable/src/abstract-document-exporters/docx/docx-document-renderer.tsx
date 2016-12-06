@@ -20,6 +20,7 @@ import {TextAlignment} from "../../abstract-document/model/enums/text-alignment"
 import {NumberingFormat} from "../../abstract-document/model/numberings/numbering-format";
 import {AbstractImage} from "../../abstract-image/abstract-image";
 import {XmlWriter} from "./xml-writer";
+import {stringToUtf8ByteArray} from "./string-utils";
 
 export interface IZipService {
   CreateZipFile(zipFiles: Map<string, Uint8Array>): Uint8Array,

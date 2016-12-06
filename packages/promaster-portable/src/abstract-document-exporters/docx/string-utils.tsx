@@ -5,7 +5,7 @@
  * @param {string} str 16-bit unicode string.
  * @return {!Array<number>} UTF-8 byte array.
  */
-function stringToUtf8ByteArray(str:string):Uint8Array {
+export function stringToUtf8ByteArray(str:string):Uint8Array {
   // TODO(user): Use native implementations if/when available
   let out:any[] = [], p: number = 0;
   for (let i = 0; i < str.length; i++) {
