@@ -35,14 +35,12 @@ export const word_document_xml = `<?xml version="1.0" encoding="utf-8" standalon
   </w:body>
 </w:document>`;
 
-export const word_rels_document_xml_rels = `
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+export const word_rels_document_xml_rels = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/header" Target="/word/Header_rId1.xml" Id="rId1" />
 </Relationships>`;
 
-export const Content_Types_xml = `
-<?xml version="1.0" encoding="utf-8"?>
+export const Content_Types_xml = `<?xml version="1.0" encoding="utf-8"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Override PartName="/word/Header_rId1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.header+xml" />
   <Default Extension="xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml" />
