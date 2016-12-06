@@ -1,6 +1,7 @@
 import {assert} from "chai";
 import {XmlWriter} from "../../src/abstract-document-exporters/docx/xml-writer";
 import {DocxDocumentRenderer} from "../../src/abstract-document-exporters/docx/docx-document-renderer";
+import {helloWorldDoc} from "../abstract-document/hello-word-doc";
 
 describe('XmlWriter', () => {
 
@@ -37,7 +38,7 @@ describe('DocxDocumentRenderer', () => {
 
   it("should write hello world document", () => {
     const exporter = new DocxDocumentRenderer(null, null);
-    const doc = null;
+    const doc = helloWorldDoc;
     exporter.WriteResultToZipDictionary(doc);
   });
 
