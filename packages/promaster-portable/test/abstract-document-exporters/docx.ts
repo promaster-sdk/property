@@ -6,6 +6,36 @@ import * as HelloWorldDocx from "./hello-world-docx";
 
 describe('XmlWriter', () => {
 
+  it("should write xml processing instruction at start-document", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartDocument(true);
+    assert.equal(writer.getXml(), `<?xml version="1.0" encoding="utf-8" standalone="yes"?>`);
+  });
+
+  it("should shorthand close tag if no content and no attribute", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("localName");
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<localName />`);
+  });
+
+  it("should shorthand close tag if no content but attribute", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("localName");
+    writer.WriteAttributeString("localName", "value");
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<localName localName="value" />`);
+  });
+
+  it("should write without namespace", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("localName");
+    writer.WriteAttributeString("localName", "value");
+    writer.WriteString("Some content");
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<localName localName="value">Some content</localName>`);
+  });
+
   it("should write with namespace and prefix", () => {
     const writer = new XmlWriter();
     writer.WriteStartElement("localName", "ns", "prefix");
@@ -22,30 +52,6 @@ describe('XmlWriter', () => {
     writer.WriteString("Some content");
     writer.WriteEndElement();
     assert.equal(writer.getXml(), `<localName p1:localName="value" xmlns="ns" xmlns:p1="ns">Some content</localName>`);
-  });
-
-  it("should write without namespace", () => {
-    const writer = new XmlWriter();
-    writer.WriteStartElement("localName");
-    writer.WriteAttributeString("localName", "value");
-    writer.WriteString("Some content");
-    writer.WriteEndElement();
-    assert.equal(writer.getXml(), `<localName localName="value">Some content</localName>`);
-  });
-
-  it("should shorthand close tag if no content but attribute", () => {
-    const writer = new XmlWriter();
-    writer.WriteStartElement("localName");
-    writer.WriteAttributeString("localName", "value");
-    writer.WriteEndElement();
-    assert.equal(writer.getXml(), `<localName localName="value" />`);
-  });
-
-  it("should shorthand close tag if no content and no attribute", () => {
-    const writer = new XmlWriter();
-    writer.WriteStartElement("localName");
-    writer.WriteEndElement();
-    assert.equal(writer.getXml(), `<localName />`);
   });
 
 });
