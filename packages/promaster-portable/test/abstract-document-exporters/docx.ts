@@ -54,6 +54,15 @@ describe('XmlWriter', () => {
     assert.equal(writer.getXml(), `<localName p1:localName="value" xmlns="ns" xmlns:p1="ns">Some content</localName>`);
   });
 
+  it("should not repeat namespaces", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("parent", "ns");
+    writer.WriteStartElement("child", "ns");
+    writer.WriteEndElement();
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<parent xmlns="ns">\n  <child />\n</parent>`);
+  });
+
 });
 
 describe('DocxDocumentRenderer', () => {
@@ -62,13 +71,11 @@ describe('DocxDocumentRenderer', () => {
     const exporter = new DocxDocumentRenderer(null, null);
     const doc = helloWorldDoc;
     const result = exporter.WriteResultToZipDictionary(doc);
-    console.log(result);
+    //console.log(result);
     assert.deepEqual(result["word\\Header_rId1.xml"], {type: "XmlString", xml: HelloWorldDocx.word_Header_rId1_xml});
     assert.deepEqual(result["word\\document.xml"], {type: "XmlString", xml: HelloWorldDocx.word_document_xml});
     assert.deepEqual(result["word\\_rels\\document.xml.rels"], {type: "XmlString", xml: HelloWorldDocx.word_rels_document_xml_rels});
     assert.deepEqual(result["[Content_Types].xml"], {type: "XmlString", xml: HelloWorldDocx.Content_Types_xml});
-
-    assert.isOk(result);
   });
 
 });
