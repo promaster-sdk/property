@@ -7,6 +7,7 @@ import * as Style from "../styles/style";
 import {StyleKey} from "../styles/style-key";
 
 export interface Table {
+  type: "Table",
   columnWidths: number[],
   rows: TableRow[],
   styleName: string,
@@ -18,6 +19,7 @@ export interface Table {
 export function createTable(styleName: string, tableProperties: TableProperties, tableCellProperties: TableCellProperties,
                             columnWidths: number[], rows: Array<TableRow>): Table {
   return {
+    type: "Table",
     styleName,
     tableProperties,
     tableCellProperties,

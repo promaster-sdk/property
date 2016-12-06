@@ -8,7 +8,7 @@ import * as TextRun from "../../abstract-document/model/atoms/text-run";
 import * as TableCell from "../../abstract-document/model/table/table-cell";
 import * as Color from "../../abstract-image/color";
 import * as PageStyle from "../../abstract-document/model/styles/page-style";
-import {KeepTogether} from "../../abstract-document/model/section-elements/keep-together";
+//import {KeepTogether} from "../../abstract-document/model/section-elements/keep-together";
 import {SectionElement} from "../../abstract-document/model/section-elements/section-element";
 import {Image} from "../../abstract-document/model/atoms/image";
 import {MasterPage} from "../../abstract-document/model/page/master-page";
@@ -341,29 +341,28 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
                                 contentTypesDoc: DocumentContainer,
                                 newSectionElement: SectionElement,
                                 inTable: boolean): void {
-    const para = newSectionElement as Table.Table;
-    if (para != null) {
-      this.InsertTable(doc, xmlWriter, zip, currentDocument, contentTypesDoc, para);
-      //Om man l�gger in en tabell i en tabell s� m�ste man l�gga till en tom paragraf under...
-      if (inTable)
-        DocxDocumentRenderer.InsertEmptyParagraph(xmlWriter);
-      return;
-    }
-    const paragraph = newSectionElement as Paragraph.Paragraph;
-    if (paragraph != null) {
-      this.InsertParagraph(doc, xmlWriter, zip, currentDocument, contentTypesDoc, paragraph);
-      return;
-    }
-    const keepTogether = newSectionElement as KeepTogether;
-    if (keepTogether != null) {
-      for (const sectionElement of keepTogether.sectionElements)
-        this.AddBaseParagraphDocX(doc, xmlWriter, zip, currentDocument, contentTypesDoc, sectionElement, inTable);
-      return;
-    }
-    if (newSectionElement == null) {
+
+    if (!newSectionElement) {
       DocxDocumentRenderer.InsertEmptyParagraph(xmlWriter);
       return;
     }
+
+    switch (newSectionElement.type) {
+      case "Table":
+        this.InsertTable(doc, xmlWriter, zip, currentDocument, contentTypesDoc, newSectionElement);
+        // Om man lägger in en tabell i en tabell så måste man lägga till en tom paragraf under...
+        if (inTable)
+          DocxDocumentRenderer.InsertEmptyParagraph(xmlWriter);
+        return;
+      case "Paragraph":
+        this.InsertParagraph(doc, xmlWriter, zip, currentDocument, contentTypesDoc, newSectionElement);
+        return;
+      case "KeepTogether":
+        for (const sectionElement of newSectionElement.sectionElements)
+          this.AddBaseParagraphDocX(doc, xmlWriter, zip, currentDocument, contentTypesDoc, sectionElement, inTable);
+        return;
+    }
+
     throw new Error("The type has not been implemented in printer");
   }
 
@@ -441,7 +440,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
       xmlWriter.WriteEndElement();
     }
     xmlWriter.WriteStartElement("pgSz", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("w", (PageStyle.getWidth(ps.style)  * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    xmlWriter.WriteAttributeString("w", (PageStyle.getWidth(ps.style) * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteAttributeString("h", (PageStyle.getHeight(ps.style) * DocxConstants.PointOoXmlFactor).toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     if (ps.style.orientation == "Landscape")
       xmlWriter.WriteAttributeString("orient", "landscape", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -506,7 +505,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
         xmlWriter.WriteEndElement();
         break;
       default:
-        throw new Error("Field type has not been implemented in printer");
+        throw new Error(`Field type '${fc.fieldType}' has not been implemented in printer`);
     }
   }
 
@@ -531,23 +530,43 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   private  InsertComponent(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
                            currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, bc: Atom): void {
-    const fc = bc as TextField.TextField;
-    if (fc != null)
-      DocxDocumentRenderer.InsertFieldComponent(doc, xmlWriter, fc);
-    else {
-      const tr = bc as TextRun.TextRun;
-      if (tr != null) {
-        const effectiveTextProps = TextRun.getEffectiveTextProperties(doc.styles, tr);
-        DocxDocumentRenderer.InsertTextComponent(/*doc,*/ xmlWriter, tr, effectiveTextProps);
-      }
-      else {
-        const im = bc as Image;
-        if (im != null)
-          this.InsertImageComponent(xmlWriter, zip, currentDocument, contentTypesDoc, im);
-        else
-          throw new Error("Contents of job is not implemented in printer");
-      }
+
+    // const fc = bc as TextField.TextField;
+    // if (fc != null) {
+    //   DocxDocumentRenderer.InsertFieldComponent(doc, xmlWriter, fc);
+    // }
+    // else {
+    //   const tr = bc as TextRun.TextRun;
+    //   if (tr != null) {
+    //     const effectiveTextProps = TextRun.getEffectiveTextProperties(doc.styles, tr);
+    //     DocxDocumentRenderer.InsertTextComponent(/*doc,*/ xmlWriter, tr, effectiveTextProps);
+    //   }
+    //   else {
+    //     const im = bc as Image;
+    //     if (im != null) {
+    //       this.InsertImageComponent(xmlWriter, zip, currentDocument, contentTypesDoc, im);
+    //     }
+    //     else {
+    //       throw new Error("Contents of job is not implemented in printer");
+    //     }
+    //   }
+    // }
+
+    switch (bc.type) {
+      case "TextField":
+        DocxDocumentRenderer.InsertFieldComponent(doc, xmlWriter, bc);
+        break;
+      case "TextRun":
+        const effectiveTextProps = TextRun.getEffectiveTextProperties(doc.styles, bc);
+        DocxDocumentRenderer.InsertTextComponent(/*doc,*/ xmlWriter, bc, effectiveTextProps);
+        break;
+      case "Image":
+        this.InsertImageComponent(xmlWriter, zip, currentDocument, contentTypesDoc, bc);
+        break;
+      default:
+        throw new Error("Contents of job is not implemented in printer");
     }
+
   }
 
   private InsertParagraph(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
@@ -562,8 +581,10 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
 
     xmlWriter.WriteStartElement("spacing", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
-    xmlWriter.WriteAttributeString("before", effectiveParaProps.spacingBefore.twips().toString(), DocxConstants.WordNamespace);
-    xmlWriter.WriteAttributeString("after", effectiveParaProps.spacingAfter.twips().toString(), DocxConstants.WordNamespace);
+    if (effectiveParaProps.spacingBefore)
+      xmlWriter.WriteAttributeString("before", effectiveParaProps.spacingBefore.twips.toString(), DocxConstants.WordNamespace);
+    if (effectiveParaProps.spacingAfter)
+      xmlWriter.WriteAttributeString("after", effectiveParaProps.spacingAfter.twips.toString(), DocxConstants.WordNamespace);
     xmlWriter.WriteEndElement();
 
     if (para.numbering != null) {

@@ -3,8 +3,8 @@ import {AbstractLength} from "../primitives/abstract-length";
 
 export interface ParagraphProperties {
   alignment: TextAlignment|undefined,
-  spacingAfter: any|undefined,
-  spacingBefore: any|undefined,
+  spacingAfter: AbstractLength | undefined,
+  spacingBefore: AbstractLength | undefined,
 }
 
 export function createParagraphProperties(alignment: TextAlignment | undefined, spacingBefore: AbstractLength | undefined,

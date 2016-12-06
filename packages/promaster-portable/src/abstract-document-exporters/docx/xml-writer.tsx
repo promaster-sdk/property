@@ -234,6 +234,7 @@ export class XmlWriter {
     }
     else if (this._state === "Prolog") {
       if (newState === "Element") {
+        this.write("<");
         ok = true;
       }
     }
