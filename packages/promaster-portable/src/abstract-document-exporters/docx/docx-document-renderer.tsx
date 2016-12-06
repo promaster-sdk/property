@@ -34,6 +34,21 @@ export interface AbstractImageExportFunc {
   <T>(format: string, image: AbstractImage, scale: number): ExportedImage<T>;
 }
 
+export type ZipArchiveItem = ZipArchiveItemXmlString | ZipArchiveItemAbstractImage;
+
+export interface ZipArchiveItemXmlString {
+  type: "XmlString",
+  xml: string,
+}
+
+export interface ZipArchiveItemAbstractImage {
+  type: "AbstractImage",
+  image: AbstractImage,
+  renderFormat: string,
+  renderScale: number,
+}
+
+
 export class DocxDocumentRenderer //extends IDocumentRenderer
 {
   private readonly _zipService: IZipService;
@@ -57,19 +72,38 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   RenderDocument(doc: AbstractDoc): Uint8Array {
     const zipFiles = this.WriteResultToZipDictionary(doc);
+
+    // Convert all archive items to byte arrays
+    const convertedZipFiles = new Map<string, Uint8Array>();
+
+    for (const itemKey of Array.from(convertedZipFiles.keys())) {
+      const item = zipFiles.get(itemKey);
+      if (item) {
+        switch (item.type) {
+          case "AbstractImage":
+            const renderedImage = this._abstractImageExportFunc<Uint8Array>("PNG", item.image, item.renderScale);
+            convertedZipFiles.set(itemKey, renderedImage.output);
+            break;
+          case "XmlString":
+            convertedZipFiles.set(itemKey, stringToUtf8ByteArray(item.xml));
+            break;
+        }
+      }
+    }
+
     // Write the zip
-    const zipBytes = this._zipService.CreateZipFile(zipFiles);
+    const zipBytes = this._zipService.CreateZipFile(convertedZipFiles);
     return zipBytes;
   }
 
   //    #endregion
 
-  WriteResultToZipDictionary(abstractDoc: AbstractDoc): Map<string, Uint8Array> {
+  WriteResultToZipDictionary(abstractDoc: AbstractDoc): Map<string, ZipArchiveItem> {
 
     this._imageContentTypesAdded = [];
     this._imageHash.clear();
 
-    const zipFiles = new Map<string, Uint8Array>();
+    const zipFiles = new Map<string, ZipArchiveItem>();
 
     const contentTypesDoc = new DocumentContainer();
     contentTypesDoc.filePath = DocxConstants.ContentTypesPath;
@@ -323,12 +357,12 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     return wordNumFmt;
   }
 
-  private static AddSupportFilesContents(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
+  private static AddSupportFilesContents(zip: Map<string, ZipArchiveItem>, contentTypesDoc: DocumentContainer): void {
     DocxDocumentRenderer.AddHeadRef(zip);
     DocxDocumentRenderer.AddContentTypes(zip, contentTypesDoc);
   }
 
-  private static AddContentTypes(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer): void {
+  private static AddContentTypes(zip: Map<string, ZipArchiveItem>, contentTypesDoc: DocumentContainer): void {
     DocxDocumentRenderer.InsertDefaultContentTypes(contentTypesDoc);
     contentTypesDoc.XMLWriter.WriteEndElement(); //Avslutar types
     DocxDocumentRenderer.AddDocumentToArchive(zip, contentTypesDoc, contentTypesDoc, false);
@@ -336,7 +370,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   private  AddBaseParagraphDocX(doc: AbstractDoc,
                                 xmlWriter: XmlWriter,
-                                zip: Map<string, Uint8Array>,
+                                zip: Map<string, ZipArchiveItem>,
                                 currentDocument: DocumentContainer,
                                 contentTypesDoc: DocumentContainer,
                                 newSectionElement: SectionElement,
@@ -367,7 +401,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   }
 
 
-  private  InsertImageComponent(xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
+  private  InsertImageComponent(xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
                                 currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, image: Image): void {
     //if (imageElement.Picture != null)
     //{
@@ -396,18 +430,20 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     // const renderedImage = renderer.Render(image.imageResource.abstractImage,
     //   image.imageResource.renderScale);
 
-    const renderedImage = this._abstractImageExportFunc("PNG", image.imageResource.abstractImage,
-      image.imageResource.renderScale);
+    // const renderedImage = this._abstractImageExportFunc("PNG", image.imageResource.abstractImage,
+    //   image.imageResource.renderScale);
+
+    const renderedImageFormat = "PNG";
 
     // Lägg till referens
     if (!this._imageHash.has(image.imageResource.id.toString()))
-      this.AddImageReference2(zip, contentTypesDoc, image, renderedImage as ExportedImage<Uint8Array>);
+      this.AddImageReference2(zip, contentTypesDoc, image, renderedImageFormat);
 
     //Lägg till bilden i dokumentet
     const rid = this._imageHash.get(image.imageResource.id.toString()).toString();
 
     //Behöver komma åt dokumentet som bilden tillhör
-    const filePath = DocxConstants.ImagePath + "image_" + rid + "." + renderedImage.format;
+    const filePath = DocxConstants.ImagePath + "image_" + rid + "." + renderedImageFormat;
     currentDocument.references.AddReference(rid, filePath, DocxConstants.ImageNamespace);
 
     //Lägg till i MainPart
@@ -528,7 +564,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
   }
 
-  private  InsertComponent(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
+  private  InsertComponent(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
                            currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, bc: Atom): void {
 
     // const fc = bc as TextField.TextField;
@@ -569,7 +605,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   }
 
-  private InsertParagraph(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
+  private InsertParagraph(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
                           currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, para: Paragraph.Paragraph): void {
 
     const effectiveParaProps = Paragraph.getEffectiveParagraphProperties(doc.styles, para);
@@ -625,7 +661,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
   }
 
-  private InsertTable(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, Uint8Array>,
+  private InsertTable(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
                       currentDocument: DocumentContainer,
                       contentTypesDoc: DocumentContainer, tPara: Table.Table): void {
 
@@ -964,18 +1000,23 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     contentTypesDoc.XMLWriter.WriteEndElement(); //Default
   }
 
-  private AddImageReference2(zip: Map<string, Uint8Array>, contentTypesDoc: DocumentContainer,
-                             image: Image, renderedImage: ExportedImage<Uint8Array>): void {
-    const refId = this.GetNewReferenceId();
-    const filePath = DocxConstants.ImagePath + "image_" + refId + "." + renderedImage.format;
+  private AddImageReference2(zip: Map<string, ZipArchiveItem>, contentTypesDoc: DocumentContainer,
+                             image: Image, renderedImageFormat: string): void {
 
-    const mimeType = DocxDocumentRenderer.GetMimeType(renderedImage.format);
+    // const renderedImage = this._abstractImageExportFunc("PNG", image.imageResource.abstractImage,
+    //   image.imageResource.renderScale);
+
+
+    const refId = this.GetNewReferenceId();
+    const filePath = DocxConstants.ImagePath + "image_" + refId + "." + renderedImageFormat;
+
+    const mimeType = DocxDocumentRenderer.GetMimeType(renderedImageFormat);
     if (this._imageContentTypesAdded.indexOf(mimeType) === -1) {
-      DocxDocumentRenderer.InsertImageContentType(renderedImage.format, mimeType, contentTypesDoc);
+      DocxDocumentRenderer.InsertImageContentType(renderedImageFormat, mimeType, contentTypesDoc);
       this._imageContentTypesAdded.push(mimeType);
     }
 
-    DocxDocumentRenderer.AddImageToArchive(zip, filePath, renderedImage.output);
+    DocxDocumentRenderer.AddImageToArchive(zip, filePath, image.imageResource.abstractImage, image.imageResource.renderScale, "PNG");
 
     this._imageHash.set(image.imageResource.id.toString(), refId);
   }
@@ -1001,7 +1042,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     return "rId" + this._referenceId;
   }
 
-  private static AddHeadRef(zip: Map<string, Uint8Array>): void {
+  private static AddHeadRef(zip: Map<string, ZipArchiveItem>): void {
 
     // const headref = new MemoryStream();
     // const contents = Encoding.UTF8.GetBytes(DocxConstants.HeadRelXml);
@@ -1015,7 +1056,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     DocxDocumentRenderer.AddXmlStringToArchive(zip, DocxConstants.RefPath + ".rels", contents);
   }
 
-  private static AddDocumentToArchive(zip: Map<string, Uint8Array>, docToAdd: DocumentContainer,
+  private static AddDocumentToArchive(zip: Map<string, ZipArchiveItem>, docToAdd: DocumentContainer,
                                       contentTypesDoc: DocumentContainer, insertContentType: boolean): void {
 
     docToAdd.finish();
@@ -1040,14 +1081,13 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   }
 
-  private static AddXmlStringToArchive(zip: Map<string, Uint8Array>, filePath: string, xml: string): void {
-    const ms = stringToUtf8ByteArray(xml);
-    zip.set(filePath, ms);
+  private static AddXmlStringToArchive(zip: Map<string, ZipArchiveItem>, filePath: string, xml: string): void {
+    //const ms = stringToUtf8ByteArray(xml);
+    zip.set(filePath, {type: "XmlString", xml: xml});
   }
 
-  private static AddImageToArchive(zip: Map<string, Uint8Array>, filePath: string, ms: Uint8Array): void {
-    zip.set(filePath, ms);
+  private static AddImageToArchive(zip: Map<string, ZipArchiveItem>, filePath: string, ms: AbstractImage, renderScale: number, renderFormat: string): void {
+    zip.set(filePath, {type: "AbstractImage", image: ms, renderScale, renderFormat});
   }
-
 
 }
