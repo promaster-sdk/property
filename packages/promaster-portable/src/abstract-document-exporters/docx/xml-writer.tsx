@@ -158,13 +158,10 @@ export class XmlWriter {
           // Seems like a prefix is always invented for attributes if not provided
           // (but for elements it is OK to have blank prefix)
           if (!prefix || prefix.length === 0) {
-            let i = 1;
-            while (i < 100) {
-              if (!this._namespaces.hasOwnProperty("p" + i))
-                break;
-              i++;
+            prefix = this.getPrefixFromAncestors(ns);
+            if (!prefix) {
+              prefix = this.generatePrefix();
             }
-            prefix = "p" + i;
           }
           this.addNamespace(ns, prefix);
         }
@@ -182,6 +179,27 @@ export class XmlWriter {
       throw e;
     }
 
+  }
+
+  // Find existing prefix for a specified namespace
+  private getPrefixFromAncestors(ns: string): string | undefined {
+    for (const nsDict of this._namespacesStack) {
+      for (const prefix of Object.keys(nsDict)) {
+        if (nsDict[prefix] === ns)
+          return prefix;
+      }
+    }
+    return undefined;
+  }
+
+  private generatePrefix() {
+    let i = 1;
+    while (i < 100) {
+      if (!this._namespaces.hasOwnProperty("p" + i))
+        break;
+      i++;
+    }
+    return "p" + i;
   }
 
   WriteEndElement(): void {
@@ -265,6 +283,19 @@ export class XmlWriter {
 
     // We should not repeat namespaces that exists in our ancestors
     // Check which of our current namespaces that does not exist in this ancestor
+    const toWrite = this.getNamespacesNotInAncestors();
+
+    // Write the ones that was not found in ancestor
+    for (const prefix of Object.keys(toWrite)) {
+      this.writeNamespaceAttribute(this._namespaces[prefix], prefix);
+    }
+
+    // Push and clear for next time
+    this._namespacesStack.push(this._namespaces);
+    this._namespaces = {};
+  }
+
+  private getNamespacesNotInAncestors() {
     const toWrite: XmlNamespaceDictionary = {};
     for (const prefix of Object.keys(this._namespaces)) {
       let exists: boolean = false;
@@ -278,15 +309,7 @@ export class XmlWriter {
       if (!exists)
         toWrite[prefix] = this._namespaces[prefix];
     }
-
-    // Write the ones that was not found in ancestor
-    for (const prefix of Object.keys(toWrite)) {
-      this.writeNamespaceAttribute(this._namespaces[prefix], prefix);
-    }
-
-    // Push and clear for next time
-    this._namespacesStack.push(this._namespaces);
-    this._namespaces = {};
+    return toWrite;
   }
 
   private writeNamespaceAttribute(ns: string, prefix: string | undefined): void {
