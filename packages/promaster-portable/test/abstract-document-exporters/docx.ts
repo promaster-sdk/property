@@ -3,6 +3,7 @@ import {XmlWriter} from "../../src/abstract-document-exporters/docx/xml-writer";
 import {DocxDocumentRenderer} from "../../src/abstract-document-exporters/docx/docx-document-renderer";
 import {helloWorldDoc} from "../abstract-document/hello-world-abstract-doc";
 import * as HelloWorldDocx from "./hello-world-docx";
+import * as DocxConstants from "../../src/abstract-document-exporters/docx/docx-constants";
 
 describe('XmlWriter', () => {
 
@@ -92,12 +93,14 @@ describe('XmlWriter', () => {
 
      */
 
-    const w = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
-    writer.WriteStartElement("document", w, "w");
-    writer.WriteStartElement("body", w, "w");
-    writer.WriteStartElement("p", w, "w");
-    writer.WriteStartElement("wordWrap", w, "w");
-    writer.WriteAttributeString("val", "on", w, "w");
+    writer.WriteStartDocument(true);
+    writer.WriteComment("This file represents a print");
+    writer.WriteStartElement("document", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    writer.WriteStartElement("body", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    writer.WriteStartElement("p", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    writer.WriteStartElement("pPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    writer.WriteStartElement("wordWrap", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    writer.WriteAttributeString("val", "on", DocxConstants.WordNamespace);
     writer.WriteEndElement();
     writer.WriteEndElement();
     writer.WriteEndElement();
