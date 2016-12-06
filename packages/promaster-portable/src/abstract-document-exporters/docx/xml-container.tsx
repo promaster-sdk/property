@@ -6,7 +6,7 @@ import {stringToUtf8ByteArray} from "./string-utils";
 
 export class XMLContainer {
 
-  private _xmlWriter: XmlWriter;
+  private _xmlWriter: XmlWriter = new XmlWriter();
 
   getXmlAsUtf8ByteArray(): Uint8Array {
     return stringToUtf8ByteArray(this._xmlWriter.getXml());

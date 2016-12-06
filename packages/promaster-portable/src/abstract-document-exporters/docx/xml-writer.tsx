@@ -91,7 +91,7 @@ export class XmlWriter {
       // private InternalWriteProcessingInstruction(name: string, text: string): void {
       this.write("<?");
       // ValidateName(name, false);
-      this.write(name);
+      this.write("xml");
       this.write(" ");
       if (bufBld) {
         this.write(bufBld);
@@ -232,6 +232,11 @@ export class XmlWriter {
       // Same state is OK
       ok = true;
     }
+    else if (this._state === "Prolog") {
+      if (newState === "Element") {
+        ok = true;
+      }
+    }
     else if (this._state === "Start") {
       if (newState === "Prolog") {
         ok = true;
@@ -255,6 +260,12 @@ export class XmlWriter {
       if (newState === "Content") {
         this.writeNamespaceAttributesAndClear();
         this.write(">");
+        ok = true;
+      }
+    }
+    else if (this._state === "Content") {
+      if (newState === "Element") {
+        this.write("<");
         ok = true;
       }
     }
