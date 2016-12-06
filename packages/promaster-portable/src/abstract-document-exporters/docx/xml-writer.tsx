@@ -58,19 +58,15 @@ export class XmlWriter {
   private _state: XmlWriterState = "Start";
   private _elementNameStack: Array<string> = [];
   private static readonly quoteChar = "\"";
-  private _encoding: string = "ENCODING TODO!";
+  private _encoding: string = "utf-8";
   private _namespaces: XmlNamespaceIndexer = {};
+  private _indent: number = 2;
 
   WriteStartDocument(standalone?: boolean): void {
 
     try {
-      //console.log(`${standalone}`);
-
+      const prevState = this._state;
       this.changeState("Prolog");
-      // if (this._state !== "Start") {
-      //   throw new Error("Invalid state");
-      // }
-      // this._state = "Prolog";
 
       let bufBld: string = "";
       bufBld += ("version=" + XmlWriter.quoteChar + "1.0" + XmlWriter.quoteChar);
@@ -84,11 +80,14 @@ export class XmlWriter {
       if (standalone) {
         bufBld += " standalone=";
         bufBld += XmlWriter.quoteChar;
-        bufBld += standalone ? "no" : "yes";
+        bufBld += standalone ? "yes" : "no";
         bufBld += XmlWriter.quoteChar;
       }
       // this.InternalWriteProcessingInstruction("xml", bufBld);
       // private InternalWriteProcessingInstruction(name: string, text: string): void {
+
+      this.writeIndent(prevState !== "Start");
+
       this.write("<?");
       // ValidateName(name, false);
       this.write("xml");
@@ -105,6 +104,16 @@ export class XmlWriter {
     }
   }
 
+  private writeIndent(newLine: boolean = true) {
+    if (this._indent > 0) {
+      if (newLine) {
+        this.write("\n");
+      }
+      for (let i; i < this._indent; i++) {
+        this.write(" ");
+      }
+    }
+  }
 
   WriteComment(text: string): void {
     try {
@@ -112,6 +121,9 @@ export class XmlWriter {
         throw new Error("Xml_InvalidCommentChars");
       }
       // AutoComplete(Token.Comment);
+
+      this.writeIndent();
+
       this.write("<!--");
       if (text) {
         // xmlEncoder.WriteRawWithSurrogateChecking(text);
@@ -132,6 +144,7 @@ export class XmlWriter {
   WriteStartElement(localName: string, ns?: string, prefix?: string): void {
     this.changeState("Element");
     const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
+    this.writeIndent();
     this.write(elementName);
     if (ns) {
       this.addNamespace(ns, prefix);
@@ -183,7 +196,6 @@ export class XmlWriter {
     const prevState = this._state;
     this.changeState("Content");
     const elementName = this._elementNameStack.pop();
-    console.log(prevState);
     if (prevState === "Attribute") {
       this.write(` />`);
     }
