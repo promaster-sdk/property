@@ -48,6 +48,10 @@ export interface ZipArchiveItemAbstractImage {
   renderScale: number,
 }
 
+export interface  ZipDictionary {
+  [key: string]: ZipArchiveItem,
+}
+
 
 export class DocxDocumentRenderer //extends IDocumentRenderer
 {
@@ -77,7 +81,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     const convertedZipFiles = new Map<string, Uint8Array>();
 
     for (const itemKey of Array.from(convertedZipFiles.keys())) {
-      const item = zipFiles.get(itemKey);
+      const item = zipFiles[itemKey];
       if (item) {
         switch (item.type) {
           case "AbstractImage":
@@ -98,12 +102,12 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   //    #endregion
 
-  WriteResultToZipDictionary(abstractDoc: AbstractDoc): Map<string, ZipArchiveItem> {
+  WriteResultToZipDictionary(abstractDoc: AbstractDoc): ZipDictionary {
 
     this._imageContentTypesAdded = [];
     this._imageHash.clear();
 
-    const zipFiles = new Map<string, ZipArchiveItem>();
+    const zipFiles: ZipDictionary = {};
 
     const contentTypesDoc = new DocumentContainer();
     contentTypesDoc.filePath = DocxConstants.ContentTypesPath;
@@ -357,12 +361,12 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     return wordNumFmt;
   }
 
-  private static AddSupportFilesContents(zip: Map<string, ZipArchiveItem>, contentTypesDoc: DocumentContainer): void {
+  private static AddSupportFilesContents(zip: ZipDictionary, contentTypesDoc: DocumentContainer): void {
     DocxDocumentRenderer.AddHeadRef(zip);
     DocxDocumentRenderer.AddContentTypes(zip, contentTypesDoc);
   }
 
-  private static AddContentTypes(zip: Map<string, ZipArchiveItem>, contentTypesDoc: DocumentContainer): void {
+  private static AddContentTypes(zip: ZipDictionary, contentTypesDoc: DocumentContainer): void {
     DocxDocumentRenderer.InsertDefaultContentTypes(contentTypesDoc);
     contentTypesDoc.XMLWriter.WriteEndElement(); //Avslutar types
     DocxDocumentRenderer.AddDocumentToArchive(zip, contentTypesDoc, contentTypesDoc, false);
@@ -370,7 +374,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   private  AddBaseParagraphDocX(doc: AbstractDoc,
                                 xmlWriter: XmlWriter,
-                                zip: Map<string, ZipArchiveItem>,
+                                zip: ZipDictionary,
                                 currentDocument: DocumentContainer,
                                 contentTypesDoc: DocumentContainer,
                                 newSectionElement: SectionElement,
@@ -401,7 +405,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
   }
 
 
-  private  InsertImageComponent(xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
+  private  InsertImageComponent(xmlWriter: XmlWriter, zip: ZipDictionary,
                                 currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, image: Image): void {
     //if (imageElement.Picture != null)
     //{
@@ -564,7 +568,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
   }
 
-  private  InsertComponent(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
+  private  InsertComponent(doc: AbstractDoc, xmlWriter: XmlWriter, zip: ZipDictionary,
                            currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, bc: Atom): void {
 
     // const fc = bc as TextField.TextField;
@@ -605,7 +609,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   }
 
-  private InsertParagraph(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
+  private InsertParagraph(doc: AbstractDoc, xmlWriter: XmlWriter, zip: ZipDictionary,
                           currentDocument: DocumentContainer, contentTypesDoc: DocumentContainer, para: Paragraph.Paragraph): void {
 
     const effectiveParaProps = Paragraph.getEffectiveParagraphProperties(doc.styles, para);
@@ -661,7 +665,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     xmlWriter.WriteEndElement();
   }
 
-  private InsertTable(doc: AbstractDoc, xmlWriter: XmlWriter, zip: Map<string, ZipArchiveItem>,
+  private InsertTable(doc: AbstractDoc, xmlWriter: XmlWriter, zip: ZipDictionary,
                       currentDocument: DocumentContainer,
                       contentTypesDoc: DocumentContainer, tPara: Table.Table): void {
 
@@ -1000,7 +1004,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     contentTypesDoc.XMLWriter.WriteEndElement(); //Default
   }
 
-  private AddImageReference2(zip: Map<string, ZipArchiveItem>, contentTypesDoc: DocumentContainer,
+  private AddImageReference2(zip: ZipDictionary, contentTypesDoc: DocumentContainer,
                              image: Image, renderedImageFormat: string): void {
 
     // const renderedImage = this._abstractImageExportFunc("PNG", image.imageResource.abstractImage,
@@ -1042,7 +1046,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     return "rId" + this._referenceId;
   }
 
-  private static AddHeadRef(zip: Map<string, ZipArchiveItem>): void {
+  private static AddHeadRef(zip: ZipDictionary): void {
 
     // const headref = new MemoryStream();
     // const contents = Encoding.UTF8.GetBytes(DocxConstants.HeadRelXml);
@@ -1056,7 +1060,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     DocxDocumentRenderer.AddXmlStringToArchive(zip, DocxConstants.RefPath + ".rels", contents);
   }
 
-  private static AddDocumentToArchive(zip: Map<string, ZipArchiveItem>, docToAdd: DocumentContainer,
+  private static AddDocumentToArchive(zip: ZipDictionary, docToAdd: DocumentContainer,
                                       contentTypesDoc: DocumentContainer, insertContentType: boolean): void {
 
     docToAdd.finish();
@@ -1081,13 +1085,13 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
   }
 
-  private static AddXmlStringToArchive(zip: Map<string, ZipArchiveItem>, filePath: string, xml: string): void {
+  private static AddXmlStringToArchive(zip: ZipDictionary, filePath: string, xml: string): void {
     //const ms = stringToUtf8ByteArray(xml);
-    zip.set(filePath, {type: "XmlString", xml: xml});
+    zip[filePath] = {type: "XmlString", xml: xml};
   }
 
-  private static AddImageToArchive(zip: Map<string, ZipArchiveItem>, filePath: string, ms: AbstractImage, renderScale: number, renderFormat: string): void {
-    zip.set(filePath, {type: "AbstractImage", image: ms, renderScale, renderFormat});
+  private static AddImageToArchive(zip: ZipDictionary, filePath: string, ms: AbstractImage, renderScale: number, renderFormat: string): void {
+    zip[filePath] = {type: "AbstractImage", image: ms, renderScale, renderFormat};
   }
 
 }
