@@ -37,7 +37,7 @@ interface XmlNamespaceIndexer {
   [ns: string]: string,
 }
 
-type XmlWriterState = "Start" | "Prolog" | "Element" | "Attribute" | "Content" | "Error";
+type XmlWriterState = "Start" | "Prolog" | "Element" | "Attribute" | "Content" | "Error" | "Closed";
 
 export class XmlWriter {
   /*
@@ -64,7 +64,7 @@ export class XmlWriter {
   WriteStartDocument(standalone?: boolean): void {
 
     try {
-      console.log(`${standalone}`);
+      //console.log(`${standalone}`);
 
       this.changeState("Prolog");
       // if (this._state !== "Start") {
@@ -186,6 +186,11 @@ export class XmlWriter {
   }
 
   Flush(): void {
+    this.close();
+  }
+
+  close(): void {
+    this._state = "Closed";
   }
 
   getXml(): string {
@@ -194,7 +199,7 @@ export class XmlWriter {
 
   private write(text: string) {
     this._xml += text;
-    console.log(`xml: '${this._xml}'`,);
+    //console.log(`xml: '${this._xml}'`,);
   }
 
   private writeNamespaceAttributesAndClear(): void {

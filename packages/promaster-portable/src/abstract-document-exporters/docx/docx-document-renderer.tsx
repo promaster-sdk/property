@@ -936,7 +936,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     return result;
   }
 
-  private static InsertDocumentContent(filename: string, contentType: string, contentTypesDoc: DocumentContainer): void {
+  private static InsertDocumentContentType(filename: string, contentType: string, contentTypesDoc: DocumentContainer): void {
     contentTypesDoc.XMLWriter.WriteStartElement("Override");
     filename = filename.replace("\\", "/");
     if (filename.startsWith("/") == false)
@@ -946,7 +946,7 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     contentTypesDoc.XMLWriter.WriteEndElement(); //Override
   }
 
-  private static InsertImageContent(contentTypesDoc: DocumentContainer, extension: string, mimeType: string): void {
+  private static InsertImageContentType(extension: string, mimeType: string, contentTypesDoc: DocumentContainer): void {
     contentTypesDoc.XMLWriter.WriteStartElement("Default");
     contentTypesDoc.XMLWriter.WriteAttributeString("Extension", extension);
     contentTypesDoc.XMLWriter.WriteAttributeString("ContentType", mimeType);
@@ -971,11 +971,11 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
 
     const mimeType = DocxDocumentRenderer.GetMimeType(renderedImage.format);
     if (this._imageContentTypesAdded.indexOf(mimeType) === -1) {
-      DocxDocumentRenderer.InsertImageContent(contentTypesDoc, renderedImage.format, mimeType);
+      DocxDocumentRenderer.InsertImageContentType(renderedImage.format, mimeType, contentTypesDoc);
       this._imageContentTypesAdded.push(mimeType);
     }
 
-    DocxDocumentRenderer.AddToArchive(zip, filePath, renderedImage.output);
+    DocxDocumentRenderer.AddImageToArchive(zip, filePath, renderedImage.output);
 
     this._imageHash.set(image.imageResource.id.toString(), refId);
   }
@@ -1011,29 +1011,43 @@ export class DocxDocumentRenderer //extends IDocumentRenderer
     // //headref.Close();
     // headref.Dispose();
 
-    const contents = stringToUtf8ByteArray(DocxConstants.HeadRelXml);
-    DocxDocumentRenderer.AddToArchive(zip, DocxConstants.RefPath + ".rels", contents);
-  }
-
-  private static AddToArchive(zip: Map<string, Uint8Array>, filePath: string, ms: Uint8Array): void {
-    zip.set(filePath, ms);
+    const contents = DocxConstants.HeadRelXml;
+    DocxDocumentRenderer.AddXmlStringToArchive(zip, DocxConstants.RefPath + ".rels", contents);
   }
 
   private static AddDocumentToArchive(zip: Map<string, Uint8Array>, docToAdd: DocumentContainer,
-                                      contentTypesDoc: DocumentContainer, insertContents: boolean): void {
+                                      contentTypesDoc: DocumentContainer, insertContentType: boolean): void {
 
     docToAdd.finish();
-    DocxDocumentRenderer.AddToArchive(zip, docToAdd.filePath + docToAdd.fileName, docToAdd.getXmlAsUtf8ByteArray());
-    if (insertContents)
-      DocxDocumentRenderer.InsertDocumentContent(docToAdd.filePath + docToAdd.fileName, docToAdd.contentType, contentTypesDoc);
+
+    // Add document
+    const docToAddFullPath = docToAdd.filePath + docToAdd.fileName;
+    DocxDocumentRenderer.AddXmlStringToArchive(zip, docToAddFullPath, docToAdd.getXml());
+
+    // Add references document if it exists
     if (docToAdd.references.count > 0) {
       docToAdd.references.finish();
-      DocxDocumentRenderer.AddToArchive(zip, docToAdd.filePath + DocxConstants.RefPath + docToAdd.fileName + ".rels",
-        docToAdd.references.getXmlAsUtf8ByteArray());
+      DocxDocumentRenderer.AddXmlStringToArchive(zip, docToAdd.filePath + DocxConstants.RefPath + docToAdd.fileName + ".rels",
+        docToAdd.references.getXml());
       docToAdd.references.close();
     }
     docToAdd.close();
 
+    // What does this do? It mutates the contentTypesDoc...
+    if (insertContentType) {
+      DocxDocumentRenderer.InsertDocumentContentType(docToAddFullPath, docToAdd.contentType, contentTypesDoc);
+    }
+
   }
+
+  private static AddXmlStringToArchive(zip: Map<string, Uint8Array>, filePath: string, xml: string): void {
+    const ms = stringToUtf8ByteArray(xml);
+    zip.set(filePath, ms);
+  }
+
+  private static AddImageToArchive(zip: Map<string, Uint8Array>, filePath: string, ms: Uint8Array): void {
+    zip.set(filePath, ms);
+  }
+
 
 }

@@ -40,6 +40,7 @@ describe('DocxDocumentRenderer', () => {
     const exporter = new DocxDocumentRenderer(null, null);
     const doc = helloWorldDoc;
     const result = exporter.WriteResultToZipDictionary(doc);
+    console.log(result);
     assert.isOk(result);
   });
 
