@@ -49,7 +49,7 @@ export class XmlWriter {
         this.write(xmlProcessingIntruction);
       }
       else {
-        throw new Error("Invalid state.");
+        this.throwInvalidState();
       }
       // Set next state
       this._state = "Prolog";
@@ -62,7 +62,7 @@ export class XmlWriter {
 
   WriteComment(text: string): void {
     try {
-      if (this._state === "Content") {
+      if (this._state === "Prolog" || this._state === "Content") {
         if (text && (text.indexOf("--") >= 0 || (text.length != 0 && text[text.length - 1] == "-"))) {
           throw new Error("Xml_InvalidCommentChars");
         }
@@ -71,7 +71,7 @@ export class XmlWriter {
         this.write("<!--${text}-->");
       }
       else {
-        throw new Error("Invalid state.");
+        this.throwInvalidState();
       }
       // Set next state
       this._state = "Content";
@@ -83,13 +83,25 @@ export class XmlWriter {
 
   }
 
+  private completeStartElement(close: boolean) {
+    this.writeNamespaceAttributesAndClear();
+    if (close)
+      this.write(" />");
+    else
+      this.write(">");
+  }
+
   WriteStartElement(localName: string): void;
   WriteStartElement(localName: string, ns: string): void;
   WriteStartElement(localName: string, ns: string, prefix: string): void;
   WriteStartElement(localName: string, ns?: string, prefix?: string): void {
 
     try {
-      if (this._state === "Start" || this._state === "Prolog" || this._state === "Content") {
+      if (this._state === "Start" || this._state === "Prolog" || this._state === "Element" || this._state === "Content") {
+        if (this._state === "Element") {
+          // Close previous start-element
+          this.completeStartElement(false);
+        }
         this.writeIndent(!(this._state === "Start" || this._state === "Prolog"));
         // this.changeState("Element");
         const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
@@ -100,7 +112,7 @@ export class XmlWriter {
         this._elementNameStack.push(elementName);
       }
       else {
-        throw new Error("Invalid state.");
+        this.throwInvalidState();
       }
       // Set next state
       this._state = "Element";
@@ -118,15 +130,13 @@ export class XmlWriter {
       if (this._state === "Content" || this._state === "Element" || this._state === "Attribute") {
 
         if (this._state === "Element" || this._state === "Attribute") {
-          // Close the start element
-          this.writeNamespaceAttributesAndClear();
-          this.write(">");
+          this.completeStartElement(false);
         }
 
         this.write(text);
       }
       else {
-        throw new Error("Invalid state.");
+        this.throwInvalidState();
       }
       // Set next state
       this._state = "Content";
@@ -169,7 +179,7 @@ export class XmlWriter {
         this.write(` ${attributeName}=${XmlWriter.quoteChar}${value}${XmlWriter.quoteChar}`);
       }
       else {
-        throw new Error("Invalid state.");
+        this.throwInvalidState();
       }
       // Set next state
       this._state = "Attribute";
@@ -187,15 +197,17 @@ export class XmlWriter {
       if (this._state === "Content" || this._state === "Element" || this._state === "Attribute") {
         // this.changeState("Content");
         const elementName = this._elementNameStack.pop();
+
         if (this._state === "Attribute" || this._state === "Element") {
-          this.write(` />`);
+          this.completeStartElement(true);
         }
         else {
           this.write(`</${elementName}>`);
         }
+
       }
       else {
-        throw new Error("Invalid state.");
+        this.throwInvalidState();
       }
       // Set next state
       this._state = "Content";
@@ -218,6 +230,10 @@ export class XmlWriter {
 
   getXml(): string {
     return this._xml;
+  }
+
+  private throwInvalidState() {
+    throw new Error(`Invalid state '${this._state}'.`);
   }
 
   private addNamespace(ns: string, prefix: string | undefined) {
