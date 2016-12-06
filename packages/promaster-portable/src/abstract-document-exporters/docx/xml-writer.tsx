@@ -18,18 +18,25 @@ interface XmlNamespaceDictionary {
   [ns: string]: string,
 }
 
+interface XmlElementContext {
+  elementName: string,
+  namespaces: XmlNamespaceDictionary,
+}
+
 type XmlWriterState = "Start" | "Prolog" | "Element" | "Content" | "Error" | "Closed";
 
 export class XmlWriter {
 
   private _xml: string = "";
   private _state: XmlWriterState = "Start";
-  private _elementNameStack: Array<string> = [];
-  private _namespacesStack: Array<XmlNamespaceDictionary> = [];
   private static readonly quoteChar = "\"";
-  private _encoding: string = "utf-8";
-  private _namespaces: XmlNamespaceDictionary = {};
-  private _indent: number = 2;
+  private readonly _encoding: string = "utf-8";
+  private readonly _indent: number = 2;
+
+  // private _namespacesStack: Array<XmlNamespaceDictionary> = [];
+  // private _namespaces: XmlNamespaceDictionary = {};
+
+  private _contextStack: Array<XmlElementContext> = [];
 
   WriteStartDocument(standalone?: boolean): void {
 
@@ -91,18 +98,19 @@ export class XmlWriter {
 
     try {
       if (this._state === "Start" || this._state === "Prolog" || this._state === "Element" || this._state === "Content") {
+        const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
+        this._contextStack.push({elementName, namespaces: {}});
         if (this._state === "Element") {
           // Close previous start-element
-          this.completeStartElement(false);
+          this.completeStartElement(false, this.peekContextStack().namespaces);
         }
         this.writeIndent(this._state !== "Start");
         // this.changeState("Element");
-        const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
         this.write("<" + elementName);
         if (ns) {
           this.addNamespace(ns, prefix);
         }
-        this._elementNameStack.push(elementName);
+
       }
       else {
         this.throwInvalidState();
@@ -123,7 +131,7 @@ export class XmlWriter {
       if (this._state === "Content" || this._state === "Element") {
 
         if (this._state === "Element") {
-          this.completeStartElement(false);
+          this.completeStartElement(false, this.peekContextStack().namespaces);
         }
 
         this.write(text);
@@ -159,7 +167,7 @@ export class XmlWriter {
           if (!prefix || prefix.length === 0) {
             prefix = this.getPrefixFromAncestors(ns);
             if (!prefix) {
-              prefix = this.generatePrefix();
+              prefix = XmlWriter.generatePrefix(this.peekContextStack().namespaces);
             }
           }
           this.addNamespace(ns, prefix);
@@ -182,19 +190,23 @@ export class XmlWriter {
 
   // Find existing prefix for a specified namespace
   private getPrefixFromAncestors(ns: string): string | undefined {
-    for (const nsDict of this._namespacesStack) {
-      for (const prefix of Object.keys(nsDict)) {
-        if (nsDict[prefix] === ns)
+    for (const context of this._contextStack) {
+      for (const prefix of Object.keys(context)) {
+        if (context.namespaces[prefix] === ns)
           return prefix;
       }
     }
     return undefined;
   }
 
-  private generatePrefix() {
+  private peekContextStack() {
+    return this._contextStack[this._contextStack.length - 1];
+  }
+
+  private static generatePrefix(namespaces: XmlNamespaceDictionary) {
     let i = 1;
     while (i < 100) {
-      if (!this._namespaces.hasOwnProperty("p" + i))
+      if (!namespaces.hasOwnProperty("p" + i))
         break;
       i++;
     }
@@ -205,28 +217,28 @@ export class XmlWriter {
 
     try {
       if (this._state === "Content" || this._state === "Element") {
-        const elementName = this._elementNameStack.pop();
+        const context = this._contextStack.pop() as XmlElementContext;
         // Only close in itself if no content....
         if (this._state === "Element") {
-          this.completeStartElement(true);
+          this.completeStartElement(true, context.namespaces);
         }
         else {
           this.writeIndent(false);
-          this.write(`</${elementName}>`);
+          this.write(`</${context.elementName}>`);
         }
-        this._namespacesStack.pop();
+        //this._contextStack.pop();
 
       }
       else {
         this.throwInvalidState();
       }
       // Set next state
-      if (this._state === "Element") {
-        this._state = "Element";
-      }
-      else {
-        this._state = "Content";
-      }
+      // if (this._state === "Element") {
+      //   this._state = "Element";
+      // }
+      // else {
+      this._state = "Content";
+      // }
     }
     catch (e) {
       this._state = "Error";
@@ -248,16 +260,18 @@ export class XmlWriter {
     return this._xml;
   }
 
-  private completeStartElement(close: boolean) {
+  private completeStartElement(close: boolean, namespaces: XmlNamespaceDictionary) {
 
-    this.writeNamespaceAttributes(this._namespaces);
+    this.writeNamespaceAttributes(namespaces);
     // Push and clear for next time
-    this._namespacesStack.push(this._namespaces);
-    this._namespaces = {};
-    if (close)
+    // this._namespacesStack.push(this._namespaces);
+    // this._namespaces = {};
+    if (close) {
       this.write(" />");
-    else
+    }
+    else {
       this.write(">");
+    }
   }
 
   private throwInvalidState() {
@@ -267,7 +281,7 @@ export class XmlWriter {
   private addNamespace(ns: string, prefix: string | undefined) {
     // Make sure we don't duplicate prefixes
     prefix = prefix || "";
-    this._namespaces[prefix] = ns;
+    this.peekContextStack().namespaces[prefix] = ns;
   }
 
   private writeIndent(newLine: boolean = true) {
@@ -276,7 +290,7 @@ export class XmlWriter {
         this.write("\n");
       }
       if (!(this._state === "Start" || this._state === "Prolog")) {
-        for (let i = 0; i < this._indent * this._elementNameStack.length; i++) {
+        for (let i = 0; i < this._indent * this._contextStack.length; i++) {
           this.write(" ");
         }
       }
@@ -290,9 +304,13 @@ export class XmlWriter {
 
   private writeNamespaceAttributes(namespaces: XmlNamespaceDictionary): void {
 
+    console.log("writeNamespaceAttributes", namespaces);
+
     // We should not repeat namespaces that exists in our ancestors
     // Check which of our current namespaces that does not exist in this ancestor
-    const toWrite = this.getNamespacesNotInAncestors();
+    const toWrite = this.getNamespacesNotInAncestors(namespaces);
+
+    console.log("writeNamespaceAttributes2", toWrite);
 
     // Write the ones that was not found in ancestor
     for (const prefix of Object.keys(toWrite)) {
@@ -301,19 +319,20 @@ export class XmlWriter {
 
   }
 
-  private getNamespacesNotInAncestors() {
+  private getNamespacesNotInAncestors(namespaces: XmlNamespaceDictionary) {
     const toWrite: XmlNamespaceDictionary = {};
-    for (const prefix of Object.keys(this._namespaces)) {
+    for (const prefix of Object.keys(namespaces)) {
       let exists: boolean = false;
-      for (const ancestorDict of this._namespacesStack) {
-        console.log(ancestorDict);
-        if (ancestorDict[prefix] == this._namespaces[prefix]) {
+      // Don't check the current (last) context in the stack
+      for (let i = 0; i < this._contextStack.length - 1; i++) {
+        const context = this._contextStack[i];
+        if (context.namespaces[prefix] == namespaces[prefix]) {
           exists = true;
           break;
         }
       }
       if (!exists)
-        toWrite[prefix] = this._namespaces[prefix];
+        toWrite[prefix] = namespaces[prefix];
     }
     return toWrite;
   }
