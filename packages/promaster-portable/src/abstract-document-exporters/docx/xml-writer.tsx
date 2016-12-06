@@ -189,8 +189,6 @@ export class XmlWriter {
     try {
       if (this._state === "Content" || this._state === "Element" || this._state === "Attribute") {
         const elementName = this._elementNameStack.pop();
-        this._namespacesStack.pop();
-
         if (this._state === "Attribute" || this._state === "Element") {
           this.completeStartElement(true);
         }
@@ -198,6 +196,7 @@ export class XmlWriter {
           this.writeIndent(true);
           this.write(`</${elementName}>`);
         }
+        this._namespacesStack.pop();
 
       }
       else {
@@ -270,6 +269,7 @@ export class XmlWriter {
     for (const prefix of Object.keys(this._namespaces)) {
       let exists: boolean = false;
       for (const ancestorDict of this._namespacesStack) {
+        console.log(ancestorDict);
         if (ancestorDict[prefix] == this._namespaces[prefix]) {
           exists = true;
           break;

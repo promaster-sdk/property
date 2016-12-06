@@ -58,9 +58,11 @@ describe('XmlWriter', () => {
     const writer = new XmlWriter();
     writer.WriteStartElement("parent", "ns");
     writer.WriteStartElement("child", "ns");
+    writer.WriteStartElement("grandChild", "ns");
     writer.WriteEndElement();
     writer.WriteEndElement();
-    assert.equal(writer.getXml(), `<parent xmlns="ns">\n  <child />\n</parent>`);
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<parent xmlns="ns">\n  <child>\n    <grandChild />\n  </child>\n</parent>`);
   });
 
 });
