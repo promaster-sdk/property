@@ -21,6 +21,7 @@ interface XmlNamespaceDictionary {
 interface XmlElementContext {
   elementName: string,
   namespaces: XmlNamespaceDictionary,
+  contentStringWritten: boolean,
 }
 
 type XmlWriterState = "Start" | "Prolog" | "Element" | "Content" | "Error" | "Closed";
@@ -103,7 +104,7 @@ export class XmlWriter {
 
         // Push new element-context to stack
         const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
-        this._contextStack.push({elementName, namespaces: {}});
+        this._contextStack.push({elementName, namespaces: {}, contentStringWritten: false});
 
         this.writeIndent(this._state !== "Start");
         this.write("<" + elementName);
@@ -134,6 +135,9 @@ export class XmlWriter {
         if (this._state === "Element") {
           this.completeStartElement(false, this.peekContextStack().namespaces);
         }
+
+        // Flag that content string has been written
+        this.peekContextStack().contentStringWritten = true;
 
         this.write(text);
       }
@@ -194,12 +198,12 @@ export class XmlWriter {
     try {
       if (this._state === "Content" || this._state === "Element") {
         const context = this._contextStack.pop() as XmlElementContext;
-        // Only close in itself if no content....
+        // Only close in itself if no content
         if (this._state === "Element") {
           this.completeStartElement(true, context.namespaces);
         }
         else {
-          this.writeIndent(false);
+          this.writeIndent(!context.contentStringWritten);
           this.write(`</${context.elementName}>`);
         }
       }
@@ -283,7 +287,7 @@ export class XmlWriter {
         this.write("\n");
       }
       if (!(this._state === "Start" || this._state === "Prolog")) {
-        for (let i = 0; i < this._indent * this._contextStack.length; i++) {
+        for (let i = 0; i < this._indent * (this._contextStack.length - 1); i++) {
           this.write(" ");
         }
       }
