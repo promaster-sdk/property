@@ -3,7 +3,7 @@ import {DocumentBuilder} from "../../src/abstract-document/index";
 import {createPageStyle} from "../../src/abstract-document/model/styles/page-style";
 import {createHeaderStyle} from "../../src/abstract-document/model/styles/header-style";
 import {createMasterPage} from "../../src/abstract-document/model/page/master-page";
-import {helloWorldDoc} from "./hello-word-doc";
+import {helloWorldDoc} from "./hello-world-abstract-doc";
 
 describe('model builder', () => {
 
