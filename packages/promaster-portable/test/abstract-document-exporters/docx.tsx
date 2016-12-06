@@ -39,7 +39,8 @@ describe('DocxDocumentRenderer', () => {
   it("should write hello world document", () => {
     const exporter = new DocxDocumentRenderer(null, null);
     const doc = helloWorldDoc;
-    exporter.WriteResultToZipDictionary(doc);
+    const result = exporter.WriteResultToZipDictionary(doc);
+    assert.isOk(result);
   });
 
 
