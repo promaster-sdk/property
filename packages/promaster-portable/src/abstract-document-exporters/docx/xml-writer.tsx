@@ -197,15 +197,20 @@ export class XmlWriter {
 
     try {
       if (this._state === "Content" || this._state === "Element") {
-        const context = this._contextStack.pop() as XmlElementContext;
+        // const context = this._contextStack.pop() as XmlElementContext;
+        const context = this.peekContextStack();
         // Only close in itself if no content
         if (this._state === "Element") {
           this.completeStartElement(true, context.namespaces);
         }
         else {
-          this.writeIndent(!context.contentStringWritten);
+          // Do not indent if there is text content written since
+          // the indention would be included in the actual text content
+          if (!context.contentStringWritten)
+            this.writeIndent();
           this.write(`</${context.elementName}>`);
         }
+        this._contextStack.pop();
       }
       else {
         this.throwInvalidState();
@@ -282,6 +287,7 @@ export class XmlWriter {
   }
 
   private writeIndent(newLine: boolean = true) {
+    console.log("writeIndent", this._contextStack.length);
     if (this._indent > 0) {
       if (newLine) {
         this.write("\n");
@@ -301,13 +307,9 @@ export class XmlWriter {
 
   private writeNamespaceAttributes(namespaces: XmlNamespaceDictionary): void {
 
-    console.log("writeNamespaceAttributes", namespaces);
-
     // We should not repeat namespaces that exists in our ancestors
     // Check which of our current namespaces that does not exist in this ancestor
     const toWrite = this.getNamespacesNotInAncestors(namespaces);
-
-    console.log("writeNamespaceAttributes2", toWrite);
 
     // Write the ones that was not found in ancestor
     for (const prefix of Object.keys(toWrite)) {
