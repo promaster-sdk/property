@@ -65,12 +65,20 @@ describe('XmlWriter', () => {
     assert.equal(writer.getXml(), `<parent xmlns="ns">\n  <child>\n    <grandChild />\n  </child>\n</parent>`);
   });
 
-  it("should not repeat namespaces in attributes", () => {
+  it("should invent new prefix for attributes if the namespace has blank prefix", () => {
     const writer = new XmlWriter();
     writer.WriteStartElement("parent", "ns");
     writer.WriteAttributeString("foo", "bar", "ns");
     writer.WriteEndElement();
     assert.equal(writer.getXml(), `<parent p1:foo="bar" xmlns="ns" xmlns:p1="ns" />`);
+  });
+
+  it("should not not invent new prefix for attributes if the  namespace already has a prefix", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("root", "ns", "prefix");
+    writer.WriteAttributeString("foo", "bar", "ns", "prefix");
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<prefix:root prefix:foo="bar" xmlns:prefix="ns" />`);
   });
 
 });
