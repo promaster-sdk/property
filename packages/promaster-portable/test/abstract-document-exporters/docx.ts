@@ -33,12 +33,19 @@ describe('XmlWriter', () => {
     assert.equal(writer.getXml(), `<localName localName="value">Some content</localName>`);
   });
 
-  it("should shorthand close tag if no content", () => {
+  it("should shorthand close tag if no content but attribute", () => {
     const writer = new XmlWriter();
     writer.WriteStartElement("localName");
     writer.WriteAttributeString("localName", "value");
     writer.WriteEndElement();
     assert.equal(writer.getXml(), `<localName localName="value" />`);
+  });
+
+  it("should shorthand close tag if no content and no attribute", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("localName");
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<localName />`);
   });
 
 });

@@ -196,7 +196,8 @@ export class XmlWriter {
     const prevState = this._state;
     this.changeState("Content");
     const elementName = this._elementNameStack.pop();
-    if (prevState === "Attribute") {
+    //console.log("prevState", prevState);
+    if (prevState === "Attribute" || prevState === "Element") {
       this.write(` />`);
     }
     else {
