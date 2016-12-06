@@ -102,7 +102,7 @@ export class XmlWriter {
           // Close previous start-element
           this.completeStartElement(false);
         }
-        this.writeIndent(!(this._state === "Start" || this._state === "Prolog"));
+        this.writeIndent(this._state !== "Start");
         // this.changeState("Element");
         const elementName: string = XmlWriter.getPrefixedName(localName, prefix);
         this.write("<" + elementName);
