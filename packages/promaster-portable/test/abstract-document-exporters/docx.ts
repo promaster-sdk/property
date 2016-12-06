@@ -12,7 +12,7 @@ describe('XmlWriter', () => {
     writer.WriteAttributeString("localName", "value", "ns", "prefix");
     writer.WriteString("Some content");
     writer.WriteEndElement();
-    assert.equal(`<prefix:localName prefix:localName="value" xmlns:prefix="ns">Some content</prefix:localName>`, writer.getXml());
+    assert.equal(writer.getXml(), `<prefix:localName prefix:localName="value" xmlns:prefix="ns">Some content</prefix:localName>`);
   });
 
   it("should write with namespace without prefix", () => {
@@ -21,7 +21,7 @@ describe('XmlWriter', () => {
     writer.WriteAttributeString("localName", "value", "ns");
     writer.WriteString("Some content");
     writer.WriteEndElement();
-    assert.equal(`<localName p1:localName="value" xmlns="ns" xmlns:p1="ns">Some content</localName>`, writer.getXml());
+    assert.equal(writer.getXml(), `<localName p1:localName="value" xmlns="ns" xmlns:p1="ns">Some content</localName>`);
   });
 
   it("should write without namespace", () => {
@@ -30,7 +30,15 @@ describe('XmlWriter', () => {
     writer.WriteAttributeString("localName", "value");
     writer.WriteString("Some content");
     writer.WriteEndElement();
-    assert.equal(`<localName localName="value">Some content</localName>`, writer.getXml());
+    assert.equal(writer.getXml(), `<localName localName="value">Some content</localName>`);
+  });
+
+  it("should shorthand close tag if no content", () => {
+    const writer = new XmlWriter();
+    writer.WriteStartElement("localName");
+    writer.WriteAttributeString("localName", "value");
+    writer.WriteEndElement();
+    assert.equal(writer.getXml(), `<localName localName="value" />`);
   });
 
 });

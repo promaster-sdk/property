@@ -180,9 +180,16 @@ export class XmlWriter {
   }
 
   WriteEndElement(): void {
+    const prevState = this._state;
     this.changeState("Content");
     const elementName = this._elementNameStack.pop();
-    this.write(`</${elementName}>`);
+    console.log(prevState);
+    if (prevState === "Attribute") {
+      this.write(` />`);
+    }
+    else {
+      this.write(`</${elementName}>`);
+    }
   }
 
   Flush(): void {
@@ -265,7 +272,7 @@ export class XmlWriter {
     else if (this._state === "Attribute") {
       if (newState === "Content") {
         this.writeNamespaceAttributesAndClear();
-        this.write(">");
+        //this.write(">");
         ok = true;
       }
     }
