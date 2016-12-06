@@ -3,6 +3,7 @@ import {DocumentBuilder} from "../../src/abstract-document/index";
 import {createPageStyle} from "../../src/abstract-document/model/styles/page-style";
 import {createHeaderStyle} from "../../src/abstract-document/model/styles/header-style";
 import {createMasterPage} from "../../src/abstract-document/model/page/master-page";
+import {helloWorldDoc} from "./hello-word-doc";
 
 describe('model builder', () => {
 
@@ -23,7 +24,12 @@ describe('model builder', () => {
     builder.endParagraph();
     builder.endSection();
     const doc = builder.build();
-    assert.isOk(doc);
+    // Get rid of keys that have undefined value before doing comparision
+    assert.deepEqual(stripUndefinedKeys(doc), helloWorldDoc);
   });
 
 });
+
+function stripUndefinedKeys(obj: any) {
+  return JSON.parse(JSON.stringify(obj));
+}
