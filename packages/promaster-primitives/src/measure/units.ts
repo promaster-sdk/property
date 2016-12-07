@@ -441,6 +441,7 @@ export const Gallon: Unit.Unit<q.Volume> = _register((Unit.timesNumber(3.785, Li
 // Velocity
 export const FeetPerSecond: Unit.Unit<q.Velocity> = _register(UnitDivide.lengthByDuration(Foot, Second), "ft/s");
 export const FeetPerMinute: Unit.Unit<q.Velocity> = _register(UnitDivide.lengthByDuration(Foot, Minute), "ft/min");
+export const MilesPerHour: Unit.Unit<q.Velocity> = _register(UnitDivide.lengthByDuration(Mile, Hour), "mph");
 export const KilometerPerHour: Unit.Unit<q.Velocity> = _register(UnitDivide.lengthByDuration(Kilometer, Hour), "km/h");
 export const MeterPerHour: Unit.Unit<q.Velocity> = _register(UnitDivide.lengthByDuration(Meter, Hour), "m/h");
 
@@ -777,6 +778,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Volume", "Gallon", Gallon);
   _addMeta("Velocity", "FeetPerSecond", FeetPerSecond);
   _addMeta("Velocity", "FeetPerMinute", FeetPerMinute);
+  _addMeta("Velocity", "MilesPerHour", MilesPerHour);
   _addMeta("Velocity", "KilometerPerHour", KilometerPerHour);
   _addMeta("Velocity", "MeterPerHour", MeterPerHour);
   _addMeta("Density", "KilogramPerCubicMeter", KilogramPerCubicMeter);
