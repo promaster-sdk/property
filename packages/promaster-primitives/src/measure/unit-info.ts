@@ -175,7 +175,7 @@ addUnit(Units.Yard, "IP", 2, Units.Meter);
 addUnit(Units.Year, undefined, 0);
 
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
-function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>, measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>) {
+export function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>, measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>) {
   units[Units.getStringFromUnit(unit)] = {measureSystem, decimalCount, coUnit};
 }
 
