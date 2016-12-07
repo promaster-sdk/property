@@ -268,6 +268,7 @@ export declare const MilliLiter: Unit.Unit<q.Volume>;
 export declare const Gallon: Unit.Unit<q.Volume>;
 export declare const FeetPerSecond: Unit.Unit<q.Velocity>;
 export declare const FeetPerMinute: Unit.Unit<q.Velocity>;
+export declare const MilesPerHour: Unit.Unit<q.Velocity>;
 export declare const KilometerPerHour: Unit.Unit<q.Velocity>;
 export declare const MeterPerHour: Unit.Unit<q.Velocity>;
 export declare const KilogramPerCubicMeter: Unit.Unit<q.Density>;

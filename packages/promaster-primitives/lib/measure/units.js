@@ -366,6 +366,7 @@ exports.Gallon = _register((Unit.timesNumber(3.785, exports.Liter)), "gal");
 // Velocity
 exports.FeetPerSecond = _register(UnitDivide.lengthByDuration(exports.Foot, exports.Second), "ft/s");
 exports.FeetPerMinute = _register(UnitDivide.lengthByDuration(exports.Foot, exports.Minute), "ft/min");
+exports.MilesPerHour = _register(UnitDivide.lengthByDuration(exports.Mile, exports.Hour), "mph");
 exports.KilometerPerHour = _register(UnitDivide.lengthByDuration(exports.Kilometer, exports.Hour), "km/h");
 exports.MeterPerHour = _register(UnitDivide.lengthByDuration(exports.Meter, exports.Hour), "m/h");
 // Acceleration
@@ -661,6 +662,7 @@ function _ensureMetaAdded() {
     _addMeta("Volume", "Gallon", exports.Gallon);
     _addMeta("Velocity", "FeetPerSecond", exports.FeetPerSecond);
     _addMeta("Velocity", "FeetPerMinute", exports.FeetPerMinute);
+    _addMeta("Velocity", "MilesPerHour", exports.MilesPerHour);
     _addMeta("Velocity", "KilometerPerHour", exports.KilometerPerHour);
     _addMeta("Velocity", "MeterPerHour", exports.MeterPerHour);
     _addMeta("Density", "KilogramPerCubicMeter", exports.KilogramPerCubicMeter);
