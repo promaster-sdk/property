@@ -166,4 +166,5 @@ addUnit(Units.Year, undefined, 0);
 function addUnit(unit, measureSystem, decimalCount, coUnit) {
     units[Units.getStringFromUnit(unit)] = { measureSystem: measureSystem, decimalCount: decimalCount, coUnit: coUnit };
 }
+exports.addUnit = addUnit;
 //# sourceMappingURL=unit-info.js.map
