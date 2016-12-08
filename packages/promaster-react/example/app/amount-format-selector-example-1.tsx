@@ -42,6 +42,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
           <AmountFormatSelector selectedUnit={this.state.selectedUnit}
                                 selectedDecimalCount={this.state.selectedDecimalCount}
                                 onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
+                                onFormatCleared={() => this.setState(merge(this.state, {selectedUnit: Units.Celsius, selectedDecimalCount: 2}))}
                                 />
         </div>
       </div>

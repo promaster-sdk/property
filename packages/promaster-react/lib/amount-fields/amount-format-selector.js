@@ -15,7 +15,7 @@ var AmountFormatSelector = (function (_super) {
     }
     AmountFormatSelector.prototype.render = function () {
         var _this = this;
-        var _a = this.props, selectedUnit = _a.selectedUnit, selectedDecimalCount = _a.selectedDecimalCount, onFormatChanged = _a.onFormatChanged, _b = _a.styles, styles = _b === void 0 ? amount_format_selector_styles_1.amountFormatSelectorStyles : _b;
+        var _a = this.props, selectedUnit = _a.selectedUnit, selectedDecimalCount = _a.selectedDecimalCount, onFormatChanged = _a.onFormatChanged, onFormatCleared = _a.onFormatCleared, _b = _a.styles, styles = _b === void 0 ? amount_format_selector_styles_1.amountFormatSelectorStyles : _b;
         var className = styles.format;
         if (!this.state.active || !onFormatChanged) {
             return (React.createElement("span", {className: className, onClick: function (_) { return _this.setState({ active: true }); }}, promaster_primitives_1.UnitName.getName(selectedUnit)));
@@ -39,7 +39,12 @@ var AmountFormatSelector = (function (_super) {
                 _this.setState({ active: false });
                 _onDecimalCountChange(e, selectedUnit, onFormatChanged);
             }}, decimalCounts.map(function (dc) { return React.createElement("option", {key: dc.toString(), value: dc.toString()}, dc); })), 
-            React.createElement("button", {className: styles.cancel, onClick: function (_) { return _this.setState({ active: false }); }}, "\u00A0")));
+            onFormatCleared ?
+                React.createElement("button", {className: styles.clear, onClick: function () {
+                    _this.setState({ active: false });
+                    onFormatCleared();
+                }}, "\u00A0") : undefined, 
+            React.createElement("button", {className: styles.cancel, onClick: function () { return _this.setState({ active: false }); }}, "\u00A0")));
     };
     return AmountFormatSelector;
 }(React.Component));

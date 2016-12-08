@@ -7,12 +7,14 @@ export interface AmountFormatSelectorProps {
     readonly selectedUnit: Unit.Unit<any>;
     readonly selectedDecimalCount: number;
     readonly onFormatChanged?: OnFormatChanged;
+    readonly onFormatCleared?: OnFormatCleared;
     readonly styles?: AmountFormatSelectorStyles;
 }
 export interface State {
     readonly active: boolean;
 }
 export declare type OnFormatChanged = (unit: Unit.Unit<any>, decimalCount: number) => void;
+export declare type OnFormatCleared = () => void;
 export declare class AmountFormatSelector extends React.Component<AmountFormatSelectorProps, State> {
     constructor(props: AmountFormatSelectorProps);
     render(): JSX.Element;

@@ -6,6 +6,7 @@ export interface AmountFormatSelectorStyles {
   readonly formatActive: string,
   readonly unit: string,
   readonly precision: string,
+  readonly clear: string,
   readonly cancel: string,
 }
 
@@ -20,6 +21,9 @@ export const amountFormatSelectorStyles: AmountFormatSelectorStyles = csjs`
   }
   
   .precision {
+  }
+  
+  .clear {
   }
   
   .cancel {

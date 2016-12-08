@@ -57,6 +57,8 @@ SystemJS.config({
   map: {
     "ts": "../node_modules/plugin-typescript/lib/",
     "typescript": "../node_modules/typescript/",
+    "ramda": "../node_modules/ramda/dist/ramda.js",
+    "showdown": "../node_modules/showdown/dist/showdown.js",
     "react": "../node_modules/react/dist/react.js",
     "react-dom": "../node_modules/react-dom/dist/react-dom.js",
     "csjs": "../node_modules/csjs/",
