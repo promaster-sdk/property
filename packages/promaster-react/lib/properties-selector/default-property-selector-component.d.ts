@@ -1,6 +1,6 @@
 import { PropertyValueSet, Quantity, PropertyValue, PropertyFilter } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
-import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, PropertyValueItem, PropertySelectorStyles } from "./types";
+import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, OnPropertyFormatCleared, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, PropertyValueItem, PropertySelectorStyles } from "./types";
 export interface PropertySelectorComponentProps {
     propertyName: string;
     quantity: Quantity.Quantity;
@@ -12,6 +12,7 @@ export interface PropertySelectorComponentProps {
     optionalProperties: Array<string>;
     onChange: PropertySelectionOnChange;
     onPropertyFormatChanged: OnPropertyFormatChanged;
+    onPropertyFormatCleared: OnPropertyFormatCleared;
     filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
     propertyFormat: AmountFormat;
     readOnly: boolean;
@@ -21,4 +22,4 @@ export interface PropertySelectorComponentProps {
     translateValueIsRequiredMessage: TranslateValueIsRequiredMessage;
     styles: PropertySelectorStyles;
 }
-export declare function DefaultPropertySelectorComponent({propertyName, quantity, validationFilter, valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, onChange, onPropertyFormatChanged, filterPrettyPrint, propertyFormat, readOnly, locked, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, styles}: PropertySelectorComponentProps): any;
+export declare function DefaultPropertySelectorComponent({propertyName, quantity, validationFilter, valueItems, selectedValue, selectedProperties, includeCodes, optionalProperties, onChange, onPropertyFormatChanged, onPropertyFormatCleared, filterPrettyPrint, propertyFormat, readOnly, locked, translatePropertyValue, translateValueMustBeNumericMessage, translateValueIsRequiredMessage, styles}: PropertySelectorComponentProps): any;

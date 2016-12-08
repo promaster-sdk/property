@@ -2,7 +2,7 @@
 import * as React from "react";
 import { PropertyValueSet } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
-import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, TranslatePropertyName, Property, TranslatePropertyLabelHover, TranslateGroupName, ReactComponent, OnToggleGroupClosed, PropertySelectorStyles } from "./types";
+import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, OnPropertyFormatCleared, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, TranslatePropertyName, Property, TranslatePropertyLabelHover, TranslateGroupName, ReactComponent, OnToggleGroupClosed, PropertySelectorStyles } from "./types";
 import { LayoutComponentProps } from "./default-layout-component";
 import { GroupComponentProps } from "./default-group-component";
 import { GroupItemComponentProps } from "./default-group-item-component";
@@ -18,6 +18,7 @@ export interface PropertiesSelectorProps {
     readonly autoSelectSingleValidValue: boolean;
     readonly onChange: PropertySelectionOnChange;
     readonly onPropertyFormatChanged: OnPropertyFormatChanged;
+    readonly onPropertyFormatCleared: OnPropertyFormatCleared;
     readonly translatePropertyName: TranslatePropertyName;
     readonly translatePropertyValue: TranslatePropertyValue;
     readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage;

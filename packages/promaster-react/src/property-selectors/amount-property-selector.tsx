@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Amount, PropertyValueSet, PropertyFilter, PropertyValue, Unit} from "@promaster/promaster-primitives";
 import {PropertyFiltering} from "@promaster/promaster-portable";
-import {AmountInputBox, AmountFormatSelector, OnFormatChanged} from "../amount-fields/index";
+import {AmountInputBox, AmountFormatSelector, OnFormatChanged, OnFormatCleared} from "../amount-fields/index";
 import {amountPropertySelectorStyles, AmountPropertySelectorStyles} from "./amount-property-selector-styles";
 
 export interface AmountPropertySelectorProps {
@@ -15,6 +15,7 @@ export interface AmountPropertySelectorProps {
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
   readonly readOnly: boolean,
   readonly onFormatChanged: OnFormatChanged,
+  readonly onFormatCleared: OnFormatCleared,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void,
   readonly styles?: AmountPropertySelectorStyles,
 }
@@ -23,7 +24,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
 
   render() {
     const {
-      onValueChange, onFormatChanged, notNumericMessage, isRequiredMessage,
+      onValueChange, onFormatChanged, onFormatCleared, notNumericMessage, isRequiredMessage,
       validationFilter, propertyValueSet, propertyName, filterPrettyPrint, inputUnit,
       inputDecimalCount, readOnly, styles = amountPropertySelectorStyles
     } = this.props;
@@ -48,6 +49,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
           <AmountFormatSelector selectedUnit={inputUnit}
                                 selectedDecimalCount={inputDecimalCount}
                                 onFormatChanged={onFormatChanged}
+                                onFormatCleared={onFormatCleared}
                                 styles={styles.amountFormatSelectorStyles}/>
         </span>
     );

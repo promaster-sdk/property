@@ -5,6 +5,7 @@ import {
   PropertySelectionOnChange,
   AmountFormat,
   OnPropertyFormatChanged,
+  OnPropertyFormatCleared,
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
@@ -42,6 +43,7 @@ export interface PropertiesSelectorProps {
   // Events
   readonly onChange: PropertySelectionOnChange,
   readonly onPropertyFormatChanged: OnPropertyFormatChanged,
+  readonly onPropertyFormatCleared: OnPropertyFormatCleared,
 
   // Translations
   readonly translatePropertyName: TranslatePropertyName,
@@ -108,6 +110,7 @@ function createPropertySelectorRenderInfos({
 
   onChange,
   onPropertyFormatChanged,
+  onPropertyFormatCleared,
 
   translatePropertyName,
   translatePropertyValue,
@@ -172,6 +175,7 @@ function createPropertySelectorRenderInfos({
         optionalProperties,
         onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue),
         onPropertyFormatChanged,
+        onPropertyFormatCleared,
         filterPrettyPrint,
         propertyFormat,
         readOnly: isReadOnly,

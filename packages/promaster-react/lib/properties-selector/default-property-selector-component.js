@@ -6,7 +6,7 @@ var amountPropertySelector = React.createFactory(index_1.AmountPropertySelector)
 var comboboxPropertySelector = React.createFactory(index_1.ComboboxPropertySelector);
 var textboxPropertySelector = React.createFactory(index_1.TextboxPropertySelector);
 function DefaultPropertySelectorComponent(_a) {
-    var propertyName = _a.propertyName, quantity = _a.quantity, validationFilter = _a.validationFilter, valueItems = _a.valueItems, selectedValue = _a.selectedValue, selectedProperties = _a.selectedProperties, includeCodes = _a.includeCodes, optionalProperties = _a.optionalProperties, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, filterPrettyPrint = _a.filterPrettyPrint, propertyFormat = _a.propertyFormat, readOnly = _a.readOnly, locked = _a.locked, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, styles = _a.styles;
+    var propertyName = _a.propertyName, quantity = _a.quantity, validationFilter = _a.validationFilter, valueItems = _a.valueItems, selectedValue = _a.selectedValue, selectedProperties = _a.selectedProperties, includeCodes = _a.includeCodes, optionalProperties = _a.optionalProperties, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, onPropertyFormatCleared = _a.onPropertyFormatCleared, filterPrettyPrint = _a.filterPrettyPrint, propertyFormat = _a.propertyFormat, readOnly = _a.readOnly, locked = _a.locked, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, styles = _a.styles;
     function onValueChange(newValue) {
         onChange(newValue
             ? promaster_primitives_1.PropertyValueSet.set(propertyName, newValue, selectedProperties)
@@ -50,6 +50,7 @@ function DefaultPropertySelectorComponent(_a) {
                 inputUnit: propertyFormat.unit,
                 inputDecimalCount: propertyFormat.decimalCount,
                 onFormatChanged: function (unit, decimalCount) { return onPropertyFormatChanged(propertyName, unit, decimalCount); },
+                onFormatCleared: function () { return onPropertyFormatCleared(propertyName); },
                 onValueChange: onValueChange,
                 notNumericMessage: translateValueMustBeNumericMessage(),
                 isRequiredMessage: optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage(),

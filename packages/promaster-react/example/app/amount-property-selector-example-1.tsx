@@ -54,7 +54,10 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
             readOnly={false}
             isRequiredMessage="Is required"
             notNumericMessage="Not numeric"
-            onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}/>
+            onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
+            onFormatCleared={() => this.setState(merge(this.state, {selectedUnit: Units.Celsius, selectedDecimalCount: 2}))}
+
+          />
         </div>
       </div>
     );

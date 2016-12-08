@@ -13,7 +13,7 @@ function PropertiesSelector(props) {
 }
 exports.PropertiesSelector = PropertiesSelector;
 function createPropertySelectorRenderInfos(_a) {
-    var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, translatePropertyLabelHover = _a.translatePropertyLabelHover, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, styles = _a.styles;
+    var productProperties = _a.productProperties, selectedProperties = _a.selectedProperties, filterPrettyPrint = _a.filterPrettyPrint, includeCodes = _a.includeCodes, includeHiddenProperties = _a.includeHiddenProperties, autoSelectSingleValidValue = _a.autoSelectSingleValidValue, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, onPropertyFormatCleared = _a.onPropertyFormatCleared, translatePropertyName = _a.translatePropertyName, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, translatePropertyLabelHover = _a.translatePropertyLabelHover, readOnlyProperties = _a.readOnlyProperties, optionalProperties = _a.optionalProperties, propertyFormats = _a.propertyFormats, styles = _a.styles;
     autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
     var sortedArray = productProperties.slice().sort(function (a, b) { return a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0; });
     var selectorDefinitions = sortedArray
@@ -54,6 +54,7 @@ function createPropertySelectorRenderInfos(_a) {
             optionalProperties: optionalProperties,
             onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue),
             onPropertyFormatChanged: onPropertyFormatChanged,
+            onPropertyFormatCleared: onPropertyFormatCleared,
             filterPrettyPrint: filterPrettyPrint,
             propertyFormat: propertyFormat,
             readOnly: isReadOnly,

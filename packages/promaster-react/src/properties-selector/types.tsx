@@ -7,6 +7,7 @@ import {AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPro
 export type AmountFormat = {unit: Unit.Unit<any>, decimalCount: number};
 export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet) => void;
 export type OnPropertyFormatChanged = (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) => void
+export type OnPropertyFormatCleared = (propertyName: string) => void
 
 export type TranslatePropertyName = (propertyName: string) => string;
 export type TranslatePropertyValue = (propertyName: string, value: number | undefined) => string;

@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as R from "ramda";
 import {PropertiesSelector} from "@promaster/promaster-react";
 import {PropertyFiltering} from "@promaster/promaster-portable";
 import {Unit, PropertyFilter, PropertyValueSet} from "@promaster/promaster-primitives";
@@ -48,6 +49,10 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
           propertyFormats: merge(this.state.propertyFormats, {
             [propertyName]: {unit, decimalCount}
           })
+        })),
+      onPropertyFormatCleared: (propertyName: string) =>
+        this.setState(merge(this.state, {
+          propertyFormats: R.dissoc(propertyName, this.state.propertyFormats)
         })),
       autoSelectSingleValidValue: true,
       translatePropertyName: (propertyName: string) => `${propertyName}_Translation`,
