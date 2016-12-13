@@ -220,7 +220,7 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
 			case "greaterOrEqual":
 				return PropertyValue.greaterOrEqualTo(left, right);
 			default:
-				throw new Error(`Unknown comparisontype: ${e.operationType}`);
+				throw new Error(`Unknown comparisontype`);
 		}
 	}
 	else if (e.type === "EmptyExpr") {
