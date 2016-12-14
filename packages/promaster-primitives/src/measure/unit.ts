@@ -215,7 +215,46 @@ export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Qu
 }
 
 export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>, right: Unit<T2>) {
-  return left === right;
+  if (left.type !== right.type || left.quantity !== right.quantity) {
+    return false;
+  }
+
+  switch (left.type) {
+    case "base":
+      return left.symbol === (right as BaseUnit<any>).symbol;
+    case "alternate":
+      const alternateRight = right as AlternateUnit<any>;
+      return left.symbol === alternateRight.symbol && left.parent === alternateRight.parent;
+    case "transformed":
+      const transformedRight = right as TransformedUnit<any>;
+      return equals(left.parentUnit, transformedRight.parentUnit) && unitConvertersIsEqual(left.toParentUnitConverter, transformedRight.toParentUnitConverter);
+    case "product":
+      const productRight = right as ProductUnit<any>;
+      if (left.elements.length !== productRight.elements.length) {
+        return false;
+      }
+      return left.elements.every((leftElement, index) => leftElement.pow === productRight.elements[index].pow && equals(leftElement.unit, productRight.elements[index].unit))
+  }
+}
+
+function unitConvertersIsEqual(left: UnitConverter, right: UnitConverter): boolean {
+  if (left.type !== right.type) {
+    return false
+  }
+
+  switch (left.type) {
+    case "compound":
+      const compoundRight = right as CompoundConverter;
+      return unitConvertersIsEqual(left.first, compoundRight.first);
+    case "factor":
+      const factorRight = right as FactorConverter;
+      return left.factor === factorRight.factor;
+    case "identity":
+      return true;
+    case "offset":
+      const offsetRight = right as OffsetConverter;
+      return left.offset === offsetRight.offset;
+  }
 }
 
 ///////////////////////////////
