@@ -12,38 +12,39 @@ insert_css_1.insertCss(csjs_1.csjs.getCss(defaultStyles));
 var Dropdown = (function (_super) {
     __extends(Dropdown, _super);
     function Dropdown(props) {
-        _super.call(this, props);
-        this.state = {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
             isOpen: false,
         };
+        return _this;
     }
     Dropdown.prototype.render = function () {
         var _this = this;
         var _a = this.props, value = _a.value, onChange = _a.onChange, options = _a.options, _b = _a.styles, styles = _b === void 0 ? defaultStyles : _b, className = _a.className;
         var selected = options.find(function (o) { return o.value === value; });
-        var background = this.state.isOpen ? (React.createElement("div", {className: styles.dropdownBackground, onClick: function () { return _this.setState({ isOpen: false }); }})) : undefined;
-        var optionsList = this.state.isOpen ? (React.createElement("div", {className: styles.dropdownOptions}, options.map(function (o) {
+        var background = this.state.isOpen ? (React.createElement("div", { className: styles.dropdownBackground, onClick: function () { return _this.setState({ isOpen: false }); } })) : undefined;
+        var optionsList = this.state.isOpen ? (React.createElement("div", { className: styles.dropdownOptions }, options.map(function (o) {
             var optionClassNames = o.className ? [styles.dropdownOption, o.className] : [styles.dropdownOption];
-            return (React.createElement("div", {key: o.value, className: optionClassNames.join(' '), title: o.tooltip, onClick: function () {
-                onChange(o.value);
-                _this.setState({ isOpen: false });
-            }}, _this._renderItem(o)));
+            return (React.createElement("div", { key: o.value, className: optionClassNames.join(' '), title: o.tooltip, onClick: function () {
+                    onChange(o.value);
+                    _this.setState({ isOpen: false });
+                } }, _this._renderItem(o)));
         }))) : undefined;
         var classNames = className ? [styles.dropdownButton, className] : [styles.dropdownButton];
-        return (React.createElement("div", {className: styles.dropdown}, 
-            background, 
-            React.createElement("button", {className: classNames.join(' '), title: selected !== undefined ? selected.tooltip : undefined, onClick: function () { return _this.setState({ isOpen: !_this.state.isOpen }); }}, 
-                this._renderItem(selected), 
-                React.createElement("i", {className: "fa fa-caret-down"})), 
+        return (React.createElement("div", { className: styles.dropdown },
+            background,
+            React.createElement("button", { className: classNames.join(' '), title: selected !== undefined ? selected.tooltip : undefined, onClick: function () { return _this.setState({ isOpen: !_this.state.isOpen }); } },
+                this._renderItem(selected),
+                React.createElement("i", { className: "fa fa-caret-down" })),
             optionsList));
     };
     Dropdown.prototype._renderItem = function (item) {
         if (item === undefined) {
             return (React.createElement("span", null));
         }
-        var image = item.imageUrl ? (React.createElement("img", {src: item.imageUrl})) : (React.createElement("span", null));
-        return (React.createElement("span", null, 
-            image, 
+        var image = item.imageUrl ? (React.createElement("img", { src: item.imageUrl })) : (React.createElement("span", null));
+        return (React.createElement("span", null,
+            image,
             " " + item.label + " "));
     };
     return Dropdown;

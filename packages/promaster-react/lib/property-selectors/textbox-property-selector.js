@@ -10,8 +10,9 @@ var textbox_property_selector_styles_1 = require("./textbox-property-selector-st
 var TextboxPropertySelector = (function (_super) {
     __extends(TextboxPropertySelector, _super);
     function TextboxPropertySelector() {
-        _super.call(this);
-        this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, 350);
+        var _this = _super.call(this) || this;
+        _this._debouncedOnValueChange = debounce(_this._debouncedOnValueChange, 350);
+        return _this;
     }
     TextboxPropertySelector.prototype.componentWillMount = function () {
         var value = this.props.value;
@@ -25,7 +26,7 @@ var TextboxPropertySelector = (function (_super) {
         var _this = this;
         var _a = this.props, onValueChange = _a.onValueChange, readOnly = _a.readOnly, _b = _a.styles, styles = _b === void 0 ? textbox_property_selector_styles_1.textboxPropertySelectorStyles : _b;
         var textValue = this.state.textValue;
-        return (React.createElement("input", {type: 'text', value: textValue, className: styles.textbox, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }}));
+        return (React.createElement("input", { type: 'text', value: textValue, className: styles.textbox, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); } }));
     };
     TextboxPropertySelector.prototype._debouncedOnValueChange = function (newValue, onValueChange) {
         onValueChange(newValue);

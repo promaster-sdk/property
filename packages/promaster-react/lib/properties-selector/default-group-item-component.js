@@ -10,8 +10,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 var React = require("react");
 function DefaultGroupItemComponent(_a) {
     var selector = _a.selector, PropertyLabelComponent = _a.PropertyLabelComponent, PropertySelectorComponent = _a.PropertySelectorComponent;
-    return (React.createElement("div", {key: selector.propertyName, className: "property-selector-row"}, 
-        React.createElement(PropertyLabelComponent, __assign({}, selector.labelComponentProps)), 
+    return (React.createElement("div", { key: selector.propertyName, className: "property-selector-row" },
+        React.createElement(PropertyLabelComponent, __assign({}, selector.labelComponentProps)),
         React.createElement(PropertySelectorComponent, __assign({}, selector.selectorComponentProps))));
 }
 exports.DefaultGroupItemComponent = DefaultGroupItemComponent;

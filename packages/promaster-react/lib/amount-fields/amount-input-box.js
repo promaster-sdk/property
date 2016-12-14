@@ -10,8 +10,9 @@ var amount_input_box_styles_1 = require("./amount-input-box-styles");
 var AmountInputBox = (function (_super) {
     __extends(AmountInputBox, _super);
     function AmountInputBox() {
-        _super.call(this);
-        this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, 350);
+        var _this = _super.call(this) || this;
+        _this._debouncedOnValueChange = debounce(_this._debouncedOnValueChange, 350);
+        return _this;
     }
     AmountInputBox.prototype.componentWillMount = function () {
         this.initStateFromProps(this.props);
@@ -33,7 +34,7 @@ var AmountInputBox = (function (_super) {
         var _this = this;
         var _a = this.props, onValueChange = _a.onValueChange, readOnly = _a.readOnly, _b = _a.styles, styles = _b === void 0 ? amount_input_box_styles_1.amountInputBoxStyles : _b;
         var _c = this.state, effectiveErrorMessage = _c.effectiveErrorMessage, textValue = _c.textValue;
-        return (React.createElement("input", {key: "input", type: "text", value: textValue, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }, title: effectiveErrorMessage, className: effectiveErrorMessage ? styles.inputInvalid : styles.input}));
+        return (React.createElement("input", { key: "input", type: "text", value: textValue, readOnly: readOnly, onChange: function (e) { return _this._onChange(e, onValueChange); }, title: effectiveErrorMessage, className: effectiveErrorMessage ? styles.inputInvalid : styles.input }));
     };
     AmountInputBox.prototype._debouncedOnValueChange = function (newAmount, onValueChange) {
         if (this.state.isValid)

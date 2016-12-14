@@ -74,9 +74,9 @@ function ComboboxPropertySelector(_a) {
             className: option.isItemValid ? styles.option : styles.optionInvalid,
             imageUrl: option.image,
         }); });
-        return (React.createElement(index_1.Dropdown, {className: selectClassName, value: selectedOption.value, options: dropdownOptions, onChange: function (e) { return _doOnChange(e, onValueChange); }}));
+        return (React.createElement(index_1.Dropdown, { className: selectClassName, value: selectedOption.value, options: dropdownOptions, onChange: function (e) { return _doOnChange(e, onValueChange); } }));
     }
-    return (React.createElement("select", {className: selectClassName, disabled: readOnly || locked, value: selectedOption.value, title: selectedOption.toolTip, onChange: function (event) { return _doOnChange(event.target.value, onValueChange); }}, options.map(function (option) { return (React.createElement("option", {key: option.value, value: option.value, title: option.toolTip, className: option.isItemValid ? styles.option : styles.optionInvalid}, (option.isItemValid ? '' : '✘ ') + option.label)); })));
+    return (React.createElement("select", { className: selectClassName, disabled: readOnly || locked, value: selectedOption.value, title: selectedOption.toolTip, onChange: function (event) { return _doOnChange(event.target.value, onValueChange); } }, options.map(function (option) { return (React.createElement("option", { key: option.value, value: option.value, title: option.toolTip, className: option.isItemValid ? styles.option : styles.optionInvalid }, (option.isItemValid ? '' : '✘ ') + option.label)); })));
 }
 exports.ComboboxPropertySelector = ComboboxPropertySelector;
 function _getItemLabel(valueItem, showCodes) {

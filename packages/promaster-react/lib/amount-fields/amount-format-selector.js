@@ -10,15 +10,16 @@ var amount_format_selector_styles_1 = require("./amount-format-selector-styles")
 var AmountFormatSelector = (function (_super) {
     __extends(AmountFormatSelector, _super);
     function AmountFormatSelector(props) {
-        _super.call(this, props);
-        this.state = { active: false };
+        var _this = _super.call(this, props) || this;
+        _this.state = { active: false };
+        return _this;
     }
     AmountFormatSelector.prototype.render = function () {
         var _this = this;
         var _a = this.props, selectedUnit = _a.selectedUnit, selectedDecimalCount = _a.selectedDecimalCount, onFormatChanged = _a.onFormatChanged, onFormatCleared = _a.onFormatCleared, _b = _a.styles, styles = _b === void 0 ? amount_format_selector_styles_1.amountFormatSelectorStyles : _b;
         var className = styles.format;
         if (!this.state.active || !onFormatChanged) {
-            return (React.createElement("span", {className: className, onClick: function (_) { return _this.setState({ active: true }); }}, promaster_primitives_1.UnitName.getName(selectedUnit)));
+            return (React.createElement("span", { className: className, onClick: function (_) { return _this.setState({ active: true }); } }, promaster_primitives_1.UnitName.getName(selectedUnit)));
         }
         var units = promaster_primitives_1.Units.getUnitsForQuantity(selectedUnit.quantity);
         var unitNames = units.map(function (u) { return promaster_primitives_1.Units.getStringFromUnit(u); });
@@ -27,24 +28,24 @@ var AmountFormatSelector = (function (_super) {
         if (decimalCounts.indexOf(selectedDecimalCount) === -1)
             decimalCounts.push(selectedDecimalCount);
         var classNameToUse = this.state.active ? styles.formatActive : styles.format;
-        return (React.createElement("span", {className: classNameToUse}, 
-            React.createElement("select", {className: styles.unit, value: selectedUnitName, onChange: function (e) {
-                _this.setState({ active: false });
-                _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
-            }}, units.map(function (u, index) { return React.createElement("option", {key: unitNames[index], value: unitNames[index]}, 
-                " ", 
-                promaster_primitives_1.UnitName.getName(u), 
-                " "); })), 
-            React.createElement("select", {className: styles.precision, value: selectedDecimalCount.toString(), onChange: function (e) {
-                _this.setState({ active: false });
-                _onDecimalCountChange(e, selectedUnit, onFormatChanged);
-            }}, decimalCounts.map(function (dc) { return React.createElement("option", {key: dc.toString(), value: dc.toString()}, dc); })), 
-            onFormatCleared ?
-                React.createElement("button", {className: styles.clear, onClick: function () {
+        return (React.createElement("span", { className: classNameToUse },
+            React.createElement("select", { className: styles.unit, value: selectedUnitName, onChange: function (e) {
                     _this.setState({ active: false });
-                    onFormatCleared();
-                }}, "\u00A0") : undefined, 
-            React.createElement("button", {className: styles.cancel, onClick: function () { return _this.setState({ active: false }); }}, "\u00A0")));
+                    _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
+                } }, units.map(function (u, index) { return React.createElement("option", { key: unitNames[index], value: unitNames[index] },
+                " ",
+                promaster_primitives_1.UnitName.getName(u),
+                " "); })),
+            React.createElement("select", { className: styles.precision, value: selectedDecimalCount.toString(), onChange: function (e) {
+                    _this.setState({ active: false });
+                    _onDecimalCountChange(e, selectedUnit, onFormatChanged);
+                } }, decimalCounts.map(function (dc) { return React.createElement("option", { key: dc.toString(), value: dc.toString() }, dc); })),
+            onFormatCleared ?
+                React.createElement("button", { className: styles.clear, onClick: function () {
+                        _this.setState({ active: false });
+                        onFormatCleared();
+                    } }, "\u00A0") : undefined,
+            React.createElement("button", { className: styles.cancel, onClick: function () { return _this.setState({ active: false }); } }, "\u00A0")));
     };
     return AmountFormatSelector;
 }(React.Component));
