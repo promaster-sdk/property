@@ -1,5 +1,5 @@
 "use strict";
-var Unit = require("./unit");
+var Unit = require('./unit');
 function volumeByDuration(left, right) {
     return Unit.divide("VolumeFlow", left, right);
 }

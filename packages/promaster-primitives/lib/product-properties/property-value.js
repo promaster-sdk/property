@@ -1,6 +1,6 @@
 "use strict";
-var Amount = require("../measure/amount");
-var Units = require("../measure/units");
+var Amount = require('../measure/amount');
+var Units = require('../measure/units');
 var compare_utils_1 = require("../utils/compare_utils");
 // Functions
 function create(type, value) {

@@ -52,7 +52,7 @@ addQuantity("WaterHardness", Units.MilliGramCalciumPerLiter, Units.MilliGramCalc
 addQuantity("WaterUseEfficiency", Units.LiterPerKiloWattHour, Units.LiterPerKiloWattHour);
 addQuantity("WetTemperature", Units.CelsiusWet, Units.FahrenheitWet);
 
-function addQuantity(quantity: Quantity.Quantity, siUnit: Unit.Unit<any>, ipUnit: Unit.Unit<any>) {
+export function addQuantity(quantity: Quantity.Quantity, siUnit: Unit.Unit<any>, ipUnit: Unit.Unit<any>) {
   quantityInfo[quantity] = {siUnit, ipUnit};
 }
 

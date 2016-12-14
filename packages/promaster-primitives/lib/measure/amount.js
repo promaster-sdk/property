@@ -1,6 +1,6 @@
 "use strict";
-var Unit = require("./unit");
-var UnitName = require("./unit-name");
+var Unit = require('./unit');
+var UnitName = require('./unit-name');
 var Units = require("./units");
 var CompareUtils = require("../utils/compare_utils");
 /**

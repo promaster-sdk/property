@@ -45,6 +45,7 @@ addQuantity("WetTemperature", Units.CelsiusWet, Units.FahrenheitWet);
 function addQuantity(quantity, siUnit, ipUnit) {
     quantityInfo[quantity] = { siUnit: siUnit, ipUnit: ipUnit };
 }
+exports.addQuantity = addQuantity;
 function getQuantityInfo(quantity) {
     return quantityInfo[quantity];
 }
