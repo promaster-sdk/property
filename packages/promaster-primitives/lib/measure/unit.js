@@ -74,9 +74,45 @@ function convert(value, fromUnit, toUnit) {
 }
 exports.convert = convert;
 function equals(left, right) {
-    return left === right;
+    if (left.type !== right.type || left.quantity !== right.quantity) {
+        return false;
+    }
+    switch (left.type) {
+        case "base":
+            return left.symbol === right.symbol;
+        case "alternate":
+            var alternateRight = right;
+            return left.symbol === alternateRight.symbol && left.parent === alternateRight.parent;
+        case "transformed":
+            var transformedRight = right;
+            return equals(left.parentUnit, transformedRight.parentUnit) && unitConvertersIsEqual(left.toParentUnitConverter, transformedRight.toParentUnitConverter);
+        case "product":
+            var productRight_1 = right;
+            if (left.elements.length !== productRight_1.elements.length) {
+                return false;
+            }
+            return left.elements.every(function (leftElement, index) { return leftElement.pow === productRight_1.elements[index].pow && equals(leftElement.unit, productRight_1.elements[index].unit); });
+    }
 }
 exports.equals = equals;
+function unitConvertersIsEqual(left, right) {
+    if (left.type !== right.type) {
+        return false;
+    }
+    switch (left.type) {
+        case "compound":
+            var compoundRight = right;
+            return unitConvertersIsEqual(left.first, compoundRight.first);
+        case "factor":
+            var factorRight = right;
+            return left.factor === factorRight.factor;
+        case "identity":
+            return true;
+        case "offset":
+            var offsetRight = right;
+            return left.offset === offsetRight.offset;
+    }
+}
 ///////////////////////////////
 /// BEGIN PRIVATE DECLARATIONS
 ///////////////////////////////
