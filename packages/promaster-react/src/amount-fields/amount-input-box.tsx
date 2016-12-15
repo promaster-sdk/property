@@ -33,7 +33,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
   constructor() {
     super();
     // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-    this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, 350);
+    this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, 350);
   }
 
   componentWillMount() {
@@ -184,15 +184,16 @@ function filterFloat(value: string): number {
   return NaN;
 }
 
+
 // (From underscore.js)
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
-function debounce(this: any, func: Function, wait: number, immediate?: boolean): any {
+function debounce(_this: any, func: Function, wait: number, immediate?: boolean): any {
   let timeout: any;
-  return function (this: any) {
-    const context = this, args = arguments;
+  return function () {
+    const context = _this, args = arguments;
     const later = function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
@@ -201,5 +202,5 @@ function debounce(this: any, func: Function, wait: number, immediate?: boolean):
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
-  };
+  }
 }

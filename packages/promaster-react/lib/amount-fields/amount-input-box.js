@@ -11,7 +11,7 @@ var AmountInputBox = (function (_super) {
     __extends(AmountInputBox, _super);
     function AmountInputBox() {
         var _this = _super.call(this) || this;
-        _this._debouncedOnValueChange = debounce(_this._debouncedOnValueChange, 350);
+        _this._debouncedOnValueChange = debounce(_this, _this._debouncedOnValueChange, 350);
         return _this;
     }
     AmountInputBox.prototype.componentWillMount = function () {
@@ -112,10 +112,10 @@ function filterFloat(value) {
         return Number(value);
     return NaN;
 }
-function debounce(func, wait, immediate) {
+function debounce(_this, func, wait, immediate) {
     var timeout;
     return function () {
-        var context = this, args = arguments;
+        var context = _this, args = arguments;
         var later = function () {
             timeout = null;
             if (!immediate)
