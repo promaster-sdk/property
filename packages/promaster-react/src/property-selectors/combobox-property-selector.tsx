@@ -5,7 +5,7 @@ import {comboboxPropertySelectorStyles, ComboboxPropertySelectorStyles} from "./
 import {Dropdown} from "../dropdown/index";
 
 export interface ComboBoxPropertyValueItem {
-  readonly value: PropertyValue.PropertyValue | undefined,
+  readonly value: PropertyValue.PropertyValue | undefined | null,
   readonly sortNo: number,
   readonly text: string,
   readonly image?: string,
@@ -155,11 +155,11 @@ export function ComboboxPropertySelector({
 }
 
 function _getItemLabel(valueItem: ComboBoxPropertyValueItem, showCodes: boolean) {
-    return valueItem.text + (showCodes ? ` (${valueItem.value !== undefined ? PropertyValue.toString(valueItem.value) : "undefined"})` : '');
+    return valueItem.text + (showCodes ? ` (${valueItem.value !== undefined && valueItem.value !== null ? PropertyValue.toString(valueItem.value) : ""})` : '');
 }
 
 function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void) {
-    if (newValue === "undefined") {
+    if (newValue === undefined || newValue === null) {
         onValueChange(undefined);
     }
     else {
@@ -168,7 +168,11 @@ function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.Prop
 }
 
 function _getItemValue(valueItem: ComboBoxPropertyValueItem) {
-    return valueItem.value === undefined ? "undefined" : PropertyValue.toString(valueItem.value);
+      if(valueItem.value === undefined || valueItem.value === null) {
+        return "";
+      }
+
+    return PropertyValue.toString(valueItem.value);
 }
 
 function _getItemInvalidMessage(valueItem: ComboBoxPropertyValueItem, filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {
@@ -177,7 +181,7 @@ function _getItemInvalidMessage(valueItem: ComboBoxPropertyValueItem, filterPret
 
 function _isValueItemValid(propertyName: string, propertyValueSet: PropertyValueSet.PropertyValueSet, valueItem: ComboBoxPropertyValueItem): boolean {
 
-    if (valueItem.value === undefined)
+    if (valueItem.value === undefined || valueItem.value === null)
         return true;
     let pvsToCheck = PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
     if (!valueItem.validationFilter)
