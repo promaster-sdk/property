@@ -4,6 +4,7 @@ const atl = require('awesome-typescript-loader');
 
 module.exports = {
   // context - The base directory, an absolute path, for resolving entry points and loaders from configuration.
+  stats: "minimal",
   context: path.resolve(__dirname, '.'),
   devtool: 'sourcemap',
   entry: './src/index',
@@ -41,18 +42,6 @@ module.exports = {
     }
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        // Useful to reduce the size of client-side libraries, e.g. react
-        NODE_ENV: JSON.stringify('development')
-      }
-    }),
     new atl.CheckerPlugin(),
-    // new webpack.DllReferencePlugin({
-    //   context: path.join(__dirname, '../'),
-    //   sourceType: "amd",
-    //   name: '../vendor/vendor.bundle.js',
-    //   manifest: require(path.join(__dirname, '../src/', './vendor/vendor-manifest.json'))
-    // })
   ]
 };

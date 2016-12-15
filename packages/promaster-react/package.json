@@ -11,7 +11,7 @@
     "registry": "https://npm.divid.se"
   },
   "scripts": {
-    "start": "webpack-dev-server --config example/webpack.config.js",
+    "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --version && tsc -p src",
     "tsc:example": "tsc -p example",
