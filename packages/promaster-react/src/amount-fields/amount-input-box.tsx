@@ -105,7 +105,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 }
 
 function calculateNewState(newAmount: Amount.Amount<any> | undefined, newStringValue: string,
-  isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
+                           isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
   const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
   if (internalErrorMessage) {
     return {isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage};
@@ -190,17 +190,19 @@ function filterFloat(value: string): number {
 // be triggered. The function will be called after it stops being called for
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
-function debounce(_this: any, func: Function, wait: number, immediate?: boolean): any {
+function debounce(_this: any, func: Function, wait: number): any {
   let timeout: any;
+
   return function () {
-    const context = _this, args = arguments;
+    const args = arguments;
+
     const later = function () {
       timeout = null;
-      if (!immediate) func.apply(context, args);
+      func.apply(_this, args);
     };
-    const callNow = immediate && !timeout;
+
     clearTimeout(timeout);
+
     timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
   }
 }

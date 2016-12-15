@@ -34,7 +34,10 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
           <AmountFields.AmountInputBox value={this.state.amount}
                           inputUnit={this.state.selectedUnit}
                           inputDecimalCount={this.state.selectedDecimalCount}
-                          onValueChange={(amount) => this.setState(merge(this.state, {amount}))}
+                          onValueChange={(amount) => {
+                            console.log("changed");
+                            this.setState(merge(this.state, {amount}))
+                          }}
                           readOnly={false}
                           errorMessage=""
                           isRequiredMessage="Is required"
