@@ -4,7 +4,7 @@ import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster/prom
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import { ComboboxPropertySelectorStyles } from "./combobox-property-selector-styles";
 export interface ComboBoxPropertyValueItem {
-    readonly value: PropertyValue.PropertyValue | undefined;
+    readonly value: PropertyValue.PropertyValue | undefined | null;
     readonly sortNo: number;
     readonly text: string;
     readonly image?: string;

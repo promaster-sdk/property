@@ -80,10 +80,10 @@ function ComboboxPropertySelector(_a) {
 }
 exports.ComboboxPropertySelector = ComboboxPropertySelector;
 function _getItemLabel(valueItem, showCodes) {
-    return valueItem.text + (showCodes ? " (" + (valueItem.value !== undefined ? promaster_primitives_1.PropertyValue.toString(valueItem.value) : "undefined") + ")" : '');
+    return valueItem.text + (showCodes ? " (" + (valueItem.value !== undefined && valueItem.value !== null ? promaster_primitives_1.PropertyValue.toString(valueItem.value) : "") + ")" : '');
 }
 function _doOnChange(newValue, onValueChange) {
-    if (newValue === "undefined") {
+    if (newValue === undefined || newValue === null) {
         onValueChange(undefined);
     }
     else {
@@ -91,13 +91,16 @@ function _doOnChange(newValue, onValueChange) {
     }
 }
 function _getItemValue(valueItem) {
-    return valueItem.value === undefined ? "undefined" : promaster_primitives_1.PropertyValue.toString(valueItem.value);
+    if (valueItem.value === undefined || valueItem.value === null) {
+        return "";
+    }
+    return promaster_primitives_1.PropertyValue.toString(valueItem.value);
 }
 function _getItemInvalidMessage(valueItem, filterPrettyPrint) {
     return filterPrettyPrint(valueItem.validationFilter);
 }
 function _isValueItemValid(propertyName, propertyValueSet, valueItem) {
-    if (valueItem.value === undefined)
+    if (valueItem.value === undefined || valueItem.value === null)
         return true;
     var pvsToCheck = promaster_primitives_1.PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
     if (!valueItem.validationFilter)
