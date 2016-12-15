@@ -11,7 +11,7 @@
     "registry": "https://npm.divid.se"
   },
   "scripts": {
-    "start": "http-server -c-1",
+    "start": "webpack-dev-server --config example/webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc --version && tsc -p src",
     "tsc:example": "tsc -p example",
@@ -30,10 +30,13 @@
   "devDependencies": {
     "@types/react": "^0.14.41",
     "@types/react-dom": "^0.14.18",
+    "awesome-typescript-loader": "^3.0.0-beta.17",
     "http-server": "^0.9.0",
     "plugin-typescript": "^5.2.7",
+    "react-dom": "^15.3.0",
     "shelljs": "^0.7.4",
     "typescript": "^2.0.3",
-    "react-dom": "^15.3.0"
+    "webpack": "beta",
+    "webpack-dev-server": "beta"
   }
 }

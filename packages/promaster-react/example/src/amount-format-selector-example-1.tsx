@@ -1,5 +1,5 @@
 import * as React from "react";
-import {AmountInputBox, AmountFormatSelector} from "@promaster/promaster-react/amount-fields/index";
+import {AmountFields} from "@promaster/promaster-react";
 import {Unit, Units, Amount} from "@promaster/promaster-primitives";
 import {merge} from "./utils";
 
@@ -31,7 +31,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
           AmountFormatSelector:
         </div>
         <div>
-          <AmountInputBox value={this.state.amount}
+          <AmountFields.AmountInputBox value={this.state.amount}
                           inputUnit={this.state.selectedUnit}
                           inputDecimalCount={this.state.selectedDecimalCount}
                           onValueChange={(amount) => this.setState(merge(this.state, {amount}))}
@@ -39,7 +39,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
                           errorMessage=""
                           isRequiredMessage="Is required"
                           notNumericMessage="Not numeric"/>
-          <AmountFormatSelector selectedUnit={this.state.selectedUnit}
+          <AmountFields.AmountFormatSelector selectedUnit={this.state.selectedUnit}
                                 selectedDecimalCount={this.state.selectedDecimalCount}
                                 onFormatChanged={(selectedUnit, selectedDecimalCount) => this.setState(merge(this.state, {selectedUnit, selectedDecimalCount}))}
                                 onFormatCleared={() => this.setState(merge(this.state, {selectedUnit: Units.Celsius, selectedDecimalCount: 2}))}

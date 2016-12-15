@@ -64,7 +64,7 @@ interface ExampleRendererProps {
 }
 
 function ExampleRenderer({example}:ExampleRendererProps) {
-  const element = React.createElement(example.component);
+  const element = React.createElement(example.component as any);
   return element;
 }
 

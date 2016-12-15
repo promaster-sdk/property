@@ -4,7 +4,7 @@
     "skipLibCheck": false,
     "declaration": false,
     "jsx": "react",
-    "module": "es6",
+    "module": "commonjs",
     "target": "es6",
     "newLine": "LF",
     "noEmit": true,
