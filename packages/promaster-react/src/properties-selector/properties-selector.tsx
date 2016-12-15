@@ -26,7 +26,7 @@ import {PropertiesSelectorProps} from "./properties-selector";
 import {PropertyLabelComponentProps, DefaultPropertyLabelComponent} from "./default-property-label-component";
 import {PropertySelectorComponentProps, DefaultPropertySelectorComponent} from "./default-property-selector-component";
 
-export interface PropertiesSelectorProps {
+export interface PropertiesSelectorProps<TExtraProps> {
 
   // Required inputs
   readonly productProperties: Array<Property>
@@ -66,14 +66,17 @@ export interface PropertiesSelectorProps {
   readonly onToggleGroupClosed: OnToggleGroupClosed,
 
   // Override layout
-  readonly LayoutComponent?: ReactComponent<LayoutComponentProps>,
+  readonly LayoutComponent?: ReactComponent<LayoutComponentProps<TExtraProps>>,
   readonly GroupComponent?: ReactComponent<GroupComponentProps>,
   readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
   readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
   readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
+
+  // Extra props
+  readonly LayoutExtraProps: TExtraProps
 }
 
-export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
+export function PropertiesSelector<TExtraProps>(props: PropertiesSelectorProps<TExtraProps>): React.ReactElement<PropertiesSelectorProps<TExtraProps>> {
 
   const {
     translateGroupName,
@@ -84,6 +87,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     GroupItemComponent = DefaultGroupItemComponent,
     PropertySelectorComponent = DefaultPropertySelectorComponent,
     PropertyLabelComponent = DefaultPropertyLabelComponent,
+    LayoutExtraProps
   } = props;
 
   const selectors = createPropertySelectorRenderInfos(props);
@@ -95,11 +99,12 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
                           GroupComponent={GroupComponent}
                           GroupItemComponent={GroupItemComponent}
                           PropertySelectorComponent={PropertySelectorComponent}
-                          PropertyLabelComponent={PropertyLabelComponent} />;
+                          PropertyLabelComponent={PropertyLabelComponent}
+                          ExtraProps={LayoutExtraProps}/>;
 
 }
 
-function createPropertySelectorRenderInfos({
+function createPropertySelectorRenderInfos<TExtraProps>({
   productProperties,
   selectedProperties,
   filterPrettyPrint,
@@ -124,7 +129,7 @@ function createPropertySelectorRenderInfos({
 
   styles,
 
-}: PropertiesSelectorProps): Array<PropertySelectorRenderInfo> {
+}: PropertiesSelectorProps<TExtraProps>): Array<PropertySelectorRenderInfo> {
 
   // Default true if not specified otherwise
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;

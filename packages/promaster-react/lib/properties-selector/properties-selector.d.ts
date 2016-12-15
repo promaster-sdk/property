@@ -9,7 +9,7 @@ import { GroupItemComponentProps } from "./default-group-item-component";
 import { PropertiesSelectorProps } from "./properties-selector";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
 import { PropertySelectorComponentProps } from "./default-property-selector-component";
-export interface PropertiesSelectorProps {
+export interface PropertiesSelectorProps<TExtraProps> {
     readonly productProperties: Array<Property>;
     readonly selectedProperties: PropertyValueSet.PropertyValueSet;
     readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
@@ -33,10 +33,11 @@ export interface PropertiesSelectorProps {
     readonly styles: PropertySelectorStyles;
     readonly closedGroups: Array<string>;
     readonly onToggleGroupClosed: OnToggleGroupClosed;
-    readonly LayoutComponent?: ReactComponent<LayoutComponentProps>;
+    readonly LayoutComponent?: ReactComponent<LayoutComponentProps<TExtraProps>>;
     readonly GroupComponent?: ReactComponent<GroupComponentProps>;
     readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>;
     readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>;
     readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>;
+    readonly LayoutExtraProps: TExtraProps;
 }
-export declare function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps>;
+export declare function PropertiesSelector<TExtraProps>(props: PropertiesSelectorProps<TExtraProps>): React.ReactElement<PropertiesSelectorProps<TExtraProps>>;
