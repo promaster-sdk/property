@@ -80,7 +80,10 @@ function ComboboxPropertySelector(_a) {
 }
 exports.ComboboxPropertySelector = ComboboxPropertySelector;
 function _getItemLabel(valueItem, showCodes) {
-    return valueItem.text + (showCodes ? " (" + (valueItem.value !== undefined && valueItem.value !== null ? promaster_primitives_1.PropertyValue.toString(valueItem.value) : "") + ")" : '');
+    if (valueItem.value === undefined || valueItem.value === null) {
+        return "";
+    }
+    return valueItem.text + (showCodes ? " (" + promaster_primitives_1.PropertyValue.toString(valueItem.value) + ")" : '');
 }
 function _doOnChange(newValue, onValueChange) {
     if (newValue === undefined || newValue === null) {
