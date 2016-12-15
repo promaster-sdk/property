@@ -155,7 +155,12 @@ export function ComboboxPropertySelector({
 }
 
 function _getItemLabel(valueItem: ComboBoxPropertyValueItem, showCodes: boolean) {
-    return valueItem.text + (showCodes ? ` (${valueItem.value !== undefined && valueItem.value !== null ? PropertyValue.toString(valueItem.value) : ""})` : '');
+
+  if(valueItem.value === undefined || valueItem.value === null) {
+    return "";
+  }
+
+  return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)})` : '');
 }
 
 function _doOnChange(newValue: any, onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void) {
