@@ -6,3 +6,4 @@ thumbs.db
 *.log
 node_modules/
 example/js_out
+dist/
