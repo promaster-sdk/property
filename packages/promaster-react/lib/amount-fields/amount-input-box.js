@@ -112,16 +112,20 @@ function filterFloat(value) {
         return Number(value);
     return NaN;
 }
-function debounce(_this, func, wait) {
+function debounce(_this, func, wait, immediate) {
     var timeout;
     return function () {
-        var args = arguments;
+        var context = _this, args = arguments;
         var later = function () {
             timeout = null;
-            func.apply(_this, args);
+            if (!immediate)
+                func.apply(context, args);
         };
+        var callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
+        if (callNow)
+            func.apply(context, args);
     };
 }
 //# sourceMappingURL=amount-input-box.js.map

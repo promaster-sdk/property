@@ -3,18 +3,13 @@ import {Expander} from "./expander";
 import {propertiesSelectorLayoutStyles as styles} from "./properties-selector-example-2-layout-styles";
 import {PropertiesSelector} from "@promaster/promaster-react";
 
-export interface PropertiesSelectorExample2LayoutExtraProps {
-  foo: "bar"
-}
-
 export function PropertiesSelectorExample2Layout({
   selectors,
   translateGroupName,
   closedGroups,
   onToggleGroupClosed,
   PropertySelectorComponent,
-  ExtraProps
-}: PropertiesSelector.LayoutComponentProps<PropertiesSelectorExample2LayoutExtraProps>): React.ReactElement<PropertiesSelector.LayoutComponentProps<PropertiesSelectorExample2LayoutExtraProps>> {
+}: PropertiesSelector.LayoutComponentProps): React.ReactElement<PropertiesSelector.LayoutComponentProps> {
 
   const groups = getGroupDistinctNames(selectors);
 
@@ -25,7 +20,7 @@ export function PropertiesSelectorExample2Layout({
           const isClosed = closedGroups.indexOf(groupName) !== -1;
           const selectorsInGroup = selectors.filter((selector) => selector.groupName === groupName);
           return (
-            <Expander key={groupName} header={translateGroupName(groupName) + ` ${ExtraProps}`} closed={isClosed} closedChanged={() => onToggleGroupClosed(groupName)}>
+            <Expander key={groupName} header={translateGroupName(groupName)} closed={isClosed} closedChanged={() => onToggleGroupClosed(groupName)}>
               {selectorsInGroup.map((selector) => selectorRow(selector, PropertySelectorComponent))}
             </Expander>
           );
