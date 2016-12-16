@@ -1,15 +1,23 @@
 "use strict";
-var React = require("react");
 var promaster_primitives_1 = require("@promaster/promaster-primitives");
-var default_layout_component_1 = require("./default-layout-component");
+var default_layout_renderer_1 = require("./default-layout-renderer");
 var default_group_component_1 = require("./default-group-component");
 var default_group_item_component_1 = require("./default-group-item-component");
 var default_property_label_component_1 = require("./default-property-label-component");
 var default_property_selector_component_1 = require("./default-property-selector-component");
 function PropertiesSelector(props) {
-    var translateGroupName = props.translateGroupName, closedGroups = props.closedGroups, onToggleGroupClosed = props.onToggleGroupClosed, _a = props.LayoutComponent, LayoutComponent = _a === void 0 ? default_layout_component_1.DefaultLayoutComponent : _a, _b = props.GroupComponent, GroupComponent = _b === void 0 ? default_group_component_1.DefaultGroupComponent : _b, _c = props.GroupItemComponent, GroupItemComponent = _c === void 0 ? default_group_item_component_1.DefaultGroupItemComponent : _c, _d = props.PropertySelectorComponent, PropertySelectorComponent = _d === void 0 ? default_property_selector_component_1.DefaultPropertySelectorComponent : _d, _e = props.PropertyLabelComponent, PropertyLabelComponent = _e === void 0 ? default_property_label_component_1.DefaultPropertyLabelComponent : _e;
+    var translateGroupName = props.translateGroupName, closedGroups = props.closedGroups, onToggleGroupClosed = props.onToggleGroupClosed, _a = props.LayoutRenderer, LayoutRenderer = _a === void 0 ? default_layout_renderer_1.DefaultLayoutRenderer : _a, _b = props.GroupComponent, GroupComponent = _b === void 0 ? default_group_component_1.DefaultGroupComponent : _b, _c = props.GroupItemComponent, GroupItemComponent = _c === void 0 ? default_group_item_component_1.DefaultGroupItemComponent : _c, _d = props.PropertySelectorComponent, PropertySelectorComponent = _d === void 0 ? default_property_selector_component_1.DefaultPropertySelectorComponent : _d, _e = props.PropertyLabelComponent, PropertyLabelComponent = _e === void 0 ? default_property_label_component_1.DefaultPropertyLabelComponent : _e;
     var selectors = createPropertySelectorRenderInfos(props);
-    return React.createElement(LayoutComponent, { selectors: selectors, translateGroupName: translateGroupName, closedGroups: closedGroups, onToggleGroupClosed: onToggleGroupClosed, GroupComponent: GroupComponent, GroupItemComponent: GroupItemComponent, PropertySelectorComponent: PropertySelectorComponent, PropertyLabelComponent: PropertyLabelComponent });
+    return LayoutRenderer({
+        selectors: selectors,
+        translateGroupName: translateGroupName,
+        closedGroups: closedGroups,
+        onToggleGroupClosed: onToggleGroupClosed,
+        GroupComponent: GroupComponent,
+        GroupItemComponent: GroupItemComponent,
+        PropertySelectorComponent: PropertySelectorComponent,
+        PropertyLabelComponent: PropertyLabelComponent
+    });
 }
 exports.PropertiesSelector = PropertiesSelector;
 function createPropertySelectorRenderInfos(_a) {

@@ -5,7 +5,7 @@ import {PropertyFiltering} from "@promaster/promaster-portable";
 import {Unit, PropertyFilter, PropertyValueSet} from "@promaster/promaster-primitives";
 import {merge} from "./utils";
 import {exampleProductProperties} from "./example-product-properties";
-import {PropertiesSelectorExample2Layout} from "./properties-selector-example-2-layout";
+import {createPropertiesSelectorExample2Layout} from "./properties-selector-example-2-layout";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet
@@ -65,7 +65,7 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
       styles: styles,
       closedGroups: [],
       onToggleGroupClosed: () => "",
-      LayoutComponent: PropertiesSelectorExample2Layout
+      LayoutRenderer: createPropertiesSelectorExample2Layout()
     };
 
     return (

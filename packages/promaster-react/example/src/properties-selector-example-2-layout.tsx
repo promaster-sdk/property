@@ -3,32 +3,38 @@ import {Expander} from "./expander";
 import {propertiesSelectorLayoutStyles as styles} from "./properties-selector-example-2-layout-styles";
 import {PropertiesSelector} from "@promaster/promaster-react";
 
-export function PropertiesSelectorExample2Layout({
-  selectors,
-  translateGroupName,
-  closedGroups,
-  onToggleGroupClosed,
-  PropertySelectorComponent,
-}: PropertiesSelector.LayoutComponentProps): React.ReactElement<PropertiesSelector.LayoutComponentProps> {
+export function createPropertiesSelectorExample2Layout() {
 
-  const groups = getGroupDistinctNames(selectors);
+  const helloWorld = "hello world";
 
-  return (
-    <div>
-      {
-        groups.map((groupName: string) => {
-          const isClosed = closedGroups.indexOf(groupName) !== -1;
-          const selectorsInGroup = selectors.filter((selector) => selector.groupName === groupName);
-          return (
-            <Expander key={groupName} header={translateGroupName(groupName)} closed={isClosed} closedChanged={() => onToggleGroupClosed(groupName)}>
-              {selectorsInGroup.map((selector) => selectorRow(selector, PropertySelectorComponent))}
-            </Expander>
-          );
-        })
-      }
-    </div>
-  );
+  return function PropertiesSelectorExample2Layout({
+    selectors,
+    translateGroupName,
+    closedGroups,
+    onToggleGroupClosed,
+    PropertySelectorComponent,
+  }: PropertiesSelector.LayoutRendererProps): React.ReactElement<PropertiesSelector.LayoutRendererProps> {
 
+    const groups = getGroupDistinctNames(selectors);
+
+    return (
+      <div>
+        {
+          groups.map((groupName: string) => {
+            const isClosed = closedGroups.indexOf(groupName) !== -1;
+            const selectorsInGroup = selectors.filter((selector) => selector.groupName === groupName);
+            return (
+              <Expander key={groupName} header={translateGroupName(groupName) + " " + helloWorld} closed={isClosed}
+                        closedChanged={() => onToggleGroupClosed(groupName)}>
+                {selectorsInGroup.map((selector) => selectorRow(selector, PropertySelectorComponent))}
+              </Expander>
+            );
+          })
+        }
+      </div>
+    );
+
+  };
 }
 
 function selectorRow(selector: PropertiesSelector.PropertySelectorRenderInfo,

@@ -3,7 +3,7 @@ import * as React from "react";
 import { PropertyValueSet } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import { PropertySelectionOnChange, AmountFormat, OnPropertyFormatChanged, OnPropertyFormatCleared, TranslatePropertyValue, TranslateNotNumericMessage, TranslateValueIsRequiredMessage, TranslatePropertyName, Property, TranslatePropertyLabelHover, TranslateGroupName, ReactComponent, OnToggleGroupClosed, PropertySelectorStyles } from "./types";
-import { LayoutComponentProps } from "./default-layout-component";
+import { LayoutRendererProps } from "./default-layout-renderer";
 import { GroupComponentProps } from "./default-group-component";
 import { GroupItemComponentProps } from "./default-group-item-component";
 import { PropertiesSelectorProps } from "./properties-selector";
@@ -33,7 +33,7 @@ export interface PropertiesSelectorProps {
     readonly styles: PropertySelectorStyles;
     readonly closedGroups: Array<string>;
     readonly onToggleGroupClosed: OnToggleGroupClosed;
-    readonly LayoutComponent?: ReactComponent<LayoutComponentProps>;
+    readonly LayoutRenderer?: (props: LayoutRendererProps) => React.ReactElement<LayoutRendererProps>;
     readonly GroupComponent?: ReactComponent<GroupComponentProps>;
     readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>;
     readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>;

@@ -19,7 +19,7 @@ import {
   OnToggleGroupClosed,
   PropertySelectorStyles
 } from "./types";
-import {DefaultLayoutComponent, LayoutComponentProps} from "./default-layout-component";
+import {DefaultLayoutRenderer, LayoutRendererProps} from "./default-layout-renderer";
 import {GroupComponentProps, DefaultGroupComponent} from "./default-group-component";
 import {GroupItemComponentProps, DefaultGroupItemComponent} from "./default-group-item-component";
 import {PropertiesSelectorProps} from "./properties-selector";
@@ -66,7 +66,7 @@ export interface PropertiesSelectorProps {
   readonly onToggleGroupClosed: OnToggleGroupClosed,
 
   // Override layout
-  readonly LayoutComponent?: ReactComponent<LayoutComponentProps>,
+  readonly LayoutRenderer?: (props: LayoutRendererProps) => React.ReactElement<LayoutRendererProps>,
   readonly GroupComponent?: ReactComponent<GroupComponentProps>,
   readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
   readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
@@ -79,7 +79,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     translateGroupName,
     closedGroups,
     onToggleGroupClosed,
-    LayoutComponent = DefaultLayoutComponent,
+    LayoutRenderer = DefaultLayoutRenderer,
     GroupComponent = DefaultGroupComponent,
     GroupItemComponent = DefaultGroupItemComponent,
     PropertySelectorComponent = DefaultPropertySelectorComponent,
@@ -88,14 +88,16 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
 
   const selectors = createPropertySelectorRenderInfos(props);
 
-  return <LayoutComponent selectors={selectors}
-                          translateGroupName={translateGroupName}
-                          closedGroups={closedGroups}
-                          onToggleGroupClosed={onToggleGroupClosed}
-                          GroupComponent={GroupComponent}
-                          GroupItemComponent={GroupItemComponent}
-                          PropertySelectorComponent={PropertySelectorComponent}
-                          PropertyLabelComponent={PropertyLabelComponent} />;
+  return LayoutRenderer({
+    selectors: selectors,
+    translateGroupName: translateGroupName,
+    closedGroups: closedGroups,
+    onToggleGroupClosed: onToggleGroupClosed,
+    GroupComponent: GroupComponent,
+    GroupItemComponent: GroupItemComponent,
+    PropertySelectorComponent: PropertySelectorComponent,
+    PropertyLabelComponent: PropertyLabelComponent
+  });
 
 }
 

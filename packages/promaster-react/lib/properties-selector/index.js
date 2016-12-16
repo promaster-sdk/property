@@ -1,8 +1,8 @@
 "use strict";
 var properties_selector_1 = require("./properties-selector");
 exports.PropertiesSelector = properties_selector_1.PropertiesSelector;
-var default_layout_component_1 = require("./default-layout-component");
-exports.DefaultLayoutComponent = default_layout_component_1.DefaultLayoutComponent;
+var default_layout_renderer_1 = require("./default-layout-renderer");
+exports.DefaultLayoutRenderer = default_layout_renderer_1.DefaultLayoutRenderer;
 var default_group_component_1 = require("./default-group-component");
 exports.DefaultGroupComponent = default_group_component_1.DefaultGroupComponent;
 var default_group_item_component_1 = require("./default-group-item-component");

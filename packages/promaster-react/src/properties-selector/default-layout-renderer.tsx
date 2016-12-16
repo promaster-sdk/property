@@ -5,7 +5,7 @@ import {GroupItemComponentProps} from "./default-group-item-component";
 import {PropertyLabelComponentProps} from "./default-property-label-component";
 import {PropertySelectorComponentProps} from "./default-property-selector-component";
 
-export interface LayoutComponentProps {
+export interface LayoutRendererProps {
   readonly selectors: Array<PropertySelectorRenderInfo>,
   readonly translateGroupName: TranslateGroupName,
   readonly closedGroups: Array<string>,
@@ -16,7 +16,7 @@ export interface LayoutComponentProps {
   readonly PropertyLabelComponent: ReactComponent<PropertyLabelComponentProps>,
 }
 
-export function DefaultLayoutComponent({
+export function DefaultLayoutRenderer({
   selectors,
   translateGroupName,
   closedGroups,
@@ -25,7 +25,7 @@ export function DefaultLayoutComponent({
   GroupItemComponent,
   PropertySelectorComponent,
   PropertyLabelComponent
-}: LayoutComponentProps) {
+}: LayoutRendererProps) {
 
   const groups = getDistinctGroupNames(selectors);
 
