@@ -35,6 +35,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
         this.setState(merge(this.state, {propertyValueSet: properties}))
+        console.log("updated");
       },
       productProperties: productProperties,
       includeCodes: true,
@@ -63,6 +64,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       styles: styles,
       closedGroups: [],
       onToggleGroupClosed: () => "",
+      inputDebounceTime: 600
     };
 
     return <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />

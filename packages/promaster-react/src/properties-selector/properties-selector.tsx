@@ -129,6 +129,8 @@ function createPropertySelectorRenderInfos({
 
   styles,
 
+  inputDebounceTime,
+
 }: PropertiesSelectorProps): Array<PropertySelectorRenderInfo> {
 
   // Default true if not specified otherwise
@@ -190,7 +192,8 @@ function createPropertySelectorRenderInfos({
         translatePropertyValue,
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
         translateValueIsRequiredMessage,
-        styles
+        styles,
+        inputDebounceTime,
       };
 
       const propertyLabelComponentProps: PropertyLabelComponentProps = {
