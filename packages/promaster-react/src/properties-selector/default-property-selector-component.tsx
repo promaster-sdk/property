@@ -28,25 +28,26 @@ const comboboxPropertySelector = React.createFactory(ComboboxPropertySelector);
 const textboxPropertySelector = React.createFactory(TextboxPropertySelector);
 
 export interface PropertySelectorComponentProps {
-  propertyName: string,
-  quantity: Quantity.Quantity,
-  validationFilter: PropertyFilter.PropertyFilter,
-  valueItems: Array<PropertyValueItem>,
-  selectedValue: PropertyValue.PropertyValue,
-  selectedProperties: PropertyValueSet.PropertyValueSet,
-  includeCodes: boolean,
-  optionalProperties: Array<string>,
-  onChange: PropertySelectionOnChange,
-  onPropertyFormatChanged: OnPropertyFormatChanged,
-  onPropertyFormatCleared: OnPropertyFormatCleared,
-  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-  propertyFormat: AmountFormat,
-  readOnly: boolean,
-  locked: boolean,
-  translatePropertyValue: TranslatePropertyValue,
-  translateValueMustBeNumericMessage: TranslateNotNumericMessage,
-  translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  styles: PropertySelectorStyles
+  readonly propertyName: string,
+  readonly quantity: Quantity.Quantity,
+  readonly validationFilter: PropertyFilter.PropertyFilter,
+  readonly valueItems: Array<PropertyValueItem>,
+  readonly selectedValue: PropertyValue.PropertyValue,
+  readonly selectedProperties: PropertyValueSet.PropertyValueSet,
+  readonly includeCodes: boolean,
+  readonly optionalProperties: Array<string>,
+  readonly onChange: PropertySelectionOnChange,
+  readonly onPropertyFormatChanged: OnPropertyFormatChanged,
+  readonly onPropertyFormatCleared: OnPropertyFormatCleared,
+  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
+  readonly propertyFormat: AmountFormat,
+  readonly readOnly: boolean,
+  readonly locked: boolean,
+  readonly translatePropertyValue: TranslatePropertyValue,
+  readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
+  readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
+  readonly styles: PropertySelectorStyles,
+  readonly inputDebounceTime?: number
 }
 
 export function DefaultPropertySelectorComponent({
@@ -68,7 +69,8 @@ export function DefaultPropertySelectorComponent({
   translatePropertyValue,
   translateValueMustBeNumericMessage,
   translateValueIsRequiredMessage,
-  styles
+  styles,
+  inputDebounceTime = 350
 }:PropertySelectorComponentProps): any {
 
   function onValueChange(newValue: PropertyValue.PropertyValue) {
@@ -87,7 +89,8 @@ export function DefaultPropertySelectorComponent({
         value: value,
         readOnly: readOnly,
         onValueChange: onValueChange,
-        styles: styles.textboxPropertySelectorStyles
+        styles: styles.textboxPropertySelectorStyles,
+        debounceTime: inputDebounceTime
       });
     case "integer": {
 
@@ -127,7 +130,8 @@ export function DefaultPropertySelectorComponent({
         validationFilter: validationFilter,
         filterPrettyPrint: filterPrettyPrint,
         readOnly: readOnly,
-        styles: styles.amountPropertySelectorStyles
+        styles: styles.amountPropertySelectorStyles,
+        debounceTime: inputDebounceTime
       });
   }
 }

@@ -62,6 +62,9 @@ export interface PropertiesSelectorProps {
 
   readonly styles: PropertySelectorStyles,
 
+  // Debounce value for inputs in ms. Defaults to 350.
+  readonly inputDebounceTime?: number,
+
   readonly closedGroups: Array<string>,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
 

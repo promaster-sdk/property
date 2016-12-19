@@ -18,6 +18,7 @@ export interface AmountPropertySelectorProps {
     readonly onFormatCleared: OnFormatCleared;
     readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
     readonly styles?: AmountPropertySelectorStyles;
+    readonly debounceTime?: number;
 }
 export declare class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, any> {
     render(): JSX.Element;

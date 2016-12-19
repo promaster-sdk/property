@@ -34,7 +34,6 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
-        //console.log("onChange", properties);
         this.setState(merge(this.state, {propertyValueSet: properties}))
       },
       productProperties: productProperties,

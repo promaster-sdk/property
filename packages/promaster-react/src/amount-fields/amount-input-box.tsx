@@ -20,6 +20,7 @@ export interface AmountInputBoxProps {
   readonly readOnly: boolean,
   readonly onValueChange: (newAmount: Amount.Amount<any>) => void,
   readonly styles?: AmountInputBoxStyles,
+  readonly debounceTime: number,
 }
 
 export interface State {
@@ -30,10 +31,10 @@ export interface State {
 
 export class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
 
-  constructor() {
-    super();
+  constructor(props:AmountInputBoxProps) {
+    super(props);
     // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-    this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, 350);
+    this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, this.props.debounceTime);
   }
 
   componentWillMount() {

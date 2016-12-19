@@ -6,7 +6,7 @@ var amountPropertySelector = React.createFactory(index_1.AmountPropertySelector)
 var comboboxPropertySelector = React.createFactory(index_1.ComboboxPropertySelector);
 var textboxPropertySelector = React.createFactory(index_1.TextboxPropertySelector);
 function DefaultPropertySelectorComponent(_a) {
-    var propertyName = _a.propertyName, quantity = _a.quantity, validationFilter = _a.validationFilter, valueItems = _a.valueItems, selectedValue = _a.selectedValue, selectedProperties = _a.selectedProperties, includeCodes = _a.includeCodes, optionalProperties = _a.optionalProperties, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, onPropertyFormatCleared = _a.onPropertyFormatCleared, filterPrettyPrint = _a.filterPrettyPrint, propertyFormat = _a.propertyFormat, readOnly = _a.readOnly, locked = _a.locked, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, styles = _a.styles;
+    var propertyName = _a.propertyName, quantity = _a.quantity, validationFilter = _a.validationFilter, valueItems = _a.valueItems, selectedValue = _a.selectedValue, selectedProperties = _a.selectedProperties, includeCodes = _a.includeCodes, optionalProperties = _a.optionalProperties, onChange = _a.onChange, onPropertyFormatChanged = _a.onPropertyFormatChanged, onPropertyFormatCleared = _a.onPropertyFormatCleared, filterPrettyPrint = _a.filterPrettyPrint, propertyFormat = _a.propertyFormat, readOnly = _a.readOnly, locked = _a.locked, translatePropertyValue = _a.translatePropertyValue, translateValueMustBeNumericMessage = _a.translateValueMustBeNumericMessage, translateValueIsRequiredMessage = _a.translateValueIsRequiredMessage, styles = _a.styles, _b = _a.inputDebounceTime, inputDebounceTime = _b === void 0 ? 350 : _b;
     function onValueChange(newValue) {
         onChange(newValue
             ? promaster_primitives_1.PropertyValueSet.set(propertyName, newValue, selectedProperties)
@@ -21,7 +21,8 @@ function DefaultPropertySelectorComponent(_a) {
                 value: value,
                 readOnly: readOnly,
                 onValueChange: onValueChange,
-                styles: styles.textboxPropertySelectorStyles
+                styles: styles.textboxPropertySelectorStyles,
+                debounceTime: inputDebounceTime
             });
         case "integer": {
             return comboboxPropertySelector({
@@ -57,7 +58,8 @@ function DefaultPropertySelectorComponent(_a) {
                 validationFilter: validationFilter,
                 filterPrettyPrint: filterPrettyPrint,
                 readOnly: readOnly,
-                styles: styles.amountPropertySelectorStyles
+                styles: styles.amountPropertySelectorStyles,
+                debounceTime: inputDebounceTime
             });
     }
 }

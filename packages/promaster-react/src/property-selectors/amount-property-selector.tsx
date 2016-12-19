@@ -18,15 +18,27 @@ export interface AmountPropertySelectorProps {
   readonly onFormatCleared: OnFormatCleared,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void,
   readonly styles?: AmountPropertySelectorStyles,
+  readonly debounceTime?: number,
 }
 
 export class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, any> {
 
   render() {
     const {
-      onValueChange, onFormatChanged, onFormatCleared, notNumericMessage, isRequiredMessage,
-      validationFilter, propertyValueSet, propertyName, filterPrettyPrint, inputUnit,
-      inputDecimalCount, readOnly, styles = amountPropertySelectorStyles
+      onValueChange,
+      onFormatChanged,
+      onFormatCleared,
+      notNumericMessage,
+      isRequiredMessage,
+      validationFilter,
+      propertyValueSet,
+      propertyName,
+      filterPrettyPrint,
+      inputUnit,
+      inputDecimalCount,
+      readOnly,
+      styles = amountPropertySelectorStyles,
+      debounceTime = 350,
     } = this.props;
 
     const value: Amount.Amount<any> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
@@ -45,7 +57,8 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
                           readOnly={readOnly}
                           onValueChange={(newAmount) =>
                             onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount): undefined)}
-                          styles={styles.amountInputBoxStyles}/>
+                          styles={styles.amountInputBoxStyles}
+                          debounceTime={debounceTime}/>
           <AmountFormatSelector selectedUnit={inputUnit}
                                 selectedDecimalCount={inputDecimalCount}
                                 onFormatChanged={onFormatChanged}

@@ -7,6 +7,7 @@ export interface TextboxPropertySelectorProps {
   readonly readOnly: boolean,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
   readonly styles?: TextboxPropertySelectorStyles,
+  readonly debounceTime: number,
 }
 
 export interface State {
@@ -15,10 +16,10 @@ export interface State {
 
 export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> {
 
-    constructor() {
-        super();
+    constructor(props:TextboxPropertySelectorProps) {
+        super(props);
         // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-        this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, 350);
+        this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, this.props.debounceTime);
     }
 
     componentWillMount() {

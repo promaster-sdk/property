@@ -14,7 +14,7 @@ var AmountPropertySelector = (function (_super) {
         return _super.apply(this, arguments) || this;
     }
     AmountPropertySelector.prototype.render = function () {
-        var _a = this.props, onValueChange = _a.onValueChange, onFormatChanged = _a.onFormatChanged, onFormatCleared = _a.onFormatCleared, notNumericMessage = _a.notNumericMessage, isRequiredMessage = _a.isRequiredMessage, validationFilter = _a.validationFilter, propertyValueSet = _a.propertyValueSet, propertyName = _a.propertyName, filterPrettyPrint = _a.filterPrettyPrint, inputUnit = _a.inputUnit, inputDecimalCount = _a.inputDecimalCount, readOnly = _a.readOnly, _b = _a.styles, styles = _b === void 0 ? amount_property_selector_styles_1.amountPropertySelectorStyles : _b;
+        var _a = this.props, onValueChange = _a.onValueChange, onFormatChanged = _a.onFormatChanged, onFormatCleared = _a.onFormatCleared, notNumericMessage = _a.notNumericMessage, isRequiredMessage = _a.isRequiredMessage, validationFilter = _a.validationFilter, propertyValueSet = _a.propertyValueSet, propertyName = _a.propertyName, filterPrettyPrint = _a.filterPrettyPrint, inputUnit = _a.inputUnit, inputDecimalCount = _a.inputDecimalCount, readOnly = _a.readOnly, _b = _a.styles, styles = _b === void 0 ? amount_property_selector_styles_1.amountPropertySelectorStyles : _b, _c = _a.debounceTime, debounceTime = _c === void 0 ? 350 : _c;
         var value = promaster_primitives_1.PropertyValueSet.getAmount(propertyName, propertyValueSet);
         if (!value) {
             throw new Error("Value is undefined");
@@ -22,7 +22,7 @@ var AmountPropertySelector = (function (_super) {
         return (React.createElement("span", { className: styles.amount },
             React.createElement(index_1.AmountInputBox, { value: value, inputUnit: inputUnit, inputDecimalCount: inputDecimalCount, notNumericMessage: notNumericMessage, isRequiredMessage: isRequiredMessage, errorMessage: _getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint), readOnly: readOnly, onValueChange: function (newAmount) {
                     return onValueChange(newAmount !== undefined ? promaster_primitives_1.PropertyValue.create("amount", newAmount) : undefined);
-                }, styles: styles.amountInputBoxStyles }),
+                }, styles: styles.amountInputBoxStyles, debounceTime: debounceTime }),
             React.createElement(index_1.AmountFormatSelector, { selectedUnit: inputUnit, selectedDecimalCount: inputDecimalCount, onFormatChanged: onFormatChanged, onFormatCleared: onFormatCleared, styles: styles.amountFormatSelectorStyles })));
     };
     return AmountPropertySelector;

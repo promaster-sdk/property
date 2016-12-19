@@ -9,9 +9,9 @@ var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var textbox_property_selector_styles_1 = require("./textbox-property-selector-styles");
 var TextboxPropertySelector = (function (_super) {
     __extends(TextboxPropertySelector, _super);
-    function TextboxPropertySelector() {
-        var _this = _super.call(this) || this;
-        _this._debouncedOnValueChange = debounce(_this._debouncedOnValueChange, 350);
+    function TextboxPropertySelector(props) {
+        var _this = _super.call(this, props) || this;
+        _this._debouncedOnValueChange = debounce(_this._debouncedOnValueChange, _this.props.debounceTime);
         return _this;
     }
     TextboxPropertySelector.prototype.componentWillMount = function () {

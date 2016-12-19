@@ -31,6 +31,7 @@ export interface PropertiesSelectorProps {
         [key: string]: AmountFormat;
     };
     readonly styles: PropertySelectorStyles;
+    readonly inputDebounceTime?: number;
     readonly closedGroups: Array<string>;
     readonly onToggleGroupClosed: OnToggleGroupClosed;
     readonly LayoutRenderer?: (props: LayoutRendererProps) => React.ReactElement<LayoutRendererProps>;

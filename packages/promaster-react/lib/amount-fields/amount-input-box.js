@@ -9,9 +9,9 @@ var promaster_primitives_1 = require("@promaster/promaster-primitives");
 var amount_input_box_styles_1 = require("./amount-input-box-styles");
 var AmountInputBox = (function (_super) {
     __extends(AmountInputBox, _super);
-    function AmountInputBox() {
-        var _this = _super.call(this) || this;
-        _this._debouncedOnValueChange = debounce(_this, _this._debouncedOnValueChange, 350);
+    function AmountInputBox(props) {
+        var _this = _super.call(this, props) || this;
+        _this._debouncedOnValueChange = debounce(_this, _this._debouncedOnValueChange, _this.props.debounceTime);
         return _this;
     }
     AmountInputBox.prototype.componentWillMount = function () {

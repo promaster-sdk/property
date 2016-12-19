@@ -13,6 +13,7 @@ export interface AmountInputBoxProps {
     readonly readOnly: boolean;
     readonly onValueChange: (newAmount: Amount.Amount<any>) => void;
     readonly styles?: AmountInputBoxStyles;
+    readonly debounceTime: number;
 }
 export interface State {
     readonly textValue: string;
@@ -20,7 +21,7 @@ export interface State {
     readonly effectiveErrorMessage: string;
 }
 export declare class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
-    constructor();
+    constructor(props: AmountInputBoxProps);
     componentWillMount(): void;
     componentWillReceiveProps(nextProps: AmountInputBoxProps): void;
     initStateFromProps(initProps: AmountInputBoxProps): void;

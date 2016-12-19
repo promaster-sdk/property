@@ -33,7 +33,8 @@ export class TextboxPropertySelectorExample1 extends React.Component<{}, State> 
             this.setState(merge(this.state, {
               propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, this.state.propertyValueSet)
             }))}
-            readOnly={false}/>
+            readOnly={false}
+            debounceTime={600}/>
         </div>
       </div>
     );
