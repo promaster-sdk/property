@@ -42,9 +42,6 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
     } = this.props;
 
     const value: Amount.Amount<any> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
-    if (!value) {
-      throw new Error("Value is undefined");
-    }
 
     return (
       <span className={styles.amount}>
@@ -70,7 +67,7 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
 }
 
 function _getValidationMessage(propertyValueSet: PropertyValueSet.PropertyValueSet,
-                               value: Amount.Amount<any>,
+                               value: Amount.Amount<any> | undefined,
                                validationFilter: PropertyFilter.PropertyFilter,
                                filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {
 

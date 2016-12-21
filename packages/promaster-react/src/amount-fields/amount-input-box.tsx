@@ -11,7 +11,7 @@ import {amountInputBoxStyles, AmountInputBoxStyles} from "./amount-input-box-sty
 
 export interface AmountInputBoxProps {
   readonly key?: string,
-  readonly value: Amount.Amount<any>,
+  readonly value: Amount.Amount<any> | undefined,
   readonly inputUnit: Unit.Unit<any>,
   readonly inputDecimalCount: number,
   readonly notNumericMessage: string,
@@ -135,7 +135,7 @@ function getInternalErrorMessage(newAmount: Amount.Amount<any> | undefined,
 
 }
 
-function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amount.Amount<T>, unit: Unit.Unit<T>, decimalCount: number): string {
+function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amount.Amount<T> | undefined, unit: Unit.Unit<T>, decimalCount: number): string {
   if (!amount)
     return "";
 
