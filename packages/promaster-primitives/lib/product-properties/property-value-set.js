@@ -23,9 +23,10 @@ function fromStringOrError(onError, encodedValueSet) {
 }
 exports.fromStringOrError = fromStringOrError;
 function fromProperty(propertyName, propertyValue) {
-    return _a = {},
+    return (_a = {},
         _a[propertyName] = propertyValue,
-        _a;
+        _a
+    );
     var _a;
 }
 exports.fromProperty = fromProperty;
@@ -179,11 +180,11 @@ function getProperties(propertiesToGet, set) {
 }
 exports.getProperties = getProperties;
 function toString(set) {
-    return Object.keys(set).map(function (p) { return p + "=" + PropertyValue.toString(set[p]); }).join(";");
+    return Object.keys(set).map(function (p) { return (p + "=" + PropertyValue.toString(set[p])); }).join(";");
 }
 exports.toString = toString;
 function toStringInSpecifiedOrder(order) {
-    return order.map(function (p) { return p + "=" + PropertyValue.toString(set[p]); }).join(";");
+    return order.map(function (p) { return (p + "=" + PropertyValue.toString(set[p])); }).join(";");
 }
 exports.toStringInSpecifiedOrder = toStringInSpecifiedOrder;
 function equals(other, set) {

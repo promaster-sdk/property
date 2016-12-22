@@ -37,8 +37,8 @@ export declare const greaterThan: <T extends Quantity>(left: Amount<T>, right: A
 export declare const lessOrEqualTo: <T extends Quantity>(left: Amount<T>, right: Amount<T>) => boolean;
 export declare const greaterOrEqualTo: <T extends Quantity>(left: Amount<T>, right: Amount<T>) => boolean;
 export declare function clamp<T extends Quantity>(minAmount: Amount<T>, maxAmount: Amount<T>, amount: Amount<T>): Amount<T>;
-export declare function max<T extends Quantity>(a2: Amount<T>, amount: Amount<T>): Amount<T>;
-export declare function min<T extends Quantity>(a2: Amount<T>, amount: Amount<T>): Amount<T>;
+export declare function max<T extends Quantity>(a1: Amount<T>, a2: Amount<T>): Amount<T>;
+export declare function min<T extends Quantity>(a1: Amount<T>, a2: Amount<T>): Amount<T>;
 export declare function roundDown<T extends Quantity>(step: Amount<T>, amount: Amount<T>): Amount<T>;
 export declare function roundUp<T extends Quantity>(step: Amount<T>, amount: Amount<T>): Amount<T>;
 export declare function compareTo<T extends Quantity>(left: Amount<T>, right: Amount<T>): number;

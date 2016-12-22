@@ -1,6 +1,6 @@
 "use strict";
-var Unit = require("./unit");
-var UnitName = require("./unit-name");
+var Unit = require('./unit');
+var UnitName = require('./unit-name');
 var Units = require("./units");
 var CompareUtils = require("../utils/compare_utils");
 /**
@@ -79,16 +79,20 @@ function clamp(minAmount, maxAmount, amount) {
     return min(maxAmount, max(minAmount, amount));
 }
 exports.clamp = clamp;
-function max(a2, amount) {
-    if (a2 == null)
-        return amount;
-    return amount > a2 ? amount : a2;
+function max(a1, a2) {
+    if (!a2)
+        return a1;
+    if (!a1)
+        return a2;
+    return exports.greaterThan(a1, a2) ? a1 : a2;
 }
 exports.max = max;
-function min(a2, amount) {
-    if (a2 == null)
-        return amount;
-    return amount < a2 ? amount : a2;
+function min(a1, a2) {
+    if (!a2)
+        return a1;
+    if (!a1)
+        return a2;
+    return exports.lessThan(a1, a2) ? a1 : a2;
 }
 exports.min = min;
 function roundDown(step, amount) {
