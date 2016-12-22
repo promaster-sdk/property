@@ -91,16 +91,20 @@ export function clamp<T extends Quantity>(minAmount: Amount<T>, maxAmount: Amoun
   return min(maxAmount, max(minAmount, amount));
 }
 
-export function max<T extends Quantity>(a2: Amount<T>, amount: Amount<T>): Amount<T> {
-  if (a2 == null)
-    return amount;
-  return amount > a2 ? amount : a2;
+export function max<T extends Quantity>(a1: Amount<T>, a2: Amount<T>): Amount<T> {
+  if (!a2)
+    return a1;
+  if (!a1)
+    return a2;
+  return greaterThan(a1, a2) ? a1 : a2;
 }
 
-export function min<T extends Quantity>(a2: Amount<T>, amount: Amount<T>): Amount<T> {
-  if (a2 == null)
-    return amount;
-  return amount < a2 ? amount : a2;
+export function min<T extends Quantity>(a1: Amount<T>, a2: Amount<T>): Amount<T> {
+  if (!a2)
+    return a1;
+  if (!a1)
+    return a2;
+  return lessThan(a1, a2) ? a1 : a2;
 }
 
 export function roundDown<T extends Quantity>(step: Amount<T>, amount: Amount<T>): Amount<T> {
