@@ -1,5 +1,5 @@
 "use strict";
-var Unit = require('./unit');
+var Unit = require("./unit");
 function lengthByLength(left, right) {
     return Unit.times("Area", left, right);
 }

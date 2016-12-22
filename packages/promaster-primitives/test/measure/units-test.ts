@@ -1,6 +1,8 @@
 import {assert} from 'chai';
 import * as Units from "../../src/measure/units";
 import * as Unit from "../../src/measure/unit";
+import * as Amount from "../../src/measure/amount";
+import * as PropertyValue from "../../src/product-properties/property-value";
 
 describe('units_test', () => {
 
@@ -25,7 +27,7 @@ describe('units_test', () => {
 
 	});
 
-  describe.only('equals', () => {
+  describe('equals', () => {
     it('Base unit One should be equal', () => {
       const unit = Units.One;
       const unit2 = Units.getUnitFromString("One");
@@ -36,6 +38,14 @@ describe('units_test', () => {
       const unit = Units.Radian;
       const unit2 = Units.getUnitFromString("Radian");
       assert.isTrue(Unit.equals(unit, unit2));
+    });
+
+    it('Alternate unit compare different object references', () => {
+      const unit1 = JSON.parse('{"quantity":"Power","type":"alternate","symbol":"W","parent":{"quantity":"Power","type":"product","elements":[{"unit":{"quantity":"Energy","type":"alternate","symbol":"J","parent":{"quantity":"Energy","type":"product","elements":[{"unit":{"quantity":"Force","type":"alternate","symbol":"N","parent":{"quantity":"Force","type":"product","elements":[{"unit":{"quantity":"Mass","type":"base","symbol":"kg"},"pow":1},{"unit":{"quantity":"Length","type":"base","symbol":"m"},"pow":1},{"unit":{"quantity":"Duration","type":"base","symbol":"s"},"pow":-2}]}},"pow":1},{"unit":{"quantity":"Length","type":"base","symbol":"m"},"pow":1}]}},"pow":1},{"unit":{"quantity":"Duration","type":"base","symbol":"s"},"pow":-1}]}}');
+      const unit2 = JSON.parse('{"quantity":"Power","type":"alternate","symbol":"W","parent":{"quantity":"Power","type":"product","elements":[{"unit":{"quantity":"Energy","type":"alternate","symbol":"J","parent":{"quantity":"Energy","type":"product","elements":[{"unit":{"quantity":"Force","type":"alternate","symbol":"N","parent":{"quantity":"Force","type":"product","elements":[{"unit":{"quantity":"Mass","type":"base","symbol":"kg"},"pow":1},{"unit":{"quantity":"Length","type":"base","symbol":"m"},"pow":1},{"unit":{"quantity":"Duration","type":"base","symbol":"s"},"pow":-2}]}},"pow":1},{"unit":{"quantity":"Length","type":"base","symbol":"m"},"pow":1}]}},"pow":1},{"unit":{"quantity":"Duration","type":"base","symbol":"s"},"pow":-1}]}}');
+
+
+      assert.isTrue(Unit.equals(unit1, unit2));
     });
 
     it('Product unit should be equal', () => {

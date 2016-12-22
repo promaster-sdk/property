@@ -1,8 +1,8 @@
 "use strict";
 var Unit = require("./unit");
 var UnitName = require("./unit-name");
-var UnitDivide = require('./unit-divide');
-var UnitTimes = require('./unit-times');
+var UnitDivide = require("./unit-divide");
+var UnitTimes = require("./unit-times");
 var _unitToString = {};
 var _stringToUnit = {};
 var _quantityToUnits = {};

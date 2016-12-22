@@ -224,7 +224,7 @@ export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>,
       return left.symbol === (right as BaseUnit<any>).symbol;
     case "alternate":
       const alternateRight = right as AlternateUnit<any>;
-      return left.symbol === alternateRight.symbol && left.parent === alternateRight.parent;
+      return left.symbol === alternateRight.symbol && equals(left.parent, alternateRight.parent);
     case "transformed":
       const transformedRight = right as TransformedUnit<any>;
       return equals(left.parentUnit, transformedRight.parentUnit) && unitConvertersIsEqual(left.toParentUnitConverter, transformedRight.toParentUnitConverter);

@@ -82,7 +82,7 @@ function equals(left, right) {
             return left.symbol === right.symbol;
         case "alternate":
             var alternateRight = right;
-            return left.symbol === alternateRight.symbol && left.parent === alternateRight.parent;
+            return left.symbol === alternateRight.symbol && equals(left.parent, alternateRight.parent);
         case "transformed":
             var transformedRight = right;
             return equals(left.parentUnit, transformedRight.parentUnit) && unitConvertersIsEqual(left.toParentUnitConverter, transformedRight.toParentUnitConverter);
