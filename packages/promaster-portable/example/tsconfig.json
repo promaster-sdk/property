@@ -4,7 +4,7 @@
     "skipLibCheck": false,
     "declaration": false,
     "jsx": "react",
-    "module": "es6",
+    "module": "commonjs",
     "target": "es6",
     "newLine": "LF",
     "noEmit": true,
@@ -36,8 +36,9 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "promaster-portable": ["../src"],
-      "promaster-portable/*": ["../src/*"]
+      "@promaster/promaster-portable": ["../src"],
+      "@promaster/promaster-portable/*": ["../src/*"],
+      "*": ["../src/custom-typings/*"]
     }
   },
   "include": [

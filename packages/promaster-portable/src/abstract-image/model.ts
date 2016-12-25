@@ -6,14 +6,16 @@ export type Component = BitmapImage | Ellipse | Line | Polygon | Rectangle | Tex
 export interface BitmapImage {
   readonly type: "bitmapimage"
   readonly topLeft: Point.Point,
+  readonly bottomRight: Point.Point,
   readonly format: string,
   readonly data: Uint8Array,
 }
 
-export function	createBitmapImage(topLeft: Point.Point, format: string, data: Uint8Array): BitmapImage {
+export function	createBitmapImage(topLeft: Point.Point, bottomRight: Point.Point, format: string, data: Uint8Array): BitmapImage {
   return {
     type: "bitmapimage",
     topLeft: topLeft,
+    bottomRight: bottomRight,
     format: format,
     data: data,
   };

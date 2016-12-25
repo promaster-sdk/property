@@ -7,3 +7,6 @@ thumbs.db
 *.log
 node_modules/
 example/js_out
+lib/
+/test.pdf
+lib/*

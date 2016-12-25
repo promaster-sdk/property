@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-portable",
-  "version": "0.8.2",
+  "version": "0.13.0",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib/index.js",
@@ -11,7 +11,7 @@
     "registry": "https://npm.divid.se"
   },
   "scripts": {
-    "start": "http-server -c-1",
+    "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "build": "rm -rf lib && tsc --version && tsc -p src",
     "publish:major": "npm run build && node scripts/publish.js major",
     "publish:minor": "npm run build && node scripts/publish.js minor",
@@ -20,23 +20,32 @@
     "tsc:watch": "tsc --watch -p src",
     "tsc:example": "tsc -p example",
     "tsc:example:watch": "tsc --watch -p example",
-    "test": "mocha --require ts-node/register test/**/*.ts"
+    "test": "mocha --require 'ts-node/register' 'test/**/*.ts{,x}'"
   },
   "dependencies": {
-    "@promaster/promaster-primitives": "^0.3.8",
+    "@promaster/promaster-primitives": "^0.4.4",
+    "@types/base64-js": "^1.2.5",
+    "@types/blob-stream": "^0.1.29",
+    "@types/pdfkit": "^0.7.31",
     "@types/ramda": "0.0.2",
+    "base64-js": "^1.2.0",
+    "blob-stream": "^0.1.3",
+    "jszip": "^3.1.3",
     "node-uuid": "^1.4.7",
+    "pdfkit": "^0.8.0",
     "ramda": "^0.22.1",
     "showdown": "^1.5.0"
   },
   "devDependencies": {
     "@types/chai": "^3.4.34",
+    "@types/jszip": "0.0.31",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.45",
     "@types/node-uuid": "0.0.28",
     "@types/react": "^0.14.41",
     "@types/react-dom": "^0.14.18",
     "@types/showdown": "^1.4.31",
+    "awesome-typescript-loader": "^3.0.0-beta.17",
     "chai": "^3.5.0",
     "http-server": "^0.9.0",
     "mocha": "^3.1.2",
@@ -46,6 +55,8 @@
     "shelljs": "^0.7.4",
     "ts-loader": "^0.9.5",
     "ts-node": "^1.6.0",
-    "typescript": "^2.0.3"
+    "typescript": "^2.0.3",
+    "webpack": "beta",
+    "webpack-dev-server": "beta"
   }
 }

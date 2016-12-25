@@ -1,6 +1,6 @@
 import * as AbstractImage from "../abstract-image/index";
 
-export function createSVG(image: AbstractImage.AbstractImage) {
+export function createSVG(image: AbstractImage.AbstractImage): string {
   const style = createElement("style", {}, ["* { vector-effect: non-scaling-stroke;}"]);
 
   let svgElements = [style];
@@ -14,7 +14,7 @@ export function createSVG(image: AbstractImage.AbstractImage) {
   }, svgElements);
 }
 
-function abstractComponentToSVG(component: AbstractImage.Component) {
+function abstractComponentToSVG(component: AbstractImage.Component): string {
 
   switch (component.type) {
     case "bitmapimage":
@@ -122,7 +122,7 @@ interface Attributes {
   readonly [key: string]: string;
 }
 
-function createElement(elementName: string, attributes: Attributes, innerElements: string[]) {
+function createElement(elementName: string, attributes: Attributes, innerElements: string[]): string {
   const formattedName = convertUpperToHyphenLower(elementName);
   let element = `<${formattedName}`;
 
@@ -157,7 +157,7 @@ function createElement(elementName: string, attributes: Attributes, innerElement
   return element;
 }
 
-function objectToAttributeValue(attributes: Attributes) {
+function objectToAttributeValue(attributes: Attributes): string {
   if (attributes && Object.keys(attributes).length > 0) {
     return Object.keys(attributes).reduce((previousValue: string, currentValue: string) => {
 
@@ -173,7 +173,7 @@ function objectToAttributeValue(attributes: Attributes) {
   return "";
 }
 
-function convertUpperToHyphenLower(elementName: string) {
+function convertUpperToHyphenLower(elementName: string): string {
 
   function upperToHyphenLower(match: string) {
     return '-' + match.toLowerCase();
@@ -182,7 +182,7 @@ function convertUpperToHyphenLower(elementName: string) {
   return elementName !== "viewBox" ? elementName.replace(/[A-Z]/g, upperToHyphenLower) : elementName;
 }
 
-function flattenElements(elements: string[]) {
+function flattenElements(elements: string[]): string {
   return elements.reduce((previousValue: string, currentValue: string) => {
     return previousValue + `\n${currentValue}`;
   }, "");

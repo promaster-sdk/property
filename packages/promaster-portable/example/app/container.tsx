@@ -1,20 +1,22 @@
 import * as React from "react";
-import {merge} from "./utils";
-import {AbstractImageExample} from "./abstract-image-example";
+import { merge } from "./utils";
+import { AbstractImageExample } from "./abstract-image-example";
+import { AbstractImageExampleDxf } from "./abstract-image-example-dxf";
 
 interface Example {
   readonly name: string;
-  readonly component: React.ComponentClass<any> | React.StatelessComponent<any>;
+  readonly component: React.SFC<any>;
 }
 
 interface State {
-  readonly examples: Array<Example>,
+  readonly examples: Example[],
   readonly selectedExample: number,
 }
 
 export class Container extends React.Component<void, State> {
 
   constructor() {
+        console.log(123)
     super();
     this.state = {
       selectedExample: 0,
@@ -22,22 +24,28 @@ export class Container extends React.Component<void, State> {
         {
           name: "AbstractImage",
           component: AbstractImageExample
+        },
+        {
+          name: "DXF",
+          component: AbstractImageExampleDxf
         }
       ]
     };
   }
 
   render() {
+    const SelectedComponent = this.state.examples[this.state.selectedExample].component;
+
     return (
       <div>
         <div>
           <ExampleSelector examples={this.state.examples}
-                           selectedExample={this.state.selectedExample}
-                           selectedExampleChanged={(index) =>
-                                        this.setState(merge(this.state, {selectedExample: index}))}/>
+            selectedExample={this.state.selectedExample}
+            selectedExampleChanged={(index) =>
+              this.setState(merge(this.state, { selectedExample: index }))} />
         </div>
         <div>
-          <ExampleRenderer example={this.state.examples[this.state.selectedExample]}/>
+        <SelectedComponent />
         </div>
       </div>
     );
@@ -46,15 +54,10 @@ export class Container extends React.Component<void, State> {
 }
 
 
-interface ExampleRendererProps {
+/*interface ExampleRendererProps {
   example: Example;
 }
-
-function ExampleRenderer({example}:ExampleRendererProps) {
-  const element = React.createElement(example.component);
-  return element;
-}
-
+*/
 
 interface ExampleSelectorProps {
   readonly examples: Array<Example>,
@@ -62,14 +65,14 @@ interface ExampleSelectorProps {
   readonly selectedExampleChanged: (index: number) => void
 }
 
-function ExampleSelector({examples, selectedExample, selectedExampleChanged}:ExampleSelectorProps) {
+function ExampleSelector({examples, selectedExample, selectedExampleChanged}: ExampleSelectorProps) {
   return (
     <select value={selectedExample}
-            onChange={(e) => selectedExampleChanged((e.target as any).value)}>
+      onChange={(e) => selectedExampleChanged((e.target as any).value)}>
       {
         examples.map((example, index) =>
           <option key={example.name}
-                  value={index}>
+            value={index}>
             {example.name}
           </option>)
       }

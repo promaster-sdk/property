@@ -10,7 +10,7 @@ export function fromArgb(a: number, r: number, g: number, b: number): Color {
 }
 
 export function toString6Hex(color: Color): string {
-  return color.r.toString(16) + color.g.toString(16) + color.b.toString(16);
+  return ("00"+color.r.toString(16)).substr(-2) + ("00"+color.g.toString(16)).substr(-2) + ("00"+color.b.toString(16)).substr(-2);
 }
 
 export function fromString(s: string): Color | undefined {

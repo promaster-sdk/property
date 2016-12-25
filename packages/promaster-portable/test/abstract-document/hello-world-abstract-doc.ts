@@ -1,6 +1,7 @@
-import {AbstractDoc} from "../../src/abstract-document/model/abstract-doc";
+/*
+import {AbstractDoc} from "../../src/abstract-document/index";
 
-export const helloWorldDoc: AbstractDoc = {
+export const helloWorldDoc: AbstractDoc.AbstractDoc = {
   "imageResources": {},
   "numberingDefinitions": {},
   "numberings": {},
@@ -241,3 +242,4 @@ export const helloWorldDoc: AbstractDoc = {
     }
   }
 };
+*/
