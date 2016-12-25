@@ -6,12 +6,10 @@
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "test_js_out",
+    "outDir": "../test_js_out",
     "noEmit": true,
     "sourceMap": true,
-    "lib": ["es5", "dom", "es2015", "es2015.promise", "es2015.iterable", "es2015.symbol"],
-    "types": ["mocha", "node"],
-    "typeRoots": ["./node_modules/@types"]
+    "lib": ["es5", "dom", "es2015", "es2015.promise", "es2015.iterable", "es2015.symbol"]
   },
   "exclude": [
     "node_modules",
