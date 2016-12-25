@@ -20,7 +20,7 @@
     "tsc:watch": "tsc --watch -p src",
     "tsc:example": "tsc -p example",
     "tsc:example:watch": "tsc --watch -p example",
-    "test": "mocha --require 'ts-node/register' 'test/**/*.ts{,x}'"
+    "test": "cd test && mocha --require 'ts-node/register' '**/*.ts{,x}'"
   },
   "dependencies": {
     "@promaster/promaster-primitives": "^0.4.4",

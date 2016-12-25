@@ -114,7 +114,7 @@ export function generateExample(): AbstractDoc.AbstractDoc {
 
    */
 
-  const b = fs.readFileSync("test/abstract-document-exporters/test-utils/googlelogo.png");
+  const b = fs.readFileSync("abstract-document-exporters/test-utils/googlelogo.png");
   const png = new Uint8Array(b.buffer);
   const components = [AI.createBitmapImage(AI.createPoint(0, 0), AI.createPoint(200, 200), "png", png)];
   const image = AI.createAbstractImage(AI.createPoint(0, 0), AI.createSize(200, 200), AI.white, components);
