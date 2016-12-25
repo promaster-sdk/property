@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    // Standard options
+    "forceConsistentCasingInFileNames": true,
+    "newLine": "LF",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    // Output options
+    "declaration": true,
+    "sourceMap": true,
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es5", "dom", "es2015", "es2015.promise", "es2015.iterable", "es2015.symbol"]
+  }
+}

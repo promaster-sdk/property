@@ -284,17 +284,18 @@ describe("DocxExporter", () => {
       });
     }
 
-    function str2ab(str): Uint8Array {
-      let buf = new ArrayBuffer(str.length); // 2 bytes for each char
-      let bufView = new Uint8Array(buf);
-      for (let i = 0, strLen = str.length; i < strLen; i++) {
-        bufView[i] = str.charCodeAt(i);
-      }
-      return bufView;
-    }
+    // function str2ab(str): Uint8Array {
+    //   let buf = new ArrayBuffer(str.length); // 2 bytes for each char
+    //   let bufView = new Uint8Array(buf);
+    //   for (let i = 0, strLen = str.length; i < strLen; i++) {
+    //     bufView[i] = str.charCodeAt(i);
+    //   }
+    //   return bufView;
+    // }
 
 
     const exportAbstractImageFunc = (format: ImageFormat, image: AbstractImage.AbstractImage, scale: number): ExportedImage => {
+      console.log(`${format},${image},${scale}`);
       return {format: "SVG", output: new Uint8Array(0)};
       // Should export PNG not SVG
       // return {
@@ -303,7 +304,7 @@ describe("DocxExporter", () => {
       // };
     };
 
-    const result = DocxDocumentRenderer.exportToDocx(exportAbstractImageFunc, doc)
+    DocxDocumentRenderer.exportToDocx(exportAbstractImageFunc, doc)
       .then((result) => {
         assert.isOk(result);
         fs.writeFileSync("my2.docx", new Buffer(result));
@@ -359,6 +360,7 @@ describe("DocxExporter", () => {
 
 
     const exportAbstractImageFunc = (format: ImageFormat, image: AbstractImage.AbstractImage, scale: number): ExportedImage => {
+      console.log(`${format},${image},${scale}`);
       return {format: "SVG", output: new Uint8Array(0)};
       // Should export PNG not SVG
       // return {
@@ -367,7 +369,7 @@ describe("DocxExporter", () => {
       // };
     };
 
-    const result = DocxDocumentRenderer.exportToDocx(exportAbstractImageFunc, doc)
+    DocxDocumentRenderer.exportToDocx(exportAbstractImageFunc, doc)
       .then((result) => {
         assert.isOk(result);
         fs.writeFileSync("my2_chars.docx", new Buffer(result));

@@ -1,7 +1,7 @@
 import * as ADPdf from "../../../src/abstract-document-exporters/pdf/render";
-import {assert} from "chai";
+// import {assert} from "chai";
 import * as fs from "fs";
-import * as path from "path";
+// import * as path from "path";
 import {generateExample, generateHyperlink} from "../test-utils/example-document";
 
 describe("PdfExporter", () => {

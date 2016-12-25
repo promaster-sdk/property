@@ -6,7 +6,9 @@ var DocxConstants = require("./docx-constants");
 var string_utils_1 = require("./string-utils");
 var JSZip = require("jszip");
 function exportToDocx(exportAbstractImageFunc, doc) {
+    // Create map that corresponds to zip file
     var zipFiles = exportToZipMap(doc);
+    // Convert all archive items to byte arrays
     var convertedZipFiles = new Map();
     for (var _i = 0, _a = Object.keys(zipFiles); _i < _a.length; _i++) {
         var itemKey = _a[_i];
@@ -23,6 +25,7 @@ function exportToDocx(exportAbstractImageFunc, doc) {
             }
         }
     }
+    // Write the zip
     var zip = new JSZip();
     for (var _b = 0, _c = Array.from(convertedZipFiles.keys()); _b < _c.length; _b++) {
         var itemKey = _c[_b];
@@ -33,6 +36,8 @@ function exportToDocx(exportAbstractImageFunc, doc) {
 }
 exports.exportToDocx = exportToDocx;
 function exportToZipMap(abstractDoc) {
+    // this._state.imageContentTypesAdded = [];
+    // this._state.imageHash.clear();
     var state = {
         imageContentTypesAdded: [],
         imageHash: new Map(),
@@ -65,14 +70,25 @@ function exportToZipMap(abstractDoc) {
         numberingDoc.contentType = DocxConstants.NumberingContentType;
         numberingDoc.XMLWriter.WriteStartDocument();
         numberingDoc.XMLWriter.WriteStartElement("numbering", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+        // <w:abstractNum>
         var wordNumberingDefinitionId = 1;
         for (var _i = 0, _a = Object.keys(abstractDoc.numberingDefinitions); _i < _a.length; _i++) {
             var key = _a[_i];
             var numDef = abstractDoc.numberingDefinitions[key];
             numberingDoc.XMLWriter.WriteStartElement("abstractNum", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
             numberingDoc.XMLWriter.WriteAttributeString("abstractNumId", wordNumberingDefinitionId.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+            // <w:lvl>
             for (var _b = 0, _c = numDef.levels; _b < _c.length; _b++) {
                 var numDefLevel = _c[_b];
+                //<w:lvl w:ilvl="0" w:tplc="041D0019">
+                //  <w:start w:val="1"/>
+                //  <w:numFmt w:val="lowerLetter"/>
+                //  <w:lvlText w:val="%1."/>
+                //  <w:lvlJc w:val="left"/>
+                //  <w:pPr>
+                //    <w:ind w:left="1440" w:hanging="360"/>
+                //  </w:pPr>
+                //</w:lvl>
                 numberingDoc.XMLWriter.WriteStartElement("lvl", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
                 numberingDoc.XMLWriter.WriteAttributeString("ilvl", numDefLevel.level.toString(), DocxConstants.WordNamespace, DocxConstants.WordPrefix);
                 numberingDoc.XMLWriter.WriteStartElement("start", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -94,9 +110,12 @@ function exportToZipMap(abstractDoc) {
                 numberingDoc.XMLWriter.WriteAttributeString("hanging", "800", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
                 numberingDoc.XMLWriter.WriteEndElement();
                 numberingDoc.XMLWriter.WriteEndElement();
+                //<w:rPr>
+                //var effectiveStyle = numDefLevel.GetEffectiveTextStyle(abstractDoc.Styles);
                 var textProperties = numDefLevel.textProperties;
                 if (textProperties != null) {
                     numberingDoc.XMLWriter.WriteStartElement("rPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+                    //  <w:b/>
                     if (textProperties.bold)
                         numberingDoc.XMLWriter.WriteStartElement("b", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
                     numberingDoc.XMLWriter.WriteEndElement();
@@ -106,7 +125,7 @@ function exportToZipMap(abstractDoc) {
             }
             state.numberingDefinitionIdTranslation.set(key, wordNumberingDefinitionId++);
         }
-        numberingDoc.XMLWriter.WriteEndElement();
+        numberingDoc.XMLWriter.WriteEndElement(); // abstractNum
         var wordNumberingId = 1;
         for (var _d = 0, _e = Object.keys(abstractDoc.numberings); _d < _e.length; _d++) {
             var key = _e[_d];
@@ -123,8 +142,47 @@ function exportToZipMap(abstractDoc) {
         numberingDoc.XMLWriter.WriteEndElement();
         var refid = GetNewReferenceId(state);
         mainDoc.references.AddReference(refid, numberingDoc.filePath + numberingDoc.fileName, DocxConstants.NumberingNamespace);
+        //mainDoc.references.AddReference2("rId1",  numberingDoc.FileName, DocxConstants.NumberingNamespace);
         addDocumentToArchive(zipFiles, numberingDoc, contentTypesDoc, true);
     }
+    //<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    //<w:numbering xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 w15 wp14">
+    //  <w:abstractNum w:abstractNumId="0">
+    //    <w:nsid w:val="00283020"/>
+    //    <w:multiLevelType w:val="hybridMultilevel"/>
+    //    <w:tmpl w:val="D6702D88"/>
+    //    <w:lvl w:ilvl="0" w:tplc="041D0019">
+    //      <w:start w:val="1"/>
+    //      <w:numFmt w:val="lowerLetter"/>
+    //      <w:lvlText w:val="%1."/>
+    //      <w:lvlJc w:val="left"/>
+    //      <w:pPr>
+    //        <w:ind w:left="1440" w:hanging="360"/>
+    //      </w:pPr>
+    //    </w:lvl>
+    //    <w:lvl w:ilvl="1" w:tplc="041D0019">
+    //      <w:start w:val="1"/>
+    //      <w:numFmt w:val="lowerLetter"/>
+    //      <w:lvlText w:val="%2."/>
+    //      <w:lvlJc w:val="left"/>
+    //      <w:pPr>
+    //        <w:ind w:left="2160" w:hanging="360"/>
+    //      </w:pPr>
+    //    </w:lvl>
+    //    <w:lvl w:ilvl="2" w:tplc="041D001B" w:tentative="1">
+    //      <w:start w:val="1"/>
+    //      <w:numFmt w:val="lowerRoman"/>
+    //      <w:lvlText w:val="%3."/>
+    //      <w:lvlJc w:val="right"/>
+    //      <w:pPr>
+    //        <w:ind w:left="2880" w:hanging="180"/>
+    //      </w:pPr>
+    //    </w:lvl>
+    //  </w:abstractNum>
+    //  <w:num w:numId="2">
+    //    <w:abstractNumId w:val="0"/>
+    //  </w:num>
+    //</w:numbering>
     var lastMasterPage = null;
     var currentHeader = null;
     var lastHeader = null;
@@ -188,6 +246,9 @@ function exportToZipMap(abstractDoc) {
         addSupportFilesContents(zipFiles, contentTypesDoc);
     }
     return zipFiles;
+    // // Write the zip
+    // const zipBytes = this._zipService.CreateZipFile(zipFiles);
+    // resultStream.Write(zipBytes, 0, zipBytes.length);
 }
 exports.exportToZipMap = exportToZipMap;
 function addBaseParagraphDocX(doc, xmlWriter, zip, currentDocument, contentTypesDoc, newSectionElement, inTable, imageHash, imageContentTypesAdded, getNewReferenceId, numberingIdTranslation) {
@@ -198,6 +259,7 @@ function addBaseParagraphDocX(doc, xmlWriter, zip, currentDocument, contentTypes
     switch (newSectionElement.type) {
         case "Table":
             insertTable(doc, xmlWriter, zip, currentDocument, contentTypesDoc, newSectionElement, imageHash, imageContentTypesAdded, getNewReferenceId, numberingIdTranslation);
+            // Om man lägger in en tabell i en tabell så måste man lägga till en tom paragraf under...
             if (inTable)
                 insertEmptyParagraph(xmlWriter);
             return;
@@ -214,6 +276,7 @@ function addBaseParagraphDocX(doc, xmlWriter, zip, currentDocument, contentTypes
     throw new Error("The type has not been implemented in printer");
 }
 function insertTable(doc, xmlWriter, zip, currentDocument, contentTypesDoc, tPara, imageHash, imageContentTypesAdded, getNewReferenceId, numberingIdTranslation) {
+    //var xml = doc.ToXml();
     xmlWriter.WriteStartElement("tbl", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("tblPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteStartElement("tblW", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -247,8 +310,21 @@ function insertTable(doc, xmlWriter, zip, currentDocument, contentTypesDoc, tPar
         var c = 0;
         var tc = 0;
         while (c < tPara.columnWidths.length) {
-            var ptc = getCell(tPara, r, tc);
-            var effectiveCellProps = index_1.TableCell.getEffectiveTableCellProperties(tPara, ptc);
+            //var ptc = tPara.GetCell(r, tc);
+            var ptc = getCell(/*doc,*/ tPara, r, tc);
+            var effectiveCellProps = index_1.TableCell.getEffectiveTableCellProperties(/*doc.styles,*/ tPara, ptc);
+            // let effectiveTableProps = Table.getEffectiveTableProperties(doc.styles, tPara);
+            //if (effectiveTableProps.BorderThickness.GetValueOrDefault(0) > double.Epsilon)
+            //{
+            //if (effectiveCellProps.Borders.Bottom == null)
+            //  effectiveCellProps.Borders.Bottom = effectiveTableProps.BorderThickness;
+            //if (effectiveCellProps.Borders.Top == null)
+            //  effectiveCellProps.Borders.Top = effectiveTableProps.BorderThickness;
+            //if (effectiveCellProps.Borders.Left == null)
+            //  effectiveCellProps.Borders.Left = effectiveTableProps.BorderThickness;
+            //if (effectiveCellProps.Borders.Right == null)
+            //  effectiveCellProps.Borders.Right = effectiveTableProps.BorderThickness;
+            //}
             xmlWriter.WriteStartElement("tc", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
             xmlWriter.WriteStartElement("tcPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
             if (effectiveCellProps.background && effectiveCellProps.background.a > 0) {
@@ -310,6 +386,8 @@ function insertTable(doc, xmlWriter, zip, currentDocument, contentTypesDoc, tPar
             else {
                 for (var _b = 0, _c = ptc.elements; _b < _c.length; _b++) {
                     var bp = _c[_b];
+                    // TODO: Detta kan ge lite konstiga resultat om man har en tabell först och sedan text...
+                    // Borde kolla om det bara finns en och det är en tabell eller om det finns två men båra är tabeller osv.
                     addBaseParagraphDocX(doc, xmlWriter, zip, currentDocument, contentTypesDoc, bp, true, imageHash, imageContentTypesAdded, getNewReferenceId, numberingIdTranslation);
                 }
             }
@@ -346,6 +424,7 @@ function insertParagraph(doc, xmlWriter, zip, currentDocument, contentTypesDoc, 
         xmlWriter.WriteEndElement();
     }
     xmlWriter.WriteElementString("keepLines", "", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    //var effectiveStyle = para.GetEffectiveStyle(doc.Styles);
     insertJc(xmlWriter, effectiveParaProps.alignment);
     xmlWriter.WriteEndElement();
     for (var _i = 0, _a = para.atoms; _i < _a.length; _i++) {
@@ -364,7 +443,7 @@ function insertComponent(doc, xmlWriter, zip, currentDocument, contentTypesDoc, 
             break;
         case "TextRun":
             var effectiveTextProps = index_1.TextRun.getEffectiveTextProperties(doc.styles, bc);
-            insertTextComponent(xmlWriter, bc, effectiveTextProps);
+            insertTextComponent(/*doc,*/ xmlWriter, bc, effectiveTextProps);
             break;
         case "Image":
             insertImageComponent(xmlWriter, zip, currentDocument, contentTypesDoc, bc, imageHash, imageContentTypesAdded, getNewReferenceId);
@@ -375,16 +454,22 @@ function insertComponent(doc, xmlWriter, zip, currentDocument, contentTypesDoc, 
 }
 function insertImageComponent(xmlWriter, zip, currentDocument, contentTypesDoc, image, imageHash, imageContentTypesAdded, getNewReferenceId) {
     var renderedImageFormat = "PNG";
+    // Lägg till referens
     if (!imageHash.has(image.imageResource.id.toString())) {
         var refId = getNewReferenceId();
         addImageReference2(zip, contentTypesDoc, image, renderedImageFormat, imageContentTypesAdded, imageHash, refId);
     }
+    //Lägg till bilden i dokumentet
     var rid = imageHash.get(image.imageResource.id.toString()).toString();
+    //Behöver komma åt dokumentet som bilden tillhör
     var filePath = DocxConstants.ImagePath + "image_" + rid + "." + renderedImageFormat;
     currentDocument.references.AddReference(rid, filePath, DocxConstants.ImageNamespace);
+    //Lägg till i MainPart
+    //Lägg till bilden i en run
     xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     insertImage(xmlWriter, rid, image.width, image.height);
     xmlWriter.WriteEndElement();
+    //}
 }
 function convertNumFormat(format) {
     var wordNumFmt = "decimal";
@@ -426,7 +511,7 @@ function addSupportFilesContents(zip, contentTypesDoc) {
 }
 function addContentTypes(zip, contentTypesDoc) {
     insertDefaultContentTypes(contentTypesDoc);
-    contentTypesDoc.XMLWriter.WriteEndElement();
+    contentTypesDoc.XMLWriter.WriteEndElement(); //Avslutar types
     addDocumentToArchive(zip, contentTypesDoc, contentTypesDoc, false);
 }
 function insertPageSettingsParagraph(xmlWriter, ps, lastHeader) {
@@ -466,6 +551,7 @@ function insertPageSettings(xmlWriter, ps, lastHeader) {
 }
 function insertDateComponent(doc, xmlWriter, tf) {
     xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    //var style = fc.GetEffectiveStyle(doc.Styles) ?? ps.TextProperties;
     var textProperties = index_1.TextField.getEffectiveStyle(doc.styles, tf).textProperties;
     insertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement("fldChar", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -477,6 +563,7 @@ function insertDateComponent(doc, xmlWriter, tf) {
     xmlWriter.WriteStartElement("instrText", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteAttributeString("space", "preserve", "", "xml");
     xmlWriter.WriteString(" DATE \\@YYYY/MM/DD ");
+    //var fcText = new TextRun("{ DATE \\@YYYY/MM/DD }", tf.GetEffectiveStyle(doc.Styles));
     var fcText = index_1.TextRun.create({ text: "{ DATE \\@YYYY/MM/DD }", textProperties: index_1.TextField.getEffectiveStyle(doc.styles, tf).textProperties });
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
@@ -487,7 +574,7 @@ function insertDateComponent(doc, xmlWriter, tf) {
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
     var effectiveStyle = index_1.TextField.getEffectiveStyle(doc.styles, tf);
-    insertTextComponent(xmlWriter, fcText, effectiveStyle.textProperties);
+    insertTextComponent(/*doc,*/ xmlWriter, fcText, effectiveStyle.textProperties);
     xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     insertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement("fldChar", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -495,7 +582,8 @@ function insertDateComponent(doc, xmlWriter, tf) {
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
 }
-function insertTextComponent(xmlWriter, tr, textProperties) {
+function insertTextComponent(/*doc: AbstractDoc, */ xmlWriter, tr, textProperties) {
+    //var effectiveStyle = tc.GetEffectiveStyle(doc.Styles);
     insertText(xmlWriter, tr.text, textProperties);
 }
 function escape(text) {
@@ -512,6 +600,8 @@ function escape(text) {
 }
 function insertText(xmlWriter, text, textProperties) {
     xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+    //var style = componentStyle ?? ps.TextProperties;
+    //var style = textProperties.TextProperties;
     insertRunProperty(xmlWriter, textProperties);
     xmlWriter.WriteStartElement("t", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
     xmlWriter.WriteAttributeString("space", "preserve", "", "xml");
@@ -528,20 +618,24 @@ function insertEmptyParagraph(xmlWriter) {
     xmlWriter.WriteEndElement();
     xmlWriter.WriteEndElement();
 }
-function getCell(table, r, c) {
+function getCell(/*abstractDoc: AbstractDoc,*/ table, r, c) {
     if (r >= index_1.Table.nrOfRows(table))
         return null;
     var row = table.rows[r];
     if (c < row.cells.length)
         return row.cells[c];
+    // Denna rad innehåller inte alla kolumner...
+    // Kolla om något element i denna rad innehåller ett element
     var cs;
     for (var _i = 0, _a = row.cells; _i < _a.length; _i++) {
         var ptc = _a[_i];
         if (ptc == null)
             break;
-        cs = index_1.TableCell.getEffectiveTableCellProperties(table, ptc);
+        //if (ptc.GetEffectiveStyle() != null)
+        cs = index_1.TableCell.getEffectiveTableCellProperties(/*abstractDoc.styles,*/ table, ptc);
     }
     if (!cs) {
+        // cs = new TableCellPropertiesBuilder().build();
         cs = index_1.TableCellProperties.create({
             borders: index_1.LayoutFoundation.create({ top: 0, bottom: 0, left: 0, right: 0 }),
             padding: index_1.LayoutFoundation.create({ top: 0, bottom: 0, left: 0, right: 0 })
@@ -556,6 +650,7 @@ function insertFieldComponent(doc, xmlWriter, fc) {
             break;
         case "PageNumber":
             xmlWriter.WriteStartElement("r", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
+            //var style = fc.GetEffectiveStyle(doc.Styles) ?? ps.TextProperties;
             var style = index_1.TextField.getEffectiveStyle(doc.styles, fc).textProperties;
             insertRunProperty(xmlWriter, style);
             xmlWriter.WriteElementString("pgNum", "", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -583,7 +678,7 @@ function insertJc(xmlWriter, ta) {
         xmlWriter.WriteAttributeString("val", "right", DocxConstants.WordNamespace);
     else
         xmlWriter.WriteAttributeString("val", "left", DocxConstants.WordNamespace);
-    xmlWriter.WriteEndElement();
+    xmlWriter.WriteEndElement(); //jc
 }
 function insertRunProperty(xmlWriter, textProperties) {
     xmlWriter.WriteStartElement("rPr", DocxConstants.WordNamespace, DocxConstants.WordPrefix);
@@ -713,23 +808,23 @@ function insertDocumentContentType(filename, contentType, contentTypesDoc) {
         filename = "/" + filename;
     contentTypesDoc.XMLWriter.WriteAttributeString("PartName", filename);
     contentTypesDoc.XMLWriter.WriteAttributeString("ContentType", contentType);
-    contentTypesDoc.XMLWriter.WriteEndElement();
+    contentTypesDoc.XMLWriter.WriteEndElement(); //Override
 }
 function insertImageContentType(extension, mimeType, contentTypesDoc) {
     contentTypesDoc.XMLWriter.WriteStartElement("Default");
     contentTypesDoc.XMLWriter.WriteAttributeString("Extension", extension);
     contentTypesDoc.XMLWriter.WriteAttributeString("ContentType", mimeType);
-    contentTypesDoc.XMLWriter.WriteEndElement();
+    contentTypesDoc.XMLWriter.WriteEndElement(); //Default
 }
 function insertDefaultContentTypes(contentTypesDoc) {
     contentTypesDoc.XMLWriter.WriteStartElement("Default");
     contentTypesDoc.XMLWriter.WriteAttributeString("Extension", "xml");
     contentTypesDoc.XMLWriter.WriteAttributeString("ContentType", DocxConstants.MainContentType);
-    contentTypesDoc.XMLWriter.WriteEndElement();
+    contentTypesDoc.XMLWriter.WriteEndElement(); //Default
     contentTypesDoc.XMLWriter.WriteStartElement("Default");
     contentTypesDoc.XMLWriter.WriteAttributeString("Extension", "rels");
     contentTypesDoc.XMLWriter.WriteAttributeString("ContentType", DocxConstants.RelationContentType);
-    contentTypesDoc.XMLWriter.WriteEndElement();
+    contentTypesDoc.XMLWriter.WriteEndElement(); //Default
 }
 function getMimeType(format) {
     switch (format.toLowerCase()) {
@@ -747,23 +842,34 @@ function getMimeType(format) {
     }
 }
 function addHeadRef(zip) {
+    // const headref = new MemoryStream();
+    // const contents = Encoding.UTF8.GetBytes(DocxConstants.HeadRelXml);
+    // headref.Write(contents, 0, contents.Length);
+    //
+    // AddToArchive(zip, DocxConstants.RefPath + ".rels", headref);
+    // //headref.Close();
+    // headref.Dispose();
     var contents = DocxConstants.HeadRelXml;
     addXmlStringToArchive(zip, DocxConstants.RefPath + ".rels", contents);
 }
 function addDocumentToArchive(zip, docToAdd, contentTypesDoc, insertContentType) {
+    // Add document
     var docToAddFullPath = docToAdd.filePath + docToAdd.fileName;
     addXmlStringToArchive(zip, docToAddFullPath, docToAdd.XMLWriter.getXml());
+    // Add references document if it exists
     if (docToAdd.references.count > 0) {
         docToAdd.references.finish();
         addXmlStringToArchive(zip, docToAdd.filePath + DocxConstants.RefPath + docToAdd.fileName + ".rels", docToAdd.references.XMLWriter.getXml());
         docToAdd.references.XMLWriter.close();
     }
     docToAdd.XMLWriter.close();
+    // What does this do? It mutates the contentTypesDoc...
     if (insertContentType) {
         insertDocumentContentType(docToAddFullPath, docToAdd.contentType, contentTypesDoc);
     }
 }
 function addXmlStringToArchive(zip, filePath, xml) {
+    //const ms = stringToUtf8ByteArray(xml);
     zip[filePath] = { type: "XmlString", xml: xml };
 }
 function addImageToArchive(zip, filePath, ms, renderScale, renderFormat) {

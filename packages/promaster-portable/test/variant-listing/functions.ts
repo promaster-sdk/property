@@ -1,6 +1,5 @@
 import {assert} from "chai";
-import {buildAllPropertyValueSets, buildAllPropertyValueSetsExtended, ProductProperty, ProductPropertyValue, PropertyDefaultValue} from "../../src/variant-listing";
-import * as PromasterPrimitives from "@promaster/promaster-primitives";
+import {buildAllPropertyValueSetsExtended} from "../../src/variant-listing";
 import {readFileSync} from "fs";
 import * as Path from "path";
 
