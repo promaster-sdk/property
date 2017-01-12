@@ -81,11 +81,10 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
             onFormatCleared();
           }}>
             {"\u00A0"}
-          </button> : undefined
-        }
-        <button className={styles.cancel} onClick={() => this.setState({active: false})}>
+          </button> : <button className={styles.cancel} onClick={() => this.setState({active: false})}>
           {"\u00A0"}
         </button>
+        }
       </span>
     );
 
