@@ -303,7 +303,7 @@ function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>):
 /// Creates a transformed unit from the specified parent unit.
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
-function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter): Unit<T> {
+function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter): TransformedUnit<T> {
   return {quantity: parentUnit.quantity, type: "transformed", parentUnit, toParentUnitConverter};
 }
 
