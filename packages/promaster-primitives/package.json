@@ -40,9 +40,9 @@
     "pegjs": "0.9.0",
     "rimraf": "^2.5.4",
     "shelljs": "^0.7.4",
-    "ts-node": "^1.6.0",
+    "ts-node": "^2.0.0",
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
-    "typescript": "^2.0.10"
+    "typescript": "^2.1.5"
   }
 }

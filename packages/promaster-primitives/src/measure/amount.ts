@@ -195,5 +195,5 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>,
     return CompareUtils.compareNumbers(left.value, right.value, left.decimalCount, right.decimalCount);
   }
   const rightValue = valueAs(left.unit, right);
-  return CompareUtils.compareNumbers(left.value, rightValue, left.decimalCount, undefined);
+  return CompareUtils.compareNumbers(left.value, rightValue, left.decimalCount, left.decimalCount);
 }

@@ -10,7 +10,8 @@
     "noEmit": true,
     "sourceMap": true,
     "lib": ["es5"],
-    "types": ["mocha", "node"]
+    "types": ["mocha", "node"],
+    "typeRoots": ["./node_modules/@types"]
   },
   "exclude": [
     "node_modules",
