@@ -135,6 +135,9 @@ export function abs<T extends Quantity>(amount: Amount<T>): Amount<T> {
  * @param amount The amount to get the value from.
  */
 export function valueAs(toUnit: Unit.Unit<any>, amount: Amount<any>): number {
+  if (Unit.equals(amount.unit, toUnit)) {
+    return amount.value;
+  }
   return Unit.convert(amount.value, amount.unit, toUnit);
 }
 
@@ -144,13 +147,13 @@ export function valueAs(toUnit: Unit.Unit<any>, amount: Amount<any>): number {
 
 function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount: number | undefined = undefined): Amount<T> {
 
-  if(typeof value !== "number")
+  if (typeof value !== "number")
     throw new Error("value must be a number.");
 
-  if(typeof unit !== "object")
+  if (typeof unit !== "object")
     throw new Error("unit must be an object.");
 
-  if(decimalCount !== undefined && typeof decimalCount !== "number")
+  if (decimalCount !== undefined && typeof decimalCount !== "number")
     throw new Error("decimalCount must be an undefined or a number.");
 
   if (decimalCount === undefined) {
@@ -183,17 +186,43 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>,
       return 2;
   }
 
-  // Convert the second amount to the same unit as the first and compare the values
-  // NOTE: The converted amount may have more decimals, eg. when comparing
-  // 0:CubicMeterPerSecond with 36:CubicMeterPerHour, both with 0 decimal places,
-  // then 36:CubicMeterPerHour gets converted to 0:CubicMeterPerSecond if the same
-  // decimal places are used as in the original amounts
-  // Therefore we need to use all decimals for the converted value.
-  // Buf if both are of the same unit then no conversion is needed so we can use decimal places from both
-
-  if(Unit.equals(left.unit, right.unit)) {
+  // If the units are the same we can just use the highest decimal count
+  if (Unit.equals(left.unit, right.unit)) {
     return CompareUtils.compareNumbers(left.value, right.value, left.decimalCount, right.decimalCount);
   }
-  const rightValue = valueAs(left.unit, right);
-  return CompareUtils.compareNumbers(left.value, rightValue, left.decimalCount, left.decimalCount);
+
+  // To handle decimals correctly when the units are different
+  // we need to know which unit is the most granular.
+  // Eg. when comparing 0:CubicMeterPerSecond with 36:CubicMeterPerHour,
+  // both with 0 decimal places.
+  const mostGranularUnit = getMostGranularUnit(left.unit, right.unit);
+  const decimalCount = left.unit === mostGranularUnit ? left.decimalCount : right.decimalCount;
+  const leftValue = valueAs(mostGranularUnit, left);
+  const rightValue = valueAs(mostGranularUnit, right);
+  return CompareUtils.compareNumbers(leftValue, rightValue, decimalCount, decimalCount);
+}
+
+/**
+ * Gets the most granular unit
+ * For example Millimeter is more granular than Meter so in that case
+ * both units should be converted to millimeter before being compared and
+ * we should use the decimal count of the amount which was specified in Millimeter
+ * To find which is the most granular unit, we find the difference between 1 and 2
+ * in the units. The one with the highest difference is the most granular.
+ * @param leftUnit
+ * @param rightUnit
+ * @returns The most granular unit.
+ */
+function getMostGranularUnit(leftUnit, rightUnit): Unit.Unit<any> {
+
+  const leftDelta = minus(create(2, leftUnit), create(1, leftUnit));
+  const rightDelta = minus(create(2, rightUnit), create(1, rightUnit));
+  const diff = leftDelta.value - rightDelta.value;
+  if (diff > 0) {
+    return leftUnit;
+  }
+  else {
+    return rightUnit;
+  }
+
 }
