@@ -1,6 +1,6 @@
 "use strict";
-var Unit = require('./unit');
-var UnitName = require('./unit-name');
+var Unit = require("./unit");
+var UnitName = require("./unit-name");
 var Units = require("./units");
 var CompareUtils = require("../utils/compare_utils");
 /**
@@ -178,6 +178,6 @@ function _comparison(left, right, allowNullOrUndefined) {
         return CompareUtils.compareNumbers(left.value, right.value, left.decimalCount, right.decimalCount);
     }
     var rightValue = valueAs(left.unit, right);
-    return CompareUtils.compareNumbers(left.value, rightValue, left.decimalCount, undefined);
+    return CompareUtils.compareNumbers(left.value, rightValue, left.decimalCount, left.decimalCount);
 }
 //# sourceMappingURL=amount.js.map

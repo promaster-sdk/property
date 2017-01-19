@@ -270,7 +270,8 @@ function _evaluate(e, properties, matchMissingIdentifiers) {
     else if (e.type === "ValueRangeExpr") {
         return [
             _evaluate(e.min, properties, matchMissingIdentifiers),
-            _evaluate(e.max, properties, matchMissingIdentifiers)];
+            _evaluate(e.max, properties, matchMissingIdentifiers)
+        ];
     }
     else if (e.type === "NullExpr") {
         return null;
