@@ -247,7 +247,7 @@
         peg$maxFailExpected = [];
       }
 
-      peg$maxFailExpected.push(expected);
+      (peg$maxFailExpected as Array<any>).push(expected);
     }
 
     function peg$buildException(message, expected, found, location) {

@@ -232,6 +232,7 @@ function getElements(unit) {
     }
     else {
         var _exhaustiveCheck = unit;
+        throw new Error("Should not get here.");
     }
 }
 function productUnitToStandardUnit(unit) {

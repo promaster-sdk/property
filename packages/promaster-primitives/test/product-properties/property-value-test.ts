@@ -2,23 +2,24 @@ import {assert} from 'chai';
 import * as PropertyValue from "../../src/product-properties/property-value";
 import * as Amount from "../../src/measure/amount";
 import * as Units from "../../src/measure/units";
+import {Quantity} from "../../src/measure/quantity";
 
 describe('property_value_test', () => {
 
   it('should_parse_amount_with_decimal_dot', () => {
-    const pv1 = PropertyValue.fromString("2.1:Celsius");
-    const amount1 = PropertyValue.getAmount(pv1);
+    const pv1 = fromStringOrException("2.1:Celsius");
+    const amount1 = getAmountOrException(pv1);
     const amount2 = Amount.create(2.1, Units.Celsius, 1);
     assert.equal(Amount.equals(amount1, amount2), true);
   });
 
   it('should_parse_integer', () => {
-    const pv1 = PropertyValue.fromString("2");
+    const pv1 = fromStringOrException("2");
     assert.equal(PropertyValue.getInteger(pv1), 2);
   });
 
   it('should_parse_text', () => {
-    const pv1 = PropertyValue.fromString('"Olle"');
+    const pv1 = fromStringOrException('"Olle"');
     assert.equal(PropertyValue.getText(pv1), "Olle");
   });
 
@@ -59,59 +60,59 @@ describe('property_value_test', () => {
   });
 
   it('should_parse_string_in_quotes_same_as_explicit_text_constructor', () => {
-    const pv1 = PropertyValue.fromString("\"abcABC\"");
+    const pv1 = fromStringOrException("\"abcABC\"");
     const pv2 = PropertyValue.fromText("abcABC");
     assert.equal(PropertyValue.equals(pv1, pv2), true);
   });
 
   it('should_parse_amount_string_with_two_decimals_to_amount_with_two_decimals', () => {
-    const pv1 = PropertyValue.fromString("12.34:Celsius");
-    const amount = PropertyValue.getAmount(pv1);
+    const pv1 = fromStringOrException("12.34:Celsius");
+    const amount = getAmountOrException(pv1);
     assert.equal(amount.decimalCount, 2);
   });
 
   it('should_parse_amount_string_with_one_decimal_to_amount_with_one_decimal', () => {
-    const pv1 = PropertyValue.fromString("532.5:Watt");
-    const amount = PropertyValue.getAmount(pv1);
+    const pv1 = fromStringOrException("532.5:Watt");
+    const amount = getAmountOrException(pv1);
     assert.equal(amount.decimalCount, 1);
   });
 
   it('should_parse_amount_string_with_zero_decimals_to_amount_with_zero_decimals', () => {
-    const pv1 = PropertyValue.fromString("532:Inch");
-    const amount = PropertyValue.getAmount(pv1);
+    const pv1 = fromStringOrException("532:Inch");
+    const amount = getAmountOrException(pv1);
     assert.equal(amount.decimalCount, 0);
   });
 
   it('should_parse_empty_string_to_property_value_of_type_text', () => {
-    const pv1 = PropertyValue.fromString("");
+    const pv1 = fromStringOrException("");
     assert.equal(pv1.type, "text");
   });
 
   it('should_give_undefined_if_type_is_not_matching', () => {
-    const pv1 = PropertyValue.fromString("10:Celsius");
+    const pv1 = fromStringOrException("10:Celsius");
     assert.equal(PropertyValue.getInteger(pv1), undefined);
   });
 
   it('should_compare_integers_correctly1', () => {
-    const pv1 = PropertyValue.fromString("2");
-    const pv2 = PropertyValue.fromString("3");
+    const pv1 = fromStringOrException("2");
+    const pv2 = fromStringOrException("3");
     assert.equal(PropertyValue.compareTo(pv1, pv2) < 0, true);
   });
 
   it('should_compare_integers_correctly2', () => {
-    const pv2 = PropertyValue.fromString("3");
-    const pv3 = PropertyValue.fromString("3");
+    const pv2 = fromStringOrException("3");
+    const pv3 = fromStringOrException("3");
     assert.equal(PropertyValue.compareTo(pv2, pv3) === 0, true);
   });
 
   it('should_compare_integers_correctly3', () => {
-    const pv1 = PropertyValue.fromString("2");
-    const pv3 = PropertyValue.fromString("3");
+    const pv1 = fromStringOrException("2");
+    const pv3 = fromStringOrException("3");
     assert.equal(PropertyValue.compareTo(pv3, pv1) > 0, true);
   });
 
   it('should make a correct string from an amount value', () => {
-    const pv1 = PropertyValue.fromString("20.03:Celsius");
+    const pv1 = fromStringOrException("20.03:Celsius");
     const pv1string = PropertyValue.toString(pv1);
     assert.equal(pv1string, "20.03:celsius");
   });
@@ -139,9 +140,25 @@ describe('property_value_test', () => {
 describe('PropertyValue.greaterOrEqualTo', () => {
 
   it("should assert false for 0:CubicMeterPerSecond >= 16:CubicMeterPerHour", () => {
-    const pv1 = PropertyValue.fromString("0:CubicMeterPerSecond");
-    const pv2 = PropertyValue.fromString("16:CubicMeterPerHour");
+    const pv1 = fromStringOrException("0:CubicMeterPerSecond");
+    const pv2 = fromStringOrException("16:CubicMeterPerHour");
     assert.equal(PropertyValue.greaterOrEqualTo(pv1, pv2), false);
   });
 
 });
+
+function fromStringOrException(encodedValue: string): PropertyValue.PropertyValue {
+  const f = PropertyValue.fromString(encodedValue);
+  if (f === undefined) {
+    throw new Error(`Could not parse property value "${encodedValue}".`);
+  }
+  return f;
+}
+
+function getAmountOrException<T extends Quantity>(value: PropertyValue.PropertyValue): Amount.Amount<T> {
+  const f = PropertyValue.getAmount(value);
+  if (f === undefined) {
+    throw new Error(`Could not get amount from property value "${value}".`);
+  }
+  return f;
+}

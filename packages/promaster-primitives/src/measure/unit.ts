@@ -382,7 +382,7 @@ function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: 
 
 }
 
-function getElements(unit: Unit<any>) {
+function getElements(unit: Unit<any>): Array<Element> {
   if (unit.type === "product") {
     return unit.elements;
   }
@@ -390,11 +390,9 @@ function getElements(unit: Unit<any>) {
     // Base units has one implicit element of the unit which they describe
     return [createElement(unit, 1)];
   }
-  // else if () {
-  //   return [];
-  // }
   else {
     const _exhaustiveCheck: never = unit;
+    throw new Error("Should not get here.");
   }
 }
 

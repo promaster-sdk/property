@@ -11,7 +11,8 @@
     "sourceMap": true,
     "lib": ["es5"],
     "types": ["mocha", "node"],
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
+    "strictNullChecks": true
   },
   "exclude": [
     "node_modules",
