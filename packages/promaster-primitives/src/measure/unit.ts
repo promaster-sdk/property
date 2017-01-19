@@ -317,7 +317,7 @@ function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParent
  * @param leftElems Left multiplicand elements.
  * @param rightElems Right multiplicand elements.
  */
-function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>, rightElems: Array<Element>): Unit<T> {
+function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>, rightElems: Array<Element>): ProductUnit<T> {
   // If we have several elements of the same unit then we can merge them by summing their power
   let allElements: Array<Element> = [];
   allElements.push(...leftElems);
@@ -365,13 +365,13 @@ function createElement(unit: Unit<any>, pow: number): Element {
   return {unit, pow};
 }
 
-function product<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
+function product<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): ProductUnit<T> {
   const leftelements = getElements(left);
   const rightelements = getElements(right);
   return fromProduct<T>(quantity, leftelements, rightelements);
 }
 
-function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
+function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): ProductUnit<T> {
 
   const leftelements = getElements(left);
   let invertedRightelements: Array<Element> = [];
@@ -414,7 +414,7 @@ function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConve
   return converter;
 }
 
-function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Element>): Unit<T> {
+function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Element>): ProductUnit<T> {
   return {quantity, type: "product", elements};
 }
 
