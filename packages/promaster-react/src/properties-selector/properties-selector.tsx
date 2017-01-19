@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Units, PropertyValueSet, Quantity, PropertyValue, PropertyFilter} from "@promaster/promaster-primitives";
-import {PropertyFiltering} from "@promaster/promaster-portable";
+import { Units, PropertyValueSet, Quantity, PropertyValue, PropertyFilter } from "@promaster/promaster-primitives";
+import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
   PropertySelectionOnChange,
   AmountFormat,
@@ -19,12 +19,12 @@ import {
   OnToggleGroupClosed,
   PropertySelectorStyles
 } from "./types";
-import {DefaultLayoutRenderer, LayoutRendererProps} from "./default-layout-renderer";
-import {GroupComponentProps, DefaultGroupComponent} from "./default-group-component";
-import {GroupItemComponentProps, DefaultGroupItemComponent} from "./default-group-item-component";
-import {PropertiesSelectorProps} from "./properties-selector";
-import {PropertyLabelComponentProps, DefaultPropertyLabelComponent} from "./default-property-label-component";
-import {PropertySelectorComponentProps, DefaultPropertySelectorComponent} from "./default-property-selector-component";
+import { DefaultLayoutRenderer, LayoutRendererProps } from "./default-layout-renderer";
+import { GroupComponentProps, DefaultGroupComponent } from "./default-group-component";
+import { GroupItemComponentProps, DefaultGroupItemComponent } from "./default-group-item-component";
+import { PropertiesSelectorProps } from "./properties-selector";
+import { PropertyLabelComponentProps, DefaultPropertyLabelComponent } from "./default-property-label-component";
+import { PropertySelectorComponentProps, DefaultPropertySelectorComponent } from "./default-property-selector-component";
 
 export interface PropertiesSelectorProps {
 
@@ -58,7 +58,7 @@ export interface PropertiesSelectorProps {
   // Specifies property names of properties that should be optional (only for amounts for now)
   readonly optionalProperties: Array<string>,
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly propertyFormats: {[key: string]: AmountFormat},
+  readonly propertyFormats: { [key: string]: AmountFormat },
 
   readonly styles: PropertySelectorStyles,
 
@@ -145,18 +145,18 @@ function createPropertySelectorRenderInfos({
 
       const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
       const selectedValueItem = property.valueItems && property.valueItems
-          .find((value: PropertyValueItem) =>
+        .find((value: PropertyValueItem) =>
           (value.value === undefined && selectedValue === undefined) || (value.value && PropertyValue.equals(selectedValue, value.value)));
 
       let isValid: boolean;
-      let defaultFormat: AmountFormat = {unit: Units.One, decimalCount: 2};
+      let defaultFormat: AmountFormat = { unit: Units.One, decimalCount: 2 };
       switch (getPropertyType(property.quantity)) {
         case "integer":
           isValid = selectedValueItem ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter) : false;
           break;
         case "amount":
           defaultFormat = selectedValue && selectedValue.type === "amount" ?
-            {unit: selectedValue.value.unit, decimalCount: selectedValue.value.decimalCount} : defaultFormat;
+            { unit: selectedValue.value.unit, decimalCount: selectedValue.value.decimalCount } : defaultFormat;
           isValid = property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter);
           break;
         default:
@@ -187,7 +187,7 @@ function createPropertySelectorRenderInfos({
         propertyFormat,
         readOnly: isReadOnly,
         locked: autoSelectSingleValidValue
-          ? !!getSingleValidValueOrUndefined(property, selectedProperties)
+          ? shouldBeLocked(selectedValueItem, property, selectedProperties)
           : false,
         translatePropertyValue,
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
@@ -256,6 +256,18 @@ function getSingleValidValueOrUndefined(productProperty: Property, properties: P
   }
 
   return undefined;
+}
+
+function shouldBeLocked(selectedValueItem: PropertyValueItem | undefined, productProperty: Property, properties: PropertyValueSet.PropertyValueSet): boolean {
+  const singleValidValue = getSingleValidValueOrUndefined(productProperty, properties);
+
+  // getSingleValidValueOrUndefined only works on onChange.
+  // Prevent locking when the sent in selectedValue isn't the singleValidValue
+  if (singleValidValue && singleValidValue === selectedValueItem) {
+    return true;
+  }
+
+  return false;
 }
 
 function handleChange(externalOnChange: PropertySelectionOnChange, productProperties: Array<Property>, autoSelectSingleValidValue: boolean) {
