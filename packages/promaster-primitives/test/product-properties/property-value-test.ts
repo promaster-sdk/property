@@ -135,6 +135,14 @@ describe('property_value_test', () => {
     assert.equal(pv1string, '"TextValue"');
   });
 
+  it('should make an empty string when amount value is null', () => {
+    const amount = Amount.create(0, Units.Ampere, 1);
+    (<any>amount).value = null;
+    const pv1 = PropertyValue.fromAmount(amount);
+    const pv1string = PropertyValue.toString(pv1);
+    assert.equal(pv1string, "");
+  });
+
 });
 
 describe('PropertyValue.greaterOrEqualTo', () => {

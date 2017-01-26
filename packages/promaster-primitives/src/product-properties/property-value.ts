@@ -108,6 +108,10 @@ export function valueAs<T extends Quantity>(unit: Unit<T>, value: PropertyValue)
 
 export function toString(value: PropertyValue): string {
   if (value.type === "amount") {
+    if (!value.value.value) {
+      return "";
+    }
+
     const valueString = value.value.value.toFixed(value.value.decimalCount);
     const unitString = Units.getStringFromUnit(value.value.unit);
     return `${valueString}:${unitString}`;
@@ -248,7 +252,7 @@ function _encodeToSafeString(unsafeString: string | null): string {
 function _decodeFromSafeString(safeString: string): string {
 
   // We use '"' to enclose a string so it must be encoded as %22 inside strings
-//    var unsafeString = safeString.Trim('"');
+  //    var unsafeString = safeString.Trim('"');
   var unsafeString = safeString;
   while (unsafeString.length > 0 && unsafeString.charAt(0) === '"')
     unsafeString = unsafeString.substring(1);
