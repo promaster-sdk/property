@@ -5,9 +5,9 @@
  It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
 import * as React from "react";
-import {Amount, Unit} from "@promaster/promaster-primitives";
-import {Quantity} from "@promaster/promaster-primitives";
-import {amountInputBoxStyles, AmountInputBoxStyles} from "./amount-input-box-styles";
+import { Amount, Unit } from "@promaster/promaster-primitives";
+import { Quantity } from "@promaster/promaster-primitives";
+import { amountInputBoxStyles, AmountInputBoxStyles } from "./amount-input-box-styles";
 
 export interface AmountInputBoxProps {
   readonly key?: string,
@@ -31,7 +31,7 @@ export interface State {
 
 export class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
 
-  constructor(props:AmountInputBoxProps) {
+  constructor(props: AmountInputBoxProps) {
     super(props);
     // What the optimal debounce is may vary between users. 350ms seems like a nice value...
     this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, this.props.debounceTime);
@@ -64,17 +64,17 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     return (
       <input key="input"
-             type="text"
-             value={textValue}
-             readOnly={readOnly}
-             onChange={(e:any) => this._onChange(e, onValueChange)}
-             title={effectiveErrorMessage}
-             className={effectiveErrorMessage ? styles.inputInvalid : styles.input}/>
+        type="text"
+        value={textValue}
+        readOnly={readOnly}
+        onChange={(e: any) => this._onChange(e, onValueChange)}
+        title={effectiveErrorMessage}
+        className={effectiveErrorMessage ? styles.inputInvalid : styles.input} />
     );
 
   }
 
-  _debouncedOnValueChange(newAmount: Amount.Amount<any>, onValueChange: (newAmount: Amount.Amount<any>) => void): void {
+  _debouncedOnValueChange(newAmount: Amount.Amount<any> | undefined, onValueChange: (newAmount: Amount.Amount<any> | undefined) => void): void {
     // log("jk", "_debouncedOnValueChange");
     // An event can have been received when the input was valid, then the input has gone invalid
     // but we still received the delayed event from when the input was valid. Therefore
@@ -99,35 +99,35 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
       this.props.isRequiredMessage, this.props.notNumericMessage, this.props.errorMessage);
     this.setState(newState);
     // We need to check isValid from the new state because state is not immidiately mutated
-    if (newState.isValid && newAmount)
+    if (newState.isValid)
       this._debouncedOnValueChange(newAmount, onValueChange);
   }
 
 }
 
 function calculateNewState(newAmount: Amount.Amount<any> | undefined, newStringValue: string,
-                           isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
+  isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
   const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
   if (internalErrorMessage) {
-    return {isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage};
+    return { isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage };
   }
   else {
-    return {isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage};
+    return { isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage };
   }
 }
 
 
 function getInternalErrorMessage(newAmount: Amount.Amount<any> | undefined,
-                                 newStringValue: string,
-                                 isRequiredMessage: string,
-                                 notNumericMessage: string): string | undefined {
+  newStringValue: string,
+  isRequiredMessage: string,
+  notNumericMessage: string): string | undefined {
 
   // Check if blank and if required or not
   if (newStringValue.trim() === "" && isRequiredMessage) {
     // The user has not entred anything, but a value was required
     return isRequiredMessage;
   }
-  if (newStringValue.trim() !== "" && !newAmount) {
+  if (newStringValue.trim() !== "" && !newAmount && isRequiredMessage) {
     // The user has entered something, but it could not be converted to an amount (=was not numeric)
     return notNumericMessage;
   }
@@ -180,7 +180,7 @@ function getDecimalCountFromString(stringValue: string) {
 
 function filterFloat(value: string): number {
   if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
-      .test(value))
+    .test(value))
     return Number(value);
   return NaN;
 }

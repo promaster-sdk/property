@@ -35,7 +35,7 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
-        //console.log("onChange", properties);
+        console.log("onChange", properties);
         this.setState(merge(this.state, {propertyValueSet: properties}))
       },
       productProperties: productProperties,
@@ -44,7 +44,7 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
       filterPrettyPrint: filterPrettyPrint,
       propertyFormats: this.state.propertyFormats,
       readOnlyProperties: [],
-      optionalProperties: [],
+      optionalProperties: ["a"],
       onPropertyFormatChanged: (propertyName: string, unit: Unit.Unit<any>, decimalCount: number) =>
         this.setState(merge(this.state, {
           propertyFormats: merge(this.state.propertyFormats, {
@@ -70,6 +70,7 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
 
     return (
       <div>
+        <span>{PropertyValueSet.toString(this.state.propertyValueSet)}</span>
         <div style={{margin: 20}}>This example shows how the whole layout can be overridden</div>
         <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
       </div>
