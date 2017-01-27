@@ -29,10 +29,10 @@ function fromProperty(propertyName, propertyValue) {
     var _a;
 }
 exports.fromProperty = fromProperty;
-function isNullOrEmpty(propertyValueSet) {
-    return propertyValueSet == null || propertyValueSet == {};
+function isEmpty(propertyValueSet) {
+    return !propertyValueSet || count(propertyValueSet) === 0;
 }
-exports.isNullOrEmpty = isNullOrEmpty;
+exports.isEmpty = isEmpty;
 function count(set) {
     return Object.keys(set).length;
 }

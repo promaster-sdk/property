@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-primitives",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "main": "lib/index.js",
   "description": "Promster SDK Primitives",
   "author": "Divid AB",

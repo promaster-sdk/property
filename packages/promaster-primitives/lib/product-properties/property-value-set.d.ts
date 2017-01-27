@@ -11,7 +11,7 @@ export declare function fromStringOrError(onError: (encodedValueSet: string) => 
 export declare function fromProperty(propertyName: string, propertyValue: PropertyValue.PropertyValue): {
     [x: string]: PropertyValue.PropertyValue;
 };
-export declare function isNullOrEmpty(propertyValueSet: PropertyValueSet | null): boolean;
+export declare function isEmpty(propertyValueSet: PropertyValueSet | null | undefined): boolean;
 export declare function count(set: PropertyValueSet): number;
 export declare function get(propertyName: string, set: PropertyValueSet): PropertyValue.PropertyValue | undefined;
 export declare function hasProperty(propertyName: string, set: PropertyValueSet): boolean;
