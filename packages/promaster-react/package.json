@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-react",
-  "version": "0.12.0",
+  "version": "0.12.3",
   "main": "lib/index.js",
   "description": "React components for applications that use Promaster.",
   "author": "Divid AB",
@@ -21,7 +21,7 @@
     "publish:patch": "npm run build && node scripts/publish.js patch"
   },
   "dependencies": {
-    "@promaster/promaster-portable": "^0.12.1",
+    "@promaster/promaster-portable": "^0.15.4",
     "@promaster/promaster-primitives": "^0.4.4",
     "csjs": "^1.0.6",
     "insert-css": "^2.0.0",

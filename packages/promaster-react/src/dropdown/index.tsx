@@ -18,9 +18,9 @@ const defaultStyles: DropdownStyles = csjs`
   .dropdown img {
     vertical-align: middle;
   }
-  
+
   .dropdownButton {
-    display: flex;
+    width: 162px;
     align-items: center;
     background: white;
     color: black;
@@ -31,17 +31,18 @@ const defaultStyles: DropdownStyles = csjs`
     font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
     outline: rgb(131, 131, 131) none 0px;
     padding: 1px 5px 0px 14px;
+    text-align: right;
   }
-  
+
   .dropdownButton i {
     margin-left: 10px;
   }
-  
+
   .dropdownButton img {
     max-width: 1em;
     max-height: 1em;
   }
-  
+
   .dropdownBackground {
     position: absolute;
     top: 0;
@@ -49,17 +50,18 @@ const defaultStyles: DropdownStyles = csjs`
     left: 0;
     right: 0;
   }
-  
+
   .dropdownOptions {
     position: absolute;
     display: block;
     background: white;
-    border: 1px solid #bbb;    
+    border: 1px solid #bbb;
     list-style: none;
     margin: 0;
     padding: 0;
+    z-index: 100;
   }
-  
+
   .dropdownOption {
     padding: 0.2em 0.5em;
     cursor: default;
@@ -69,7 +71,7 @@ const defaultStyles: DropdownStyles = csjs`
     max-width: 2em;
     max-height: 2em;
   }
-  
+
   .dropdownOptions .dropdownOption:hover {
     background-color: blue;
     color: white;
