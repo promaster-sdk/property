@@ -5,9 +5,9 @@
  It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
 import * as React from "react";
-import {Amount, Unit} from "@promaster/promaster-primitives";
-import {Quantity} from "@promaster/promaster-primitives";
-import {amountInputBoxStyles, AmountInputBoxStyles} from "./amount-input-box-styles";
+import { Amount, Unit } from "@promaster/promaster-primitives";
+import { Quantity } from "@promaster/promaster-primitives";
+import { amountInputBoxStyles, AmountInputBoxStyles } from "./amount-input-box-styles";
 
 export interface AmountInputBoxProps {
   readonly key?: string,
@@ -31,7 +31,7 @@ export interface State {
 
 export class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
 
-  constructor(props:AmountInputBoxProps) {
+  constructor(props: AmountInputBoxProps) {
     super(props);
     // What the optimal debounce is may vary between users. 350ms seems like a nice value...
     this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, this.props.debounceTime);
@@ -52,7 +52,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
     if (!(inputDecimalCount !== null && inputDecimalCount !== undefined))
       console.error("Missing inputDecimalCount");
     const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
-    const newState = calculateNewState(value, formattedValue,
+    const newState = calculateNewState(formattedValue,
       initProps.isRequiredMessage, initProps.notNumericMessage, initProps.errorMessage);
     this.setState(newState);
   }
@@ -64,12 +64,12 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     return (
       <input key="input"
-             type="text"
-             value={textValue}
-             readOnly={readOnly}
-             onChange={(e:any) => this._onChange(e, onValueChange)}
-             title={effectiveErrorMessage}
-             className={effectiveErrorMessage ? styles.inputInvalid : styles.input}/>
+        type="text"
+        value={textValue}
+        readOnly={readOnly}
+        onChange={(e: any) => this._onChange(e, onValueChange)}
+        title={effectiveErrorMessage}
+        className={effectiveErrorMessage ? styles.inputInvalid : styles.input} />
     );
 
   }
@@ -95,7 +95,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
     // Update the internal state and if the change resulted in a valid value then emit a change with that value
     const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
-    const newState = calculateNewState(newAmount, newStringValue,
+    const newState = calculateNewState(newStringValue,
       this.props.isRequiredMessage, this.props.notNumericMessage, this.props.errorMessage);
     this.setState(newState);
     // We need to check isValid from the new state because state is not immidiately mutated
@@ -105,29 +105,28 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
 
 }
 
-function calculateNewState(newAmount: Amount.Amount<any> | undefined, newStringValue: string,
-                           isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
-  const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
+function calculateNewState(newStringValue: string,
+  isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
+  const internalErrorMessage = getInternalErrorMessage(newStringValue, isRequiredMessage, notNumericMessage);
   if (internalErrorMessage) {
-    return {isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage};
+    return { isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage };
   }
   else {
-    return {isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage};
+    return { isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage };
   }
 }
 
 
-function getInternalErrorMessage(newAmount: Amount.Amount<any> | undefined,
-                                 newStringValue: string,
-                                 isRequiredMessage: string,
-                                 notNumericMessage: string): string | undefined {
+function getInternalErrorMessage(newStringValue: string,
+  isRequiredMessage: string,
+  notNumericMessage: string): string | undefined {
 
   // Check if blank and if required or not
   if (newStringValue.trim() === "" && isRequiredMessage) {
     // The user has not entred anything, but a value was required
     return isRequiredMessage;
   }
-  if (newStringValue.trim() !== "" && !newAmount) {
+  if (newStringValue.trim() !== "") {
     // The user has entered something, but it could not be converted to an amount (=was not numeric)
     return notNumericMessage;
   }
@@ -180,7 +179,7 @@ function getDecimalCountFromString(stringValue: string) {
 
 function filterFloat(value: string): number {
   if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
-      .test(value))
+    .test(value))
     return Number(value);
   return NaN;
 }
