@@ -1,13 +1,13 @@
 import * as PropertyValue from "./property-value";
 import * as Amount from "../measure/amount";
-import {PropertyType} from "./property-value";
-import {Quantity} from "../measure/quantity";
+import { PropertyType } from "./property-value";
+import { Quantity } from "../measure/quantity";
 
 // Types
 
 /// Represents a set of properties and a selected value for each of the properties.
 export interface PropertyValueSet {
-  readonly [key: string]: PropertyValue.PropertyValue;
+  readonly[key: string]: PropertyValue.PropertyValue;
 }
 
 export const Empty: PropertyValueSet = {};
@@ -41,8 +41,8 @@ export function fromProperty(propertyName: string, propertyValue: PropertyValue.
   }
 }
 
-export function isNullOrEmpty(propertyValueSet: PropertyValueSet | null): boolean {
-  return propertyValueSet == null || propertyValueSet == {};
+export function isEmpty(propertyValueSet: PropertyValueSet | null | undefined): boolean {
+  return !propertyValueSet || count(propertyValueSet) === 0;
 }
 
 export function count(set: PropertyValueSet): number {
@@ -113,7 +113,7 @@ export function removeProperty(propertyName: string, set: PropertyValueSet): Pro
 /// Gets an integer value, if the value is missing the onMissing function's
 /// return value is returned.
 export function getValue(propertyName: string,
-                         set: PropertyValueSet): PropertyValue.PropertyValue {
+  set: PropertyValueSet): PropertyValue.PropertyValue {
   const value = set[propertyName];
   return value;
 }
@@ -249,7 +249,7 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
           }
           let entryValue: PropertyValue.PropertyValue | undefined;
           entryValue = PropertyValue.fromString(value.toString());
-//              if (!PropertyValue.TryParse(value.ToString(), out entryValue)) {
+          //              if (!PropertyValue.TryParse(value.ToString(), out entryValue)) {
           if (entryValue === undefined) {
             // Parse error
             return undefined;
@@ -289,7 +289,7 @@ function amend<PropertyValueSet, T2>(obj1: PropertyValueSet, obj2: T2): Property
 }
 
 function amendProperty<PropertyValueSet, T2>(set: PropertyValueSet, name: string, value: T2): PropertyValueSet {
-  return amend(set, {[name]: value});
+  return amend(set, { [name]: value });
 }
 
 function extend<TOrigin, TAdd>(origin: TOrigin, add: TAdd): TOrigin & TAdd {
