@@ -1,6 +1,6 @@
 "use strict";
-var Unit = require("./unit");
-var UnitName = require("./unit-name");
+var Unit = require('./unit');
+var UnitName = require('./unit-name');
 var Units = require("./units");
 var CompareUtils = require("../utils/compare_utils");
 /**
@@ -179,7 +179,7 @@ function _comparison(left, right, allowNullOrUndefined) {
     // Eg. when comparing 0:CubicMeterPerSecond with 36:CubicMeterPerHour,
     // both with 0 decimal places.
     var mostGranularUnit = getMostGranularUnit(left.unit, right.unit);
-    var decimalCount = left.unit === mostGranularUnit ? left.decimalCount : right.decimalCount;
+    var decimalCount = Math.max(left.decimalCount, right.decimalCount);
     var leftValue = valueAs(mostGranularUnit, left);
     var rightValue = valueAs(mostGranularUnit, right);
     return CompareUtils.compareNumbers(leftValue, rightValue, decimalCount, decimalCount);
@@ -196,10 +196,8 @@ function _comparison(left, right, allowNullOrUndefined) {
  * @returns The most granular unit.
  */
 function getMostGranularUnit(leftUnit, rightUnit) {
-    var leftDelta = minus(create(2, leftUnit), create(1, leftUnit));
-    var rightDelta = minus(create(2, rightUnit), create(1, rightUnit));
-    var diff = leftDelta.value - rightDelta.value;
-    if (diff > 0) {
+    var rightDelta = valueAs(leftUnit, minus(create(2, rightUnit), create(1, rightUnit)));
+    if (rightDelta > 1) {
         return leftUnit;
     }
     else {
