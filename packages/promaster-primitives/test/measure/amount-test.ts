@@ -166,6 +166,20 @@ describe('amount_test', () => {
     assert.equal(Amount.lessThan(left, right), true);
   });
 
+  it('Assert 32.5 CubicMeterPerHour is larger than 9 LiterPerSecond', () => {
+    const a1 = Amount.create(32.5, Units.CubicMeterPerHour);
+    const a2 = Amount.create(9, Units.LiterPerSecond);
+    const max = Amount.max(a1, a2);
+    assert.equal(max, a1);
+  });
+
+  it('Assert 33 CubicMeterPerHour is less than 9.2 LiterPerSecond', () => {
+    const a1 = Amount.create(33, Units.CubicMeterPerHour);
+    const a2 = Amount.create(9.2, Units.LiterPerSecond);
+    const max = Amount.min(a1, a2);
+    assert.equal(max, a1);
+  });
+
   /*
 	 it('Operator_Equals_Tolerance', () => {
 	 const x1 = Amount.create(44000.000000000065, Units.Celsius);

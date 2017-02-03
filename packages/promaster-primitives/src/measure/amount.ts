@@ -196,7 +196,7 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>,
   // Eg. when comparing 0:CubicMeterPerSecond with 36:CubicMeterPerHour,
   // both with 0 decimal places.
   const mostGranularUnit = getMostGranularUnit(left.unit, right.unit);
-  const decimalCount = left.unit === mostGranularUnit ? left.decimalCount : right.decimalCount;
+  const decimalCount = Math.max(left.decimalCount, right.decimalCount);
   const leftValue = valueAs(mostGranularUnit, left);
   const rightValue = valueAs(mostGranularUnit, right);
   return CompareUtils.compareNumbers(leftValue, rightValue, decimalCount, decimalCount);
@@ -215,10 +215,8 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>,
  */
 function getMostGranularUnit(leftUnit, rightUnit): Unit.Unit<any> {
 
-  const leftDelta = minus(create(2, leftUnit), create(1, leftUnit));
-  const rightDelta = minus(create(2, rightUnit), create(1, rightUnit));
-  const diff = leftDelta.value - rightDelta.value;
-  if (diff > 0) {
+  const rightDelta = valueAs(leftUnit, minus(create(2, rightUnit), create(1, rightUnit)));
+  if (rightDelta > 1) {
     return leftUnit;
   }
   else {
