@@ -2,11 +2,11 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-portable@^0.15.8":
-  version "0.15.8"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.15.8.tgz#413b99f88ced16c518abd0551050a7a05d62589d"
+"@promaster/promaster-portable@^0.15.9":
+  version "0.15.9"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.15.9.tgz#e26405a1fbe8b5395810e85ba680fabfe53dadcc"
   dependencies:
-    "@promaster/promaster-primitives" "^0.5.5"
+    "@promaster/promaster-primitives" "^0.5.6"
     "@types/base64-js" "^1.2.5"
     "@types/blob-stream" "^0.1.29"
     "@types/pdfkit" "^0.7.31"
@@ -20,9 +20,9 @@
     ramda "^0.22.1"
     showdown "^1.5.0"
 
-"@promaster/promaster-primitives@^0.5.5":
-  version "0.5.5"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.5.5.tgz#a85214b7185f8645ebb5c9e6d03b1bb9a250fb89"
+"@promaster/promaster-primitives@^0.5.6":
+  version "0.5.6"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.5.6.tgz#315891d8e014bcb9cfed1b74585ea3796e2a063e"
 
 "@types/base64-js@^1.2.5":
   version "1.2.5"
