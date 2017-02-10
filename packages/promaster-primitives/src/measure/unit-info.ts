@@ -35,6 +35,7 @@ addUnit(Units.CubicMeterPerHour, "SI", 1, Units.CubicFeetPerMinute);
 addUnit(Units.CubicMeterPerSecond, "SI", 2, Units.CubicFeetPerMinute);
 addUnit(Units.Day, undefined, 0);
 addUnit(Units.Decibel, "SI", 1);
+addUnit(Units.DecibelA, "SI", 1);
 addUnit(Units.DecibelLw, "SI", 1);
 addUnit(Units.Decimeter, "SI", 0, Units.Foot);
 addUnit(Units.Degrees, "SI", 2);

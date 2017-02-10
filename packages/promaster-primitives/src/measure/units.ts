@@ -579,11 +579,14 @@ export const WattPerSquareMeter: Unit.Unit<q.Intensity> = _register(UnitDivide.p
 export const KiloWattPerCubicMeterPerSecond: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(KiloWatt, CubicMeterPerSecond), "kW/m³/s");
 export const WattPerCubicMeterPerSecond: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(Watt, CubicMeterPerSecond), "W/m³/s");
 
+// Sound power level
+export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlternate<q.SoundPowerLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
+
 // Sound pressure level
 export const Decibel: Unit.Unit<q.SoundPressureLevel> = _register(Unit.createAlternate<q.SoundPressureLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
 
-// Sound power level
-export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlternate<q.SoundPowerLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
+// Sound pressure level A weighted
+export const DecibelA: Unit.Unit<q.AWeightedDecibel> = _register(Unit.createAlternate<q.AWeightedDecibel>("dB(A)", UnitTimes.dimensionlessByDimensionless(One, One)), "dB(A)");
 
 // Water hardness
 export const MilliGramCalciumPerLiter: Unit.Unit<q.WaterHardness> = _register(Unit.createBase<q.WaterHardness>("WaterHardness", "mg Ca²⁺/l"), "mg Ca²⁺/l");

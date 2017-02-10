@@ -14,6 +14,7 @@ addQuantity("Acceleration", Units.MeterPerSquareSecond, Units.MeterPerSquareSeco
 addQuantity("Alkalinity", Units.MilliGramHydrogenCarbonatePerLiter, Units.MilliGramHydrogenCarbonatePerLiter);
 addQuantity("Angle", Units.Degrees, Units.Degrees);
 addQuantity("Area", Units.SquareMeter, Units.SquareInch);
+addQuantity("AWeightedDecibel", Units.DecibelA, Units.DecibelA);
 addQuantity("DeltaTemperature", Units.DeltaCelsius, Units.DeltaFahrenheit);
 addQuantity("Density", Units.KilogramPerCubicMeter, Units.KilogramPerCubicMeter);
 addQuantity("Dimensionless", Units.Percent, Units.Percent);
@@ -39,6 +40,7 @@ addQuantity("Power", Units.KiloWatt, Units.HorsePower);
 addQuantity("Pressure", Units.Pascal, Units.InchOfWaterColumn);
 addQuantity("RelativeHumidity", Units.PercentHumidity, Units.PercentHumidity);
 addQuantity("SoundPressureLevel", Units.Decibel, Units.Decibel);
+addQuantity("SoundPowerLevel", Units.DecibelLw, Units.DecibelLw);
 addQuantity("SpecificEnthalpy", Units.KilojoulePerKilogram, Units.KilojoulePerKilogram);
 addQuantity("SpecificFanPower", Units.WattPerCubicMeterPerSecond, Units.WattPerCubicMeterPerSecond);
 addQuantity("SpecificHeatCapacity", Units.KilojoulePerKilogramCelsius, Units.KilojoulePerKilogramCelsius);
