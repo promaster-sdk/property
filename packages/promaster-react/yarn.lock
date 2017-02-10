@@ -2,12 +2,11 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-portable@^0.13.1":
-  version "0.13.2"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.13.2.tgz#d156a8fce72a4f05fd39495e43363c25d520d4e1"
+"@promaster/promaster-portable@^0.15.8":
+  version "0.15.8"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.15.8.tgz#413b99f88ced16c518abd0551050a7a05d62589d"
   dependencies:
-    "@promaster/promaster-portable" "^0.13.1"
-    "@promaster/promaster-primitives" "^0.4.4"
+    "@promaster/promaster-primitives" "^0.5.5"
     "@types/base64-js" "^1.2.5"
     "@types/blob-stream" "^0.1.29"
     "@types/pdfkit" "^0.7.31"
@@ -21,32 +20,9 @@
     ramda "^0.22.1"
     showdown "^1.5.0"
 
-"@promaster/promaster-portable@^0.15.4":
-  version "0.15.4"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.15.4.tgz#3c657db3866ea751277bbdc0ca2458fc1a82f451"
-  dependencies:
-    "@promaster/promaster-portable" "^0.13.1"
-    "@promaster/promaster-primitives" "^0.4.4"
-    "@types/base64-js" "^1.2.5"
-    "@types/blob-stream" "^0.1.29"
-    "@types/pdfkit" "^0.7.31"
-    "@types/ramda" "0.0.2"
-    base64-js "^1.2.0"
-    blob-stream "^0.1.3"
-    jszip "^3.1.3"
-    markdown-to-ast "^3.4.0"
-    node-uuid "^1.4.7"
-    pdfkit "^0.8.0"
-    ramda "^0.22.1"
-    showdown "^1.5.0"
-
-"@promaster/promaster-primitives@^0.4.4":
-  version "0.4.4"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.4.4.tgz#fd225b04deafb266165e6ad971f37737e1d79a23"
-
-"@promaster/promaster-primitives@^0.5.4":
-  version "0.5.4"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.5.4.tgz#08c60596c14cbbe48ffb020945bb855b8ae579da"
+"@promaster/promaster-primitives@^0.5.5":
+  version "0.5.5"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.5.5.tgz#a85214b7185f8645ebb5c9e6d03b1bb9a250fb89"
 
 "@types/base64-js@^1.2.5":
   version "1.2.5"
@@ -59,12 +35,12 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "6.0.52"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.52.tgz#1ac3a99b42320f9e463482f25af4c2359473aaa6"
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.5.tgz#96a0f0a618b7b606f1ec547403c00650210bfbb7"
 
 "@types/pdfkit@^0.7.31":
-  version "0.7.31"
-  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.7.31.tgz#dacba66b4cde11f84719f57d20fda126a361f71f"
+  version "0.7.34"
+  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.7.34.tgz#cc2a63beea2c78b23fab39d96431e251c99ff150"
   dependencies:
     "@types/node" "*"
 
@@ -273,8 +249,8 @@ aws4@^1.2.1:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.5.0.tgz#0a29ffb79c31c9e712eeb087e8e7a64b4a56d755"
 
 babel-runtime@^6.11.6:
-  version "6.20.0"
-  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.20.0.tgz#87300bdcf4cd770f09bf0048c64204e17806d16f"
+  version "6.22.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.22.0.tgz#1cf8b4ac67c77a4ddb0db2ae1f74de52ac4ca611"
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
@@ -474,10 +450,6 @@ camelcase@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"
 
-camelcase@^2.0.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-2.1.1.tgz#7c1d16d679a1bbe59ca02cacecfb011e201f5a1f"
-
 camelcase@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
@@ -552,7 +524,7 @@ cliui@^2.1.0:
     right-align "^0.1.1"
     wordwrap "0.0.2"
 
-cliui@^3.0.3, cliui@^3.2.0:
+cliui@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-3.2.0.tgz#120601537a916d29940f934da3b48d585a39213d"
   dependencies:
@@ -777,6 +749,12 @@ des.js@^1.0.0:
 destroy@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
+
+dfa@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/dfa/-/dfa-1.0.0.tgz#1e8665a345f967bee13a8850f40592ec4fe447df"
+  dependencies:
+    babel-runtime "^6.11.6"
 
 diffie-hellman@^5.0.0:
   version "5.0.2"
@@ -1074,15 +1052,17 @@ find-up@^1.0.0:
     pinkie-promise "^2.0.0"
 
 fontkit@^1.0.0:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/fontkit/-/fontkit-1.4.2.tgz#a71c4e87a890049b6d6ba383853518113cef4fcb"
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/fontkit/-/fontkit-1.5.2.tgz#8f0b959f5c55b35486da5220f68dfff1044805d2"
   dependencies:
     babel-runtime "^6.11.6"
     brfs "^1.4.0"
     brotli "^1.2.0"
+    browserify-optional "^1.0.0"
     clone "^1.0.1"
     deep-equal "^1.0.0"
-    restructure "^0.5.2"
+    dfa "^1.0.0"
+    restructure "^0.5.3"
     tiny-inflate "^1.0.2"
     unicode-properties "^1.0.0"
     unicode-trie "^0.3.0"
@@ -1622,8 +1602,8 @@ lcid@^1.0.0:
     invert-kv "^1.0.0"
 
 lie@~3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/lie/-/lie-3.1.0.tgz#65e0139eaef9ae791a1f5c8c53692c8d3b4718f4"
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/lie/-/lie-3.1.1.tgz#9a436b2cc7746ca59de7a41fa469b3efb76bd87e"
   dependencies:
     immediate "~3.0.5"
 
@@ -2404,7 +2384,7 @@ resolve@^1.1.5, resolve@^1.1.6:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.2.0.tgz#9589c3f2f6149d1417a40becc1663db6ec6bc26c"
 
-restructure@^0.5.2:
+restructure@^0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/restructure/-/restructure-0.5.3.tgz#b35f4b2a403383bc6103f38ecf7fcbe488b5ef77"
   dependencies:
@@ -2508,10 +2488,10 @@ shelljs@^0.7.4:
     rechoir "^0.6.2"
 
 showdown@^1.5.0:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/showdown/-/showdown-1.5.1.tgz#973fc11f1463898f2dad678279f6aa08ac0f82ce"
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/showdown/-/showdown-1.6.4.tgz#056bbb654ecdb8d8643ae12d6d597893ccaf46c6"
   dependencies:
-    yargs "^3.15.0"
+    yargs "^6.6.0"
 
 signal-exit@^3.0.0:
   version "3.0.2"
@@ -3080,10 +3060,6 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-window-size@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.4.tgz#f8e1aa1ee5a53ec5bf151ffa09742a6ad7697876"
-
 window-size@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.2.0.tgz#b4315bb4214a3d7058ebeee892e13fa24d98b075"
@@ -3117,7 +3093,7 @@ xtend@~2.1.1:
   dependencies:
     object-keys "~0.4.0"
 
-y18n@^3.2.0, y18n@^3.2.1:
+y18n@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.1.tgz#6d15fba884c08679c0d77e88e7759e811e07fa41"
 
@@ -3126,18 +3102,6 @@ yargs-parser@^4.2.0:
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-4.2.0.tgz#6ced869cd05a3dca6a1eaee38b68aeed4b0b4101"
   dependencies:
     camelcase "^3.0.0"
-
-yargs@^3.15.0:
-  version "3.32.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.32.0.tgz#03088e9ebf9e756b69751611d2a5ef591482c995"
-  dependencies:
-    camelcase "^2.0.1"
-    cliui "^3.0.3"
-    decamelize "^1.1.1"
-    os-locale "^1.4.0"
-    string-width "^1.0.1"
-    window-size "^0.1.4"
-    y18n "^3.2.0"
 
 yargs@^6.0.0:
   version "6.5.0"
@@ -3155,6 +3119,24 @@ yargs@^6.0.0:
     string-width "^1.0.2"
     which-module "^1.0.0"
     window-size "^0.2.0"
+    y18n "^3.2.1"
+    yargs-parser "^4.2.0"
+
+yargs@^6.6.0:
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-6.6.0.tgz#782ec21ef403345f830a808ca3d513af56065208"
+  dependencies:
+    camelcase "^3.0.0"
+    cliui "^3.2.0"
+    decamelize "^1.1.1"
+    get-caller-file "^1.0.1"
+    os-locale "^1.4.0"
+    read-pkg-up "^1.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^1.0.2"
+    which-module "^1.0.0"
     y18n "^3.2.1"
     yargs-parser "^4.2.0"
 
