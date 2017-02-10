@@ -862,6 +862,7 @@ function _ensureMetaAdded(): void {
   _addMeta("SpecificFanPower", "KiloWattPerCubicMeterPerSecond", KiloWattPerCubicMeterPerSecond);
   _addMeta("SpecificFanPower", "WattPerCubicMeterPerSecond", WattPerCubicMeterPerSecond);
   _addMeta("SoundPressureLevel", "Decibel", Decibel);
+  _addMeta("AWeightedDecibel", "DecibelA", DecibelA);
   _addMeta("SoundPowerLevel", "DecibelLw", DecibelLw);
   _addMeta("WaterHardness", "MilliGramCalciumPerLiter", MilliGramCalciumPerLiter);
   _addMeta("WaterHardness", "FrenchDegree", FrenchDegree);
