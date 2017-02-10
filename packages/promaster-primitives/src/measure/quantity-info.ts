@@ -14,7 +14,6 @@ addQuantity("Acceleration", Units.MeterPerSquareSecond, Units.MeterPerSquareSeco
 addQuantity("Alkalinity", Units.MilliGramHydrogenCarbonatePerLiter, Units.MilliGramHydrogenCarbonatePerLiter);
 addQuantity("Angle", Units.Degrees, Units.Degrees);
 addQuantity("Area", Units.SquareMeter, Units.SquareInch);
-addQuantity("AWeightedDecibel", Units.DecibelA, Units.DecibelA);
 addQuantity("DeltaTemperature", Units.DeltaCelsius, Units.DeltaFahrenheit);
 addQuantity("Density", Units.KilogramPerCubicMeter, Units.KilogramPerCubicMeter);
 addQuantity("Dimensionless", Units.Percent, Units.Percent);

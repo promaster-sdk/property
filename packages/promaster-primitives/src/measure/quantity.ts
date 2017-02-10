@@ -3,7 +3,6 @@ export type Alkalinity = "Alkalinity";
 export type AmountOfSubstance = "AmountOfSubstance";
 export type Angle = "Angle";
 export type Area = "Area";
-export type AWeightedDecibel = "AWeightedDecibel";
 export type CatalyticActivity = "CatalyticActivity";
 export type DataAmount = "DataAmount";
 export type DeltaTemperature = "DeltaTemperature";
@@ -71,7 +70,6 @@ export type Quantity =
         AmountOfSubstance |
         Angle |
         Area |
-        AWeightedDecibel |
         CatalyticActivity |
         DataAmount |
         DeltaTemperature |

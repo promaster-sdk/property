@@ -460,6 +460,7 @@ export const KiloPascal: Unit.Unit<q.Pressure> = _register(Kilo(Pascal), "kPa");
 export const HectoPascal: Unit.Unit<q.Pressure> = _register(Hecto(Pascal), "hPa");
 export const NewtonPerSquareMeter: Unit.Unit<q.Pressure> = _register(UnitDivide.forceByArea(Newton, SquareMeter), "N/m²");
 export const PoundForcePerSquareInch: Unit.Unit<q.Pressure> = _register(Unit.divideNumber(1290320000.0, Unit.timesNumber(8896443230521.0, Pascal)), "psi");
+export const PoundForcePerSquareFoot:Unit.Unit<q.Pressure> = _register(Unit.timesNumber(144.0, PoundForcePerSquareInch), "psf");
 
 // http://www.wolframalpha.com/input/?i=psi and select 'Show exact conversions'
 export const InchOfMercury: Unit.Unit<q.Pressure> = _register(Unit.divideNumber(152.0, Unit.timesNumber(514731.0, Pascal)), "in HG");
@@ -491,6 +492,7 @@ export const GigaWattHour: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDura
 export const WattHour: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDuration(Watt, Hour), "Wh");
 export const WattSecond: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDuration(Watt, Second), "Ws");
 export const Btu: Unit.Unit<q.Energy> = _register(Unit.timesNumber((52752792631.0 / 50000000.0), Joule), "BTU");
+export const KiloBtu:Unit.Unit<q.Energy> = _register(Kilo(Btu), "kBTU");
 
 /// http://www.wolframalpha.com/input/?i=BTU and select 'Show exact conversions'
 // Per Energy
@@ -550,6 +552,7 @@ export const KilogramPerKilogram: Unit.Unit<q.HumidityRatio> = _register(UnitDiv
 export const GramPerKilogram: Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(Gram, Kilogram), "g/kg");
 export const PoundLbPerPoundLb: Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(PoundLb, PoundLb), "lb/lb");
 export const GrainPerPoundLb: Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(Grain, PoundLb), "gr/lb");
+export const GramPerPoundLb:Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(Gram, PoundLb), "g/lb");
 
 // Specific energy
 export const KilojoulePerKilogram: Unit.Unit<q.SpecificEnthalpy> = _register(UnitDivide.energyByMass(Kilojoule, Kilogram), "kJ/kg");
@@ -578,6 +581,7 @@ export const WattPerSquareMeter: Unit.Unit<q.Intensity> = _register(UnitDivide.p
 // Specific Fan Power
 export const KiloWattPerCubicMeterPerSecond: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(KiloWatt, CubicMeterPerSecond), "kW/m³/s");
 export const WattPerCubicMeterPerSecond: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(Watt, CubicMeterPerSecond), "W/m³/s");
+export const  KiloWattPerCubicFootPerMinute: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(KiloWatt, CubicFeetPerMinute), "kW/ft³/min");
 
 // Sound power level
 export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlternate<q.SoundPowerLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
@@ -585,8 +589,8 @@ export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlte
 // Sound pressure level
 export const Decibel: Unit.Unit<q.SoundPressureLevel> = _register(Unit.createAlternate<q.SoundPressureLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
 
-// Sound pressure level A weighted
-export const DecibelA: Unit.Unit<q.AWeightedDecibel> = _register(Unit.createAlternate<q.AWeightedDecibel>("dB(A)", UnitTimes.dimensionlessByDimensionless(One, One)), "dB(A)");
+// Sound pressure level A Weighted
+export const AWeightedDecibel: Unit.Unit<q.SoundPressureLevel> = _register(Unit.createAlternate<q.SoundPressureLevel>("dB(A)", UnitTimes.dimensionlessByDimensionless(One, One)), "dB(A)");
 
 // Water hardness
 export const MilliGramCalciumPerLiter: Unit.Unit<q.WaterHardness> = _register(Unit.createBase<q.WaterHardness>("WaterHardness", "mg Ca²⁺/l"), "mg Ca²⁺/l");
@@ -797,6 +801,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Pressure", "FeetOfWaterColumn", FeetOfWaterColumn);
   _addMeta("Pressure", "Bar", Bar);
   _addMeta("Pressure", "MilliBar", MilliBar);
+  _addMeta("Pressure", "PoundForcePerSquareFoot", PoundForcePerSquareFoot);
   _addMeta("Power", "KiloWatt", KiloWatt);
   _addMeta("Power", "MegaWatt", MegaWatt);
   _addMeta("Power", "GigaWatt", GigaWatt);
@@ -813,6 +818,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Energy", "WattHour", WattHour);
   _addMeta("Energy", "WattSecond", WattSecond);
   _addMeta("Energy", "Btu", Btu);
+  _addMeta("Energy", "KiloBtu", KiloBtu);
   _addMeta("DimensionlessPerEnergy", "OnePerKiloWattHour", OnePerKiloWattHour);
   _addMeta("DimensionlessPerEnergy", "OnePerBtu", OnePerBtu);
   _addMeta("DimensionlessPerEnergy", "OnePerKilojoule", OnePerKilojoule);
@@ -849,6 +855,7 @@ function _ensureMetaAdded(): void {
   _addMeta("HumidityRatio", "GramPerKilogram", GramPerKilogram);
   _addMeta("HumidityRatio", "PoundLbPerPoundLb", PoundLbPerPoundLb);
   _addMeta("HumidityRatio", "GrainPerPoundLb", GrainPerPoundLb);
+  _addMeta("HumidityRatio", "GramPerPoundLb", GramPerPoundLb);
   _addMeta("SpecificEnthalpy", "KilojoulePerKilogram", KilojoulePerKilogram);
   _addMeta("SpecificEnthalpy", "KiloWattHourPerKilogram", KiloWattHourPerKilogram);
   _addMeta("SpecificEnthalpy", "BtuPerPoundLb", BtuPerPoundLb);
@@ -861,8 +868,9 @@ function _ensureMetaAdded(): void {
   _addMeta("Intensity", "WattPerSquareMeter", WattPerSquareMeter);
   _addMeta("SpecificFanPower", "KiloWattPerCubicMeterPerSecond", KiloWattPerCubicMeterPerSecond);
   _addMeta("SpecificFanPower", "WattPerCubicMeterPerSecond", WattPerCubicMeterPerSecond);
+  _addMeta("SpecificFanPower", "KiloWattPerCubicFootPerMinute", KiloWattPerCubicFootPerMinute);
   _addMeta("SoundPressureLevel", "Decibel", Decibel);
-  _addMeta("AWeightedDecibel", "DecibelA", DecibelA);
+  _addMeta("SoundPressureLevel", "AWeightedDecibel", AWeightedDecibel);
   _addMeta("SoundPowerLevel", "DecibelLw", DecibelLw);
   _addMeta("WaterHardness", "MilliGramCalciumPerLiter", MilliGramCalciumPerLiter);
   _addMeta("WaterHardness", "FrenchDegree", FrenchDegree);
