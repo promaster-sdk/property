@@ -44,6 +44,10 @@
   version "0.4.4"
   resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.4.4.tgz#fd225b04deafb266165e6ad971f37737e1d79a23"
 
+"@promaster/promaster-primitives@^0.5.4":
+  version "0.5.4"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.5.4.tgz#08c60596c14cbbe48ffb020945bb855b8ae579da"
+
 "@types/base64-js@^1.2.5":
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/@types/base64-js/-/base64-js-1.2.5.tgz#582b2476169a6cba460a214d476c744441d873d5"
