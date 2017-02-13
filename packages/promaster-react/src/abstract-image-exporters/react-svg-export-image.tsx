@@ -12,6 +12,10 @@ export function createReactSvg(image: AbstractImage.AbstractImage): React.ReactE
 function _visit(key: string, component: AbstractImage.Component): Array<React.ReactElement<any>> {
 
   switch (component.type) {
+    case "group":
+      return [
+        <g key={key} name={component.name}>{R.unnest(R.addIndex(R.map)((c, i) => _visit(i.toString(), c), component.children))}</g>
+      ];
     case "bitmapimage":
       return [];
     case "line":
