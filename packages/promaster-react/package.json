@@ -21,7 +21,7 @@
     "publish:patch": "npm run build && node scripts/publish.js patch"
   },
   "dependencies": {
-    "@promaster/promaster-portable": "^0.17.1",
+    "@promaster/promaster-portable": "^0.17.2",
     "@promaster/promaster-primitives": "^0.5.6",
     "csjs": "^1.0.6",
     "insert-css": "^2.0.0",
