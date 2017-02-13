@@ -80,7 +80,7 @@ function _visit(key: string, component: AbstractImage.Component): Array<React.Re
     case "polyline":
       let linePoints = component.points.map((p) => p.x.toString() + "," + p.y.toString()).join(' ');
       return [<polyline key={key} points={linePoints} stroke={colorToRgb(component.strokeColor)}
-                       strokeWidth={component.strokeThickness} />];
+                       strokeWidth={component.strokeThickness} fill="none" />];
     case "polygon":
       let points = component.points.map((p) => p.x.toString() + "," + p.y.toString()).join(' ');
       return [<polygon key={key} points={points} stroke={colorToRgb(component.strokeColor)}
