@@ -2,15 +2,11 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-portable@^0.17.3":
-  version "0.17.3"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.17.3.tgz#2a44b731ead309b37c2c1b15e57f08c2dab66d73"
+"@promaster/promaster-portable@^0.17.5":
+  version "0.17.5"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.17.5.tgz#3662cbc8e0b9279a48d2721614afc183b6ee25e7"
   dependencies:
     "@promaster/promaster-primitives" "^0.5.6"
-    "@types/base64-js" "^1.2.5"
-    "@types/blob-stream" "^0.1.29"
-    "@types/pdfkit" "^0.7.31"
-    "@types/ramda" "0.0.2"
     base64-js "^1.2.0"
     blob-stream "^0.1.3"
     jszip "^3.1.3"
@@ -24,29 +20,9 @@
   version "0.5.6"
   resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.5.6.tgz#315891d8e014bcb9cfed1b74585ea3796e2a063e"
 
-"@types/base64-js@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@types/base64-js/-/base64-js-1.2.5.tgz#582b2476169a6cba460a214d476c744441d873d5"
-
-"@types/blob-stream@^0.1.29":
-  version "0.1.29"
-  resolved "https://registry.yarnpkg.com/@types/blob-stream/-/blob-stream-0.1.29.tgz#fb56770feb0625d3acae604f245633f9ceda0ffd"
-  dependencies:
-    "@types/node" "*"
-
-"@types/node@*":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.5.tgz#96a0f0a618b7b606f1ec547403c00650210bfbb7"
-
-"@types/pdfkit@^0.7.31":
-  version "0.7.34"
-  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.7.34.tgz#cc2a63beea2c78b23fab39d96431e251c99ff150"
-  dependencies:
-    "@types/node" "*"
-
-"@types/ramda@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.0.2.tgz#04e9b560b118eaf48542945ef9b2701c3f9832e3"
+"@types/ramda@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.0.3.tgz#683a3437d4446a4d21af473a9286e6950fa777c1"
 
 "@types/react-dom@^0.14.18":
   version "0.14.19"
