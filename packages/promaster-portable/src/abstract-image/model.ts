@@ -1,10 +1,24 @@
 import * as Point from "./point";
 import * as Color from "./color";
 
-export type Component = BitmapImage | Ellipse | Line | Polygon | Rectangle | Text | VectorImage;
+export type Component = BitmapImage | Ellipse | Line | PolyLine | Polygon | Rectangle | Text | VectorImage | Group;
+
+export interface Group {
+  readonly type: "group",
+  readonly name: string,
+  readonly children: Array<Component>,
+}
+
+export function createGroup(name: string, children: Array<Component>): Group {
+  return {
+    type: "group",
+    name: name,
+    children: children,
+  };
+}
 
 export interface BitmapImage {
-  readonly type: "bitmapimage"
+  readonly type: "bitmapimage",
   readonly topLeft: Point.Point,
   readonly bottomRight: Point.Point,
   readonly format: string,
@@ -56,6 +70,23 @@ export function createLine(start: Point.Point, end: Point.Point,
     type: "line",
     start: start,
     end: end,
+    strokeColor: strokeColor,
+    strokeThickness: strokeThickness,
+  };
+}
+
+export interface PolyLine {
+  readonly type: "polyline",
+  readonly points: Array<Point.Point>,
+  readonly strokeColor: Color.Color,
+  readonly strokeThickness: number,
+}
+
+export function createPolyLine(points: Array<Point.Point>, strokeColor: Color.Color,
+                               strokeThickness: number): PolyLine {
+  return {
+    type: "polyline",
+    points: points,
     strokeColor: strokeColor,
     strokeThickness: strokeThickness,
   };

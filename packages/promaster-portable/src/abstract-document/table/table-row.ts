@@ -1,18 +1,18 @@
 import {TableCell} from "./table-cell";
 
 export interface TableRow {
-  cells: TableCell[],
-  height: number,
+  readonly children: Array<TableCell>,
 }
 
 export interface TableRowProps {
-  cells: TableCell[],
-  height?: number,
+  readonly children?: Array<TableCell>,
 }
 
-export function create({height = Infinity, cells}: TableRowProps) {
+export function create(props?: TableRowProps): TableRow {
+  const {
+    children = []
+  } = props || {};
   return {
-    height,
-    cells,
+    children
   };
 }

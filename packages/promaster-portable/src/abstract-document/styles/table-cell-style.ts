@@ -1,27 +1,51 @@
-import * as TableCellProperties from "../properties/table-cell-properties";
+import * as LayoutFoundation from "../primitives/layout-foundation";
+
+export type RowAlignment = "Top" | "Middle"| "Bottom";
 
 export interface TableCellStyle {
-  type: "TableCellStyle",
-  basedOn: string | undefined,
-  tableCellProperties: TableCellProperties.TableCellProperties,
+  readonly type: "TableCellStyle",
+  readonly background?: string,
+  readonly borders: LayoutFoundation.LayoutFoundation,
+  readonly borderColor?: string,
+  readonly padding: LayoutFoundation.LayoutFoundation,
+  readonly verticalAlignment?: RowAlignment,
 }
 
 export interface TableCellStyleProps {
-  basedOn?: string,
-  tableCellProperties: TableCellProperties.TableCellProperties,
+  readonly background?: string,
+  readonly borders?: LayoutFoundation.LayoutFoundation,
+  readonly borderColor?: string,
+  readonly padding?: LayoutFoundation.LayoutFoundation,
+  readonly verticalAlignment?: RowAlignment,
 }
 
-export function create({basedOn, tableCellProperties}: TableCellStyleProps): TableCellStyle {
+export function create(props?: TableCellStyleProps): TableCellStyle {
+  const {
+    background = undefined,
+    borders = LayoutFoundation.create(),
+    borderColor = undefined,
+    padding = LayoutFoundation.create(),
+    verticalAlignment = undefined,
+  } = props || {};
   return {
     type: "TableCellStyle",
-    basedOn,
-    tableCellProperties,
+    background,
+    borders,
+    borderColor,
+    padding,
+    verticalAlignment
   };
 }
 
-export function overrideWith(overrider: TableCellStyle, toOverride: TableCellStyle): TableCellStyle {
+export function overrideWith(overrider: TableCellStyle | undefined, toOverride: TableCellStyle | undefined): TableCellStyle {
+  const a: TableCellStyleProps = overrider || {};
+  const b: TableCellStyleProps = toOverride || {};
   return create({
-    tableCellProperties: TableCellProperties.overrideWith(overrider.tableCellProperties, toOverride.tableCellProperties)
+    background: a.background || b.background,
+    borders: LayoutFoundation.overrideWith(a.borders, b.borders),
+    borderColor: a.borderColor || b.borderColor,
+    padding: LayoutFoundation.overrideWith(a.padding, b.padding),
+    verticalAlignment: a.verticalAlignment || b.verticalAlignment
   });
 }
 

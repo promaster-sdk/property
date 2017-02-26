@@ -6,38 +6,35 @@ const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m
 const _numberingLevelItems = new Map<string, number>();
 
 export function preProcess(doc: AD.AbstractDoc.AbstractDoc): AD.AbstractDoc.AbstractDoc {
-  const sections = doc.sections.map((s) => preProcessSection(s, doc));
-  return AD.AbstractDoc.create({sections, imageResources: doc.imageResources, styles: doc.styles, numberings: doc.numberings, numberingDefinitions: doc.numberingDefinitions});
+  const children = doc.children.map((s) => preProcessSection(s, doc));
+  return AD.AbstractDoc.create({children: children, fonts: doc.fonts, imageResources: doc.imageResources, styles: doc.styles, numberings: doc.numberings, numberingDefinitions: doc.numberingDefinitions});
 }
 
 function preProcessSection(s: AD.Section.Section, doc: AD.AbstractDoc.AbstractDoc): AD.Section.Section {
-  const sectionElements = s.sectionElements.map((e) => preProcessSectionElement(e, doc));
-  return AD.Section.create({page: s.page, sectionElements});
+  const header = R.unnest(s.page.header.map((e) => preProcessSectionElement(e, doc)));
+  const footer = R.unnest(s.page.footer.map((e) => preProcessSectionElement(e, doc)));
+  const page = AD.MasterPage.create({style: s.page.style, header: header, footer: footer});
+  const children = R.unnest(s.children.map((e) => preProcessSectionElement(e, doc)));
+  return AD.Section.create({page: page, children});
 }
 
-function preProcessSectionElement(e: AD.SectionElement.SectionElement, doc: AD.AbstractDoc.AbstractDoc): AD.SectionElement.SectionElement {
+function preProcessSectionElement(e: AD.SectionElement.SectionElement, doc: AD.AbstractDoc.AbstractDoc): Array<AD.SectionElement.SectionElement> {
   switch (e.type) {
     case "Paragraph":
       return preProcessParagraph(e, doc);
     case "Table":
-      return preProcessTable(e, doc);
+      return [preProcessTable(e, doc)];
     case "KeepTogether":
-      return preProcessKeepTogether(e, doc);
+      return [preProcessKeepTogether(e, doc)];
   }
 }
 
-function preProcessParagraph(paragraph: AD.Paragraph.Paragraph, doc: AD.AbstractDoc.AbstractDoc): AD.SectionElement.SectionElement {
-  const atoms = R.unnest(paragraph.atoms.map((a) => preProcessAtom(a)));
-  const adjustedParagraph = AD.Paragraph.create({
-    styleName: paragraph.styleName,
-    paragraphProperties: paragraph.paragraphProperties,
-    textProperties: paragraph.textProperties,
-    atoms,
-    numbering: paragraph.numbering
-  });
+function preProcessParagraph(paragraph: AD.Paragraph.Paragraph, doc: AD.AbstractDoc.AbstractDoc): Array<AD.SectionElement.SectionElement> {
+  const adjustedParagraphs = adjustParagraph(paragraph);
 
-  if (paragraph.numbering === undefined)
-    return adjustedParagraph;
+  if (paragraph.numbering === undefined){
+    return adjustedParagraphs;
+  }
 
   const numbering = paragraph.numbering.numberingId;
   const level = paragraph.numbering.level;
@@ -47,7 +44,7 @@ function preProcessParagraph(paragraph: AD.Paragraph.Paragraph, doc: AD.Abstract
     _numberingLevelItems.delete(numbering + "_" + levelDefinition.level.toString());
 
   let numberText = levelDefinitions[level].levelText;
-  const indentationWidth = AD.AbstractLength.asPoints(levelDefinitions[level].levelIndention);
+  const indentationWidth = levelDefinitions[level].levelIndention;
   if (!_numberingLevelItems.has(key))
     _numberingLevelItems.set(key, levelDefinitions[level].start);
   else
@@ -60,60 +57,67 @@ function preProcessParagraph(paragraph: AD.Paragraph.Paragraph, doc: AD.Abstract
   }
 
   let rows: Array<AD.TableRow.TableRow> = [];
-  let cells: Array<AD.TableCell.TableCell> = [];
-  const noBorder = AD.LayoutFoundation.create<number | undefined>({top: undefined, bottom: undefined, left: undefined, right: undefined});
+  let children: Array<AD.TableCell.TableCell> = [];
 
-  const c1Elements: Array<AD.SectionElement.SectionElement> = [
-    AD.Paragraph.create({
-      styleName: "",
-      paragraphProperties: paragraph.paragraphProperties,
-      textProperties: paragraph.textProperties,
-      atoms: [AD.TextRun.create({text: "", textProperties: paragraph.textProperties})]
-    })
-  ];
-  cells.push(AD.TableCell.create({
-    tableCellProperties: AD.TableCellProperties.create({borders: noBorder, padding: noBorder, verticalAlignment: "Top"}),
-    columnSpan: 1,
-    elements: c1Elements
+  children.push(AD.TableCell.create());
+
+  children.push(AD.TableCell.create({
+    children: [
+      AD.Paragraph.create({
+        styleName: paragraph.styleName,
+        children: [AD.TextRun.create({style: paragraph.style.textStyle, text: numberText})]
+      })
+    ]
   }));
 
-  const textProps = levelDefinitions[level].textProperties;
-  if (textProps === undefined)
-    throw new Error("Missing level definition for level " + level);
-
-  const c2Elements = [
-    AD.Paragraph.create({
-      styleName: paragraph.styleName,
-      paragraphProperties: paragraph.paragraphProperties,
-      textProperties: textProps,
-      atoms: [AD.TextRun.create({text: numberText, textProperties: textProps})]
-    })
-  ];
-  cells.push(AD.TableCell.create({
-    tableCellProperties: AD.TableCellProperties.create({borders: noBorder, padding: noBorder, verticalAlignment: "Top"}),
-    columnSpan: 1,
-    elements: c2Elements
+  children.push(AD.TableCell.create({
+    children: adjustedParagraphs
   }));
+  rows.push(AD.TableRow.create({children}));
 
-  const c3Elements = [
-    adjustedParagraph
-  ];
-  cells.push(AD.TableCell.create({
-    tableCellProperties: AD.TableCellProperties.create({borders: noBorder, padding: noBorder, verticalAlignment: "Top"}),
-    columnSpan: 1,
-    elements: c3Elements
-  }));
-  rows.push(AD.TableRow.create({height: NaN, cells}));
-
-  return AD.Table.create({
-    tableProperties: AD.TableProperties.create("Left"), tableCellProperties: AD.TableCellProperties.create({
-      borders: noBorder,
-      padding: noBorder,
-      verticalAlignment: "Top"
-    }), columnWidths: [indentationWidth - 40, 40, Infinity], rows
-  });
+  return [AD.Table.create({
+    style: AD.TableStyle.create({alignment: "Left", cellStyle: AD.TableCellStyle.create({verticalAlignment: "Top"})}),
+    columnWidths: [indentationWidth - 40, 40, Infinity],
+    children: rows
+  })];
 }
 
+function adjustParagraph(paragraph: AD.Paragraph.Paragraph): Array<AD.SectionElement.SectionElement> {
+  return [paragraph];
+  // let adjustedParagraphs: Array<AD.SectionElement.SectionElement> = [];
+  // paragraph.children.forEach((a) => {
+  //   switch (a.type) {
+  //     case  "TextRun":
+  //       const tr = preProcessTextRun(a, paragraph);
+  //       adjustedParagraphs.push(tr);
+  //       break;
+  //       //FIXME: remove, we moved this section to when we "import" markdown into abstract doc instead of
+  //       //       to when we export it.
+  //     // case  "Markdown":
+  //     //   const md = preProcessMarkdown(a); // this returns more paragraphs that we need
+  //     //   adjustedParagraphs = adjustedParagraphs.concat(md);
+  //     //   // md.forEach((mdparagraph) => {     // adjust so run them through ourselves once.
+  //     //   //   console.log("***\n", JSON.stringify(mdparagraph), "\n");
+  //     //   //   const mdproc = adjustParagraph(mdparagraph);
+  //     //   //   console.log("===\n", JSON.stringify(mdproc), "\n");
+  //     //   //   adjustedParagraphs = adjustedParagraphs.concat(mdproc)
+  //     //   // })
+  //     //   break;
+  //     default:
+  //       const children = [a];
+  //       adjustedParagraphs.push(AD.Paragraph.create({
+  //         styleName: paragraph.styleName,
+  //         paragraphProperties: paragraph.paragraphProperties,
+  //         textProperties: paragraph.textProperties,
+  //         children,
+  //         numbering: paragraph.numbering
+  //       }));
+  //       break;
+  //   }
+  // });
+
+  // return adjustedParagraphs;
+}
 function generateLevelText(numberingFormat: AD.NumberingFormat.NumberingFormat, num: number): string {
   switch (numberingFormat) {
     case "Decimal":
@@ -175,43 +179,45 @@ function toChar(num: number): string {
   return builder;
 }
 
-function preProcessAtom(a: AD.Atom.Atom): Array<AD.Atom.Atom> {
-  if (a.type === "TextRun")
-    return preProcessTextRun(a);
-  return [a];
-}
-
-function preProcessTextRun(r: AD.TextRun.TextRun): Array<AD.Atom.Atom> {
-  const text = !r.text ? [""] : r.text.split(' ');
-  return R.addIndex(R.map)((s, i) => AD.TextRun.create({
-    text: s + (i == text.length - 1 ? "" : " "),
-    styleName: r.styleName,
-    textProperties: r.textProperties
-  }), text);
-}
+// function preProcessTextRun(r: AD.TextRun.TextRun, paragraph: AD.Paragraph.Paragraph): AD.Paragraph.Paragraph {
+//   console.log("text", r.text);
+//   const text = (!r.text ? [""] : r.text.split(' ')).filter((f) => f!=="");
+//   const children: Array<AD.Atom.Atom> = R.addIndex(R.map)((s, i) => AD.TextRun.create({
+//     text: s + (i == text.length - 1 ? "" : " "),
+//     styleName: r.styleName,
+//     textProperties: r.textProperties
+//   }), text);
+//   console.log("children", children);
+//   return AD.Paragraph.create({
+//     styleName: paragraph.styleName,
+//     paragraphProperties: paragraph.paragraphProperties,
+//     textProperties: paragraph.textProperties,
+//     children,
+//     numbering: paragraph.numbering
+//   });
+// }
 
 function preProcessTable(table: AD.Table.Table, doc: AD.AbstractDoc.AbstractDoc): AD.SectionElement.SectionElement {
-  const rows = table.rows.map((r) => preProcessTableRow(r, doc));
+  const children = table.children.map((r) => preProcessTableRow(r, doc));
   return AD.Table.create({
-    styleName: table.styleName,
-    tableProperties: table.tableProperties,
-    tableCellProperties: table.tableCellProperties,
     columnWidths: table.columnWidths,
-    rows
+    styleName: table.styleName,
+    style: table.style,
+    children: children
   });
 }
 
 function preProcessTableRow(r: AD.TableRow.TableRow, doc: AD.AbstractDoc.AbstractDoc): AD.TableRow.TableRow {
-  const cells = r.cells.map((c) => preProcessTableCell(c, doc));
-  return AD.TableRow.create({height: r.height, cells});
+  const children = r.children.map((c) => preProcessTableCell(c, doc));
+  return AD.TableRow.create({children: children});
 }
 
 function preProcessTableCell(c: AD.TableCell.TableCell, doc: AD.AbstractDoc.AbstractDoc): AD.TableCell.TableCell {
-  const elements = c.elements.map((e) => preProcessSectionElement(e, doc));
-  return AD.TableCell.create({styleName: c.styleName, tableCellProperties: c.tableCellProperties, columnSpan: c.columnSpan, elements});
+  const children = R.unnest(c.children.map((e) => preProcessSectionElement(e, doc)));
+  return AD.TableCell.create({styleName: c.styleName, columnSpan: c.columnSpan, style: c.style, children: children});
 }
 
 function preProcessKeepTogether(keepTogether: AD.KeepTogether.KeepTogether, doc: AD.AbstractDoc.AbstractDoc): AD.SectionElement.SectionElement {
-  const sectionElements = keepTogether.sectionElements.map((e) => preProcessSectionElement(e, doc));
-  return AD.KeepTogether.create({sectionElements});
+  const children = R.unnest(keepTogether.children.map((e) => preProcessSectionElement(e, doc)));
+  return AD.KeepTogether.create({children: children});
 }

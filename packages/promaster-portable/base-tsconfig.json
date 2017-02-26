@@ -5,12 +5,18 @@
     "newLine": "LF",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
+    // "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "strictNullChecks": true,
+    //
+    "baseUrl": ".",
+
+    "paths": {
+      "*": ["./custom_typings/*"]
+    },
     // Output options
     "declaration": true,
     "sourceMap": true,

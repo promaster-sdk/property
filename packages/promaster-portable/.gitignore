@@ -8,3 +8,5 @@ thumbs.db
 node_modules/
 example/js_out
 lib/
+test/*.pdf
+test/*.docx

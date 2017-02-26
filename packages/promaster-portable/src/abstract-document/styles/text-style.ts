@@ -1,26 +1,44 @@
-import * as TextProperties from "../properties/text-properties";
-
 export interface TextStyle {
-  type: "TextStyle",
-  basedOn: string | undefined,
-  textProperties: TextProperties.TextProperties,
+  readonly type: "TextStyle",
+  readonly fontFamily?: string,
+  readonly bold?: boolean,
+  readonly color?: string,
+  readonly fontSize?: number,
+  readonly italic?: boolean,
+  readonly subScript?: boolean,
+  readonly superScript?: boolean,
+  readonly underline?: boolean,
 }
 
 export interface TextStyleProps {
-  basedOn?: string,
-  textProperties: TextProperties.TextProperties,
+  readonly fontFamily?: string,
+  readonly bold?: boolean,
+  readonly color?: string,
+  readonly fontSize?: number,
+  readonly italic?: boolean,
+  readonly subScript?: boolean,
+  readonly superScript?: boolean,
+  readonly underline?: boolean,
 }
 
-export function create({basedOn, textProperties}: TextStyleProps): TextStyle {
+export function create(props?: TextStyleProps): TextStyle {
   return {
     type: "TextStyle",
-    basedOn,
-    textProperties
+    ...(props|| {})
   };
 }
 
-export function overrideWith(overrider: TextStyle, toOverride: TextStyle): TextStyle {
+export function overrideWith(overrider: TextStyle | undefined, toOverride: TextStyle | undefined): TextStyle {
+  const a: TextStyleProps = overrider || {};
+  const b: TextStyleProps = toOverride || {};
   return create({
-    textProperties: TextProperties.overrideWith(overrider.textProperties, toOverride.textProperties)
+    fontFamily: a.fontFamily || b.fontFamily,
+    bold: a.bold || b.bold,
+    color: a.color || b.color,
+    fontSize: a.fontSize || b.fontSize,
+    italic: a.italic || b.italic,
+    subScript: a.subScript || b.subScript,
+    superScript: a.superScript || b.superScript,
+    underline: a.underline || b.underline,
   });
 }

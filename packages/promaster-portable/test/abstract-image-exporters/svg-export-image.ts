@@ -11,7 +11,7 @@ describe("svg export", () => {
     ];
     const image = AbstractImage.createAbstractImage(AbstractImage.createPoint(0, 0), AbstractImage.createSize(400, 400), AbstractImage.white, components);
     const svg = AbstractImageExporters.createSVG(image);
-    console.log(svg);
+    // console.log(svg);
     assert.equal(svg !== "", true);
   });
 

@@ -1,26 +1,41 @@
-import * as TableProperties from "../properties/table-properties";
+import * as LayoutFoundation from "../primitives/layout-foundation";
+import * as TableCellStyle from "./table-cell-style";
+
+export type TableAlignment = "Left" | "Center" | "Right";
 
 export interface TableStyle {
-  type: "TableStyle",
-  basedOn: string | undefined,
-  tableProperties: TableProperties.TableProperties,
+  readonly type: "TableStyle",
+  readonly margins: LayoutFoundation.LayoutFoundation,
+  readonly alignment?: TableAlignment,
+  readonly cellStyle: TableCellStyle.TableCellStyle
 }
 
 export interface TableStyleProps {
-  basedOn?: string,
-  tableProperties: TableProperties.TableProperties,
+  readonly margins?: LayoutFoundation.LayoutFoundation,
+  readonly alignment?: TableAlignment,
+  readonly cellStyle?: TableCellStyle.TableCellStyle
 }
 
-export function create({basedOn, tableProperties}: TableStyleProps): TableStyle {
+export function create(props?: TableStyleProps): TableStyle {
+  const {
+    margins = LayoutFoundation.create(),
+    alignment = undefined,
+    cellStyle = TableCellStyle.create()
+  } = props || {};
   return {
     type: "TableStyle",
-    basedOn,
-    tableProperties,
-  }
+    margins,
+    alignment,
+    cellStyle
+  };
 }
 
 export function overrideWith(overrider: TableStyle, toOverride: TableStyle): TableStyle {
+  const a: TableStyleProps = overrider || {};
+  const b: TableStyleProps = toOverride || {};
   return create({
-    tableProperties: TableProperties.overrideWith(overrider.tableProperties, toOverride.tableProperties)
+    margins: LayoutFoundation.overrideWith(a.margins, b.margins),
+    alignment: a.alignment || b.alignment,
+    cellStyle: TableCellStyle.overrideWith(a.cellStyle, b.cellStyle)
   });
 }

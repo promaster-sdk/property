@@ -1,4 +1,4 @@
 export interface ParagraphNumbering {
-  level: number,
-  numberingId: string,
+  readonly level: number,
+  readonly numberingId: string,
 }

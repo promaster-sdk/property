@@ -2,6 +2,7 @@ import * as React from "react";
 import { merge } from "./utils";
 import { AbstractImageExample } from "./abstract-image-example";
 import { AbstractImageExampleDxf } from "./abstract-image-example-dxf";
+import { AbstractDocumentExample } from "./abstract-document-example";
 
 interface Example {
   readonly name: string;
@@ -28,6 +29,10 @@ export class Container extends React.Component<void, State> {
         {
           name: "DXF",
           component: AbstractImageExampleDxf
+        },
+        {
+          name: "AbstractDocument",
+          component: AbstractDocumentExample
         }
       ]
     };

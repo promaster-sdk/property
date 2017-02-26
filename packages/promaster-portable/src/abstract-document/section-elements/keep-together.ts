@@ -1,17 +1,20 @@
 import {SectionElement} from "./section-element";
 
 export interface KeepTogether {
-  type: "KeepTogether",
-  sectionElements: SectionElement[],
+  readonly type: "KeepTogether",
+  readonly children: SectionElement[],
 }
 
 export interface KeepTogetherProps {
-  sectionElements: SectionElement[],
+  readonly children?: SectionElement[],
 }
 
-export function create({sectionElements}:KeepTogetherProps): KeepTogether {
+export function create(props?: KeepTogetherProps): KeepTogether {
+  const {
+    children = []
+  } = props || {};
   return {
     type: "KeepTogether",
-    sectionElements,
+    children: children
   };
 }

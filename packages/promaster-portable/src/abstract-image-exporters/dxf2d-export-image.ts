@@ -23,14 +23,14 @@ export function dxf2dExportImage(root: AbstractImage.AbstractImage): string {
   builder.append("0\nENDSEC\n0\nEOF");
 
   return builder.build();
-};
+}
 
 interface Builder {
   append: (addedStr: string) => void,
   build: () => string
 }
 function createBuilder(): Builder {
-  let str = ""
+  let str = "";
   return {
     append: (addedStr: string) => {
       str += addedStr;
@@ -47,7 +47,14 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
       _visit(component, builder, layer, height);
   }*/
 
-  if (c_in.type === "bitmapimage") {
+  if (c_in.type === "group") {
+    let c: AbstractImage.Group = c_in;
+    for (const child of c.children) {
+      _visit(child, builder, layer, height);
+    }
+  }
+
+    if (c_in.type === "bitmapimage") {
     //let c:BitmapImageComponent = c_in;
     //let importer = imageImporterFactory(c.format);
     //if (importer == null)
@@ -63,16 +70,31 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
   }
 
   if (c_in.type === "line") {
-    console.log(c_in);
     let c: AbstractImage.Line = c_in;
-    builder.append("0\nLINE\n")
-    builder.append("8\nLines\n")
-    builder.append("10\n" + c.start.x.toString() + "\n")
-    builder.append("20\n" + _invert(c.start.y, height).toString() + "\n")
-    builder.append("30\n0.0\n")
-    builder.append("11\n" + c.end.x.toString() + "\n")
-    builder.append("21\n" + _invert(c.end.y, height).toString() + "\n")
-    builder.append("31\n0.0\n")
+    builder.append("0\nLINE\n");
+    builder.append("8\nLines\n");
+    builder.append("10\n" + c.start.x.toString() + "\n");
+    builder.append("20\n" + _invert(c.start.y, height).toString() + "\n");
+    builder.append("30\n0.0\n");
+    builder.append("11\n" + c.end.x.toString() + "\n");
+    builder.append("21\n" + _invert(c.end.y, height).toString() + "\n");
+    builder.append("31\n0.0\n");
+  }
+
+  if (c_in.type === "polyline") {
+    let c: AbstractImage.PolyLine = c_in;
+    builder.append("0\nPOLYLINE\n");
+    builder.append("8\n" + layer.toString() + "\n");
+    builder.append("66\n" + "1" + "\n");
+    for (let point of c.points) {
+      builder.append("0\nVERTEX\n");
+      builder.append("8\n" + layer.toString() + "\n");
+      builder.append("10\n" + point.x.toString() + "\n");
+      builder.append("20\n" + _invert(point.y, height).toString() + "\n");
+      builder.append("30\n0.0\n");
+    }
+    builder.append("0\nSEQEND\n");
+    builder.append("8\n" + layer.toString() + "\n");
   }
 
   if (c_in.type === "text") {
@@ -95,17 +117,17 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
 
     let fontSize = c.fontSize - 2;
 
-    builder.append("0\nTEXT\n")
-    builder.append("8\nText\n")
-    builder.append("10\n" + c.position.x.toString() + "\n")
-    builder.append("20\n" + _invert(c.position.y, height).toString() + "\n")
-    builder.append("30\n0.0\n")
-    builder.append("11\n" + c.position.x.toString() + "\n")
-    builder.append("21\n" + _invert(c.position.y, height).toString() + "\n")
-    builder.append("31\n0.0\n")
-    builder.append("40\n" + fontSize.toString() + "\n")
-    builder.append("1\n" + c.text + "\n")
-    builder.append("72\n" + horizontalAlignment.toString() + "\n")
+    builder.append("0\nTEXT\n");
+    builder.append("8\nText\n");
+    builder.append("10\n" + c.position.x.toString() + "\n");
+    builder.append("20\n" + _invert(c.position.y, height).toString() + "\n");
+    builder.append("30\n0.0\n");
+    builder.append("11\n" + c.position.x.toString() + "\n");
+    builder.append("21\n" + _invert(c.position.y, height).toString() + "\n");
+    builder.append("31\n0.0\n");
+    builder.append("40\n" + fontSize.toString() + "\n");
+    builder.append("1\n" + c.text + "\n");
+    builder.append("72\n" + horizontalAlignment.toString() + "\n");
     builder.append("73\n" + verticalAlignment.toString() + "\n")
   }
 
@@ -145,39 +167,39 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
   if (c_in.type === "polygon") {
     let c: AbstractImage.Polygon = c_in;
 
-    builder.append("0\nPOLYLINE\n")
-    builder.append("8\n" + layer.toString() + "\n")
-    builder.append("66\n" + "1" + "\n")
+    builder.append("0\nPOLYLINE\n");
+    builder.append("8\n" + layer.toString() + "\n");
+    builder.append("66\n" + "1" + "\n");
     //      for (let point in c.points.concat(c.points.take(1)))
     //      for (let point of concat([c.points, c.points.take(1)])) {
     for (let point of c.points.concat(c.points[0])) {
-      builder.append("0\nVERTEX\n")
-      builder.append("8\n" + layer.toString() + "\n")
-      builder.append("10\n" + point.x.toString() + "\n")
-      builder.append("20\n" + _invert(point.y, height).toString() + "\n")
-      builder.append("30\n0.0\n")
+      builder.append("0\nVERTEX\n");
+      builder.append("8\n" + layer.toString() + "\n");
+      builder.append("10\n" + point.x.toString() + "\n");
+      builder.append("20\n" + _invert(point.y, height).toString() + "\n");
+      builder.append("30\n0.0\n");
     }
-    builder.append("0\nSEQEND\n")
-    builder.append("8\n" + layer.toString() + "\n")
+    builder.append("0\nSEQEND\n");
+    builder.append("8\n" + layer.toString() + "\n");
   }
 
   if (c_in.type === "rectangle") {
     let c: AbstractImage.Rectangle = c_in;
 
-    builder.append("0\nPOLYLINE\n")
-    builder.append("8\n" + layer.toString() + "\n")
-    builder.append("66\n" + "1" + "\n")
+    builder.append("0\nPOLYLINE\n");
+    builder.append("8\n" + layer.toString() + "\n");
+    builder.append("66\n" + "1" + "\n");
     let corners = AbstractImage.corners(c);
     //      for (let point in c.Corners().Concat(c.Corners().Take(1))) {
     //      for (let point of concat([corners, corners.take(1)])) {
     for (let point of corners.concat(corners[0])) {
-      builder.append("0\nVERTEX\n")
-      builder.append("8\n" + layer.toString() + "\n")
-      builder.append("10\n" + point.x.toString() + "\n")
-      builder.append("20\n" + _invert(point.y, height).toString() + "\n")
-      builder.append("30\n0.0\n")
+      builder.append("0\nVERTEX\n");
+      builder.append("8\n" + layer.toString() + "\n");
+      builder.append("10\n" + point.x.toString() + "\n");
+      builder.append("20\n" + _invert(point.y, height).toString() + "\n");
+      builder.append("30\n0.0\n");
     }
-    builder.append("0\nSEQEND\n")
+    builder.append("0\nSEQEND\n");
     builder.append("8\n" + layer.toString() + "\n")
   }
 

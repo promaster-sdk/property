@@ -10,13 +10,16 @@ export function createSVG(image: AbstractImage.AbstractImage): string {
 
   return createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 400 300"
   }, svgElements);
 }
 
 function abstractComponentToSVG(component: AbstractImage.Component): string {
 
   switch (component.type) {
+    case "group":
+      return createElement("g", {
+        "name": component.name,
+      }, component.children.map((c) => abstractComponentToSVG(c)));
     case "bitmapimage":
       return "";
     case "vectorimage":
@@ -27,6 +30,13 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         "y1": component.start.y.toString(),
         "x2": component.end.x.toString(),
         "y2": component.end.y.toString(),
+        "stroke": colorToRgb(component.strokeColor),
+        "strokeWidth": component.strokeThickness.toString()
+      }, []);
+    case "polyline":
+      return createElement("polyline", {
+        "fill": "none",
+        "points": component.points.map((p) => p.x.toString() + "," + p.y.toString()).join(' '),
         "stroke": colorToRgb(component.strokeColor),
         "strokeWidth": component.strokeThickness.toString()
       }, []);
@@ -96,9 +106,8 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         fill: colorToRgb(component.fillColor)
       }, []);
     case "polygon":
-      const points = component.points.map((p) => p.x.toString() + "," + p.y.toString()).join(' ');
       return createElement("polygon", {
-        points: points,
+        points: component.points.map((p) => p.x.toString() + "," + p.y.toString()).join(' '),
         stroke: colorToRgb(component.strokeColor),
         strokeWidth: component.strokeThickness.toString(),
         fill: colorToRgb(component.fillColor)

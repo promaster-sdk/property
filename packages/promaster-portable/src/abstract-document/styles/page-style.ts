@@ -1,39 +1,50 @@
-import {PaperSize} from "../enums/paper-size";
-import {HeaderStyle} from "./header-style";
 import * as LayoutFoundation from "../primitives/layout-foundation";
-import {PageOrientation} from "../enums/page-orientation";
+
+export type PageOrientation = "Portrait" | "Landscape";
+export type PaperSize = "A4" | "Letter";
 
 export interface PageStyle {
-  header: HeaderStyle,
-  margins: LayoutFoundation.LayoutFoundation<number>,
+  headerMargins: LayoutFoundation.LayoutFoundation,
+  footerMargins: LayoutFoundation.LayoutFoundation,
+  contentMargins: LayoutFoundation.LayoutFoundation,
   orientation: PageOrientation,
   paperSize: PaperSize,
 }
 
 export interface PageStyleProps {
-  header: HeaderStyle,
-  orientation: PageOrientation,
-  paperSize: PaperSize,
+  headerMargins?: LayoutFoundation.LayoutFoundation,
+  footerMargins?: LayoutFoundation.LayoutFoundation,
+  contentMargins?: LayoutFoundation.LayoutFoundation,
+  orientation?: PageOrientation,
+  paperSize?: PaperSize,
 }
 
-export function create({paperSize, orientation, header}: PageStyleProps): PageStyle {
+export function create(props?: PageStyleProps): PageStyle {
+  const {
+    headerMargins = LayoutFoundation.create(),
+    footerMargins = LayoutFoundation.create(),
+    contentMargins = LayoutFoundation.create(),
+    orientation = "Portrait",
+    paperSize = "A4"
+  } = props || {};
   return {
-    header,
-    paperSize,
+    headerMargins,
+    footerMargins,
+    contentMargins,
     orientation,
-    margins: LayoutFoundation.create<number>({top: 8.0 * 595.0 / 210.0, bottom: 8.0 * 595.0 / 210.0, left: 20.0 * 595.0 / 210.0, right: 15.0 * 595.0 / 210.0})
+    paperSize
   };
 }
 
 export function getWidth(pageStyle: PageStyle): number {
-  return pageStyle.orientation === "Landscape" ? getPageHeight(pageStyle.paperSize) : getPageWidth(pageStyle.paperSize);
+  return pageStyle.orientation === "Landscape" ? getPaperHeight(pageStyle.paperSize) : getPaperWidth(pageStyle.paperSize);
 }
 
 export function getHeight(pageStyle: PageStyle): number {
-  return pageStyle.orientation === "Landscape" ? getPageWidth(pageStyle.paperSize) : getPageHeight(pageStyle.paperSize);
+  return pageStyle.orientation === "Landscape" ? getPaperWidth(pageStyle.paperSize) : getPaperHeight(pageStyle.paperSize);
 }
 
-export function getPageWidth(ps: PaperSize): number {
+export function getPaperWidth(ps: PaperSize): number {
   switch (ps) {
     case "A4":
       return 595;
@@ -44,7 +55,7 @@ export function getPageWidth(ps: PaperSize): number {
   }
 }
 
-export function getPageHeight(ps: PaperSize): number {
+export function getPaperHeight(ps: PaperSize): number {
   switch (ps) {
     case "A4":
       return 842;

@@ -1,31 +1,41 @@
-import * as TextProperties from "../properties/text-properties";
-import * as ParagraphProperties from "../properties/paragraph-properties";
+import * as TextStyle from "./text-style";
+import * as LayoutFoundation from "../primitives/layout-foundation";
+
+export type TextAlignment = "Start" | "Center" | "End" | "Justify";
 
 export interface ParagraphStyle {
-  type: "ParagraphStyle",
-  basedOn: string | undefined,
-  paragraphProperties: ParagraphProperties.ParagraphProperties,
-  textProperties: TextProperties.TextProperties,
+  readonly type: "ParagraphStyle",
+  readonly alignment?: TextAlignment,
+  readonly margins: LayoutFoundation.LayoutFoundation,
+  readonly textStyle: TextStyle.TextStyle
 }
 
 export interface ParagraphStyleProps {
-  basedOn?: string,
-  paragraphProperties: ParagraphProperties.ParagraphProperties,
-  textProperties: TextProperties.TextProperties,
+  readonly alignment?: TextAlignment,
+  readonly margins?: LayoutFoundation.LayoutFoundation,
+  readonly textStyle?: TextStyle.TextStyle
 }
 
-export function create({basedOn, paragraphProperties, textProperties}: ParagraphStyleProps): ParagraphStyle {
+export function create(props?: ParagraphStyleProps): ParagraphStyle {
+  const {
+    alignment = undefined,
+    margins = LayoutFoundation.create(),
+    textStyle = TextStyle.create()
+  } = props || {};
   return {
     type: "ParagraphStyle",
-    basedOn,
-    paragraphProperties,
-    textProperties,
+    alignment,
+    margins,
+    textStyle
   };
 }
 
-export function overrideWith(overrider: ParagraphStyle, toOverride: ParagraphStyle): ParagraphStyle {
+export function overrideWith(overrider: ParagraphStyle | undefined, toOverride: ParagraphStyle | undefined): ParagraphStyle {
+  const a: ParagraphStyleProps = overrider || {};
+  const b: ParagraphStyleProps = toOverride || {};
   return create({
-    paragraphProperties: ParagraphProperties.overrideWith(overrider.paragraphProperties, toOverride.paragraphProperties),
-    textProperties: TextProperties.overrideWith(overrider.textProperties, toOverride.textProperties)
+    alignment: a.alignment || b.alignment,
+    margins: LayoutFoundation.overrideWith(a.margins, b.margins),
+    textStyle: TextStyle.overrideWith(a.textStyle, b.textStyle)
   });
 }

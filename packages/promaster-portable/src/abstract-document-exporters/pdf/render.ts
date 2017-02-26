@@ -1,20 +1,27 @@
+import * as R from "ramda";
 import * as AD from "../../abstract-document/index";
 import {preProcess} from "./pre-process";
 import {measure} from "./measure";
 import * as BlobStream from "blob-stream";
 import {renderImage} from "./render-image";
-import * as AbstractImage from "../../abstract-image";
 
 export function exportToPdfPromise(doc: AD.AbstractDoc.AbstractDoc) {
   const PDFDocument = require("pdfkit");
+  const document = preProcess(doc);
+  const desiredSizes = measure(document);
   return new Promise((resolve) => {
-    const document = preProcess(doc);
-    const desiredSizes = measure(document);
-
     let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
-    for (let section of document.sections)
-      renderSection(document, pdf, desiredSizes, section, undefined);
-
+    for (let fontName of R.keys(document.fonts)) {
+      const font = document.fonts[fontName];
+      pdf.registerFont(fontName, font.normal);
+      pdf.registerFont(fontName + "-Bold", font.bold);
+      pdf.registerFont(fontName + "-Oblique", font.italic);
+      pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
+    }
+    let pageNo = 0;
+    for (let section of document.children) {
+      pageNo = renderSection(document, pdf, desiredSizes, section, pageNo);
+    }
     const stream = pdf.pipe(BlobStream());
     pdf.end();
     stream.on("finish", () => { resolve(stream); });
@@ -26,16 +33,44 @@ export function exportToPdf(doc: AD.AbstractDoc.AbstractDoc, stream: any) {
   const document = preProcess(doc);
   const desiredSizes = measure(document);
   let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
-  for (let section of document.sections)
-    renderSection(document, pdf, desiredSizes, section, undefined);
+  for (let fontName of R.keys(document.fonts)) {
+    const font = document.fonts[fontName];
+    pdf.registerFont(fontName, font.normal);
+    pdf.registerFont(fontName + "-Bold", font.bold);
+    pdf.registerFont(fontName + "-Oblique", font.italic);
+    pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
+  }
+  let pageNo = 0;
+  for (let section of document.children){
+    pageNo = renderSection(document, pdf, desiredSizes, section, pageNo);
+  }
   pdf.pipe(stream);
   pdf.end();
 }
 
-function renderSection(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, totalPages: number | undefined) {
-  const pageWidth = AD.PageStyle.getWidth(section.page.style);
-  const pageHeight = AD.PageStyle.getHeight(section.page.style);
-  const layout = section.page.style.orientation === "Landscape" ? "landscape" : "portrait";
+function renderSection(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, pageNo: number) {
+  pageNo++;
+  const contentRect = renderPage(doc, pdf, desiredSizes, section, pageNo);
+
+  let y = contentRect.y;
+  for (let element of section.children) {
+    const elementSize = getDesiredSize(element, desiredSizes);
+    if (y + elementSize.height > contentRect.y + contentRect.height) {
+      pageNo++;
+      renderPage(doc, pdf, desiredSizes, section, pageNo);
+      y = contentRect.y;
+    }
+    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(contentRect.x, y, elementSize.width, elementSize.height), element, pageNo);
+    y += elementSize.height;
+  }
+  return pageNo;
+}
+
+function renderPage(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, pageNo: number): AD.Rect.Rect {
+  const style = section.page.style;
+  const pageWidth = AD.PageStyle.getWidth(style);
+  const pageHeight = AD.PageStyle.getHeight(style);
+  const layout = style.orientation === "Landscape" ? "landscape" : "portrait";
   const pageOptions = {
     size: [pageWidth, pageHeight],
     layout: layout,
@@ -48,52 +83,57 @@ function renderSection(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: 
   };
   pdf.addPage(pageOptions);
 
-  let x = section.page.style.margins.left;
-  let y = section.page.style.margins.top;
-  let renderHeader = true;
-  for (let element of section.sectionElements) {
+  const headerHeight = section.page.header.reduce((a, b) => a + getDesiredSize(b, desiredSizes).height, style.headerMargins.top + style.headerMargins.bottom);
+  const footerHeight = section.page.footer.reduce((a, b) => a + getDesiredSize(b, desiredSizes).height, style.footerMargins.top + style.footerMargins.bottom);
+
+  const headerX = style.headerMargins.left;
+  let headerY = style.headerMargins.top;
+  for (let element of section.page.header) {
     const elementSize = getDesiredSize(element, desiredSizes);
-    if (y + elementSize.height > (pageHeight - section.page.style.margins.bottom)) {
-      pdf.addPage(pageOptions);
-      y = section.page.style.margins.top;
-      renderHeader = true;
-    }
-
-    if (renderHeader) {
-      for (let headerElement of section.page.header) {
-        const headerElementSize = getDesiredSize(headerElement, desiredSizes);
-        renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(x, y, headerElementSize.width, headerElementSize.height), headerElement, totalPages);
-        y += headerElementSize.height;
-      }
-      renderHeader = false;
-    }
-
-    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(x, y, elementSize.width, elementSize.height), element, totalPages);
-    y += elementSize.height;
+    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(headerX, headerY, elementSize.width, elementSize.height), element, pageNo);
+    headerY += elementSize.height;
   }
+  headerY += style.headerMargins.bottom;
+
+  const footerX = style.footerMargins.left;
+  let footerY = pageHeight - (style.footerMargins.bottom + footerHeight);
+  for (let element of section.page.footer) {
+    const elementSize = getDesiredSize(element, desiredSizes);
+    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(footerX, footerY, elementSize.width, elementSize.height), element, pageNo);
+    footerY += elementSize.height;
+  }
+
+  const rectX = style.contentMargins.left;
+  const rectY = headerY + style.contentMargins.top;
+  const rectWidth = pageWidth - (style.contentMargins.left + style.contentMargins.right);
+  const rectHeight = pageHeight - headerHeight - footerHeight - style.contentMargins.top - style.contentMargins.bottom;
+
+  return AD.Rect.create(rectX, rectY, rectWidth, rectHeight);
 }
 
-function renderSectionElement(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, element: AD.SectionElement.SectionElement, totalPages: number | undefined) {
+function renderSectionElement(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, element: AD.SectionElement.SectionElement, pageNo: number) {
   switch (element.type) {
     case "Paragraph":
-      renderParagraph(doc, pdf, desiredSizes, finalRect, element, totalPages);
+      renderParagraph(doc, pdf, desiredSizes, finalRect, element, pageNo);
       return;
     case "Table":
-      renderTable(doc, pdf, desiredSizes, finalRect, element, totalPages);
+      renderTable(doc, pdf, desiredSizes, finalRect, element, pageNo);
       return;
     case "KeepTogether":
-      renderKeepTogether(doc, pdf, desiredSizes, finalRect, element, totalPages);
+      renderKeepTogether(doc, pdf, desiredSizes, finalRect, element, pageNo);
       return;
   }
 }
 
-function renderParagraph(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, paragraph: AD.Paragraph.Paragraph, totalPages: number | undefined) {
-  const availableWidth = finalRect.width;
+function renderParagraph(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, paragraph: AD.Paragraph.Paragraph, pageNo: number) {
+  const styleFromName = AD.AbstractDoc.getStyle("ParagraphStyle", paragraph.styleName, doc) as AD.ParagraphStyle.ParagraphStyle;
+  const style = AD.ParagraphStyle.overrideWith(paragraph.style, styleFromName);
+  const availableWidth = finalRect.width - (style.margins.left + style.margins.right);
 
   let rows: Array<Array<AD.Atom.Atom>> = [];
   let currentRow: Array<AD.Atom.Atom> = [];
   let currentWidth = 0;
-  for (const atom of paragraph.atoms) {
+  for (const atom of paragraph.children) {
     const atomSize = getDesiredSize(atom, desiredSizes);
     if (currentWidth + atomSize.width >= availableWidth) {
       rows.push(currentRow);
@@ -103,175 +143,189 @@ function renderParagraph(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes
     currentRow.push(atom);
     currentWidth += atomSize.width;
   }
-  if (currentRow.length > 0)
+  if (currentRow.length > 0) // Add any remaning children to a new row.
     rows.push(currentRow);
 
-  const effectiveParaProps = AD.Paragraph.getEffectiveParagraphProperties(doc.styles, paragraph);
-
-  let y = finalRect.y;
-  if (effectiveParaProps.spacingBefore !== undefined)
-    y += AD.AbstractLength.asPoints(effectiveParaProps.spacingBefore);
+  let y = finalRect.y + style.margins.top;
 
   for (let row of rows) {
     const rowWidth = row.reduce((a, b) => a + getDesiredSize(b, desiredSizes).width, 0);
-    let x = finalRect.x;
-    if (effectiveParaProps.alignment === "Center")
-      x = finalRect.x + 0.5 * (availableWidth - rowWidth);
-    else if (effectiveParaProps.alignment === "End")
-      x = finalRect.x + availableWidth - rowWidth;
+    let x = finalRect.x + style.margins.left;
+    if (style.alignment === "Center")
+      x += 0.5 * (availableWidth - rowWidth);
+    else if (style.alignment === "End")
+      x += availableWidth - rowWidth;
 
     let rowHeight = 0;
     for (const atom of row) {
       const atomSize = getDesiredSize(atom, desiredSizes);
-      rowHeight = Math.max(rowHeight, atomSize.height);
-      renderAtom(doc, pdf, AD.Rect.create(x, y, atomSize.width, atomSize.height), atom, totalPages);
+      renderAtom(doc, pdf, AD.Rect.create(x, y, atomSize.width, atomSize.height), style.textStyle, atom, pageNo);
       x += atomSize.width;
+      rowHeight = Math.max(rowHeight, atomSize.height);
     }
 
     y += rowHeight;
   }
 }
 
-function renderKeepTogether(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, keepTogether: AD.KeepTogether.KeepTogether, totalPages: number | undefined) {
+function renderKeepTogether(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, keepTogether: AD.KeepTogether.KeepTogether, pageNo: number) {
   let y = finalRect.y;
-  for (const element of keepTogether.sectionElements) {
+  for (const element of keepTogether.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
-    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(finalRect.x, y, elementSize.width, elementSize.height), element, totalPages);
+    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(finalRect.x, y, elementSize.width, elementSize.height), element, pageNo);
     y += elementSize.height;
   }
 }
 
-function renderAtom(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, atom: AD.Atom.Atom, totalPages: number | undefined) {
+function renderAtom(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, atom: AD.Atom.Atom, pageNo: number) {
   switch (atom.type) {
     case "TextField":
-      renderTextField(doc, pdf, finalRect, atom, totalPages);
+      renderTextField(doc, pdf, finalRect, textStyle, atom, pageNo);
       return;
     case "TextRun":
-      renderTextRun(doc, pdf, finalRect, atom);
+      renderTextRun(doc, pdf, finalRect, textStyle, atom);
       return;
     case "Image":
       renderImage(pdf, finalRect, atom);
       return;
     case "HyperLink":
-      renderHyperLink(doc, pdf, finalRect, atom);
+      renderHyperLink(doc, pdf, finalRect, textStyle, atom);
       return;
   }
 }
 
-function renderTextField(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textField: AD.TextField.TextField, totalPages: number | undefined) {
-  const effectiveStyle = AD.TextField.getEffectiveStyle(doc.styles, textField);
+function renderTextField(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textField: AD.TextField.TextField, pageNo: number) {
+  const styleFromName = AD.AbstractDoc.getStyle("TextStyle", textField.styleName, doc) as AD.TextStyle.TextStyle;
+  const style = AD.TextStyle.overrideWith(textField.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
   switch (textField.fieldType) {
     case "Date":
-      drawText(pdf, finalRect, effectiveStyle.textProperties, new Date(Date.now()).toDateString());
+      drawText(pdf, finalRect, style, new Date(Date.now()).toDateString());
       return;
     case "PageNumber":
-      drawText(pdf, finalRect, effectiveStyle.textProperties, pdf.bufferedPageRange().count.toString() + (totalPages ? "" : (" (" + totalPages + ")")));
+      drawText(pdf, finalRect, style, pageNo.toString());
       return;
   }
 }
 
-function renderTextRun(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, text: AD.TextRun.TextRun) {
-  const effectiveTextProperties = AD.TextRun.getEffectiveTextProperties(doc.styles, text);
-  drawText(pdf, finalRect, effectiveTextProperties, text.text);
+function renderTextRun(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textRun: AD.TextRun.TextRun) {
+  const styleFromName = AD.AbstractDoc.getStyle("TextStyle", textRun.styleName, doc) as AD.TextStyle.TextStyle;
+  const style = AD.TextStyle.overrideWith(textRun.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  drawText(pdf, finalRect, style, textRun.text);
 }
 
-function renderHyperLink(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, hyperLink: AD.HyperLink.HyperLink) {
-  const effectiveTextProperties = AD.HyperLink.getEffectiveTextProperties(doc.styles, hyperLink);
-  drawHyperLink(pdf, finalRect, effectiveTextProperties, hyperLink);
+function renderHyperLink(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, hyperLink: AD.HyperLink.HyperLink) {
+  const styleFromName = AD.AbstractDoc.getStyle("TextStyle", hyperLink.styleName, doc) as AD.TextStyle.TextStyle;
+  const style = AD.TextStyle.overrideWith(hyperLink.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  drawHyperLink(pdf, finalRect, style, hyperLink);
 }
 
-function drawHyperLink(pdf: any, finalRect: AD.Rect.Rect, textProperties: AD.TextProperties.TextProperties, hyperLink: AD.HyperLink.HyperLink) {
+function drawHyperLink(pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, hyperLink: AD.HyperLink.HyperLink) {
   let features: Array<string> = [];
-  if (textProperties.italic) features.push("ital");
-  if (textProperties.subScript) features.push("subs");
-  if (textProperties.superScript) features.push("sups");
+  let font = textStyle.fontFamily || "Helvetica";
+  if (textStyle.bold && textStyle.italic) { font += "-BoldOblique"; }
+  else if (textStyle.bold) { font += "-Bold"; }
+  else if (textStyle.italic) { font += "-Oblique"; }
+
+  if (textStyle.subScript) features.push("subs");
+  if (textStyle.superScript) features.push("sups");
 
   pdf
-    .font(/*textProperties.fontFamily || */"Helvetica", /*textProperties.fontFamily || */"Helvetica", textProperties.fontSize || 10)
-    .fillColor(textProperties.color || "blue")
+    .font(font)
+    .fontSize(textStyle.fontSize || 10)
+    .fillColor(textStyle.color || "blue")
     .text(hyperLink.text, finalRect.x, finalRect.y, {
       width: finalRect.width,
       height: finalRect.height,
-      underline: textProperties.underline || false,
+      underline: textStyle.underline || false,
       features: features,
     })
     .underline(finalRect.x, finalRect.y, finalRect.width, finalRect.height, { color: "blue" })
     .link(finalRect.x, finalRect.y, finalRect.width, finalRect.height, hyperLink.target);
 }
 
-function drawText(pdf: any, finalRect: AD.Rect.Rect, textProperties: AD.TextProperties.TextProperties, text: string) {
+function drawText(pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, text: string) {
   let features: Array<string> = [];
-  if (textProperties.italic) features.push("ital");
-  if (textProperties.subScript) features.push("subs");
-  if (textProperties.superScript) features.push("sups");
+  let font = textStyle.fontFamily || "Helvetica";
+  if (textStyle.bold && textStyle.italic) { font += "-BoldOblique"; }
+  else if (textStyle.bold) { font += "-Bold"; }
+  else if (textStyle.italic) { font += "-Oblique"; }
+
+  if (textStyle.subScript) features.push("subs");
+  if (textStyle.superScript) features.push("sups");
 
   pdf
-    .font(/*textProperties.fontFamily || */"Helvetica", /*textProperties.fontFamily || */"Helvetica", textProperties.fontSize || 10)
-    .fillColor(textProperties.color || "black")
+    .font(font)
+    .fontSize(textStyle.fontSize || 10)
+    .fillColor(textStyle.color || "black")
     .text(text, finalRect.x, finalRect.y, {
       width: finalRect.width,
       height: finalRect.height,
-      underline: textProperties.underline || false,
+      underline: textStyle.underline || false,
       features: features,
     });
 }
 
-function renderTable(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, table: AD.Table.Table, totalPages: number | undefined) {
-  let y = finalRect.y;
-  for (let row of table.rows) {
+function renderTable(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, table: AD.Table.Table, pageNo: number) {
+  const styleFromName = AD.AbstractDoc.getStyle("TableStyle", table.styleName, doc) as AD.TableStyle.TableStyle;
+  const style = AD.TableStyle.overrideWith(table.style, styleFromName);
+  const x = finalRect.x + style.margins.left;
+  let y = finalRect.y + style.margins.top;
+  for (let row of table.children) {
     const rowSize = getDesiredSize(row, desiredSizes);
-    const rowRect = AD.Rect.create(finalRect.x, y, rowSize.width, rowSize.height);
-    renderRow(doc, pdf, desiredSizes, rowRect, table, row, totalPages);
+    const rowRect = AD.Rect.create(x, y, rowSize.width, rowSize.height);
+    renderRow(doc, pdf, desiredSizes, rowRect, style.cellStyle, row, pageNo);
     y += rowSize.height;
   }
 }
 
-function renderRow(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, table: AD.Table.Table, row: AD.TableRow.TableRow, totalPages: number | undefined) {
+function renderRow(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, tableCellStyle: AD.TableCellStyle.TableCellStyle, row: AD.TableRow.TableRow, pageNo: number) {
   let x = finalRect.x;
-  for (const cell of row.cells) {
+  for (const cell of row.children) {
     const cellSize = getDesiredSize(cell, desiredSizes);
     const cellRect = AD.Rect.create(x, finalRect.y, cellSize.width, cellSize.height);
-    renderCell(doc, pdf, desiredSizes, cellRect, table, cell, totalPages);
+    renderCell(doc, pdf, desiredSizes, cellRect, tableCellStyle, cell, pageNo);
     x += cellSize.width;
   }
 }
 
-function renderCell(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, table: AD.Table.Table, cell: AD.TableCell.TableCell, totalPages: number | undefined) {
-  const cellEffectiveStyle = AD.TableCell.getEffectiveTableCellProperties(table, cell);
-  if (cellEffectiveStyle.background && cellEffectiveStyle.background.a > 0) {
-    const colorHex = "#"+AbstractImage.toString6Hex(cellEffectiveStyle.background) || "#000";
+function renderCell(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, tableCellStyle: AD.TableCellStyle.TableCellStyle, cell: AD.TableCell.TableCell, pageNo: number) {
+  const cellStyleFromName = AD.AbstractDoc.getStyle("TableCellStyle", cell.styleName, doc) as AD.TableCellStyle.TableCellStyle;
+  const cellStyle = AD.TableCellStyle.overrideWith(cell.style, AD.TableCellStyle.overrideWith(cellStyleFromName, tableCellStyle));
+  if (cellStyle.background) {
     pdf.rect(finalRect.x, finalRect.y, finalRect.width, finalRect.height)
-      .fillOpacity(cellEffectiveStyle.background.a / 255)
-      .fillAndStroke(colorHex, colorHex)
+      .fill(cellStyle.background);
   }
 
-  let y = finalRect.y;
-  for (const element of cell.elements) {
+  let x = finalRect.x + cellStyle.padding.left;
+  let y = finalRect.y + cellStyle.padding.top;
+  for (const element of cell.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
-    const elementRect = AD.Rect.create(finalRect.x, y, finalRect.width, elementSize.height);
-    renderSectionElement(doc, pdf, desiredSizes, elementRect, element, totalPages);
+    const elementRect = AD.Rect.create(x, y, elementSize.width, elementSize.height);
+    renderSectionElement(doc, pdf, desiredSizes, elementRect, element, pageNo);
     y += elementSize.height;
   }
 
-  if (cellEffectiveStyle.borders.top) {
-    pdf.moveTo(finalRect.x, finalRect.y)
-      .lineTo(finalRect.x + finalRect.width, finalRect.y)
-      .stroke();
-  }
-  if (cellEffectiveStyle.borders.bottom) {
-    pdf.moveTo(finalRect.x, finalRect.y + finalRect.height)
-      .lineTo(finalRect.x + finalRect.width, finalRect.y + finalRect.height)
-      .stroke();
-  }
-  if (cellEffectiveStyle.borders.left) {
-    pdf.moveTo(finalRect.x, finalRect.y)
-      .lineTo(finalRect.x, finalRect.y + finalRect.height)
-      .stroke();
-  }
-  if (cellEffectiveStyle.borders.right) {
-    pdf.moveTo(finalRect.x + finalRect.width, finalRect.y)
-      .lineTo(finalRect.x + finalRect.width, finalRect.y + finalRect.height)
-      .stroke();
+  if (cellStyle.borderColor) {
+    if (cellStyle.borders.top) {
+      pdf.moveTo(finalRect.x, finalRect.y)
+        .lineTo(finalRect.x + finalRect.width, finalRect.y)
+        .stroke(cellStyle.borderColor);
+    }
+    if (cellStyle.borders.bottom) {
+      pdf.moveTo(finalRect.x, finalRect.y + finalRect.height)
+        .lineTo(finalRect.x + finalRect.width, finalRect.y + finalRect.height)
+        .stroke(cellStyle.borderColor);
+    }
+    if (cellStyle.borders.left) {
+      pdf.moveTo(finalRect.x, finalRect.y)
+        .lineTo(finalRect.x, finalRect.y + finalRect.height)
+        .stroke(cellStyle.borderColor);
+    }
+    if (cellStyle.borders.right) {
+      pdf.moveTo(finalRect.x + finalRect.width, finalRect.y)
+        .lineTo(finalRect.x + finalRect.width, finalRect.y + finalRect.height)
+        .stroke(cellStyle.borderColor);
+    }
   }
 }
 

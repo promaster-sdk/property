@@ -1,19 +1,23 @@
-import {MasterPage} from "./master-page";
+import * as MasterPage from "./master-page";
 import {SectionElement} from "../section-elements/section-element";
 
 export interface Section {
-  page: MasterPage,
-  sectionElements: SectionElement[],
+  readonly page: MasterPage.MasterPage,
+  readonly children: SectionElement[],
 }
 
 export interface SectionProps {
-  page: MasterPage,
-  sectionElements: SectionElement[],
+  readonly page?: MasterPage.MasterPage,
+  readonly children?: SectionElement[],
 }
 
-export function create({page, sectionElements}:SectionProps): Section {
+export function create(props?: SectionProps): Section {
+  const {
+    page = MasterPage.create(),
+    children = []
+  } = props || {};
   return {
     page,
-    sectionElements,
+    children
   };
 }
