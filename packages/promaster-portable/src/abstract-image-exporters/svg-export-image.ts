@@ -71,25 +71,37 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         dy: (dy + lines.indexOf(t)).toString() + "em"
       }, [t]));
 
-      let cs: Array<string> = [];
+      const cs: Array<string> = [];
 
       if (component.strokeThickness > 0 && component.strokeColor != null) {
-        cs.push(createElement("text", {
-          "x": component.position.x.toString(),
-          "y": component.position.y.toString(),
-          "dy": dy.toString() + "em",
-          "style": objectToAttributeValue(shadowStyle),
-          "transform": transform
-        }, tSpans));
+        cs.push(
+          createElement(
+            "text",
+            {
+              "x": component.position.x.toString(),
+              "y": component.position.y.toString(),
+              "dy": dy.toString() + "em",
+              "style": objectToAttributeValue(shadowStyle),
+              "transform": transform
+            },
+            tSpans
+          )
+        );
+      } else {
+        cs.push(
+          createElement(
+            "text",
+            {
+              "x": component.position.x.toString(),
+              "y": component.position.y.toString(),
+              "dy": dy.toString() + "em",
+              "style": objectToAttributeValue(style),
+              "transform": transform
+            },
+            tSpans
+          )
+        );
       }
-
-      cs.push(createElement("text", {
-        "x": component.position.x.toString(),
-        "y": component.position.y.toString(),
-        "dy": dy.toString() + "em", "style": objectToAttributeValue(style),
-        "transform": transform
-      }, tSpans));
-
       return flattenElements(cs);
     case "ellipse":
       const rx = Math.abs(component.bottomRight.x - component.topLeft.x) * 0.5;
