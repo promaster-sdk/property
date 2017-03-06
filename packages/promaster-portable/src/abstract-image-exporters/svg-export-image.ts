@@ -218,5 +218,5 @@ function getTextAnchor(d: AbstractImage.GrowthDirection): string {
 }
 
 function colorToRgb(color: AbstractImage.Color): string {
-  return "rgb(" + color.r.toString() + "," + color.g.toString() + "," + color.b.toString() + ")";
+  return `rgba(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}, ${color.a.toString()})`;
 }
