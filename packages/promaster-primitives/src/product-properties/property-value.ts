@@ -108,7 +108,7 @@ export function valueAs<T extends Quantity>(unit: Unit<T>, value: PropertyValue)
 
 export function toString(value: PropertyValue): string {
   if (value.type === "amount") {
-    if (!value.value.value) {
+    if (value.value.value === null || value.value.value === undefined) {
       return "";
     }
 
