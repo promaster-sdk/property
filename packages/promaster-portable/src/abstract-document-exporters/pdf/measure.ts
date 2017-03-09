@@ -10,7 +10,6 @@ export function measure(document: AD.AbstractDoc.AbstractDoc): Map<any, AD.Size.
   if (resources.fonts) {
     for (let fontName of R.keys(resources.fonts)) {
       const font = resources.fonts[fontName];
-      console.log({fontName, font});
       pdf.registerFont(fontName, font.normal);
       pdf.registerFont(fontName + "-Bold", font.bold);
       pdf.registerFont(fontName + "-Oblique", font.italic);
