@@ -23,13 +23,15 @@ export function create(props?: ParagraphProps): Paragraph {
     styleName = "",
     style = ParagraphStyle.create(),
     numbering = undefined,
-    children = []
+    children = [],
+    ...rest
   } = props || {};
   return {
     type: "Paragraph",
     styleName,
     style,
     numbering,
-    children
+    children,
+    ...rest
   };
 }

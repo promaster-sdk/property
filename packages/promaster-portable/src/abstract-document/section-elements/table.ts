@@ -22,13 +22,15 @@ export function create(props: TableProps): Table {
     columnWidths,
     styleName = "",
     style = TableStyle.create(),
-    children = []
+    children = [],
+    ...rest
   } = props;
   return {
     type: "Table",
     columnWidths,
     styleName,
     style,
-    children
+    children,
+    ...rest
   };
 }

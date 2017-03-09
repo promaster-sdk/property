@@ -2,7 +2,7 @@ import * as AD from "../../abstract-document/index";
 
 export function getResources(doc: AD.AbstractDoc.AbstractDoc): AD.Resources.Resources {
   const resources = doc.children.map((s) => getResourcesSection(s));
-  return AD.Resources.mergeResources(resources);
+  return AD.Resources.mergeResources([resources, doc]);
 }
 
 function getResourcesSection(s: AD.Section.Section): AD.Resources.Resources {

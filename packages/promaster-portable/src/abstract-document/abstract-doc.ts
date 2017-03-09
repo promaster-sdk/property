@@ -12,8 +12,10 @@ export type AbstractDocProps = Resources & {
 export function create(props?: AbstractDocProps): AbstractDoc {
   const {
     children = [],
+    ...rest
   } = props || {};
   return {
-    children: children,
+    children,
+    ...rest
   };
 }

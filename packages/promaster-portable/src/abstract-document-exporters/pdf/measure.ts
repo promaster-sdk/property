@@ -6,16 +6,18 @@ export function measure(document: AD.AbstractDoc.AbstractDoc): Map<any, AD.Size.
   const resources = getResources(document);
   const PDFDocument = require("pdfkit");
   let pdf = new PDFDocument();
+
   if (resources.fonts) {
     for (let fontName of R.keys(resources.fonts)) {
       const font = resources.fonts[fontName];
+      console.log({fontName, font});
       pdf.registerFont(fontName, font.normal);
       pdf.registerFont(fontName + "-Bold", font.bold);
       pdf.registerFont(fontName + "-Oblique", font.italic);
       pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
     }
   }
-  return mergeMaps(document.children.map((s) => measureSection(pdf, resources, s)));
+  return mergeMaps(document.children.map((s) => measureSection(pdf, document, s)));
 }
 
 function measureSection(pdf: any, parentResources: AD.Resources.Resources, section: AD.Section.Section): Map<any, AD.Size.Size> {

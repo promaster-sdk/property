@@ -12,10 +12,12 @@ export type KeepTogetherProps = Resources & {
 
 export function create(props?: KeepTogetherProps): KeepTogether {
   const {
-    children = []
+    children = [],
+    ...rest
   } = props || {};
   return {
     type: "KeepTogether",
-    children: children
+    children: children,
+    ...rest
   };
 }
