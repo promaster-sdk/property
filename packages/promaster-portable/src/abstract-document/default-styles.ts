@@ -1,6 +1,8 @@
 import * as R from "ramda";
 import {ParagraphStyle, StyleKey, TableStyle, TextStyle, TableCellStyle, LayoutFoundation, Style} from "./index";
-import {Indexer} from "./abstract-doc";
+import {Indexer} from "./types";
+
+export const defaultAndStandardStyles = createDefaultAndStandardStyles();
 
 export function createDefaultAndStandardStyles(): Indexer<StyleKey.StyleKey, Style.Style> {
   return {...createDefaultStyles(), ...createStandardStyles()};

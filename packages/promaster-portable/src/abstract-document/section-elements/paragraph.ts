@@ -1,8 +1,9 @@
+import {Resources} from "../resources";
 import {Atom} from "../atoms/atom";
 import {ParagraphNumbering} from "./paragraph-numbering";
 import * as ParagraphStyle from "../styles/paragraph-style";
 
-export interface Paragraph {
+export type Paragraph = Resources & {
   readonly type: "Paragraph",
   readonly styleName: string,
   readonly style: ParagraphStyle.ParagraphStyle,
@@ -10,7 +11,7 @@ export interface Paragraph {
   readonly children: Atom[],
 }
 
-export interface ParagraphProps {
+export type ParagraphProps = Resources & {
   readonly styleName?: string,
   readonly style?: ParagraphStyle.ParagraphStyle,
   readonly numbering?: ParagraphNumbering,

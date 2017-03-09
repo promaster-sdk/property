@@ -1,7 +1,8 @@
+import {Resources} from "../resources";
 import * as TableRow from "../table/table-row";
 import * as TableStyle from "../styles/table-style";
 
-export interface Table {
+export type Table = Resources & {
   readonly type: "Table",
   readonly columnWidths: Array<number>,
   readonly styleName: string,
@@ -9,7 +10,7 @@ export interface Table {
   readonly children: Array<TableRow.TableRow>,
 }
 
-export interface TableProps {
+export type TableProps = Resources & {
   readonly columnWidths: Array<number>,
   readonly styleName?: string,
   readonly style?: TableStyle.TableStyle,

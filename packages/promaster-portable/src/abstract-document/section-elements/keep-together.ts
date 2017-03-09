@@ -1,11 +1,12 @@
+import {Resources} from "../resources";
 import {SectionElement} from "./section-element";
 
-export interface KeepTogether {
+export type KeepTogether = Resources & {
   readonly type: "KeepTogether",
   readonly children: SectionElement[],
 }
 
-export interface KeepTogetherProps {
+export type KeepTogetherProps = Resources & {
   readonly children?: SectionElement[],
 }
 

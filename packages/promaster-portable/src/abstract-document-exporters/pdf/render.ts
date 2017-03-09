@@ -4,19 +4,24 @@ import {preProcess} from "./pre-process";
 import {measure} from "./measure";
 import * as BlobStream from "blob-stream";
 import {renderImage} from "./render-image";
+import {getResources} from "../shared/get_resources";
 
 export function exportToPdfPromise(doc: AD.AbstractDoc.AbstractDoc) {
   const PDFDocument = require("pdfkit");
   const document = preProcess(doc);
   const desiredSizes = measure(document);
+  const resources = getResources(document);
+
   return new Promise((resolve) => {
     let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
-    for (let fontName of R.keys(document.fonts)) {
-      const font = document.fonts[fontName];
-      pdf.registerFont(fontName, font.normal);
-      pdf.registerFont(fontName + "-Bold", font.bold);
-      pdf.registerFont(fontName + "-Oblique", font.italic);
-      pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
+    if (resources.fonts) {
+      for (let fontName of R.keys(document.fonts)) {
+        const font = resources.fonts[fontName];
+        pdf.registerFont(fontName, font.normal);
+        pdf.registerFont(fontName + "-Bold", font.bold);
+        pdf.registerFont(fontName + "-Oblique", font.italic);
+        pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
+      }
     }
     let pageNo = 0;
     for (let section of document.children) {
@@ -32,13 +37,17 @@ export function exportToPdf(doc: AD.AbstractDoc.AbstractDoc, stream: any) {
   const PDFDocument = require("pdfkit");
   const document = preProcess(doc);
   const desiredSizes = measure(document);
+  const resources = getResources(document);
+
   let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
-  for (let fontName of R.keys(document.fonts)) {
-    const font = document.fonts[fontName];
-    pdf.registerFont(fontName, font.normal);
-    pdf.registerFont(fontName + "-Bold", font.bold);
-    pdf.registerFont(fontName + "-Oblique", font.italic);
-    pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
+  if (resources.fonts) {
+    for (let fontName of R.keys(document.fonts)) {
+      const font = resources.fonts[fontName];
+      pdf.registerFont(fontName, font.normal);
+      pdf.registerFont(fontName + "-Bold", font.bold);
+      pdf.registerFont(fontName + "-Oblique", font.italic);
+      pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
+    }
   }
   let pageNo = 0;
   for (let section of document.children){
@@ -48,25 +57,26 @@ export function exportToPdf(doc: AD.AbstractDoc.AbstractDoc, stream: any) {
   pdf.end();
 }
 
-function renderSection(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, pageNo: number) {
+function renderSection(parentResources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, pageNo: number) {
   pageNo++;
-  const contentRect = renderPage(doc, pdf, desiredSizes, section, pageNo);
+  const resources = AD.Resources.mergeResources([parentResources, section]);
+  const contentRect = renderPage(resources, pdf, desiredSizes, section, pageNo);
 
   let y = contentRect.y;
   for (let element of section.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
     if (y + elementSize.height > contentRect.y + contentRect.height) {
       pageNo++;
-      renderPage(doc, pdf, desiredSizes, section, pageNo);
+      renderPage(resources, pdf, desiredSizes, section, pageNo);
       y = contentRect.y;
     }
-    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(contentRect.x, y, elementSize.width, elementSize.height), element, pageNo);
+    renderSectionElement(resources, pdf, desiredSizes, AD.Rect.create(contentRect.x, y, elementSize.width, elementSize.height), element, pageNo);
     y += elementSize.height;
   }
   return pageNo;
 }
 
-function renderPage(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, pageNo: number): AD.Rect.Rect {
+function renderPage(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, pageNo: number): AD.Rect.Rect {
   const style = section.page.style;
   const pageWidth = AD.PageStyle.getWidth(style);
   const pageHeight = AD.PageStyle.getHeight(style);
@@ -90,7 +100,7 @@ function renderPage(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map
   let headerY = style.headerMargins.top;
   for (let element of section.page.header) {
     const elementSize = getDesiredSize(element, desiredSizes);
-    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(headerX, headerY, elementSize.width, elementSize.height), element, pageNo);
+    renderSectionElement(resources, pdf, desiredSizes, AD.Rect.create(headerX, headerY, elementSize.width, elementSize.height), element, pageNo);
     headerY += elementSize.height;
   }
   headerY += style.headerMargins.bottom;
@@ -99,7 +109,7 @@ function renderPage(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map
   let footerY = pageHeight - (style.footerMargins.bottom + footerHeight);
   for (let element of section.page.footer) {
     const elementSize = getDesiredSize(element, desiredSizes);
-    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(footerX, footerY, elementSize.width, elementSize.height), element, pageNo);
+    renderSectionElement(resources, pdf, desiredSizes, AD.Rect.create(footerX, footerY, elementSize.width, elementSize.height), element, pageNo);
     footerY += elementSize.height;
   }
 
@@ -111,22 +121,23 @@ function renderPage(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map
   return AD.Rect.create(rectX, rectY, rectWidth, rectHeight);
 }
 
-function renderSectionElement(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, element: AD.SectionElement.SectionElement, pageNo: number) {
+function renderSectionElement(parentResources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, element: AD.SectionElement.SectionElement, pageNo: number) {
+  const resources = AD.Resources.mergeResources([parentResources, element]);
   switch (element.type) {
     case "Paragraph":
-      renderParagraph(doc, pdf, desiredSizes, finalRect, element, pageNo);
+      renderParagraph(resources, pdf, desiredSizes, finalRect, element, pageNo);
       return;
     case "Table":
-      renderTable(doc, pdf, desiredSizes, finalRect, element, pageNo);
+      renderTable(resources, pdf, desiredSizes, finalRect, element, pageNo);
       return;
     case "KeepTogether":
-      renderKeepTogether(doc, pdf, desiredSizes, finalRect, element, pageNo);
+      renderKeepTogether(resources, pdf, desiredSizes, finalRect, element, pageNo);
       return;
   }
 }
 
-function renderParagraph(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, paragraph: AD.Paragraph.Paragraph, pageNo: number) {
-  const styleFromName = AD.AbstractDoc.getStyle("ParagraphStyle", paragraph.styleName, doc) as AD.ParagraphStyle.ParagraphStyle;
+function renderParagraph(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, paragraph: AD.Paragraph.Paragraph, pageNo: number) {
+  const styleFromName = AD.Resources.getStyle("ParagraphStyle", paragraph.styleName, resources) as AD.ParagraphStyle.ParagraphStyle;
   const style = AD.ParagraphStyle.overrideWith(paragraph.style, styleFromName);
   const availableWidth = finalRect.width - (style.margins.left + style.margins.right);
 
@@ -159,7 +170,7 @@ function renderParagraph(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes
     let rowHeight = 0;
     for (const atom of row) {
       const atomSize = getDesiredSize(atom, desiredSizes);
-      renderAtom(doc, pdf, AD.Rect.create(x, y, atomSize.width, atomSize.height), style.textStyle, atom, pageNo);
+      renderAtom(resources, pdf, AD.Rect.create(x, y, atomSize.width, atomSize.height), style.textStyle, atom, pageNo);
       x += atomSize.width;
       rowHeight = Math.max(rowHeight, atomSize.height);
     }
@@ -168,34 +179,34 @@ function renderParagraph(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes
   }
 }
 
-function renderKeepTogether(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, keepTogether: AD.KeepTogether.KeepTogether, pageNo: number) {
+function renderKeepTogether(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, keepTogether: AD.KeepTogether.KeepTogether, pageNo: number) {
   let y = finalRect.y;
   for (const element of keepTogether.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
-    renderSectionElement(doc, pdf, desiredSizes, AD.Rect.create(finalRect.x, y, elementSize.width, elementSize.height), element, pageNo);
+    renderSectionElement(resources, pdf, desiredSizes, AD.Rect.create(finalRect.x, y, elementSize.width, elementSize.height), element, pageNo);
     y += elementSize.height;
   }
 }
 
-function renderAtom(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, atom: AD.Atom.Atom, pageNo: number) {
+function renderAtom(resources: AD.Resources.Resources, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, atom: AD.Atom.Atom, pageNo: number) {
   switch (atom.type) {
     case "TextField":
-      renderTextField(doc, pdf, finalRect, textStyle, atom, pageNo);
+      renderTextField(resources, pdf, finalRect, textStyle, atom, pageNo);
       return;
     case "TextRun":
-      renderTextRun(doc, pdf, finalRect, textStyle, atom);
+      renderTextRun(resources, pdf, finalRect, textStyle, atom);
       return;
     case "Image":
       renderImage(pdf, finalRect, atom);
       return;
     case "HyperLink":
-      renderHyperLink(doc, pdf, finalRect, textStyle, atom);
+      renderHyperLink(resources, pdf, finalRect, textStyle, atom);
       return;
   }
 }
 
-function renderTextField(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textField: AD.TextField.TextField, pageNo: number) {
-  const styleFromName = AD.AbstractDoc.getStyle("TextStyle", textField.styleName, doc) as AD.TextStyle.TextStyle;
+function renderTextField(resources: AD.Resources.Resources, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textField: AD.TextField.TextField, pageNo: number) {
+  const styleFromName = AD.Resources.getStyle("TextStyle", textField.styleName, resources) as AD.TextStyle.TextStyle;
   const style = AD.TextStyle.overrideWith(textField.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
   switch (textField.fieldType) {
     case "Date":
@@ -207,14 +218,14 @@ function renderTextField(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: A
   }
 }
 
-function renderTextRun(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textRun: AD.TextRun.TextRun) {
-  const styleFromName = AD.AbstractDoc.getStyle("TextStyle", textRun.styleName, doc) as AD.TextStyle.TextStyle;
+function renderTextRun(resources: AD.Resources.Resources, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textRun: AD.TextRun.TextRun) {
+  const styleFromName = AD.Resources.getStyle("TextStyle", textRun.styleName, resources) as AD.TextStyle.TextStyle;
   const style = AD.TextStyle.overrideWith(textRun.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
   drawText(pdf, finalRect, style, textRun.text);
 }
 
-function renderHyperLink(doc: AD.AbstractDoc.AbstractDoc, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, hyperLink: AD.HyperLink.HyperLink) {
-  const styleFromName = AD.AbstractDoc.getStyle("TextStyle", hyperLink.styleName, doc) as AD.TextStyle.TextStyle;
+function renderHyperLink(resources: AD.Resources.Resources, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, hyperLink: AD.HyperLink.HyperLink) {
+  const styleFromName = AD.Resources.getStyle("TextStyle", hyperLink.styleName, resources) as AD.TextStyle.TextStyle;
   const style = AD.TextStyle.overrideWith(hyperLink.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
   drawHyperLink(pdf, finalRect, style, hyperLink);
 }
@@ -265,31 +276,31 @@ function drawText(pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.Tex
     });
 }
 
-function renderTable(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, table: AD.Table.Table, pageNo: number) {
-  const styleFromName = AD.AbstractDoc.getStyle("TableStyle", table.styleName, doc) as AD.TableStyle.TableStyle;
+function renderTable(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, table: AD.Table.Table, pageNo: number) {
+  const styleFromName = AD.Resources.getStyle("TableStyle", table.styleName, resources) as AD.TableStyle.TableStyle;
   const style = AD.TableStyle.overrideWith(table.style, styleFromName);
   const x = finalRect.x + style.margins.left;
   let y = finalRect.y + style.margins.top;
   for (let row of table.children) {
     const rowSize = getDesiredSize(row, desiredSizes);
     const rowRect = AD.Rect.create(x, y, rowSize.width, rowSize.height);
-    renderRow(doc, pdf, desiredSizes, rowRect, style.cellStyle, row, pageNo);
+    renderRow(resources, pdf, desiredSizes, rowRect, style.cellStyle, row, pageNo);
     y += rowSize.height;
   }
 }
 
-function renderRow(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, tableCellStyle: AD.TableCellStyle.TableCellStyle, row: AD.TableRow.TableRow, pageNo: number) {
+function renderRow(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, tableCellStyle: AD.TableCellStyle.TableCellStyle, row: AD.TableRow.TableRow, pageNo: number) {
   let x = finalRect.x;
   for (const cell of row.children) {
     const cellSize = getDesiredSize(cell, desiredSizes);
     const cellRect = AD.Rect.create(x, finalRect.y, cellSize.width, cellSize.height);
-    renderCell(doc, pdf, desiredSizes, cellRect, tableCellStyle, cell, pageNo);
+    renderCell(resources, pdf, desiredSizes, cellRect, tableCellStyle, cell, pageNo);
     x += cellSize.width;
   }
 }
 
-function renderCell(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, tableCellStyle: AD.TableCellStyle.TableCellStyle, cell: AD.TableCell.TableCell, pageNo: number) {
-  const cellStyleFromName = AD.AbstractDoc.getStyle("TableCellStyle", cell.styleName, doc) as AD.TableCellStyle.TableCellStyle;
+function renderCell(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, tableCellStyle: AD.TableCellStyle.TableCellStyle, cell: AD.TableCell.TableCell, pageNo: number) {
+  const cellStyleFromName = AD.Resources.getStyle("TableCellStyle", cell.styleName, resources) as AD.TableCellStyle.TableCellStyle;
   const cellStyle = AD.TableCellStyle.overrideWith(cell.style, AD.TableCellStyle.overrideWith(cellStyleFromName, tableCellStyle));
   if (cellStyle.background) {
     pdf.rect(finalRect.x, finalRect.y, finalRect.width, finalRect.height)
@@ -301,7 +312,7 @@ function renderCell(doc: AD.AbstractDoc.AbstractDoc, pdf: any, desiredSizes: Map
   for (const element of cell.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
     const elementRect = AD.Rect.create(x, y, elementSize.width, elementSize.height);
-    renderSectionElement(doc, pdf, desiredSizes, elementRect, element, pageNo);
+    renderSectionElement(resources, pdf, desiredSizes, elementRect, element, pageNo);
     y += elementSize.height;
   }
 

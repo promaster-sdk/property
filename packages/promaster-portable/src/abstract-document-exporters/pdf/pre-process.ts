@@ -10,36 +10,38 @@ export function preProcess(doc: AD.AbstractDoc.AbstractDoc): AD.AbstractDoc.Abst
   return AD.AbstractDoc.create({children: children, fonts: doc.fonts, imageResources: doc.imageResources, styles: doc.styles, numberings: doc.numberings, numberingDefinitions: doc.numberingDefinitions});
 }
 
-function preProcessSection(s: AD.Section.Section, doc: AD.AbstractDoc.AbstractDoc): AD.Section.Section {
-  const header = R.unnest(s.page.header.map((e) => preProcessSectionElement(e, doc)));
-  const footer = R.unnest(s.page.footer.map((e) => preProcessSectionElement(e, doc)));
+function preProcessSection(s: AD.Section.Section, parentResources: AD.Resources.Resources): AD.Section.Section {
+  const resources = AD.Resources.mergeResources([parentResources, s]);
+  const header = R.unnest(s.page.header.map((e) => preProcessSectionElement(e, resources)));
+  const footer = R.unnest(s.page.footer.map((e) => preProcessSectionElement(e, resources)));
   const page = AD.MasterPage.create({style: s.page.style, header: header, footer: footer});
-  const children = R.unnest(s.children.map((e) => preProcessSectionElement(e, doc)));
+  const children = R.unnest(s.children.map((e) => preProcessSectionElement(e, resources)));
   return AD.Section.create({page: page, children});
 }
 
-function preProcessSectionElement(e: AD.SectionElement.SectionElement, doc: AD.AbstractDoc.AbstractDoc): Array<AD.SectionElement.SectionElement> {
+function preProcessSectionElement(e: AD.SectionElement.SectionElement, parentResources: AD.Resources.Resources): Array<AD.SectionElement.SectionElement> {
+  const resources = AD.Resources.mergeResources([parentResources, e]);
   switch (e.type) {
     case "Paragraph":
-      return preProcessParagraph(e, doc);
+      return preProcessParagraph(e, resources);
     case "Table":
-      return [preProcessTable(e, doc)];
+      return [preProcessTable(e, resources)];
     case "KeepTogether":
-      return [preProcessKeepTogether(e, doc)];
+      return [preProcessKeepTogether(e, resources)];
   }
 }
 
-function preProcessParagraph(paragraph: AD.Paragraph.Paragraph, doc: AD.AbstractDoc.AbstractDoc): Array<AD.SectionElement.SectionElement> {
+function preProcessParagraph(paragraph: AD.Paragraph.Paragraph, resources: AD.Resources.Resources): Array<AD.SectionElement.SectionElement> {
   const adjustedParagraphs = adjustParagraph(paragraph);
 
-  if (paragraph.numbering === undefined){
+  if (paragraph.numbering === undefined || !resources.numberingDefinitions){
     return adjustedParagraphs;
   }
 
   const numbering = paragraph.numbering.numberingId;
   const level = paragraph.numbering.level;
   const key = numbering + "_" + level.toString();
-  const levelDefinitions = doc.numberingDefinitions[numbering].levels;
+  const levelDefinitions = resources.numberingDefinitions[numbering].levels;
   for (let levelDefinition of levelDefinitions.filter((l) => l.level > level))
     _numberingLevelItems.delete(numbering + "_" + levelDefinition.level.toString());
 
@@ -197,8 +199,8 @@ function toChar(num: number): string {
 //   });
 // }
 
-function preProcessTable(table: AD.Table.Table, doc: AD.AbstractDoc.AbstractDoc): AD.SectionElement.SectionElement {
-  const children = table.children.map((r) => preProcessTableRow(r, doc));
+function preProcessTable(table: AD.Table.Table, resources: AD.Resources.Resources): AD.SectionElement.SectionElement {
+  const children = table.children.map((r) => preProcessTableRow(r, resources));
   return AD.Table.create({
     columnWidths: table.columnWidths,
     styleName: table.styleName,
@@ -207,17 +209,17 @@ function preProcessTable(table: AD.Table.Table, doc: AD.AbstractDoc.AbstractDoc)
   });
 }
 
-function preProcessTableRow(r: AD.TableRow.TableRow, doc: AD.AbstractDoc.AbstractDoc): AD.TableRow.TableRow {
-  const children = r.children.map((c) => preProcessTableCell(c, doc));
+function preProcessTableRow(r: AD.TableRow.TableRow, resources: AD.Resources.Resources): AD.TableRow.TableRow {
+  const children = r.children.map((c) => preProcessTableCell(c, resources));
   return AD.TableRow.create({children: children});
 }
 
-function preProcessTableCell(c: AD.TableCell.TableCell, doc: AD.AbstractDoc.AbstractDoc): AD.TableCell.TableCell {
-  const children = R.unnest(c.children.map((e) => preProcessSectionElement(e, doc)));
+function preProcessTableCell(c: AD.TableCell.TableCell, resources: AD.Resources.Resources): AD.TableCell.TableCell {
+  const children = R.unnest(c.children.map((e) => preProcessSectionElement(e, resources)));
   return AD.TableCell.create({styleName: c.styleName, columnSpan: c.columnSpan, style: c.style, children: children});
 }
 
-function preProcessKeepTogether(keepTogether: AD.KeepTogether.KeepTogether, doc: AD.AbstractDoc.AbstractDoc): AD.SectionElement.SectionElement {
-  const children = R.unnest(keepTogether.children.map((e) => preProcessSectionElement(e, doc)));
+function preProcessKeepTogether(keepTogether: AD.KeepTogether.KeepTogether, resources: AD.Resources.Resources): AD.SectionElement.SectionElement {
+  const children = R.unnest(keepTogether.children.map((e) => preProcessSectionElement(e, resources)));
   return AD.KeepTogether.create({children: children});
 }

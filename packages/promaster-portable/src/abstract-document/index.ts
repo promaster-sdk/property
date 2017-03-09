@@ -32,15 +32,15 @@ import * as TextStyle from "./styles/text-style";
 import * as TableCell from "./table/table-cell";
 import * as TableRow from "./table/table-row";
 import * as DefaultStyles from "./default-styles";
-//
 import * as Markdown from "./markdown/markdown";
+import * as Resources from "./resources";
+import * as Types from "./types";
 
-// export * from "./abstract-doc";
 export {
   AbstractDoc, Atom, Image, TextField, TextRun, HyperLink,
   Font, Numbering, NumberingDefinition, NumberingFormat,
   NumberingLevelDefinition, MasterPage, Section, Length, ImageResource,
   LayoutFoundation, Point, Rect, Size, KeepTogether, Paragraph, ParagraphNumbering, SectionElement, Table, Markdown,
   PageStyle, ParagraphStyle, Style, StyleKey, TableCellStyle, TableStyle, TextStyle,
-  TableCell, TableRow, DefaultStyles
+  TableCell, TableRow, DefaultStyles, Resources, Types
 };
