@@ -2,9 +2,8 @@ import * as R from "ramda";
 import * as AD from "../../abstract-document/index";
 import {getResources} from "../shared/get_resources";
 
-export function measure(document: AD.AbstractDoc.AbstractDoc): Map<any, AD.Size.Size> {
+export function measure(PDFDocument: any, document: AD.AbstractDoc.AbstractDoc): Map<any, AD.Size.Size> {
   const resources = getResources(document);
-  const PDFDocument = require("pdfkit");
   let pdf = new PDFDocument();
 
   if (resources.fonts) {

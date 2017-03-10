@@ -6,13 +6,30 @@ import * as BlobStream from "blob-stream";
 import {renderImage} from "./render-image";
 import {getResources} from "../shared/get_resources";
 
-export function exportToPdfPromise(doc: AD.AbstractDoc.AbstractDoc) {
-  const PDFDocument = require("pdfkit");
+export function exportToHTML5Blob(pdfKit: any, doc: AD.AbstractDoc.AbstractDoc): Promise<Blob> {
+  return new Promise((resolve) => {
+    const stream = BlobStream();
+    exportToStream(pdfKit, stream, doc);
+    stream.on("finish", () => {
+      const blob = stream.toBlob("application/pdf");
+      resolve(blob);
+    });
+  });
+}
+
+/**
+ * On the client side the stream can be a BlobStream from the blob-stream package.
+ * On the server-side the stream can be a file stream from the fs package.
+ * @param pdfKit
+ * @param blobStream
+ * @param doc
+ */
+export function exportToStream(pdfKit: any, blobStream: any, doc: AD.AbstractDoc.AbstractDoc): void {
+  const PDFDocument = pdfKit;
   const document = preProcess(doc);
-  const desiredSizes = measure(document);
+  const desiredSizes = measure(pdfKit, document);
   const resources = getResources(document);
 
-  return new Promise((resolve) => {
     let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
     if (resources.fonts) {
       for (let fontName of R.keys(document.fonts)) {
@@ -27,35 +44,34 @@ export function exportToPdfPromise(doc: AD.AbstractDoc.AbstractDoc) {
     for (let section of document.children) {
       pageNo = renderSection(document, pdf, desiredSizes, section, pageNo);
     }
-    const stream = pdf.pipe(BlobStream());
+    pdf.pipe(blobStream);
     pdf.end();
-    stream.on("finish", () => { resolve(stream); });
-  });
 }
 
-export function exportToPdf(doc: AD.AbstractDoc.AbstractDoc, stream: any) {
-  const PDFDocument = require("pdfkit");
-  const document = preProcess(doc);
-  const desiredSizes = measure(document);
-  const resources = getResources(document);
-
-  let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
-  if (resources.fonts) {
-    for (let fontName of R.keys(resources.fonts)) {
-      const font = resources.fonts[fontName];
-      pdf.registerFont(fontName, font.normal);
-      pdf.registerFont(fontName + "-Bold", font.bold);
-      pdf.registerFont(fontName + "-Oblique", font.italic);
-      pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
-    }
-  }
-  let pageNo = 0;
-  for (let section of document.children){
-    pageNo = renderSection(document, pdf, desiredSizes, section, pageNo);
-  }
-  pdf.pipe(stream);
-  pdf.end();
-}
+// // Can only be used on the server-side
+// export function exportToNodeStream(pdfKit: any, doc: AD.AbstractDoc.AbstractDoc, stream: any): void {
+//   const PDFDocument = pdfKit;
+//   const document = preProcess(doc);
+//   const desiredSizes = measure(pdfKit, document);
+//   const resources = getResources(document);
+//
+//   let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
+//   if (resources.fonts) {
+//     for (let fontName of R.keys(resources.fonts)) {
+//       const font = resources.fonts[fontName];
+//       pdf.registerFont(fontName, font.normal);
+//       pdf.registerFont(fontName + "-Bold", font.bold);
+//       pdf.registerFont(fontName + "-Oblique", font.italic);
+//       pdf.registerFont(fontName + "-BoldOblique", font.boldItalic);
+//     }
+//   }
+//   let pageNo = 0;
+//   for (let section of document.children){
+//     pageNo = renderSection(document, pdf, desiredSizes, section, pageNo);
+//   }
+//   pdf.pipe(stream);
+//   pdf.end();
+// }
 
 function renderSection(parentResources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, section: AD.Section.Section, pageNo: number) {
   pageNo++;

@@ -8,6 +8,8 @@ import * as fs from "fs";
 // import {generateExample, generateHyperlink} from "../test-utils/example-document";
 // import {generateText, generateTextInTable, generateMarkdownText} from "../test-utils/textrun";
 
+const pdfKit = require("pdfkit");
+
 describe("PdfExporter", () => {
 
   // it("should not crash", function(done) {
@@ -82,7 +84,7 @@ describe("PdfExporter", () => {
     ]});
     let stream = fs.createWriteStream("test_abstractimage.pdf");
     stream.on('finish', function() { done(); });
-    ADPdf.exportToPdf(doc, stream);
+    ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
   it("should render tables correctly", function(done) {
@@ -107,7 +109,7 @@ describe("PdfExporter", () => {
     ]});
     let stream = fs.createWriteStream("test_table.pdf");
     stream.on('finish', function() { done(); });
-    ADPdf.exportToPdf(doc, stream);
+    ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
   it("should render paragraphs in Daxline correctly", function(done) {
@@ -142,7 +144,7 @@ describe("PdfExporter", () => {
     });
     let stream = fs.createWriteStream("test_paragraphstyling_daxline.pdf");
     stream.on('finish', function() { done(); });
-    ADPdf.exportToPdf(doc, stream);
+    ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
   it("should render paragraphs in Arial correctly", function(done) {
@@ -177,7 +179,7 @@ describe("PdfExporter", () => {
     });
     let stream = fs.createWriteStream("test_paragraphstyling_arial.pdf");
     stream.on('finish', function() { done(); });
-    ADPdf.exportToPdf(doc, stream);
+    ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
   it("should render page number correctly", function(done) {
@@ -200,7 +202,7 @@ describe("PdfExporter", () => {
     ]});
     let stream = fs.createWriteStream("test_pagenumber.pdf");
     stream.on('finish', function() { done(); });
-    ADPdf.exportToPdf(doc, stream);
+    ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
   it("should render header and footer correctly", function(done) {
@@ -231,7 +233,7 @@ describe("PdfExporter", () => {
     ]});
     let stream = fs.createWriteStream("test_headerfooter.pdf");
     stream.on('finish', function() { done(); });
-    ADPdf.exportToPdf(doc, stream);
+    ADPdf.exportToStream(pdfKit, stream, doc);
   });
 });
 
