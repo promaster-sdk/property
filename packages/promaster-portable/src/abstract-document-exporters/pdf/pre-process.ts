@@ -50,7 +50,7 @@ function preProcessParagraph(paragraph: AD.Paragraph.Paragraph, resources: AD.Re
   if (!_numberingLevelItems.has(key))
     _numberingLevelItems.set(key, levelDefinitions[level].start);
   else
-    _numberingLevelItems.set(key, _numberingLevelItems.get(key) + 1);
+    _numberingLevelItems.set(key, (_numberingLevelItems.get(key) || 0) + 1);
 
   for (let levelDefinition of levelDefinitions.filter((l) => l.level <= level)) {
     const numberingLevel = numbering + "_" + levelDefinition.level.toString();
