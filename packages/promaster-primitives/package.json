@@ -43,6 +43,6 @@
     "ts-node": "^2.0.0",
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
-    "typescript": "^2.1.5"
+    "typescript": "^2.2.1"
   }
 }

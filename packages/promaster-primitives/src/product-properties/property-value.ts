@@ -1,8 +1,8 @@
 import * as Amount from '../measure/amount';
 import * as Units from '../measure/units';
-import {Unit} from '../measure/unit';
-import {Discrete, Quantity} from '../measure/quantity';
-import {compareNumbers, compareIgnoreCase} from "../utils/compare_utils";
+import { Unit } from '../measure/unit';
+import { Discrete, Quantity } from '../measure/quantity';
+import { compareNumbers, compareIgnoreCase } from "../utils/compare_utils";
 
 // Types
 
@@ -33,11 +33,11 @@ export function create(type: PropertyType, value: Amount.Amount<any> | string | 
   if (value == undefined || value == null)
     throw new Error("Argument 'value' must be specified.");
   if (type === "amount")
-    return {type: "amount", value: value as Amount.Amount<any>};
+    return { type: "amount", value: value as Amount.Amount<any> };
   if (type === "text")
-    return {type: "text", value: value as string};
+    return { type: "text", value: value as string };
   if (type === "integer")
-    return {type: "integer", value: value as number};
+    return { type: "integer", value: value as number };
   throw new Error(`Unknown 'type' ${type}.`);
 }
 
@@ -55,13 +55,12 @@ export function fromAmount<T extends Quantity>(amountValue: Amount.Amount<T>): P
   let value;
   if (Amount.isQuantity<Discrete>("Discrete", amountValue)) {
     value = Amount.valueAs(Units.Integer, amountValue);
-    type = "integer";
+    return { type: "integer", value: value };
   }
   else {
     value = amountValue;
-    type = "amount";
+    return { type: "amount", value: value };
   }
-  return {type: type, value: value};
 }
 
 /// NOTE: The string value should *NOT* be encoded in any way (such as being enclosed in
@@ -70,11 +69,11 @@ export function fromAmount<T extends Quantity>(amountValue: Amount.Amount<T>): P
 export function fromText(textValue: string): PropertyValue {
   if (textValue == null)
     throw new Error("value");
-  return {type: "text", value: textValue} as PropertyValue;
+  return { type: "text", value: textValue } as PropertyValue;
 }
 
 export function fromInteger(integerValue: number): PropertyValue {
-  return {type: "integer", value: integerValue} as PropertyValue;
+  return { type: "integer", value: integerValue } as PropertyValue;
 }
 
 export function getInteger(value: PropertyValue): number | undefined {

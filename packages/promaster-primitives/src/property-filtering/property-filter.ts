@@ -14,7 +14,7 @@ const _cache: {[key:string]: PropertyFilter} = {};
 
 export const Empty: PropertyFilter = {text: "", ast: Ast.newEmptyExpr()};
 
-function create(text, ast): PropertyFilter {
+function create(text: string, ast: Ast.Expr): PropertyFilter {
 	return {text, ast};
 }
 

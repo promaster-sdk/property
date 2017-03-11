@@ -1,6 +1,6 @@
 import * as Unit from './unit';
 import * as UnitName from './unit-name';
-import {Dimensionless, Quantity} from "./quantity";
+import { Dimensionless, Quantity } from "./quantity";
 import * as Units from "./units";
 import * as CompareUtils from "../utils/compare_utils";
 
@@ -213,7 +213,7 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>,
  * @param rightUnit
  * @returns The most granular unit.
  */
-function getMostGranularUnit(leftUnit, rightUnit): Unit.Unit<any> {
+function getMostGranularUnit(leftUnit: Unit.Unit<any>, rightUnit: Unit.Unit<any>): Unit.Unit<any> {
 
   const rightDelta = valueAs(leftUnit, minus(create(2, rightUnit), create(1, rightUnit)));
   if (rightDelta > 1) {

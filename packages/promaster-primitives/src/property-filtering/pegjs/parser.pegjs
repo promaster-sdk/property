@@ -1,17 +1,8 @@
 /*
 
-NOTE:
-We have to manually make the commonjs module produced by PEG a ESM module by removing the IIFE and
-replace this:
- return {
-   SyntaxError: peg$SyntaxError,
-   parse: peg$parse
- };
-with this:
- export const SyntaxError = (message, expected, found, location) => peg$SyntaxError(message, expected, found, location);
- export const parse = (input) => peg$parse(input);
-
-See: https://github.com/pegjs/pegjs/issues/423
+The generated parser it in it's on node_modules. Previously we renamed it to .ts and 
+compiled it but that is not possible with noImplicitAny so now we treat it as a CommonJS 
+module and put it in its own node_modules.
 
 */
 

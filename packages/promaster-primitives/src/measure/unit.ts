@@ -214,7 +214,7 @@ export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Qu
   return convertWithConverter(value, converter);
 }
 
-export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>, right: Unit<T2>) {
+export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>, right: Unit<T2>): boolean {
   if (left.type !== right.type || left.quantity !== right.quantity) {
     return false;
   }
@@ -303,7 +303,7 @@ function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>):
 /// Creates a transformed unit from the specified parent unit.
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
-function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter): TransformedUnit<T> {
+function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter: UnitConverter): TransformedUnit<T> {
   return {quantity: parentUnit.quantity, type: "transformed", parentUnit, toParentUnitConverter};
 }
 

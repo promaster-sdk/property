@@ -5,6 +5,7 @@
     "declaration": true,
     "outDir": "../lib",
     "sourceMap": true,
+    "noImplicitAny": true,
     "lib": ["es5", "dom"]
   },
   "exclude": [

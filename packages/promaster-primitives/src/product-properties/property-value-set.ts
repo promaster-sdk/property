@@ -7,10 +7,15 @@ import { Quantity } from "../measure/quantity";
 
 /// Represents a set of properties and a selected value for each of the properties.
 export interface PropertyValueSet {
-  readonly[key: string]: PropertyValue.PropertyValue;
+  readonly [key: string]: PropertyValue.PropertyValue;
 }
 
 export const Empty: PropertyValueSet = {};
+
+// For internal use only
+interface MutablePropertyValueSet {
+  [key: string]: PropertyValue.PropertyValue;
+}
 
 // Functions
 
@@ -64,13 +69,15 @@ export function getPropertyNames(set: PropertyValueSet): Array<string> {
 }
 
 export function merge(mergeWith: PropertyValueSet, set: PropertyValueSet): PropertyValueSet {
-  return amend(set, mergeWith);
+  //return amend(set, mergeWith);
+  return { ...set, ...mergeWith };
 }
 
 /// If a property exists with the same name in the PropertyValueSet as in the
 // replacement set then the value of that property will be replaced.
 export function setValues(replacementSet: PropertyValueSet, set: PropertyValueSet): PropertyValueSet {
-  return amend(set, replacementSet);
+  //return amend(set, replacementSet);
+  return { ...set, ...replacementSet };
 }
 
 export function set(propertyName: string, propertyValue: PropertyValue.PropertyValue, set: PropertyValueSet): PropertyValueSet {
@@ -90,7 +97,7 @@ export function setText(propertyName: string, textValue: string, set: PropertyVa
 }
 
 export function keepProperties(propertyNames: Array<string>, set: PropertyValueSet): PropertyValueSet {
-  let newSet = {};
+  let newSet: MutablePropertyValueSet = {};
   for (let name of propertyNames) {
     newSet[name] = set[name];
   }
@@ -98,7 +105,7 @@ export function keepProperties(propertyNames: Array<string>, set: PropertyValueS
 }
 
 export function removeProperties(propertyNames: Array<string>, set: PropertyValueSet): PropertyValueSet {
-  let newSet = {};
+  let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(set)) {
     if (propertyNames.indexOf(name) === -1)
       newSet[name] = set[name];
@@ -143,7 +150,7 @@ export function getInteger(propertyName: string, set: PropertyValueSet): number 
 }
 
 export function addPrefixToValues(prefix: string, set: PropertyValueSet): PropertyValueSet {
-  let newSet = {};
+  let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(set)) {
     newSet[prefix + name] = set[name];
   }
@@ -151,7 +158,7 @@ export function addPrefixToValues(prefix: string, set: PropertyValueSet): Proper
 }
 
 export function getValuesWithPrefix(prefix: string, removePrefix: boolean, set: PropertyValueSet): PropertyValueSet {
-  let newSet = {};
+  let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(set)) {
     if (name.length > 0 && name.substr(0, prefix.length) === prefix) {
       newSet[removePrefix ? name.substring(prefix.length) : name] = set[name];
@@ -161,7 +168,7 @@ export function getValuesWithPrefix(prefix: string, removePrefix: boolean, set: 
 }
 
 export function getValuesWithoutPrefix(prefix: string, removePrefix: boolean, set: PropertyValueSet): PropertyValueSet {
-  let newSet = {};
+  let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(set)) {
     if (name.substr(0, prefix.length) !== prefix) {
       newSet[removePrefix ? name.substring(prefix.length) : name] = set[name];
@@ -171,7 +178,7 @@ export function getValuesWithoutPrefix(prefix: string, removePrefix: boolean, se
 }
 
 export function getValuesOfType(type: PropertyType, set: PropertyValueSet): PropertyValueSet {
-  let newSet = {};
+  let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(set)) {
     if (set[name].type === type) {
       newSet[name] = set[name];
@@ -189,7 +196,7 @@ export function toString(set: PropertyValueSet): string {
   return Object.keys(set).map((p) => `${p}=${PropertyValue.toString(set[p])}`).join(";");
 }
 
-export function toStringInSpecifiedOrder(order: Array<string>): string {
+export function toStringInSpecifiedOrder(order: Array<string>, set: PropertyValueSet): string {
   return order.map((p) => `${p}=${PropertyValue.toString(set[p])}`).join(";");
 }
 
@@ -215,7 +222,7 @@ export function equals(other: PropertyValueSet, set: PropertyValueSet) {
 /// Values that represents strings must be enclosed in double quote (") and if they contains double quote characters they must be encoded as %22.
 function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): PropertyValueSet | undefined {
 
-  var entries = {};
+  var entries: MutablePropertyValueSet = {};
   // Add extra semicolon on the end to close last name/value pair
   var toParse = encodedValueSet;
   if (toParse.charAt(toParse.length - 1) !== ";")
@@ -283,20 +290,22 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
 
 }
 
-function amend<PropertyValueSet, T2>(obj1: PropertyValueSet, obj2: T2): PropertyValueSet {
-  // return Object.assign({}, obj1, obj2);
-  return extend(extend({}, obj1), obj2);
+// function amend<PropertyValueSet, T2>(obj1: PropertyValueSet, obj2: T2): PropertyValueSet {
+//   // return Object.assign({}, obj1, obj2);
+//   return extend(extend({}, obj1), obj2);
+//   return { ...obj1, ...obj2 }
+// }
+
+function amendProperty<T2 extends PropertyValue.PropertyValue>(set: PropertyValueSet, name: string, value: T2): PropertyValueSet {
+  // return amend(set, { [name]: value });
+  return { ...set, [name]: value };
 }
 
-function amendProperty<PropertyValueSet, T2>(set: PropertyValueSet, name: string, value: T2): PropertyValueSet {
-  return amend(set, { [name]: value });
-}
-
-function extend<TOrigin, TAdd>(origin: TOrigin, add: TAdd): TOrigin & TAdd {
-  var keys = Object.keys(add);
-  var i = keys.length;
-  while (i--) {
-    origin[keys[i]] = add[keys[i]];
-  }
-  return origin as TOrigin & TAdd;
-}
+// function extend<TOrigin, TAdd>(origin: TOrigin, add: TAdd): TOrigin & TAdd {
+//   var keys = Object.keys(add);
+//   var i = keys.length;
+//   while (i--) {
+//     origin[keys[i]] = add[keys[i]];
+//   }
+//   return origin as TOrigin & TAdd;
+// }
