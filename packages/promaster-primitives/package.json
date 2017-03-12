@@ -3,10 +3,10 @@
   "version": "0.6.1",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
+  "types": "lib-cjs/index",
   "description": "Promster SDK Primitives",
   "author": "Divid AB",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-primitives",
-  "types": "lib-cjs/index",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"
