@@ -1,5 +1,5 @@
 import * as Ast from "../property-filter-ast";
-import Parser = require("./generated-parser");
+import * as Parser from "./generated-parser";
 
 export type ParserCallbacks = {
 	createValueExpr(unparsed: string): Ast.ValueExpr,

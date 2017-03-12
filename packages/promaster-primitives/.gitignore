@@ -6,4 +6,5 @@ thumbs.db
 *.log
 node_modules/
 example/js_out
-lib/
+lib-cjs/
+lib-esm/

@@ -5,12 +5,9 @@
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "../lib",
+    "outDir": "../lib-cjs",
     "sourceMap": true,
     // Lib options
     "lib": ["es5", "dom"]
-  },
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }
