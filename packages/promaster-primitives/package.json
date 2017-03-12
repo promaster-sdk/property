@@ -10,23 +10,6 @@
   "publishConfig": {
     "registry": "https://npm.divid.se"
   },
-  "scripts": {
-    "build": "rm -rf lib && tsc --version && tsc -p src",
-    "publish:major": "yarn test && yarn build && node scripts/publish.js major",
-    "publish:minor": "yarn test && yarn build && node scripts/publish.js minor",
-    "publish:patch": "yarn test && yarn build && node scripts/publish.js patch",
-    "tsc": "tsc -p src",
-    "tsc:test": "tsc",
-    "gen-doc": "yarn build && node scripts/gen-doc.js",
-    "gen-typedoc": "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
-    "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
-    "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
-    "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
-    "test:filtering": "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
-    "test:parser": "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
-    "gen_parser": "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/parser.ts",
-    "benchmark": "node ./lib/test/property_filtering/property_filter_benchmark.js"
-  },
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
     "@types/chai": "^3.4.34",
@@ -44,5 +27,22 @@
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
     "typescript": "^2.2.1"
+  },
+  "scripts": {
+    "build": "rm -rf lib && tsc --version && tsc -p src",
+    "publish:major": "yarn test && yarn build && node scripts/publish.js major",
+    "publish:minor": "yarn test && yarn build && node scripts/publish.js minor",
+    "publish:patch": "yarn test && yarn build && node scripts/publish.js patch",
+    "tsc": "tsc -p src",
+    "tsc:test": "tsc",
+    "gen-doc": "yarn build && node scripts/gen-doc.js",
+    "gen-typedoc": "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
+    "test": "mocha --compilers ts:ts-node/register test/**/*.ts",
+    "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
+    "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
+    "test:filtering": "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
+    "test:parser": "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
+    "gen_parser": "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/parser.ts",
+    "benchmark": "node ./lib/test/property_filtering/property_filter_benchmark.js"
   }
 }

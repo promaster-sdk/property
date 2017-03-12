@@ -643,7 +643,7 @@ export function getStringFromUnit(unit: Unit.Unit<any>): string {
   return name;
 }
 
-export function getQuantityTypeFromString(quantityString: string, onError?: (quantityString: string) => q.Quantity): q.Quantity {
+export function getQuantityTypeFromString(quantityString: string): q.Quantity {
   _ensureMetaAdded();
   const quantityArray = Object.keys(_quantityToUnits);
   const foundIndex = quantityArray.indexOf(quantityString as Quantity);

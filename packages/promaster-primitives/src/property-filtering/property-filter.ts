@@ -2,7 +2,6 @@ import * as PropertyValue from "../product-properties/property-value";
 import * as PropertyValueSet from "../product-properties/property-value-set";
 import * as Ast from "./property-filter-ast";
 import * as Parser from "./pegjs/property-filter-parser";
-import {Units} from "../index"
 
 export interface PropertyFilter {
 	text: string;

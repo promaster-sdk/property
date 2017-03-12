@@ -51,15 +51,11 @@ export function fromString(encodedValue: string): PropertyValue | undefined {
 export function fromAmount<T extends Quantity>(amountValue: Amount.Amount<T>): PropertyValue {
   if (!amountValue)
     throw new Error("null: value");
-  let type;
-  let value;
   if (Amount.isQuantity<Discrete>("Discrete", amountValue)) {
-    value = Amount.valueAs(Units.Integer, amountValue);
-    return { type: "integer", value: value };
+    return { type: "integer", value: Amount.valueAs(Units.Integer, amountValue) };
   }
   else {
-    value = amountValue;
-    return { type: "amount", value: value };
+    return { type: "amount", value: amountValue };
   }
 }
 

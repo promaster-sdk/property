@@ -1,4 +1,4 @@
-import * as PEG from "pegjs";
+// import * as PEG from "pegjs";
 import * as Ast from "../property-filter-ast";
 // import * as Parser from "generated-parser";
 import {parse as parserParse} from "generated-parser";
