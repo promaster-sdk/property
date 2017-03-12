@@ -1,7 +1,9 @@
 // import * as PEG from "pegjs";
 import * as Ast from "../property-filter-ast";
-// import * as Parser from "generated-parser";
-import {parse as parserParse} from "generated-parser";
+import Parser = require("./generated-parser");
+// import {parse as parserParse} from "./generated-parser";
+
+console.log("PAAAAAAAAAARSER!!", Parser);
 
 // const parser: PEG.Parser = Parser;
 
@@ -35,10 +37,11 @@ const options = {
 
 export function parse(text: string, throwOnInvalidSyntax: boolean = false): Ast.Expr | undefined {
 	try {
-		const result = parserParse(text, options);
+		const result = Parser.parse(text, options);
 		return result;
 	}
 	catch (error) {
+		console.warn("An exception occured when parsing", error);
 		if (throwOnInvalidSyntax)
 			throw error;
 		else

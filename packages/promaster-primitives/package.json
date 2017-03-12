@@ -42,7 +42,7 @@
     "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
     "test:filtering": "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
     "test:parser": "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
-    "gen_parser": "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/parser.ts",
+    "generate-parser": "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/generated-parser.js",
     "benchmark": "node ./lib/test/property_filtering/property_filter_benchmark.js"
   }
 }
