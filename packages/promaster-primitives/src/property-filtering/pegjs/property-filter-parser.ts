@@ -1,11 +1,5 @@
-// import * as PEG from "pegjs";
 import * as Ast from "../property-filter-ast";
 import Parser = require("./generated-parser");
-// import {parse as parserParse} from "./generated-parser";
-
-console.log("PAAAAAAAAAARSER!!", Parser);
-
-// const parser: PEG.Parser = Parser;
 
 export type ParserCallbacks = {
 	createValueExpr(unparsed: string): Ast.ValueExpr,
