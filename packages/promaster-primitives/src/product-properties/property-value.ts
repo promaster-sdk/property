@@ -2,7 +2,7 @@ import * as Amount from '../measure/amount';
 import * as Units from '../measure/units';
 import { Unit } from '../measure/unit';
 import { Discrete, Quantity } from '../measure/quantity';
-import { compareNumbers, compareIgnoreCase } from "../utils/compare_utils";
+import { compareNumbers, compareIgnoreCase } from "../utils/compare-utils";
 
 // Types
 

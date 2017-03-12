@@ -1,4 +1,5 @@
-import {Quantity, Dimensionless} from "./quantity";
+import { Quantity, Dimensionless } from "./quantity";
+import { exhaustiveCheck } from "../utils/exhaustive-check";
 
 /**
  * This record represents a determinate quantity (as of length, time, heat, or value)
@@ -24,9 +25,9 @@ import {Quantity, Dimensionless} from "./quantity";
 
 export type Unit<T extends Quantity> =
   AlternateUnit<T>
-    | BaseUnit<T>
-    | ProductUnit<T>
-    | TransformedUnit<T>;
+  | BaseUnit<T>
+  | ProductUnit<T>
+  | TransformedUnit<T>;
 
 /**
  * This record represents the building blocks on top of which all others
@@ -148,7 +149,7 @@ const identityConverter: UnitConverter = createIdentityConverter();
  * @param symbol The symbol of this base unit.
  */
 export function createBase<T extends Quantity>(quantity: T, symbol: string): Unit<T> {
-  return {quantity, type: "base", symbol};
+  return { quantity, type: "base", symbol };
 }
 
 /**
@@ -158,7 +159,7 @@ export function createBase<T extends Quantity>(quantity: T, symbol: string): Uni
  * @param parent Parent the system unit from which this alternate unit is derived.
  */
 export function createAlternate<T extends Quantity>(symbol: string, parent: Unit<any>): Unit<T> {
-  return {quantity: parent.quantity, type: "alternate", symbol, parent};
+  return { quantity: parent.quantity, type: "alternate", symbol, parent };
 }
 
 /**
@@ -304,7 +305,7 @@ function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>):
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
 function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter: UnitConverter): TransformedUnit<T> {
-  return {quantity: parentUnit.quantity, type: "transformed", parentUnit, toParentUnitConverter};
+  return { quantity: parentUnit.quantity, type: "transformed", parentUnit, toParentUnitConverter };
 }
 
 // function create<T extends Quantity>(quantity: T, innerUnit: Unit<T>): Unit<T> {
@@ -340,7 +341,7 @@ function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>,
   //   }
   // });
 
-  let unitGroups: {[key: string]: Array<Element>} = {};
+  let unitGroups: { [key: string]: Array<Element> } = {};
   for (let v of allElements) {
     const group = unitGroups[JSON.stringify(v.unit)];
     if (group === undefined)
@@ -362,7 +363,7 @@ function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>,
 }
 
 function createElement(unit: Unit<any>, pow: number): Element {
-  return {unit, pow};
+  return { unit, pow };
 }
 
 function product<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): ProductUnit<T> {
@@ -391,8 +392,7 @@ function getElements(unit: Unit<any>): Array<Element> {
     return [createElement(unit, 1)];
   }
   else {
-    const _exhaustiveCheck: never = unit;
-    throw new Error("Should not get here.");
+    return exhaustiveCheck(unit, true);
   }
 }
 
@@ -413,7 +413,7 @@ function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConve
 }
 
 function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Element>): ProductUnit<T> {
-  return {quantity, type: "product", elements};
+  return { quantity, type: "product", elements };
 }
 
 /**
@@ -423,21 +423,21 @@ function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Elem
  * @param second Second the second converter.
  */
 function createCompoundConverter(first: UnitConverter, second: UnitConverter): CompoundConverter {
-  return {type: "compound", first, second};
+  return { type: "compound", first, second };
 }
 
 function createIdentityConverter(): IdentityConverter {
-  return {type: "identity"};
+  return { type: "identity" };
 }
 
 function createOffsetConverter(offset: number): OffsetConverter {
-  return {type: "offset", offset};
+  return { type: "offset", offset };
 }
 
 function createFactorConverter(factor: number): FactorConverter {
   if (factor === 1.0)
     throw new Error("Argument: factor " + factor.toString());
-  return {type: "factor", factor};
+  return { type: "factor", factor };
 }
 
 /**
@@ -491,5 +491,5 @@ function concatenateConverters(concatConverter: UnitConverter, converter: UnitCo
 
 /** Used solely to create ONE instance. */
 function createOne(): Unit<Dimensionless> {
-  return {quantity: "Dimensionless", type: "product", elements: []};
+  return { quantity: "Dimensionless", type: "product", elements: [] };
 }
