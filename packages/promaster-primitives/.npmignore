@@ -2,7 +2,6 @@
 .editorconfig
 .gitattributes
 .npmignore
-tsconfig.json
 example/
 scripts/
 test/
