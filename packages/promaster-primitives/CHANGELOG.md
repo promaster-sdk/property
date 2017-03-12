@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.6.0]
+## [0.6.1] - 2017-03-12
+### Fixed
+- Parser was not included in build output.
+- Typings field in package.json was incorrect.
+
+## [0.6.0] - 2017-03-12
 ### Changed
 - Internal change how the parser is generated and imported.
 - Use local tsconfig in test and src that extends from base-tsconfig.

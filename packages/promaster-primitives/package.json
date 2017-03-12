@@ -6,7 +6,7 @@
   "description": "Promster SDK Primitives",
   "author": "Divid AB",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-primitives",
-  "typings": "lib/index",
+  "types": "lib-cjs/index",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"
@@ -30,7 +30,12 @@
     "typescript": "^2.2.1"
   },
   "scripts": {
-    "build": "rm -rf ./lib-cjs ./lib-esm && tsc --version && tsc -p src && tsc -p src --module es2015 --outDir ./lib-esm",
+    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
+    "build:clean": "rm -rf ./lib-cjs ./lib-esm",
+    "build:cjs": "tsc -p src && yarn build:parser:cjs",
+    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm && yarn build:parser:esm",
+    "build:parser:cjs": "cp src/property-filtering/pegjs/generated-parser.* lib-cjs/property-filtering/pegjs/",
+    "build:parser:esm": "cp src/property-filtering/pegjs/generated-parser.* lib-esm/property-filtering/pegjs/",
     "publish:major": "yarn test && yarn build && node scripts/publish.js major",
     "publish:minor": "yarn test && yarn build && node scripts/publish.js minor",
     "publish:patch": "yarn test && yarn build && node scripts/publish.js patch",
