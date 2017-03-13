@@ -1,4 +1,4 @@
-import {AbstractImage} from "@promaster/promaster-portable";
+import * as AbstractImage from "../abstract-image";
 import * as Axis from "./axis";
 
 export type Partial<T> = {[P in keyof T]?: T[P] };

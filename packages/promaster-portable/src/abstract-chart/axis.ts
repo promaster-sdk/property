@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import {AbstractImage} from "@promaster/promaster-portable";
+import * as AbstractImage from "../abstract-image";
 
 export type Axis = LinearAxis | LogarithmicAxis;
 
