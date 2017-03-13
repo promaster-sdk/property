@@ -10,7 +10,7 @@ export function renderImage(pdf: any, finalRect: AD.Rect.Rect, image: AD.Image.I
   const scale = Math.min(scaleX, scaleY);
   pdf.save();
   pdf.translate(position.x, position.y).scale(scale);
-  aImage.components.forEach((c) => abstractComponentToPdf(pdf, c));
+  aImage.components.forEach((c: AbstractImage.Component) => abstractComponentToPdf(pdf, c));
   pdf.restore();
 }
 

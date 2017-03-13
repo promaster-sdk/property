@@ -25,7 +25,7 @@ export function buildAllPropertyValueSetsExtended(explicitPropertyValueSet: Prop
     // that uses a blacklisted propertyfilter value we should remove it from the blacklist.
     .map((property) => {
       if (property.visibility_filter.text !== "") {
-        blacklistedPropertyFilters = blacklistedPropertyFilters.filter((bpf) => !((property.visibility_filter.text.split("&")).reduce((acc, filterPart) => acc || filterPart.toLowerCase() === bpf.text.toLowerCase(), false)));
+        blacklistedPropertyFilters = blacklistedPropertyFilters.filter((bpf) => !((property.visibility_filter.text.split("&")).reduce((acc: any, filterPart: any) => acc || filterPart.toLowerCase() === bpf.text.toLowerCase(), false)));
       }
       return property;
     })

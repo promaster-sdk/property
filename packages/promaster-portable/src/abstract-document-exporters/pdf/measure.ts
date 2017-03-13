@@ -131,7 +131,7 @@ function measureTable(pdf: any, resources: AD.Resources.Resources, availableSize
   return desiredSizes;
 }
 
-function measureKeepTogether(pdf, resources: AD.Resources.Resources, availableSize: AD.Size.Size, keepTogether: AD.KeepTogether.KeepTogether) {
+function measureKeepTogether(pdf: any, resources: AD.Resources.Resources, availableSize: AD.Size.Size, keepTogether: AD.KeepTogether.KeepTogether) {
   let desiredSizes = mergeMaps(keepTogether.children.map((e) => measureSectionElement(pdf, resources, availableSize, e)));
   let desiredHeight = R.reduce((sum, e) => sum + getDesiredSize(e, desiredSizes).height, 0.0, keepTogether.children);
   desiredSizes.set(keepTogether, AD.Size.create(availableSize.width, desiredHeight));
@@ -180,7 +180,7 @@ function measureImage(availableSize: AD.Size.Size, image: AD.Image.Image): AD.Si
   return AD.Size.create(desiredWidth, desiredHeight);
 }
 
-function measureText(pdf, text: string, style: AD.TextStyle.TextStyle, availableSize: AD.Size.Size): AD.Size.Size {
+function measureText(pdf: any, text: string, style: AD.TextStyle.TextStyle, availableSize: AD.Size.Size): AD.Size.Size {
   let font = style.fontFamily || "Helvetica";
   if (style.bold && style.italic) { font += "-BoldOblique"; }
   else if (style.bold) { font += "-Bold"; }

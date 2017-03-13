@@ -34,6 +34,7 @@ export function propertyValueMessage(propertyName: string, propertyValue: Proper
     case "text":
       return propertyValue.value;
   }
+  return "MESSAGE NOT AVAILABLE";
 }
 
 export function nullMessage(): string {

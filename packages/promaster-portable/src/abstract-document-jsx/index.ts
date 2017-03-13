@@ -29,7 +29,7 @@ export const Markdown = (props: Markdown1.MarkdownProps): React.ReactElement<Arr
 export const TextField = (props: TextField1.TextFieldProps): React.ReactElement<TextField1.TextField> => TextField1.create(props) as any;
 export const TextRun = (props: TextRun1.TextRunProps): React.ReactElement<TextRun1.TextRun> => TextRun1.create(props) as any;
 
-export function render(element: any) {
+export function render(element: any): any {
   if (typeof element.type !== "function") {
     return element;
   }
@@ -42,7 +42,7 @@ function renderChildren(element: React.ReactElement<any>) {
   if (!element.props || !element.props.children) {
     return [];
   } else if (Array.isArray(element.props.children)) {
-    return R.unnest(element.props.children.map((c) => {
+    return R.unnest(element.props.children.map((c: any) => {
       if (!c) {
         return [];
       }
