@@ -1,3 +1,4 @@
+import * as AbstractChart from "./abstract-chart/index";
 import * as AbstractDoc from "./abstract-document/index";
 import * as AbstractDocExporters from "./abstract-document-exporters/index";
 import * as AbstractDocJsx from "./abstract-document-jsx/index";
@@ -8,6 +9,7 @@ import * as VariantListing from "./variant-listing/index";
 import * as PromasterMarkdown from "./promaster-markdown/index";
 
 export {
+  AbstractChart,
   AbstractDoc,
   AbstractDocExporters,
   AbstractDocJsx,
