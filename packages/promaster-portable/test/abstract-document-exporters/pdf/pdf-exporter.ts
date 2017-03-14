@@ -310,6 +310,38 @@ describe("PdfExporter", () => {
     stream.on('finish', function () { done(); });
     ADPdf.exportToStream(pdfKit, stream, doc);
   });
+
+  it("should render bitmap images correctly", function (done) {
+    const data = fs.readFileSync("images/diffusers.png");
+    console.log(data);
+    const abstractImage = AI.createAbstractImage(AI.createPoint(0, 0), AI.createSize(40, 38), AI.white, [
+      AI.createBitmapImage(AI.createPoint(0, 0), AI.createPoint(40, 38), "png", data)
+    ]);
+    const imageResource = AD.ImageResource.create({
+      id: "image",
+      abstractImage: abstractImage
+    });
+    const doc = AD.AbstractDoc.create({
+      children: [
+        AD.Section.create({
+          children: [
+            AD.Paragraph.create({
+              children: [
+                AD.Image.create({
+                  width: 40,
+                  height: 38,
+                  imageResource: imageResource
+                })
+              ]
+            })
+          ]
+        }),
+      ]
+    });
+    const stream = createWriteStreamInOutDir("test_image.pdf");
+    stream.on('finish', function () { done(); });
+    ADPdf.exportToStream(pdfKit, stream, doc);
+  });
 });
 
 function createWriteStreamInOutDir(pathToStream: string): fs.WriteStream {
