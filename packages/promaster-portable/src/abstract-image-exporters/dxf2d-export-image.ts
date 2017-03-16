@@ -131,7 +131,7 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
     builder.append("73\n" + verticalAlignment.toString() + "\n")
   }
 
-  /*if (c_in.type === "ellipse") {
+  if (c_in.type === "ellipse") {
     let c: AbstractImage.Ellipse = c_in;
     layer++;
 
@@ -139,8 +139,8 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
     builder.append("8\n" + layer.toString() + "\n")
     builder.append("66\n" + "1" + "\n")
 
-    let r1 = c.size.width / 2.0;
-    let r2 = c.size.height / 2.0;
+    let r1 = Math.abs(c.bottomRight.x - c.topLeft.x) / 2.0;
+    let r2 = Math.abs(c.topLeft.y - c.bottomRight.y) / 2.0;
     const numPoints: number = 32;
 
     //      for (let t in Enumerable.Range(0, numPoints).Select(i => 2.0 * PI * i / numPoints))
@@ -161,7 +161,7 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
     }
     builder.append("0\nSEQEND\n")
     builder.append("8\n" + layer.toString() + "\n")
-  }*/
+  }
 
 
   if (c_in.type === "polygon") {
