@@ -32,7 +32,7 @@ export function exportToStream(pdfKit: any, blobStream: any, doc: AD.AbstractDoc
 
     let pdf = new PDFDocument({compress: false, autoFirstPage: false}) as any;
     if (resources.fonts) {
-      for (let fontName of R.keys(document.fonts)) {
+      for (let fontName of R.keys(document.fonts as any)) {
         const font = resources.fonts[fontName];
         pdf.registerFont(fontName, font.normal);
         pdf.registerFont(fontName + "-Bold", font.bold);
