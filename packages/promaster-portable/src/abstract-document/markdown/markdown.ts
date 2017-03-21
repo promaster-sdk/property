@@ -1,13 +1,15 @@
-import * as AD from "../../abstract-document/index";
 import {SectionElement} from "../section-elements/section-element";
 import {parse} from "markdown-to-ast";
-import {AstElements, MarkDownProcessData} from "./types";
+import { AstElements, MarkDownProcessData } from "./types";
+import * as Paragraph from "../section-elements/paragraph";
+import * as Atom from "../atoms/atom";
+import * as TextRun from "../atoms/text-run";
 
 export interface MarkdownProps {
   text: string,
 }
 
-function preProcessMarkdownAst(ast: AstElements, styles: Array<string>, atoms: Array<AD.Atom.Atom>, paragraphs: Array<AD.Paragraph.Paragraph>, d: number): MarkDownProcessData {
+function preProcessMarkdownAst(ast: AstElements, styles: Array<string>, atoms: Array<Atom.Atom>, paragraphs: Array<Paragraph.Paragraph>, d: number): MarkDownProcessData {
   if (ast.type === "Str") { return {atoms, paragraphs}; } // Need to convice TS that we never go below this line with a Str element.
 
   ast.children.forEach((child) => {
@@ -32,14 +34,14 @@ function preProcessMarkdownAst(ast: AstElements, styles: Array<string>, atoms: A
     if (child.type === "Paragraph" || child.type === "Header") {
       const paragraphStyle = child.type === "Header" ? "H" + child.depth : undefined;
 
-      paragraphs.push(AD.Paragraph.create({
+      paragraphs.push(Paragraph.create({
         styleName: paragraphStyle,
         children: atoms,
         numbering: undefined,    //paragraph.numbering
       }));
       atoms = []; // Flush the Atoms-array for the next paragraph.
     } else if (child.type === "Str") {
-      atoms = atoms.concat(child.value.split("\n").map((v: string) => ({ type: 'TextRun', text: v, styleName: style[style.length -1], textProperties: {} } as AD.TextRun.TextRun)));
+      atoms = atoms.concat(child.value.split("\n").map((v: string) => ({ type: 'TextRun', text: v, styleName: style[style.length -1], textProperties: {} } as TextRun.TextRun)));
     }
   });
 

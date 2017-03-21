@@ -1,5 +1,12 @@
 import * as R from "ramda";
-import {ParagraphStyle, StyleKey, TableStyle, TextStyle, TableCellStyle, LayoutFoundation, Style} from "./index";
+// import {ParagraphStyle, StyleKey, TableStyle, TextStyle, TableCellStyle, LayoutFoundation, Style} from "./index";
+import * as LayoutFoundation from "./primitives/layout-foundation";
+import * as ParagraphStyle from "./styles/paragraph-style";
+import * as Style from "./styles/style";
+import * as StyleKey from "./styles/style-key";
+import * as TableCellStyle from "./styles/table-cell-style";
+import * as TableStyle from "./styles/table-style";
+import * as TextStyle from "./styles/text-style";
 import {Indexer} from "./types";
 
 export const defaultAndStandardStyles = createDefaultAndStandardStyles();
