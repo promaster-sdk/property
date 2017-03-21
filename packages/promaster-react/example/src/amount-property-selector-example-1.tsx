@@ -1,5 +1,5 @@
 import * as React from "react";
-import {PropertySelectors} from "@promaster/promaster-react";
+import {PropertySelectors} from "../../src";
 import {PropertyFiltering} from "@promaster/promaster-portable";
 import {Unit, Units, PropertyFilter, PropertyValueSet, PropertyValue} from "@promaster/promaster-primitives";
 import {merge} from "./utils";
