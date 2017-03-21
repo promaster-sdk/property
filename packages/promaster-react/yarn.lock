@@ -2,46 +2,32 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-portable@^0.20.0":
-  version "0.20.0"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.20.0.tgz#ab74a1433a7889af79cebf58ebc092cf93cea9dc"
+"@promaster/promaster-portable@^0.24.0":
+  version "0.24.0"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.24.0.tgz#a67315348109dcb16485115af88845f57985be70"
   dependencies:
-    "@promaster/promaster-primitives" "^0.5.7"
+    "@promaster/promaster-primitives" "^0.6.1"
     base64-js "^1.2.0"
     blob-stream "^0.1.3"
+    isomorphic-fetch "^2.2.1"
     jszip "^3.1.3"
     markdown-to-ast "^3.4.0"
     node-uuid "^1.4.7"
     ramda "^0.22.1"
     showdown "^1.5.0"
+    webpack-dev-server "^2.4.2"
 
 "@promaster/promaster-primitives@^0.5.7":
   version "0.5.7"
   resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.5.7.tgz#3d38c9e3b3b73d0278e286a2bac381c68338913f"
 
-"@types/base64-js@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@types/base64-js/-/base64-js-1.2.5.tgz#582b2476169a6cba460a214d476c744441d873d5"
+"@promaster/promaster-primitives@^0.6.1":
+  version "0.6.1"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.6.1.tgz#12b22d11c5e43a688345d4eacafd1e5cc4de8382"
 
-"@types/blob-stream@^0.1.29":
-  version "0.1.29"
-  resolved "https://registry.yarnpkg.com/@types/blob-stream/-/blob-stream-0.1.29.tgz#fb56770feb0625d3acae604f245633f9ceda0ffd"
-  dependencies:
-    "@types/node" "*"
-
-"@types/node@*":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.5.tgz#96a0f0a618b7b606f1ec547403c00650210bfbb7"
-
-"@types/pdfkit@^0.7.31":
-  version "0.7.34"
-  resolved "https://registry.yarnpkg.com/@types/pdfkit/-/pdfkit-0.7.34.tgz#cc2a63beea2c78b23fab39d96431e251c99ff150"
-  dependencies:
-    "@types/node" "*"
-
-"@types/ramda@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.0.2.tgz#04e9b560b118eaf48542945ef9b2701c3f9832e3"
+"@types/ramda@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.0.3.tgz#683a3437d4446a4d21af473a9286e6950fa777c1"
 
 "@types/react-dom@^0.14.18":
   version "0.14.19"
@@ -1112,6 +1098,15 @@ http-proxy-middleware@~0.17.1:
     lodash "^4.17.2"
     micromatch "^2.3.11"
 
+http-proxy-middleware@~0.17.4:
+  version "0.17.4"
+  resolved "https://registry.yarnpkg.com/http-proxy-middleware/-/http-proxy-middleware-0.17.4.tgz#642e8848851d66f09d4f124912846dbaeb41b833"
+  dependencies:
+    http-proxy "^1.16.2"
+    is-glob "^3.1.0"
+    lodash "^4.17.2"
+    micromatch "^2.3.11"
+
 http-proxy@^1.16.2, http-proxy@^1.8.1:
   version "1.16.2"
   resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.16.2.tgz#06dff292952bf64dbe8471fa9df73066d4f37742"
@@ -1327,7 +1322,7 @@ isobject@^2.0.0:
   dependencies:
     isarray "1.0.0"
 
-isomorphic-fetch@^2.1.1:
+isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   dependencies:
@@ -2643,6 +2638,28 @@ webpack-dev-server@^2.4.1:
     express "^4.13.3"
     html-entities "^1.2.0"
     http-proxy-middleware "~0.17.1"
+    opn "4.0.2"
+    portfinder "^1.0.9"
+    serve-index "^1.7.2"
+    sockjs "0.3.18"
+    sockjs-client "1.1.2"
+    spdy "^3.4.1"
+    strip-ansi "^3.0.0"
+    supports-color "^3.1.1"
+    webpack-dev-middleware "^1.9.0"
+    yargs "^6.0.0"
+
+webpack-dev-server@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.4.2.tgz#cf595d6b40878452b6d2ad7229056b686f8a16be"
+  dependencies:
+    ansi-html "0.0.7"
+    chokidar "^1.6.0"
+    compression "^1.5.2"
+    connect-history-api-fallback "^1.3.0"
+    express "^4.13.3"
+    html-entities "^1.2.0"
+    http-proxy-middleware "~0.17.4"
     opn "4.0.2"
     portfinder "^1.0.9"
     serve-index "^1.7.2"
