@@ -52,7 +52,7 @@ function selectorRow(selector: PropertiesSelector.PropertySelectorRenderInfo,
   );
 }
 
-function getGroupDistinctNames(productPropertiesArray: Array<PropertiesSelector.PropertySelectorRenderInfo>): Array<string> {
+function getGroupDistinctNames(productPropertiesArray: ReadonlyArray<PropertiesSelector.PropertySelectorRenderInfo>): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (let property of productPropertiesArray) {
     if (groupNames.indexOf(property.groupName) === -1 /*&& !isNullOrWhiteSpace(property.groupName)*/) {

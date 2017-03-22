@@ -77,42 +77,42 @@ export class PropertiesSelectorExample3SingleValidValue extends React.Component<
 export function exampleProductProperties(): Array<PropertiesSelector.Property> {
   return [
     {
-      sortNo: 1,
+      sort_no: 1,
       name: "a",
       group: "Group1",
       quantity: "Discrete",
-      validationFilter: PropertyFilter.Empty,
-      visibilityFilter: PropertyFilter.Empty,
-      valueItems: [
+      validation_filter: PropertyFilter.Empty,
+      visibility_filter: PropertyFilter.Empty,
+      value: [
         {
+          sort_no: 10,
           value: PropertyValue.fromInteger(10),
-          sortNo: 10,
-          validationFilter: PropertyFilter.Empty,
+          property_filter: PropertyFilter.Empty,
         },
         {
+          sort_no: 20,
           value: PropertyValue.fromInteger(20),
-          sortNo: 20,
-          validationFilter: PropertyFilter.fromStringOrEmpty(""),
+          property_filter: PropertyFilter.fromStringOrEmpty(""),
         }
       ],
     },
     {
-      sortNo: 1,
+      sort_no: 1,
       name: "b",
       group: "Group1",
       quantity: "Discrete",
-      validationFilter: PropertyFilter.Empty,
-      visibilityFilter: PropertyFilter.Empty,
-      valueItems: [
+      validation_filter: PropertyFilter.Empty,
+      visibility_filter: PropertyFilter.Empty,
+      value: [
         {
+          sort_no: 100,
           value: PropertyValue.fromInteger(100),
-          sortNo: 100,
-          validationFilter: PropertyFilter.Empty,
+          property_filter: PropertyFilter.Empty,
         },
         {
+          sort_no: 200,
           value: PropertyValue.fromInteger(200),
-          sortNo: 200,
-          validationFilter: PropertyFilter.fromStringOrEmpty("a!=20"),
+          property_filter: PropertyFilter.fromStringOrEmpty("a!=20"),
         }
       ],
     }

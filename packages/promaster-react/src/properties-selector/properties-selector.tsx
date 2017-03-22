@@ -137,14 +137,14 @@ function createPropertySelectorRenderInfos({
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
 
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
-  const sortedArray = productProperties.slice().sort((a, b) => a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0);
+  const sortedArray = productProperties.slice().sort((a, b) => a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0);
 
   const selectorDefinitions: ReadonlyArray<PropertySelectorRenderInfo> = sortedArray
-    .filter((property: Property) => includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter))
+    .filter((property: Property) => includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter))
     .map((property: Property) => {
 
       const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
-      const selectedValueItem = property.valueItems && property.valueItems
+      const selectedValueItem = property.value && property.value
         .find((value: PropertyValueItem) =>
           (value.value === undefined && selectedValue === undefined) || (value.value && PropertyValue.equals(selectedValue, value.value)));
 
@@ -152,12 +152,12 @@ function createPropertySelectorRenderInfos({
       let defaultFormat: AmountFormat = { unit: Units.One, decimalCount: 2 };
       switch (getPropertyType(property.quantity)) {
         case "integer":
-          isValid = selectedValueItem ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter) : false;
+          isValid = selectedValueItem ? PropertyFilter.isValid(selectedProperties, selectedValueItem.property_filter) : false;
           break;
         case "amount":
           defaultFormat = selectedValue && selectedValue.type === "amount" ?
             { unit: selectedValue.value.unit, decimalCount: selectedValue.value.decimalCount } : defaultFormat;
-          isValid = property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter);
+          isValid = property.validation_filter && PropertyFilter.isValid(selectedProperties, property.validation_filter);
           break;
         default:
           isValid = true;
@@ -167,15 +167,15 @@ function createPropertySelectorRenderInfos({
       // TODO: Better handling of format to use when the format is missing in the map
       const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
-      const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter);
+      const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibility_filter);
       const label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
       const labelHover = translatePropertyLabelHover(property.name);
 
       const propertySelectorComponentProps: PropertySelectorComponentProps = {
         propertyName: property.name,
         quantity: property.quantity,
-        validationFilter: property.validationFilter,
-        valueItems: property.valueItems,
+        validationFilter: property.validation_filter,
+        valueItems: property.value,
         selectedValue,
         selectedProperties,
         includeCodes,
@@ -205,7 +205,7 @@ function createPropertySelectorRenderInfos({
       };
 
       return {
-        sortNo: property.sortNo,
+        sortNo: property.sort_no,
         propertyName: property.name,
         groupName: property.group,
 
@@ -244,8 +244,8 @@ function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyTyp
 function getSingleValidValueOrUndefined(productProperty: Property, properties: PropertyValueSet.PropertyValueSet): PropertyValueItem | undefined {
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: PropertyValueItem[] = [];
-    for (let productValueItem of productProperty.valueItems) {
-      const isValid = PropertyFilter.isValid(properties, productValueItem.validationFilter);
+    for (let productValueItem of productProperty.value) {
+      const isValid = PropertyFilter.isValid(properties, productValueItem.property_filter);
 
       if (isValid) {
         validPropertyValueItems.push(productValueItem);

@@ -4,56 +4,56 @@ import {PropertyFilter, PropertyValue} from "@promaster/promaster-primitives";
 export function exampleProductProperties(): Array<PropertiesSelector.Property> {
   return [
     {
-      sortNo: 1,
+      sort_no: 1,
       name: "a",
       group: "Group1",
       quantity: "Temperature",
-      validationFilter: PropertyFilter.fromString("a>100:Celsius") || PropertyFilter.Empty,
-      visibilityFilter: PropertyFilter.Empty,
-      valueItems: [],
+      validation_filter: PropertyFilter.fromString("a>100:Celsius") || PropertyFilter.Empty,
+      visibility_filter: PropertyFilter.Empty,
+      value: [],
     },
     {
-      sortNo: 2,
+      sort_no: 2,
       name: "b",
       group: "Group1",
       quantity: "Discrete",
-      validationFilter: PropertyFilter.Empty,
-      visibilityFilter: PropertyFilter.Empty,
-      valueItems: [
+      validation_filter: PropertyFilter.Empty,
+      visibility_filter: PropertyFilter.Empty,
+      value: [
         {
+          sort_no: 10,
           value: PropertyValue.fromInteger(1),
-          sortNo: 10,
-          validationFilter: PropertyFilter.Empty,
+          property_filter: PropertyFilter.Empty,
         },
         {
+          sort_no: 20,
           value: PropertyValue.fromInteger(2),
-          sortNo: 20,
-          validationFilter: PropertyFilter.Empty,
+          property_filter: PropertyFilter.Empty,
         }
       ],
     },
     {
-      sortNo: 3,
+      sort_no: 3,
       name: "c",
       group: "Group1",
       quantity: "Discrete",
-      validationFilter: PropertyFilter.Empty,
-      visibilityFilter: PropertyFilter.Empty,
-      valueItems: [
+      validation_filter: PropertyFilter.Empty,
+      visibility_filter: PropertyFilter.Empty,
+      value: [
         {
+          sort_no: 10,
           value: PropertyValue.fromInteger(1),
-          sortNo: 10,
-          validationFilter: PropertyFilter.fromString("b=1") || PropertyFilter.Empty,
+          property_filter: PropertyFilter.fromString("b=1") || PropertyFilter.Empty,
         },
         {
+          sort_no: 20,
           value: PropertyValue.fromInteger(2),
-          sortNo: 20,
-          validationFilter: PropertyFilter.Empty,
+          property_filter: PropertyFilter.Empty,
         },
         {
+          sort_no: 30,
           value: PropertyValue.fromInteger(3),
-          sortNo: 30,
-          validationFilter: PropertyFilter.Empty,
+          property_filter: PropertyFilter.Empty,
         }
       ],
     }

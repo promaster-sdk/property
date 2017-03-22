@@ -46,23 +46,28 @@ export interface PropertySelectorRenderInfo {
 
 }
 
+/**
+ * This interface has keys with the same names as returned by promaster-api.
+ */
 export interface Property {
-	readonly sortNo: number,
+	readonly sort_no: number,
 	readonly name: string,
 	readonly group: string,
 	readonly quantity: Quantity.Quantity,
-	readonly validationFilter: PropertyFilter.PropertyFilter,
-	readonly visibilityFilter: PropertyFilter.PropertyFilter,
-	readonly valueItems: ReadonlyArray<PropertyValueItem>,
+	readonly validation_filter: PropertyFilter.PropertyFilter,
+	readonly visibility_filter: PropertyFilter.PropertyFilter,
+	readonly value: ReadonlyArray<PropertyValueItem>,
 }
 
+/**
+ * This interface has keys with the same names as returned by promaster-api.
+ */
 export interface PropertyValueItem {
+	readonly sort_no: number,
 	readonly value: PropertyValue.PropertyValue,
-	readonly sortNo: number,
-	readonly validationFilter: PropertyFilter.PropertyFilter,
+	readonly property_filter: PropertyFilter.PropertyFilter,
   readonly image?: string,
 }
-
 
 export interface PropertySelectorStyles {
   amountPropertySelectorStyles?: AmountPropertySelectorStyles,

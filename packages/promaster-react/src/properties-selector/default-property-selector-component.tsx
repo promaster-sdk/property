@@ -101,8 +101,8 @@ export function DefaultPropertySelectorComponent({
         valueItems: valueItems && valueItems.map((vi) => ({
           value: vi.value,
           text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
-          sortNo: vi.sortNo,
-          validationFilter: vi.validationFilter,
+          sortNo: vi.sort_no,
+          validationFilter: vi.property_filter,
           image: vi.image,
         })),
         showCodes: includeCodes,

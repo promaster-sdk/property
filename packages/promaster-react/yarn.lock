@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-portable@^0.24.0":
-  version "0.24.0"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.24.0.tgz#a67315348109dcb16485115af88845f57985be70"
+"@promaster/promaster-portable@^0.25.0":
+  version "0.25.0"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-portable/-/promaster-portable-0.25.0.tgz#a3db8806b6a5a4857a2c3313126c763308663d99"
   dependencies:
     "@promaster/promaster-primitives" "^0.6.1"
     base64-js "^1.2.0"
