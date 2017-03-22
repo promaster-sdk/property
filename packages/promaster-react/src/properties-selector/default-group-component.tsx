@@ -1,12 +1,12 @@
 import * as React from "react";
-import {OnToggleGroupClosed, TranslateGroupName} from "./types";
+import { OnToggleGroupClosed, TranslateGroupName } from "./types";
 
 export interface GroupComponentProps {
   readonly isClosedGroup: boolean,
   readonly groupName: string,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
   readonly translateGroupName: TranslateGroupName,
-  readonly children?: Array<React.ReactElement<{}>>,
+  readonly children?: ReadonlyArray<React.ReactElement<{}>>,
 }
 
 export function DefaultGroupComponent({
@@ -15,7 +15,7 @@ export function DefaultGroupComponent({
   onToggleGroupClosed,
   translateGroupName,
   children
-}:GroupComponentProps) {
+}: GroupComponentProps) {
   const className1 = 'group-container' + (isClosedGroup || groupName === "Main" ? ' expanded' : ' collapsed'); // temp fix to hide on start
   return (
     <div key={groupName} className={className1}>

@@ -53,7 +53,7 @@ export interface Property {
 	readonly quantity: Quantity.Quantity,
 	readonly validationFilter: PropertyFilter.PropertyFilter,
 	readonly visibilityFilter: PropertyFilter.PropertyFilter,
-	readonly valueItems: Array<PropertyValueItem>,
+	readonly valueItems: ReadonlyArray<PropertyValueItem>,
 }
 
 export interface PropertyValueItem {

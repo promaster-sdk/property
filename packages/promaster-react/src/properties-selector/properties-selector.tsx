@@ -29,7 +29,7 @@ import { PropertySelectorComponentProps, DefaultPropertySelectorComponent } from
 export interface PropertiesSelectorProps {
 
   // Required inputs
-  readonly productProperties: Array<Property>
+  readonly productProperties: ReadonlyArray<Property>
   readonly selectedProperties: PropertyValueSet.PropertyValueSet,
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
 
@@ -54,9 +54,9 @@ export interface PropertiesSelectorProps {
   readonly translateGroupName: TranslateGroupName,
 
   // Specifies property names of properties that should be read-only
-  readonly readOnlyProperties: Array<string>,
+  readonly readOnlyProperties: ReadonlyArray<string>,
   // Specifies property names of properties that should be optional (only for amounts for now)
-  readonly optionalProperties: Array<string>,
+  readonly optionalProperties: ReadonlyArray<string>,
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
   readonly propertyFormats: { [key: string]: AmountFormat },
 
@@ -65,7 +65,7 @@ export interface PropertiesSelectorProps {
   // Debounce value for inputs in ms. Defaults to 350.
   readonly inputDebounceTime?: number,
 
-  readonly closedGroups: Array<string>,
+  readonly closedGroups: ReadonlyArray<string>,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
 
   // Override layout
@@ -131,7 +131,7 @@ function createPropertySelectorRenderInfos({
 
   inputDebounceTime,
 
-}: PropertiesSelectorProps): Array<PropertySelectorRenderInfo> {
+}: PropertiesSelectorProps): ReadonlyArray<PropertySelectorRenderInfo> {
 
   // Default true if not specified otherwise
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;
@@ -139,7 +139,7 @@ function createPropertySelectorRenderInfos({
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
   const sortedArray = productProperties.slice().sort((a, b) => a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0);
 
-  const selectorDefinitions: Array<PropertySelectorRenderInfo> = sortedArray
+  const selectorDefinitions: ReadonlyArray<PropertySelectorRenderInfo> = sortedArray
     .filter((property: Property) => includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter))
     .map((property: Property) => {
 
@@ -270,7 +270,7 @@ function shouldBeLocked(selectedValueItem: PropertyValueItem | undefined, produc
   return false;
 }
 
-function handleChange(externalOnChange: PropertySelectionOnChange, productProperties: Array<Property>, autoSelectSingleValidValue: boolean) {
+function handleChange(externalOnChange: PropertySelectionOnChange, productProperties: ReadonlyArray<Property>, autoSelectSingleValidValue: boolean) {
   return (properties: PropertyValueSet.PropertyValueSet) => {
 
     if (!autoSelectSingleValidValue) {

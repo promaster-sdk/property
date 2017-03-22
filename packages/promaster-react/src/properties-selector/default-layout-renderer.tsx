@@ -6,9 +6,9 @@ import {PropertyLabelComponentProps} from "./default-property-label-component";
 import {PropertySelectorComponentProps} from "./default-property-selector-component";
 
 export interface LayoutRendererProps {
-  readonly selectors: Array<PropertySelectorRenderInfo>,
+  readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>,
   readonly translateGroupName: TranslateGroupName,
-  readonly closedGroups: Array<string>,
+  readonly closedGroups: ReadonlyArray<string>,
   readonly onToggleGroupClosed: OnToggleGroupClosed,
   readonly GroupComponent: ReactComponent<GroupComponentProps>,
   readonly GroupItemComponent: ReactComponent<GroupItemComponentProps>,
@@ -57,7 +57,7 @@ export function DefaultLayoutRenderer({
 }
 
 
-function getDistinctGroupNames(productPropertiesArray: Array<PropertySelectorRenderInfo>): Array<string> {
+function getDistinctGroupNames(productPropertiesArray: ReadonlyArray<PropertySelectorRenderInfo>): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (let property of productPropertiesArray) {
     if (groupNames.indexOf(property.groupName) === -1 && !isNullOrWhiteSpace(property.groupName)) {
