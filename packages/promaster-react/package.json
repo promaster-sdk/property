@@ -19,14 +19,19 @@
     "react": "^15.3.0"
   },
   "devDependencies": {
+    "@types/jest": "^19.2.2",
     "@types/ramda": "^0.0.3",
     "@types/react": "^0.14.41",
     "@types/react-dom": "^0.14.18",
+    "@types/react-test-renderer": "^15.4.2",
     "awesome-typescript-loader": "^3.0.0-beta.17",
     "http-server": "^0.9.0",
+    "jest": "^19.0.2",
     "plugin-typescript": "^5.2.7",
     "react-dom": "^15.3.0",
+    "react-test-renderer": "^15.4.2",
     "shelljs": "^0.7.4",
+    "ts-jest": "^19.0.2",
     "tslint-immutable": "^2.1.0",
     "typescript": "^2.2.1",
     "webpack": "^2.2.1",
@@ -36,7 +41,8 @@
     "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "tsc": "tsc --version && tsc -p src",
     "tsc:example": "tsc -p example",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc:test": "tsc -p test",
+    "test": "jest test/** --config=test/jest.config.json",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
@@ -44,5 +50,19 @@
     "publish:major": "yarn build && node scripts/publish.js major",
     "publish:minor": "yarn build && node scripts/publish.js minor",
     "publish:patch": "yarn build && node scripts/publish.js patch"
+  },
+  "jest": {
+    "globals": {
+      "__TS_CONFIG__": "src/tsconfig.json"
+    },
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
   }
 }
