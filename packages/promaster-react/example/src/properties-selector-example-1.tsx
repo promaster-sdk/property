@@ -22,7 +22,6 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       productProperties: productProperties,
       selectedProperties: this.state.propertyValueSet,
-      includeCodes: true,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
         this.setState({ ...this.state, propertyValueSet: properties });
         console.log("updated");
