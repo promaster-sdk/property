@@ -74,3 +74,7 @@ export interface PropertySelectorStyles {
   comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles,
   textboxPropertySelectorStyles?: TextboxPropertySelectorStyles
 }
+
+export interface PropertyFormats {
+  [key: string]: AmountFormat
+}

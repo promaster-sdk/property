@@ -27,7 +27,7 @@ export class Container extends React.Component<void, State> {
   constructor() {
     super();
     this.state = {
-      selectedExample: 6,
+      selectedExample: 4,
       examples: [
         {name: "AmountFormatSelector #1", component: AmountFormatSelectorExample1},
         {name: "AmountPropertySelector #1", component: AmountPropertySelectorExample1},

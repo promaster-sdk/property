@@ -47,7 +47,7 @@ export interface PropertySelectorComponentProps {
   readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
   readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
   readonly styles: PropertySelectorStyles,
-  readonly inputDebounceTime?: number
+  readonly inputDebounceTime: number
 }
 
 export function DefaultPropertySelectorComponent({
@@ -70,7 +70,7 @@ export function DefaultPropertySelectorComponent({
   translateValueMustBeNumericMessage,
   translateValueIsRequiredMessage,
   styles,
-  inputDebounceTime = 350
+  inputDebounceTime
 }:PropertySelectorComponentProps): any {
 
   function onValueChange(newValue: PropertyValue.PropertyValue) {

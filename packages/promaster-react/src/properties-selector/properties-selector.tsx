@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Units, PropertyValueSet, Quantity, PropertyValue, PropertyFilter } from "@promaster/promaster-primitives";
+import { Units, PropertyValueSet, Quantity, PropertyValue, PropertyFilter, Unit } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
   PropertySelectionOnChange,
@@ -17,7 +17,8 @@ import {
   PropertyValueItem,
   ReactComponent,
   OnToggleGroupClosed,
-  PropertySelectorStyles
+  PropertySelectorStyles,
+  PropertyFormats
 } from "./types";
 import { DefaultLayoutRenderer, LayoutRendererProps } from "./default-layout-renderer";
 import { GroupComponentProps, DefaultGroupComponent } from "./default-group-component";
@@ -28,6 +29,171 @@ import { PropertySelectorComponentProps, DefaultPropertySelectorComponent } from
 
 export interface PropertiesSelectorProps {
 
+  // Required inputs
+  readonly productProperties: ReadonlyArray<Property>
+  readonly selectedProperties: PropertyValueSet.PropertyValueSet,
+
+  // Used to print error messages
+  readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint,
+
+  // Includes the raw property name and value in paranthesis
+  readonly includeCodes?: boolean,
+  // Will render properties that according to their rule should be hidden
+  readonly includeHiddenProperties?: boolean,
+  // Will automatically select values for properties that have only one valid value
+  readonly autoSelectSingleValidValue?: boolean
+
+  // Events
+  readonly onChange?: PropertySelectionOnChange,
+  readonly onPropertyFormatChanged?: OnPropertyFormatChanged,
+  readonly onPropertyFormatCleared?: OnPropertyFormatCleared,
+
+  // Translations
+  readonly translatePropertyName?: TranslatePropertyName,
+  readonly translatePropertyValue?: TranslatePropertyValue,
+  readonly translateValueMustBeNumericMessage?: TranslateNotNumericMessage,
+  readonly translateValueIsRequiredMessage?: TranslateValueIsRequiredMessage,
+  readonly translatePropertyLabelHover?: TranslatePropertyLabelHover,
+  readonly translateGroupName?: TranslateGroupName,
+
+  // Specifies property names of properties that should be read-only
+  readonly readOnlyProperties?: ReadonlyArray<string>,
+  // Specifies property names of properties that should be optional (only for amounts for now)
+  readonly optionalProperties?: ReadonlyArray<string>,
+  // Specifies input format per property name for entering amount properties (measure unit and decimal count)
+  readonly propertyFormats?: PropertyFormats,
+
+  readonly styles?: PropertySelectorStyles,
+
+  // Debounce value for inputs in ms. Defaults to 350.
+  readonly inputDebounceTime?: number,
+
+  // Group handling
+  readonly closedGroups?: ReadonlyArray<string>,
+  readonly onToggleGroupClosed?: OnToggleGroupClosed,
+
+  // Override layout
+  readonly LayoutRenderer?: (props: LayoutRendererProps) => React.ReactElement<LayoutRendererProps>,
+  readonly GroupComponent?: ReactComponent<GroupComponentProps>,
+  readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
+  readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
+  readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
+}
+
+export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
+
+  // Do destructoring and set defaults
+  const {
+   productProperties,
+    selectedProperties,
+    filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
+      PropertyFiltering.filterPrettyPrintIndented(
+        PropertyFiltering.FilterPrettyPrintMessagesEnglish, 2, " ", propertyFilter),
+
+    includeCodes = false,
+    includeHiddenProperties = false,
+    autoSelectSingleValidValue = true,
+
+    onChange = (_a: PropertyValueSet.PropertyValueSet) => { },
+    onPropertyFormatChanged = (_a: string, _b: Unit.Unit<any>, _c: number) => { },
+    onPropertyFormatCleared = (_a: string) => { },
+
+    translatePropertyName = (a: string) => a,
+    translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
+    translateValueMustBeNumericMessage = () => "value_must_be_numeric",
+    translateValueIsRequiredMessage = () => "value_is_required",
+    translatePropertyLabelHover = () => "translatePropertyLabelHover",
+    translateGroupName = (a: string) => a,
+
+    readOnlyProperties = [],
+    optionalProperties = [],
+    propertyFormats = {},
+
+    styles = {},
+
+    inputDebounceTime = 350,
+
+    closedGroups = [],
+    onToggleGroupClosed = () => { },
+
+    LayoutRenderer = DefaultLayoutRenderer,
+    GroupComponent = DefaultGroupComponent,
+    GroupItemComponent = DefaultGroupItemComponent,
+    PropertySelectorComponent = DefaultPropertySelectorComponent,
+    PropertyLabelComponent = DefaultPropertyLabelComponent,
+  } = props;
+
+  const selectors = createPropertySelectorRenderInfos(
+    productProperties,
+    selectedProperties,
+    filterPrettyPrint,
+
+    includeCodes,
+    includeHiddenProperties,
+    autoSelectSingleValidValue,
+
+    onChange,
+    onPropertyFormatChanged,
+    onPropertyFormatCleared,
+
+    translatePropertyName,
+    translatePropertyValue,
+    translateValueMustBeNumericMessage,
+    translateValueIsRequiredMessage,
+    translatePropertyLabelHover,
+
+    readOnlyProperties,
+    optionalProperties,
+    propertyFormats,
+
+    styles,
+    inputDebounceTime,
+  );
+
+  return LayoutRenderer({
+    selectors: selectors,
+    translateGroupName: translateGroupName,
+    closedGroups: closedGroups,
+    onToggleGroupClosed: onToggleGroupClosed,
+    GroupComponent: GroupComponent,
+    GroupItemComponent: GroupItemComponent,
+    PropertySelectorComponent: PropertySelectorComponent,
+    PropertyLabelComponent: PropertyLabelComponent
+  });
+
+}
+
+// function createPropertySelectorRenderInfos({
+//   productProperties,
+//   selectedProperties,
+//   filterPrettyPrint,
+
+//   includeCodes,
+//   includeHiddenProperties,
+//   autoSelectSingleValidValue,
+
+//   onChange,
+//   onPropertyFormatChanged,
+//   onPropertyFormatCleared,
+
+//   translatePropertyName,
+//   translatePropertyValue,
+//   translateValueMustBeNumericMessage,
+//   translateValueIsRequiredMessage,
+//   translatePropertyLabelHover,
+
+//   readOnlyProperties,
+//   optionalProperties,
+//   propertyFormats,
+
+//   styles,
+
+//   inputDebounceTime,
+
+// }: PropertiesSelectorProps): ReadonlyArray<PropertySelectorRenderInfo> {
+
+
+/*
   // Required inputs
   readonly productProperties: ReadonlyArray<Property>
   readonly selectedProperties: PropertyValueSet.PropertyValueSet,
@@ -51,7 +217,7 @@ export interface PropertiesSelectorProps {
   readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
   readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
   readonly translatePropertyLabelHover: TranslatePropertyLabelHover,
-  readonly translateGroupName: TranslateGroupName,
+  readonly translateGroupName?: TranslateGroupName,
 
   // Specifies property names of properties that should be read-only
   readonly readOnlyProperties: ReadonlyArray<string>,
@@ -65,8 +231,9 @@ export interface PropertiesSelectorProps {
   // Debounce value for inputs in ms. Defaults to 350.
   readonly inputDebounceTime?: number,
 
-  readonly closedGroups: ReadonlyArray<string>,
-  readonly onToggleGroupClosed: OnToggleGroupClosed,
+  // Group handling
+  readonly closedGroups?: ReadonlyArray<string>,
+  readonly onToggleGroupClosed?: OnToggleGroupClosed,
 
   // Override layout
   readonly LayoutRenderer?: (props: LayoutRendererProps) => React.ReactElement<LayoutRendererProps>,
@@ -74,64 +241,35 @@ export interface PropertiesSelectorProps {
   readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
   readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
   readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
-}
+*/
 
-export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
 
-  const {
-    translateGroupName,
-    closedGroups,
-    onToggleGroupClosed,
-    LayoutRenderer = DefaultLayoutRenderer,
-    GroupComponent = DefaultGroupComponent,
-    GroupItemComponent = DefaultGroupItemComponent,
-    PropertySelectorComponent = DefaultPropertySelectorComponent,
-    PropertyLabelComponent = DefaultPropertyLabelComponent,
-  } = props;
+function createPropertySelectorRenderInfos(
+  productProperties: ReadonlyArray<Property>,
+  selectedProperties: PropertyValueSet.PropertyValueSet,
+  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
 
-  const selectors = createPropertySelectorRenderInfos(props);
+  includeCodes: boolean,
+  includeHiddenProperties: boolean,
+  autoSelectSingleValidValue: boolean,
 
-  return LayoutRenderer({
-    selectors: selectors,
-    translateGroupName: translateGroupName,
-    closedGroups: closedGroups,
-    onToggleGroupClosed: onToggleGroupClosed,
-    GroupComponent: GroupComponent,
-    GroupItemComponent: GroupItemComponent,
-    PropertySelectorComponent: PropertySelectorComponent,
-    PropertyLabelComponent: PropertyLabelComponent
-  });
+  onChange: PropertySelectionOnChange,
+  onPropertyFormatChanged: OnPropertyFormatChanged,
+  onPropertyFormatCleared: OnPropertyFormatCleared,
 
-}
+  translatePropertyName: TranslatePropertyName,
+  translatePropertyValue: TranslatePropertyValue,
+  translateValueMustBeNumericMessage: TranslateNotNumericMessage,
+  translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
+  translatePropertyLabelHover: TranslatePropertyLabelHover,
 
-function createPropertySelectorRenderInfos({
-  productProperties,
-  selectedProperties,
-  filterPrettyPrint,
+  readOnlyProperties: ReadonlyArray<string>,
+  optionalProperties: ReadonlyArray<string>,
+  propertyFormats: { [key: string]: AmountFormat },
 
-  includeCodes,
-  includeHiddenProperties,
-  autoSelectSingleValidValue,
-
-  onChange,
-  onPropertyFormatChanged,
-  onPropertyFormatCleared,
-
-  translatePropertyName,
-  translatePropertyValue,
-  translateValueMustBeNumericMessage,
-  translateValueIsRequiredMessage,
-  translatePropertyLabelHover,
-
-  readOnlyProperties,
-  optionalProperties,
-  propertyFormats,
-
-  styles,
-
-  inputDebounceTime,
-
-}: PropertiesSelectorProps): ReadonlyArray<PropertySelectorRenderInfo> {
+  styles: PropertySelectorStyles,
+  inputDebounceTime: number,
+): ReadonlyArray<PropertySelectorRenderInfo> {
 
   // Default true if not specified otherwise
   autoSelectSingleValidValue = (autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined) ? true : autoSelectSingleValidValue;

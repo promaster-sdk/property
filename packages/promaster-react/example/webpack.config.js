@@ -29,16 +29,13 @@ module.exports = {
   node: {
     fs: "empty",
   },
-  performance: {
-    hints: false
-  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     plugins: [
       new atl.TsConfigPathsPlugin({configFileName: "./src/client/tsconfig.json"})
     ],
     alias: {
-      "@promaster/promaster-react": path.resolve( __dirname, '../')
+      "@promaster/promaster-react": path.resolve( __dirname, '../src')
     }
   },
   plugins: [
