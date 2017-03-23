@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-react",
-  "version": "0.16.1",
+  "version": "0.16.2",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "description": "React components for applications that use Promaster.",
@@ -41,8 +41,8 @@
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
     "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
-    "publish:major": "npm run build && node scripts/publish.js major",
-    "publish:minor": "npm run build && node scripts/publish.js minor",
-    "publish:patch": "npm run build && node scripts/publish.js patch"
+    "publish:major": "yarn build && node scripts/publish.js major",
+    "publish:minor": "yarn build && node scripts/publish.js minor",
+    "publish:patch": "yarn build && node scripts/publish.js patch"
   }
 }
