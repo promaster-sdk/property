@@ -1,9 +1,9 @@
 import * as React from "react";
-import {PropertySelectorRenderInfo, TranslateGroupName, OnToggleGroupClosed, ReactComponent} from "./types";
-import {GroupComponentProps} from "./default-group-component";
-import {GroupItemComponentProps} from "./default-group-item-component";
-import {PropertyLabelComponentProps} from "./default-property-label-component";
-import {PropertySelectorComponentProps} from "./default-property-selector-component";
+import { PropertySelectorRenderInfo, TranslateGroupName, OnToggleGroupClosed, ReactComponent } from "./types";
+import { GroupComponentProps } from "./default-group-component";
+import { GroupItemComponentProps } from "./default-group-item-component";
+import { PropertyLabelComponentProps } from "./default-property-label-component";
+import { PropertySelectorComponentProps } from "./default-property-selector-component";
 
 export interface LayoutRendererProps {
   readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>,
@@ -37,15 +37,15 @@ export function DefaultLayoutRenderer({
           const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ''));
           return (
             <GroupComponent key={groupName}
-                            isClosedGroup={isClosedGroup}
-                            groupName={groupName}
-                            onToggleGroupClosed={onToggleGroupClosed}
-                            translateGroupName={translateGroupName}>
+              isClosedGroup={isClosedGroup}
+              groupName={groupName}
+              onToggleGroupClosed={onToggleGroupClosed}
+              translateGroupName={translateGroupName}>
               {renderedSelectorsForGroup.map((selector) => (
                 <GroupItemComponent key={selector.propertyName}
-                                    selector={selector}
-                                    PropertySelectorComponent={PropertySelectorComponent}
-                                    PropertyLabelComponent={PropertyLabelComponent}/>
+                  selector={selector}
+                  PropertySelectorComponent={PropertySelectorComponent}
+                  PropertyLabelComponent={PropertyLabelComponent} />
               ))}
             </GroupComponent>
           );
@@ -60,7 +60,11 @@ export function DefaultLayoutRenderer({
 function getDistinctGroupNames(productPropertiesArray: ReadonlyArray<PropertySelectorRenderInfo>): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (let property of productPropertiesArray) {
-    if (groupNames.indexOf(property.groupName) === -1 && !isNullOrWhiteSpace(property.groupName)) {
+    let groupName = property.groupName;
+    if (isNullOrWhiteSpace(property.groupName)) {
+      groupName = "";
+    }
+    if (groupNames.indexOf(property.groupName) === -1) {
       groupNames.push(property.groupName);
     }
   }

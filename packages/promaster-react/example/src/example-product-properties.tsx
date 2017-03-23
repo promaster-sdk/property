@@ -6,7 +6,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
     {
       sort_no: 1,
       name: "a",
-      group: "Group1",
+      group: "",
       quantity: "Temperature",
       validation_filter: PropertyFilter.fromString("a>100:Celsius") || PropertyFilter.Empty,
       visibility_filter: PropertyFilter.Empty,
