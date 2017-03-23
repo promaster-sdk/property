@@ -16,16 +16,19 @@ export function DefaultGroupComponent({
   translateGroupName,
   children
 }: GroupComponentProps) {
-  const className1 = 'group-container' + (isClosedGroup || groupName === "Main" ? ' expanded' : ' collapsed'); // temp fix to hide on start
   return (
-    <div key={groupName} className={className1}>
+    <div key={groupName}>
       {groupName !== "" ?
         <div className="group-container-header" onClick={() => onToggleGroupClosed(groupName)}>
           <button className="expand-collapse">&nbsp;>>&nbsp;</button>
           {translateGroupName(groupName)}
         </div> : ""
       }
-      {children}
+      <table>
+        <tbody>
+          {isClosedGroup ? "" : children}
+        </tbody>
+      </table>
     </div>
   );
 }

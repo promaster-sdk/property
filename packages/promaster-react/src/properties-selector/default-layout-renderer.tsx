@@ -30,7 +30,7 @@ export function DefaultLayoutRenderer({
   const groups = getDistinctGroupNames(selectors);
 
   return (
-    <div className="properties-selector">
+    <div>
       {
         groups.map((groupName: any) => {
           const isClosedGroup = closedGroups.indexOf(groupName) !== -1;

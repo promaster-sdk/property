@@ -1,7 +1,7 @@
 import * as React from "react";
-import {PropertySelectorRenderInfo, ReactComponent} from "./types";
-import {PropertyLabelComponentProps} from "./default-property-label-component";
-import {PropertySelectorComponentProps} from "./default-property-selector-component";
+import { PropertySelectorRenderInfo, ReactComponent } from "./types";
+import { PropertyLabelComponentProps } from "./default-property-label-component";
+import { PropertySelectorComponentProps } from "./default-property-selector-component";
 
 export interface GroupItemComponentProps {
   readonly selector: PropertySelectorRenderInfo,
@@ -15,9 +15,13 @@ export function DefaultGroupItemComponent({
   PropertySelectorComponent,
 }: GroupItemComponentProps): React.ReactElement<GroupItemComponentProps> {
   return (
-    <div key={selector.propertyName} className="property-selector-row">
-      <PropertyLabelComponent {...selector.labelComponentProps} />
-      <PropertySelectorComponent {...selector.selectorComponentProps} />
-    </div>
+    <tr key={selector.propertyName}>
+      <td>
+        <PropertyLabelComponent {...selector.labelComponentProps} />
+      </td>
+      <td>
+        <PropertySelectorComponent {...selector.selectorComponentProps} />
+      </td>
+    </tr>
   );
 }
