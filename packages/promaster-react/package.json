@@ -3,6 +3,7 @@
   "version": "0.16.3",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
+  "types": "lib-cjs/index",
   "description": "React components for applications that use Promaster.",
   "author": "Divid AB",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
