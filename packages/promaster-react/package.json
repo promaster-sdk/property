@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-react",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "description": "React components for applications that use Promaster.",
@@ -32,18 +32,15 @@
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
   },
-    "scripts": {
+  "scripts": {
     "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "tsc": "tsc --version && tsc -p src",
     "tsc:example": "tsc -p example",
-
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
     "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
-
     "publish:major": "npm run build && node scripts/publish.js major",
     "publish:minor": "npm run build && node scripts/publish.js minor",
     "publish:patch": "npm run build && node scripts/publish.js patch"
