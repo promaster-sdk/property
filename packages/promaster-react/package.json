@@ -1,7 +1,8 @@
 {
   "name": "@promaster/promaster-react",
   "version": "0.16.0",
-  "main": "lib/index.js",
+  "main": "lib-cjs/index.js",
+  "module": "lib-esm/index.js",
   "description": "React components for applications that use Promaster.",
   "author": "Divid AB",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-react",
@@ -9,16 +10,6 @@
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc --version && tsc -p src",
-    "tsc:example": "tsc -p example",
-    "build": "rm -rf lib && tsc --version && tsc -p src",
-    "publish:major": "npm run build && node scripts/publish.js major",
-    "publish:minor": "npm run build && node scripts/publish.js minor",
-    "publish:patch": "npm run build && node scripts/publish.js patch"
   },
   "dependencies": {
     "@promaster/promaster-portable": "^0.25.0",
@@ -40,5 +31,21 @@
     "typescript": "^2.2.1",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
+  },
+    "scripts": {
+    "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
+    "tsc": "tsc --version && tsc -p src",
+    "tsc:example": "tsc -p example",
+
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
+    "build:clean": "rm -rf ./lib-cjs ./lib-esm",
+    "build:cjs": "tsc -p src",
+    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
+
+    "publish:major": "npm run build && node scripts/publish.js major",
+    "publish:minor": "npm run build && node scripts/publish.js minor",
+    "publish:patch": "npm run build && node scripts/publish.js patch"
   }
 }

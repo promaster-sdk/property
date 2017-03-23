@@ -1,13 +1,15 @@
 {
   "extends": "../base-tsconfig.json",
   "compilerOptions": {
-
+    // Output options
     "target": "es5",
     "module": "commonjs",
-    "jsx": "react",
-    "outDir": "../lib",
-    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "../lib-cjs",
     "sourceMap": true,
+    "jsx": "react",
+    // import & lib options
+    "moduleResolution": "node",
     "typeRoots": ["../node_modules/@types/"],
     "lib": ["es5", "dom", "es2015", "es2015.promise", "es2015.iterable", "es2015.symbol"],
     "baseUrl": ".",

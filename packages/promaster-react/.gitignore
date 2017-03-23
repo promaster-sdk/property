@@ -7,4 +7,5 @@ thumbs.db
 node_modules/
 example/js_out
 dist/
-lib/
+lib-cjs/
+lib-esm/
