@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-react",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "description": "React components for applications that use Promaster.",
