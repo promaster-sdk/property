@@ -4,7 +4,7 @@ stages:
 variables:
   YARN: node ./yarn.js
 
-build:
+test:
   image: node:7.6.0
   stage: test
   script:
@@ -12,6 +12,3 @@ build:
     - $YARN run lint
     - $YARN run circular
     - $YARN run test
-  artifacts:
-    paths:
-    - dist/
