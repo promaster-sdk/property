@@ -25,16 +25,16 @@ export function DefaultLayoutRenderer({
   GroupItemComponent,
   PropertySelectorComponent,
   PropertyLabelComponent
-}: LayoutRendererProps) {
+}: LayoutRendererProps): React.ReactElement<LayoutRendererProps> {
 
   const groups = getDistinctGroupNames(selectors);
 
   return (
     <div>
       {
-        groups.map((groupName: any) => {
+        groups.map((groupName) => {
           const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
-          const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ''));
+          const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ""));
           return (
             <GroupComponent key={groupName}
               isClosedGroup={isClosedGroup}
@@ -56,7 +56,6 @@ export function DefaultLayoutRenderer({
 
 }
 
-
 function getDistinctGroupNames(productPropertiesArray: ReadonlyArray<PropertySelectorRenderInfo>): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (let property of productPropertiesArray) {
@@ -71,6 +70,6 @@ function getDistinctGroupNames(productPropertiesArray: ReadonlyArray<PropertySel
   return groupNames;
 }
 
-function isNullOrWhiteSpace(str: string) {
-  return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, '').length < 1;
+function isNullOrWhiteSpace(str: string): boolean {
+  return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
 }

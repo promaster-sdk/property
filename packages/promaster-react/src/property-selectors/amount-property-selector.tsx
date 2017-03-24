@@ -1,13 +1,15 @@
 import * as React from "react";
-import {Amount, PropertyValueSet, PropertyFilter, PropertyValue, Unit} from "@promaster/promaster-primitives";
-import {PropertyFiltering} from "@promaster/promaster-portable";
-import {AmountInputBox, AmountFormatSelector, OnFormatChanged, OnFormatCleared} from "../amount-fields/index";
-import {amountPropertySelectorStyles, AmountPropertySelectorStyles} from "./amount-property-selector-styles";
+import { Amount, PropertyValueSet, PropertyFilter, PropertyValue, Unit, Quantity } from "@promaster/promaster-primitives";
+import { PropertyFiltering } from "@promaster/promaster-portable";
+import { AmountInputBox, AmountFormatSelector, OnFormatChanged, OnFormatCleared } from "../amount-fields/index";
+import { amountPropertySelectorStyles, AmountPropertySelectorStyles } from "./amount-property-selector-styles";
+
+// tslint:disable no-class no-this
 
 export interface AmountPropertySelectorProps {
   readonly propertyName: string,
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet,
-  readonly inputUnit: Unit.Unit<any>,
+  readonly inputUnit: Unit.Unit<Quantity.Quantity>,
   readonly inputDecimalCount: number,
   readonly validationFilter: PropertyFilter.PropertyFilter,
   readonly notNumericMessage: string,
@@ -21,9 +23,9 @@ export interface AmountPropertySelectorProps {
   readonly debounceTime?: number,
 }
 
-export class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, any> {
+export class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, {}> {
 
-  render() {
+  render(): React.ReactElement<AmountPropertySelectorProps> {
     const {
       onValueChange,
       onFormatChanged,
@@ -41,44 +43,43 @@ export class AmountPropertySelector extends React.Component<AmountPropertySelect
       debounceTime = 350,
     } = this.props;
 
-    const value: Amount.Amount<any> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
+    const value: Amount.Amount<Quantity.Quantity> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
 
     return (
       <span className={styles.amount}>
-          <AmountInputBox value={value}
-                          inputUnit={inputUnit}
-                          inputDecimalCount={inputDecimalCount}
-                          notNumericMessage={notNumericMessage}
-                          isRequiredMessage={isRequiredMessage}
-                          errorMessage={_getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint)}
-                          readOnly={readOnly}
-                          onValueChange={(newAmount) =>
-                            onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount): undefined)}
-                          styles={styles.amountInputBoxStyles}
-                          debounceTime={debounceTime}/>
-          <AmountFormatSelector selectedUnit={inputUnit}
-                                selectedDecimalCount={inputDecimalCount}
-                                onFormatChanged={onFormatChanged}
-                                onFormatCleared={onFormatCleared}
-                                styles={styles.amountFormatSelectorStyles}/>
-        </span>
+        <AmountInputBox value={value}
+          inputUnit={inputUnit}
+          inputDecimalCount={inputDecimalCount}
+          notNumericMessage={notNumericMessage}
+          isRequiredMessage={isRequiredMessage}
+          errorMessage={_getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint)}
+          readOnly={readOnly}
+          onValueChange={(newAmount) =>
+            onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount) : undefined)}
+          styles={styles.amountInputBoxStyles}
+          debounceTime={debounceTime} />
+        <AmountFormatSelector selectedUnit={inputUnit}
+          selectedDecimalCount={inputDecimalCount}
+          onFormatChanged={onFormatChanged}
+          onFormatCleared={onFormatCleared}
+          styles={styles.amountFormatSelectorStyles} />
+      </span>
     );
   }
 }
 
 function _getValidationMessage(propertyValueSet: PropertyValueSet.PropertyValueSet,
-                               value: Amount.Amount<any> | undefined,
-                               validationFilter: PropertyFilter.PropertyFilter,
-                               filterPrettyPrint: PropertyFiltering.FilterPrettyPrint) {
+  value: Amount.Amount<Quantity.Quantity> | undefined,
+  validationFilter: PropertyFilter.PropertyFilter,
+  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint): string {
 
   if (!value || !validationFilter) {
-    return '';
+    return "";
   }
 
   if (PropertyFilter.isValid(propertyValueSet, validationFilter)) {
-    return '';
-  }
-  else {
+    return "";
+  } else {
     return filterPrettyPrint(validationFilter);
   }
 }

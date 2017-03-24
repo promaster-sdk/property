@@ -6,7 +6,7 @@ import {
   PropertyValue,
   PropertyFilter
 } from "@promaster/promaster-primitives";
-import {PropertyFiltering} from "@promaster/promaster-portable";
+import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
   ComboboxPropertySelector,
   TextboxPropertySelector,
@@ -71,9 +71,9 @@ export function DefaultPropertySelectorComponent({
   translateValueIsRequiredMessage,
   styles,
   inputDebounceTime
-}:PropertySelectorComponentProps): any {
+}: PropertySelectorComponentProps): React.ReactElement<{}> {
 
-  function onValueChange(newValue: PropertyValue.PropertyValue) {
+  function onValueChange(newValue: PropertyValue.PropertyValue): void {
     onChange(newValue
       ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
       : PropertyValueSet.removeProperty(propertyName, selectedProperties)
@@ -83,8 +83,9 @@ export function DefaultPropertySelectorComponent({
   switch (getPropertyType(quantity)) {
     case "text":
       const value: string | undefined = selectedValue && PropertyValue.getText(selectedValue);
-      if (value === undefined)
+      if (value === undefined) {
         throw new Error("No value!");
+      }
       return textboxPropertySelector({
         value: value,
         readOnly: readOnly,
@@ -92,8 +93,8 @@ export function DefaultPropertySelectorComponent({
         styles: styles.textboxPropertySelectorStyles,
         debounceTime: inputDebounceTime
       });
-    case "integer": {
 
+    case "integer":
       return comboboxPropertySelector({
         sortValidFirst: true,
         propertyName: propertyName,
@@ -112,14 +113,14 @@ export function DefaultPropertySelectorComponent({
         locked: locked,
         styles: styles.comboboxPropertySelectorStyles
       });
-    }
+
     default:
       return amountPropertySelector({
         propertyName: propertyName,
         propertyValueSet: selectedProperties,
         inputUnit: propertyFormat.unit,
         inputDecimalCount: propertyFormat.decimalCount,
-        onFormatChanged: (unit: Unit.Unit<any>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount),
+        onFormatChanged: (unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount),
         onFormatCleared: () => onPropertyFormatCleared(propertyName),
         onValueChange: onValueChange,
         notNumericMessage: translateValueMustBeNumericMessage(),

@@ -1,11 +1,12 @@
 import * as React from "react";
-import {TranslatePropertyLabelHover} from "./types";
+import { TranslatePropertyLabelHover } from "./types";
 
-export interface PropertyLabelComponentProps {selectorIsValid: boolean,
-  selectorIsHidden: boolean,
-  selectorLabel: string,
-  translatePropertyLabelHover: TranslatePropertyLabelHover,
-  propertyName: string
+export interface PropertyLabelComponentProps {
+  readonly selectorIsValid: boolean,
+  readonly selectorIsHidden: boolean,
+  readonly selectorLabel: string,
+  readonly translatePropertyLabelHover: TranslatePropertyLabelHover,
+  readonly propertyName: string
 }
 
 export function DefaultPropertyLabelComponent({
@@ -14,10 +15,10 @@ export function DefaultPropertyLabelComponent({
   selectorLabel,
   translatePropertyLabelHover,
   propertyName
-}:PropertyLabelComponentProps) {
+}: PropertyLabelComponentProps): React.ReactElement<PropertyLabelComponentProps> {
   return (
-    <label className={ !selectorIsValid	? 'invalid'	: undefined}
-           title={translatePropertyLabelHover(propertyName)}>
+    <label className={!selectorIsValid ? "invalid" : undefined}
+      title={translatePropertyLabelHover(propertyName)}>
       <span className={selectorIsHidden ? "hidden-property" : ""}>{selectorLabel}</span>
     </label>
   );

@@ -2,12 +2,14 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import * as React from "react";
-import {Units, Unit, UnitName} from "@promaster/promaster-primitives";
-import {amountFormatSelectorStyles, AmountFormatSelectorStyles} from "./amount-format-selector-styles";
+import { Units, Unit, UnitName, Quantity } from "@promaster/promaster-primitives";
+import { amountFormatSelectorStyles, AmountFormatSelectorStyles } from "./amount-format-selector-styles";
+
+//tslint:disable no-class no-this
 
 export interface AmountFormatSelectorProps {
   readonly key?: string,
-  readonly selectedUnit: Unit.Unit<any>,
+  readonly selectedUnit: Unit.Unit<Quantity.Quantity>,
   readonly selectedDecimalCount: number,
   readonly onFormatChanged?: OnFormatChanged,
   readonly onFormatCleared?: OnFormatCleared,
@@ -18,17 +20,17 @@ export interface State {
   readonly active: boolean
 }
 
-export type OnFormatChanged = (unit: Unit.Unit<any>, decimalCount: number) => void;
+export type OnFormatChanged = (unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => void;
 export type OnFormatCleared = () => void;
 
 export class AmountFormatSelector extends React.Component<AmountFormatSelectorProps, State> {
 
   constructor(props: AmountFormatSelectorProps) {
     super(props);
-    this.state = {active: false};
+    this.state = { active: false };
   }
 
-  render() {
+  render(): React.ReactElement<AmountFormatSelectorProps> {
 
     const {
       selectedUnit, selectedDecimalCount, onFormatChanged,
@@ -41,9 +43,9 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
     if (!this.state.active || !onFormatChanged) {
 
       return (
-        <span className={className} onClick={(_:any) => this.setState({active: true})}>
-                    {UnitName.getName(selectedUnit)}
-			    </span>
+        <span className={className} onClick={(_) => this.setState({ active: true })}>
+          {UnitName.getName(selectedUnit)}
+        </span>
       );
 
     }
@@ -54,36 +56,37 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
     const selectedUnitName = Units.getStringFromUnit(selectedUnit);
 
     const decimalCounts = [0, 1, 2, 3, 4, 5];
-    if (decimalCounts.indexOf(selectedDecimalCount) === -1)
+    if (decimalCounts.indexOf(selectedDecimalCount) === -1) {
       decimalCounts.push(selectedDecimalCount);
+    }
 
     const classNameToUse = this.state.active ? styles.formatActive : styles.format;
 
     return (
       <span className={classNameToUse}>
         <select className={styles.unit} value={selectedUnitName}
-                onChange={(e) => {
-                  this.setState({active: false});
-                  _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
-                  }}>
+          onChange={(e) => {
+            this.setState({ active: false });
+            _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
+          }}>
           {units.map((u, index) => <option key={unitNames[index]} value={unitNames[index]}> {UnitName.getName(u)} </option>)}
         </select>
         <select className={styles.precision}
-                value={selectedDecimalCount.toString()}
-                onChange={(e) => {
-                  this.setState({active: false});
-                  _onDecimalCountChange(e, selectedUnit, onFormatChanged);
-                }}>{decimalCounts.map((dc) => <option key={dc.toString()} value={dc.toString()}>{dc}</option>)}
+          value={selectedDecimalCount.toString()}
+          onChange={(e) => {
+            this.setState({ active: false });
+            _onDecimalCountChange(e, selectedUnit, onFormatChanged);
+          }}>{decimalCounts.map((dc) => <option key={dc.toString()} value={dc.toString()}>{dc}</option>)}
         </select>
         {onFormatCleared ?
           <button className={styles.clear} onClick={() => {
-            this.setState({active: false});
+            this.setState({ active: false });
             onFormatCleared();
           }}>
             {"\u00A0"}
-          </button> : <button className={styles.cancel} onClick={() => this.setState({active: false})}>
-          {"\u00A0"}
-        </button>
+          </button> : <button className={styles.cancel} onClick={() => this.setState({ active: false })}>
+            {"\u00A0"}
+          </button>
         }
       </span>
     );
@@ -91,14 +94,16 @@ export class AmountFormatSelector extends React.Component<AmountFormatSelectorPr
   }
 }
 
-function _onDecimalCountChange(e: React.SyntheticEvent<any>, selectedUnit: Unit.Unit<any>, onFormatChanged: OnFormatChanged) {
-  const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
+function _onDecimalCountChange(e: React.FormEvent<HTMLSelectElement>, 
+selectedUnit: Unit.Unit<Quantity.Quantity>, onFormatChanged: OnFormatChanged): void {
+  const selectedIndex = e.currentTarget.selectedIndex;
   const selectedDecimalCount = selectedIndex;
   onFormatChanged(selectedUnit, selectedDecimalCount);
 }
 
-function _onUnitChange(e: React.SyntheticEvent<any>, units: Unit.Unit<any>[], selectedDecimalCount: number, onFormatChanged: OnFormatChanged) {
-  const selectedIndex = (e.target as HTMLSelectElement).selectedIndex;
+function _onUnitChange(e: React.FormEvent<HTMLSelectElement>, units: Unit.Unit<Quantity.Quantity>[],
+  selectedDecimalCount: number, onFormatChanged: OnFormatChanged): void {
+  const selectedIndex = e.currentTarget.selectedIndex;
   const selectedUnit = units[selectedIndex];
   onFormatChanged(selectedUnit, selectedDecimalCount);
 }

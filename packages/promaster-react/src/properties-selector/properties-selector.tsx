@@ -80,7 +80,7 @@ export interface PropertiesSelectorProps {
   readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
 }
 
-export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<PropertiesSelectorProps> {
+export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactElement<LayoutRendererProps> {
 
   // Do destructoring and set defaults
   const {
@@ -94,9 +94,9 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     includeHiddenProperties = false,
     autoSelectSingleValidValue = true,
 
-    onChange = (_a: PropertyValueSet.PropertyValueSet) => { },
-    onPropertyFormatChanged = (_a: string, _b: Unit.Unit<any>, _c: number) => { },
-    onPropertyFormatCleared = (_a: string) => { },
+    onChange = (_a: PropertyValueSet.PropertyValueSet) => { }, //tslint:disable-line
+    onPropertyFormatChanged = (_a: string, _b: Unit.Unit<any>, _c: number) => { }, //tslint:disable-line
+    onPropertyFormatCleared = (_a: string) => { }, //tslint:disable-line
 
     translatePropertyName = (a: string) => a,
     translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
@@ -114,7 +114,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     inputDebounceTime = 350,
 
     closedGroups = [],
-    onToggleGroupClosed = () => { },
+    onToggleGroupClosed = () => { }, // tslint:disable-line
 
     LayoutRenderer = DefaultLayoutRenderer,
     GroupComponent = DefaultGroupComponent,
@@ -192,7 +192,6 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
 
 // }: PropertiesSelectorProps): ReadonlyArray<PropertySelectorRenderInfo> {
 
-
 /*
   // Required inputs
   readonly productProperties: ReadonlyArray<Property>
@@ -242,7 +241,6 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
   readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
   readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
 */
-
 
 function createPropertySelectorRenderInfos(
   productProperties: ReadonlyArray<Property>,
@@ -306,7 +304,7 @@ function createPropertySelectorRenderInfos(
       const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
       const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibility_filter);
-      const label = translatePropertyName(property.name) + (includeCodes ? ' (' + property.name + ')' : '');
+      const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
       const labelHover = translatePropertyLabelHover(property.name);
 
       const propertySelectorComponentProps: PropertySelectorComponentProps = {
@@ -408,7 +406,9 @@ function shouldBeLocked(selectedValueItem: PropertyValueItem | undefined, produc
   return false;
 }
 
-function handleChange(externalOnChange: PropertySelectionOnChange, productProperties: ReadonlyArray<Property>, autoSelectSingleValidValue: boolean) {
+function handleChange(externalOnChange: PropertySelectionOnChange,
+  productProperties: ReadonlyArray<Property>, autoSelectSingleValidValue: boolean): (properties: PropertyValueSet.PropertyValueSet) => void {
+
   return (properties: PropertyValueSet.PropertyValueSet) => {
 
     if (!autoSelectSingleValidValue) {

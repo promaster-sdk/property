@@ -1,6 +1,8 @@
 import * as React from "react";
-import {PropertyValue} from "@promaster/promaster-primitives";
-import {textboxPropertySelectorStyles, TextboxPropertySelectorStyles} from "./textbox-property-selector-styles";
+import { PropertyValue } from "@promaster/promaster-primitives";
+import { textboxPropertySelectorStyles, TextboxPropertySelectorStyles } from "./textbox-property-selector-styles";
+
+// tslint:disable no-this no-class
 
 export interface TextboxPropertySelectorProps {
   readonly value: string,
@@ -11,52 +13,50 @@ export interface TextboxPropertySelectorProps {
 }
 
 export interface State {
-    readonly textValue: string,
+  readonly textValue: string,
 }
 
-export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> { //tslint:disable-line
+export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> {
 
-    constructor(props:TextboxPropertySelectorProps) {
-        super(props);
-        // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-        this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, this.props.debounceTime);
-    }
+  constructor(props: TextboxPropertySelectorProps) {
+    super(props);
+    // What the optimal debounce is may vary between users. 350ms seems like a nice value...
+    this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, this.props.debounceTime);
+  }
 
-    componentWillMount() {
-        const {value} = this.props;
-        this.setState({textValue: value});
-    }
+  componentWillMount(): void {
+    const { value } = this.props;
+    this.setState({ textValue: value });
+  }
 
-    componentWillReceiveProps(nextProps: TextboxPropertySelectorProps) {
-        const {value} = nextProps;
-        this.setState({textValue: value});
-    }
+  componentWillReceiveProps(nextProps: TextboxPropertySelectorProps): void {
+    const { value } = nextProps;
+    this.setState({ textValue: value });
+  }
 
-    render() {
+  render(): React.ReactElement<TextboxPropertySelectorProps> {
 
-        const {onValueChange, readOnly, styles = textboxPropertySelectorStyles} = this.props;
-        const {textValue} = this.state;
+    const { onValueChange, readOnly, styles = textboxPropertySelectorStyles } = this.props;
+    const { textValue } = this.state;
 
-        return (
-            <input type='text'
-                   value={textValue}
-                   className={styles.textbox}
-                   readOnly={readOnly}
-                   onChange={(e:any) => this._onChange(e, onValueChange)}/>
-        );
-    }
+    return (
+      <input type="text"
+        value={textValue}
+        className={styles.textbox}
+        readOnly={readOnly}
+        onChange={(e) => this._onChange(e, onValueChange)} />
+    );
+  }
 
-    _debouncedOnValueChange(newValue: PropertyValue.PropertyValue, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
-        // log("jk", "_debouncedOnValueChange");
-        onValueChange(newValue);
-    }
+  _debouncedOnValueChange(newValue: PropertyValue.PropertyValue, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
+    onValueChange(newValue);
+  }
 
-    _onChange(e: React.SyntheticEvent<any>, onValueChange: (newValue: PropertyValue.PropertyValue) => void) {
-        // log("jk", "_onChange");
-        let newStringValue = (e.target as HTMLInputElement).value;
-        this.setState({textValue: newStringValue});
-        this._debouncedOnValueChange(PropertyValue.create("text", newStringValue), onValueChange);
-    }
+  _onChange(e: React.FormEvent<HTMLInputElement>, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
+    let newStringValue = (e.target as HTMLInputElement).value;
+    this.setState({ textValue: newStringValue });
+    this._debouncedOnValueChange(PropertyValue.create("text", newStringValue), onValueChange);
+  }
 
 }
 
@@ -65,17 +65,18 @@ export class TextboxPropertySelector extends React.Component<TextboxPropertySele
 // be triggered. The function will be called after it stops being called for
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
-function debounce(func: Function, wait: number, immediate?: boolean): any {
-    let timeout: any;
-    return function (this: any) {
-        const context = this, args = arguments;
-        const later = function () {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
+function debounce(func: Function, wait: number, immediate?: boolean): any { //tslint:disable-line
+  let timeout: number | null;
+  return function (this: any) { //tslint:disable-line
+    const context = this;  //tslint:disable-line
+    const args = arguments; //tslint:disable-line
+    const later = function (): void {
+      timeout = null;
+      if (!immediate) { func.apply(context, args); }
     };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout!);
+    timeout = setTimeout(later, wait);
+    if (callNow) { func.apply(context, args); }
+  };
 }

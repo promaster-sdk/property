@@ -15,7 +15,7 @@ export function DefaultGroupComponent({
   onToggleGroupClosed,
   translateGroupName,
   children
-}: GroupComponentProps) {
+}: GroupComponentProps): React.ReactElement<GroupComponentProps> {
   return (
     <div key={groupName}>
       {groupName !== "" ?
@@ -32,5 +32,3 @@ export function DefaultGroupComponent({
     </div>
   );
 }
-
-
