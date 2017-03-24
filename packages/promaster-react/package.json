@@ -31,7 +31,7 @@
     "react-dom": "^15.3.0",
     "react-test-renderer": "^15.4.2",
     "shelljs": "^0.7.4",
-    "ts-jest": "^19.0.2",
+    "ts-jest": "^19.0.3",
     "tslint-immutable": "^2.1.0",
     "typescript": "^2.2.1",
     "webpack": "^2.2.1",
@@ -42,7 +42,7 @@
     "tsc": "tsc --version && tsc -p src",
     "tsc:example": "tsc -p example",
     "tsc:test": "tsc -p test",
-    "test": "jest test/** --config=test/jest.config.json",
+    "test": "jest test/* --config=test/jest.config.json",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
@@ -50,19 +50,5 @@
     "publish:major": "yarn build && node scripts/publish.js major",
     "publish:minor": "yarn build && node scripts/publish.js minor",
     "publish:patch": "yarn build && node scripts/publish.js patch"
-  },
-  "jest": {
-    "globals": {
-      "__TS_CONFIG__": "src/tsconfig.json"
-    },
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ]
   }
 }

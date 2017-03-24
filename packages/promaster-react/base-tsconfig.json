@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
 
+    // These options has documented reasons for deviating from defaults
     "forceConsistentCasingInFileNames": true,
     "newLine": "LF",
     "noEmitOnError": true,

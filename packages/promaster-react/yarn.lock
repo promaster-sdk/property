@@ -3555,7 +3555,7 @@ strip-ansi@^3.0.0, strip-ansi@^3.0.1:
   dependencies:
     ansi-regex "^2.0.0"
 
-strip-bom@3.0.0:
+strip-bom@3.0.0, strip-bom@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/strip-bom/-/strip-bom-3.0.0.tgz#2334c18e9c759f7bdd56fdef7e9ae3d588e68ed3"
 
@@ -3570,6 +3570,10 @@ strip-indent@^1.0.1:
   resolved "https://registry.yarnpkg.com/strip-indent/-/strip-indent-1.0.1.tgz#0c7962a6adefa7bbd4ac366460a638552ae1a0a2"
   dependencies:
     get-stdin "^4.0.1"
+
+strip-json-comments@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
 strip-json-comments@~1.0.4:
   version "1.0.4"
@@ -3701,9 +3705,9 @@ trough@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.0.tgz#6bdedfe7f2aa49a6f3c432257687555957f342fd"
 
-ts-jest@^19.0.2:
-  version "19.0.2"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-19.0.2.tgz#1d0f0f2ffff97695ff8c09873b371167d6f4aea6"
+ts-jest@^19.0.3:
+  version "19.0.3"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-19.0.3.tgz#02dba3086c0447aa65a4a2fe215801df70ec9853"
   dependencies:
     fs-extra "^2.1.2"
     glob-all "^3.1.0"
@@ -3716,7 +3720,15 @@ ts-jest@^19.0.2:
     lodash.pickby "^4.6.0"
     remap-istanbul "^0.7.0"
     source-map-support "^0.4.4"
+    tsconfig "^6.0.0"
     yargs "^6.1.1"
+
+tsconfig@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/tsconfig/-/tsconfig-6.0.0.tgz#6b0e8376003d7af1864f8df8f89dd0059ffcd032"
+  dependencies:
+    strip-bom "^3.0.0"
+    strip-json-comments "^2.0.0"
 
 tslint-immutable@^2.1.0:
   version "2.1.0"
