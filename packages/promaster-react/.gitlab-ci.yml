@@ -11,4 +11,6 @@ test:
     - $YARN install --ignore-scripts
     - $YARN run lint
     - $YARN run circular
+    - $YARN run build
+    - $YARN run build:test
     - $YARN run test

@@ -1,10 +1,10 @@
 import * as React from "react";
-// import Link from '../Link.react';
 import * as renderer from "react-test-renderer";
 
 test("Link changes the class when hovered", () => {
   const component = renderer.create(
-    <PropertiesSelector />
+    // <PropertiesSelector />
+    <div>Facebook</div>
   );
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
