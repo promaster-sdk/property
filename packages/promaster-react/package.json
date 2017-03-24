@@ -32,6 +32,7 @@
     "react-test-renderer": "^15.4.2",
     "shelljs": "^0.7.4",
     "ts-jest": "^19.0.3",
+    "tslint": "^4.5.1",
     "tslint-immutable": "^2.1.0",
     "typescript": "^2.2.1",
     "webpack": "^2.2.1",
