@@ -14,7 +14,7 @@ export interface State {
     readonly textValue: string,
 }
 
-export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> {
+export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> { //tslint:disable-line
 
     constructor(props:TextboxPropertySelectorProps) {
         super(props);
