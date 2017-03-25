@@ -9,3 +9,4 @@ example/js_out
 dist/
 lib-cjs/
 lib-esm/
+coverage/
