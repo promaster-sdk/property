@@ -4298,9 +4298,9 @@ trough@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.0.tgz#6bdedfe7f2aa49a6f3c432257687555957f342fd"
 
-ts-jest@^19.0.3:
-  version "19.0.3"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-19.0.3.tgz#02dba3086c0447aa65a4a2fe215801df70ec9853"
+ts-jest@^19.0.4:
+  version "19.0.4"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-19.0.4.tgz#3d1f3e11d416f73e6e91eb315a6412ea49b881db"
   dependencies:
     fs-extra "^2.1.2"
     glob-all "^3.1.0"
