@@ -1,13 +1,15 @@
 import * as Unit from "./unit";
 import * as UnitName from "./unit-name";
-import * as UnitDivide from './unit-divide';
-import * as UnitTimes from './unit-times';
+import * as UnitDivide from "./unit-divide";
+import * as UnitTimes from "./unit-times";
 import * as q from "./quantity";
-import {Quantity} from "./quantity";
+import { Quantity } from "./quantity";
 
-const _unitToString: {[key: string]: string} = {};
-const _stringToUnit: {[key: string]: Unit.Unit<any>} = {};
-const _quantityToUnits: {[key: string]: Array<Unit.Unit<any>>} = {};
+// tslint:disable variable-name max-line-length max-file-line-count
+
+const _unitToString: { [key: string]: string } = {};
+const _stringToUnit: { [key: string]: Unit.Unit<Quantity> } = {};
+const _quantityToUnits: { [key: string]: Array<Unit.Unit<Quantity>> } = {};
 
 function _register<T extends q.Quantity>(unit: Unit.Unit<T>, label: string = ""): Unit.Unit<T> {
   UnitName.registerLabel(label, unit);
@@ -200,7 +202,8 @@ export const Volt: Unit.Unit<q.ElectricPotential> = _register(Unit.createAlterna
  * each plate and a potential difference of 1 volt between the plates.
  * It is named after the British physicist and chemist Michael Faraday (1791-1867).
  */
-export const Farad: Unit.Unit<q.ElectricCapacitance> = _register(Unit.createAlternate<q.ElectricCapacitance>("F", UnitDivide.electricChargeByElectricPotential(Coulomb, Volt)), "F");
+export const Farad: Unit.Unit<q.ElectricCapacitance> =
+  _register(Unit.createAlternate<q.ElectricCapacitance>("F", UnitDivide.electricChargeByElectricPotential(Coulomb, Volt)), "F");
 
 /**
  * The derived unit for electric resistance ( <code>Ω</code> or <code>Ohm</code> ).
@@ -208,14 +211,16 @@ export const Farad: Unit.Unit<q.ElectricCapacitance> = _register(Unit.createAlte
  * by a potential of one volt across its terminals.
  * It is named after the German physicist Georg Simon Ohm (1789-1854).
  */
-export const Ohm: Unit.Unit<q.ElectricResistance> = _register(Si(Unit.createAlternate<q.ElectricResistance>("Ω", UnitDivide.electricalPotentialByElectricalCurrent(Volt, Ampere))));
+export const Ohm: Unit.Unit<q.ElectricResistance> =
+  _register(Si(Unit.createAlternate<q.ElectricResistance>("Ω", UnitDivide.electricalPotentialByElectricalCurrent(Volt, Ampere))));
 
 /**
  * The derived unit for electric conductance ( <code>S</code> ).
  * One Siemens is equal to one ampere per volt.
  * It is named after the German engineer Ernst Werner von Siemens (1816-1892).
  */
-export const Siemens: Unit.Unit<q.ElectricConductance> = _register(Si(Unit.createAlternate<q.ElectricConductance>("S", UnitDivide.electricalCurrentByElectricalPotential(Ampere, Volt))));
+export const Siemens: Unit.Unit<q.ElectricConductance> =
+  _register(Si(Unit.createAlternate<q.ElectricConductance>("S", UnitDivide.electricalCurrentByElectricalPotential(Ampere, Volt))));
 
 /**
  * The derived unit for magnetic flux ( <code>Wb</code> ).
@@ -223,14 +228,16 @@ export const Siemens: Unit.Unit<q.ElectricConductance> = _register(Si(Unit.creat
  * electromotive force of one volt as it is uniformly reduced to zero within one second.
  * It is named after the German physicist Wilhelm Eduard Weber (1804-1891).
  */
-export const Weber: Unit.Unit<q.MagneticFlux> = _register(Si(Unit.createAlternate<q.MagneticFlux>("Wb", UnitTimes.electricalPotentialByDuration(Volt, Second))));
+export const Weber: Unit.Unit<q.MagneticFlux> =
+  _register(Si(Unit.createAlternate<q.MagneticFlux>("Wb", UnitTimes.electricalPotentialByDuration(Volt, Second))));
 
 /**
  * The derived unit for magnetic flux density ( <code>T</code> ).
  * One Tesla is equal equal to one weber per square meter.
  * It is named after the Serbian-born American electrical engineer and physicist Nikola Tesla (1856-1943).
  */
-export const Tesla: Unit.Unit<q.MagneticFluxDensity> = _register(Si(Unit.createAlternate<q.MagneticFluxDensity>("T", UnitDivide.magneticFluxByArea(Weber, Squared(Meter)))));
+export const Tesla: Unit.Unit<q.MagneticFluxDensity> =
+  _register(Si(Unit.createAlternate<q.MagneticFluxDensity>("T", UnitDivide.magneticFluxByArea(Weber, Squared(Meter)))));
 
 /**
  * The derived unit for inductance ( <code>H</code> ).
@@ -238,41 +245,47 @@ export const Tesla: Unit.Unit<q.MagneticFluxDensity> = _register(Si(Unit.createA
  * when the current is varied at the rate of one ampere per second.
  * It is named after the American physicist Joseph Henry (1791-1878).
  */
-export const Henry: Unit.Unit<q.ElectricInductance> = _register(Si(Unit.createAlternate<q.ElectricInductance>("H", UnitDivide.magneticFluxByElectricalCurrent(Weber, Ampere))));
+export const Henry: Unit.Unit<q.ElectricInductance> =
+  _register(Si(Unit.createAlternate<q.ElectricInductance>("H", UnitDivide.magneticFluxByElectricalCurrent(Weber, Ampere))));
 
 /**
  * The derived unit for Celsius temperature ( <code>℃</code> ).
  * This is a unit of temperature such as the freezing point of water (at one atmosphere of pressure)
  * is 0 ℃, while the boiling point is 100 ℃.
  */
-export const Celsius: Unit.Unit<q.Temperature> = _register(Si(Unit.plus(273.15, Kelvin)), "°C");
+export const Celsius: Unit.Unit<q.Temperature> =
+  _register(Si(Unit.plus(273.15, Kelvin)), "°C");
 
 /**
  * The derived unit for luminous flux ( <code>lm</code> ).
  * One Lumen is equal to the amount of light given out through a solid angle by a source of one
  * candela intensity radiating equally in all directions.
  */
-export const Lumen: Unit.Unit<q.LuminousFlux> = _register(Si(Unit.createAlternate<q.LuminousFlux>("lm", UnitTimes.luminousIntensityBySolidAngle(Candela, Steradian))));
+export const Lumen: Unit.Unit<q.LuminousFlux> =
+  _register(Si(Unit.createAlternate<q.LuminousFlux>("lm", UnitTimes.luminousIntensityBySolidAngle(Candela, Steradian))));
 
 /**
  * The derived unit for illuminance ( <code>lx</code> ).
  * One Lux is equal to one lumen per square meter.
  */
-export const Lux: Unit.Unit<q.Illuminance> = _register(Si(Unit.createAlternate<q.Illuminance>("lx", UnitDivide.luminousFluxByArea(Lumen, Squared(Meter)))));
+export const Lux: Unit.Unit<q.Illuminance> =
+  _register(Si(Unit.createAlternate<q.Illuminance>("lx", UnitDivide.luminousFluxByArea(Lumen, Squared(Meter)))));
 
 /**
  * The derived unit for activity of a radionuclide ( <code>Bq</code> ).
  * One becquerel is the radiation caused by one disintegration per second.
  * It is named after the French physicist, Antoine-Henri Becquerel (1852-1908).
  */
-export const Becquerel: Unit.Unit<q.RadioactiveActivity> = _register(Si(Unit.createAlternate<q.RadioactiveActivity>("Bq", UnitDivide.dimentionlessByDuration(One, Second))));
+export const Becquerel: Unit.Unit<q.RadioactiveActivity> =
+  _register(Si(Unit.createAlternate<q.RadioactiveActivity>("Bq", UnitDivide.dimentionlessByDuration(One, Second))));
 
 /**
  * The derived unit for absorbed dose, specific energy (imparted), kerma ( <code>Gy</code> ).
  * One gray is equal to the dose of one joule of energy absorbed per one kilogram of matter.
  * It is named after the British physician L. H. Gray (1905-1965).
  */
-export const Gray: Unit.Unit<q.RadiationDoseAbsorbed> = _register(Si(Unit.createAlternate<q.RadiationDoseAbsorbed>("Gy", UnitDivide.energyByMass(Joule, Kilogram))));
+export const Gray: Unit.Unit<q.RadiationDoseAbsorbed> =
+  _register(Si(Unit.createAlternate<q.RadiationDoseAbsorbed>("Gy", UnitDivide.energyByMass(Joule, Kilogram))));
 
 /**
  * The derived unit for dose equivalent ( <code>Sv</code> ).
@@ -280,12 +293,14 @@ export const Gray: Unit.Unit<q.RadiationDoseAbsorbed> = _register(Si(Unit.create
  * larger for more dangerous forms of radiation.
  * It is named after the Swedish physicist Rolf Sievert (1898-1966).
  */
-export const Sievert: Unit.Unit<q.RadiationDoseEffective> = _register(Si(Unit.createAlternate<q.RadiationDoseEffective>("Sv", UnitDivide.energyByMass(Joule, Kilogram))));
+export const Sievert: Unit.Unit<q.RadiationDoseEffective> =
+  _register(Si(Unit.createAlternate<q.RadiationDoseEffective>("Sv", UnitDivide.energyByMass(Joule, Kilogram))));
 
 /**
  * The derived unit for catalytic activity ( <code>kat</code> ).
  */
-export const Katal: Unit.Unit<q.CatalyticActivity> = _register(Si(Unit.createAlternate<q.CatalyticActivity>("kat", UnitDivide.amountOfSubstanceByDuration(Mole, Second))));
+export const Katal: Unit.Unit<q.CatalyticActivity> =
+  _register(Si(Unit.createAlternate<q.CatalyticActivity>("kat", UnitDivide.amountOfSubstanceByDuration(Mole, Second))));
 
 /////////////////
 /// SI PREFIXES //
@@ -354,11 +369,10 @@ function Squared(u: Unit.Unit<q.Length>): Unit.Unit<q.Area> {
 }
 
 function Cubed(u: Unit.Unit<q.Length>): Unit.Unit<q.Volume> {
-  var area = UnitTimes.lengthByLength(u, u);
+  const area = UnitTimes.lengthByLength(u, u);
   return UnitTimes.areaByLength(area, u);
   // TODO was return u.Times < IArea > (u).Times < IVolume > (u);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 /// END: System of Units - SI
@@ -460,7 +474,7 @@ export const KiloPascal: Unit.Unit<q.Pressure> = _register(Kilo(Pascal), "kPa");
 export const HectoPascal: Unit.Unit<q.Pressure> = _register(Hecto(Pascal), "hPa");
 export const NewtonPerSquareMeter: Unit.Unit<q.Pressure> = _register(UnitDivide.forceByArea(Newton, SquareMeter), "N/m²");
 export const PoundForcePerSquareInch: Unit.Unit<q.Pressure> = _register(Unit.divideNumber(1290320000.0, Unit.timesNumber(8896443230521.0, Pascal)), "psi");
-export const PoundForcePerSquareFoot:Unit.Unit<q.Pressure> = _register(Unit.timesNumber(144.0, PoundForcePerSquareInch), "psf");
+export const PoundForcePerSquareFoot: Unit.Unit<q.Pressure> = _register(Unit.timesNumber(144.0, PoundForcePerSquareInch), "psf");
 
 // http://www.wolframalpha.com/input/?i=psi and select 'Show exact conversions'
 export const InchOfMercury: Unit.Unit<q.Pressure> = _register(Unit.divideNumber(152.0, Unit.timesNumber(514731.0, Pascal)), "in HG");
@@ -492,7 +506,7 @@ export const GigaWattHour: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDura
 export const WattHour: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDuration(Watt, Hour), "Wh");
 export const WattSecond: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDuration(Watt, Second), "Ws");
 export const Btu: Unit.Unit<q.Energy> = _register(Unit.timesNumber((52752792631.0 / 50000000.0), Joule), "BTU");
-export const KiloBtu:Unit.Unit<q.Energy> = _register(Kilo(Btu), "kBTU");
+export const KiloBtu: Unit.Unit<q.Energy> = _register(Kilo(Btu), "kBTU");
 
 /// http://www.wolframalpha.com/input/?i=BTU and select 'Show exact conversions'
 // Per Energy
@@ -552,7 +566,7 @@ export const KilogramPerKilogram: Unit.Unit<q.HumidityRatio> = _register(UnitDiv
 export const GramPerKilogram: Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(Gram, Kilogram), "g/kg");
 export const PoundLbPerPoundLb: Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(PoundLb, PoundLb), "lb/lb");
 export const GrainPerPoundLb: Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(Grain, PoundLb), "gr/lb");
-export const GramPerPoundLb:Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(Gram, PoundLb), "g/lb");
+export const GramPerPoundLb: Unit.Unit<q.HumidityRatio> = _register(UnitDivide.massByMass(Gram, PoundLb), "g/lb");
 
 // Specific energy
 export const KilojoulePerKilogram: Unit.Unit<q.SpecificEnthalpy> = _register(UnitDivide.energyByMass(Kilojoule, Kilogram), "kJ/kg");
@@ -581,7 +595,7 @@ export const WattPerSquareMeter: Unit.Unit<q.Intensity> = _register(UnitDivide.p
 // Specific Fan Power
 export const KiloWattPerCubicMeterPerSecond: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(KiloWatt, CubicMeterPerSecond), "kW/m³/s");
 export const WattPerCubicMeterPerSecond: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(Watt, CubicMeterPerSecond), "W/m³/s");
-export const  KiloWattPerCubicFootPerMinute: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(KiloWatt, CubicFeetPerMinute), "kW/ft³/min");
+export const KiloWattPerCubicFootPerMinute: Unit.Unit<q.SpecificFanPower> = _register(UnitDivide.powerByVolumeFlow(KiloWatt, CubicFeetPerMinute), "kW/ft³/min");
 
 // Sound power level
 export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlternate<q.SoundPowerLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
@@ -623,23 +637,25 @@ export function isUnit(unit: string): boolean {
   return _stringToUnit.hasOwnProperty(unit.trim().toLowerCase());
 }
 
-export function getUnitFromString(unitString: string, onError?: (unitString: string) => Unit.Unit<any>): Unit.Unit<any> {
+export function getUnitFromString(unitString: string, onError?: (unitString: string) => Unit.Unit<Quantity>): Unit.Unit<Quantity> {
   _ensureMetaAdded();
   let unit = _stringToUnit[unitString.trim().toLowerCase()];
   if (unit === undefined) {
-    if (onError == null)
+    if (!onError) {
       throw new Error("Unknown unit " + unitString);
-    else
+    } else {
       return onError(unitString);
+    }
   }
   return unit;
 }
 
-export function getStringFromUnit(unit: Unit.Unit<any>): string {
+export function getStringFromUnit(unit: Unit.Unit<Quantity>): string {
   _ensureMetaAdded();
   const name = _unitToString[JSON.stringify(unit)];
-  if (name === undefined)
+  if (name === undefined) {
     throw new Error("Unknown Unit " + unit);
+  }
   return name;
 }
 
@@ -647,8 +663,9 @@ export function getQuantityTypeFromString(quantityString: string): q.Quantity {
   _ensureMetaAdded();
   const quantityArray = Object.keys(_quantityToUnits);
   const foundIndex = quantityArray.indexOf(quantityString as Quantity);
-  if (foundIndex < 0)
+  if (foundIndex < 0) {
     throw new Error(`Unknown quantity '${quantityString}'`);
+  }
   return quantityString as Quantity;
 }
 
@@ -656,17 +673,18 @@ export function getStringFromQuantityType(quantity: Quantity): string {
   return quantity;
 }
 
-export function getUnitsForQuantity(quantityType: q.Quantity): Array<Unit.Unit<any>> {
+export function getUnitsForQuantity(quantityType: q.Quantity): Array<Unit.Unit<Quantity>> {
   _ensureMetaAdded();
   const units = _quantityToUnits[quantityType];
-  if (units === undefined)
+  if (units === undefined) {
     throw new Error("Unknown quantity type");
+  }
   return units;
 }
 
-export function getAllUnits(): Array<Unit.Unit<any>> {
+export function getAllUnits(): Array<Unit.Unit<Quantity>> {
   _ensureMetaAdded();
-  var unitsArray = Object.keys(_stringToUnit).map((key) => _stringToUnit[key]);
+  const unitsArray = Object.keys(_stringToUnit).map((key) => _stringToUnit[key]);
   return unitsArray;
 }
 
@@ -680,8 +698,8 @@ export function getAllQuantities(): Array<Quantity> {
 
 let _metaAdded: boolean = false;
 
-function _addMeta(quantity: q.Quantity, name: string, unit: Unit.Unit<any>): void {
-  let lowerName = name.toLowerCase();
+function _addMeta(quantity: q.Quantity, name: string, unit: Unit.Unit<Quantity>): void {
+  const lowerName = name.toLowerCase();
   _unitToString[JSON.stringify(unit)] = lowerName;
   _stringToUnit[lowerName] = unit;
   let quantityUnits = _quantityToUnits[quantity];
@@ -696,8 +714,9 @@ function _addMeta(quantity: q.Quantity, name: string, unit: Unit.Unit<any>): voi
 // While accessing them we also register meta-data for them
 function _ensureMetaAdded(): void {
 
-  if (_metaAdded)
+  if (_metaAdded) {
     return;
+  }
 
   _addMeta("Dimensionless", "One", One);
   _addMeta("Dimensionless", "Percent", Percent);

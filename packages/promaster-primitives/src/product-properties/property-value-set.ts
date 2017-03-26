@@ -7,14 +7,14 @@ import { Quantity } from "../measure/quantity";
 
 /// Represents a set of properties and a selected value for each of the properties.
 export interface PropertyValueSet {
-  readonly [key: string]: PropertyValue.PropertyValue;
+  readonly [key: string]: PropertyValue.PropertyValue,
 }
 
-export const Empty: PropertyValueSet = {};
+export const Empty: PropertyValueSet = {}; //tslint:disable-line
 
 // For internal use only
 interface MutablePropertyValueSet {
-  [key: string]: PropertyValue.PropertyValue;
+  [key: string]: PropertyValue.PropertyValue, //tslint:disable-line
 }
 
 // Functions
@@ -31,19 +31,18 @@ export function fromStringOrError(onError: (encodedValueSet: string) => Property
   if (!encodedValueSet || encodedValueSet.length === 0) {
     return {};
   }
-  var entries = _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet);
+  const entries = _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet);
   if (entries === undefined) {
     return onError(encodedValueSet);
-  }
-  else {
+  } else {
     return entries;
   }
 }
 
-export function fromProperty(propertyName: string, propertyValue: PropertyValue.PropertyValue) {
+export function fromProperty(propertyName: string, propertyValue: PropertyValue.PropertyValue): PropertyValueSet {
   return {
     [propertyName]: propertyValue
-  }
+  };
 }
 
 export function isEmpty(propertyValueSet: PropertyValueSet | null | undefined): boolean {
@@ -55,8 +54,9 @@ export function count(set: PropertyValueSet): number {
 }
 
 export function get(propertyName: string, set: PropertyValueSet): PropertyValue.PropertyValue | undefined {
-  if (!set.hasOwnProperty(propertyName))
+  if (!set.hasOwnProperty(propertyName)) {
     return undefined;
+  }
   return set[propertyName];
 }
 
@@ -107,8 +107,9 @@ export function keepProperties(propertyNames: Array<string>, set: PropertyValueS
 export function removeProperties(propertyNames: Array<string>, set: PropertyValueSet): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(set)) {
-    if (propertyNames.indexOf(name) === -1)
+    if (propertyNames.indexOf(name) === -1) {
       newSet[name] = set[name];
+    }
   }
   return newSet;
 }
@@ -128,24 +129,27 @@ export function getValue(propertyName: string,
 /// Gets an amount value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
 export function getAmount<T extends Quantity>(propertyName: string, set: PropertyValueSet): Amount.Amount<T> | undefined {
-  if (!hasProperty(propertyName, set))
+  if (!hasProperty(propertyName, set)) {
     return undefined;
+  }
   return PropertyValue.getAmount(set[propertyName]);
 }
 
 /// Gets an integer value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
 export function getText(propertyName: string, set: PropertyValueSet): string | undefined {
-  if (!hasProperty(propertyName, set))
+  if (!hasProperty(propertyName, set)) {
     return undefined;
+  }
   return PropertyValue.getText(set[propertyName]);
 }
 
 /// Gets an integer value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
 export function getInteger(propertyName: string, set: PropertyValueSet): number | undefined {
-  if (!hasProperty(propertyName, set))
+  if (!hasProperty(propertyName, set)) {
     return undefined;
+  }
   return PropertyValue.getInteger(set[propertyName]);
 }
 
@@ -200,13 +204,16 @@ export function toStringInSpecifiedOrder(order: Array<string>, set: PropertyValu
   return order.map((p) => `${p}=${PropertyValue.toString(set[p])}`).join(";");
 }
 
-export function equals(other: PropertyValueSet, set: PropertyValueSet) {
-  if (other === null || other === undefined)
+export function equals(other: PropertyValueSet, set: PropertyValueSet): boolean {
+  if (other === null || other === undefined) {
     return false;
-  if (set === other)
+  }
+  if (set === other) {
     return true;
-  if (Object.keys(set).length !== Object.keys(other).length)
+  }
+  if (Object.keys(set).length !== Object.keys(other).length) {
     return false;
+  }
 
   for (let name of Object.keys(set)) {
     if (!PropertyValue.equals(other[name], set[name])) {
@@ -222,11 +229,12 @@ export function equals(other: PropertyValueSet, set: PropertyValueSet) {
 /// Values that represents strings must be enclosed in double quote (") and if they contains double quote characters they must be encoded as %22.
 function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): PropertyValueSet | undefined {
 
-  var entries: MutablePropertyValueSet = {};
+  let entries: MutablePropertyValueSet = {};
   // Add extra semicolon on the end to close last name/value pair
-  var toParse = encodedValueSet;
-  if (toParse.charAt(toParse.length - 1) !== ";")
+  let toParse = encodedValueSet;
+  if (toParse.charAt(toParse.length - 1) !== ";") {
     toParse += ";";
+  }
   //StringBuffer name = new StringBuffer();
   let name: string = "";
   //StringBuffer value = new StringBuffer();
@@ -236,19 +244,18 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
   for (let i: number = 0; i < toParse.length; i++) {
     let c: string = toParse[i];
     switch (c) {
-      case '=':
+      case "=":
         if (!isInQuote) {
           if (!isInNamePart) {
             // Parse error
             return undefined;
           }
           isInNamePart = false;
-        }
-        else {
+        } else {
           value = value + c;
         }
         break;
-      case ';':
+      case ";":
         if (!isInQuote) {
           if (isInNamePart) {
             // Parse error
@@ -267,20 +274,18 @@ function _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet: string): Pr
           //value = new StringBuffer();
           name = "";
           value = "";
-        }
-        else {
+        } else {
           value = value + c;
         }
         break;
-      case '"':
+      case "\"":
         isInQuote = !isInQuote;
         value = value + c;
         break;
       default:
         if (isInNamePart) {
           name = name + c;
-        }
-        else {
+        } else {
           value = value + c;
         }
         break;

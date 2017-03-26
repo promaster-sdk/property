@@ -1,13 +1,13 @@
-import * as Unit from './unit';
-import * as UnitName from './unit-name';
+import * as Unit from "./unit";
+import * as UnitName from "./unit-name";
 import { Dimensionless, Quantity } from "./quantity";
 import * as Units from "./units";
 import * as CompareUtils from "../utils/compare-utils";
 
 export interface Amount<T extends Quantity> {
-  value: number;
-  unit: Unit.Unit<T>;
-  decimalCount: number;
+  readonly value: number,
+  readonly unit: Unit.Unit<T>,
+  readonly decimalCount: number,
 }
 
 /**
@@ -25,8 +25,9 @@ export function create<T extends Quantity>(value: number, unit: Unit.Unit<T>, de
 
 export function toString<T extends Quantity>(amount: Amount<T>): string {
   const unitname = UnitName.getName(amount.unit);
-  if (unitname.length > 0)
+  if (unitname.length > 0) {
     return amount.value.toString() + " " + unitname;
+  }
   return amount.value.toString();
 }
 
@@ -58,26 +59,28 @@ export function minus<T extends Quantity>(left: Amount<T>, right: Amount<T>): Am
 }
 
 export function times<T extends Quantity>(left: Amount<T>, right: number | Amount<Dimensionless>): Amount<T> {
-  if (typeof right === "number")
+  if (typeof right === "number") {
     return _factory<T>(left.value * right, left.unit);
-  else if (right.unit.quantity === "Dimensionless")
+  } else if (right.unit.quantity === "Dimensionless") {
     return _factory<T>(left.value * valueAs(Units.One, right), left.unit);
-  else
+  } else {
     throw new Error(`Cannot perform '*' operation with value of type '${right}'.`);
+  }
 }
 
 export function divide<T extends Quantity>(left: Amount<T>, right: number | Amount<Dimensionless>): Amount<T> {
-  if (typeof right === "number")
+  if (typeof right === "number") {
     return _factory<T>(left.value / right, left.unit);
-  else if (right.unit.quantity === "Dimensionless")
+  } else if (right.unit.quantity === "Dimensionless") {
     return _factory<T>(left.value / valueAs(Units.One, right), left.unit);
-  else
+  } else {
     throw new Error(`Cannot perform '*' operation with value of type '${right}'.`);
+  }
 }
 
 /// Comparsion operators
 
-export const equals = <T extends Quantity>(left: Amount<T>, right: Amount<T>): boolean => _comparison(left, right, true) == 0;
+export const equals = <T extends Quantity>(left: Amount<T>, right: Amount<T>): boolean => _comparison(left, right, true) === 0;
 
 export const lessThan = <T extends Quantity>(left: Amount<T>, right: Amount<T>): boolean => _comparison(left, right, false) < 0;
 
@@ -92,18 +95,22 @@ export function clamp<T extends Quantity>(minAmount: Amount<T>, maxAmount: Amoun
 }
 
 export function max<T extends Quantity>(a1: Amount<T>, a2: Amount<T>): Amount<T> {
-  if (!a2)
+  if (!a2) {
     return a1;
-  if (!a1)
+  }
+  if (!a1) {
     return a2;
+  }
   return greaterThan(a1, a2) ? a1 : a2;
 }
 
 export function min<T extends Quantity>(a1: Amount<T>, a2: Amount<T>): Amount<T> {
-  if (!a2)
+  if (!a2) {
     return a1;
-  if (!a1)
+  }
+  if (!a1) {
     return a2;
+  }
   return lessThan(a1, a2) ? a1 : a2;
 }
 
@@ -134,7 +141,7 @@ export function abs<T extends Quantity>(amount: Amount<T>): Amount<T> {
  * @param toUnit The unit to get the amount in.
  * @param amount The amount to get the value from.
  */
-export function valueAs(toUnit: Unit.Unit<any>, amount: Amount<any>): number {
+export function valueAs(toUnit: Unit.Unit<Quantity>, amount: Amount<Quantity>): number {
   if (Unit.equals(amount.unit, toUnit)) {
     return amount.value;
   }
@@ -147,21 +154,23 @@ export function valueAs(toUnit: Unit.Unit<any>, amount: Amount<any>): number {
 
 function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimalCount: number | undefined = undefined): Amount<T> {
 
-  if (typeof value !== "number")
+  if (typeof value !== "number") {
     throw new Error("value must be a number.");
-
-  if (typeof unit !== "object")
+  }
+  if (typeof unit !== "object") {
     throw new Error("unit must be an object.");
-
-  if (decimalCount !== undefined && typeof decimalCount !== "number")
+  }
+  if (decimalCount !== undefined && typeof decimalCount !== "number") {
     throw new Error("decimalCount must be an undefined or a number.");
+  }
 
   if (decimalCount === undefined) {
     decimalCount = 0;
     const stringValue = value.toString();
-    const pointIndex = stringValue.indexOf('.');
-    if (pointIndex >= 0)
+    const pointIndex = stringValue.indexOf(".");
+    if (pointIndex >= 0) {
       decimalCount = stringValue.length - pointIndex - 1;
+    }
   }
   return {
     value: value,
@@ -173,17 +182,19 @@ function _factory<T extends Quantity>(value: number, unit: Unit.Unit<T>, decimal
 function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>, right: Amount<T2>, allowNullOrUndefined: boolean): number {
   if (!allowNullOrUndefined) {
     // We don't allow nulls for < and > because it would cause strange behavior, e.g. 1 < null would work which it shouldn't
-    if (left === null || left === undefined) throw new Error("ArgumentNull: left");
-    if (right === null || right === undefined) throw new Error("ArgumentNull: right");
-  }
-  else {
+    if (left === null || left === undefined) { throw new Error("ArgumentNull: left"); }
+    if (right === null || right === undefined) { throw new Error("ArgumentNull: right"); }
+  } else {
     // Handle nulls
-    if ((left === null && right === null) || (left === undefined && right === undefined))
+    if ((left === null && right === null) || (left === undefined && right === undefined)) {
       return 0;
-    if (left === null || left === undefined)
+    }
+    if (left === null || left === undefined) {
       return 1;
-    if (right === null || right === undefined)
+    }
+    if (right === null || right === undefined) {
       return 2;
+    }
   }
 
   // If the units are the same we can just use the highest decimal count
@@ -213,13 +224,12 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(left: Amount<T1>,
  * @param rightUnit
  * @returns The most granular unit.
  */
-function getMostGranularUnit(leftUnit: Unit.Unit<any>, rightUnit: Unit.Unit<any>): Unit.Unit<any> {
+function getMostGranularUnit(leftUnit: Unit.Unit<Quantity>, rightUnit: Unit.Unit<Quantity>): Unit.Unit<Quantity> {
 
   const rightDelta = valueAs(leftUnit, minus(create(2, rightUnit), create(1, rightUnit)));
   if (rightDelta > 1) {
     return leftUnit;
-  }
-  else {
+  } else {
     return rightUnit;
   }
 

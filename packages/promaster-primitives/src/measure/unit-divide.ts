@@ -1,4 +1,4 @@
-import * as Unit from './unit';
+import * as Unit from "./unit";
 import * as q from "./quantity";
 
 export function volumeByDuration(left: Unit.Unit<q.Volume>, right: Unit.Unit<q.Duration>): Unit.Unit<q.VolumeFlow> {
@@ -33,7 +33,8 @@ export function powerByElectricalCurrent(left: Unit.Unit<q.Power>, right: Unit.U
     return Unit.divide("ElectricPotential", left, right);
 }
 
-export function electricalCurrentByElectricalPotential(left: Unit.Unit<q.ElectricCurrent>, right: Unit.Unit<q.ElectricPotential>): Unit.Unit<q.ElectricConductance> {
+export function electricalCurrentByElectricalPotential(left: Unit.Unit<q.ElectricCurrent>, 
+right: Unit.Unit<q.ElectricPotential>): Unit.Unit<q.ElectricConductance> {
     return Unit.divide("ElectricConductance", left, right);
 }
 
@@ -41,7 +42,8 @@ export function magneticFluxByElectricalCurrent(left: Unit.Unit<q.MagneticFlux>,
     return Unit.divide("ElectricInductance", left, right);
 }
 
-export function electricalPotentialByElectricalCurrent(left: Unit.Unit<q.ElectricPotential>, right: Unit.Unit<q.ElectricCurrent>): Unit.Unit<q.ElectricResistance> {
+export function electricalPotentialByElectricalCurrent(left: Unit.Unit<q.ElectricPotential>, 
+right: Unit.Unit<q.ElectricCurrent>): Unit.Unit<q.ElectricResistance> {
     return Unit.divide("ElectricResistance", left, right);
 }
 

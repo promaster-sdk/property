@@ -53,7 +53,7 @@ export interface AlternateUnit<T extends Quantity> {
   readonly quantity: Quantity,
   readonly symbol: string,
   /** Holds the parent unit (a system unit). */
-  readonly parent: Unit<any>,
+  readonly parent: Unit<Quantity>,
 }
 
 /**
@@ -99,9 +99,9 @@ export interface ProductUnit<T extends Quantity> {
 /** Represents a rational power of a single unit. */
 export interface Element {
   /** Holds the single unit. */
-  readonly unit: Unit<any>;
+  readonly unit: Unit<Quantity>,
   /** Holds the power exponent. */
-  readonly pow: number;
+  readonly pow: number,
 }
 
 /**
@@ -138,7 +138,7 @@ export interface OffsetConverter {
 }
 
 /** Holds the dimensionless unit ONE */
-export const One: Unit<Dimensionless> = createOne();
+export const One: Unit<Dimensionless> = createOne(); //tslint:disable-line
 
 /** Holds the identity converter (unique). This converter does nothing (ONE.convert(x) == x). */
 const identityConverter: UnitConverter = createIdentityConverter();
@@ -158,7 +158,7 @@ export function createBase<T extends Quantity>(quantity: T, symbol: string): Uni
  * @param symbol The symbol for this alternate unit.
  * @param parent Parent the system unit from which this alternate unit is derived.
  */
-export function createAlternate<T extends Quantity>(symbol: string, parent: Unit<any>): Unit<T> {
+export function createAlternate<T extends Quantity>(symbol: string, parent: Unit<Quantity>): Unit<T> {
   return { quantity: parent.quantity, type: "alternate", symbol, parent };
 }
 
@@ -222,25 +222,28 @@ export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>,
 
   switch (left.type) {
     case "base":
-      return left.symbol === (right as BaseUnit<any>).symbol;
+      return left.symbol === (right as BaseUnit<Quantity>).symbol;
     case "alternate":
-      const alternateRight = right as AlternateUnit<any>;
+      const alternateRight = right as AlternateUnit<Quantity>;
       return left.symbol === alternateRight.symbol && equals(left.parent, alternateRight.parent);
     case "transformed":
-      const transformedRight = right as TransformedUnit<any>;
+      const transformedRight = right as TransformedUnit<Quantity>;
       return equals(left.parentUnit, transformedRight.parentUnit) && unitConvertersIsEqual(left.toParentUnitConverter, transformedRight.toParentUnitConverter);
     case "product":
-      const productRight = right as ProductUnit<any>;
+      const productRight = right as ProductUnit<Quantity>;
       if (left.elements.length !== productRight.elements.length) {
         return false;
       }
-      return left.elements.every((leftElement, index) => leftElement.pow === productRight.elements[index].pow && equals(leftElement.unit, productRight.elements[index].unit))
+      return left.elements.every((leftElement, index) =>
+        leftElement.pow === productRight.elements[index].pow && equals(leftElement.unit, productRight.elements[index].unit));
+    default:
+      return exhaustiveCheck(left, true);
   }
 }
 
 function unitConvertersIsEqual(left: UnitConverter, right: UnitConverter): boolean {
   if (left.type !== right.type) {
-    return false
+    return false;
   }
 
   switch (left.type) {
@@ -255,6 +258,8 @@ function unitConvertersIsEqual(left: UnitConverter, right: UnitConverter): boole
     case "offset":
       const offsetRight = right as OffsetConverter;
       return left.offset === offsetRight.offset;
+    default:
+      return exhaustiveCheck(left, true);
   }
 }
 
@@ -262,7 +267,7 @@ function unitConvertersIsEqual(left: UnitConverter, right: UnitConverter): boole
 /// BEGIN PRIVATE DECLARATIONS
 ///////////////////////////////
 
-function getConverter<T extends Quantity>(fromUnit: Unit<T>, toUnit: Unit<any>): UnitConverter {
+function getConverter<T extends Quantity>(fromUnit: Unit<T>, toUnit: Unit<Quantity>): UnitConverter {
   if (fromUnit === toUnit) {
     return identityConverter;
   }
@@ -283,8 +288,10 @@ function toStandardUnitConverter<T extends Quantity>(unit: Unit<T>): UnitConvert
       return productUnitToStandardUnit(unit);
     case "transformed":
       return concatenateConverters(unit.toParentUnitConverter, toStandardUnitConverter(unit.parentUnit));
+    default:
+      return exhaustiveCheck(unit, true);
   }
-  throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
+  // throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
 }
 
 /**
@@ -344,17 +351,18 @@ function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>,
   let unitGroups: { [key: string]: Array<Element> } = {};
   for (let v of allElements) {
     const group = unitGroups[JSON.stringify(v.unit)];
-    if (group === undefined)
+    if (group === undefined) {
       unitGroups[JSON.stringify(v.unit)] = [v];
-    else
+    } else {
       group.push(v);
+    }
   }
 
   Object.keys(unitGroups).forEach((unitJson: string) => {
-    const unit: Unit<any> = JSON.parse(unitJson);
+    const unit: Unit<Quantity> = JSON.parse(unitJson);
     const unitGroup: Array<Element> = unitGroups[unitJson];
     let sumpow: number = unitGroup.reduce((prev: number, element: Element) => prev + element.pow, 0);
-    if (sumpow != 0) {
+    if (sumpow !== 0) {
       resultElements.push(createElement(unit, sumpow));
     }
   });
@@ -362,7 +370,7 @@ function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>,
   return createProductUnit(quantity, resultElements);
 }
 
-function createElement(unit: Unit<any>, pow: number): Element {
+function createElement(unit: Unit<Quantity>, pow: number): Element {
   return { unit, pow };
 }
 
@@ -383,15 +391,13 @@ function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: 
 
 }
 
-function getElements(unit: Unit<any>): Array<Element> {
+function getElements(unit: Unit<Quantity>): Array<Element> {
   if (unit.type === "product") {
     return unit.elements;
-  }
-  else if (unit.type === "base" || unit.type === "transformed" || unit.type == "alternate") {
+  } else if (unit.type === "base" || unit.type === "transformed" || unit.type === "alternate") {
     // Base units has one implicit element of the unit which they describe
     return [createElement(unit, 1)];
-  }
-  else {
+  } else {
     return exhaustiveCheck(unit, true);
   }
 }
@@ -435,8 +441,9 @@ function createOffsetConverter(offset: number): OffsetConverter {
 }
 
 function createFactorConverter(factor: number): FactorConverter {
-  if (factor === 1.0)
+  if (factor === 1.0) {
     throw new Error("Argument: factor " + factor.toString());
+  }
   return { type: "factor", factor };
 }
 
@@ -455,8 +462,10 @@ function inverseConverter(converter: UnitConverter): UnitConverter {
       return converter;
     case "offset":
       return createOffsetConverter(-converter.offset);
+    default:
+      return exhaustiveCheck(converter, true);
   }
-  throw new Error("Unknown unit converter");
+  // throw new Error("Unknown unit converter");
 }
 
 function convertWithConverter(value: number, converter: UnitConverter): number {
@@ -469,8 +478,10 @@ function convertWithConverter(value: number, converter: UnitConverter): number {
       return value;
     case "offset":
       return value + converter.offset;
+    default:
+      return exhaustiveCheck(converter, true);
   }
-  throw new Error("Unknown unit converter");
+  // throw new Error("Unknown unit converter");
 }
 
 /**

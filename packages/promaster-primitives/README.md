@@ -1,5 +1,8 @@
 # promaster-primitives
 
+[![build status](https://gitlab.divid.se/promaster-sdk/promaster-primitives/badges/master/build.svg)](https://gitlab.divid.se/promaster-sdk/promaster-primitives/commits/master)
+[![coverage report](https://gitlab.divid.se/promaster-sdk/promaster-primitives/badges/master/coverage.svg)](https://gitlab.divid.se/promaster-sdk/promaster-primitives/commits/master)
+
 ## Introduction
 
 This is the main implementation of `promaster-primitives`. There are other ports and clones but the goal is to keep this single repo well maintained, documented, and tested.

@@ -1,10 +1,11 @@
-import {Quantity} from "./quantity";
+import { Quantity } from "./quantity";
 import * as Unit from "./unit";
+import { exhaustiveCheck } from "../utils/exhaustive-check";
 
 // We keep a global repository of Labels becasue if a Unit object is derived from arithmetic operations
 // it may still be considered equal to an existing unit and thus should have the same label.
 // const _typeLabels: Map<Unit.Unit<Quantity>, string> = new Map();
-const _typeLabels: {[unit: string]: string} = {};
+const _typeLabels: { [unit: string]: string } = {}; //tslint:disable-line
 
 export function registerLabel<T extends Quantity>(label: string, unit: Unit.Unit<T>): void {
   _typeLabels[JSON.stringify(unit)] = label;
@@ -12,8 +13,9 @@ export function registerLabel<T extends Quantity>(label: string, unit: Unit.Unit
 
 export function getName<T extends Quantity>(unit: Unit.Unit<T>): string {
   const label = _typeLabels[JSON.stringify(unit)];
-  if (label === undefined)
+  if (label === undefined) {
     return buildDerivedName(unit);
+  }
   return label;
 }
 
@@ -27,31 +29,34 @@ function buildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): string {
       return productUnitBuildDerivedName(unit);
     case "transformed":
       return "";
+    default:
+      return exhaustiveCheck(unit, true);
   }
-  throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
+  // throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
 }
 
 function productUnitBuildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): string {
 
   const comparePow = (a: Unit.Element, b: Unit.Element) => {
-    if (a.pow > b.pow)
+    if (a.pow > b.pow) {
       return 1;
-    else if (a.pow < b.pow)
+    } else if (a.pow < b.pow) {
       return -1;
-    else
+    } else {
       return 0;
+    }
   };
 
-  var pospow = getElements(unit).filter((e) => e.pow > 0);
+  const pospow = getElements(unit).filter((e) => e.pow > 0);
   pospow.sort(comparePow); // orderby e.Pow descending select e;
-  var posname = productUnitBuildNameFromElements(pospow);
-  var negpow = getElements(unit).filter((e) => e.pow < 0);
+  const posname = productUnitBuildNameFromElements(pospow);
+  const negpow = getElements(unit).filter((e) => e.pow < 0);
   negpow.sort(comparePow); // orderby e.Pow ascending select e;
-  var negname = productUnitBuildNameFromElements(negpow);
+  const negname = productUnitBuildNameFromElements(negpow);
 
   let name: string = posname;
   if (negname.length > 0) {
-    if (name.length == 0) {
+    if (name.length === 0) {
       name += "1";
     }
 
@@ -61,7 +66,7 @@ function productUnitBuildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): st
   return name;
 }
 
-function getElements(unit: Unit.Unit<any>) {
+function getElements(unit: Unit.Unit<Quantity>): Array<Unit.Element> {
   if (unit.type === "product") {
     return unit.elements;
   }

@@ -1,0 +1,16 @@
+stages:
+- test
+
+variables:
+  YARN: node ./yarn.js
+
+test:
+  image: node:7.6.0
+  stage: test
+  script:
+    - $YARN install --ignore-scripts
+    - $YARN run lint
+    - $YARN run circular
+    - $YARN run tsc
+    - $YARN run tsc:test
+    - $YARN run test

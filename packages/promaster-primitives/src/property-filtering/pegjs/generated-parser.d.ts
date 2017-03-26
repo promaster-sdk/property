@@ -1,8 +1,10 @@
 // import {Parser} from "pegjs";
 
+// tslint:disable no-any
+
 interface Parser {
-    parse: (input: any, options: any) => any,
-    SyntaxError: (message: any, expected: any, found: any, location: any) => any,
+  readonly parse: (input: any, options: any) => any,
+  readonly SyntaxError: (message: any, expected: any, found: any, location: any) => any,
 }
 
 declare const parser: Parser;
