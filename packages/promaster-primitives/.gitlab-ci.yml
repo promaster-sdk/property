@@ -1,5 +1,6 @@
 stages:
 - test
+- pages
 
 variables:
   YARN: node ./yarn.js
@@ -15,3 +16,16 @@ test:
     - $YARN run tsc:test
     - $YARN run test
   coverage: /^All files\s*\|\s*(\d+.\d+)/
+
+pages:
+  stage: pages
+  dependencies:
+    - test
+  script:
+    - mv coverage/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  only:
+    - master
