@@ -16,7 +16,9 @@ test:
     - $YARN run tsc:test
     - $YARN run test
   coverage: /^All files\s*\|\s*(\d+.\d+)/
-
+  artifacts:
+    paths:
+      - coverage/
 pages:
   stage: pages
   dependencies:
