@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import {PropertyFilter, PropertyValue, Amount, Units} from "@promaster/promaster-primitives";
+import {PropertyFilter, PropertyValueSet, PropertyValue, Amount, Units} from "@promaster/promaster-primitives";
 import {exhaustiveCheck} from "../exhaustive-check/index";
 import * as Types from "./types";
 
@@ -63,6 +63,8 @@ function mapValue(mapping: Types.ValueMapping, rawValue: Types.RawColumnData): a
         return convertFloat(rawValue);
       case "PropertyFilter":
         return convertFilter(rawValue);
+      case "PropertyValueSet":
+        return convertPropertyValueSet(rawValue);
       case "Quantity":
         return Units.getQuantityTypeFromString(rawValue);
       case "Unit":
@@ -213,6 +215,10 @@ function convertArray<TFrom, TTo>(array: ReadonlyArray<TFrom> | undefined, mappe
 
 function convertFilter(filter: string | undefined): PropertyFilter.PropertyFilter {
   return PropertyFilter.fromStringOrEmpty(filter || "");
+}
+
+function convertPropertyValueSet(values: string | undefined): PropertyValueSet.PropertyValueSet {
+  return PropertyValueSet.fromString(values || "") || PropertyValueSet.Empty;
 }
 
 function convertPropertyValue(value: string | undefined): PropertyValue.PropertyValue | undefined {
