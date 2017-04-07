@@ -45,8 +45,8 @@ function measureSectionElement(pdf: any, parentResources: AD.Resources.Resources
       return measureParagraph(pdf, resources, availableSize, element);
     case "Table":
       return measureTable(pdf, resources, availableSize, element);
-    case "KeepTogether":
-      return measureKeepTogether(pdf, resources, availableSize, element);
+    case "Group":
+      return measureGroup(pdf, resources, availableSize, element);
   }
 }
 
@@ -131,7 +131,7 @@ function measureTable(pdf: any, resources: AD.Resources.Resources, availableSize
   return desiredSizes;
 }
 
-function measureKeepTogether(pdf: any, resources: AD.Resources.Resources, availableSize: AD.Size.Size, keepTogether: AD.KeepTogether.KeepTogether) {
+function measureGroup(pdf: any, resources: AD.Resources.Resources, availableSize: AD.Size.Size, keepTogether: AD.Group.Group) {
   let desiredSizes = mergeMaps(keepTogether.children.map((e) => measureSectionElement(pdf, resources, availableSize, e)));
   let desiredHeight = R.reduce((sum, e) => sum + getDesiredSize(e, desiredSizes).height, 0.0, keepTogether.children);
   desiredSizes.set(keepTogether, AD.Size.create(availableSize.width, desiredHeight));

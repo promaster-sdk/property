@@ -26,8 +26,8 @@ function preProcessSectionElement(e: AD.SectionElement.SectionElement, parentRes
       return preProcessParagraph(e, resources);
     case "Table":
       return [preProcessTable(e, resources)];
-    case "KeepTogether":
-      return [preProcessKeepTogether(e, resources)];
+    case "Group":
+      return preProcessGroup(e, resources);
   }
 }
 
@@ -219,7 +219,10 @@ function preProcessTableCell(c: AD.TableCell.TableCell, resources: AD.Resources.
   return AD.TableCell.create({styleName: c.styleName, columnSpan: c.columnSpan, style: c.style, children: children});
 }
 
-function preProcessKeepTogether(keepTogether: AD.KeepTogether.KeepTogether, resources: AD.Resources.Resources): AD.SectionElement.SectionElement {
-  const children = R.unnest(keepTogether.children.map((e) => preProcessSectionElement(e, resources)));
-  return AD.KeepTogether.create({children: children});
+function preProcessGroup(group: AD.Group.Group, parentResources: AD.Resources.Resources): Array<AD.SectionElement.SectionElement> {
+  const children = R.unnest(group.children.map((e) => preProcessSectionElement(e, parentResources)));
+  if (group.keepTogether) {
+    return [AD.Group.create({keepTogether: group.keepTogether, children: children})];
+  }
+  return children;
 }

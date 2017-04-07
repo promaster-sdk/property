@@ -3,7 +3,7 @@ import * as React from "react";
 import {
   AbstractDoc as AbstractDoc1,
   Section as Section1,
-  KeepTogether as KeepTogether1,
+  Group as Group1,
   Paragraph as Paragraph1,
   Table as Table1,
   TableRow as TableRow1,
@@ -18,7 +18,7 @@ import {
 
 export const AbstractDoc = (props: AbstractDoc1.AbstractDocProps): React.ReactElement<AbstractDoc1.AbstractDocProps> => AbstractDoc1.create(props) as any;
 export const Section = (props: Section1.SectionProps): React.ReactElement<Section1.Section> => Section1.create(props) as any;
-export const KeepTogether = (props: KeepTogether1.KeepTogetherProps): React.ReactElement<KeepTogether1.KeepTogether> => KeepTogether1.create(props) as any;
+export const Group = (props: Group1.GroupProps): React.ReactElement<Group1.Group> => Group1.create(props) as any;
 export const Paragraph = (props: Paragraph1.ParagraphProps): React.ReactElement<Paragraph1.Paragraph> => Paragraph1.create(props) as any;
 export const Table = (props: Table1.TableProps): React.ReactElement<Table1.Table> => Table1.create(props) as any;
 export const TableRow = (props: TableRow1.TableRowProps): React.ReactElement<TableRow1.TableRow> => TableRow1.create(props) as any;

@@ -18,8 +18,8 @@ function getResourcesSectionElement(e: AD.SectionElement.SectionElement): AD.Res
       return getResourcesParagraph(e);
     case "Table":
       return getResourcesTable(e);
-    case "KeepTogether":
-      return getResourcesKeepTogether(e);
+    case "Group":
+      return getResourcesGroup(e);
   }
 }
 
@@ -39,6 +39,6 @@ function getResourcesTableCell(c: AD.TableCell.TableCell): AD.Resources.Resource
   return AD.Resources.mergeResources(c.children.map((e) => getResourcesSectionElement(e)));
 }
 
-function getResourcesKeepTogether(keepTogether: AD.KeepTogether.KeepTogether): AD.Resources.Resources {
-  return AD.Resources.mergeResources(keepTogether.children.map((e) => getResourcesSectionElement(e)));
+function getResourcesGroup(group: AD.Group.Group): AD.Resources.Resources {
+  return AD.Resources.mergeResources(group.children.map((e) => getResourcesSectionElement(e)));
 }

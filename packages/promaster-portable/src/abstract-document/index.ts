@@ -17,7 +17,7 @@ import * as LayoutFoundation from "./primitives/layout-foundation";
 import * as Point from "./primitives/point";
 import * as Rect from "./primitives/rect";
 import * as Size from "./primitives/size";
-import * as KeepTogether from "./section-elements/keep-together";
+import * as Group from "./section-elements/group";
 import * as Paragraph from "./section-elements/paragraph";
 import * as ParagraphNumbering from "./section-elements/paragraph-numbering";
 import * as SectionElement from "./section-elements/section-element";
@@ -40,7 +40,7 @@ export {
   AbstractDoc, Atom, Image, TextField, TextRun, HyperLink,
   Font, Numbering, NumberingDefinition, NumberingFormat,
   NumberingLevelDefinition, MasterPage, Section, Length, ImageResource,
-  LayoutFoundation, Point, Rect, Size, KeepTogether, Paragraph, ParagraphNumbering, SectionElement, Table, Markdown,
+  LayoutFoundation, Point, Rect, Size, Group, Paragraph, ParagraphNumbering, SectionElement, Table, Markdown,
   PageStyle, ParagraphStyle, Style, StyleKey, TableCellStyle, TableStyle, TextStyle,
   TableCell, TableRow, DefaultStyles, Resources, Types
 };

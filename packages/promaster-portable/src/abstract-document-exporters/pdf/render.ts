@@ -146,7 +146,7 @@ function renderSectionElement(parentResources: AD.Resources.Resources, pdf: any,
     case "Table":
       renderTable(resources, pdf, desiredSizes, finalRect, element, pageNo);
       return;
-    case "KeepTogether":
+    case "Group":
       renderKeepTogether(resources, pdf, desiredSizes, finalRect, element, pageNo);
       return;
   }
@@ -195,7 +195,7 @@ function renderParagraph(resources: AD.Resources.Resources, pdf: any, desiredSiz
   }
 }
 
-function renderKeepTogether(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, keepTogether: AD.KeepTogether.KeepTogether, pageNo: number) {
+function renderKeepTogether(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, keepTogether: AD.Group.Group, pageNo: number) {
   let y = finalRect.y;
   for (const element of keepTogether.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
