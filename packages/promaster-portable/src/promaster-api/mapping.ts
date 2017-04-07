@@ -133,7 +133,9 @@ function convertProductPropertyDefValue(defValue: any): Types.ProductPropertyDef
     return undefined;
   }
   return {
+    sort_no: convertInt(defValue.sort_no, 0),
     value: value,
+    property_filter: convertFilter(defValue.property_filter),
   };
 }
 

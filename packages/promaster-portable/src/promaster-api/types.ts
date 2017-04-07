@@ -1,4 +1,4 @@
-import {PropertyFilter, PropertyValue, Quantity, Unit} from "@promaster/promaster-primitives";
+import { PropertyFilter, PropertyValue, Quantity, Unit } from "@promaster/promaster-primitives";
 
 export type Url = string;
 export type Uuid = string;
@@ -29,10 +29,10 @@ export interface RawProduct {
   readonly data: RawProductData,
 }
 
-export type RawProductData = {readonly [tableName: string]: RawTableData};
+export type RawProductData = { readonly [tableName: string]: RawTableData };
 
 export type RawTableData = ReadonlyArray<RawTableRow>;
-export type RawTableRow = {readonly [columnName: string]: RawColumnData};
+export type RawTableRow = { readonly [columnName: string]: RawColumnData };
 
 export type RawColumnData = string;
 
@@ -48,7 +48,7 @@ export interface RawTreeRelation {
 }
 
 export type ValueMapping = AmountValueMapping | "string" | "PropertyFilter" | "number" | "Quantity" | "Unit";
-export type AmountValueMapping = {type: "Amount", unit: Unit.Unit<any>}; //tslint:disable-line
+export type AmountValueMapping = { type: "Amount", unit: Unit.Unit<any> }; //tslint:disable-line
 
 export type Mapping<TMappedType> = {
   readonly [FieldName in keyof TMappedType]: ValueMapping
@@ -80,7 +80,9 @@ export interface Translation {
 }
 
 export interface ProductPropertyDefValue {
+  readonly sort_no: number,
   readonly value: PropertyValue.PropertyValue,
+  readonly property_filter: PropertyFilter.PropertyFilter,
 }
 
 export interface ProductPropertyTranslation {
