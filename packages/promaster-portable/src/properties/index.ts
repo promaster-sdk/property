@@ -9,7 +9,6 @@ export function getDefaultValues(productProperties: ReadonlyArray<Api.ProductPro
   let defaultValues: PropertyValueSet.PropertyValueSet = PropertyValueSet.Empty;
   for (const p of productProperties) {
     let defValue: PropertyValue.PropertyValue | undefined = undefined;
-    console.log("p.def_value", p.def_value);
     for (const def of p.def_value) {
       if (PropertyFilter.isValid(defaultValues, def.property_filter)) {
         defValue = def.value;
