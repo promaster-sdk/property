@@ -8,7 +8,8 @@ import * as PropertyFiltering from "./property-filtering/index";
 import * as VariantListing from "./variant-listing/index";
 import * as PromasterMarkdown from "./promaster-markdown/index";
 import * as PromasterApi from "./promaster-api/index";
-import * as PropertyValues from "./property-values/index";
+import * as Properties from "./properties/index";
+import * as OrderingCode from "./ordering-code/index";
 
 export {
   AbstractChart,
@@ -21,5 +22,6 @@ export {
   VariantListing,
   PromasterMarkdown,
   PromasterApi,
-  PropertyValues
+  Properties,
+  OrderingCode
 }

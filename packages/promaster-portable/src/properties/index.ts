@@ -1,3 +1,7 @@
+/**
+ * Functions related to the "Properties" module in Promaster
+ */
+
 import { PropertyValueSet, PropertyValue, PropertyFilter, Amount, Units } from "@promaster/promaster-primitives";
 import * as Api from "../promaster-api";
 
