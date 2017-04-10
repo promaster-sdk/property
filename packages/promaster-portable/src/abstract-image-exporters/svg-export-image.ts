@@ -41,6 +41,9 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         "strokeWidth": component.strokeThickness.toString()
       }, []);
     case "text":
+      if (!component.text) {
+        return "";
+      }
       const shadowStyle = {
         textAnchor: getTextAnchor(component.horizontalGrowthDirection),
         fontSize: component.fontSize.toString() + "px",
