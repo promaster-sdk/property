@@ -66,6 +66,11 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
     const { onValueChange, readOnly, styles = amountInputBoxStyles } = this.props;
     const { effectiveErrorMessage, textValue } = this.state;
 
+    const className =
+      readOnly ?
+        (effectiveErrorMessage ? styles.inputInvalidLocked : styles.inputLocked) :
+        (effectiveErrorMessage ? styles.inputInvalid : styles.input);
+
     return (
       <input key="input"
         type="text"
@@ -73,7 +78,7 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
         readOnly={readOnly}
         onChange={(e) => this._onChange(e, onValueChange)}
         title={effectiveErrorMessage}
-        className={effectiveErrorMessage ? styles.inputInvalid : styles.input} />
+        className={className} />
     );
 
   }

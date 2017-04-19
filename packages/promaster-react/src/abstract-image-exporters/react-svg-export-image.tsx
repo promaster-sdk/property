@@ -29,6 +29,9 @@ function _visit(key: string, component: AbstractImage.Component): Array<React.Re
           strokeWidth={component.strokeThickness} />
       )];
     case "text":
+      if (!component.text) {
+        return [];
+      }
       const shadowStyle = {
         textAnchor: getTextAnchor(component.horizontalGrowthDirection),
         fontSize: component.fontSize.toString() + "px",
