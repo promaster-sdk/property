@@ -64,7 +64,7 @@ function measureParagraph(pdf: any, resources: AD.Resources.Resources, available
   for (let atom of paragraph.children) {
     const atomSize = measureAtom(pdf, resources, style.textStyle, contentAvailableSize, atom);
     desiredSizes.set(atom, atomSize);
-    if (currentRowWidth + atomSize.width >= contentAvailableSize.width) {
+    if (currentRowWidth + atomSize.width > contentAvailableSize.width) {
       desiredHeight += currentRowHeight;
       currentRowWidth = 0;
       currentRowHeight = 0;
@@ -200,14 +200,15 @@ function measureText(pdf: any, text: string, textStyle: AD.TextStyle.TextStyle, 
       height: availableSize.height,
       underline: textStyle.underline || false,
       features: features,
-    }));
+    }) + 0.0001);
   const height = pdf
     .heightOfString(text, {
       width: width,
       height: availableSize.height,
       underline: textStyle.underline || false,
       features: features,
-    });
+    }) + 0.0001;
+  console.log({text, availableSize, width, height});
   return AD.Size.create(width, height);
   // let font = style.fontFamily || "Helvetica";
   // if (style.bold && style.italic) { font += "-BoldOblique"; }
