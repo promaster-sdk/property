@@ -180,17 +180,45 @@ function measureImage(availableSize: AD.Size.Size, image: AD.Image.Image): AD.Si
   return AD.Size.create(desiredWidth, desiredHeight);
 }
 
-function measureText(pdf: any, text: string, style: AD.TextStyle.TextStyle, availableSize: AD.Size.Size): AD.Size.Size {
-  let font = style.fontFamily || "Helvetica";
-  if (style.bold && style.italic) { font += "-BoldOblique"; }
-  else if (style.bold) { font += "-Bold"; }
-  else if (style.italic) { font += "-Oblique"; }
+function measureText(pdf: any, text: string, textStyle: AD.TextStyle.TextStyle, availableSize: AD.Size.Size): AD.Size.Size {
+  let features: Array<string> = [];
+  let font = textStyle.fontFamily || "Helvetica";
+  if (textStyle.bold && textStyle.italic) { font += "-BoldOblique"; }
+  else if (textStyle.bold) { font += "-Bold"; }
+  else if (textStyle.italic) { font += "-Oblique"; }
 
-  pdf.font(font).fontSize(style.fontSize || 10);
-  const width = Math.min(availableSize.width, pdf.widthOfString(text));
-  const height = Math.min(availableSize.height, pdf.heightOfString(text));
+  if (textStyle.subScript) features.push("subs");
+  if (textStyle.superScript) features.push("sups");
 
+  pdf
+    .font(font)
+    .fontSize(textStyle.fontSize || 10)
+    .fillColor(textStyle.color || "black");
+  const width = Math.min(availableSize.width, pdf
+    .widthOfString(text, {
+      width: availableSize.width,
+      height: availableSize.height,
+      underline: textStyle.underline || false,
+      features: features,
+    }));
+  const height = pdf
+    .heightOfString(text, {
+      width: width,
+      height: availableSize.height,
+      underline: textStyle.underline || false,
+      features: features,
+    });
   return AD.Size.create(width, height);
+  // let font = style.fontFamily || "Helvetica";
+  // if (style.bold && style.italic) { font += "-BoldOblique"; }
+  // else if (style.bold) { font += "-Bold"; }
+  // else if (style.italic) { font += "-Oblique"; }
+
+  // pdf.font(font).fontSize(style.fontSize || 10);
+  // const width = Math.min(availableSize.width, pdf.widthOfString(text));
+  // const height = Math.min(availableSize.height, pdf.heightOfString(text));
+
+  // return AD.Size.create(width, height);
 }
 
 function mergeMaps(maps: Array<Map<any, AD.Size.Size>>): Map<any, AD.Size.Size> {

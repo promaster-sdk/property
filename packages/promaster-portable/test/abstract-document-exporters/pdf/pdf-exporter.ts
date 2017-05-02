@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import * as ADPdf from "../../../src/abstract-document-exporters/pdf/render";
 import * as AD from "../../../src/abstract-document";
-import * as AI from "../../../src/abstract-image";
+// import * as AI from "../../../src/abstract-image";
 // import {assert} from "chai";
 import * as fs from "fs";
 // import * as path from "path";
@@ -98,6 +98,7 @@ describe("PdfExporter", () => {
 
   it("should render tables correctly", function (done) {
     const tableCellStyle = AD.TableCellStyle.create({ background: "#AAAAFF", padding: AD.LayoutFoundation.create({ top: 10, bottom: 20, left: 30, right: 40 }) });
+    const text = R.range(0, 30).map((i) => "Test" + i.toString()).join(" ");
     const doc = AD.AbstractDoc.create({
       children: [
         AD.Section.create({
@@ -110,7 +111,7 @@ describe("PdfExporter", () => {
                       style: tableCellStyle, children: [
                         AD.Paragraph.create({
                           children: [
-                            AD.TextRun.create({ text: "Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing " })
+                            AD.TextRun.create({ text: text })
                           ]
                         })
                       ]
@@ -119,7 +120,7 @@ describe("PdfExporter", () => {
                       style: tableCellStyle, children: [
                         AD.Paragraph.create({
                           children: [
-                            AD.TextRun.create({ text: "Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing " })
+                            AD.TextRun.create({ text: text })
                           ]
                         })
                       ]
