@@ -208,7 +208,6 @@ function measureText(pdf: any, text: string, textStyle: AD.TextStyle.TextStyle, 
       underline: textStyle.underline || false,
       features: features,
     }) + 0.0001;
-  console.log({text, availableSize, width, height});
   return AD.Size.create(width, height);
   // let font = style.fontFamily || "Helvetica";
   // if (style.bold && style.italic) { font += "-BoldOblique"; }
