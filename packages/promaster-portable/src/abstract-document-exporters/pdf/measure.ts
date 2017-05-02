@@ -51,8 +51,7 @@ function measureSectionElement(pdf: any, parentResources: AD.Resources.Resources
 }
 
 function measureParagraph(pdf: any, resources: AD.Resources.Resources, availableSize: AD.Size.Size, paragraph: AD.Paragraph.Paragraph): Map<any, AD.Size.Size> {
-  const styleFromName = AD.Resources.getStyle("ParagraphStyle", paragraph.styleName, resources) as AD.ParagraphStyle.ParagraphStyle;
-  const style = AD.ParagraphStyle.overrideWith(paragraph.style, styleFromName);
+  const style = AD.Resources.getStyle(undefined, paragraph.style, "ParagraphStyle", paragraph.styleName, resources) as AD.ParagraphStyle.ParagraphStyle;
   const contentAvailableWidth = availableSize.width - (style.margins.left + style.margins.left);
   const contentAvailableHeight = availableSize.height - (style.margins.top + style.margins.bottom);
   const contentAvailableSize = AD.Size.create(contentAvailableWidth, contentAvailableHeight);
@@ -80,8 +79,7 @@ function measureParagraph(pdf: any, resources: AD.Resources.Resources, available
 }
 
 function measureTable(pdf: any, resources: AD.Resources.Resources, availableSize: AD.Size.Size, table: AD.Table.Table): Map<any, AD.Size.Size> {
-  const styleFromName = AD.Resources.getStyle("TableStyle", table.styleName, resources) as AD.TableStyle.TableStyle;
-  const style = AD.TableStyle.overrideWith(table.style, styleFromName);
+  const style = AD.Resources.getStyle(undefined, table.style, "TableStyle", table.styleName, resources) as AD.TableStyle.TableStyle;
   const tableAvailableWidth = availableSize.width - (style.margins.left + style.margins.right);
   const numInfinityColumns = table.columnWidths.filter((w) => !isFinite(w)).length;
   const fixedColumnsWidth = table.columnWidths.filter((w) => isFinite(w)).reduce((a, b) => a + b, 0);
@@ -92,8 +90,7 @@ function measureTable(pdf: any, resources: AD.Resources.Resources, availableSize
   for (let row of table.children) {
     let column = 0;
     for (let cell of row.children) {
-      const cellStyleFromName = AD.Resources.getStyle("TableCellStyle", cell.styleName, resources) as AD.TableCellStyle.TableCellStyle;
-      const cellStyle = AD.TableCellStyle.overrideWith(cell.style, AD.TableCellStyle.overrideWith(cellStyleFromName, style.cellStyle));
+      const cellStyle = AD.Resources.getStyle(style.cellStyle, cell.style, "TableCellStyle", cell.styleName, resources) as AD.TableCellStyle.TableCellStyle;
       const cellWidth = columnWidths.slice(column, column + cell.columnSpan).reduce((a, b) => a + b, 0);
 
       const contentAvailableWidth = cellWidth - (cellStyle.padding.left + cellStyle.padding.right);
@@ -152,20 +149,17 @@ function measureAtom(pdf: any, resources: AD.Resources.Resources, textStyle: AD.
 }
 
 function measureTextRun(pdf: any, resources: AD.Resources.Resources, textStyle: AD.TextStyle.TextStyle, textRun: AD.TextRun.TextRun, availableSize: AD.Size.Size): AD.Size.Size {
-  const styleFromName = AD.Resources.getStyle("TextStyle", textRun.styleName, resources) as AD.TextStyle.TextStyle;
-  const style = AD.TextStyle.overrideWith(textRun.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  const style = AD.Resources.getStyle(textStyle, textRun.style, "TextStyle", textRun.styleName, resources) as AD.TextStyle.TextStyle;
   return measureText(pdf, textRun.text, style, availableSize);
 }
 
 function measureHyperLink(pdf: any, resources: AD.Resources.Resources, textStyle: AD.TextStyle.TextStyle, hyperLink: AD.HyperLink.HyperLink, availableSize: AD.Size.Size): AD.Size.Size {
-  const styleFromName = AD.Resources.getStyle("TextStyle", hyperLink.styleName, resources) as AD.TextStyle.TextStyle;
-  const style = AD.TextStyle.overrideWith(hyperLink.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  const style = AD.Resources.getStyle(textStyle, hyperLink.style, "TextStyle", hyperLink.styleName, resources) as AD.TextStyle.TextStyle;
   return measureText(pdf, hyperLink.text, style, availableSize);
 }
 
 function measureTextField(pdf: any, resources: AD.Resources.Resources, textStyle: AD.TextStyle.TextStyle, textField: AD.TextField.TextField, availableSize: AD.Size.Size): AD.Size.Size {
-  const styleFromName = AD.Resources.getStyle("TextStyle", textField.styleName, resources) as AD.TextStyle.TextStyle;
-  const style = AD.TextStyle.overrideWith(textField.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  const style = AD.Resources.getStyle(textStyle, textField.style, "TextStyle", textField.styleName, resources) as AD.TextStyle.TextStyle;
   switch (textField.fieldType) {
     case "Date":
       return measureText(pdf, new Date(Date.now()).toDateString(), style, availableSize);

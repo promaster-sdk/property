@@ -3,7 +3,7 @@ import {ImageResource} from "./primitives/image-resource";
 import {NumberingDefinition} from "./numberings/numbering-definition";
 import {Numbering} from "./numberings/numbering";
 import * as StyleKey from "./styles/style-key";
-import {Style} from "./styles/style";
+import {Style, overrideWith} from "./styles/style";
 import {Font} from "./primitives/font";
 import {Indexer} from "./types";
 import {defaultAndStandardStyles} from "./default-styles";
@@ -31,8 +31,9 @@ export function mergeResources(resources: Array<Resources>): Resources {
   };
 }
 
-export function getStyle(type: string, name: string, resources: Resources): Style | undefined {
-  const key = StyleKey.create(type, name || "Default");
-  const style = resources.styles ? resources.styles[key] : undefined;
-  return style || defaultAndStandardStyles[key];
+export function getStyle(parentStyle: Style | undefined, elementStyle: Style | undefined, type: string, name: string, resources: Resources): Style | undefined {
+  const factoryDefault = defaultAndStandardStyles[StyleKey.create(type, "Default")];
+  const documentDefault = resources.styles && resources.styles[StyleKey.create(type, "Default")];
+  const namedStyle = resources.styles && resources.styles[StyleKey.create(type, name)];
+  return overrideWith(elementStyle, overrideWith(namedStyle, overrideWith(parentStyle, overrideWith(documentDefault, factoryDefault))));
 }

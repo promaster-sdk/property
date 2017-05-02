@@ -153,8 +153,7 @@ function renderSectionElement(parentResources: AD.Resources.Resources, pdf: any,
 }
 
 function renderParagraph(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, paragraph: AD.Paragraph.Paragraph, pageNo: number) {
-  const styleFromName = AD.Resources.getStyle("ParagraphStyle", paragraph.styleName, resources) as AD.ParagraphStyle.ParagraphStyle;
-  const style = AD.ParagraphStyle.overrideWith(paragraph.style, styleFromName);
+  const style = AD.Resources.getStyle(undefined, paragraph.style, "ParagraphStyle", paragraph.styleName, resources) as AD.ParagraphStyle.ParagraphStyle;
   const availableWidth = finalRect.width - (style.margins.left + style.margins.right);
 
   let rows: Array<Array<AD.Atom.Atom>> = [];
@@ -222,8 +221,7 @@ function renderAtom(resources: AD.Resources.Resources, pdf: any, finalRect: AD.R
 }
 
 function renderTextField(resources: AD.Resources.Resources, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textField: AD.TextField.TextField, pageNo: number) {
-  const styleFromName = AD.Resources.getStyle("TextStyle", textField.styleName, resources) as AD.TextStyle.TextStyle;
-  const style = AD.TextStyle.overrideWith(textField.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  const style = AD.Resources.getStyle(textStyle, textField.style, "TextStyle", textField.styleName, resources) as AD.TextStyle.TextStyle;
   switch (textField.fieldType) {
     case "Date":
       drawText(pdf, finalRect, style, new Date(Date.now()).toDateString());
@@ -235,14 +233,12 @@ function renderTextField(resources: AD.Resources.Resources, pdf: any, finalRect:
 }
 
 function renderTextRun(resources: AD.Resources.Resources, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, textRun: AD.TextRun.TextRun) {
-  const styleFromName = AD.Resources.getStyle("TextStyle", textRun.styleName, resources) as AD.TextStyle.TextStyle;
-  const style = AD.TextStyle.overrideWith(textRun.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  const style = AD.Resources.getStyle(textStyle, textRun.style, "TextStyle", textRun.styleName, resources) as AD.TextStyle.TextStyle;
   drawText(pdf, finalRect, style, textRun.text);
 }
 
 function renderHyperLink(resources: AD.Resources.Resources, pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.TextStyle, hyperLink: AD.HyperLink.HyperLink) {
-  const styleFromName = AD.Resources.getStyle("TextStyle", hyperLink.styleName, resources) as AD.TextStyle.TextStyle;
-  const style = AD.TextStyle.overrideWith(hyperLink.style, AD.TextStyle.overrideWith(styleFromName, textStyle));
+  const style = AD.Resources.getStyle(textStyle, hyperLink.style, "TextStyle", hyperLink.styleName, resources) as AD.TextStyle.TextStyle;
   drawHyperLink(pdf, finalRect, style, hyperLink);
 }
 
@@ -293,8 +289,7 @@ function drawText(pdf: any, finalRect: AD.Rect.Rect, textStyle: AD.TextStyle.Tex
 }
 
 function renderTable(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, table: AD.Table.Table, pageNo: number) {
-  const styleFromName = AD.Resources.getStyle("TableStyle", table.styleName, resources) as AD.TableStyle.TableStyle;
-  const style = AD.TableStyle.overrideWith(table.style, styleFromName);
+  const style = AD.Resources.getStyle(undefined, table.style, "TableStyle", table.styleName, resources) as AD.TableStyle.TableStyle;
   const x = finalRect.x + style.margins.left;
   let y = finalRect.y + style.margins.top;
   for (let row of table.children) {
@@ -316,15 +311,14 @@ function renderRow(resources: AD.Resources.Resources, pdf: any, desiredSizes: Ma
 }
 
 function renderCell(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, tableCellStyle: AD.TableCellStyle.TableCellStyle, cell: AD.TableCell.TableCell, pageNo: number) {
-  const cellStyleFromName = AD.Resources.getStyle("TableCellStyle", cell.styleName, resources) as AD.TableCellStyle.TableCellStyle;
-  const cellStyle = AD.TableCellStyle.overrideWith(cell.style, AD.TableCellStyle.overrideWith(cellStyleFromName, tableCellStyle));
-  if (cellStyle.background) {
+  const style = AD.Resources.getStyle(tableCellStyle, cell.style, "TableCellStyle", cell.styleName, resources) as AD.TableCellStyle.TableCellStyle;
+  if (style.background) {
     pdf.rect(finalRect.x, finalRect.y, finalRect.width, finalRect.height)
-      .fill(cellStyle.background);
+      .fill(style.background);
   }
 
-  let x = finalRect.x + cellStyle.padding.left;
-  let y = finalRect.y + cellStyle.padding.top;
+  let x = finalRect.x + style.padding.left;
+  let y = finalRect.y + style.padding.top;
   for (const element of cell.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
     const elementRect = AD.Rect.create(x, y, elementSize.width, elementSize.height);
@@ -332,26 +326,26 @@ function renderCell(resources: AD.Resources.Resources, pdf: any, desiredSizes: M
     y += elementSize.height;
   }
 
-  if (cellStyle.borderColor) {
-    if (cellStyle.borders.top) {
+  if (style.borderColor) {
+    if (style.borders.top) {
       pdf.moveTo(finalRect.x, finalRect.y)
         .lineTo(finalRect.x + finalRect.width, finalRect.y)
-        .stroke(cellStyle.borderColor);
+        .stroke(style.borderColor);
     }
-    if (cellStyle.borders.bottom) {
+    if (style.borders.bottom) {
       pdf.moveTo(finalRect.x, finalRect.y + finalRect.height)
         .lineTo(finalRect.x + finalRect.width, finalRect.y + finalRect.height)
-        .stroke(cellStyle.borderColor);
+        .stroke(style.borderColor);
     }
-    if (cellStyle.borders.left) {
+    if (style.borders.left) {
       pdf.moveTo(finalRect.x, finalRect.y)
         .lineTo(finalRect.x, finalRect.y + finalRect.height)
-        .stroke(cellStyle.borderColor);
+        .stroke(style.borderColor);
     }
-    if (cellStyle.borders.right) {
+    if (style.borders.right) {
       pdf.moveTo(finalRect.x + finalRect.width, finalRect.y)
         .lineTo(finalRect.x + finalRect.width, finalRect.y + finalRect.height)
-        .stroke(cellStyle.borderColor);
+        .stroke(style.borderColor);
     }
   }
 }
