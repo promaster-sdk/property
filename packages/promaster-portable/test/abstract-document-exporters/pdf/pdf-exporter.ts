@@ -414,6 +414,81 @@ describe("PdfExporter", () => {
   //   stream.on('finish', function () { done(); });
   //   ADPdf.exportToStream(pdfKit, stream, doc);
   // });
+
+    it("should handle styling correctly", function (done) {
+      const textBlue = AD.TextStyle.create({fontSize: 20});
+      const textRed = AD.TextStyle.create({fontSize: 7});
+      
+      const paragraphBlue = AD.ParagraphStyle.create({textStyle: textBlue})
+      const paragraphRed = AD.ParagraphStyle.create({textStyle: textRed})
+
+      const styles: AD.Types.Indexer<AD.Style.Style> = {};
+      styles[AD.StyleKey.create("ParagraphStyle", "Default")] = paragraphBlue;
+      styles[AD.StyleKey.create("TextStyle", "Default")] = textBlue;
+      styles[AD.StyleKey.create("ParagraphStyle", "Red")] = paragraphRed;
+      styles[AD.StyleKey.create("TextStyle", "Red")] = textRed;
+
+      const doc = AD.AbstractDoc.create({
+        styles: styles,
+        children: [
+          AD.Section.create({
+            children: [
+              AD.Paragraph.create({
+                children: [
+                  AD.TextRun.create({
+                    text: "Blue from default style"
+                  })
+                ]
+              }),
+              AD.Paragraph.create({
+                styleName: "Red",
+                children: [
+                  AD.TextRun.create({
+                    text: "Red from paragraph style name"
+                  })
+                ]
+              }),
+              AD.Paragraph.create({
+                children: [
+                  AD.TextRun.create({
+                    styleName: "Red",
+                    text: "Red from text style name"
+                  })
+                ]
+              }),
+              AD.Paragraph.create({
+                style: paragraphRed,
+                children: [
+                  AD.TextRun.create({
+                    text: "Red from paragraph element"
+                  })
+                ]
+              }),
+              AD.Paragraph.create({
+                children: [
+                  AD.TextRun.create({
+                    style: textRed,
+                    text: "Red from text element"
+                  })
+                ]
+              }),
+              AD.Paragraph.create({
+                style: paragraphBlue,
+                children: [
+                  AD.TextRun.create({
+                    styleName: "Red",
+                    text: "Red from paragraph element, overriding parent style"
+                  })
+                ]
+              }),
+            ]
+          })
+        ]
+      });
+      let stream = createWriteStreamInOutDir("test_paragraphstyling_hierarchy.pdf");
+      stream.on('finish', function () { done(); });
+      ADPdf.exportToStream(pdfKit, stream, doc);
+    });
 });
 
 function createWriteStreamInOutDir(pathToStream: string): fs.WriteStream {

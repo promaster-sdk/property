@@ -147,7 +147,7 @@ function renderSectionElement(parentResources: AD.Resources.Resources, pdf: any,
       renderTable(resources, pdf, desiredSizes, finalRect, element, pageNo);
       return;
     case "Group":
-      renderKeepTogether(resources, pdf, desiredSizes, finalRect, element, pageNo);
+      renderGroup(resources, pdf, desiredSizes, finalRect, element, pageNo);
       return;
   }
 }
@@ -194,9 +194,9 @@ function renderParagraph(resources: AD.Resources.Resources, pdf: any, desiredSiz
   }
 }
 
-function renderKeepTogether(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, keepTogether: AD.Group.Group, pageNo: number) {
+function renderGroup(resources: AD.Resources.Resources, pdf: any, desiredSizes: Map<any, AD.Size.Size>, finalRect: AD.Rect.Rect, group: AD.Group.Group, pageNo: number) {
   let y = finalRect.y;
-  for (const element of keepTogether.children) {
+  for (const element of group.children) {
     const elementSize = getDesiredSize(element, desiredSizes);
     renderSectionElement(resources, pdf, desiredSizes, AD.Rect.create(finalRect.x, y, elementSize.width, elementSize.height), element, pageNo);
     y += elementSize.height;
