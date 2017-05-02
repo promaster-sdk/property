@@ -11,11 +11,11 @@ import {Indexer} from "./types";
 
 export const defaultAndStandardStyles = createDefaultAndStandardStyles();
 
-export function createDefaultAndStandardStyles(): Indexer<StyleKey.StyleKey, Style.Style> {
+export function createDefaultAndStandardStyles(): Indexer<Style.Style> {
   return {...createDefaultStyles(), ...createStandardStyles()};
 }
 
-export function createStandardStyles(): Indexer<StyleKey.StyleKey, Style.Style> {
+export function createStandardStyles(): Indexer<Style.Style> {
   return createStyles([
     // Markdown styles START --> //
     ["H1", ParagraphStyle.create({textStyle: TextStyle.create({bold: true, fontSize: 32}), margins: LayoutFoundation.create({top: 32/4, bottom: 32/16})})],
@@ -30,11 +30,11 @@ export function createStandardStyles(): Indexer<StyleKey.StyleKey, Style.Style> 
   ]);
 }
 
-function createStyles(tuples: Array<[string, Style.Style]>): Indexer<StyleKey.StyleKey, Style.Style> {
+function createStyles(tuples: Array<[string, Style.Style]>): Indexer<Style.Style> {
   return R.fromPairs(tuples.map((s) => [StyleKey.create(s[1].type, s[0]), s[1]] as R.KeyValuePair<StyleKey.StyleKey, Style.Style>));
 }
 
-export function createDefaultStyles(): Indexer<StyleKey.StyleKey, Style.Style> {
+export function createDefaultStyles(): Indexer<Style.Style> {
   const paragraphStyle = defaultParagraphStyle();
   const textStyle = defaultTextStyle();
   const tableStyle = defaultTableStyle();

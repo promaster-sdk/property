@@ -5,15 +5,15 @@ import {Numbering} from "./numberings/numbering";
 import * as StyleKey from "./styles/style-key";
 import {Style} from "./styles/style";
 import {Font} from "./primitives/font";
-import {Indexer, Guid} from "./types";
+import {Indexer} from "./types";
 import {defaultAndStandardStyles} from "./default-styles";
 
 export interface Resources {
-  readonly fonts?: Indexer<string, Font>,
-  readonly imageResources?: Indexer<Guid, ImageResource>,
-  readonly styles?: Indexer<StyleKey.StyleKey, Style>,
-  readonly numberings?: Indexer<string, Numbering>,
-  readonly numberingDefinitions?: Indexer<string, NumberingDefinition>,
+  readonly fonts?: Indexer<Font>,
+  readonly imageResources?: Indexer<ImageResource>,
+  readonly styles?: Indexer<Style>,
+  readonly numberings?: Indexer<Numbering>,
+  readonly numberingDefinitions?: Indexer<NumberingDefinition>,
 }
 
 export function mergeResources(resources: Array<Resources>): Resources {
@@ -32,7 +32,7 @@ export function mergeResources(resources: Array<Resources>): Resources {
 }
 
 export function getStyle(type: string, name: string, resources: Resources): Style | undefined {
-  const key = StyleKey.create(type, name);
+  const key = StyleKey.create(type, name || "Default");
   const style = resources.styles ? resources.styles[key] : undefined;
   return style || defaultAndStandardStyles[key];
 }

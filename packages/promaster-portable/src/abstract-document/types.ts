@@ -1,2 +1,2 @@
-export type Indexer<T1, T2> = {[key: string]: T2};
+export type Indexer<T> = {[key: string]: T};
 export type Guid = string;

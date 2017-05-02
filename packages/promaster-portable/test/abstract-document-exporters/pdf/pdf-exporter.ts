@@ -99,7 +99,13 @@ describe("PdfExporter", () => {
   it("should render tables correctly", function (done) {
     const tableCellStyle = AD.TableCellStyle.create({ background: "#AAAAFF", padding: AD.LayoutFoundation.create({ top: 10, bottom: 20, left: 30, right: 40 }) });
     const text = R.range(0, 30).map((i) => "Test" + i.toString()).join(" ");
+    const defaultTextStyle = AD.TextStyle.create({fontSize: 20});
+    const styles: AD.Types.Indexer<AD.Style.Style> = {};
+    styles[AD.StyleKey.create("ParagraphStyle", "Default")] = AD.ParagraphStyle.create({textStyle: defaultTextStyle});
+    styles[AD.StyleKey.create("TextStyle", "Default")] = defaultTextStyle;
+    
     const doc = AD.AbstractDoc.create({
+      styles: styles,
       children: [
         AD.Section.create({
           children: [
