@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import * as ADPdf from "../../../src/abstract-document-exporters/pdf/render";
 import * as AD from "../../../src/abstract-document";
-// import * as AI from "../../../src/abstract-image";
+import * as AI from "../../../src/abstract-image";
 // import {assert} from "chai";
 import * as fs from "fs";
 // import * as path from "path";
