@@ -4,7 +4,7 @@ import { AbstractImage } from "@promaster/promaster-portable";
 
 export function createReactSvg(image: AbstractImage.AbstractImage): React.ReactElement<{}> {
   return (
-    <svg viewBox={[0, 0, image.size.width, image.size.height].join(" ")}>
+    <svg width={`${image.size.width}px`} height={`${image.size.height}px`} viewBox={[0, 0, image.size.width, image.size.height].join(" ")}>
       {R.unnest(R.addIndex(R.map)((c, i) => _visit(i.toString(), c), image.components))}
     </svg>);
 }
