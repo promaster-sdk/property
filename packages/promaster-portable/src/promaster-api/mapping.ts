@@ -78,7 +78,8 @@ function mapValue(mapping: Types.ValueMapping, rawValue: Types.RawColumnData): a
   } else {
     switch (mapping.type) {
       case "Amount":
-        return Amount.create(parseFloat(rawValue as string), mapping.unit);
+        const amountValue = parseFloat(rawValue as string) || 0;
+        return Amount.create(amountValue, mapping.unit);
       default:
         //exhaustiveCheck(mapping);
         throw new Error("Exhaustive check");
