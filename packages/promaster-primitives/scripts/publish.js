@@ -8,9 +8,9 @@ if(!semverType || !semverType.match(/^(major|minor|patch)$/)) {
     process.exit(1);
 }
 
-execCommand(`npm version ${semverType}`);
 execCommand(`node yarn.js run build`);
 execCommand(`node yarn.js run test:rules`);
+execCommand(`npm version ${semverType}`);
 execCommand(`git push`);
 execCommand(`git push --tags`);
 execCommand(`npm publish`);
