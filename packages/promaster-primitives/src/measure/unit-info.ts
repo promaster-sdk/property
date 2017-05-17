@@ -18,10 +18,20 @@ export type GetUnitInfoFunction = (unit: Unit.Unit<Quantity.Quantity>) => UnitIn
  */
 export let getUnitInfo: GetUnitInfoFunction = defaultGetUnitInfo;
 
+export function createUnitInfo(measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<Quantity.Quantity>): UnitInfo {
+  return { measureSystem, decimalCount, coUnit };  
+}
+
 const units: { [key: string]: UnitInfo } = {}; //tslint:disable-line
 
 function defaultGetUnitInfo(unit: Unit.Unit<Quantity.Quantity>): UnitInfo | undefined {
   return units[Units.getStringFromUnit(unit)];
+}
+
+// The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
+function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>,
+  measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>): void {
+  units[Units.getStringFromUnit(unit)] = createUnitInfo(measureSystem, decimalCount, coUnit );
 }
 
 addUnit(Units.Ampere, "SI", 2);
@@ -187,9 +197,3 @@ addUnit(Units.Weber, undefined, 2);
 addUnit(Units.Week, undefined, 0);
 addUnit(Units.Yard, "IP", 2, Units.Meter);
 addUnit(Units.Year, undefined, 0);
-
-// The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
-function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>,
-  measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>): void {
-  units[Units.getStringFromUnit(unit)] = { measureSystem, decimalCount, coUnit };
-}

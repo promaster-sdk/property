@@ -2,13 +2,32 @@ import * as Unit from "./unit";
 import * as Units from "./units";
 import * as Quantity from "./quantity";
 
-//tslint:disable
-export type QuantityInfo = {
-  readonly siUnit: Unit.Unit<any>,
-  readonly ipUnit: Unit.Unit<any>
+export interface QuantityInfo {
+  readonly siUnit: Unit.Unit<Quantity.Quantity>,
+  readonly ipUnit: Unit.Unit<Quantity.Quantity>
 }
 
-const quantityInfo: {[key: string]: QuantityInfo} = {};
+export type GetQuantityInfoFunction = (quantity: Quantity.Quantity) => QuantityInfo | undefined;
+
+/**
+ * The getQuantityInfo is overridable (can be set to another function) becuase
+ * some applications will have their own default unit for each quantity.
+ */
+export let getQuantityInfo: GetQuantityInfoFunction = defaultGetQuantityInfo;
+
+export function createQuantityInfo(siUnit: Unit.Unit<Quantity.Quantity>, ipUnit: Unit.Unit<Quantity.Quantity>): QuantityInfo | undefined {
+  return { siUnit, ipUnit };
+}
+
+const quantityInfo: { [key: string]: QuantityInfo } = {}; //tslint:disable-line
+
+function defaultGetQuantityInfo(quantity: Quantity.Quantity): QuantityInfo | undefined {
+  return quantityInfo[quantity];
+}
+
+function addQuantity(quantity: Quantity.Quantity, siUnit: Unit.Unit<Quantity.Quantity>, ipUnit: Unit.Unit<Quantity.Quantity>): void {
+  quantityInfo[quantity] = { siUnit, ipUnit };
+}
 
 addQuantity("Acceleration", Units.MeterPerSquareSecond, Units.MeterPerSquareSecond);
 addQuantity("Alkalinity", Units.MilliGramHydrogenCarbonatePerLiter, Units.MilliGramHydrogenCarbonatePerLiter);
@@ -52,11 +71,3 @@ addQuantity("VolumeFlowPerPower", Units.LiterPerSecondPerKiloWatt, Units.Gallons
 addQuantity("WaterHardness", Units.MilliGramCalciumPerLiter, Units.MilliGramCalciumPerLiter);
 addQuantity("WaterUseEfficiency", Units.LiterPerKiloWattHour, Units.LiterPerKiloWattHour);
 addQuantity("WetTemperature", Units.CelsiusWet, Units.FahrenheitWet);
-
-export function addQuantity(quantity: Quantity.Quantity, siUnit: Unit.Unit<any>, ipUnit: Unit.Unit<any>) {
-  quantityInfo[quantity] = {siUnit, ipUnit};
-}
-
-export function getQuantityInfo(quantity: Quantity.Quantity): QuantityInfo | undefined {
-  return quantityInfo[quantity];
-}
