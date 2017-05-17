@@ -7,22 +7,14 @@ export interface QuantityInfo {
   readonly ipUnit: Unit.Unit<Quantity.Quantity>
 }
 
-export type GetQuantityInfoFunction = (quantity: Quantity.Quantity) => QuantityInfo | undefined;
-
-/**
- * The getQuantityInfo is overridable (can be set to another function) becuase
- * some applications will have their own default unit for each quantity.
- */
-export let getQuantityInfo: GetQuantityInfoFunction = defaultGetQuantityInfo;
-
-export function createQuantityInfo(siUnit: Unit.Unit<Quantity.Quantity>, ipUnit: Unit.Unit<Quantity.Quantity>): QuantityInfo | undefined {
-  return { siUnit, ipUnit };
-}
-
 const quantityInfo: { [key: string]: QuantityInfo } = {}; //tslint:disable-line
 
-function defaultGetQuantityInfo(quantity: Quantity.Quantity): QuantityInfo | undefined {
+export function getQuantityInfo(quantity: Quantity.Quantity): QuantityInfo | undefined {
   return quantityInfo[quantity];
+}
+
+function createQuantityInfo(siUnit: Unit.Unit<Quantity.Quantity>, ipUnit: Unit.Unit<Quantity.Quantity>): QuantityInfo | undefined {
+  return { siUnit, ipUnit };
 }
 
 function addQuantity(quantity: Quantity.Quantity, siUnit: Unit.Unit<Quantity.Quantity>, ipUnit: Unit.Unit<Quantity.Quantity>): void {

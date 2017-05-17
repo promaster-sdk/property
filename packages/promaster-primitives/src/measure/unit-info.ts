@@ -10,22 +10,14 @@ export interface UnitInfo {
   readonly coUnit?: Unit.Unit<Quantity.Quantity>
 }
 
-export type GetUnitInfoFunction = (unit: Unit.Unit<Quantity.Quantity>) => UnitInfo | undefined;
-
-/**
- * The getUnitInfo is overridable (can be set to another function) becuase
- * some applications will have their own default unit for each quantity.
- */
-export let getUnitInfo: GetUnitInfoFunction = defaultGetUnitInfo;
-
-export function createUnitInfo(measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<Quantity.Quantity>): UnitInfo {
-  return { measureSystem, decimalCount, coUnit };  
-}
-
 const units: { [key: string]: UnitInfo } = {}; //tslint:disable-line
 
-function defaultGetUnitInfo(unit: Unit.Unit<Quantity.Quantity>): UnitInfo | undefined {
+export function getUnitInfo(unit: Unit.Unit<Quantity.Quantity>): UnitInfo | undefined {
   return units[Units.getStringFromUnit(unit)];
+}
+
+function createUnitInfo(measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<Quantity.Quantity>): UnitInfo {
+  return { measureSystem, decimalCount, coUnit };  
 }
 
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
