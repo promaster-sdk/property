@@ -4,18 +4,18 @@ import * as Quantity from "./quantity";
 
 export type MeasureSystem = "SI" | "IP";
 
-//tslint:disable
 export interface UnitInfo {
   readonly measureSystem: MeasureSystem | undefined,
   readonly decimalCount: number,
-  readonly coUnit?: Unit.Unit<any>
+  readonly coUnit?: Unit.Unit<Quantity.Quantity>
 }
 
-const units: {[key: string]: UnitInfo} = {};
+const units: { [key: string]: UnitInfo } = {}; //tslint:disable-line
 
-export function getUnitInfo(unit: Unit.Unit<any>): UnitInfo | undefined {
+export function getUnitInfo(unit: Unit.Unit<Quantity.Quantity>): UnitInfo | undefined {
   return units[Units.getStringFromUnit(unit)];
 }
+
 addUnit(Units.Ampere, "SI", 2);
 addUnit(Units.AWeightedDecibel, "SI", 1);
 addUnit(Units.Bit, undefined, 0);
@@ -181,7 +181,7 @@ addUnit(Units.Yard, "IP", 2, Units.Meter);
 addUnit(Units.Year, undefined, 0);
 
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
-export function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>, measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>) {
-  units[Units.getStringFromUnit(unit)] = {measureSystem, decimalCount, coUnit};
+export function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>,
+  measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>): void {
+  units[Units.getStringFromUnit(unit)] = { measureSystem, decimalCount, coUnit };
 }
-

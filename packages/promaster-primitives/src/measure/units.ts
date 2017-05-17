@@ -7,17 +7,17 @@ import { Quantity } from "./quantity";
 
 // tslint:disable variable-name max-line-length max-file-line-count
 
-const _unitToString: { [key: string]: string } = {};
-const _stringToUnit: { [key: string]: Unit.Unit<Quantity> } = {};
-const _quantityToUnits: { [key: string]: Array<Unit.Unit<Quantity>> } = {};
+const _unitToString: { [key: string]: string } = {}; // tslint:disable-line
+const _stringToUnit: { [key: string]: Unit.Unit<Quantity> } = {}; // tslint:disable-line
+const _quantityToUnits: { [key: string]: Array<Unit.Unit<Quantity>> } = {}; // tslint:disable-line
 
 function _register<T extends q.Quantity>(unit: Unit.Unit<T>, label: string = ""): Unit.Unit<T> {
   UnitName.registerLabel(label, unit);
   return unit;
 }
 
-export const One: Unit.Unit<q.Dimensionless> = _register(Unit.One, " ");
-export const Percent: Unit.Unit<q.Dimensionless> = _register(Unit.divideNumber(100.0, One), "%");
+export const One: Unit.Unit<q.Dimensionless> = _register(Unit.One, " "); // tslint:disable-line
+export const Percent: Unit.Unit<q.Dimensionless> = _register(Unit.divideNumber(100.0, One), "%"); // tslint:disable-line
 export const PPM: Unit.Unit<q.Dimensionless> = _register(Unit.divideNumber(1000000.0, One), "ppm");
 
 ///////////////////

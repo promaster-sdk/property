@@ -49,7 +49,7 @@ export function create(type: PropertyType, value: Amount.Amount<Quantity> | stri
 export function fromString(encodedValue: string): PropertyValue | undefined {
   const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue);
   if (result === null) {
-    console.log(`PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`);
+    console.warn(`PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`); //tslint:disable-line
   }
   return result;
 }

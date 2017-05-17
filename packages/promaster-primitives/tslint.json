@@ -1,6 +1,8 @@
 {
-  "rulesDirectory": "./node_modules/tslint-immutable/rules",
-  "rules": {
+    "extends": [
+      "tslint-immutable"
+    ],
+    "rules": {
     "adjacent-overload-signatures": false,
     "member-access": false,
     "member-ordering": false,
@@ -49,8 +51,6 @@
     "no-switch-case-fall-through": true,
     "no-unsafe-finally": true,
     "no-unused-expression": true,
-    "no-unused-new": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "radix": true,
     "switch-default": true,
@@ -105,6 +105,7 @@
     ],
     "no-arguments": true,
     // From tslint-immutable
+    "readonly-keyword": true,
     "no-class": true,
     // Need to use statements to add values to Map
 //    "no-expression-statement": true,
@@ -112,7 +113,6 @@
 //    "no-new": true,
     "no-this": true,
     "no-mixed-interface": true,
-    "readonly-interface": true,
     "no-label": true,
     "no-semicolon-interface": true,
     "import-containment": [ true,

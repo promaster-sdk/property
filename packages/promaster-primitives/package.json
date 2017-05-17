@@ -27,14 +27,14 @@
     "rimraf": "^2.5.4",
     "shelljs": "^0.7.4",
     "ts-node": "^2.0.0",
-    "tslint": "^4.5.1",
-    "tslint-immutable": "^2.1.0",
+    "tslint": "^5.2.0",
+    "tslint-immutable": "^3.4.2",
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
     "typescript": "^2.2.1"
   },
   "scripts": {
-    "lint": "tslint './src/**/*.ts{,x}'",
+    "lint": "tslint -t msbuild './src/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",

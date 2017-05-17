@@ -32,4 +32,4 @@ export {
     // product-properties
     PropertyValue,
     PropertyValueSet,
-}
+};

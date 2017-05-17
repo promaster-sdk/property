@@ -36,7 +36,7 @@ export function parse(text: string, throwOnInvalidSyntax: boolean = false): Ast.
     const result = Parser.parse(text, options);
     return result;
   } catch (error) {
-    console.warn("An exception occured when parsing", error);
+    console.warn("An exception occured when parsing", error); //tslint:disable-line
     if (throwOnInvalidSyntax) {
       throw error;
     } else {

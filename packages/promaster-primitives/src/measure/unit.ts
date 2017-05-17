@@ -348,7 +348,7 @@ function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>,
   //   }
   // });
 
-  let unitGroups: { [key: string]: Array<Element> } = {};
+  let unitGroups: { [key: string]: Array<Element> } = {}; // tslint:disable-line
   for (let v of allElements) {
     const group = unitGroups[JSON.stringify(v.unit)];
     if (group === undefined) {

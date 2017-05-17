@@ -30,7 +30,7 @@ export function fromString(filter: string): PropertyFilter | undefined {
     }
     const ast = _buildAst(adjustedFilter, false);
     if (ast === undefined) {
-      console.log("Invalid property filter syntax: " + adjustedFilter);
+      console.warn("Invalid property filter syntax: " + adjustedFilter); //tslint:disable-line
       return undefined;
     }
     _cache[filter] = create(adjustedFilter, ast);
