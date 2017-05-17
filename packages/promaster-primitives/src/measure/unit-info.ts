@@ -10,9 +10,17 @@ export interface UnitInfo {
   readonly coUnit?: Unit.Unit<Quantity.Quantity>
 }
 
+export type GetUnitInfoFunction = (unit: Unit.Unit<Quantity.Quantity>) => UnitInfo | undefined;
+
+/**
+ * The getUnitInfo is overridable (can be set to another function) becuase
+ * some applications will have their own default unit for each quantity.
+ */
+export let getUnitInfo: GetUnitInfoFunction = defaultGetUnitInfo;
+
 const units: { [key: string]: UnitInfo } = {}; //tslint:disable-line
 
-export function getUnitInfo(unit: Unit.Unit<Quantity.Quantity>): UnitInfo | undefined {
+function defaultGetUnitInfo(unit: Unit.Unit<Quantity.Quantity>): UnitInfo | undefined {
   return units[Units.getStringFromUnit(unit)];
 }
 
@@ -181,7 +189,7 @@ addUnit(Units.Yard, "IP", 2, Units.Meter);
 addUnit(Units.Year, undefined, 0);
 
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
-export function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>,
+function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>,
   measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>): void {
   units[Units.getStringFromUnit(unit)] = { measureSystem, decimalCount, coUnit };
 }
