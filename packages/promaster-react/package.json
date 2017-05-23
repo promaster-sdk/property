@@ -24,7 +24,7 @@
     "@types/react": "^0.14.41",
     "@types/react-dom": "^0.14.18",
     "@types/react-test-renderer": "^15.4.2",
-    "awesome-typescript-loader": "^3.0.0-beta.17",
+    "awesome-typescript-loader": "^3.1.3",
     "http-server": "^0.9.0",
     "jest": "^19.0.2",
     "madge": "^1.6.0",
@@ -35,8 +35,8 @@
     "ts-jest": "^19.0.4",
     "tslint": "^4.5.1",
     "tslint-immutable": "^2.1.0",
-    "typescript": "^2.2.1",
-    "webpack": "^2.2.1",
+    "typescript": "^2.3.3",
+    "webpack": "^2.6.0",
     "webpack-dev-server": "^2.4.1"
   },
   "scripts": {

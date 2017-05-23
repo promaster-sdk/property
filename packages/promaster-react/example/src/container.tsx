@@ -13,8 +13,9 @@ import {PropertiesSelectorExample2} from "./properties-selector-example-2";
 import {PropertiesSelectorExampleEmptyPvs} from "./properties-selector-example-empty-pvs";
 
 interface Example {
-  readonly name: string;
-  readonly component: React.ComponentClass<any> | React.StatelessComponent<any>;
+  readonly name: string,
+  // tslint:disable-next-line:no-any
+  readonly component: React.ComponentClass<any> | React.StatelessComponent<any>,
 }
 
 interface State {
@@ -22,7 +23,7 @@ interface State {
   readonly selectedExample: number,
 }
 
-export class Container extends React.Component<void, State> {
+export class Container extends React.Component<any, State> {
 
   constructor() {
     super();
