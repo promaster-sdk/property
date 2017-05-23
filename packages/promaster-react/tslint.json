@@ -1,17 +1,28 @@
 {
-  "rulesDirectory": "./node_modules/tslint-immutable/rules",
+  "rulesDirectory": [
+    "./node_modules/tslint-immutable/rules"
+  ],
   "rules": {
     "adjacent-overload-signatures": false,
     "member-access": false,
-    "member-ordering": false,
+    "member-ordering": [
+      false
+    ],
     "no-any": true,
-//    "no-inferrable-types": true,
+    //    "no-inferrable-types": true,
     "no-internal-module": true,
     "no-namespace": true,
     "no-reference": true,
     "no-var-requires": true,
-    "only-arrow-functions": false,
-    "typedef": [true, "call-signature", "parameter", "property-declaration"],
+    "only-arrow-functions": [
+      false
+    ],
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "property-declaration"
+    ],
     "typedef-whitespace": [
       true,
       {
@@ -36,7 +47,9 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-conditional-assignment": true,
-    "no-console": true,
+    "no-console": [
+      true
+    ],
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
@@ -49,7 +62,7 @@
     "no-switch-case-fall-through": true,
     "no-unsafe-finally": true,
     "no-unused-expression": true,
-    "no-unused-new": true,
+    // "no-unused-new": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "radix": true,
@@ -57,25 +70,47 @@
     "triple-equals": true,
     "use-isnan": true,
     "eofline": true,
-    "indent": [true, "spaces"],
-    "linebreak-style": false,
-    "max-file-line-count": [true, 500],
-    "max-line-length": [true, 160],
+    "indent": [
+      true,
+      "spaces"
+    ],
+    "linebreak-style": [
+      false
+    ],
+    "max-file-line-count": [
+      true,
+      500
+    ],
+    "max-line-length": [
+      true,
+      160
+    ],
     "no-default-export": true,
     "no-mergeable-namespace": true,
     "no-require-imports": true,
     //"trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
-    "align": [true, "statements"],
+    "align": [
+      true,
+      "statements"
+    ],
     "arrow-parens": true,
     "class-name": true,
-    "file-header": false,
-    "interface-name": false,
+    "file-header": [
+      false
+    ],
+    "interface-name": [
+      false
+    ],
     "jsdoc-format": false,
     "new-parens": true,
     "no-angle-bracket-type-assertion": true,
-    "no-consecutive-blank-lines": true,
+    "no-consecutive-blank-lines": [
+      true
+    ],
     "no-parameter-properties": true,
-    "object-literal-key-quotes": false,
+    "object-literal-key-quotes": [
+      false
+    ],
     "object-literal-shorthand": false,
     "one-line": [
       true,
@@ -85,14 +120,23 @@
       "check-open-brace",
       "check-whitespace"
     ],
-    "one-variable-per-declaration": true,
-    "quotemark": [true, "double"],
+    "one-variable-per-declaration": [
+      true
+    ],
+    "quotemark": [
+      true,
+      "double"
+    ],
     "semicolon": [
       true,
       "always",
       "ignore-interfaces"
     ],
-    "variable-name": [true, "ban-keywords", "check-format"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format"
+    ],
     "whitespace": [
       true,
       "check-branch",
@@ -107,19 +151,27 @@
     // From tslint-immutable
     "no-class": true,
     // Need to use statements to add values to Map
-//    "no-expression-statement": true,
+    //    "no-expression-statement": true,
     // Neec to use new for built-in types like Map, Set, RegEx etc.
-//    "no-new": true,
+    //    "no-new": true,
     "no-this": true,
     "no-mixed-interface": true,
     "readonly-interface": true,
     "no-label": true,
     "no-semicolon-interface": true,
-    "import-containment": [ true,
-    {
-      "containmentPath": "src/client/containers",
-      "allowedExternalFileNames": ["index", "types", "bootstrap"],
-      "disallowedInternalFileNames": ["index"]
-    }]
+    "import-containment": [
+      true,
+      {
+        "containmentPath": "src/client/containers",
+        "allowedExternalFileNames": [
+          "index",
+          "types",
+          "bootstrap"
+        ],
+        "disallowedInternalFileNames": [
+          "index"
+        ]
+      }
+    ]
   }
 }

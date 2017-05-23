@@ -1,1 +1,1 @@
-declare module "insert-css"
+declare module "insert-css";

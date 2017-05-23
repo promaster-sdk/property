@@ -14,25 +14,18 @@
       "problemMatcher": "$tsc"
     },
     {
-      "taskName": "lint",
+      "taskName": "tslint",
       "command": "node",
-      "args": [
-        "./yarn.js",
-        "lint"
-      ],
       "isShellCommand": true,
+      "showOutput": "always",
       "problemMatcher": {
-        "owner": "tslint",
-        "fileLocation": "relative",
-        "severity": "warning",
-        "pattern": {
-          "regexp": "^(\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-          "file": 1,
-          "line": 2,
-          "column": 3,
-          "message": 4
-        }
-      }
+        "base": "$tslint5",
+        "fileLocation": "relative"
+      },
+      "args": [
+        "yarn",
+        "lint"
+      ]
     }
   ]
 }

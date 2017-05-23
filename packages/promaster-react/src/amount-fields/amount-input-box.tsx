@@ -50,9 +50,11 @@ export class AmountInputBox extends React.Component<AmountInputBoxProps, State> 
   initStateFromProps(initProps: AmountInputBoxProps): void {
     const { value, inputUnit, inputDecimalCount } = initProps;
     if (!inputUnit) {
+      // tslint:disable-next-line:no-console
       console.error("Missing inputUnit");
     }
     if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
+      // tslint:disable-next-line:no-console
       console.error("Missing inputDecimalCount");
     }
     const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);

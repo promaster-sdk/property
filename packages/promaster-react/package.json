@@ -45,7 +45,7 @@
     "tsc:example": "tsc -p example",
     "tsc:test": "tsc -p test",
     "test": "jest --config=test/jest.config.json",
-    "lint": "tslint './src/**/*.ts{,x}'",
+    "lint": "tslint --project src/tsconfig.json --type-check './src/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.tsx",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",

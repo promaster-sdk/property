@@ -1,1 +1,1 @@
-declare module "csjs"
+declare module "csjs";
