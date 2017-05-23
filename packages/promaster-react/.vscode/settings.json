@@ -9,5 +9,6 @@
         ".vscode/**": true,
         "**/temp": true,
         "lib/**": true
-    }
+    },
+    "tslint.exclude": "**/{example,test}/**/*"
 }
