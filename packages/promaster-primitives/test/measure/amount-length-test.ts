@@ -1,3 +1,5 @@
+//tslint:disable max-file-line-count
+
 import { assert } from "chai";
 import * as Units from "../../src/measure/units";
 import * as Amount from "../../src/measure/amount";

@@ -1,3 +1,5 @@
+//tslint:disable max-file-line-count
+
 import { assert } from "chai";
 import * as Amount from "../../src/measure/amount";
 import * as Units from "../../src/measure/units";
@@ -9,7 +11,6 @@ describe("amount_temperature_comparisions_test", () => {
 
     const kelvinInCelsius = Amount.valueAs(Units.Celsius, Amount.create(273.15, Units.Kelvin));
     const celsiusInCelsius = Amount.valueAs(Units.Celsius, Amount.create(0.0, Units.Celsius));
-    console.log(kelvinInCelsius === celsiusInCelsius);
 
     assert.isTrue(Amount.equals(Amount.create(0.0, Units.Celsius), Amount.create(273.15, Units.Kelvin)));
   });

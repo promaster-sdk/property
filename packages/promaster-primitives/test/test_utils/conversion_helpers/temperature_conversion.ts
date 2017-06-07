@@ -42,7 +42,7 @@ export class TemperatureConversion {
     return TemperatureConversion.R2K(TemperatureConversion.F2R(f));
   }
 
-  static F2C(f: number) {
+  static F2C(f: number): number {
     return TemperatureConversion.R2C(TemperatureConversion.F2R(f));
   }
 

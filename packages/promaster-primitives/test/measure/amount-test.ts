@@ -7,16 +7,6 @@ import { Mass, Length, Energy, Temperature, Duration } from "../../src/measure/q
 
 describe("amount_test", () => {
 
-	/*
-	 it('hash_should_be_same_for_same_value', () => {
-	 const a1 = new Amount<ITemperature>.create(4.0, Units.Celsius);
-	 const a2 = new Amount<ITemperature>.create(4.0, Units.Celsius);
-	 int hash1 = a1.hashCode;
-	 int hash2 = a2.hashCode;
-	 assert.equal(hash1 == hash2, true);
-	 });
-	 */
-
   it("should_not_accept_a_string_as_value", () => {
     const a: any = "12.3"; //tslint:disable-line
     expect(() => Amount.create(a, Units.Celsius)).to.throw();
@@ -138,16 +128,6 @@ describe("amount_test", () => {
     assert.equal(true, Amount.greaterOrEqualTo(valueLeft, valueRight));
   });
 
-	/*
-	 it('Tolerance_Result_Of_Substraction_Equals_Constant', () => {
-	 const valueLeft = Amount.create(0.8, Units.Celsius);
-	 const valueRight = Amount.create(0.7, Units.Celsius);
-	 const result = valueLeft.minus(valueRight);
-
-	 assert.equal(result, Amount.create(0.1, Units.Celsius));
-	 });
-	 */
-
   it("Assert true for 16.2 Celsius > -200.0 Celsius", () => {
     const left = Amount.create(16.2, Units.Celsius);
     const right = Amount.create(-200.0, Units.Celsius);
@@ -180,15 +160,15 @@ describe("amount_test", () => {
     assert.equal(max, a1);
   });
 
-  /*
+/*
 	 it('Operator_Equals_Tolerance', () => {
 	 const x1 = Amount.create(44000.000000000065, Units.Celsius);
 	 const x2 = Amount.create(44000.000000000007, Units.Celsius);
 	 assert.equal(x1 == x2, true);
 	 });
-	 */
+*/
 
-	/*
+/*
 
 	 const normal1:number = 0.0002777777777777701;
 	 const normal2:number = 0.0002777777777777901;

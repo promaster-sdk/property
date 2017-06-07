@@ -34,7 +34,7 @@
     "typescript": "^2.2.1"
   },
   "scripts": {
-    "lint": "tslint -t msbuild './src/**/*.ts{,x}'",
+    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
     "build": "node yarn.js build:clean && node yarn.js build:cjs && node yarn.js build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",

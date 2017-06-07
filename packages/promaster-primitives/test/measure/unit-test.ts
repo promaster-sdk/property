@@ -25,8 +25,7 @@ describe("derived units", () => {
         { pow: 3, unit: { quantity: "Length", type: "base", symbol: "m" } },
         { pow: -1, unit: { quantity: "Duration", type: "base", symbol: "s" } },
       ], "Wrong elements");
-    }
-    else {
+    } else {
       assert.fail(newUnit.type, "product", "Expected the type of unit to be 'product'");
     }
 
@@ -64,8 +63,7 @@ describe("derived units", () => {
           }
         }
       ], "Wrong elements");
-    }
-    else {
+    } else {
       assert.fail(newUnit.type, "product", "Expected the type of unit to be 'product'");
     }
 
