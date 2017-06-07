@@ -1,3 +1,5 @@
+// tslint:disable no-class
+
 export class TemperatureConversion {
 
   static K2C(k: number): number {

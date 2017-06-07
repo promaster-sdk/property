@@ -1,7 +1,7 @@
-import {assert} from "chai";
+import { assert } from "chai";
 import * as Units from "../../src/measure/units";
 import * as Unit from "../../src/measure/unit";
-import {VolumeFlowConversion} from "../test_utils/conversion_helpers/volume_flow_conversion";
+import { VolumeFlowConversion } from "../test_utils/conversion_helpers/volume_flow_conversion";
 
 describe("derived units", () => {
 
@@ -11,8 +11,7 @@ describe("derived units", () => {
     if (newUnit.type === "product") {
       assert.equal(newUnit.elements.length, 1, "Wrong elements length");
       assert.equal(newUnit.elements[0].pow, 2, "Wrong pow");
-    }
-    else {
+    } else {
       assert.fail(newUnit.type, "product", "Expected the type of unit to be 'product'");
     }
 
@@ -23,8 +22,8 @@ describe("derived units", () => {
     const newUnit = Unit.divide("VolumeFlow", Units.CubicMeter, Units.Second);
     if (newUnit.type === "product") {
       assert.deepEqual(newUnit.elements, [
-        {pow: 3, unit: {quantity: "Length", type: "base", symbol: "m"}},
-        {pow: -1, unit: {quantity: "Duration", type: "base", symbol: "s"}},
+        { pow: 3, unit: { quantity: "Length", type: "base", symbol: "m" } },
+        { pow: -1, unit: { quantity: "Duration", type: "base", symbol: "s" } },
       ], "Wrong elements");
     }
     else {
@@ -38,7 +37,7 @@ describe("derived units", () => {
     const newUnit = Unit.divide("VolumeFlow", Units.CubicMeter, Units.Hour);
     if (newUnit.type === "product") {
       assert.deepEqual(newUnit.elements, [
-        {pow: 3, unit: {quantity: "Length", type: "base", symbol: "m"}},
+        { pow: 3, unit: { quantity: "Length", type: "base", symbol: "m" } },
         {
           pow: -1,
           unit: {

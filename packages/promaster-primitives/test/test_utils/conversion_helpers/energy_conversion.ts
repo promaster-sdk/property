@@ -1,3 +1,5 @@
+// tslint:disable no-class
+
 export class EnergyConversion {
 
   static  J2Kj(j: number): number {

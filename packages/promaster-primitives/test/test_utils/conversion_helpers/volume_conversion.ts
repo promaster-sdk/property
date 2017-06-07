@@ -1,3 +1,5 @@
+// tslint:disable no-class
+
 export class VolumeConversion {
 
   static  M32L(m3: number): number {

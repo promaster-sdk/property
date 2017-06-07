@@ -1,3 +1,5 @@
+// tslint:disable no-class
+
 export class VolumeFlowConversion {
 
   static  M3PerSec2M3PerHour(m3PerSec: number): number {

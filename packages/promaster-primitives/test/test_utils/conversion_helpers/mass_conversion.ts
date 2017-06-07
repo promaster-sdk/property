@@ -1,3 +1,5 @@
+// tslint:disable no-class
+
 export class MassConversion {
 
   static  G2Kg(g: number): number {

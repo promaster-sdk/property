@@ -1,4 +1,4 @@
-import {assert} from "chai";
+import { assert } from "chai";
 import * as Units from "../../src/measure/units";
 import * as Unit from "../../src/measure/unit";
 import * as Amount from "../../src/measure/amount";
@@ -6,7 +6,7 @@ import * as PropertyValue from "../../src/product-properties/property-value";
 
 describe("units_test", () => {
 
-	describe("getQuantityTypeFromString", () => {
+  describe("getQuantityTypeFromString", () => {
 
 		/*it('should not be case sensitive', () => {
 			let length1 = Units.getQuantityTypeFromString("Length");
@@ -25,9 +25,9 @@ describe("units_test", () => {
      assert.isTrue(unit === Units.Meter);
      });*/
 
-	});
+  });
 
- describe("equals", () => {
+  describe("equals", () => {
     it("Base unit One should be equal", () => {
       const unit = Units.One;
       const unit2 = Units.getUnitFromString("One");

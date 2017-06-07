@@ -1,9 +1,9 @@
-import {assert} from "chai";
+import { assert } from "chai";
 import * as PropertyFilter from "../../src/property-filtering/property-filter";
 import * as PropertyValueSet from "../../src/product-properties/property-value-set";
 // import * as FilterEvaluator from "../../src/property-filtering/evaluation/filter-evaluator";
 import * as Ast from "../../src/property-filtering/property-filter-ast";
-import {parse} from "../../src/property-filtering/pegjs/property-filter-parser";
+import { parse } from "../../src/property-filtering/pegjs/property-filter-parser";
 
 describe("main", () => {
 

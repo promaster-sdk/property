@@ -1,3 +1,5 @@
+// tslint:disable no-class
+
 export class LengthConversion {
 
   static  Cm2Km(cm: number): number {

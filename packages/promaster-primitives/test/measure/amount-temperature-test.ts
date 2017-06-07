@@ -1,7 +1,7 @@
-import {assert} from "chai";
+import { assert } from "chai";
 import * as Amount from "../../src/measure/amount";
 import * as Units from "../../src/measure/units";
-import {TemperatureConversion} from "../test_utils/conversion_helpers/temperature_conversion";
+import { TemperatureConversion } from "../test_utils/conversion_helpers/temperature_conversion";
 
 describe("amount_temperature_comparisions_test", () => {
 
