@@ -3,78 +3,76 @@ import * as Units from "../../src/measure/units";
 import * as Amount from "../../src/measure/amount";
 import {EnergyConversion} from "../test_utils/conversion_helpers/energy_conversion";
 
-describe('amount_energy_test', () => {
+describe("amount_energy_test", () => {
 
-  it('ForValue1JouleWeShouldGetValue0001Kilojoules', () => {
-    const value:number = 1.0;
-		const amountToTest = Amount.create(value, Units.Joule);
-    const valueInKilojoules:number = Amount.valueAs(Units.Kilojoule, amountToTest);
+  it("ForValue1JouleWeShouldGetValue0001Kilojoules", () => {
+    const value: number = 1.0;
+		  const amountToTest = Amount.create(value, Units.Joule);
+    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
     assert.equal(valueInKilojoules, EnergyConversion.J2Kj(value));
   });
 
-  it('ForValue1KilojouleWeShouldGetValue1000Joules', () => {
-    const value:number = 1.0;
-		const amountToTest = Amount.create(value, Units.Kilojoule);
-    const valueInJoules:number = Amount.valueAs(Units.Joule, amountToTest);
+  it("ForValue1KilojouleWeShouldGetValue1000Joules", () => {
+    const value: number = 1.0;
+		  const amountToTest = Amount.create(value, Units.Kilojoule);
+    const valueInJoules: number = Amount.valueAs(Units.Joule, amountToTest);
     assert.equal(valueInJoules, EnergyConversion.Kj2J(value));
   });
 
-  it('ForValue0JouleWeShouldGetValue0Kilojoules', () => {
-    const value:number = 0.0;
-		const amountToTest = Amount.create(value, Units.Joule);
-    const valueInKilojoules:number = Amount.valueAs(Units.Kilojoule, amountToTest);
+  it("ForValue0JouleWeShouldGetValue0Kilojoules", () => {
+    const value: number = 0.0;
+		  const amountToTest = Amount.create(value, Units.Joule);
+    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
     assert.equal(valueInKilojoules, EnergyConversion.J2Kj(value));
   });
 
-
-  it('ForValue0KilojouleWeShouldGetValue0Joules', () => {
-    const value:number = 0.0;
-		const amountToTest = Amount.create(value, Units.Kilojoule);
-    const valueInJoules:number = Amount.valueAs(Units.Joule, amountToTest);
+  it("ForValue0KilojouleWeShouldGetValue0Joules", () => {
+    const value: number = 0.0;
+		  const amountToTest = Amount.create(value, Units.Kilojoule);
+    const valueInJoules: number = Amount.valueAs(Units.Joule, amountToTest);
     assert.equal(valueInJoules, EnergyConversion.Kj2J(value));
   });
 
-  it('ForValue1JouleWeShouldGetValue1Joule', () => {
-    const value:number = 1.0;
-		const amountToTest = Amount.create(value, Units.Joule);
-    const valueInJoules:number = Amount.valueAs(Units.Joule, amountToTest);
+  it("ForValue1JouleWeShouldGetValue1Joule", () => {
+    const value: number = 1.0;
+		  const amountToTest = Amount.create(value, Units.Joule);
+    const valueInJoules: number = Amount.valueAs(Units.Joule, amountToTest);
     assert.equal(valueInJoules, value);
   });
 
-  it('ForValue1KilojouleWeShouldGetValue1Kilojoule', () => {
-    const value:number = 1.0;
-		const amountToTest = Amount.create(value, Units.Kilojoule);
-    const valueInKilojoules:number = Amount.valueAs(Units.Kilojoule, amountToTest);
+  it("ForValue1KilojouleWeShouldGetValue1Kilojoule", () => {
+    const value: number = 1.0;
+		  const amountToTest = Amount.create(value, Units.Kilojoule);
+    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
     assert.equal(valueInKilojoules, value);
   });
 
-  it('ForValue063JouleWeShouldGetValue000063Kilojoules', () => {
-    const value:number = 0.63;
-		const amountToTest = Amount.create(value, Units.Joule);
-    const valueInKilojoules:number = Amount.valueAs(Units.Kilojoule, amountToTest);
+  it("ForValue063JouleWeShouldGetValue000063Kilojoules", () => {
+    const value: number = 0.63;
+		  const amountToTest = Amount.create(value, Units.Joule);
+    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
     assert.equal(valueInKilojoules, EnergyConversion.J2Kj(value));
   });
 
-  it('ForValue589KilojouleWeShouldGetValue5890Joules', () => {
-    const value:number = 5.89;
-		const amountToTest = Amount.create(value, Units.Kilojoule);
-    const valueInJoules:number = Amount.valueAs(Units.Joule, amountToTest);
+  it("ForValue589KilojouleWeShouldGetValue5890Joules", () => {
+    const value: number = 5.89;
+		  const amountToTest = Amount.create(value, Units.Kilojoule);
+    const valueInJoules: number = Amount.valueAs(Units.Joule, amountToTest);
     assert.equal(valueInJoules, EnergyConversion.Kj2J(value));
   });
 
-  it('ForValue1BtuWeShouldGetValue1055Joules', () => {
+  it("ForValue1BtuWeShouldGetValue1055Joules", () => {
     // http://www.wolframalpha.com/input/?i=btu
 
     // Arrange
     const p = Amount.create(1.0, Units.Btu);
 
     // Act
-    const result:number = Amount.valueAs(Units.Joule, p);
+    const result: number = Amount.valueAs(Units.Joule, p);
 
     // Assert
     assert.closeTo(result, 1055.0, 1.0);
   });
-
 
   //[TestMethod]
   //public void ForValue1BtuPerPoundlbWeShouldGetValue2326KilojoulesPerKilogram()
@@ -122,4 +120,3 @@ describe('amount_energy_test', () => {
   //}
 
 });
-

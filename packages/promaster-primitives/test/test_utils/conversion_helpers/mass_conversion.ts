@@ -1,10 +1,10 @@
 export class MassConversion {
 
-  static  G2Kg(g:number):number {
+  static  G2Kg(g: number): number {
     return g / 1000.0;
   }
 
-  static  Kg2G(kg:number):number {
+  static  Kg2G(kg: number): number {
     return kg * 1000.0;
   }
 }

@@ -1,11 +1,11 @@
-import {assert} from 'chai';
+import {assert} from "chai";
 import * as Units from "../../src/measure/units";
 import * as Unit from "../../src/measure/unit";
 import {VolumeFlowConversion} from "../test_utils/conversion_helpers/volume_flow_conversion";
 
-describe('derived units', () => {
+describe("derived units", () => {
 
-  it('Meter times Meter should return unit with 1 element of pow 2', () => {
+  it("Meter times Meter should return unit with 1 element of pow 2", () => {
 
     const newUnit = Unit.times("Length", Units.Meter, Units.Meter);
     if (newUnit.type === "product") {
@@ -72,13 +72,11 @@ describe('derived units', () => {
 
   });
 
-
 });
 
-describe('unit conversions', () => {
+describe("unit conversions", () => {
 
-
-  it('For_Value_2_m3persec_we_should_get_value_7200_m3perhour', () => {
+  it("For_Value_2_m3persec_we_should_get_value_7200_m3perhour", () => {
     const value = 2.0;
     const convertedValue: number = Unit.convert(value, Units.CubicMeterPerSecond, Units.CubicMeterPerHour);
     assert.closeTo(convertedValue, VolumeFlowConversion.M3PerSec2M3PerHour(value), 0.00001);
