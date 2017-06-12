@@ -63,3 +63,5 @@ addQuantity("VolumeFlowPerPower", Units.LiterPerSecondPerKiloWatt, Units.Gallons
 addQuantity("WaterHardness", Units.MilliGramCalciumPerLiter, Units.MilliGramCalciumPerLiter);
 addQuantity("WaterUseEfficiency", Units.LiterPerKiloWattHour, Units.LiterPerKiloWattHour);
 addQuantity("WetTemperature", Units.CelsiusWet, Units.FahrenheitWet);
+addQuantity("SquareRootPressure", Units.SquareRootPascal, Units.SquareRootInchOfWaterColumn);
+addQuantity("VolumeFlowPerSquareRootPressure", Units.LiterPerSecondPerSquareRootPascal, Units.CubicFeetPerMinutePerSquareRootInchOfWaterColumn);
