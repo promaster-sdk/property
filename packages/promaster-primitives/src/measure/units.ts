@@ -920,6 +920,8 @@ function _ensureMetaAdded(): void {
   _addMeta("VolumeFlowPerArea", "LiterPerSecondPerSquareMeter", LiterPerSecondPerSquareMeter);
   _addMeta("SquareRootPressure", "SquareRootPascal", SquareRootPascal);
   _addMeta("SquareRootPressure", "SquareRootInchOfWaterColumn", SquareRootInchOfWaterColumn);
+  _addMeta("VolumeFlowPerSquareRootPressure", "LiterPerSecondPerSquareRootPascal", LiterPerSecondPerSquareRootPascal);
+  _addMeta("VolumeFlowPerSquareRootPressure", "CubicFeetPerMinutePerSquareRootInchOfWaterColumn", CubicFeetPerMinutePerSquareRootInchOfWaterColumn);
 
   _metaAdded = true;
 }
