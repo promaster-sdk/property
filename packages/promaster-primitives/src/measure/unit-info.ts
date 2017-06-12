@@ -189,3 +189,5 @@ addUnit(Units.Weber, undefined, 2);
 addUnit(Units.Week, undefined, 0);
 addUnit(Units.Yard, "IP", 2, Units.Meter);
 addUnit(Units.Year, undefined, 0);
+addUnit(Units.SquareRootPascal, "SI", 2, Units.SquareRootInchOfWaterColumn);
+addUnit(Units.SquareRootInchOfWaterColumn, "IP", 2, Units.SquareRootPascal);

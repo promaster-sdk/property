@@ -52,14 +52,16 @@ export type SoundPressureLevel = "SoundPressureLevel";
 export type SpecificEnthalpy = "SpecificEnthalpy";
 export type SpecificFanPower = "SpecificFanPower";
 export type SpecificHeatCapacity = "SpecificHeatCapacity";
+export type SquareRootPressure = "SquareRootPressure";
 export type Temperature = "Temperature";
 export type Text = "Text";
 export type Velocity = "Velocity";
 export type Viscosity = "Viscosity";
 export type Volume = "Volume";
 export type VolumeFlow = "VolumeFlow";
-export type VolumeFlowPerPower = "VolumeFlowPerPower";
 export type VolumeFlowPerArea = "VolumeFlowPerArea";
+export type VolumeFlowPerPower = "VolumeFlowPerPower";
+export type VolumeFlowPerSquareRootPressure = "VolumeFlowPerSquareRootPressure";
 export type WaterHardness = "WaterHardness";
 export type WaterUseEfficiency = "WaterUseEfficiency";
 export type WetTemperature = "WetTemperature";
@@ -119,14 +121,16 @@ export type Quantity =
   SpecificEnthalpy |
   SpecificFanPower |
   SpecificHeatCapacity |
+  SquareRootPressure |
   Temperature |
   Text |
   Velocity |
   Viscosity |
   Volume |
   VolumeFlow |
-  VolumeFlowPerPower |
   VolumeFlowPerArea |
+  VolumeFlowPerPower |
+  VolumeFlowPerSquareRootPressure |
   WaterHardness |
   WaterUseEfficiency |
   WetTemperature;

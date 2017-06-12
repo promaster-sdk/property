@@ -4,6 +4,7 @@ import * as UnitDivide from "./unit-divide";
 import * as UnitTimes from "./unit-times";
 import * as q from "./quantity";
 import { Quantity } from "./quantity";
+import * as UnitPow from "./unit-pow";
 
 // tslint:disable variable-name max-line-length max-file-line-count
 
@@ -632,6 +633,16 @@ export const PascalSecond: Unit.Unit<q.Viscosity> = _register(Unit.createBase<q.
 export const GallonsPerMinutePerTonCooling: Unit.Unit<q.VolumeFlowPerPower> = _register(UnitDivide.volumeFlowByPower(GallonsPerMinute, TonCooling), "gpm/ton");
 export const LiterPerSecondPerKiloWatt: Unit.Unit<q.VolumeFlowPerPower> = _register(UnitDivide.volumeFlowByPower(LiterPerSecond, KiloWatt), "l/s/kW");
 
+//SquareRootPressure
+export const SquareRootPascal: Unit.Unit<q.SquareRootPressure> = _register(Unit.createBase<q.SquareRootPressure>("SquareRootPressure", "√Pa"), "√Pa");
+export const SquareRootInchOfWaterColumn: Unit.Unit<q.SquareRootPressure> = _register(Unit.timesNumber(1 / 0.06335029447, SquareRootPascal), "√in WC");   //sqrt(Pa/249.0889) = 0.06335029447
+
+//VolumeFlowPerSquareRootPressure
+export const LiterPerSecondPerSquareRootPascal: Unit.Unit<q.VolumeFlowPerSquareRootPressure> = _register(
+  UnitDivide.volumeFlowBySquareRootPressure(LiterPerSecond, SquareRootPascal));
+export const CubicFeetPerMinutePerSquareRootInchOfWaterColumn: Unit.Unit<q.VolumeFlowPerSquareRootPressure> = _register(
+  UnitDivide.volumeFlowBySquareRootPressure(CubicFeetPerMinute, SquareRootInchOfWaterColumn));
+
 export function isUnit(unit: string): boolean {
   _ensureMetaAdded();
   return _stringToUnit.hasOwnProperty(unit.trim().toLowerCase());
@@ -907,6 +918,8 @@ function _ensureMetaAdded(): void {
   _addMeta("VolumeFlowPerArea", "CubicMeterPerSecondPerSquareMeter", CubicMeterPerSecondPerSquareMeter);
   _addMeta("VolumeFlowPerArea", "CubicFeetPerMinutePerSquareFeet", CubicFeetPerMinutePerSquareFeet);
   _addMeta("VolumeFlowPerArea", "LiterPerSecondPerSquareMeter", LiterPerSecondPerSquareMeter);
+  _addMeta("SquareRootPressure", "SquareRootPascal", SquareRootPascal);
+  _addMeta("SquareRootPressure", "SquareRootInchOfWaterColumn", SquareRootInchOfWaterColumn);
 
   _metaAdded = true;
 }

@@ -5,6 +5,13 @@ export function volumeByDuration(left: Unit.Unit<q.Volume>, right: Unit.Unit<q.D
     return Unit.divide("VolumeFlow", left, right);
 }
 
+export function volumeFlowBySquareRootPressure(
+    left: Unit.Unit<q.VolumeFlow>,
+    right: Unit.Unit<q.SquareRootPressure>
+): Unit.Unit<q.VolumeFlowPerSquareRootPressure> {
+    return Unit.divide("VolumeFlowPerSquareRootPressure", left, right);
+}
+
 export function lengthByDuration(left: Unit.Unit<q.Length>, right: Unit.Unit<q.Duration>): Unit.Unit<q.Velocity> {
     return Unit.divide("Velocity", left, right);
 }
@@ -33,8 +40,8 @@ export function powerByElectricalCurrent(left: Unit.Unit<q.Power>, right: Unit.U
     return Unit.divide("ElectricPotential", left, right);
 }
 
-export function electricalCurrentByElectricalPotential(left: Unit.Unit<q.ElectricCurrent>, 
-right: Unit.Unit<q.ElectricPotential>): Unit.Unit<q.ElectricConductance> {
+export function electricalCurrentByElectricalPotential(left: Unit.Unit<q.ElectricCurrent>,
+    right: Unit.Unit<q.ElectricPotential>): Unit.Unit<q.ElectricConductance> {
     return Unit.divide("ElectricConductance", left, right);
 }
 
@@ -42,8 +49,8 @@ export function magneticFluxByElectricalCurrent(left: Unit.Unit<q.MagneticFlux>,
     return Unit.divide("ElectricInductance", left, right);
 }
 
-export function electricalPotentialByElectricalCurrent(left: Unit.Unit<q.ElectricPotential>, 
-right: Unit.Unit<q.ElectricCurrent>): Unit.Unit<q.ElectricResistance> {
+export function electricalPotentialByElectricalCurrent(left: Unit.Unit<q.ElectricPotential>,
+    right: Unit.Unit<q.ElectricCurrent>): Unit.Unit<q.ElectricResistance> {
     return Unit.divide("ElectricResistance", left, right);
 }
 

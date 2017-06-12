@@ -184,6 +184,10 @@ export function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, ri
   return quotient(quantity, left, right);
 }
 
+export function squareRoot<T extends Quantity>(quantity: T, unit: Unit<T>): Unit<T> {
+  return pow(quantity, unit, 0.5);
+}
+
 export function timesNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
   return transform(createFactorConverter(factor), unit);
 }
@@ -209,9 +213,6 @@ export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T
  */
 export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number {
   const converter = getConverter(fromUnit, toUnit);
-
-  // console.log("converter", converter);
-
   return convertWithConverter(value, converter);
 }
 
@@ -234,8 +235,9 @@ export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>,
       if (left.elements.length !== productRight.elements.length) {
         return false;
       }
-      return left.elements.every((leftElement, index) =>
-        leftElement.pow === productRight.elements[index].pow && equals(leftElement.unit, productRight.elements[index].unit));
+      return left.elements.every((leftElement, index) => {
+        return leftElement.pow === productRight.elements[index].pow && equals(leftElement.unit, productRight.elements[index].unit);
+      });
     default:
       return exhaustiveCheck(left, true);
   }
@@ -268,7 +270,7 @@ function unitConvertersIsEqual(left: UnitConverter, right: UnitConverter): boole
 ///////////////////////////////
 
 function getConverter<T extends Quantity>(fromUnit: Unit<T>, toUnit: Unit<Quantity>): UnitConverter {
-  if (fromUnit === toUnit) {
+  if (equals(fromUnit, toUnit)) {
     return identityConverter;
   }
   const standardFromUnit = toStandardUnitConverter(fromUnit);
@@ -388,6 +390,16 @@ function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: 
     invertedRightelements.push(createElement(element.unit, -element.pow));
   }
   return fromProduct<T>(quantity, leftelements, invertedRightelements);
+
+}
+
+function pow<T extends Quantity>(quantity: T, unit: Unit<Quantity>, exponent: number): ProductUnit<T> {
+
+  let squareRootedRightelements: Array<Element> = [];
+  for (let element of getElements(unit)) {
+    squareRootedRightelements.push(createElement(element.unit, element.pow * exponent));
+  }
+  return fromProduct<T>(quantity, [], squareRootedRightelements);
 
 }
 

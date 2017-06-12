@@ -3,6 +3,7 @@ import * as Units from "../../src/measure/units";
 import * as Unit from "../../src/measure/unit";
 import * as Amount from "../../src/measure/amount";
 import * as PropertyValue from "../../src/product-properties/property-value";
+import * as squareRoot from "../../src/measure/unit";
 
 describe("units_test", () => {
 
@@ -57,6 +58,12 @@ describe("units_test", () => {
       const unit = Unit.divide("Length", Units.Meter, Units.CentiMeter);
       const unit2 = Unit.divide("Length", Units.Meter, Units.Millimeter);
       assert.isFalse(Unit.equals(unit, unit2));
+    });
+
+    it("SquareRootPascal and SquareRootInchOfWaterColumn should not be equal", () => {
+      const unit1 = Units.SquareRootPascal;
+      const unit2 = Units.SquareRootInchOfWaterColumn;
+      assert.isFalse(Unit.equals(unit1, unit2));
     });
   });
 
