@@ -12,8 +12,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/promaster-portable": "^0.25.0",
-    "@promaster/promaster-primitives": "^0.6.1",
+    "@promaster/promaster-portable": "^0.27.0",
+    "@promaster/promaster-primitives": "^0.11.0",
     "csjs": "1.0.6",
     "insert-css": "^2.0.0",
     "react": "^15.3.0"
