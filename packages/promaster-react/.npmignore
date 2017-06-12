@@ -7,3 +7,4 @@ test/
 .gitignore
 .npmignore
 base-tsconfig.json
+npm-packages-offline-cache/
