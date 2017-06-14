@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-primitives@^0.6.1":
-  version "0.6.1"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.6.1.tgz#12b22d11c5e43a688345d4eacafd1e5cc4de8382"
+"@promaster/promaster-primitives@^0.12.0":
+  version "0.12.0"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.12.0.tgz#49b09b472fb0108ffa5ad7c52acaf2ca8b776821"
 
 "@types/base64-js@^1.2.5":
   version "1.2.5"
