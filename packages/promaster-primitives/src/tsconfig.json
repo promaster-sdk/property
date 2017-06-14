@@ -8,6 +8,6 @@
     "outDir": "../lib-cjs",
     "sourceMap": true,
     // Lib options
-    "lib": ["es5", "dom"]
+    "lib": ["es5", "es2015", "dom"]
   }
 }

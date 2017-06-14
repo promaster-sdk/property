@@ -710,7 +710,7 @@ export function getAllQuantities(): Array<Quantity> {
 let _metaAdded: boolean = false;
 
 function getUnitKey(unit: Unit.Unit<Quantity>): string {
-  const foundUnit = getAllUnits().filter((u) => Unit.equals(u, unit))[0];
+  const foundUnit = getAllUnits().find((u) => Unit.equals(u, unit));
   if (!foundUnit) {
     throw new Error("Unknown Unit " + JSON.stringify(unit));
   }
