@@ -663,7 +663,7 @@ export function getUnitFromString(unitString: string, onError?: (unitString: str
 
 export function getStringFromUnit(unit: Unit.Unit<Quantity>): string {
   _ensureMetaAdded();
-  const name = _unitToString[JSON.stringify(unit)];
+  const name = _unitToString[getUnitKey(unit)];
   if (name === undefined) {
     throw new Error("Unknown Unit " + unit);
   }
@@ -708,6 +708,15 @@ export function getAllQuantities(): Array<Quantity> {
 // == BEGIN META: Manually added meta data needed becuase reflection does not work ==
 
 let _metaAdded: boolean = false;
+
+function getUnitKey(unit: Unit.Unit<Quantity>): string {
+  const foundUnit = getAllUnits().filter((u) => Unit.equals(u, unit))[0];
+  if (!foundUnit) {
+    throw new Error("Unknown Unit " + JSON.stringify(unit));
+  }
+
+  return JSON.stringify(foundUnit);
+}
 
 function _addMeta(quantity: q.Quantity, name: string, unit: Unit.Unit<Quantity>): void {
   const lowerName = name.toLowerCase();

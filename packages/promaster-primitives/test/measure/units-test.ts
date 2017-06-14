@@ -9,11 +9,11 @@ describe("units_test", () => {
 
   describe("getQuantityTypeFromString", () => {
 
-/*it('should not be case sensitive', () => {
-			let length1 = Units.getQuantityTypeFromString("Length");
-			let length2 = Units.getQuantityTypeFromString("length");
-			assert.isTrue(length1 === length2);
-		});*/
+    /*it('should not be case sensitive', () => {
+          let length1 = Units.getQuantityTypeFromString("Length");
+          let length2 = Units.getQuantityTypeFromString("length");
+          assert.isTrue(length1 === length2);
+        });*/
 
     /*it('getUnitsForQuantityshould not be case sensitive', () => {
       const unit = Units.getUnitsForQuantity("Length")[0];
@@ -33,6 +33,12 @@ describe("units_test", () => {
       const unit = Units.One;
       const unit2 = Units.getUnitFromString("One");
       assert.isTrue(Unit.equals(unit, unit2));
+    });
+
+    it("Base unit One should be equal. Order should not matter", () => {
+      const unit = Units.getStringFromUnit(Unit.One);
+      const unit2 = Units.getStringFromUnit(JSON.parse("{\"type\":\"product\",\"elements\":[],\"quantity\":\"Dimensionless\"}"));
+      assert.equal(unit, unit2);
     });
 
     it("Alternate unit Radian should be equal", () => {
