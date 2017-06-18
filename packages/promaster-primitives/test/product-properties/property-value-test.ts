@@ -65,6 +65,12 @@ describe("property_value_test", () => {
     assert.equal(PropertyValue.equals(pv1, pv2), true);
   });
 
+  it("should_not_compare_values_of_different_types_and_return_false", () => {
+    const pv1 = PropertyValue.fromInteger(0);
+    const pv2 = PropertyValue.fromText("abcABC");
+    assert.isFalse(PropertyValue.equals(pv1, pv2));
+  });
+
   it("should_parse_amount_string_with_two_decimals_to_amount_with_two_decimals", () => {
     const pv1 = fromStringOrException("12.34:Celsius");
     const amount = getAmountOrException(pv1);

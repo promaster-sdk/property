@@ -155,6 +155,9 @@ export function equals(left: PropertyValue, right: PropertyValue): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
+  if (right.type !== left.type) {
+    return false;
+  }
   return compareTo(left, right) === 0;
 }
 

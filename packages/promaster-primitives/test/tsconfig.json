@@ -12,7 +12,7 @@
     "noEmit": true,
     "sourceMap": true,
     // Lib options
-    "lib": ["es5"],
+    "lib": ["es5", "es2015"],
     "types": ["mocha", "node"],
     "typeRoots": ["./node_modules/@types"]
   },
