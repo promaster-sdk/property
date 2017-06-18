@@ -2,9 +2,11 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-primitives@^0.12.0":
-  version "0.12.0"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.12.0.tgz#49b09b472fb0108ffa5ad7c52acaf2ca8b776821"
+"@promaster/promaster-primitives@^0.13.0":
+  version "0.13.0"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.13.0.tgz#9543489ff0ce285e951f357dd8be4342fbf9246e"
+  dependencies:
+    "@types/lodash" "^4.14.66"
 
 "@types/base64-js@^1.2.5":
   version "1.2.5"
@@ -27,6 +29,10 @@
 "@types/jszip@0.0.31":
   version "0.0.31"
   resolved "https://registry.yarnpkg.com/@types/jszip/-/jszip-0.0.31.tgz#841abc138e53f6e66653714d467935b6dbdf9819"
+
+"@types/lodash@^4.14.66":
+  version "4.14.66"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.66.tgz#3dbb83477becf130611f8fac82a8fdb199805981"
 
 "@types/mocha@^2.2.32":
   version "2.2.33"
