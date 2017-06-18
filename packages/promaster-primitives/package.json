@@ -56,5 +56,8 @@
     "test:filtering": "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
     "test:parser": "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
     "generate-parser": "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/generated-parser.js"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.66"
   }
 }
