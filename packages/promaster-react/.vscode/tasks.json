@@ -14,6 +14,17 @@
       "problemMatcher": "$tsc"
     },
     {
+      "taskName": "tsc:watch",
+      "command": "yarn",
+      "isShellCommand": true,
+      "isBackground": true,
+      "args": [
+        "tsc:watch"
+      ],
+      "showOutput": "always",
+      "problemMatcher": "$tsc-watch"
+    },
+    {
       "taskName": "tslint",
       "command": "node",
       "isShellCommand": true,

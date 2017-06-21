@@ -17,7 +17,6 @@ import {
   PropertyValueItem,
   ReactComponent,
   OnToggleGroupClosed,
-  PropertySelectorStyles,
   PropertyFormats
 } from "./types";
 import { DefaultLayoutRenderer, LayoutRendererProps } from "./default-layout-renderer";
@@ -63,8 +62,6 @@ export interface PropertiesSelectorProps {
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
   readonly propertyFormats?: PropertyFormats,
 
-  readonly styles?: PropertySelectorStyles,
-
   // Debounce value for inputs in ms. Defaults to 350.
   readonly inputDebounceTime?: number,
 
@@ -109,8 +106,6 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     optionalProperties = [],
     propertyFormats = {},
 
-    styles = {},
-
     inputDebounceTime = 350,
 
     closedGroups = [],
@@ -146,7 +141,6 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     optionalProperties,
     propertyFormats,
 
-    styles,
     inputDebounceTime,
   );
 
@@ -162,85 +156,6 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
   });
 
 }
-
-// function createPropertySelectorRenderInfos({
-//   productProperties,
-//   selectedProperties,
-//   filterPrettyPrint,
-
-//   includeCodes,
-//   includeHiddenProperties,
-//   autoSelectSingleValidValue,
-
-//   onChange,
-//   onPropertyFormatChanged,
-//   onPropertyFormatCleared,
-
-//   translatePropertyName,
-//   translatePropertyValue,
-//   translateValueMustBeNumericMessage,
-//   translateValueIsRequiredMessage,
-//   translatePropertyLabelHover,
-
-//   readOnlyProperties,
-//   optionalProperties,
-//   propertyFormats,
-
-//   styles,
-
-//   inputDebounceTime,
-
-// }: PropertiesSelectorProps): ReadonlyArray<PropertySelectorRenderInfo> {
-
-/*
-  // Required inputs
-  readonly productProperties: ReadonlyArray<Property>
-  readonly selectedProperties: PropertyValueSet.PropertyValueSet,
-  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-
-  // Includes the raw property name and value in paranthesis
-  readonly includeCodes: boolean,
-  // Will render properties that according to their rule should be hidden
-  readonly includeHiddenProperties: boolean,
-  // Will automatically select values for properties that have only one valid value
-  readonly autoSelectSingleValidValue: boolean
-
-  // Events
-  readonly onChange: PropertySelectionOnChange,
-  readonly onPropertyFormatChanged: OnPropertyFormatChanged,
-  readonly onPropertyFormatCleared: OnPropertyFormatCleared,
-
-  // Translations
-  readonly translatePropertyName: TranslatePropertyName,
-  readonly translatePropertyValue: TranslatePropertyValue,
-  readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
-  readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  readonly translatePropertyLabelHover: TranslatePropertyLabelHover,
-  readonly translateGroupName?: TranslateGroupName,
-
-  // Specifies property names of properties that should be read-only
-  readonly readOnlyProperties: ReadonlyArray<string>,
-  // Specifies property names of properties that should be optional (only for amounts for now)
-  readonly optionalProperties: ReadonlyArray<string>,
-  // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly propertyFormats: { [key: string]: AmountFormat },
-
-  readonly styles: PropertySelectorStyles,
-
-  // Debounce value for inputs in ms. Defaults to 350.
-  readonly inputDebounceTime?: number,
-
-  // Group handling
-  readonly closedGroups?: ReadonlyArray<string>,
-  readonly onToggleGroupClosed?: OnToggleGroupClosed,
-
-  // Override layout
-  readonly LayoutRenderer?: (props: LayoutRendererProps) => React.ReactElement<LayoutRendererProps>,
-  readonly GroupComponent?: ReactComponent<GroupComponentProps>,
-  readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
-  readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
-  readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
-*/
 
 function createPropertySelectorRenderInfos(
   productProperties: ReadonlyArray<Property>,
@@ -265,7 +180,6 @@ function createPropertySelectorRenderInfos(
   optionalProperties: ReadonlyArray<string>,
   propertyFormats: { [key: string]: AmountFormat },
 
-  styles: PropertySelectorStyles,
   inputDebounceTime: number,
 ): ReadonlyArray<PropertySelectorRenderInfo> {
 
@@ -328,7 +242,6 @@ function createPropertySelectorRenderInfos(
         translatePropertyValue,
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
         translateValueIsRequiredMessage,
-        styles,
         inputDebounceTime,
       };
 
@@ -350,9 +263,6 @@ function createPropertySelectorRenderInfos(
 
         label: label,
         labelHover: labelHover,
-
-        // renderedSelectorElement: <DefaultPropertySelectorComponent {...propertySelectorComponentProps} />,
-        // renderedLabelElement: <DefaultPropertyLabelComponent {...propertyLabelComponentProps} />,
 
         selectorComponentProps: propertySelectorComponentProps,
         labelComponentProps: propertyLabelComponentProps,

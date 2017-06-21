@@ -30,7 +30,6 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
 
   render() {
 
-    const styles: PropertiesSelector.PropertySelectorStyles = {};
     const productProperties = exampleProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,
@@ -62,7 +61,6 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
       translateValueIsRequiredMessage: () => "value_is_required",
       translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: () => "translateGroupName",
-      styles: styles,
       closedGroups: [],
       onToggleGroupClosed: () => "",
       LayoutRenderer: createPropertiesSelectorExample2Layout()

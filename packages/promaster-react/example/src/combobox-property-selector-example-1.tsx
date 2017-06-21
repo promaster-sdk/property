@@ -12,6 +12,8 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish, 2, " ", propertyFilter);
 
+const ComboboxPropertySelector = Selectors.createComboboxPropertySelector({});
+
 export class ComboboxPropertySelectorExample1 extends React.Component<{}, State> {
 
   constructor() {
@@ -50,7 +52,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
         value: PropertyValue.create("integer", 2),
         sortNo: 2,
         text: "Alternative 2",
-        validationFilter: PropertyFilter.fromString("b=2") as PropertyFilter.PropertyFilter
+        validationFilter: PropertyFilter.fromString("a=2") as PropertyFilter.PropertyFilter
       }
     ];
 
@@ -63,7 +65,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
           PropertyValueSet: {PropertyValueSet.toString(this.state.propertyValueSet)}
         </div>
         <div>
-          <Selectors.ComboboxPropertySelector
+          <ComboboxPropertySelector
           propertyName="a"
           valueItems={valueItems1}
           propertyValueSet={this.state.propertyValueSet}
@@ -76,7 +78,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
             }))}
           filterPrettyPrint={filterPrettyPrint}
           readOnly={false}/>
-          <Selectors.ComboboxPropertySelector
+          <ComboboxPropertySelector
             propertyName="b"
             valueItems={valueItems2}
             propertyValueSet={this.state.propertyValueSet}

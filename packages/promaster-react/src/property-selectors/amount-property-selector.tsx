@@ -1,8 +1,15 @@
 import * as React from "react";
 import { Amount, PropertyValueSet, PropertyFilter, PropertyValue, Unit, Quantity } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
-import { AmountInputBox, AmountFormatSelector, OnFormatChanged, OnFormatCleared } from "../amount-fields/index";
-import { amountPropertySelectorStyles, AmountPropertySelectorStyles } from "./amount-property-selector-styles";
+import {
+  AmountFormatSelector,
+  AmountInputBox,
+  createAmountFormatSelector,
+  createAmountInputBox,
+  OnFormatChanged,
+  OnFormatCleared
+} from "../amount-fields/index";
+import styled from "styled-components";
 
 // tslint:disable no-class no-this
 
@@ -19,53 +26,69 @@ export interface AmountPropertySelectorProps {
   readonly onFormatChanged: OnFormatChanged,
   readonly onFormatCleared: OnFormatCleared,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void,
-  readonly styles?: AmountPropertySelectorStyles,
   readonly debounceTime?: number,
+
+  readonly AmountFormatSelector?: AmountFormatSelector,
+  readonly AmountInputBox?: AmountInputBox,
 }
 
-export class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, {}> {
+export type AmountPropertySelector = React.ComponentClass<AmountPropertySelectorProps>;
+export interface CreateAmountPropertySelectorProps {
+  readonly DefaultAmountPropertySelectorWrapper?: React.ComponentType<React.HTMLProps<HTMLSpanElement>>
+}
 
-  render(): React.ReactElement<AmountPropertySelectorProps> {
-    const {
-      onValueChange,
-      onFormatChanged,
-      onFormatCleared,
-      notNumericMessage,
-      isRequiredMessage,
-      validationFilter,
-      propertyValueSet,
-      propertyName,
-      filterPrettyPrint,
-      inputUnit,
-      inputDecimalCount,
-      readOnly,
-      styles = amountPropertySelectorStyles,
-      debounceTime = 350,
+const defaultAmountPropertySelectorWrapper = styled.span``;
+
+const defaultAmountFormatSelector = createAmountFormatSelector({});
+const defaultAmountInputBox = createAmountInputBox({});
+
+export function createAmountPropertySelector({
+  DefaultAmountPropertySelectorWrapper = defaultAmountPropertySelectorWrapper,
+}: CreateAmountPropertySelectorProps): AmountPropertySelector {
+  return class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, {}> {
+
+    render(): React.ReactElement<AmountPropertySelectorProps> {
+      const {
+        onValueChange,
+        onFormatChanged,
+        onFormatCleared,
+        notNumericMessage,
+        isRequiredMessage,
+        validationFilter,
+        propertyValueSet,
+        propertyName,
+        filterPrettyPrint,
+        inputUnit,
+        inputDecimalCount,
+        readOnly,
+        debounceTime = 350,
+
+        AmountFormatSelector = defaultAmountFormatSelector,
+        AmountInputBox = defaultAmountInputBox,
     } = this.props;
 
-    const value: Amount.Amount<Quantity.Quantity> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
+      const value: Amount.Amount<Quantity.Quantity> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
 
-    return (
-      <span className={styles.amount}>
-        <AmountInputBox value={value}
-          inputUnit={inputUnit}
-          inputDecimalCount={inputDecimalCount}
-          notNumericMessage={notNumericMessage}
-          isRequiredMessage={isRequiredMessage}
-          errorMessage={_getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint)}
-          readOnly={readOnly}
-          onValueChange={(newAmount) =>
-            onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount) : undefined)}
-          styles={styles.amountInputBoxStyles}
-          debounceTime={debounceTime} />
-        <AmountFormatSelector selectedUnit={inputUnit}
-          selectedDecimalCount={inputDecimalCount}
-          onFormatChanged={onFormatChanged}
-          onFormatCleared={onFormatCleared}
-          styles={styles.amountFormatSelectorStyles} />
-      </span>
-    );
-  }
+      return (
+        <DefaultAmountPropertySelectorWrapper>
+          <AmountInputBox value={value}
+            inputUnit={inputUnit}
+            inputDecimalCount={inputDecimalCount}
+            notNumericMessage={notNumericMessage}
+            isRequiredMessage={isRequiredMessage}
+            errorMessage={_getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint)}
+            readOnly={readOnly}
+            onValueChange={(newAmount) =>
+              onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount) : undefined)}
+            debounceTime={debounceTime} />
+          <AmountFormatSelector selectedUnit={inputUnit}
+            selectedDecimalCount={inputDecimalCount}
+            onFormatChanged={onFormatChanged}
+            onFormatCleared={onFormatCleared} />
+        </DefaultAmountPropertySelectorWrapper>
+      );
+    }
+  };
 }
 
 function _getValidationMessage(propertyValueSet: PropertyValueSet.PropertyValueSet,

@@ -8,7 +8,8 @@
         ".idea/**": true,
         ".vscode/**": true,
         "**/temp": true,
-        "lib/**": true
+        "lib/**": true,
+        "lib-cjs/**": true
     },
     "tslint.exclude": "**/{example,test}/**/*"
 }

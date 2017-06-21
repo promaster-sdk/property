@@ -16,6 +16,8 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
 
 const validationFilter = PropertyFilter.fromString("a<100:Celsius") as PropertyFilter.PropertyFilter;
 
+const AmountPropertySelector = PropertySelectors.createAmountPropertySelector({});
+
 export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
 
   constructor() {
@@ -40,7 +42,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
           PropertyValueSet: {PropertyValueSet.toString(this.state.propertyValueSet)}
         </div>
         <div>
-          <PropertySelectors.AmountPropertySelector
+          <AmountPropertySelector
             propertyName="a"
             propertyValueSet={this.state.propertyValueSet}
             inputUnit={this.state.selectedUnit}

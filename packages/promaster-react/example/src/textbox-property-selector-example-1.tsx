@@ -1,11 +1,13 @@
 import * as React from "react";
-import {PropertySelectors as Selectors} from "@promaster/promaster-react";
-import {PropertyValueSet, PropertyValue} from "@promaster/promaster-primitives";
-import {merge} from "./utils";
+import { PropertySelectors as Selectors } from "@promaster/promaster-react";
+import { PropertyValueSet, PropertyValue } from "@promaster/promaster-primitives";
+import { merge } from "./utils";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet
 }
+
+const TextboxPropertySelector = Selectors.createTextboxPropertySelector({});
 
 export class TextboxPropertySelectorExample1 extends React.Component<{}, State> {
 
@@ -27,14 +29,14 @@ export class TextboxPropertySelectorExample1 extends React.Component<{}, State> 
           PropertyValueSet: {PropertyValueSet.toString(this.state.propertyValueSet)}
         </div>
         <div>
-          <Selectors.TextboxPropertySelector
+          <TextboxPropertySelector
             value={PropertyValueSet.getText("a", this.state.propertyValueSet) as string}
             onValueChange={(pv) =>
-            this.setState(merge(this.state, {
-              propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, this.state.propertyValueSet)
-            }))}
+              this.setState(merge(this.state, {
+                propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, this.state.propertyValueSet)
+              }))}
             readOnly={false}
-            debounceTime={600}/>
+            debounceTime={600} />
         </div>
       </div>
     );

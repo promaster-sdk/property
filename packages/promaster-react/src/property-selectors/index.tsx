@@ -1,25 +1,15 @@
 export {
   AmountPropertySelector,
   AmountPropertySelectorProps,
+  createAmountPropertySelector,
 } from "./amount-property-selector";
 export {
-  AmountPropertySelectorStyles,
-  amountPropertySelectorStyles
-} from "./amount-property-selector-styles";
-export {
-  ComboboxPropertySelector,
+  createComboboxPropertySelector,
   ComboboxPropertySelectorProps,
   ComboBoxPropertyValueItem
 } from "./combobox-property-selector";
 export {
-  ComboboxPropertySelectorStyles,
-  comboboxPropertySelectorStyles
-} from "./combobox-property-selector-styles";
-export {
   TextboxPropertySelector,
-  TextboxPropertySelectorProps
+  TextboxPropertySelectorProps,
+  createTextboxPropertySelector,
 } from "./textbox-property-selector";
-export {
-  TextboxPropertySelectorStyles,
-  textboxPropertySelectorStyles
-} from "./textbox-property-selector-styles";

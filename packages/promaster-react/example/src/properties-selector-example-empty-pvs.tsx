@@ -29,7 +29,6 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<{}, State
 
   render() {
 
-    const styles: PropertiesSelector.PropertySelectorStyles = {};
     const productProperties = exampleProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,
@@ -61,7 +60,6 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<{}, State
       translateValueIsRequiredMessage: () => "value_is_required",
       translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: () => "translateGroupName",
-      styles: styles,
       closedGroups: [],
       onToggleGroupClosed: () => "",
       inputDebounceTime: 600

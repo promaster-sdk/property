@@ -7,7 +7,8 @@
 import * as React from "react";
 import { Amount, Unit } from "@promaster/promaster-primitives";
 import { Quantity } from "@promaster/promaster-primitives";
-import { amountInputBoxStyles, AmountInputBoxStyles } from "./amount-input-box-styles";
+import styled, { css, InterpolationValue } from "styled-components";
+import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 
 // tslint:disable no-class no-this
 
@@ -21,7 +22,6 @@ export interface AmountInputBoxProps {
   readonly errorMessage: string,
   readonly readOnly: boolean,
   readonly onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void,
-  readonly styles?: AmountInputBoxStyles,
   readonly debounceTime: number,
 }
 
@@ -31,92 +31,139 @@ export interface State {
   readonly effectiveErrorMessage: string
 }
 
-export class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
+export type AmountInputBox = React.ComponentClass<AmountInputBoxProps>;
 
-  constructor(props: AmountInputBoxProps) {
-    super(props);
-    // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-    this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, this.props.debounceTime);
+export interface CreateAmountInputBoxParams {
+  readonly AmountInputField?: React.ComponentType<AmountInputFieldProps>,
+}
+
+function inputInvalidLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): InterpolationValue[] {
+  // tslint:disable-next-line:no-console
+  if (isReadonly && effectiveErrorMessage) {
+    return css`
+    background: lightgray;
+    color: red;
+    border: none;
+  `;
   }
 
-  componentWillMount(): void {
-    this.initStateFromProps(this.props);
+  return [];
+}
+
+function inputLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): InterpolationValue[] {
+  if (isReadonly && !effectiveErrorMessage) {
+    return css`
+    background: lightgray;
+    color: darkgray;
+    border: none;
+  `;
   }
 
-  componentWillReceiveProps(nextProps: AmountInputBoxProps): void {
-    this.initStateFromProps(nextProps);
-  }
+  return [];
+}
 
-  initStateFromProps(initProps: AmountInputBoxProps): void {
-    const { value, inputUnit, inputDecimalCount } = initProps;
-    if (!inputUnit) {
-      // tslint:disable-next-line:no-console
-      console.error("Missing inputUnit");
-    }
-    if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
-      // tslint:disable-next-line:no-console
-      console.error("Missing inputDecimalCount");
-    }
-    const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
-    const newState = calculateNewState(value, formattedValue,
-      initProps.isRequiredMessage, initProps.notNumericMessage, initProps.errorMessage);
-    this.setState(newState);
-  }
+const defaultAmountInputField = styled(AmountInputField) `
+  color: black;
+  height: 30px;
+  border: 1px solid #b4b4b4;
+  border-radius: 3px;
+  font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
+  outline: rgb(131, 131, 131) none 0px;
+  padding: 1px 30px 0px 10px;
 
-  render(): React.ReactElement<AmountInputBoxProps> {
+  ${(props) => inputInvalidLocked(props)}
 
-    const { onValueChange, readOnly, styles = amountInputBoxStyles } = this.props;
-    const { effectiveErrorMessage, textValue } = this.state;
+  ${(props) => inputLocked(props)}
 
-    const className =
-      readOnly ?
-        (effectiveErrorMessage ? styles.inputInvalidLocked : styles.inputLocked) :
-        (effectiveErrorMessage ? styles.inputInvalid : styles.input);
+  ${(props) => !props.isReadonly && props.effectiveErrorMessage ? "color: red" : ""}
+`;
 
-    return (
-      <input key="input"
-        type="text"
-        value={textValue}
-        readOnly={readOnly}
-        onChange={(e) => this._onChange(e, onValueChange)}
-        title={effectiveErrorMessage}
-        className={className} />
-    );
+export function createAmountInputBox({
+    AmountInputField = defaultAmountInputField
+  }: CreateAmountInputBoxParams): AmountInputBox {
+  return class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
 
-  }
-
-  _debouncedOnValueChange(newAmount: Amount.Amount<Quantity.Quantity> | undefined,
-    onValueChange: (newAmount: Amount.Amount<Quantity.Quantity> | undefined) => void): void {
-    // An event can have been received when the input was valid, then the input has gone invalid
-    // but we still received the delayed event from when the input was valid. Therefore
-    // we need an extra check here to make sure that the current input is valid before we
-    // dispatch the value change.
-    if (this.state.isValid) {
-      onValueChange(newAmount);
-    }
-  }
-
-  _onChange(e: React.FormEvent<HTMLInputElement>, onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void): void {
-    const newStringValue = e.currentTarget.value.replace(",", ".");
-    const { inputUnit, inputDecimalCount } = this.props;
-
-    // If the change would add more decimals than allowed then ignore the change
-    const stringDecimalCount = getDecimalCountFromString(newStringValue);
-    if (stringDecimalCount > inputDecimalCount) {
-      return;
+    constructor(props: AmountInputBoxProps) {
+      super(props);
+      // What the optimal debounce is may vary between users. 350ms seems like a nice value...
+      this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, this.props.debounceTime);
     }
 
-    // Update the internal state and if the change resulted in a valid value then emit a change with that value
-    const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
-    const newState = calculateNewState(newAmount, newStringValue,
-      this.props.isRequiredMessage, this.props.notNumericMessage, this.props.errorMessage);
-    this.setState(newState);
-    // We need to check isValid from the new state because state is not immidiately mutated
-    if (newState.isValid) {
-      this._debouncedOnValueChange(newAmount, onValueChange);
+    componentWillMount(): void {
+      this.initStateFromProps(this.props);
     }
-  }
 
+    componentWillReceiveProps(nextProps: AmountInputBoxProps): void {
+      this.initStateFromProps(nextProps);
+    }
+
+    initStateFromProps(initProps: AmountInputBoxProps): void {
+      const { value, inputUnit, inputDecimalCount } = initProps;
+      if (!inputUnit) {
+        // tslint:disable-next-line:no-console
+        console.error("Missing inputUnit");
+      }
+      if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
+        // tslint:disable-next-line:no-console
+        console.error("Missing inputDecimalCount");
+      }
+      const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
+      const newState = calculateNewState(value, formattedValue,
+        initProps.isRequiredMessage, initProps.notNumericMessage, initProps.errorMessage);
+      this.setState(newState);
+    }
+
+    render(): React.ReactElement<AmountInputBoxProps> {
+
+      const { onValueChange, readOnly } = this.props;
+      const { effectiveErrorMessage, textValue } = this.state;
+      // const test = (<input type="text" />);
+      return (
+        <AmountInputField
+          key="input"
+          value={textValue}
+          readOnly={readOnly}
+          onChange={(e) => this._onChange(e, onValueChange)}
+          title={effectiveErrorMessage}
+          effectiveErrorMessage={effectiveErrorMessage}
+          isReadonly={readOnly} />
+      );
+
+    }
+
+    _debouncedOnValueChange(newAmount: Amount.Amount<Quantity.Quantity> | undefined,
+      onValueChange: (newAmount: Amount.Amount<Quantity.Quantity> | undefined) => void): void {
+      // An event can have been received when the input was valid, then the input has gone invalid
+      // but we still received the delayed event from when the input was valid. Therefore
+      // we need an extra check here to make sure that the current input is valid before we
+      // dispatch the value change.
+      if (this.state.isValid) {
+        onValueChange(newAmount);
+      }
+    }
+
+    _onChange(e: React.FormEvent<HTMLInputElement>, onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void): void {
+      const newStringValue = e.currentTarget.value.replace(",", ".");
+      const { inputUnit, inputDecimalCount } = this.props;
+
+      // If the change would add more decimals than allowed then ignore the change
+      const stringDecimalCount = getDecimalCountFromString(newStringValue);
+      if (stringDecimalCount > inputDecimalCount) {
+        return;
+      }
+
+      // Update the internal state and if the change resulted in a valid value then emit a change with that value
+      const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
+      const newState = calculateNewState(newAmount, newStringValue,
+        this.props.isRequiredMessage, this.props.notNumericMessage, this.props.errorMessage);
+      this.setState(newState);
+      // We need to check isValid from the new state because state is not immidiately mutated
+      if (newState.isValid) {
+        this._debouncedOnValueChange(newAmount, onValueChange);
+      }
+    }
+
+  };
 }
 
 function calculateNewState(newAmount: Amount.Amount<Quantity.Quantity> | undefined, newStringValue: string,

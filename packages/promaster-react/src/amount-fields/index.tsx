@@ -1,4 +1,10 @@
-export {AmountInputBox, AmountInputBoxProps} from "./amount-input-box";
-export {AmountInputBoxStyles} from "./amount-input-box-styles";
-export {AmountFormatSelector, AmountFormatSelectorProps, OnFormatChanged, OnFormatCleared} from "./amount-format-selector";
-export {AmountFormatSelectorStyles} from "./amount-format-selector-styles";
+export { AmountInputBox, AmountInputBoxProps, createAmountInputBox } from "./amount-input-box";
+export {
+  AmountFormatSelector,
+  AmountFormatSelectorProps,
+  createAmountFormatSelector,
+  OnFormatChanged,
+  OnFormatCleared,
+} from "./amount-format-selector";
+export { AmountFormatWrapper, AmountFormatWrapperProps } from "./amount-format-wrapper";
+export { AmountInputField, AmountInputFieldProps } from "./amount-input-field";

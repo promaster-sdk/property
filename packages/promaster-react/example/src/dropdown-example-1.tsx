@@ -1,6 +1,8 @@
 import * as React from "react";
 import {Dropdown} from "@promaster/promaster-react";
 
+const ImageDropDownSelector = Dropdown.createImageDropdownSelector({});
+
 export function DropdownExample1(): React.ReactElement<{}> {
   const options = [
     {
@@ -22,7 +24,7 @@ export function DropdownExample1(): React.ReactElement<{}> {
 
   return (
     <div>
-      <Dropdown.Dropdown value="a" options={options} onChange={(v: string) => console.log(v)} />
+      <ImageDropDownSelector locked={false} isSelectedItemValid={false} value="a" options={options} onChange={(v: string) => console.log(v)} />
       <p>Hej</p>
       <p>Hej</p>
       <p>Hej</p>

@@ -28,7 +28,6 @@ export class PropertiesSelectorExample3SingleValidValue extends React.Component<
 
   render() {
 
-    const styles: PropertiesSelector.PropertySelectorStyles = {};
     const productProperties = exampleProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,
@@ -60,7 +59,6 @@ export class PropertiesSelectorExample3SingleValidValue extends React.Component<
       translateValueIsRequiredMessage: () => "value_is_required",
       translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: () => "translateGroupName",
-      styles: styles,
       closedGroups: [],
       onToggleGroupClosed: () => "",
       inputDebounceTime: 600

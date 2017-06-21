@@ -15,15 +15,17 @@
     "@promaster/promaster-portable": "^0.29.0",
     "@promaster/promaster-primitives": "^0.13.0",
     "csjs": "1.0.6",
+    "immutable": "^3.8.1",
     "insert-css": "^2.0.0",
-    "react": "^15.3.0"
+    "react": "^15.3.0",
+    "styled-components": "^2.1.0"
   },
   "devDependencies": {
     "@types/jest": "^19.2.2",
     "@types/ramda": "^0.0.3",
-    "@types/react": "^0.14.41",
+    "@types/react": "^15.0.26",
     "@types/react-dom": "^0.14.18",
-    "@types/react-test-renderer": "^15.4.2",
+    "@types/react-test-renderer": "^15.5.0",
     "awesome-typescript-loader": "^3.1.3",
     "http-server": "^0.9.0",
     "jest": "^19.0.2",
@@ -33,7 +35,7 @@
     "react-test-renderer": "^15.4.2",
     "shelljs": "^0.7.4",
     "ts-jest": "^19.0.4",
-    "tslint": "^5.3.2",
+    "tslint": "^5.4.2",
     "tslint-immutable": "^2.1.0",
     "typescript": "^2.3.3",
     "webpack": "^2.6.0",
@@ -42,6 +44,7 @@
   "scripts": {
     "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "tsc": "tsc --version && tsc -p src",
+    "tsc:watch": "tsc -w -p src",
     "tsc:example": "tsc -p example",
     "tsc:test": "tsc -p test",
     "test": "jest --config=test/jest.config.json",

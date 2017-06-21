@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PropertyValue } from "@promaster/promaster-primitives";
-import { textboxPropertySelectorStyles, TextboxPropertySelectorStyles } from "./textbox-property-selector-styles";
+import styled from "styled-components";
 
 // tslint:disable no-this no-class
 
@@ -8,7 +8,6 @@ export interface TextboxPropertySelectorProps {
   readonly value: string,
   readonly readOnly: boolean,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
-  readonly styles?: TextboxPropertySelectorStyles,
   readonly debounceTime: number,
 }
 
@@ -16,47 +15,67 @@ export interface State {
   readonly textValue: string,
 }
 
-export class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> {
+export type TextboxPropertySelector = React.ComponentClass<TextboxPropertySelectorProps>;
+export interface CreateTextboxPropertySelectorProps {
+  readonly StyledInputTextBox?: React.ComponentType<React.ChangeTargetHTMLProps<HTMLInputElement>>,
+}
 
-  constructor(props: TextboxPropertySelectorProps) {
-    super(props);
-    // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-    this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, this.props.debounceTime);
-  }
+const defaultStyledInputTextBox = styled.input`
+    color: black;
+    height: 30px;
+    border: 1px solid #b4b4b4;
+    border-radius: 3px;
+    font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
+    outline: rgb(131, 131, 131) none 0px;
+    padding: 1px 30px 0px 10px;
+`;
 
-  componentWillMount(): void {
-    const { value } = this.props;
-    this.setState({ textValue: value });
-  }
+export function createTextboxPropertySelector({
+  StyledInputTextBox = defaultStyledInputTextBox,
+}: CreateTextboxPropertySelectorProps): TextboxPropertySelector {
+  return class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> {
 
-  componentWillReceiveProps(nextProps: TextboxPropertySelectorProps): void {
-    const { value } = nextProps;
-    this.setState({ textValue: value });
-  }
+    constructor(props: TextboxPropertySelectorProps) {
+      super(props);
+      // What the optimal debounce is may vary between users. 350ms seems like a nice value...
+      this._debouncedOnValueChange = debounce(this._debouncedOnValueChange, this.props.debounceTime);
+    }
 
-  render(): React.ReactElement<TextboxPropertySelectorProps> {
+    componentWillMount(): void {
+      const { value } = this.props;
+      this.setState({ textValue: value });
+    }
 
-    const { onValueChange, readOnly, styles = textboxPropertySelectorStyles } = this.props;
-    const { textValue } = this.state;
+    componentWillReceiveProps(nextProps: TextboxPropertySelectorProps): void {
+      const { value } = nextProps;
+      this.setState({ textValue: value });
+    }
 
-    return (
-      <input type="text"
-        value={textValue}
-        className={styles.textbox}
-        readOnly={readOnly}
-        onChange={(e) => this._onChange(e, onValueChange)} />
-    );
-  }
+    render(): React.ReactElement<TextboxPropertySelectorProps> {
 
-  _debouncedOnValueChange(newValue: PropertyValue.PropertyValue, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
-    onValueChange(newValue);
-  }
+      const { onValueChange, readOnly } = this.props;
+      const { textValue } = this.state;
 
-  _onChange(e: React.FormEvent<HTMLInputElement>, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
-    let newStringValue = (e.target as HTMLInputElement).value;
-    this.setState({ textValue: newStringValue });
-    this._debouncedOnValueChange(PropertyValue.create("text", newStringValue), onValueChange);
-  }
+      return (
+        <StyledInputTextBox
+          type="text"
+          value={textValue}
+          readOnly={readOnly}
+          onChange={(e) => this._onChange(e, onValueChange)} />
+      );
+    }
+
+    _debouncedOnValueChange(newValue: PropertyValue.PropertyValue, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
+      onValueChange(newValue);
+    }
+
+    _onChange(e: React.FormEvent<HTMLInputElement>, onValueChange: (newValue: PropertyValue.PropertyValue) => void): void {
+      let newStringValue = (e.target as HTMLInputElement).value;
+      this.setState({ textValue: newStringValue });
+      this._debouncedOnValueChange(PropertyValue.create("text", newStringValue), onValueChange);
+    }
+
+  };
 
 }
 

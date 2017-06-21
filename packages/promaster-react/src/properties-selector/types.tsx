@@ -2,7 +2,6 @@ import * as React from "react";
 import { Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity } from "@promaster/promaster-primitives";
 import { PropertySelectorComponentProps } from "./default-property-selector-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
-import { AmountPropertySelectorStyles, ComboboxPropertySelectorStyles, TextboxPropertySelectorStyles } from "../property-selectors/index";
 
 export type AmountFormat = { unit: Unit.Unit<Quantity.Quantity>, decimalCount: number };
 export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet) => void;
@@ -67,12 +66,6 @@ export interface PropertyValueItem {
   readonly value: PropertyValue.PropertyValue,
   readonly property_filter: PropertyFilter.PropertyFilter,
   readonly image?: string,
-}
-
-export interface PropertySelectorStyles {
-  readonly amountPropertySelectorStyles?: AmountPropertySelectorStyles,
-  readonly comboboxPropertySelectorStyles?: ComboboxPropertySelectorStyles,
-  readonly textboxPropertySelectorStyles?: TextboxPropertySelectorStyles
 }
 
 export interface PropertyFormats {
