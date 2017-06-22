@@ -69,7 +69,7 @@ function abstractComponentToPdf(pdf: any, component: AbstractImage.Component): v
         : component.verticalGrowthDirection === "uniform" ? -stringHeight * 0.5 : 0;
       pdf
         .font("Helvetica").fontSize(component.fontSize)
-        .fillColor(colorToRgb(component.strokeColor))
+        .fillColor(colorToRgb(component.textColor))
         .text(component.text, component.position.x + dx, component.position.y + dy);
       if (component.clockwiseRotationDegrees !== 0) {
         pdf.restore();
