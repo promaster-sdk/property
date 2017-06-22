@@ -88,7 +88,7 @@ function abstractComponentToPdf(pdf: any, component: AbstractImage.Component): v
     case "polygon":
       pdf
         .lineWidth(component.strokeThickness)
-        .polygon(component.points.map((p) => [p.x, p.y]))
+        .polygon(...component.points.map((p) => [p.x, p.y]))
         .fillAndStroke(colorToRgb(component.fillColor), colorToRgb(component.strokeColor));
       break;
     case "rectangle":
