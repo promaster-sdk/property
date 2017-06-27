@@ -39,6 +39,14 @@ The above command will add both authentication information and config to use the
 
 > NOTE: All settngs will be stored in the [.npmrc](https://docs.npmjs.com/files/npmrc) file in your home directory.
 
+You may also have to set the `always-auth` option in .npmrc for yarn to work with verdaccio. The complete .npmrc would look like this:
+
+```
+@promaster:registry=https://npm.divid.se/
+//npm.divid.se/:always-auth=true
+//npm.divid.se/:_authToken="**REDUCTED**"
+```
+
 ### Installation
 
 Once you have the [promaster npm registry](#npm-registry) setup and working, you can install the package using this command:
