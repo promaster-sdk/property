@@ -27,7 +27,6 @@ function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>,
 }
 
 addUnit(Units.Ampere, "SI", 2);
-addUnit(Units.AWeightedDecibel, "SI", 1);
 addUnit(Units.Bit, undefined, 0);
 addUnit(Units.BtuPerHour, "IP", 0);
 addUnit(Units.BtuPerPoundLb, "IP", 3);

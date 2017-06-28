@@ -604,9 +604,6 @@ export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlte
 // Sound pressure level
 export const Decibel: Unit.Unit<q.SoundPressureLevel> = _register(Unit.createAlternate<q.SoundPressureLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
 
-// Sound pressure level A Weighted
-export const AWeightedDecibel: Unit.Unit<q.SoundPressureLevel> = _register(Unit.createAlternate<q.SoundPressureLevel>("dB(A)", UnitTimes.dimensionlessByDimensionless(One, One)), "dB(A)");
-
 // Water hardness
 export const MilliGramCalciumPerLiter: Unit.Unit<q.WaterHardness> = _register(Unit.createBase<q.WaterHardness>("WaterHardness", "mg Ca²⁺/l"), "mg Ca²⁺/l");
 export const FrenchDegree: Unit.Unit<q.WaterHardness> = _register(Unit.timesNumber(4.0043, MilliGramCalciumPerLiter), "°f");
@@ -910,7 +907,6 @@ function _ensureMetaAdded(): void {
   _addMeta("SpecificFanPower", "WattPerCubicMeterPerSecond", WattPerCubicMeterPerSecond);
   _addMeta("SpecificFanPower", "KiloWattPerCubicFootPerMinute", KiloWattPerCubicFootPerMinute);
   _addMeta("SoundPressureLevel", "Decibel", Decibel);
-  _addMeta("SoundPressureLevel", "AWeightedDecibel", AWeightedDecibel);
   _addMeta("SoundPowerLevel", "DecibelLw", DecibelLw);
   _addMeta("WaterHardness", "MilliGramCalciumPerLiter", MilliGramCalciumPerLiter);
   _addMeta("WaterHardness", "FrenchDegree", FrenchDegree);
