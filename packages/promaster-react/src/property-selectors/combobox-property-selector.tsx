@@ -104,7 +104,7 @@ ComboBoxStandardOption = defaultComboBoxStandardOption,
       };
       // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
       // valueItems.unshift(selectedValueItem);
-      valueItems = ([selectedValueItem] as ReadonlyArray<ComboBoxPropertyValueItem>).concat(valueItems);
+      valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<ComboBoxPropertyValueItem>;
     } else {
       selectedValueItem = selectedValueItemOrUndefined;
     }
