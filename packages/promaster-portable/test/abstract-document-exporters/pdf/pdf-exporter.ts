@@ -489,6 +489,85 @@ describe("PdfExporter", () => {
       stream.on('finish', function () { done(); });
       ADPdf.exportToStream(pdfKit, stream, doc);
     });
+
+
+    it.only("should handle new lines correctly", function (done) {
+      const paragraphStyle1 = AD.ParagraphStyle.create({
+        textStyle: AD.TextStyle.create({
+          bold: true,
+          fontSize: 14,
+        })
+      });
+      const paragraphStyle2 = AD.ParagraphStyle.create({
+        textStyle: AD.TextStyle.create({
+          fontSize: 10,
+        })
+      });
+      const cellStyle = AD.TableCellStyle.create({
+        padding: AD.LayoutFoundation.create({
+          top: 20,
+          bottom: 20,
+          left: 50,
+          right: 50
+        })
+      });
+
+      const doc = AD.AbstractDoc.create({
+        children: [
+          AD.Section.create({
+            page: AD.MasterPage.create({
+              header: [
+                AD.Table.create({
+                  columnWidths: [Infinity],
+                  children: [
+                    AD.TableRow.create({
+                      children: [
+                        AD.TableCell.create({
+                          style: cellStyle,
+                          children: [
+                            AD.Paragraph.create({
+                              style: paragraphStyle1,
+                              children: [
+                                AD.TextRun.create({
+                                  text: "Some text"
+                                })
+                              ]
+                            }),
+                            AD.Paragraph.create({
+                              style: paragraphStyle2,
+                              children: [
+                                AD.TextRun.create({
+                                  text: "Some text: with (parentheses) no new line"
+                                })
+                              ]
+                            }),
+                            AD.Paragraph.create({
+                              style: paragraphStyle2,
+                              children: [
+                                AD.TextRun.create({
+                                  text: "Some text: with (parentheses) and other stuff no new line (blabla), blah (gagaga)"
+                                })
+                              ]
+                            }),
+                          ]
+                        }),
+                        AD.TableCell.create(),
+                      ]
+                    })
+                  ]
+                }),
+              ]
+            }),
+            children: [
+            ]
+          })
+        ]
+      });
+      let stream = createWriteStreamInOutDir("test_new_line.pdf");
+      stream.on('finish', function () { done(); });
+      ADPdf.exportToStream(pdfKit, stream, doc);
+    });
+
 });
 
 function createWriteStreamInOutDir(pathToStream: string): fs.WriteStream {

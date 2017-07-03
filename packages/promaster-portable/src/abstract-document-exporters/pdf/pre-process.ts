@@ -12,10 +12,10 @@ export function preProcess(doc: AD.AbstractDoc.AbstractDoc): AD.AbstractDoc.Abst
 
 function preProcessSection(s: AD.Section.Section, parentResources: AD.Resources.Resources): AD.Section.Section {
   const resources = AD.Resources.mergeResources([parentResources, s]);
-  const header = R.unnest(s.page.header.map((e) => preProcessSectionElement(e, resources)));
-  const footer = R.unnest(s.page.footer.map((e) => preProcessSectionElement(e, resources)));
+  const header = R.unnest<AD.SectionElement.SectionElement>(s.page.header.map((e) => preProcessSectionElement(e, resources)));
+  const footer = R.unnest<AD.SectionElement.SectionElement>(s.page.footer.map((e) => preProcessSectionElement(e, resources)));
   const page = AD.MasterPage.create({style: s.page.style, header: header, footer: footer});
-  const children = R.unnest(s.children.map((e) => preProcessSectionElement(e, resources)));
+  const children = R.unnest<AD.SectionElement.SectionElement>(s.children.map((e) => preProcessSectionElement(e, resources)));
   return AD.Section.create({page: page, children});
 }
 
@@ -215,12 +215,12 @@ function preProcessTableRow(r: AD.TableRow.TableRow, resources: AD.Resources.Res
 }
 
 function preProcessTableCell(c: AD.TableCell.TableCell, resources: AD.Resources.Resources): AD.TableCell.TableCell {
-  const children = R.unnest(c.children.map((e) => preProcessSectionElement(e, resources)));
+  const children = R.unnest<AD.SectionElement.SectionElement>(c.children.map((e) => preProcessSectionElement(e, resources)));
   return AD.TableCell.create({styleName: c.styleName, columnSpan: c.columnSpan, style: c.style, children: children});
 }
 
 function preProcessGroup(group: AD.Group.Group, parentResources: AD.Resources.Resources): Array<AD.SectionElement.SectionElement> {
-  const children = R.unnest(group.children.map((e) => preProcessSectionElement(e, parentResources)));
+  const children = R.unnest<AD.SectionElement.SectionElement>(group.children.map((e) => preProcessSectionElement(e, parentResources)));
   if (group.keepTogether) {
     return [AD.Group.create({keepTogether: group.keepTogether, children: children})];
   }
