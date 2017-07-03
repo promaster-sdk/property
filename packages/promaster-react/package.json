@@ -12,8 +12,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/promaster-portable": "^0.30.0",
-    "@promaster/promaster-primitives": "^0.14.0",
+    "@promaster/promaster-portable": "^0.31.1",
+    "@promaster/promaster-primitives": "^0.15.0",
     "csjs": "1.0.6",
     "immutable": "^3.8.1",
     "insert-css": "^2.0.0",
@@ -37,7 +37,7 @@
     "ts-jest": "^19.0.4",
     "tslint": "^5.4.2",
     "tslint-immutable": "^2.1.0",
-    "typescript": "^2.3.3",
+    "typescript": "^2.4.1",
     "webpack": "^2.6.0",
     "webpack-dev-server": "^2.4.1"
   },
