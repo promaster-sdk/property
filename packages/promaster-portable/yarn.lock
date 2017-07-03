@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-primitives@^0.14.0":
-  version "0.14.0"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.14.0.tgz#3e3655b85422736446682db90b52473ef3b34595"
+"@promaster/promaster-primitives@^0.15.0":
+  version "0.15.0"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.15.0.tgz#2bb2bceaa448c0e2a1d6a9730c4667d08ed996fd"
   dependencies:
     "@types/lodash" "^4.14.66"
 
