@@ -49,6 +49,7 @@
     "tsc:watch": "tsc -w -p src",
     "tsc:example": "tsc -p example",
     "tsc:test": "tsc -p test",
+    "tsc:stories": "tsc -p ./stories",
     "test": "jest --config=test/jest.config.json",
     "lint": "tslint --project src/tsconfig.json --type-check './src/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.tsx",
