@@ -21,7 +21,9 @@
     "styled-components": "^2.1.0"
   },
   "devDependencies": {
+    "@storybook/react": "^3.1.8",
     "@types/jest": "^20.0.2",
+    "@types/node": "^8.0.9",
     "@types/ramda": "^0.0.3",
     "@types/react": "^15.0.26",
     "@types/react-dom": "^0.14.18",
@@ -57,6 +59,8 @@
     "publish:major": "yarn build && node scripts/publish.js major",
     "publish:minor": "yarn build && node scripts/publish.js minor",
     "publish:patch": "yarn build && node scripts/publish.js patch",
-    "promaster-upgrade": "yarn upgrade @promaster/promaster-primitives && yarn upgrade @promaster/promaster-portable"
+    "promaster-upgrade": "yarn upgrade @promaster/promaster-primitives && yarn upgrade @promaster/promaster-portable",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   }
 }

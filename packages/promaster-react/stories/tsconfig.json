@@ -1,0 +1,27 @@
+{
+  "extends": "../base-tsconfig.json",
+  "compilerOptions": {
+    // Output options
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "../lib-cjs",
+    "noEmit": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "noImplicitAny": false,
+    "lib": [
+      "es5",
+      "dom",
+      "es2015",
+      "es2015.promise",
+      "es2015.iterable",
+      "es2015.symbol"
+    ]
+  },
+  "include": [
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules/**/"
+  ]
+}
