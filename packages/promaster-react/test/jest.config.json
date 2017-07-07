@@ -13,5 +13,8 @@
     "ts",
     "tsx",
     "js"
-  ]
+  ],
+  "collectCoverage": true,
+  "mapCoverage": true,
+  "coverageDirectory": "<rootDir>/coverage"
 }
