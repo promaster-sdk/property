@@ -18,10 +18,9 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
-        exclude: /^node_modules/,
-        query: {
-          configFileName: './example/tsconfig.json'
+        loader: "ts-loader",
+        options: {
+          configFileName2: "./example/tsconfig.json"
         }
       }
     ]
@@ -32,10 +31,10 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     plugins: [
-      new atl.TsConfigPathsPlugin({configFileName: "./src/client/tsconfig.json"})
+      new atl.TsConfigPathsPlugin({ configFileName: "./src/client/tsconfig.json" })
     ],
     alias: {
-      "@promaster/promaster-react": path.resolve( __dirname, '../src')
+      "@promaster/promaster-react": path.resolve(__dirname, '../src')
     }
   },
   plugins: [

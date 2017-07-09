@@ -85,7 +85,7 @@ export function createTextboxPropertySelector({
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
 function debounce(func: Function, wait: number, immediate?: boolean): any { //tslint:disable-line
-  let timeout: number | null;
+  let timeout: NodeJS.Timer | null;
   return function (this: any) { //tslint:disable-line
     const context = this;  //tslint:disable-line
     const args = arguments; //tslint:disable-line

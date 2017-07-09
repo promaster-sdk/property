@@ -19,6 +19,29 @@ module.exports = {
 };
 */
 
+/*
+module.exports = {
+  stats: "minimal",
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          configFileName: "./stories/tsconfig.json"
+        }
+      }
+    ],
+  },
+  resolve: {
+    extensions: [".ts", ".tsx"]
+  }
+};
+*/
+
+
+const atl = require('awesome-typescript-loader');
+
 // load the default config generator.
 const genDefaultConfig = require('@storybook/react/dist/server/config/defaults/webpack.config.js');
 
@@ -29,13 +52,23 @@ module.exports = (baseConfig, env) => {
 
   // For example, add typescript loader:
   config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    loader: require.resolve('awesome-typescript-loader'),
-    query: {
-      configFileName: './stories/tsconfig.json'
+    test: /\.tsx?$/,
+    loader: "ts-loader",
+    options: {
+      configFileName: "./stories/tsconfig.json"
     }
   });
-  config.resolve.extensions.push('.ts', '.tsx');
+  config.resolve.extensions.push(".ts", ".tsx");
+  if (!config.resolve.plugins) {
+    config.resolve.plugins = [];
+  }
+  config.resolve.plugins.push(new atl.TsConfigPathsPlugin({ configFileName: "./stories/tsconfig.json" }));
+  // config.resolve.extensions.push = {
+  //   extensions: [".ts", ".tsx"],
+  //   plugins: [
+  //     new atl.TsConfigPathsPlugin({ configFileName: "./src/client/tsconfig.json" })
+  //   ]
+  // };
 
   return config;
 };
