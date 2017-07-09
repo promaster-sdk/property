@@ -8,6 +8,7 @@ test:
   image: node:7.6.0
   stage: test
   script:
+    - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
     - $YARN install --ignore-scripts
     - $YARN run lint
     - $YARN run circular
