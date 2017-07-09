@@ -6,40 +6,6 @@
 // When you add this file, we won't add the default configurations which is similar
 // to "React Create App". This only has babel loader to load JavaScript.
 
-/*
-module.exports = {
-  plugins: [
-    // your custom plugins
-  ],
-  module: {
-    loaders: [
-      // add your custom loaders.
-    ],
-  },
-};
-*/
-
-/*
-module.exports = {
-  stats: "minimal",
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
-        options: {
-          configFileName: "./stories/tsconfig.json"
-        }
-      }
-    ],
-  },
-  resolve: {
-    extensions: [".ts", ".tsx"]
-  }
-};
-*/
-
-
 const atl = require('awesome-typescript-loader');
 
 // load the default config generator.
