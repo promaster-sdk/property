@@ -1,13 +1,10 @@
 import * as React from "react";
 import { AmountFields } from "@promaster/promaster-react";
 import { Unit, Units, Amount } from "@promaster/promaster-primitives";
-import { merge } from "./utils";
+import { merge } from "../utils";
 import styled from "styled-components";
 
-// tslint:disable:variable-name
-// tslint:disable:no-class
-// tslint:disable:no-this
-// tslint:disable:no-any
+// tslint:disable:variable-name no-class no-this no-any
 
 interface State {
   readonly selectedUnit: Unit.Unit<any>,
@@ -61,7 +58,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
             inputDecimalCount={this.state.selectedDecimalCount}
             onValueChange={(amount) => {
               //console.log("changed");
-              this.setState(merge(this.state, { amount }))
+              this.setState(merge(this.state, { amount }));
             }}
             readOnly={false}
             errorMessage=""

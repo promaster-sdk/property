@@ -21,7 +21,8 @@ module.exports = (baseConfig, env) => {
     test: /\.tsx?$/,
     loader: "ts-loader",
     options: {
-      configFileName: "./stories/tsconfig.json"
+      configFileName: "./stories/tsconfig.json",
+      visualStudioErrorFormat: true,
     }
   });
   config.resolve.extensions.push(".ts", ".tsx");
