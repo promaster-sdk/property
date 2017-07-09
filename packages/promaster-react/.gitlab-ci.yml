@@ -5,7 +5,7 @@ variables:
   YARN: node ./yarn.js
 
 test:
-  image: node:7.6.0
+  image: node:8.1.3
   stage: test
   script:
     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
