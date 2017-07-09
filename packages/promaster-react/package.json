@@ -45,10 +45,9 @@
   },
   "scripts": {
     "start": "yarn storybook",
-    "tsc": "tsc --version && tsc -p src",
-    "tsc:watch": "tsc -w -p src",
-    "tsc:test": "tsc -p test",
-    "tsc:stories": "tsc -p ./stories",
+    "tsc": "tsc -p src --noEmit",
+    "tsc:test": "tsc -p test --noEmit",
+    "tsc:stories": "tsc -p stories --noEmit",
     "test": "jest --config=test/jest.config.json",
     "lint": "tslint --project src/tsconfig.json --type-check './src/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.tsx",
