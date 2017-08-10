@@ -2,7 +2,7 @@ import * as React from "react";
 import { merge } from "./utils";
 import { AbstractImageExample } from "./abstract-image-example";
 import { AbstractImageExampleDxf } from "./abstract-image-example-dxf";
-import { AbstractDocumentExample } from "./abstract-document-example";
+// import { AbstractDocumentExample } from "./abstract-document-example";
 
 interface Example {
   readonly name: string;
@@ -14,7 +14,7 @@ interface State {
   readonly selectedExample: number,
 }
 
-export class Container extends React.Component<void, State> {
+export class Container extends React.Component<{}, State> {
 
   constructor() {
         console.log(123)
@@ -29,11 +29,11 @@ export class Container extends React.Component<void, State> {
         {
           name: "DXF",
           component: AbstractImageExampleDxf
-        },
+        }/* ,
         {
           name: "AbstractDocument",
           component: AbstractDocumentExample
-        }
+        } */
       ]
     };
   }

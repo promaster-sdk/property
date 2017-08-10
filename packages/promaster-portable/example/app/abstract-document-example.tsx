@@ -1,4 +1,4 @@
-import * as React from "react";
+/* import * as React from "react";
 import * as AD from "../../src/abstract-document";
 import {AbstractDoc, Section, Paragraph, TextRun, render} from "../../src/abstract-document-jsx";
 import {AbstractDocExporters} from "../../src/index"
@@ -36,3 +36,4 @@ async function generatePDF(doc: AD.AbstractDoc.AbstractDoc) {
   const objectURL = URL.createObjectURL(blob);
   window.open(objectURL);
 }
+ */
