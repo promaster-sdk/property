@@ -24,7 +24,7 @@ import { GroupComponentProps, DefaultGroupComponent } from "./default-group-comp
 import { GroupItemComponentProps, DefaultGroupItemComponent } from "./default-group-item-component";
 import { PropertiesSelectorProps } from "./properties-selector";
 import { PropertyLabelComponentProps, DefaultPropertyLabelComponent } from "./default-property-label-component";
-import { PropertySelectorComponentProps, DefaultPropertySelectorComponent } from "./default-property-selector-component";
+import { PropertySelectorProps, createPropertySelector } from "./default-property-selector-component";
 
 export interface PropertiesSelectorProps {
 
@@ -73,7 +73,7 @@ export interface PropertiesSelectorProps {
   readonly LayoutRenderer?: (props: LayoutRendererProps) => React.ReactElement<LayoutRendererProps>,
   readonly GroupComponent?: ReactComponent<GroupComponentProps>,
   readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>,
-  readonly PropertySelectorComponent?: ReactComponent<PropertySelectorComponentProps>,
+  readonly PropertySelectorComponent?: ReactComponent<PropertySelectorProps>,
   readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>,
 }
 
@@ -114,7 +114,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     LayoutRenderer = DefaultLayoutRenderer,
     GroupComponent = DefaultGroupComponent,
     GroupItemComponent = DefaultGroupItemComponent,
-    PropertySelectorComponent = DefaultPropertySelectorComponent,
+    PropertySelectorComponent = createPropertySelector({}),
     PropertyLabelComponent = DefaultPropertyLabelComponent,
   } = props;
 
@@ -221,7 +221,7 @@ function createPropertySelectorRenderInfos(
       const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
       const labelHover = translatePropertyLabelHover(property.name);
 
-      const propertySelectorComponentProps: PropertySelectorComponentProps = {
+      const propertySelectorComponentProps: PropertySelectorProps = {
         propertyName: property.name,
         quantity: property.quantity,
         validationFilter: property.validation_filter,

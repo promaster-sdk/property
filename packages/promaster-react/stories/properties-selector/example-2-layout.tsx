@@ -5,6 +5,8 @@ import { PropertiesSelector } from "@promaster/promaster-react";
 
 // tslint:disable:variable-name no-class no-this no-any
 
+const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector.createPropertySelector({});
+
 export function createPropertiesSelectorExample2Layout(): any {
 
   const helloWorld = "hello world";
@@ -14,7 +16,6 @@ export function createPropertiesSelectorExample2Layout(): any {
     translateGroupName,
     closedGroups,
     onToggleGroupClosed,
-    PropertySelectorComponent,
   }: PropertiesSelector.LayoutRendererProps): React.ReactElement<PropertiesSelector.LayoutRendererProps> {
 
     const groups = getGroupDistinctNames(selectors);
@@ -28,7 +29,7 @@ export function createPropertiesSelectorExample2Layout(): any {
             return (
               <Expander key={groupName} header={translateGroupName(groupName) + " " + helloWorld} closed={isClosed}
                 closedChanged={() => onToggleGroupClosed(groupName)}>
-                {selectorsInGroup.map((selector) => selectorRow(selector, PropertySelectorComponent))}
+                {selectorsInGroup.map((selector) => selectorRow(selector))}
               </Expander>
             );
           })
@@ -39,8 +40,7 @@ export function createPropertiesSelectorExample2Layout(): any {
   };
 }
 
-function selectorRow(selector: PropertiesSelector.PropertySelectorRenderInfo,
-  PropertySelectorComponent: PropertiesSelector.ReactComponent<PropertiesSelector.PropertySelectorComponentProps>): React.ReactElement<{}> {
+function selectorRow(selector: PropertiesSelector.PropertySelectorRenderInfo): React.ReactElement<{}> {
   const className = [
     styles.property,
     selector.isValid ? "" : styles.invalid,
@@ -49,7 +49,7 @@ function selectorRow(selector: PropertiesSelector.PropertySelectorRenderInfo,
   return (
     <div key={selector.propertyName} className={className}>
       <span className={styles.label} title={selector.labelHover}>{selector.label}</span>
-      <PropertySelectorComponent {...selector.selectorComponentProps} />
+      <PropertySelector {...selector.selectorComponentProps} />
     </div>
   );
 }

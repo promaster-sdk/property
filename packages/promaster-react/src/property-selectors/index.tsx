@@ -5,6 +5,7 @@ export {
 } from "./amount-property-selector";
 export {
   createComboboxPropertySelector,
+  ComboboxPropertySelector,
   ComboboxPropertySelectorProps,
   ComboBoxPropertyValueItem
 } from "./combobox-property-selector";

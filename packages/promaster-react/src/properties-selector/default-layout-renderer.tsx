@@ -3,7 +3,7 @@ import { PropertySelectorRenderInfo, TranslateGroupName, OnToggleGroupClosed, Re
 import { GroupComponentProps } from "./default-group-component";
 import { GroupItemComponentProps } from "./default-group-item-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
-import { PropertySelectorComponentProps } from "./default-property-selector-component";
+import { PropertySelectorProps } from "./default-property-selector-component";
 
 export interface LayoutRendererProps {
   readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>,
@@ -12,7 +12,7 @@ export interface LayoutRendererProps {
   readonly onToggleGroupClosed: OnToggleGroupClosed,
   readonly GroupComponent: ReactComponent<GroupComponentProps>,
   readonly GroupItemComponent: ReactComponent<GroupItemComponentProps>,
-  readonly PropertySelectorComponent: ReactComponent<PropertySelectorComponentProps>,
+  readonly PropertySelectorComponent: ReactComponent<PropertySelectorProps>,
   readonly PropertyLabelComponent: ReactComponent<PropertyLabelComponentProps>,
 }
 

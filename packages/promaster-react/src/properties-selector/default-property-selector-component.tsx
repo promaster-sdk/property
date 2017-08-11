@@ -7,11 +7,7 @@ import {
   PropertyFilter
 } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
-import {
-  createComboboxPropertySelector,
-  createTextboxPropertySelector,
-  createAmountPropertySelector
-} from "../property-selectors/index";
+import * as PropertySelectors from "../property-selectors/index";
 import {
   PropertySelectionOnChange,
   AmountFormat,
@@ -24,13 +20,13 @@ import {
 } from "./types";
 
 // tslint:disable-next-line:variable-name
-const AmountPropertySelector = createAmountPropertySelector({});
+const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector({});
 // tslint:disable-next-line:variable-name
-const ComboboxPropertySelector = createComboboxPropertySelector({});
+const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector({});
 // tslint:disable-next-line:variable-name
-const TextboxPropertySelector = createTextboxPropertySelector({});
+const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector({});
 
-export interface PropertySelectorComponentProps {
+export interface PropertySelectorProps {
   readonly propertyName: string,
   readonly quantity: Quantity.Quantity,
   readonly validationFilter: PropertyFilter.PropertyFilter,
@@ -49,96 +45,110 @@ export interface PropertySelectorComponentProps {
   readonly translatePropertyValue: TranslatePropertyValue,
   readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
   readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  readonly inputDebounceTime: number
+  readonly inputDebounceTime: number,
 }
 
-export function DefaultPropertySelectorComponent({
-  propertyName,
-  quantity,
-  validationFilter,
-  valueItems,
-  selectedValue,
-  selectedProperties,
-  includeCodes,
-  optionalProperties,
-  onChange,
-  onPropertyFormatChanged,
-  onPropertyFormatCleared,
-  filterPrettyPrint,
-  propertyFormat,
-  readOnly,
-  locked,
-  translatePropertyValue,
-  translateValueMustBeNumericMessage,
-  translateValueIsRequiredMessage,
-  inputDebounceTime
-}: PropertySelectorComponentProps): React.ReactElement<{}> {
+export interface CreatePropertySelectorProps {
+  readonly AmountPropertySelector?: PropertySelectors.AmountPropertySelector,
+  readonly ComboboxPropertySelector?: PropertySelectors.ComboboxPropertySelector,
+  readonly TextboxPropertySelector?: PropertySelectors.TextboxPropertySelector,
+}
 
-  function onValueChange(newValue: PropertyValue.PropertyValue): void {
-    onChange(newValue
-      ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-      : PropertyValueSet.removeProperty(propertyName, selectedProperties)
-    );
-  }
+export type PropertySelector = React.StatelessComponent<PropertySelectorProps>;
 
-  switch (getPropertyType(quantity)) {
-    case "text":
-      const value: string | undefined = selectedValue && PropertyValue.getText(selectedValue);
-      if (value === undefined) {
-        throw new Error("No value!");
-      }
+export function createPropertySelector({
+  AmountPropertySelector = AmountPropertySelectorDefault,
+  ComboboxPropertySelector = ComboboxPropertySelectorDefault,
+  TextboxPropertySelector = TextboxPropertySelectorDefault,
+ }: CreatePropertySelectorProps): PropertySelector {
+  return function PropertySelector({
+    propertyName,
+    quantity,
+    validationFilter,
+    valueItems,
+    selectedValue,
+    selectedProperties,
+    includeCodes,
+    optionalProperties,
+    onChange,
+    onPropertyFormatChanged,
+    onPropertyFormatCleared,
+    filterPrettyPrint,
+    propertyFormat,
+    readOnly,
+    locked,
+    translatePropertyValue,
+    translateValueMustBeNumericMessage,
+    translateValueIsRequiredMessage,
+    inputDebounceTime,
+  }: PropertySelectorProps): JSX.Element {
 
-      return (
-        <TextboxPropertySelector
-          value={value}
-          readOnly={readOnly}
-          onValueChange={onValueChange}
-          debounceTime={inputDebounceTime}
-        />
+    function onValueChange(newValue: PropertyValue.PropertyValue): void {
+      onChange(newValue
+        ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
+        : PropertyValueSet.removeProperty(propertyName, selectedProperties)
       );
+    }
 
-    case "integer":
-      return (
-        <ComboboxPropertySelector
-          sortValidFirst={true}
-          propertyName={propertyName}
-          propertyValueSet={selectedProperties}
-          valueItems={valueItems && valueItems.map((vi) => ({
-            value: vi.value,
-            text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
-            sortNo: vi.sort_no,
-            validationFilter: vi.property_filter,
-            image: vi.image,
-          }))}
-          showCodes={includeCodes}
-          filterPrettyPrint={filterPrettyPrint}
-          onValueChange={onValueChange}
-          readOnly={readOnly}
-          locked={locked} />
-      );
+    switch (getPropertyType(quantity)) {
+      case "text":
+        const value: string | undefined = selectedValue && PropertyValue.getText(selectedValue);
+        if (value === undefined) {
+          throw new Error("No value!");
+        }
 
-    default:
-      return (
-        <AmountPropertySelector
-          propertyName={propertyName}
-          propertyValueSet={selectedProperties}
-          inputUnit={propertyFormat.unit}
-          inputDecimalCount={propertyFormat.decimalCount}
-          onFormatChanged={(unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount)}
-          onFormatCleared={() => onPropertyFormatCleared(propertyName)}
-          onValueChange={onValueChange}
-          notNumericMessage={translateValueMustBeNumericMessage()}
+        return (
+          <TextboxPropertySelector
+            value={value}
+            readOnly={readOnly}
+            onValueChange={onValueChange}
+            debounceTime={inputDebounceTime}
+          />
+        );
 
-          // If it is optional then use blank required message
-          isRequiredMessage={optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage()}
+      case "integer":
+        return (
+          <ComboboxPropertySelector
+            sortValidFirst={true}
+            propertyName={propertyName}
+            propertyValueSet={selectedProperties}
+            valueItems={valueItems && valueItems.map((vi) => ({
+              value: vi.value,
+              text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
+              sortNo: vi.sort_no,
+              validationFilter: vi.property_filter,
+              image: vi.image,
+            }))}
+            showCodes={includeCodes}
+            filterPrettyPrint={filterPrettyPrint}
+            onValueChange={onValueChange}
+            readOnly={readOnly}
+            locked={locked} />
+        );
 
-          validationFilter={validationFilter}
-          filterPrettyPrint={filterPrettyPrint}
-          readOnly={readOnly}
-          debounceTime={inputDebounceTime}
-        />
-      );
-  }
+      default:
+        return (
+          <AmountPropertySelector
+            propertyName={propertyName}
+            propertyValueSet={selectedProperties}
+            inputUnit={propertyFormat.unit}
+            inputDecimalCount={propertyFormat.decimalCount}
+            onFormatChanged={(unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount)}
+            onFormatCleared={() => onPropertyFormatCleared(propertyName)}
+            onValueChange={onValueChange}
+            notNumericMessage={translateValueMustBeNumericMessage()}
+
+            // If it is optional then use blank required message
+            isRequiredMessage={optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage()}
+
+            validationFilter={validationFilter}
+            filterPrettyPrint={filterPrettyPrint}
+            readOnly={readOnly}
+            debounceTime={inputDebounceTime}
+          />
+        );
+    }
+  };
 }
 
 function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyType {

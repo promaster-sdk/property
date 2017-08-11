@@ -37,6 +37,8 @@ export interface CreateComboboxPropertySelectorParams {
   readonly ComboBoxImageDropdownSelector?: ImageDropdownSelector
 }
 
+export type ComboboxPropertySelector = React.StatelessComponent<ComboboxPropertySelectorProps>;
+
 function standardSelectStyles(props: ComboBoxStandardSelectProps): Array<InterpolationValue> {
   if (!props.isSelectedItemValid && props.locked) {
     return css`
@@ -75,7 +77,7 @@ export function createComboboxPropertySelector({
 ComboBoxStandardOption = defaultComboBoxStandardOption,
   ComboBoxStandardSelect = defaultComboBoxStandardSelect,
   ComboBoxImageDropdownSelector = defaultImageDropdownSelector,
-}: CreateComboboxPropertySelectorParams): React.StatelessComponent<ComboboxPropertySelectorProps> {
+}: CreateComboboxPropertySelectorParams): ComboboxPropertySelector {
   return function ComboboxPropertySelector({
     sortValidFirst,
     propertyName,

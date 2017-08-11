@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Unit, PropertyValueSet, PropertyValue, PropertyFilter, Quantity } from "@promaster/promaster-primitives";
-import { PropertySelectorComponentProps } from "./default-property-selector-component";
+import { PropertySelectorProps } from "./default-property-selector-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
 
 export type AmountFormat = { unit: Unit.Unit<Quantity.Quantity>, decimalCount: number };
@@ -40,7 +40,7 @@ export interface PropertySelectorRenderInfo {
   readonly labelHover: string,
 
   // Props that are used by the components that render the actual property selector and it's label
-  readonly selectorComponentProps: PropertySelectorComponentProps,
+  readonly selectorComponentProps: PropertySelectorProps,
   readonly labelComponentProps: PropertyLabelComponentProps,
 
 }
