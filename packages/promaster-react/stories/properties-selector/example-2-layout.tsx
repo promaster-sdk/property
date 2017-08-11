@@ -1,11 +1,37 @@
 import * as React from "react";
 import { Expander } from "./expander";
 import { propertiesSelectorLayoutStyles as styles } from "./example-2-layout-styles";
-import { PropertiesSelector } from "@promaster/promaster-react";
+import { PropertiesSelector, PropertySelectors, AmountFields } from "@promaster/promaster-react";
+import styled from "styled-components";
 
 // tslint:disable:variable-name no-class no-this no-any
-
-const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector.createPropertySelector({});
+const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector.createPropertySelector({
+  AmountPropertySelector: PropertySelectors.createAmountPropertySelector({
+    AmountPropertySelectorWrapper: styled.span`
+      background: green;
+      padding: 20px;
+    `,
+    AmountInputBox: AmountFields.createAmountInputBox({}),
+    AmountFormatSelector: AmountFields.createAmountFormatSelector({
+      AmountFormatWrapper: styled(AmountFields.AmountFormatWrapper) `
+        background-color: ${(props) => props.active ? "red" : "white"};
+        padding: 5px;
+      `,
+      UnitSelector: styled.select`
+        color: blue;
+      `,
+      PrecisionSelector: styled.select`
+        font-size: 5px;
+      `,
+      ClearButton: styled.button`
+        font-size: 25px;
+        &::before {
+          content: "X";
+        }
+      `
+    })
+  })
+});
 
 export function createPropertiesSelectorExample2Layout(): any {
 

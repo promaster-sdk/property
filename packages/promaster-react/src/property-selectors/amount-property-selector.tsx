@@ -27,14 +27,13 @@ export interface AmountPropertySelectorProps {
   readonly onFormatCleared: OnFormatCleared,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void,
   readonly debounceTime?: number,
-
-  readonly AmountFormatSelector?: AmountFormatSelector,
-  readonly AmountInputBox?: AmountInputBox,
 }
 
 export type AmountPropertySelector = React.ComponentClass<AmountPropertySelectorProps>;
 export interface CreateAmountPropertySelectorProps {
-  readonly DefaultAmountPropertySelectorWrapper?: React.ComponentType<React.HTMLProps<HTMLSpanElement>>
+  readonly AmountPropertySelectorWrapper?: React.ComponentType<React.HTMLProps<HTMLSpanElement>>
+  readonly AmountFormatSelector?: AmountFormatSelector,
+  readonly AmountInputBox?: AmountInputBox,
 }
 
 const defaultAmountPropertySelectorWrapper = styled.span``;
@@ -43,7 +42,9 @@ const defaultAmountFormatSelector = createAmountFormatSelector({});
 const defaultAmountInputBox = createAmountInputBox({});
 
 export function createAmountPropertySelector({
-  DefaultAmountPropertySelectorWrapper = defaultAmountPropertySelectorWrapper,
+  AmountPropertySelectorWrapper = defaultAmountPropertySelectorWrapper,
+  AmountFormatSelector = defaultAmountFormatSelector,
+  AmountInputBox = defaultAmountInputBox,
 }: CreateAmountPropertySelectorProps): AmountPropertySelector {
   return class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, {}> {
 
@@ -62,15 +63,12 @@ export function createAmountPropertySelector({
         inputDecimalCount,
         readOnly,
         debounceTime = 350,
-
-        AmountFormatSelector = defaultAmountFormatSelector,
-        AmountInputBox = defaultAmountInputBox,
     } = this.props;
 
       const value: Amount.Amount<Quantity.Quantity> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
 
       return (
-        <DefaultAmountPropertySelectorWrapper>
+        <AmountPropertySelectorWrapper>
           <AmountInputBox value={value}
             inputUnit={inputUnit}
             inputDecimalCount={inputDecimalCount}
@@ -85,7 +83,7 @@ export function createAmountPropertySelector({
             selectedDecimalCount={inputDecimalCount}
             onFormatChanged={onFormatChanged}
             onFormatCleared={onFormatCleared} />
-        </DefaultAmountPropertySelectorWrapper>
+        </AmountPropertySelectorWrapper>
       );
     }
   };
