@@ -22,7 +22,7 @@ function isItemValid(props: OptionElementProps): Array<InterpolationValue> {
   return css`color: red;`;
 }
 
-const defaultOptionElement = styled(OptionElement) `
+export const defaultOptionElement = styled(OptionElement) `
     color: rgb(131, 131, 131);
     min-height: 18px;
     align-self: center;

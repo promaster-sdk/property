@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Expander } from "./expander";
 import { propertiesSelectorLayoutStyles as styles } from "./example-2-layout-styles";
-import { PropertiesSelector, PropertySelectors, AmountFields } from "@promaster/promaster-react";
+import { AmountFields, PropertiesSelector, PropertySelectors } from "@promaster/promaster-react";
 import styled from "styled-components";
 
 // tslint:disable:variable-name no-class no-this no-any
@@ -30,7 +30,7 @@ const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector
         }
       `
     })
-  })
+  }),
 });
 
 export function createPropertiesSelectorExample2Layout(): any {

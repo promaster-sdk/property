@@ -34,12 +34,12 @@ export interface CreateImageDropdownSelectorProps {
 
 }
 
-const defaultOptionImageElement = styled.img`
+export const defaultOptionImageElement = styled.img`
   max-width: 2em;
   max-height: 2em;
 `;
 
-const defaultOptionImageElementRow = styled(comboBoxImageOptionElementRow) `
+export const defaultOptionImageElementRow = styled(comboBoxImageOptionElementRow) `
   color: rgb(131, 131, 131);
   min-height: 18px;
   align-self: center;
@@ -58,7 +58,7 @@ const defaultOptionImageElementRow = styled(comboBoxImageOptionElementRow) `
   ${(props) => props.isItemValid === false ? "color: red;" : ""}
 `;
 
-const defaultDropdownOptionsElement = styled.div`
+export const defaultDropdownOptionsElement = styled.div`
   position: absolute;
   display: block;
   background: white;
@@ -69,7 +69,7 @@ const defaultDropdownOptionsElement = styled.div`
   z-index: 100;
 `;
 
-const defaultDropdownSelectElement = styled.div`
+export const defaultDropdownSelectElement = styled.div`
   user-select: none;
 
   img {
@@ -78,7 +78,7 @@ const defaultDropdownSelectElement = styled.div`
 `;
 
 // tslint:disable-next-line:variable-name
-const DefaultBackgroundElement = styled.div`
+export const DefaultBackgroundElement = styled.div`
     position: absolute;
     top: 0;
     bottom: 0;
@@ -86,7 +86,7 @@ const DefaultBackgroundElement = styled.div`
     right: 0;
 `;
 
-const defaultComboBoxImageButtonElement = styled(comboBoxImageElement) `
+export const defaultComboBoxImageButtonElement = styled(comboBoxImageElement) `
   width: 162px;
   align-items: center;
   background: white;

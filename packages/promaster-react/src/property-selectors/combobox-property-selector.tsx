@@ -61,7 +61,7 @@ function standardSelectStyles(props: ComboBoxStandardSelectProps): Array<Interpo
 
 const defaultComboBoxStandardOption = createComboBoxStandardOption({});
 const defaultImageDropdownSelector = createImageDropdownSelector({});
-const defaultComboBoxStandardSelect = styled(ComboBoxStandardSelect) `
+export const defaultComboBoxStandardSelect = styled(ComboBoxStandardSelect) `
   color: black;
   height: 30px;
   border: 1px solid #b4b4b4;

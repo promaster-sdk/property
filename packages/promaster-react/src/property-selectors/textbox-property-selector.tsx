@@ -20,7 +20,7 @@ export interface CreateTextboxPropertySelectorProps {
   readonly StyledInputTextBox?: React.ComponentType<React.ChangeTargetHTMLProps<HTMLInputElement>>,
 }
 
-const defaultStyledInputTextBox = styled.input`
+export const defaultStyledInputTextBox = styled.input`
     color: black;
     height: 30px;
     border: 1px solid #b4b4b4;

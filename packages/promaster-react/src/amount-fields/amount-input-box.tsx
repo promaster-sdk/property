@@ -62,7 +62,7 @@ function inputLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProp
   return [];
 }
 
-const defaultAmountInputField = styled(AmountInputField) `
+export const defaultAmountInputField = styled(AmountInputField) `
   color: black;
   height: 30px;
   border: 1px solid #b4b4b4;
