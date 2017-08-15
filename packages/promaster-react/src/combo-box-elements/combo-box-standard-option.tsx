@@ -1,5 +1,5 @@
 import * as React from "react";
-import styled, { css, InterpolationValue } from "styled-components";
+import styled, * as StyledComponents from "styled-components";
 import { OptionElement, OptionElementProps } from "./option-element";
 
 export interface ComboBoxStandardOptionProps {
@@ -14,12 +14,12 @@ export interface CreateComboBoxStandardOptionParams {
   readonly OptionElement?: React.ComponentType<OptionElementProps>
 }
 
-function isItemValid(props: OptionElementProps): Array<InterpolationValue> {
+function isItemValid(props: OptionElementProps): Array<StyledComponents.InterpolationValue> {
   if (props.isItemValid) {
-    return css``;
+    return StyledComponents.css``;
   }
 
-  return css`color: red;`;
+  return StyledComponents.css`color: red;`;
 }
 
 export const defaultOptionElement = styled(OptionElement) `

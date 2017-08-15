@@ -7,7 +7,7 @@
 import * as React from "react";
 import { Amount, Unit } from "@promaster/promaster-primitives";
 import { Quantity } from "@promaster/promaster-primitives";
-import styled, { css, InterpolationValue } from "styled-components";
+import styled, * as StyledComponents from "styled-components";
 import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 
 // tslint:disable no-class no-this
@@ -37,10 +37,10 @@ export interface CreateAmountInputBoxParams {
   readonly AmountInputField?: React.ComponentType<AmountInputFieldProps>,
 }
 
-function inputInvalidLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): InterpolationValue[] {
+function inputInvalidLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
   // tslint:disable-next-line:no-console
   if (isReadonly && effectiveErrorMessage) {
-    return css`
+    return StyledComponents.css`
     background: lightgray;
     color: red;
     border: none;
@@ -50,9 +50,9 @@ function inputInvalidLocked({ isReadonly, effectiveErrorMessage }: AmountInputFi
   return [];
 }
 
-function inputLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): InterpolationValue[] {
+function inputLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
   if (isReadonly && !effectiveErrorMessage) {
-    return css`
+    return StyledComponents.css`
     background: lightgray;
     color: darkgray;
     border: none;

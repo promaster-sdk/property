@@ -9,7 +9,7 @@ import {
   ImageDropdownSelector,
   createImageDropdownSelector,
 } from "../combo-box-elements/index";
-import styled, { css, InterpolationValue } from "styled-components";
+import styled, * as StyledComponents from "styled-components";
 
 export interface ComboBoxPropertyValueItem {
   readonly value: PropertyValue.PropertyValue | undefined | null,
@@ -39,24 +39,24 @@ export interface CreateComboboxPropertySelectorParams {
 
 export type ComboboxPropertySelector = React.StatelessComponent<ComboboxPropertySelectorProps>;
 
-function standardSelectStyles(props: ComboBoxStandardSelectProps): Array<InterpolationValue> {
+function standardSelectStyles(props: ComboBoxStandardSelectProps): Array<StyledComponents.InterpolationValue> {
   if (!props.isSelectedItemValid && props.locked) {
-    return css`
+    return StyledComponents.css`
       background: lightgray;
       color: red;
       border: none;    
     `;
   } else if (!props.isSelectedItemValid) {
-    return css`color: red;`;
+    return StyledComponents.css`color: red;`;
   } else if (props.locked) {
-    return css`
+    return StyledComponents.css`
       background: lightgray;
       color: darkgray;
       border: none;
     `;
   }
 
-  return css``;
+  return StyledComponents.css``;
 }
 
 const defaultComboBoxStandardOption = createComboBoxStandardOption({});
