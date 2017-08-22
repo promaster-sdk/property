@@ -55,9 +55,9 @@
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
     "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
-    "publish:major": "yarn build && node scripts/publish.js major",
-    "publish:minor": "yarn build && node scripts/publish.js minor",
-    "publish:patch": "yarn build && node scripts/publish.js patch",
+    "publish:major": "node ./yarn.js build && node scripts/publish.js major",
+    "publish:minor": "node ./yarn.js build && node scripts/publish.js minor",
+    "publish:patch": "node ./yarn.js build && node scripts/publish.js patch",
     "promaster-upgrade": "yarn upgrade @promaster/promaster-primitives && yarn upgrade @promaster/promaster-portable",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
