@@ -2,14 +2,6 @@ import * as React from "react";
 import { PropertyValue } from "@promaster/promaster-primitives";
 import styled, * as StyledComponents from "styled-components";
 
-// https://github.com/styled-components/styled-components/issues/1063
-// Because of this we need to import StyledComponentClass even if we don't use it.
-// So the trick below is for tricking the compiler that were using it because there are no overrides for compileroptions.
-if (!!false) {
-  // tslint:disable-next-line:no-console
-  console.log(StyledComponents);
-}
-
 export interface TextboxPropertySelectorProps {
   readonly value: string,
   readonly readOnly: boolean,
@@ -26,7 +18,11 @@ export interface CreateTextboxPropertySelectorProps {
   readonly StyledInputTextBox?: React.ComponentType<React.ChangeTargetHTMLProps<HTMLInputElement>>,
 }
 
-export const defaultStyledInputTextBox = styled.input`
+export const defaultStyledInputTextBox: StyledComponents.StyledComponentClass<
+  React.HTMLProps<HTMLInputElement>,
+  // tslint:disable-next-line:no-any
+  any,
+  React.HTMLProps<HTMLInputElement>> = styled.input`
     color: black;
     height: 30px;
     border: 1px solid #b4b4b4;

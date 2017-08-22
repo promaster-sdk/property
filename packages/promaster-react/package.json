@@ -44,7 +44,7 @@
     "webpack-dev-server": "^2.5.1"
   },
   "scripts": {
-    "start": "yarn storybook",
+    "start": "node ./yarn storybook",
     "tsc": "tsc -p src --noEmit",
     "tsc:test": "tsc -p test --noEmit",
     "tsc:stories": "tsc -p stories --noEmit",
