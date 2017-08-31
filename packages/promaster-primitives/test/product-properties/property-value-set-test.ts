@@ -43,7 +43,7 @@ describe("property_value_set_test", () => {
       assert.deepEqual(PropertyValueSet.get("a", pvs), PropertyValue.fromInteger(1));
       assert.deepEqual(PropertyValueSet.get("b", pvs), PropertyValue.fromInteger(2));
     });
-
+  
   });
 
   describe("set", () => {

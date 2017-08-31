@@ -381,7 +381,8 @@ function Cubed(u: Unit.Unit<q.Length>): Unit.Unit<q.Volume> {
 
 /// Alternative Quantities for Humidity
 // export const HumidityFactor: Unit.Unit<q.RelativeHumidity> = _register(Unit.createProductUnit<q.RelativeHumidity>("RelativeHumidity", []), "r.H. factor");
-export const HumidityFactor: Unit.Unit<q.RelativeHumidity> = _register(Unit.createAlternate<q.RelativeHumidity>("r.H.", One), "r.H. factor");
+// export const HumidityFactor: Unit.Unit<q.RelativeHumidity> = _register(Unit.createAlternate<q.RelativeHumidity>("r.H.", One), "r.H. factor");
+export const HumidityFactor: Unit.Unit<q.RelativeHumidity> = _register(Unit.createBase<q.RelativeHumidity>("RelativeHumidity", "r.H."), "r.H. factor");
 
 /** Factor of humidity, eg., 0.01 means 1% */
 export const PercentHumidity: Unit.Unit<q.RelativeHumidity> = _register((Unit.divideNumber(100.0, HumidityFactor)), "% r.H.");
