@@ -149,7 +149,7 @@ describe("property_value_test", () => {
     assert.equal(pv1string, "");
   });
 
-  it.only("should make an empty string when amount value is null", () => {
+  it("should make an empty string when amount value is null", () => {
     const pv1 = PropertyValue.fromString("20:PercentHumidity");
     if (pv1 === undefined || pv1.type !== "amount") {
       throw new Error("Bla");

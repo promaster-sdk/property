@@ -31,7 +31,7 @@
     "tslint-immutable": "^3.4.2",
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
-    "typescript": "^2.4.1"
+    "typescript": "^2.5.2"
   },
   "scripts": {
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
