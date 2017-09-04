@@ -1,18 +1,18 @@
-interface XmlElement {
-  localName: string,
-  ns: string | undefined,
-  prefix: string | undefined,
-  attributes: Array<XmlAttribute>
-  parent: XmlElement,
-  children: Array<XmlElement>
-}
+// interface XmlElement {
+//   localName: string,
+//   ns: string | undefined,
+//   prefix: string | undefined,
+//   attributes: Array<XmlAttribute>
+//   parent: XmlElement,
+//   children: Array<XmlElement>
+// }
 
-interface XmlAttribute {
-  localName: string,
-  value: string,
-  ns: string | undefined,
-  prefix: string | undefined
-}
+// interface XmlAttribute {
+//   localName: string,
+//   value: string,
+//   ns: string | undefined,
+//   prefix: string | undefined
+// }
 
 interface XmlNamespaceDictionary {
   [ns: string]: string,

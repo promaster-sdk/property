@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@promaster/promaster-primitives@^0.15.0":
-  version "0.15.0"
-  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.15.0.tgz#2bb2bceaa448c0e2a1d6a9730c4667d08ed996fd"
+"@promaster/promaster-primitives@^0.16.0":
+  version "0.16.0"
+  resolved "https://npm.divid.se/@promaster%2fpromaster-primitives/-/promaster-primitives-0.16.0.tgz#d90fb5e98c5db57e096d9924926cd76f55206134"
   dependencies:
     "@types/lodash" "^4.14.66"
 
@@ -3234,9 +3234,13 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.1.0, typescript@^2.4.1:
+typescript@^2.1.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.1.tgz#c3ccb16ddaa0b2314de031e7e6fee89e5ba346bc"
+
+typescript@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
 
 ua-parser-js@^0.7.9:
   version "0.7.12"

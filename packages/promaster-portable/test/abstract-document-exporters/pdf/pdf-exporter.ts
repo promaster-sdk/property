@@ -491,7 +491,7 @@ describe("PdfExporter", () => {
     });
 
 
-    it.only("should handle new lines correctly", function (done) {
+    it("should handle new lines correctly", function (done) {
       const paragraphStyle1 = AD.ParagraphStyle.create({
         textStyle: AD.TextStyle.create({
           bold: true,
