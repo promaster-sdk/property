@@ -3,7 +3,7 @@ import * as React from "react";
 export type AmountInputFieldProps = {
   readonly isReadonly: boolean,
   readonly effectiveErrorMessage: string,
-} & React.ChangeTargetHTMLProps<HTMLInputElement>;
+} & React.HTMLProps<HTMLInputElement>;
 
 // tslint:disable-next-line:variable-name
 export const AmountInputField: React.ComponentType<AmountInputFieldProps> =

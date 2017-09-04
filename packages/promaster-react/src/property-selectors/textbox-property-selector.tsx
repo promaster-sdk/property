@@ -15,7 +15,7 @@ export interface State {
 
 export type TextboxPropertySelector = React.ComponentClass<TextboxPropertySelectorProps>;
 export interface CreateTextboxPropertySelectorProps {
-  readonly StyledInputTextBox?: React.ComponentType<React.ChangeTargetHTMLProps<HTMLInputElement>>,
+  readonly StyledInputTextBox?: React.ComponentType<React.HTMLProps<HTMLInputElement>>,
 }
 
 export const defaultStyledInputTextBox: StyledComponents.StyledComponentClass<
