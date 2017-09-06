@@ -65,6 +65,8 @@ export type VolumeFlowPerSquareRootPressure = "VolumeFlowPerSquareRootPressure";
 export type WaterHardness = "WaterHardness";
 export type WaterUseEfficiency = "WaterUseEfficiency";
 export type WetTemperature = "WetTemperature";
+export type ThermalTransmittance = "ThermalTransmittance";
+export type ThermalConductivity = "ThermalConductivity";
 
 export type Quantity =
   Acceleration |
@@ -133,4 +135,6 @@ export type Quantity =
   VolumeFlowPerSquareRootPressure |
   WaterHardness |
   WaterUseEfficiency |
-  WetTemperature;
+  WetTemperature |
+  ThermalTransmittance |
+  ThermalConductivity;

@@ -431,6 +431,7 @@ export const Hour: Unit.Unit<q.Duration> = _register(Unit.timesNumber(60.0, Minu
 export const Day: Unit.Unit<q.Duration> = _register(Unit.timesNumber(24.0, Hour), "days");
 export const Week: Unit.Unit<q.Duration> = _register(Unit.timesNumber(7.0, Day), "weeks");
 export const Year: Unit.Unit<q.Duration> = _register(Unit.timesNumber(8760.0, Hour), "year");
+export const MilliSecond: Unit.Unit<q.Duration> = _register(Milli(Second), "ms");
 
 // Frequency
 export const RevolutionsPerMinute: Unit.Unit<q.Frequency> = _register(Unit.createAlternate<q.Frequency>("rpm", UnitDivide.dimentionlessByDuration(One, Minute)), "rpm");
@@ -448,6 +449,7 @@ export const Degrees: Unit.Unit<q.Angle> = _register(Unit.timesNumber((180.0 / M
 
 // Volume
 export const CubicCentiMeter: Unit.Unit<q.Volume> = _register(Cubed(CentiMeter), "cm³");
+export const CubicInch: Unit.Unit<q.Volume>  = _register(Cubed(Inch), "in³");
 export const CubicFeet: Unit.Unit<q.Volume> = _register(Cubed(Foot), "ft³");
 export const HundredCubicFeet: Unit.Unit<q.Volume> = _register((Unit.timesNumber(100.0, CubicFeet)), "100 ft³");
 export const Liter: Unit.Unit<q.Volume> = _register((Unit.divideNumber(1000.0, CubicMeter)), "L");
@@ -467,6 +469,7 @@ export const MeterPerHour: Unit.Unit<q.Velocity> = _register(UnitDivide.lengthBy
 export const KilogramPerCubicMeter: Unit.Unit<q.Density> = _register(UnitDivide.massByVolume(Kilogram, CubicMeter), "kg/m³");
 export const GramPerCubicCentiMeter: Unit.Unit<q.Density> = _register(UnitDivide.massByVolume(Gram, CubicCentiMeter), "g/cm³");
 export const SlugPerCubicFeet: Unit.Unit<q.Density> = _register(UnitDivide.massByVolume(Slug, CubicFeet), "slug/ft³");
+export const PoundPerCubicFoot: Unit.Unit<q.Density> = _register(UnitDivide.massByVolume(PoundLb, CubicFeet), "lb/ft³");
 
 // Force
 export const PoundForce: Unit.Unit<q.Force> = _register(Unit.divideNumber(8896443230521.0, Unit.timesNumber(2000000000000.0, Newton)), "lb");
@@ -477,6 +480,7 @@ export const HectoPascal: Unit.Unit<q.Pressure> = _register(Hecto(Pascal), "hPa"
 export const NewtonPerSquareMeter: Unit.Unit<q.Pressure> = _register(UnitDivide.forceByArea(Newton, SquareMeter), "N/m²");
 export const PoundForcePerSquareInch: Unit.Unit<q.Pressure> = _register(Unit.divideNumber(1290320000.0, Unit.timesNumber(8896443230521.0, Pascal)), "psi");
 export const PoundForcePerSquareFoot: Unit.Unit<q.Pressure> = _register(Unit.timesNumber(144.0, PoundForcePerSquareInch), "psf");
+export const DeciPascal: Unit.Unit<q.Pressure> = _register(Deci(Pascal), "dPa");
 
 // http://www.wolframalpha.com/input/?i=psi and select 'Show exact conversions'
 export const InchOfMercury: Unit.Unit<q.Pressure> = _register(Unit.divideNumber(152.0, Unit.timesNumber(514731.0, Pascal)), "in HG");
@@ -502,6 +506,7 @@ export const VoltAmpere: Unit.Unit<q.Power> = _register(Unit.createAlternate<q.P
 // Energy
 export const NewtonMeter: Unit.Unit<q.Energy> = _register(UnitTimes.forceByLength(Newton, Meter), "Nm");
 export const Kilojoule: Unit.Unit<q.Energy> = _register(Kilo(Joule), "kJ");
+export const Megajoule: Unit.Unit<q.Energy> = _register(Mega(Joule), "MJ");
 export const KiloWattHour: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDuration(KiloWatt, Hour), "kWh");
 export const MegaWattHour: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDuration(MegaWatt, Hour), "MWh");
 export const GigaWattHour: Unit.Unit<q.Energy> = _register(UnitTimes.powerByDuration(GigaWatt, Hour), "GWh");
@@ -515,6 +520,7 @@ export const KiloBtu: Unit.Unit<q.Energy> = _register(Kilo(Btu), "kBTU");
 export const OnePerKiloWattHour: Unit.Unit<q.DimensionlessPerEnergy> = _register(UnitDivide.dimensionlessByEnergy(One, KiloWattHour), "/kWh");
 export const OnePerBtu: Unit.Unit<q.DimensionlessPerEnergy> = _register(UnitDivide.dimensionlessByEnergy(One, Btu), "/BTU");
 export const OnePerKilojoule: Unit.Unit<q.DimensionlessPerEnergy> = _register(UnitDivide.dimensionlessByEnergy(One, Kilojoule), "/kJ");
+export const OnePerMegajoule: Unit.Unit<q.DimensionlessPerEnergy> = _register(UnitDivide.dimensionlessByEnergy(One, Megajoule), "/MJ");
 export const OnePerJoule: Unit.Unit<q.DimensionlessPerEnergy> = _register(UnitDivide.dimensionlessByEnergy(One, Joule), "/J");
 
 // Emission
@@ -524,12 +530,15 @@ export const GramPerKiloWattHour: Unit.Unit<q.Emission> = _register(UnitDivide.m
 // MassFlow
 export const KilogramPerSecond: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(Kilogram, Second), "kg/s");
 export const GramPerSecond: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(Gram, Second), "g/s");
+export const GramPerHour: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(Gram, Hour), "g/h");
 export const KilogramPerHour: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(Kilogram, Hour), "kg/h");
 export const SlugPerSecond: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(Slug, Second), "slug/s");
 export const SlugPerHour: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(Slug, Hour), "slug/h");
 export const PoundLbPerHour: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(PoundLb, Hour), "lb/h");
+export const GrainPerHour: Unit.Unit<q.MassFlow> = _register(UnitDivide.massByDuration(Grain, Hour), "gr/h");
 export const StandardCubicMeterPerHour: Unit.Unit<q.MassFlow> = _register(Unit.timesNumber(1.2041, KilogramPerHour), "Sm³/h");
 export const StandardCubicFeetPerMinute: Unit.Unit<q.MassFlow> = _register(Unit.timesNumber(0.02831684660923049289319782819867, Unit.timesNumber(60.0, StandardCubicMeterPerHour)), "SCFM");
+export const StandardCubicMeterPerSecond: Unit.Unit<q.MassFlow> = _register(Unit.timesNumber(3600.0, StandardCubicMeterPerHour), "Sm³/s");
 
 // VolumeFlow
 export const CubicMeterPerSecond: Unit.Unit<q.VolumeFlow> = _register(UnitDivide.volumeByDuration(CubicMeter, Second), "m³/s");
@@ -605,6 +614,12 @@ export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlte
 // Sound pressure level
 export const Decibel: Unit.Unit<q.SoundPressureLevel> = _register(Unit.createAlternate<q.SoundPressureLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
 
+// Electric resistance
+export const KiloOhm: Unit.Unit<q.ElectricResistance> = _register(Kilo(Ohm),"kOhm");
+
+// Electric current
+export const MilliAmpere: Unit.Unit<q.ElectricCurrent> = _register(Milli(Ampere),"mA");
+
 // Water hardness
 export const MilliGramCalciumPerLiter: Unit.Unit<q.WaterHardness> = _register(Unit.createBase<q.WaterHardness>("WaterHardness", "mg Ca²⁺/l"), "mg Ca²⁺/l");
 export const FrenchDegree: Unit.Unit<q.WaterHardness> = _register(Unit.timesNumber(4.0043, MilliGramCalciumPerLiter), "°f");
@@ -626,6 +641,14 @@ export const MilliGramHydrogenCarbonatePerLiter: Unit.Unit<q.Alkalinity> = _regi
 
 // Viscosity
 export const PascalSecond: Unit.Unit<q.Viscosity> = _register(Unit.createBase<q.Viscosity>("Viscosity", "Pa·s"));
+
+// Thermal Transmittance
+export const WattPerSquareMeterPerKelvin: Unit.Unit<q.ThermalTransmittance> = _register(UnitDivide.intensityByDeltaTemperature(UnitDivide.powerByArea(Watt, SquareMeter), DeltaCelsius), "W/m²/°K");
+export const BtuPerHourPerSquareFeetPerFahrenheit: Unit.Unit<q.ThermalTransmittance> = _register(UnitDivide.intensityByDeltaTemperature(UnitDivide.powerByArea(BtuPerHour, SquareFeet), DeltaFahrenheit), "BTU/h/ft²/°F");
+
+// Thermal conductivity
+export const WattPerMeterPerKelvin: Unit.Unit<q.ThermalConductivity> = _register(UnitDivide.heatCapacityRateByLength(UnitDivide.powerByDeltaTemperature(Watt, DeltaCelsius), Meter), "W/m/°K");
+export const BtuPerHourPerFeetPerFahrenheit: Unit.Unit<q.ThermalConductivity> = _register(UnitDivide.heatCapacityRateByLength(UnitDivide.powerByDeltaTemperature(BtuPerHour, DeltaCelsius), Foot), "BTU/h/ft/°F");
 
 // Volume flow per cooling power
 export const GallonsPerMinutePerTonCooling: Unit.Unit<q.VolumeFlowPerPower> = _register(UnitDivide.volumeFlowByPower(GallonsPerMinute, TonCooling), "gpm/ton");

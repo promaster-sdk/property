@@ -1,3 +1,4 @@
+import { DeltaCelsius } from './units';
 import * as Unit from "./unit";
 import * as q from "./quantity";
 
@@ -132,4 +133,16 @@ export function volumeFlowByArea(left: Unit.Unit<q.VolumeFlow>, right: Unit.Unit
 
 export function dimensionlessByMass(left: Unit.Unit<q.Dimensionless>, right: Unit.Unit<q.Mass>): Unit.Unit<q.DimensionlessPerMass> {
     return Unit.divide("DimensionlessPerMass", left, right);
+}
+
+export function powerByDeltaTemperature(left: Unit.Unit<q.Power>, right: Unit.Unit<q.DeltaTemperature>): Unit.Unit<q.HeatCapacityRate> {
+    return Unit.divide("HeatCapacityRate", left, right);
+}
+
+export function intensityByDeltaTemperature(left: Unit.Unit<q.Intensity>, right: Unit.Unit<q.DeltaTemperature>): Unit.Unit<q.ThermalTransmittance> {
+    return Unit.divide("ThermalTransmittance", left, right);
+}
+
+export function heatCapacityRateByLength(left: Unit.Unit<q.HeatCapacityRate>, right: Unit.Unit<q.Length>): Unit.Unit<q.ThermalConductivity> {
+    return Unit.divide("ThermalConductivity", left, right);
 }
