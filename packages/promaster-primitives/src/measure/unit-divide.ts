@@ -1,4 +1,3 @@
-import { DeltaCelsius } from './units';
 import * as Unit from "./unit";
 import * as q from "./quantity";
 
