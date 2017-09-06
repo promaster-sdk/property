@@ -830,6 +830,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Duration", "Day", Day);
   _addMeta("Duration", "Week", Week);
   _addMeta("Duration", "Year", Year);
+  _addMeta("Duration", "MilliSecond", MilliSecond);
   _addMeta("Frequency", "RevolutionsPerMinute", RevolutionsPerMinute);
   _addMeta("Frequency", "RevolutionsPerHour", RevolutionsPerHour);
   _addMeta("Area", "SquareInch", SquareInch);
@@ -839,6 +840,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Area", "SquareDecimeter", SquareDecimeter);
   _addMeta("Angle", "Degrees", Degrees);
   _addMeta("Volume", "CubicCentiMeter", CubicCentiMeter);
+  _addMeta("Volume", "CubicInch", CubicInch);
   _addMeta("Volume", "CubicFeet", CubicFeet);
   _addMeta("Volume", "HundredCubicFeet", HundredCubicFeet);
   _addMeta("Volume", "Liter", Liter);
@@ -852,6 +854,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Density", "KilogramPerCubicMeter", KilogramPerCubicMeter);
   _addMeta("Density", "GramPerCubicCentiMeter", GramPerCubicCentiMeter);
   _addMeta("Density", "SlugPerCubicFeet", SlugPerCubicFeet);
+  _addMeta("Density", "PoundPerCubicFoot", PoundPerCubicFoot);
   _addMeta("Force", "PoundForce", PoundForce);
   _addMeta("Pressure", "KiloPascal", KiloPascal);
   _addMeta("Pressure", "HectoPascal", HectoPascal);
@@ -863,6 +866,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Pressure", "Bar", Bar);
   _addMeta("Pressure", "MilliBar", MilliBar);
   _addMeta("Pressure", "PoundForcePerSquareFoot", PoundForcePerSquareFoot);
+  _addMeta("Pressure", "DeciPascal", DeciPascal);
   _addMeta("Power", "KiloWatt", KiloWatt);
   _addMeta("Power", "MegaWatt", MegaWatt);
   _addMeta("Power", "GigaWatt", GigaWatt);
@@ -873,6 +877,7 @@ function _ensureMetaAdded(): void {
   _addMeta("Power", "VoltAmpere", VoltAmpere);
   _addMeta("Energy", "NewtonMeter", NewtonMeter);
   _addMeta("Energy", "Kilojoule", Kilojoule);
+  _addMeta("Energy", "Megajoule", Megajoule);
   _addMeta("Energy", "KiloWattHour", KiloWattHour);
   _addMeta("Energy", "MegaWattHour", MegaWattHour);
   _addMeta("Energy", "GigaWattHour", GigaWattHour);
@@ -883,17 +888,21 @@ function _ensureMetaAdded(): void {
   _addMeta("DimensionlessPerEnergy", "OnePerKiloWattHour", OnePerKiloWattHour);
   _addMeta("DimensionlessPerEnergy", "OnePerBtu", OnePerBtu);
   _addMeta("DimensionlessPerEnergy", "OnePerKilojoule", OnePerKilojoule);
+  _addMeta("DimensionlessPerEnergy", "OnePerMegajoule", OnePerMegajoule);
   _addMeta("DimensionlessPerEnergy", "OnePerJoule", OnePerJoule);
   _addMeta("Emission", "KilogramPerKiloWattHour", KilogramPerKiloWattHour);
   _addMeta("Emission", "GramPerKiloWattHour", GramPerKiloWattHour);
   _addMeta("MassFlow", "KilogramPerSecond", KilogramPerSecond);
   _addMeta("MassFlow", "GramPerSecond", GramPerSecond);
+  _addMeta("MassFlow", "GramPerHour", GramPerHour);
   _addMeta("MassFlow", "KilogramPerHour", KilogramPerHour);
   _addMeta("MassFlow", "SlugPerSecond", SlugPerSecond);
   _addMeta("MassFlow", "SlugPerHour", SlugPerHour);
   _addMeta("MassFlow", "PoundLbPerHour", PoundLbPerHour);
+  _addMeta("MassFlow", "GrainPerHour", GrainPerHour);
   _addMeta("MassFlow", "StandardCubicMeterPerHour", StandardCubicMeterPerHour);
   _addMeta("MassFlow", "StandardCubicFeetPerMinute", StandardCubicFeetPerMinute);
+  _addMeta("MassFlow", "StandardCubicMeterPerSecond", StandardCubicMeterPerSecond);
   _addMeta("VolumeFlow", "CubicMeterPerSecond", CubicMeterPerSecond);
   _addMeta("VolumeFlow", "CubicMeterPerHour", CubicMeterPerHour);
   _addMeta("VolumeFlow", "CubicFeetPerMinute", CubicFeetPerMinute);
@@ -932,6 +941,8 @@ function _ensureMetaAdded(): void {
   _addMeta("SpecificFanPower", "KiloWattPerCubicFootPerMinute", KiloWattPerCubicFootPerMinute);
   _addMeta("SoundPressureLevel", "Decibel", Decibel);
   _addMeta("SoundPowerLevel", "DecibelLw", DecibelLw);
+  _addMeta("ElectricResistance", "KiloOhm", KiloOhm);
+  _addMeta("ElectricCurrent", "MilliAmpere", MilliAmpere);
   _addMeta("WaterHardness", "MilliGramCalciumPerLiter", MilliGramCalciumPerLiter);
   _addMeta("WaterHardness", "FrenchDegree", FrenchDegree);
   _addMeta("ElectricPotential", "MilliVolt", MilliVolt);
@@ -940,6 +951,10 @@ function _ensureMetaAdded(): void {
   _addMeta("Text", "Text", Text);
   _addMeta("Alkalinity", "MilliGramHydrogenCarbonatePerLiter", MilliGramHydrogenCarbonatePerLiter);
   _addMeta("Viscosity", "PascalSecond", PascalSecond);
+  _addMeta("ThermalTransmittance", "WattPerSquareMeterPerKelvin", WattPerSquareMeterPerKelvin);
+  _addMeta("ThermalTransmittance", "BtuPerHourPerSquareFeetPerFahrenheit", BtuPerHourPerSquareFeetPerFahrenheit);
+  _addMeta("ThermalConductivity", "WattPerMeterPerKelvin", WattPerMeterPerKelvin);
+  _addMeta("ThermalConductivity", "BtuPerHourPerFeetPerFahrenheit", BtuPerHourPerFeetPerFahrenheit);
   _addMeta("VolumeFlowPerPower", "GallonsPerMinutePerTonCooling", GallonsPerMinutePerTonCooling);
   _addMeta("VolumeFlowPerPower", "LiterPerSecondPerKiloWatt", LiterPerSecondPerKiloWatt);
   _addMeta("VolumeFlowPerPower", "CubicFeetPerMinutePerSquareFeet", CubicFeetPerMinutePerSquareFeet);
