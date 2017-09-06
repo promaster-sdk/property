@@ -615,10 +615,10 @@ export const DecibelLw: Unit.Unit<q.SoundPowerLevel> = _register(Unit.createAlte
 export const Decibel: Unit.Unit<q.SoundPressureLevel> = _register(Unit.createAlternate<q.SoundPressureLevel>("dB", UnitTimes.dimensionlessByDimensionless(One, One)), "dB");
 
 // Electric resistance
-export const KiloOhm: Unit.Unit<q.ElectricResistance> = _register(Kilo(Ohm),"kOhm");
+export const KiloOhm: Unit.Unit<q.ElectricResistance> = _register(Kilo(Ohm), "kOhm");
 
 // Electric current
-export const MilliAmpere: Unit.Unit<q.ElectricCurrent> = _register(Milli(Ampere),"mA");
+export const MilliAmpere: Unit.Unit<q.ElectricCurrent> = _register(Milli(Ampere), "mA");
 
 // Water hardness
 export const MilliGramCalciumPerLiter: Unit.Unit<q.WaterHardness> = _register(Unit.createBase<q.WaterHardness>("WaterHardness", "mg Ca²⁺/l"), "mg Ca²⁺/l");
