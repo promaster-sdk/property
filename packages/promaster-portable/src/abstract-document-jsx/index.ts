@@ -15,22 +15,18 @@ import {
   TextRun as TextRun1
 } from "../abstract-document";
 
-export type Jsx<T> = T & {
-  readonly children?: React.ReactNode;  
-};
-
-export const AbstractDoc = (props: Jsx<AbstractDoc1.AbstractDocProps>): React.ReactElement<Jsx<AbstractDoc1.AbstractDocProps>> => AbstractDoc1.create(props) as any;
-export const Section = (props: Jsx<Section1.SectionProps>): React.ReactElement<Jsx<Section1.Section>> => Section1.create(props) as any;
-export const Group = (props: Jsx<Group1.GroupProps>): React.ReactElement<Jsx<Group1.Group>> => Group1.create(props) as any;
-export const Paragraph = (props: Jsx<Paragraph1.ParagraphProps>): React.ReactElement<Jsx<Paragraph1.Paragraph>> => Paragraph1.create(props) as any;
-export const Table = (props: Jsx<Table1.TableProps>): React.ReactElement<Jsx<Table1.Table>> => Table1.create(props) as any;
-export const TableRow = (props: Jsx<TableRow1.TableRowProps>): React.ReactElement<Jsx<TableRow1.TableRow>> => TableRow1.create(props) as any;
-export const TableCell = (props: Jsx<TableCell1.TableCellProps>): React.ReactElement<Jsx<TableCell1.TableCell>> => TableCell1.create(props) as any;
-export const HyperLink = (props: Jsx<HyperLink1.HyperLinkProps>): React.ReactElement<Jsx<HyperLink1.HyperLink>> => HyperLink1.create(props) as any;
-export const Image = (props: Jsx<Image1.ImageProps>): React.ReactElement<Jsx<Image1.Image>> => Image1.create(props) as any;
-export const Markdown = (props: Jsx<Markdown1.MarkdownProps>): React.ReactElement<Jsx<Markdown1.MarkdownProps>> => Markdown1.create(props) as any;
-export const TextField = (props: Jsx<TextField1.TextFieldProps>): React.ReactElement<Jsx<TextField1.TextField>> => TextField1.create(props) as any;
-export const TextRun = (props: Jsx<TextRun1.TextRunProps>): React.ReactElement<Jsx<TextRun1.TextRun>> => TextRun1.create(props) as any;
+export const AbstractDoc = (props: AbstractDoc1.AbstractDocProps) => AbstractDoc1.create(props) as any;
+export const Section = (props: Section1.SectionProps) => Section1.create(props) as any;
+export const Group = (props: Group1.GroupProps) => Group1.create(props) as any;
+export const Paragraph = (props: Paragraph1.ParagraphProps) => Paragraph1.create(props) as any;
+export const Table = (props: Table1.TableProps) => Table1.create(props) as any;
+export const TableRow = (props: TableRow1.TableRowProps) => TableRow1.create(props) as any;
+export const TableCell = (props: TableCell1.TableCellProps) => TableCell1.create(props) as any;
+export const HyperLink = (props: HyperLink1.HyperLinkProps) => HyperLink1.create(props) as any;
+export const Image = (props: Image1.ImageProps) => Image1.create(props) as any;
+export const Markdown = (props: Markdown1.MarkdownProps) => Markdown1.create(props) as any;
+export const TextField = (props: TextField1.TextFieldProps) => TextField1.create(props) as any;
+export const TextRun = (props: TextRun1.TextRunProps) => TextRun1.create(props) as any;
 
 export function render(element: any): any {
   if (typeof element.type !== "function") {
