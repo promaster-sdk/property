@@ -194,14 +194,14 @@ function measureText(pdf: any, text: string, textStyle: AD.TextStyle.TextStyle, 
       height: availableSize.height,
       underline: textStyle.underline || false,
       features: features,
-    }) + 0.0001);
+    }) + 2);
   const height = pdf
     .heightOfString(text, {
       width: width,
       height: availableSize.height,
       underline: textStyle.underline || false,
       features: features,
-    }) + 0.0001;
+    });
   return AD.Size.create(width, height);
   // let font = style.fontFamily || "Helvetica";
   // if (style.bold && style.italic) { font += "-BoldOblique"; }

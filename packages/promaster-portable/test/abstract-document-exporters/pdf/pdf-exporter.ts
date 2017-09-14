@@ -492,15 +492,9 @@ describe("PdfExporter", () => {
 
 
     it("should handle new lines correctly", function (done) {
-      const paragraphStyle1 = AD.ParagraphStyle.create({
+      const paragraphStyle = AD.ParagraphStyle.create({
         textStyle: AD.TextStyle.create({
-          bold: true,
-          fontSize: 14,
-        })
-      });
-      const paragraphStyle2 = AD.ParagraphStyle.create({
-        textStyle: AD.TextStyle.create({
-          fontSize: 10,
+          fontSize: 12,
         })
       });
       const cellStyle = AD.TableCellStyle.create({
@@ -526,26 +520,10 @@ describe("PdfExporter", () => {
                           style: cellStyle,
                           children: [
                             AD.Paragraph.create({
-                              style: paragraphStyle1,
+                              style: paragraphStyle,
                               children: [
                                 AD.TextRun.create({
-                                  text: "Some text"
-                                })
-                              ]
-                            }),
-                            AD.Paragraph.create({
-                              style: paragraphStyle2,
-                              children: [
-                                AD.TextRun.create({
-                                  text: "Some text: with (parentheses) no new line"
-                                })
-                              ]
-                            }),
-                            AD.Paragraph.create({
-                              style: paragraphStyle2,
-                              children: [
-                                AD.TextRun.create({
-                                  text: "Some text: with (parentheses) and other stuff no new line (blabla), blah (gagaga)"
+                                  text: "THOR-100, THOR-100, THOR-100, THOR-100"
                                 })
                               ]
                             }),
