@@ -108,7 +108,6 @@ export function createAmountFormatSelector({
           <CancelButton onClick={() => this.setState({ active: false })}>
             {"\u00A0"}
           </CancelButton>
-          }
         </AmountFormatWrapper>
       );
 
