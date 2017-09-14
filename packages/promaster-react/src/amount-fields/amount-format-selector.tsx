@@ -98,15 +98,16 @@ export function createAmountFormatSelector({
             }}>{decimalCounts.map((dc) => <option key={dc.toString()} value={dc.toString()}>{dc}</option>)}
           </PrecisionSelector>
           {onFormatCleared
-            ? (<ClearButton onClick={() => {
-              this.setState({ active: false });
-              onFormatCleared();
-            }}>
-              {"\u00A0"}
-            </ClearButton>)
-            : (<CancelButton onClick={() => this.setState({ active: false })}>
-              {"\u00A0"}
-            </CancelButton>)
+            && (
+              <ClearButton onClick={() => {
+                this.setState({ active: false });
+                onFormatCleared();
+              }}>
+                {"\u00A0"}
+              </ClearButton>)}
+          <CancelButton onClick={() => this.setState({ active: false })}>
+            {"\u00A0"}
+          </CancelButton>
           }
         </AmountFormatWrapper>
       );
