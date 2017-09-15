@@ -3,6 +3,7 @@ import { AmountFields } from "@promaster/promaster-react";
 import { Unit, Units, Amount } from "@promaster/promaster-primitives";
 import { merge } from "../utils";
 import styled from "styled-components";
+import { action } from "@storybook/addon-actions";
 
 // tslint:disable:variable-name no-class no-this no-any
 
@@ -70,6 +71,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
             onFormatChanged={(selectedUnit: Unit.Unit<any>, selectedDecimalCount: number) =>
               this.setState(merge(this.state, { selectedUnit, selectedDecimalCount }))}
             onFormatCleared={() => this.setState(merge(this.state, { selectedUnit: Units.Celsius, selectedDecimalCount: 2 }))}
+            onFormatSelectorActiveChanged={action("Toggle format selector")}
           />
         </div>
       </div>
