@@ -55,6 +55,7 @@ export function createAmountPropertySelector({
         onValueChange,
         onFormatChanged,
         onFormatCleared,
+        onFormatSelectorToggled,
         notNumericMessage,
         isRequiredMessage,
         validationFilter,
@@ -84,7 +85,8 @@ export function createAmountPropertySelector({
           <AmountFormatSelector selectedUnit={inputUnit}
             selectedDecimalCount={inputDecimalCount}
             onFormatChanged={onFormatChanged}
-            onFormatCleared={onFormatCleared} />
+            onFormatCleared={onFormatCleared}
+            onFormatSelectorActiveChanged={onFormatSelectorToggled} />
         </AmountPropertySelectorWrapper>
       );
     }
