@@ -13,6 +13,7 @@ import {
   AmountFormat,
   OnPropertyFormatChanged,
   OnPropertyFormatCleared,
+  OnPropertyFormatSelectorToggled,
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
@@ -38,6 +39,7 @@ export interface PropertySelectorProps {
   readonly onChange: PropertySelectionOnChange,
   readonly onPropertyFormatChanged: OnPropertyFormatChanged,
   readonly onPropertyFormatCleared: OnPropertyFormatCleared,
+  readonly onPropertyFormatSelectorToggled: OnPropertyFormatSelectorToggled,
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
   readonly propertyFormat: AmountFormat,
   readonly readOnly: boolean,
@@ -73,6 +75,7 @@ export function createPropertySelector({
     onChange,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
+    onPropertyFormatSelectorToggled,
     filterPrettyPrint,
     propertyFormat,
     readOnly,
@@ -135,6 +138,7 @@ export function createPropertySelector({
             inputDecimalCount={propertyFormat.decimalCount}
             onFormatChanged={(unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount)}
             onFormatCleared={() => onPropertyFormatCleared(propertyName)}
+            onFormatSelectorToggled={(active: boolean) => onPropertyFormatSelectorToggled(propertyName, active)}
             onValueChange={onValueChange}
             notNumericMessage={translateValueMustBeNumericMessage()}
 

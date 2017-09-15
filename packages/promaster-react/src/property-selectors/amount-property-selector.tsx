@@ -7,7 +7,8 @@ import {
   createAmountFormatSelector,
   createAmountInputBox,
   OnFormatChanged,
-  OnFormatCleared
+  OnFormatCleared,
+  OnFormatSelectorToggled,
 } from "../amount-fields/index";
 import styled from "styled-components";
 
@@ -25,6 +26,7 @@ export interface AmountPropertySelectorProps {
   readonly readOnly: boolean,
   readonly onFormatChanged: OnFormatChanged,
   readonly onFormatCleared: OnFormatCleared,
+  readonly onFormatSelectorToggled?: OnFormatSelectorToggled,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void,
   readonly debounceTime?: number,
 }

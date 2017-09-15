@@ -6,6 +6,7 @@ import {
   AmountFormat,
   OnPropertyFormatChanged,
   OnPropertyFormatCleared,
+  OnPropertyFormatSelectorToggled,
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
@@ -46,6 +47,7 @@ export interface PropertiesSelectorProps {
   readonly onChange?: PropertySelectionOnChange,
   readonly onPropertyFormatChanged?: OnPropertyFormatChanged,
   readonly onPropertyFormatCleared?: OnPropertyFormatCleared,
+  readonly onPropertyFormatSelectorToggled?: OnPropertyFormatSelectorToggled,
 
   // Translations
   readonly translatePropertyName?: TranslatePropertyName,
@@ -94,6 +96,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     onChange = (_a: PropertyValueSet.PropertyValueSet) => { }, //tslint:disable-line
     onPropertyFormatChanged = (_a: string, _b: Unit.Unit<any>, _c: number) => { }, //tslint:disable-line
     onPropertyFormatCleared = (_a: string) => { }, //tslint:disable-line
+    onPropertyFormatSelectorToggled = () => { }, //tslint:disable-line
 
     translatePropertyName = (a: string) => a,
     translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
@@ -130,6 +133,7 @@ export function PropertiesSelector(props: PropertiesSelectorProps): React.ReactE
     onChange,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
+    onPropertyFormatSelectorToggled,
 
     translatePropertyName,
     translatePropertyValue,
@@ -169,6 +173,7 @@ function createPropertySelectorRenderInfos(
   onChange: PropertySelectionOnChange,
   onPropertyFormatChanged: OnPropertyFormatChanged,
   onPropertyFormatCleared: OnPropertyFormatCleared,
+  onPropertyFormatSelectorToggled: OnPropertyFormatSelectorToggled,
 
   translatePropertyName: TranslatePropertyName,
   translatePropertyValue: TranslatePropertyValue,
@@ -233,6 +238,7 @@ function createPropertySelectorRenderInfos(
         onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue),
         onPropertyFormatChanged,
         onPropertyFormatCleared,
+        onPropertyFormatSelectorToggled,
         filterPrettyPrint,
         propertyFormat,
         readOnly: isReadOnly,

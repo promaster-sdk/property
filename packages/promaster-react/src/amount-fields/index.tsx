@@ -5,6 +5,7 @@ export {
   createAmountFormatSelector,
   OnFormatChanged,
   OnFormatCleared,
+  OnFormatSelectorToggled,
 } from "./amount-format-selector";
 export { AmountFormatWrapper, AmountFormatWrapperProps } from "./amount-format-wrapper";
 export { AmountInputField, AmountInputFieldProps } from "./amount-input-field";

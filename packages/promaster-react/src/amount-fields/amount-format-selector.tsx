@@ -14,6 +14,7 @@ export interface AmountFormatSelectorProps {
   readonly selectedDecimalCount: number,
   readonly onFormatChanged?: OnFormatChanged,
   readonly onFormatCleared?: OnFormatCleared,
+  readonly onFormatSelectorActiveChanged?: OnFormatSelectorToggled,
 }
 
 export interface State {
@@ -22,6 +23,7 @@ export interface State {
 
 export type OnFormatChanged = (unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => void;
 export type OnFormatCleared = () => void;
+export type OnFormatSelectorToggled = (active: boolean) => void;
 
 export type AmountFormatSelector = React.ComponentClass<AmountFormatSelectorProps>;
 export interface CreateAmountFormatSelectorParams {
@@ -53,11 +55,17 @@ export function createAmountFormatSelector({
       this.state = { active: false };
     }
 
+    componentDidUpdate(_: AmountFormatSelectorProps, prevState: State): void {
+      if (this.props.onFormatSelectorActiveChanged && prevState.active !== this.state.active) {
+        this.props.onFormatSelectorActiveChanged(this.state.active);
+      }
+    }
+
     render(): React.ReactElement<AmountFormatSelectorProps> {
 
       const {
         selectedUnit, selectedDecimalCount, onFormatChanged,
-        onFormatCleared
+        onFormatCleared,
     } = this.props;
 
       // If there is no handler for onFormatChanged then the user should not be able to change the format
