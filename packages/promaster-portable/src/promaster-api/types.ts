@@ -110,6 +110,7 @@ export interface ProductDocument {
   readonly property_filter: PropertyFilter.PropertyFilter,
   readonly file_name: string,
   readonly document: Url,
+  readonly language: string,
   readonly name: string,
   readonly type: string,
 }

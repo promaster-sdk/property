@@ -189,6 +189,7 @@ function convertProductDocument(document: any): Types.ProductDocument {
     property_filter: convertFilter(document.property_filter),
     file_name: document.file_name,
     document: document.document,
+    language: document.language,
     name: document.name,
     type: document.type,
   };
