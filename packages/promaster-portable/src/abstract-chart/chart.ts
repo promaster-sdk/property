@@ -332,6 +332,15 @@ export function generateYAxisLabel(x: number, y: number, label: string, chart: C
 }
 
 function formatNumber(n: number): string {
-  const precision = Math.ceil(0.001 + Math.abs(Math.log10(n)));
-  return n.toPrecision(precision);
+  if (n >= 10000000) {
+    return numberToString(n / 1000000) + "m";
+  }
+  if (n >= 10000) {
+    return numberToString(n / 1000) + "k";
+  }
+  return numberToString(n);
+}
+
+function numberToString(n: number): string {
+  return parseFloat(n.toPrecision(5)).toString();
 }
