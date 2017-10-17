@@ -170,11 +170,9 @@ function createElement(elementName: string, attributes: Attributes, innerElement
         return previousValue;
       }
       else {
-        return previousValue + `\n${currentValue}`;
+        return previousValue + `${currentValue}`;
       }
     }, element);
-
-    element += "\n";
   }
 
   element += `</${formattedName}>`;
@@ -209,7 +207,7 @@ function convertUpperToHyphenLower(elementName: string): string {
 
 function flattenElements(elements: string[]): string {
   return elements.reduce((previousValue: string, currentValue: string) => {
-    return previousValue + `\n${currentValue}`;
+    return previousValue + `${currentValue}`;
   }, "");
 }
 
