@@ -10,6 +10,9 @@ export function createSVG(image: AbstractImage.AbstractImage): string {
 
   return createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
+    width: `${image.size.width}px`,
+    height: `${image.size.height}px`,
+    viewBox: [0, 0, image.size.width, image.size.height].join(" ")
   }, svgElements);
 }
 
