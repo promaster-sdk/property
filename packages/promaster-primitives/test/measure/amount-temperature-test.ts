@@ -6,27 +6,44 @@ import * as Units from "../../src/measure/units";
 import { TemperatureConversion } from "../test_utils/conversion_helpers/temperature_conversion";
 
 describe("amount_temperature_comparisions_test", () => {
-
   it("0.0 Celsius should equal 273.15 Kelvin", () => {
+    const kelvinInCelsius = Amount.valueAs(
+      Units.Celsius,
+      Amount.create(273.15, Units.Kelvin)
+    );
+    const celsiusInCelsius = Amount.valueAs(
+      Units.Celsius,
+      Amount.create(0.0, Units.Celsius)
+    );
 
-    const kelvinInCelsius = Amount.valueAs(Units.Celsius, Amount.create(273.15, Units.Kelvin));
-    const celsiusInCelsius = Amount.valueAs(Units.Celsius, Amount.create(0.0, Units.Celsius));
-
-    assert.isTrue(Amount.equals(Amount.create(0.0, Units.Celsius), Amount.create(273.15, Units.Kelvin)));
+    assert.isTrue(
+      Amount.equals(
+        Amount.create(0.0, Units.Celsius),
+        Amount.create(273.15, Units.Kelvin)
+      )
+    );
   });
 
   it("1.0 Celsius should be greater than 273.15 Kelvin", () => {
-    assert.isTrue(Amount.greaterThan(Amount.create(1.0, Units.Celsius), Amount.create(273.15, Units.Kelvin)));
+    assert.isTrue(
+      Amount.greaterThan(
+        Amount.create(1.0, Units.Celsius),
+        Amount.create(273.15, Units.Kelvin)
+      )
+    );
   });
 
   it("-1.0 Celsius should be less than 273.15 Kelvin", () => {
-    assert.isTrue(Amount.lessThan(Amount.create(-1.0, Units.Celsius), Amount.create(273.15, Units.Kelvin)));
+    assert.isTrue(
+      Amount.lessThan(
+        Amount.create(-1.0, Units.Celsius),
+        Amount.create(273.15, Units.Kelvin)
+      )
+    );
   });
-
 });
 
 describe("amount_temperature_conversions_test", () => {
-
   //kelvin
 
   //kelvin 2 kelvin
@@ -117,21 +134,30 @@ describe("amount_temperature_conversions_test", () => {
   it("For_Value_0_kelvin_we_should_get_value_minus_459_67_fahrenheit", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.Kelvin);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.K2F(value), 0.00001);
   });
 
   it("For_Value_459_67_kelvin_we_should_get_value_367_736_fahrenheit", () => {
     const value: number = 459.67;
     const amountToTest = Amount.create(value, Units.Kelvin);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.K2F(value), 0.00001);
   });
 
   it("For_Value_minus_10_kelvin_we_should_get_value_minus_477_67_fahrenheit", () => {
     const value: number = -10.0;
     const amountToTest = Amount.create(value, Units.Kelvin);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.K2F(value), 0.00001);
   });
 
@@ -225,28 +251,40 @@ describe("amount_temperature_conversions_test", () => {
   it("For_Value_0_celsius_we_should_get_value_32_fahrenheit", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.Celsius);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.C2F(value), 0.00001);
   });
 
   it("For_Value_35_celsius_we_should_get_value_95_fahrenheit", () => {
     const value: number = 35.0;
     const amountToTest = Amount.create(value, Units.Celsius);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.C2F(value), 0.00001);
   });
 
   it("For_Value_104_587_celsius_we_should_get_value_220_2566_fahrenheit", () => {
     const value: number = 104.587;
     const amountToTest = Amount.create(value, Units.Celsius);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.C2F(value), 0.00001);
   });
 
   it("For_Value_minus_51_45_celsius_we_should_get_value_minus_60_61_fahrenheit", () => {
     const value: number = -51.45;
     const amountToTest = Amount.create(value, Units.Celsius);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.C2F(value), 0.00001);
   });
 
@@ -354,21 +392,30 @@ describe("amount_temperature_conversions_test", () => {
   it("For_Value_0_rankine_we_should_get_value_minus_459_67_fahrenheit", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.Rankine);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.R2F(value), 0.00001);
   });
 
   it("For_Value_895_2_rankine_we_should_get_value_435_53_fahrenheit", () => {
     const value: number = 895.2;
     const amountToTest = Amount.create(value, Units.Rankine);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.R2F(value), 0.00001);
   });
 
   it("For_Value_minus_108_236_rankine_we_should_get_value_minus_567_906_fahrenheit", () => {
     const value: number = -108.236;
     const amountToTest = Amount.create(value, Units.Rankine);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, TemperatureConversion.R2F(value), 0.00001);
   });
 
@@ -490,21 +537,30 @@ describe("amount_temperature_conversions_test", () => {
   it("For_Value_0_fahrenheit_we_should_get_value_0_fahrenheit", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.Fahrenheit);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, value, 0.00001);
   });
 
   it("For_Value_7_fahrenheit_we_should_get_value_0_fahrenheit", () => {
     const value: number = 7.0;
     const amountToTest = Amount.create(value, Units.Fahrenheit);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, value, 0.00001);
   });
 
   it("For_Value_minus_20_fahrenheit_we_should_get_value_minus_20_fahrenheit", () => {
     const value: number = -20.0;
     const amountToTest = Amount.create(value, Units.Fahrenheit);
-    const convertedAmount: number = Amount.valueAs(Units.Fahrenheit, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.Fahrenheit,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, value, 0.00001);
   });
 
@@ -571,5 +627,4 @@ describe("amount_temperature_conversions_test", () => {
     // Assert
     assert.isTrue(result);
   });
-
 });
