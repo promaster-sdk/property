@@ -24,6 +24,15 @@ export function create<T extends Quantity>(
   unit: Unit.Unit<T>,
   decimalCount: number | undefined = undefined
 ): Amount<T> {
+  if (decimalCount === undefined) {
+    decimalCount = 0;
+    const stringValue = value.toString();
+    const pointIndex = stringValue.indexOf(".");
+    if (pointIndex >= 0) {
+      decimalCount = stringValue.length - pointIndex - 1;
+    }
+  }
+
   return _factory<T>(value, unit, decimalCount);
 }
 
@@ -53,6 +62,8 @@ export function isQuantity<T extends Quantity>(
  * Adds two amounts together.
  * The two amounts amounts must have the same quantity.
  * The resulting amount will be of the same quantity as the two amounts.
+ * The resulting amount will have it's decimal count set from the
+ * most granular amount.
  * @param left The left-hand amount.
  * @param right The right-hand
  * @returns left + right
@@ -61,27 +72,61 @@ export function plus<T extends Quantity>(
   left: Amount<T>,
   right: Amount<T>
 ): Amount<T> {
-  console.log("left.value", left.value);
-  console.log("valueAs(left.unit, right)", valueAs(left.unit, right));
-
-  return _factory<T>(left.value + valueAs(left.unit, right), left.unit);
+  console.log("left", left);
+  console.log("right", right);
+  const mostGranularAmount = getMostGranularAmount(left, right);
+  console.log("mostGranularAmount", mostGranularAmount);
+  console.log("left2", valueAs(mostGranularAmount.unit, left));
+  console.log("right2", valueAs(mostGranularAmount.unit, right));
+  return _factory<T>(
+    valueAs(mostGranularAmount.unit, left) +
+      valueAs(mostGranularAmount.unit, right),
+    mostGranularAmount.unit,
+    mostGranularAmount.decimalCount
+  );
 }
 
+/**
+ * Substracts two amounts from each other.
+ * The two amounts amounts must have the same quantity.
+ * The resulting amount will be of the same quantity as the two amounts.
+ * The resulting amount will have it's decimal count set from the
+ * most granular amount.
+ * @param left The left-hand amount.
+ * @param right The right-hand
+ * @returns left + right
+ */
 export function minus<T extends Quantity>(
   left: Amount<T>,
   right: Amount<T>
 ): Amount<T> {
-  return _factory<T>(left.value - valueAs(left.unit, right), left.unit);
+  const mostGranularAmount = getMostGranularAmount(left, right);
+  return _factory<T>(
+    valueAs(mostGranularAmount.unit, left) -
+      valueAs(mostGranularAmount.unit, right),
+    mostGranularAmount.unit,
+    mostGranularAmount.decimalCount
+  );
 }
 
+/**
+ * Multiplies an amount with a number.
+ * The resulting amount has the same unit and decimal count as the original amount.
+ * @param left The amount to multiply
+ * @param right The number to multiply with
+ */
 export function times<T extends Quantity>(
   left: Amount<T>,
   right: number | Amount<Dimensionless>
 ): Amount<T> {
   if (typeof right === "number") {
-    return _factory<T>(left.value * right, left.unit);
+    return _factory<T>(left.value * right, left.unit, left.decimalCount);
   } else if (right.unit.quantity === "Dimensionless") {
-    return _factory<T>(left.value * valueAs(Units.One, right), left.unit);
+    return _factory<T>(
+      left.value * valueAs(Units.One, right),
+      left.unit,
+      left.decimalCount
+    );
   } else {
     throw new Error(
       `Cannot perform '*' operation with value of type '${right}'.`
@@ -89,14 +134,24 @@ export function times<T extends Quantity>(
   }
 }
 
+/**
+ * Divides an amount with a number.
+ * The resulting amount has the same unit and decimal count as the original amount.
+ * @param left The amount to divide
+ * @param right The number to divide by
+ */
 export function divide<T extends Quantity>(
   left: Amount<T>,
   right: number | Amount<Dimensionless>
 ): Amount<T> {
   if (typeof right === "number") {
-    return _factory<T>(left.value / right, left.unit);
+    return _factory<T>(left.value / right, left.unit, left.decimalCount);
   } else if (right.unit.quantity === "Dimensionless") {
-    return _factory<T>(left.value / valueAs(Units.One, right), left.unit);
+    return _factory<T>(
+      left.value / valueAs(Units.One, right),
+      left.unit,
+      left.decimalCount
+    );
   } else {
     throw new Error(
       `Cannot perform '*' operation with value of type '${right}'.`
@@ -165,20 +220,36 @@ export function min<T extends Quantity>(
   return lessThan(a1, a2) ? a1 : a2;
 }
 
+/**
+ * @param step Rounding step, for example 5.0 Celsius will round 23 to 20.
+ * @param amount  Amount to round.
+ */
 export function roundDown<T extends Quantity>(
   step: Amount<T>,
   amount: Amount<T>
 ): Amount<T> {
   const div = amount.value / step.value;
-  return _factory<T>(Math.floor(div) * step.value, amount.unit);
+  return _factory<T>(
+    Math.floor(div) * step.value,
+    amount.unit,
+    step.decimalCount
+  );
 }
 
+/**
+ * @param step Rounding step, for example 5.0 Celsius will round 23 to 25.
+ * @param amount  Amount to round.
+ */
 export function roundUp<T extends Quantity>(
   step: Amount<T>,
   amount: Amount<T>
 ): Amount<T> {
   const div = amount.value / step.value;
-  return _factory<T>(Math.ceil(div) * step.value, amount.unit);
+  return _factory<T>(
+    Math.ceil(div) * step.value,
+    amount.unit,
+    step.decimalCount
+  );
 }
 
 export function compareTo<T extends Quantity>(
@@ -193,7 +264,7 @@ export function compareTo<T extends Quantity>(
  * @param amount The amount to get the aboslute amount from.
  */
 export function abs<T extends Quantity>(amount: Amount<T>): Amount<T> {
-  return _factory<T>(Math.abs(amount.value), amount.unit);
+  return _factory<T>(Math.abs(amount.value), amount.unit, amount.decimalCount);
 }
 
 /**
@@ -218,7 +289,7 @@ export function valueAs(
 function _factory<T extends Quantity>(
   value: number,
   unit: Unit.Unit<T>,
-  decimalCount: number | undefined = undefined
+  decimalCount: number
 ): Amount<T> {
   if (typeof value !== "number") {
     throw new Error("value must be a number.");
@@ -230,14 +301,6 @@ function _factory<T extends Quantity>(
     throw new Error("decimalCount must be an undefined or a number.");
   }
 
-  if (decimalCount === undefined) {
-    decimalCount = 0;
-    const stringValue = value.toString();
-    const pointIndex = stringValue.indexOf(".");
-    if (pointIndex >= 0) {
-      decimalCount = stringValue.length - pointIndex - 1;
-    }
-  }
   return {
     value: value,
     unit: unit,
@@ -298,6 +361,25 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(
     decimalCount,
     decimalCount
   );
+}
+
+/**
+ * Gets the most granular amount
+ * Takes into account both the unit and the decimalCount.
+ * @param leftUnit 
+ * @param rightUnit 
+ */
+function getMostGranularAmount(
+  left: Amount<Quantity>,
+  right: Amount<Quantity>
+): Amount<Quantity> {
+  const rightSmallest = create(Math.pow(10, -right.decimalCount), right.unit);
+  const rightSmallestInLeftUnit = valueAs(left.unit, rightSmallest);
+  const leftSmallestInLeftUnit = Math.pow(10, -left.decimalCount);
+  if (leftSmallestInLeftUnit < rightSmallestInLeftUnit) {
+    return left;
+  }
+  return right;
 }
 
 /**
