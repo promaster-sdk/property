@@ -1,12 +1,25 @@
 import * as PropertyValue from "../product-properties/property-value";
 
-export type Expr = AndExpr | ComparisonExpr | EmptyExpr | EqualsExpr | IdentifierExpr | NullExpr | OrExpr | ValueExpr | ValueRangeExpr;
+export type Expr =
+  | AndExpr
+  | ComparisonExpr
+  | EmptyExpr
+  | EqualsExpr
+  | IdentifierExpr
+  | NullExpr
+  | OrExpr
+  | ValueExpr
+  | ValueRangeExpr;
 
 export function newAndExpr(children: Array<Expr>): AndExpr {
   return { type: "AndExpr", children };
 }
 
-export function newComparisonExpr(leftValue: Expr, operationType: ComparisonOperationType, rightValue: Expr): ComparisonExpr {
+export function newComparisonExpr(
+  leftValue: Expr,
+  operationType: ComparisonOperationType,
+  rightValue: Expr
+): ComparisonExpr {
   return { type: "ComparisonExpr", leftValue, operationType, rightValue };
 }
 
@@ -14,7 +27,11 @@ export function newEmptyExpr(): EmptyExpr {
   return { type: "EmptyExpr" };
 }
 
-export function newEqualsExpr(leftValue: Expr, operationType: EqualsOperationType, rightValueRanges: Array<Expr>): EqualsExpr {
+export function newEqualsExpr(
+  leftValue: Expr,
+  operationType: EqualsOperationType,
+  rightValueRanges: Array<Expr>
+): EqualsExpr {
   return { type: "EqualsExpr", leftValue, operationType, rightValueRanges };
 }
 
@@ -43,54 +60,58 @@ export function newValueRangeExpr(min: Expr, max: Expr): ValueRangeExpr {
 }
 
 export interface AndExpr {
-  readonly type: "AndExpr",
-  readonly children: Array<Expr>
+  readonly type: "AndExpr";
+  readonly children: Array<Expr>;
 }
 
-export type ComparisonOperationType = "greater" | "less" | "greaterOrEqual" | "lessOrEqual";
+export type ComparisonOperationType =
+  | "greater"
+  | "less"
+  | "greaterOrEqual"
+  | "lessOrEqual";
 
 export interface ComparisonExpr {
-  readonly type: "ComparisonExpr",
-  readonly leftValue: Expr,
-  readonly operationType: ComparisonOperationType,
-  readonly rightValue: Expr
+  readonly type: "ComparisonExpr";
+  readonly leftValue: Expr;
+  readonly operationType: ComparisonOperationType;
+  readonly rightValue: Expr;
 }
 
 export interface EmptyExpr {
-  readonly type: "EmptyExpr",
+  readonly type: "EmptyExpr";
 }
 
 export type EqualsOperationType = "equals" | "notEquals";
 
 export interface EqualsExpr {
-  readonly type: "EqualsExpr",
-  readonly leftValue: Expr,
-  readonly operationType: EqualsOperationType,
-  readonly rightValueRanges: Array<Expr>,
+  readonly type: "EqualsExpr";
+  readonly leftValue: Expr;
+  readonly operationType: EqualsOperationType;
+  readonly rightValueRanges: Array<Expr>;
 }
 
 export interface IdentifierExpr {
-  readonly type: "IdentifierExpr",
-  readonly name: string,
+  readonly type: "IdentifierExpr";
+  readonly name: string;
 }
 
 export interface NullExpr {
-  readonly type: "NullExpr",
+  readonly type: "NullExpr";
 }
 
 export interface OrExpr {
-  readonly type: "OrExpr",
-  readonly children: Array<Expr>,
+  readonly type: "OrExpr";
+  readonly children: Array<Expr>;
 }
 
 export interface ValueExpr {
-  readonly type: "ValueExpr",
-  readonly unParsed: string,
-  readonly parsed: PropertyValue.PropertyValue,
+  readonly type: "ValueExpr";
+  readonly unParsed: string;
+  readonly parsed: PropertyValue.PropertyValue;
 }
 
 export interface ValueRangeExpr {
-  readonly type: "ValueRangeExpr",
-  readonly min: Expr,
-  readonly max: Expr,
+  readonly type: "ValueRangeExpr";
+  readonly min: Expr;
+  readonly max: Expr;
 }

@@ -7,7 +7,10 @@ import { exhaustiveCheck } from "../utils/exhaustive-check";
 // const _typeLabels: Map<Unit.Unit<Quantity>, string> = new Map();
 const _typeLabels: { [unit: string]: string } = {}; //tslint:disable-line
 
-export function registerLabel<T extends Quantity>(label: string, unit: Unit.Unit<T>): void {
+export function registerLabel<T extends Quantity>(
+  label: string,
+  unit: Unit.Unit<T>
+): void {
   _typeLabels[JSON.stringify(unit)] = label;
 }
 
@@ -35,8 +38,9 @@ function buildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): string {
   // throw new Error(`Unknown innerUnit ${JSON.stringify(unit)}`);
 }
 
-function productUnitBuildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): string {
-
+function productUnitBuildDerivedName<T extends Quantity>(
+  unit: Unit.Unit<T>
+): string {
   const comparePow = (a: Unit.Element, b: Unit.Element) => {
     if (a.pow > b.pow) {
       return 1;
@@ -47,10 +51,10 @@ function productUnitBuildDerivedName<T extends Quantity>(unit: Unit.Unit<T>): st
     }
   };
 
-  const pospow = getElements(unit).filter((e) => e.pow > 0);
+  const pospow = getElements(unit).filter(e => e.pow > 0);
   pospow.sort(comparePow); // orderby e.Pow descending select e;
   const posname = productUnitBuildNameFromElements(pospow);
-  const negpow = getElements(unit).filter((e) => e.pow < 0);
+  const negpow = getElements(unit).filter(e => e.pow < 0);
   negpow.sort(comparePow); // orderby e.Pow ascending select e;
   const negname = productUnitBuildNameFromElements(negpow);
 
@@ -73,7 +77,9 @@ function getElements(unit: Unit.Unit<Quantity>): Array<Unit.Element> {
   return [];
 }
 
-function productUnitBuildNameFromElements(elements: Array<Unit.Element>): string {
+function productUnitBuildNameFromElements(
+  elements: Array<Unit.Element>
+): string {
   let name: string = "";
   for (let e of elements) {
     name += getName(e.unit);

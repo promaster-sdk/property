@@ -9,25 +9,31 @@ import { compareNumbers, compareIgnoreCase } from "../utils/compare-utils";
 export type PropertyType = "amount" | "text" | "integer";
 
 export interface AmountPropertyValue {
-  readonly type: "amount",
-  readonly value: Amount.Amount<Quantity>,
+  readonly type: "amount";
+  readonly value: Amount.Amount<Quantity>;
 }
 
 export interface TextPropertyValue {
-  readonly type: "text",
-  readonly value: string,
+  readonly type: "text";
+  readonly value: string;
 }
 
 export interface IntegerPropertyValue {
-  readonly type: "integer",
-  readonly value: number,
+  readonly type: "integer";
+  readonly value: number;
 }
 
-export type PropertyValue = AmountPropertyValue | TextPropertyValue | IntegerPropertyValue;
+export type PropertyValue =
+  | AmountPropertyValue
+  | TextPropertyValue
+  | IntegerPropertyValue;
 
 // Functions
 
-export function create(type: PropertyType, value: Amount.Amount<Quantity> | string | number): PropertyValue {
+export function create(
+  type: PropertyType,
+  value: Amount.Amount<Quantity> | string | number
+): PropertyValue {
   if (type === undefined || type === null) {
     throw new Error("Argument 'type' must be specified.");
   }
@@ -49,17 +55,27 @@ export function create(type: PropertyType, value: Amount.Amount<Quantity> | stri
 export function fromString(encodedValue: string): PropertyValue | undefined {
   const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue);
   if (result === null) {
-    console.warn(`PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`); //tslint:disable-line
+    // tslint:disable-next-line:no-console
+    console.warn(
+      `PropertyValue.fromString(): Could not parse encoded value: '${
+        encodedValue
+      }'`
+    ); //tslint:disable-line
   }
   return result;
 }
 
-export function fromAmount<T extends Quantity>(amountValue: Amount.Amount<T>): PropertyValue {
+export function fromAmount<T extends Quantity>(
+  amountValue: Amount.Amount<T>
+): PropertyValue {
   if (!amountValue) {
     throw new Error("null: value");
   }
   if (Amount.isQuantity<Discrete>("Discrete", amountValue)) {
-    return { type: "integer", value: Amount.valueAs(Units.Integer, amountValue) };
+    return {
+      type: "integer",
+      value: Amount.valueAs(Units.Integer, amountValue)
+    };
   } else {
     return { type: "amount", value: amountValue };
   }
@@ -87,7 +103,9 @@ export function getInteger(value: PropertyValue): number | undefined {
   }
 }
 
-export function getAmount<T extends Quantity>(value: PropertyValue): Amount.Amount<T> | undefined {
+export function getAmount<T extends Quantity>(
+  value: PropertyValue
+): Amount.Amount<T> | undefined {
   if (value.type === "amount") {
     return value.value as Amount.Amount<T>;
   } else {
@@ -103,7 +121,10 @@ export function getText(value: PropertyValue): string | undefined {
   }
 }
 
-export function valueAs<T extends Quantity>(unit: Unit<T>, value: PropertyValue): number | undefined {
+export function valueAs<T extends Quantity>(
+  unit: Unit<T>,
+  value: PropertyValue
+): number | undefined {
   const amount = getAmount(value);
   if (amount === undefined) {
     return undefined;
@@ -171,7 +192,10 @@ export function lessThan(left: PropertyValue, right: PropertyValue): boolean {
   return compareTo(left, right) < 0;
 }
 
-export function lessOrEqualTo(left: PropertyValue, right: PropertyValue): boolean {
+export function lessOrEqualTo(
+  left: PropertyValue,
+  right: PropertyValue
+): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
@@ -181,7 +205,10 @@ export function lessOrEqualTo(left: PropertyValue, right: PropertyValue): boolea
   return compareTo(left, right) <= 0;
 }
 
-export function greaterThan(left: PropertyValue, right: PropertyValue): boolean {
+export function greaterThan(
+  left: PropertyValue,
+  right: PropertyValue
+): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
@@ -191,7 +218,10 @@ export function greaterThan(left: PropertyValue, right: PropertyValue): boolean 
   return compareTo(left, right) > 0;
 }
 
-export function greaterOrEqualTo(left: PropertyValue, right: PropertyValue): boolean {
+export function greaterOrEqualTo(
+  left: PropertyValue,
+  right: PropertyValue
+): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
@@ -210,7 +240,9 @@ export function greaterOrEqualTo(left: PropertyValue, right: PropertyValue): boo
 /// Integer-values should not be enclosed in quotation marks.
 ///
 /// Amount-values must be in format Value:Unit without quotation marks.
-function _fromSerializedStringOrUndefinedIfInvalidString(encodedValue: string): PropertyValue | undefined {
+function _fromSerializedStringOrUndefinedIfInvalidString(
+  encodedValue: string
+): PropertyValue | undefined {
   if (encodedValue === "") {
     return fromText("");
   }
@@ -218,7 +250,10 @@ function _fromSerializedStringOrUndefinedIfInvalidString(encodedValue: string): 
     return undefined;
   }
   let deserializedValue: PropertyValue;
-  if (encodedValue.charAt(0) === "\"" && encodedValue.charAt(encodedValue.length - 1) === "\"") {
+  if (
+    encodedValue.charAt(0) === '"' &&
+    encodedValue.charAt(encodedValue.length - 1) === '"'
+  ) {
     const valueString = _decodeFromSafeString(encodedValue);
     deserializedValue = fromText(valueString);
   } else if (encodedValue.indexOf(":") !== -1) {
@@ -265,22 +300,24 @@ function _encodeToSafeString(unsafeString: string | null): string {
   }
   let safeString = unsafeString;
   safeString = safeString.replace(/"/g, "%22");
-  return "\"" + safeString + "\"";
+  return '"' + safeString + '"';
 }
 
 function _decodeFromSafeString(safeString: string): string {
-
   // We use '"' to enclose a string so it must be encoded as %22 inside strings
   //    var unsafeString = safeString.Trim('"');
   let unsafeString = safeString;
-  while (unsafeString.length > 0 && unsafeString.charAt(0) === "\"") {
+  while (unsafeString.length > 0 && unsafeString.charAt(0) === '"') {
     unsafeString = unsafeString.substring(1);
   }
-  while (unsafeString.length > 0 && unsafeString.charAt(unsafeString.length - 1) === "\"") {
+  while (
+    unsafeString.length > 0 &&
+    unsafeString.charAt(unsafeString.length - 1) === '"'
+  ) {
     unsafeString = unsafeString.substring(0, unsafeString.length - 1);
   }
 
-  unsafeString = unsafeString.replace(/%22/g, "\"");
+  unsafeString = unsafeString.replace(/%22/g, '"');
 
   //// **** OBSOLETE BEGIN - WE ONLY SUPPORT DECODING OF THESE CHARS FOR BACKWARDS COMPABILITY ****
   //unsafeString = unsafeString.replaceAll(/%3B/g, ";");

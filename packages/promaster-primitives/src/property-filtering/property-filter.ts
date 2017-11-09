@@ -5,14 +5,14 @@ import * as Parser from "./pegjs/property-filter-parser";
 import { exhaustiveCheck } from "../utils/exhaustive-check";
 
 export interface PropertyFilter {
-  readonly text: string,
-  readonly ast: Ast.Expr,
+  readonly text: string;
+  readonly ast: Ast.Expr;
 }
 
 //const _cache: Map<String, PropertyFilter> = new Map<String, PropertyFilter>();
 const _cache: { [key: string]: PropertyFilter } = {}; //tslint:disable-line
 
-export const Empty: PropertyFilter = { text: "", ast: Ast.newEmptyExpr() };  //tslint:disable-line
+export const Empty: PropertyFilter = { text: "", ast: Ast.newEmptyExpr() }; //tslint:disable-line
 
 function create(text: string, ast: Ast.Expr): PropertyFilter {
   return { text, ast };
@@ -46,7 +46,10 @@ export function fromStringOrEmpty(filterString: string): PropertyFilter {
   return filter;
 }
 
-export function isSyntaxValid(filter: string, propertyNames: Array<string> | undefined = undefined): boolean {
+export function isSyntaxValid(
+  filter: string,
+  propertyNames: Array<string> | undefined = undefined
+): boolean {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
@@ -75,8 +78,10 @@ export function isSyntaxValid(filter: string, propertyNames: Array<string> | und
   return true;
 }
 
-export function isValid(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean {
-
+export function isValid(
+  properties: PropertyValueSet.PropertyValueSet,
+  filter: PropertyFilter
+): boolean {
   if (properties === null || properties === undefined) {
     throw new Error("Argument 'properties' must be defined.");
   }
@@ -86,7 +91,10 @@ export function isValid(properties: PropertyValueSet.PropertyValueSet, filter: P
   return _evaluate(filter.ast, properties, false);
 }
 
-export function isValidMatchMissing(properties: PropertyValueSet.PropertyValueSet, filter: PropertyFilter): boolean {
+export function isValidMatchMissing(
+  properties: PropertyValueSet.PropertyValueSet,
+  filter: PropertyFilter
+): boolean {
   if (properties === null || properties === undefined) {
     throw new Error("Argument 'properties' must be defined.");
   }
@@ -134,7 +142,7 @@ function _preProcessString(filter: string): string {
   let inString: boolean = false;
   let newFilter = "";
   for (let char of filter.split("")) {
-    if (char === "\"") {
+    if (char === '"') {
       inString = !inString;
     }
     if (char !== " " || inString) {
@@ -147,7 +155,6 @@ function _preProcessString(filter: string): string {
 }
 
 function _findProperties(e: Ast.Expr, properties: Array<string>): void {
-
   switch (e.type) {
     case "AndExpr":
       for (let child of e.children) {
@@ -191,12 +198,21 @@ function _findProperties(e: Ast.Expr, properties: Array<string>): void {
   }
 }
 
-function _buildAst(text: string, throwOnInvalidSyntax: boolean): Ast.Expr | undefined {
+function _buildAst(
+  text: string,
+  throwOnInvalidSyntax: boolean
+): Ast.Expr | undefined {
   const result = Parser.parse(text, throwOnInvalidSyntax);
   return result;
 }
 
-export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValueSet, matchMissingIdentifiers: boolean): any { //tslint:disable-line
+export function _evaluate(
+  e: Ast.Expr,
+  properties: PropertyValueSet.PropertyValueSet,
+  matchMissingIdentifiers: boolean
+  // tslint:disable-next-line:no-any
+): any {
+  //tslint:disable-line
 
   if (e.type === "AndExpr") {
     for (let child of e.children) {
@@ -206,19 +222,29 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
     }
     return true;
   } else if (e.type === "ComparisonExpr") {
-
     // Handle match missing identifier
-    if (matchMissingIdentifiers && (_isMissingIdent(e.leftValue, properties)
-      || _isMissingIdent(e.rightValue, properties))) {
+    if (
+      matchMissingIdentifiers &&
+      (_isMissingIdent(e.leftValue, properties) ||
+        _isMissingIdent(e.rightValue, properties))
+    ) {
       return true;
     }
 
-    let left: PropertyValue.PropertyValue = _evaluate(e.leftValue, properties, matchMissingIdentifiers);
+    let left: PropertyValue.PropertyValue = _evaluate(
+      e.leftValue,
+      properties,
+      matchMissingIdentifiers
+    );
     if (left === null) {
       return false;
     }
 
-    let right: PropertyValue.PropertyValue = _evaluate(e.rightValue, properties, matchMissingIdentifiers);
+    let right: PropertyValue.PropertyValue = _evaluate(
+      e.rightValue,
+      properties,
+      matchMissingIdentifiers
+    );
     if (right === null) {
       return false;
     }
@@ -238,19 +264,25 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
   } else if (e.type === "EmptyExpr") {
     return true;
   } else if (e.type === "EqualsExpr") {
-
     // Handle match missing identifier
     if (matchMissingIdentifiers) {
-      if (_isMissingIdent(e.leftValue, properties) ||
-        e.rightValueRanges.filter((vr: Ast.ValueRangeExpr) =>
-          _isMissingIdent(vr.min, properties)
-          || _isMissingIdent(vr.max, properties)
-        ).length > 0) {
+      if (
+        _isMissingIdent(e.leftValue, properties) ||
+        e.rightValueRanges.filter(
+          (vr: Ast.ValueRangeExpr) =>
+            _isMissingIdent(vr.min, properties) ||
+            _isMissingIdent(vr.max, properties)
+        ).length > 0
+      ) {
         return true;
       }
     }
 
-    const left: PropertyValue.PropertyValue = _evaluate(e.leftValue, properties, matchMissingIdentifiers);
+    const left: PropertyValue.PropertyValue = _evaluate(
+      e.leftValue,
+      properties,
+      matchMissingIdentifiers
+    );
 
     for (let range of e.rightValueRanges) {
       let rangeResult = _evaluate(range, properties, matchMissingIdentifiers);
@@ -276,15 +308,24 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
       // console.log("PropertyValue.lessOrEqualTo(left, max)", PropertyValue.lessOrEqualTo(left, max));
 
       // Match on NULL or inclusive in range
-      if (((max === null || min === null) && left === null) ||
-        (left !== null && min !== null && max !== null && (PropertyValue.greaterOrEqualTo(left, min) && PropertyValue.lessOrEqualTo(left, max)))) {
+      if (
+        ((max === null || min === null) && left === null) ||
+        (left !== null &&
+          min !== null &&
+          max !== null &&
+          (PropertyValue.greaterOrEqualTo(left, min) &&
+            PropertyValue.lessOrEqualTo(left, max)))
+      ) {
         return e.operationType === "equals";
       }
     }
 
     return e.operationType === "notEquals";
   } else if (e.type === "IdentifierExpr") {
-    if (properties !== null && PropertyValueSet.hasProperty(e.name, properties)) {
+    if (
+      properties !== null &&
+      PropertyValueSet.hasProperty(e.name, properties)
+    ) {
       return PropertyValueSet.get(e.name, properties);
     } else {
       return null;
@@ -301,16 +342,19 @@ export function _evaluate(e: Ast.Expr, properties: PropertyValueSet.PropertyValu
   } else if (e.type === "ValueRangeExpr") {
     return [
       _evaluate(e.min, properties, matchMissingIdentifiers),
-      _evaluate(e.max, properties, matchMissingIdentifiers)];
+      _evaluate(e.max, properties, matchMissingIdentifiers)
+    ];
   } else if (e.type === "NullExpr") {
     return null;
   } else {
     throw new Error("invalid type.");
   }
-
 }
 
-function _isMissingIdent(e: Ast.Expr, properties: PropertyValueSet.PropertyValueSet): boolean {
+function _isMissingIdent(
+  e: Ast.Expr,
+  properties: PropertyValueSet.PropertyValueSet
+): boolean {
   // If expression is an missing identifier it should match anything
   if (e.type === "IdentifierExpr") {
     if (!PropertyValueSet.hasProperty(e.name, properties)) {

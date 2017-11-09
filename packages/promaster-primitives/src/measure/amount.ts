@@ -72,12 +72,7 @@ export function plus<T extends Quantity>(
   left: Amount<T>,
   right: Amount<T>
 ): Amount<T> {
-  console.log("left", left);
-  console.log("right", right);
   const mostGranularAmount = getMostGranularAmount(left, right);
-  console.log("mostGranularAmount", mostGranularAmount);
-  console.log("left2", valueAs(mostGranularAmount.unit, left));
-  console.log("right2", valueAs(mostGranularAmount.unit, right));
   return _factory<T>(
     valueAs(mostGranularAmount.unit, left) +
       valueAs(mostGranularAmount.unit, right),
@@ -366,8 +361,8 @@ function _comparison<T1 extends Quantity, T2 extends Quantity>(
 /**
  * Gets the most granular amount
  * Takes into account both the unit and the decimalCount.
- * @param leftUnit 
- * @param rightUnit 
+ * @param leftUnit
+ * @param rightUnit
  */
 function getMostGranularAmount(
   left: Amount<Quantity>,

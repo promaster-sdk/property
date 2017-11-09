@@ -5,25 +5,39 @@ import * as Quantity from "./quantity";
 export type MeasureSystem = "SI" | "IP";
 
 export interface UnitInfo {
-  readonly measureSystem: MeasureSystem | undefined,
-  readonly decimalCount: number,
-  readonly coUnit?: Unit.Unit<Quantity.Quantity>
+  readonly measureSystem: MeasureSystem | undefined;
+  readonly decimalCount: number;
+  readonly coUnit?: Unit.Unit<Quantity.Quantity>;
 }
 
 const units: { [key: string]: UnitInfo } = {}; //tslint:disable-line
 
-export function getUnitInfo(unit: Unit.Unit<Quantity.Quantity>): UnitInfo | undefined {
+export function getUnitInfo(
+  unit: Unit.Unit<Quantity.Quantity>
+): UnitInfo | undefined {
   return units[Units.getStringFromUnit(unit)];
 }
 
-function createUnitInfo(measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<Quantity.Quantity>): UnitInfo {
-  return { measureSystem, decimalCount, coUnit };  
+function createUnitInfo(
+  measureSystem: MeasureSystem | undefined,
+  decimalCount: number,
+  coUnit?: Unit.Unit<Quantity.Quantity>
+): UnitInfo {
+  return { measureSystem, decimalCount, coUnit };
 }
 
 // The last argument is the corresponding unit which is the closest unit in the other measure system (SI/IP)
-function addUnit<T extends Quantity.Quantity>(unit: Unit.Unit<T>,
-  measureSystem: MeasureSystem | undefined, decimalCount: number, coUnit?: Unit.Unit<T>): void {
-  units[Units.getStringFromUnit(unit)] = createUnitInfo(measureSystem, decimalCount, coUnit );
+function addUnit<T extends Quantity.Quantity>(
+  unit: Unit.Unit<T>,
+  measureSystem: MeasureSystem | undefined,
+  decimalCount: number,
+  coUnit?: Unit.Unit<T>
+): void {
+  units[Units.getStringFromUnit(unit)] = createUnitInfo(
+    measureSystem,
+    decimalCount,
+    coUnit
+  );
 }
 
 addUnit(Units.Ampere, "SI", 2);
@@ -171,8 +185,18 @@ addUnit(Units.SquareFeet, "IP", 0, Units.SquareDecimeter);
 addUnit(Units.SquareInch, "IP", 0, Units.SquareCentimeter);
 addUnit(Units.SquareMeter, "SI", 2, Units.SquareFeet);
 addUnit(Units.SquareMillimeter, "SI", 4);
-addUnit(Units.StandardCubicFeetPerMinute, "IP", 0, Units.StandardCubicMeterPerHour);
-addUnit(Units.StandardCubicMeterPerHour, "SI", 0, Units.StandardCubicFeetPerMinute);
+addUnit(
+  Units.StandardCubicFeetPerMinute,
+  "IP",
+  0,
+  Units.StandardCubicMeterPerHour
+);
+addUnit(
+  Units.StandardCubicMeterPerHour,
+  "SI",
+  0,
+  Units.StandardCubicFeetPerMinute
+);
 addUnit(Units.Steradian, "SI", 2);
 addUnit(Units.Tesla, "SI", 2);
 addUnit(Units.TonCooling, "IP", 2, Units.KiloWatt);

@@ -24,7 +24,7 @@ import { exhaustiveCheck } from "../utils/exhaustive-check";
 // }
 
 export type Unit<T extends Quantity> =
-  AlternateUnit<T>
+  | AlternateUnit<T>
   | BaseUnit<T>
   | ProductUnit<T>
   | TransformedUnit<T>;
@@ -38,10 +38,10 @@ export type Unit<T extends Quantity> =
  * be base units accross all possible systems otherwise).
  */
 export interface BaseUnit<T extends Quantity> {
-  readonly type: "base",
-  readonly quantity: Quantity,
+  readonly type: "base";
+  readonly quantity: Quantity;
   /** Holds the unique symbol for this base unit. */
-  readonly symbol: string,
+  readonly symbol: string;
 }
 
 /**
@@ -49,11 +49,11 @@ export interface BaseUnit<T extends Quantity> {
  * between quantities of a different nature but of the same dimensions.
  */
 export interface AlternateUnit<T extends Quantity> {
-  readonly type: "alternate",
-  readonly quantity: Quantity,
-  readonly symbol: string,
+  readonly type: "alternate";
+  readonly quantity: Quantity;
+  readonly symbol: string;
   /** Holds the parent unit (a system unit). */
-  readonly parent: Unit<Quantity>,
+  readonly parent: Unit<Quantity>;
 }
 
 /**
@@ -74,12 +74,12 @@ export interface AlternateUnit<T extends Quantity> {
  *       UnitFormat.getStandardInstance().alias(CENTI(METER)), "centimetre");
  */
 export interface TransformedUnit<T extends Quantity> {
-  readonly type: "transformed",
-  readonly quantity: Quantity,
+  readonly type: "transformed";
+  readonly quantity: Quantity;
   /** Holds the parent unit (not a transformed unit). */
-  readonly parentUnit: Unit<T>,
+  readonly parentUnit: Unit<T>;
   /** Holds the converter to the parent unit. */
-  readonly toParentUnitConverter: UnitConverter,
+  readonly toParentUnitConverter: UnitConverter;
 }
 
 /**
@@ -90,18 +90,18 @@ export interface TransformedUnit<T extends Quantity> {
  * METER.pow(2).divide(METER) returns METER.
  */
 export interface ProductUnit<T extends Quantity> {
-  readonly type: "product",
-  readonly quantity: Quantity,
+  readonly type: "product";
+  readonly quantity: Quantity;
   /// Holds the units composing this product unit.
-  readonly elements: Array<Element>,
+  readonly elements: Array<Element>;
 }
 
 /** Represents a rational power of a single unit. */
 export interface Element {
   /** Holds the single unit. */
-  readonly unit: Unit<Quantity>,
+  readonly unit: Unit<Quantity>;
   /** Holds the power exponent. */
-  readonly pow: number,
+  readonly pow: number;
 }
 
 /**
@@ -111,30 +111,34 @@ export interface Element {
  * to the identity converter, then the unique IDENTITY instance
  * should be returned.
  */
-export type UnitConverter = OffsetConverter | CompoundConverter | FactorConverter | IdentityConverter;
+export type UnitConverter =
+  | OffsetConverter
+  | CompoundConverter
+  | FactorConverter
+  | IdentityConverter;
 
 /** This record represents a compound converter. */
 export interface CompoundConverter {
-  readonly type: "compound",
+  readonly type: "compound";
   /** Holds the first converter. */
-  readonly first: UnitConverter,
+  readonly first: UnitConverter;
   /** Holds the second converter. */
-  readonly second: UnitConverter,
+  readonly second: UnitConverter;
 }
 
 export interface FactorConverter {
-  readonly type: "factor",
-  readonly factor: number,
+  readonly type: "factor";
+  readonly factor: number;
 }
 
 /** This record represents the identity converter (singleton). */
 export interface IdentityConverter {
-  readonly type: "identity",
+  readonly type: "identity";
 }
 
 export interface OffsetConverter {
-  readonly type: "offset",
-  readonly offset: number,
+  readonly type: "offset";
+  readonly offset: number;
 }
 
 /** Holds the dimensionless unit ONE */
@@ -148,7 +152,10 @@ const identityConverter: UnitConverter = createIdentityConverter();
  * @param quantity The quantity of the resulting unit.
  * @param symbol The symbol of this base unit.
  */
-export function createBase<T extends Quantity>(quantity: T, symbol: string): Unit<T> {
+export function createBase<T extends Quantity>(
+  quantity: T,
+  symbol: string
+): Unit<T> {
   return { quantity, type: "base", symbol };
 }
 
@@ -158,7 +165,10 @@ export function createBase<T extends Quantity>(quantity: T, symbol: string): Uni
  * @param symbol The symbol for this alternate unit.
  * @param parent Parent the system unit from which this alternate unit is derived.
  */
-export function createAlternate<T extends Quantity>(symbol: string, parent: Unit<Quantity>): Unit<T> {
+export function createAlternate<T extends Quantity>(
+  symbol: string,
+  parent: Unit<Quantity>
+): Unit<T> {
   return { quantity: parent.quantity, type: "alternate", symbol, parent };
 }
 
@@ -169,7 +179,11 @@ export function createAlternate<T extends Quantity>(symbol: string, parent: Unit
  * @param right The right unit operand.</param>
  * @returns left * right
  */
-export function times<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
+export function times<T extends Quantity>(
+  quantity: T,
+  left: Unit<Quantity>,
+  right: Unit<Quantity>
+): Unit<T> {
   return product(quantity, left, right);
 }
 
@@ -180,27 +194,46 @@ export function times<T extends Quantity>(quantity: T, left: Unit<Quantity>, rig
  * @param right The divisor unit operand.
  * @returns left / right
  */
-export function divide<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): Unit<T> {
+export function divide<T extends Quantity>(
+  quantity: T,
+  left: Unit<Quantity>,
+  right: Unit<Quantity>
+): Unit<T> {
   return quotient(quantity, left, right);
 }
 
-export function squareRoot<T extends Quantity>(quantity: T, unit: Unit<T>): Unit<T> {
+export function squareRoot<T extends Quantity>(
+  quantity: T,
+  unit: Unit<T>
+): Unit<T> {
   return pow(quantity, unit, 0.5);
 }
 
-export function timesNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
+export function timesNumber<T extends Quantity>(
+  factor: number,
+  unit: Unit<T>
+): Unit<T> {
   return transform(createFactorConverter(factor), unit);
 }
 
-export function divideNumber<T extends Quantity>(factor: number, unit: Unit<T>): Unit<T> {
+export function divideNumber<T extends Quantity>(
+  factor: number,
+  unit: Unit<T>
+): Unit<T> {
   return transform(createFactorConverter(1.0 / factor), unit);
 }
 
-export function plus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
+export function plus<T extends Quantity>(
+  offset: number,
+  unit: Unit<T>
+): Unit<T> {
   return transform(createOffsetConverter(offset), unit);
 }
 
-export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T> {
+export function minus<T extends Quantity>(
+  offset: number,
+  unit: Unit<T>
+): Unit<T> {
   return transform(createOffsetConverter(-offset), unit);
 }
 
@@ -211,12 +244,19 @@ export function minus<T extends Quantity>(offset: number, unit: Unit<T>): Unit<T
  * @param toUnit The unit to which to convert the numeric value.
  * @returns The converted numeric value.
  */
-export function convert(value: number, fromUnit: Unit<Quantity>, toUnit: Unit<Quantity>): number {
+export function convert(
+  value: number,
+  fromUnit: Unit<Quantity>,
+  toUnit: Unit<Quantity>
+): number {
   const converter = getConverter(fromUnit, toUnit);
   return convertWithConverter(value, converter);
 }
 
-export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>, right: Unit<T2>): boolean {
+export function equals<T1 extends Quantity, T2 extends Quantity>(
+  left: Unit<T1>,
+  right: Unit<T2>
+): boolean {
   if (left.type !== right.type || left.quantity !== right.quantity) {
     return false;
   }
@@ -226,24 +266,39 @@ export function equals<T1 extends Quantity, T2 extends Quantity>(left: Unit<T1>,
       return left.symbol === (right as BaseUnit<Quantity>).symbol;
     case "alternate":
       const alternateRight = right as AlternateUnit<Quantity>;
-      return left.symbol === alternateRight.symbol && equals(left.parent, alternateRight.parent);
+      return (
+        left.symbol === alternateRight.symbol &&
+        equals(left.parent, alternateRight.parent)
+      );
     case "transformed":
       const transformedRight = right as TransformedUnit<Quantity>;
-      return equals(left.parentUnit, transformedRight.parentUnit) && unitConvertersIsEqual(left.toParentUnitConverter, transformedRight.toParentUnitConverter);
+      return (
+        equals(left.parentUnit, transformedRight.parentUnit) &&
+        unitConvertersIsEqual(
+          left.toParentUnitConverter,
+          transformedRight.toParentUnitConverter
+        )
+      );
     case "product":
       const productRight = right as ProductUnit<Quantity>;
       if (left.elements.length !== productRight.elements.length) {
         return false;
       }
       return left.elements.every((leftElement, index) => {
-        return leftElement.pow === productRight.elements[index].pow && equals(leftElement.unit, productRight.elements[index].unit);
+        return (
+          leftElement.pow === productRight.elements[index].pow &&
+          equals(leftElement.unit, productRight.elements[index].unit)
+        );
       });
     default:
       return exhaustiveCheck(left, true);
   }
 }
 
-function unitConvertersIsEqual(left: UnitConverter, right: UnitConverter): boolean {
+function unitConvertersIsEqual(
+  left: UnitConverter,
+  right: UnitConverter
+): boolean {
   if (left.type !== right.type) {
     return false;
   }
@@ -269,18 +324,25 @@ function unitConvertersIsEqual(left: UnitConverter, right: UnitConverter): boole
 /// BEGIN PRIVATE DECLARATIONS
 ///////////////////////////////
 
-function getConverter<T extends Quantity>(fromUnit: Unit<T>, toUnit: Unit<Quantity>): UnitConverter {
+function getConverter<T extends Quantity>(
+  fromUnit: Unit<T>,
+  toUnit: Unit<Quantity>
+): UnitConverter {
   if (equals(fromUnit, toUnit)) {
     return identityConverter;
   }
   const standardFromUnit = toStandardUnitConverter(fromUnit);
   const standardToUnit = toStandardUnitConverter(toUnit);
-  return concatenateConverters(standardFromUnit, inverseConverter(standardToUnit));
+  return concatenateConverters(
+    standardFromUnit,
+    inverseConverter(standardToUnit)
+  );
 }
 
 // Returns the converter from this unit to its system unit.
-function toStandardUnitConverter<T extends Quantity>(unit: Unit<T>): UnitConverter {
-
+function toStandardUnitConverter<T extends Quantity>(
+  unit: Unit<T>
+): UnitConverter {
   switch (unit.type) {
     case "alternate":
       return toStandardUnitConverter(unit.parent);
@@ -289,7 +351,10 @@ function toStandardUnitConverter<T extends Quantity>(unit: Unit<T>): UnitConvert
     case "product":
       return productUnitToStandardUnit(unit);
     case "transformed":
-      return concatenateConverters(unit.toParentUnitConverter, toStandardUnitConverter(unit.parentUnit));
+      return concatenateConverters(
+        unit.toParentUnitConverter,
+        toStandardUnitConverter(unit.parentUnit)
+      );
     default:
       return exhaustiveCheck(unit, true);
   }
@@ -303,7 +368,10 @@ function toStandardUnitConverter<T extends Quantity>(unit: Unit<T>): UnitConvert
  * @param unit The unit.
  * @returns The unit after the specified transformation.
  */
-function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>): Unit<T> {
+function transform<T extends Quantity>(
+  operation: UnitConverter,
+  unit: Unit<T>
+): Unit<T> {
   if (operation === identityConverter) {
     return unit;
   }
@@ -313,8 +381,16 @@ function transform<T extends Quantity>(operation: UnitConverter, unit: Unit<T>):
 /// Creates a transformed unit from the specified parent unit.
 /// <param name="parentUnit">the untransformed unit from which this unit is derived.</param>
 /// <param name="toParentUnitConverter">the converter to the parent units.</param>
-function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParentUnitConverter: UnitConverter): TransformedUnit<T> {
-  return { quantity: parentUnit.quantity, type: "transformed", parentUnit, toParentUnitConverter };
+function createTransformedUnit<T extends Quantity>(
+  parentUnit: Unit<T>,
+  toParentUnitConverter: UnitConverter
+): TransformedUnit<T> {
+  return {
+    quantity: parentUnit.quantity,
+    type: "transformed",
+    parentUnit,
+    toParentUnitConverter
+  };
 }
 
 // function create<T extends Quantity>(quantity: T, innerUnit: Unit<T>): Unit<T> {
@@ -327,7 +403,11 @@ function createTransformedUnit<T extends Quantity>(parentUnit: Unit<T>, toParent
  * @param leftElems Left multiplicand elements.
  * @param rightElems Right multiplicand elements.
  */
-function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>, rightElems: Array<Element>): ProductUnit<T> {
+function fromProduct<T extends Quantity>(
+  quantity: T,
+  leftElems: Array<Element>,
+  rightElems: Array<Element>
+): ProductUnit<T> {
   // If we have several elements of the same unit then we can merge them by summing their power
   let allElements: Array<Element> = [];
   allElements.push(...leftElems);
@@ -363,7 +443,10 @@ function fromProduct<T extends Quantity>(quantity: T, leftElems: Array<Element>,
   Object.keys(unitGroups).forEach((unitJson: string) => {
     const unit: Unit<Quantity> = JSON.parse(unitJson);
     const unitGroup: Array<Element> = unitGroups[unitJson];
-    let sumpow: number = unitGroup.reduce((prev: number, element: Element) => prev + element.pow, 0);
+    let sumpow: number = unitGroup.reduce(
+      (prev: number, element: Element) => prev + element.pow,
+      0
+    );
     if (sumpow !== 0) {
       resultElements.push(createElement(unit, sumpow));
     }
@@ -376,37 +459,51 @@ function createElement(unit: Unit<Quantity>, pow: number): Element {
   return { unit, pow };
 }
 
-function product<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): ProductUnit<T> {
+function product<T extends Quantity>(
+  quantity: T,
+  left: Unit<Quantity>,
+  right: Unit<Quantity>
+): ProductUnit<T> {
   const leftelements = getElements(left);
   const rightelements = getElements(right);
   return fromProduct<T>(quantity, leftelements, rightelements);
 }
 
-function quotient<T extends Quantity>(quantity: T, left: Unit<Quantity>, right: Unit<Quantity>): ProductUnit<T> {
-
+function quotient<T extends Quantity>(
+  quantity: T,
+  left: Unit<Quantity>,
+  right: Unit<Quantity>
+): ProductUnit<T> {
   const leftelements = getElements(left);
   let invertedRightelements: Array<Element> = [];
   for (let element of getElements(right)) {
     invertedRightelements.push(createElement(element.unit, -element.pow));
   }
   return fromProduct<T>(quantity, leftelements, invertedRightelements);
-
 }
 
-function pow<T extends Quantity>(quantity: T, unit: Unit<Quantity>, exponent: number): ProductUnit<T> {
-
+function pow<T extends Quantity>(
+  quantity: T,
+  unit: Unit<Quantity>,
+  exponent: number
+): ProductUnit<T> {
   let squareRootedRightelements: Array<Element> = [];
   for (let element of getElements(unit)) {
-    squareRootedRightelements.push(createElement(element.unit, element.pow * exponent));
+    squareRootedRightelements.push(
+      createElement(element.unit, element.pow * exponent)
+    );
   }
   return fromProduct<T>(quantity, [], squareRootedRightelements);
-
 }
 
 function getElements(unit: Unit<Quantity>): Array<Element> {
   if (unit.type === "product") {
     return unit.elements;
-  } else if (unit.type === "base" || unit.type === "transformed" || unit.type === "alternate") {
+  } else if (
+    unit.type === "base" ||
+    unit.type === "transformed" ||
+    unit.type === "alternate"
+  ) {
     // Base units has one implicit element of the unit which they describe
     return [createElement(unit, 1)];
   } else {
@@ -414,7 +511,9 @@ function getElements(unit: Unit<Quantity>): Array<Element> {
   }
 }
 
-function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConverter {
+function productUnitToStandardUnit<T extends Quantity>(
+  unit: Unit<T>
+): UnitConverter {
   let converter = identityConverter;
   for (let element of getElements(unit)) {
     let conv = toStandardUnitConverter(element.unit);
@@ -430,7 +529,10 @@ function productUnitToStandardUnit<T extends Quantity>(unit: Unit<T>): UnitConve
   return converter;
 }
 
-function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Element>): ProductUnit<T> {
+function createProductUnit<T extends Quantity>(
+  quantity: T,
+  elements: Array<Element>
+): ProductUnit<T> {
   return { quantity, type: "product", elements };
 }
 
@@ -440,7 +542,10 @@ function createProductUnit<T extends Quantity>(quantity: T, elements: Array<Elem
  * @param first The first converter.
  * @param second Second the second converter.
  */
-function createCompoundConverter(first: UnitConverter, second: UnitConverter): CompoundConverter {
+function createCompoundConverter(
+  first: UnitConverter,
+  second: UnitConverter
+): CompoundConverter {
   return { type: "compound", first, second };
 }
 
@@ -467,7 +572,10 @@ function createFactorConverter(factor: number): FactorConverter {
 function inverseConverter(converter: UnitConverter): UnitConverter {
   switch (converter.type) {
     case "compound":
-      return createCompoundConverter(inverseConverter(converter.second), inverseConverter(converter.first));
+      return createCompoundConverter(
+        inverseConverter(converter.second),
+        inverseConverter(converter.first)
+      );
     case "factor":
       return createFactorConverter(1.0 / converter.factor);
     case "identity":
@@ -483,7 +591,10 @@ function inverseConverter(converter: UnitConverter): UnitConverter {
 function convertWithConverter(value: number, converter: UnitConverter): number {
   switch (converter.type) {
     case "compound":
-      return convertWithConverter(convertWithConverter(value, converter.first), converter.second);
+      return convertWithConverter(
+        convertWithConverter(value, converter.first),
+        converter.second
+      );
     case "factor":
       return value * converter.factor;
     case "identity":
@@ -508,8 +619,13 @@ function convertWithConverter(value: number, converter: UnitConverter): number {
  * @param converter The other converter.
  * @returns The concatenation of this converter with the other converter.
  */
-function concatenateConverters(concatConverter: UnitConverter, converter: UnitConverter): UnitConverter {
-  return concatConverter === identityConverter ? converter : createCompoundConverter(concatConverter, converter);
+function concatenateConverters(
+  concatConverter: UnitConverter,
+  converter: UnitConverter
+): UnitConverter {
+  return concatConverter === identityConverter
+    ? converter
+    : createCompoundConverter(concatConverter, converter);
 }
 
 /** Used solely to create ONE instance. */
