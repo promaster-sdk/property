@@ -18,12 +18,15 @@
     "@types/node": "^6.0.45",
     "@types/pegjs": "0.0.28",
     "chai": "^3.5.0",
+    "husky": "^0.14.3",
     "jsdoc-to-markdown": "^2.0.1",
+    "lint-staged": "^4.3.0",
     "madge": "^1.6.0",
     "mkdirp": "^0.5.1",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "pegjs": "0.9.0",
+    "prettier": "^1.8.2",
     "rimraf": "^2.5.4",
     "shelljs": "^0.7.4",
     "ts-node": "^3.1.0",
@@ -33,29 +36,46 @@
     "typedoc-markdown-theme": "0.0.4",
     "typescript": "^2.5.2"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": "tslint",
+    "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
+  },
   "scripts": {
+    "precommit": "lint-staged",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
-    "build": "node yarn.js build:clean && node yarn.js build:cjs && node yarn.js build:esm",
+    "build":
+      "node yarn.js build:clean && node yarn.js build:cjs && node yarn.js build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src && node yarn.js build:parser:cjs",
-    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm && node yarn.js build:parser:esm",
-    "build:parser:cjs": "cp src/property-filtering/pegjs/generated-parser.* lib-cjs/property-filtering/pegjs/",
-    "build:parser:esm": "cp src/property-filtering/pegjs/generated-parser.* lib-esm/property-filtering/pegjs/",
-    "publish:major": "node yarn.js test && node yarn.js build && node scripts/publish.js major",
-    "publish:minor": "node yarn.js test && node yarn.js build && node scripts/publish.js minor",
-    "publish:patch": "node yarn.js test && node yarn.js build && node scripts/publish.js patch",
+    "build:esm":
+      "tsc -p src --module es2015 --outDir ./lib-esm && node yarn.js build:parser:esm",
+    "build:parser:cjs":
+      "cp src/property-filtering/pegjs/generated-parser.* lib-cjs/property-filtering/pegjs/",
+    "build:parser:esm":
+      "cp src/property-filtering/pegjs/generated-parser.* lib-esm/property-filtering/pegjs/",
+    "publish:major":
+      "node yarn.js test && node yarn.js build && node scripts/publish.js major",
+    "publish:minor":
+      "node yarn.js test && node yarn.js build && node scripts/publish.js minor",
+    "publish:patch":
+      "node yarn.js test && node yarn.js build && node scripts/publish.js patch",
     "tsc": "tsc -p src",
     "tsc:test": "tsc -p test",
     "gen-doc": "node yarn.js build && node scripts/gen-doc.js",
-    "gen-typedoc": "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
+    "gen-typedoc":
+      "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
     "test:mocha": "mocha --compilers ts:ts-node/register \"test/**/*.ts\"",
     "test": "nyc mocha --require ts-node/register \"test/**/*.ts\"",
     "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
-    "test:properties": "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
-    "test:filtering": "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
-    "test:parser": "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
-    "generate-parser": "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/generated-parser.js"
+    "test:properties":
+      "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
+    "test:filtering":
+      "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
+    "test:parser":
+      "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
+    "generate-parser":
+      "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/generated-parser.js"
   },
   "dependencies": {
     "@types/lodash": "^4.14.66"
