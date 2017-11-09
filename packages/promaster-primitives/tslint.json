@@ -1,13 +1,11 @@
 {
-    "extends": [
-      "tslint-immutable"
-    ],
-    "rules": {
+  "extends": ["tslint-immutable"],
+  "rules": {
     "adjacent-overload-signatures": false,
     "member-access": false,
     "member-ordering": false,
     "no-any": true,
-//    "no-inferrable-types": true,
+    //    "no-inferrable-types": true,
     "no-internal-module": true,
     "no-namespace": true,
     "no-reference": true,
@@ -64,9 +62,6 @@
     "no-default-export": true,
     "no-mergeable-namespace": true,
     "no-require-imports": true,
-    //"trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
-    "align": [true, "statements"],
-    "arrow-parens": true,
     "class-name": true,
     "file-header": false,
     "interface-name": false,
@@ -86,12 +81,6 @@
       "check-whitespace"
     ],
     "one-variable-per-declaration": true,
-    "quotemark": [true, "double"],
-    "semicolon": [
-      true,
-      "always",
-      "ignore-interfaces"
-    ],
     "variable-name": [true, "ban-keywords", "check-format"],
     "whitespace": [
       true,
@@ -108,18 +97,19 @@
     "readonly-keyword": true,
     "no-class": true,
     // Need to use statements to add values to Map
-//    "no-expression-statement": true,
+    //    "no-expression-statement": true,
     // Neec to use new for built-in types like Map, Set, RegEx etc.
-//    "no-new": true,
+    //    "no-new": true,
     "no-this": true,
     "no-mixed-interface": true,
     "no-label": true,
-    "no-semicolon-interface": true,
-    "import-containment": [ true,
-    {
-      "containmentPath": "src/client/containers",
-      "allowedExternalFileNames": ["index", "types", "bootstrap"],
-      "disallowedInternalFileNames": ["index"]
-    }]
+    "import-containment": [
+      true,
+      {
+        "containmentPath": "src/client/containers",
+        "allowedExternalFileNames": ["index", "types", "bootstrap"],
+        "disallowedInternalFileNames": ["index"]
+      }
+    ]
   }
 }
