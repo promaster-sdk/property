@@ -54,12 +54,9 @@
       "cp src/property-filtering/pegjs/generated-parser.* lib-cjs/property-filtering/pegjs/",
     "build:parser:esm":
       "cp src/property-filtering/pegjs/generated-parser.* lib-esm/property-filtering/pegjs/",
-    "publish:major":
-      "node yarn.js test && node yarn.js build && node scripts/publish.js major",
-    "publish:minor":
-      "node yarn.js test && node yarn.js build && node scripts/publish.js minor",
-    "publish:patch":
-      "node yarn.js test && node yarn.js build && node scripts/publish.js patch",
+    "publish:major": "node scripts/publish.js major",
+    "publish:minor": "node scripts/publish.js minor",
+    "publish:patch": "node scripts/publish.js patch",
     "tsc": "tsc -p src",
     "tsc:test": "tsc -p test",
     "gen-doc": "node yarn.js build && node scripts/gen-doc.js",
