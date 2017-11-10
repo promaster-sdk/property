@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-primitives",
-  "version": "0.16.3",
+  "version": "0.17.0",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
