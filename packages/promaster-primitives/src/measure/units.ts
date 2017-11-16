@@ -915,6 +915,10 @@ export const GramPerKiloWattHour: Unit.Unit<q.Emission> = _register(
   UnitDivide.massByEnergy(Gram, KiloWattHour),
   "g/kWh"
 );
+export const PoundLbPerKiloWattHour: Unit.Unit<q.Emission> = _register(
+  UnitDivide.massByEnergy(PoundLb, KiloWattHour),
+  "lb/kWh"
+);
 
 // MassFlow
 export const KilogramPerSecond: Unit.Unit<q.MassFlow> = _register(
@@ -1557,6 +1561,7 @@ function _ensureMetaAdded(): void {
   _addMeta("DimensionlessPerEnergy", "OnePerMegajoule", OnePerMegajoule);
   _addMeta("DimensionlessPerEnergy", "OnePerJoule", OnePerJoule);
   _addMeta("Emission", "KilogramPerKiloWattHour", KilogramPerKiloWattHour);
+  _addMeta("Emission", "PoundLbPerKiloWattHour", PoundLbPerKiloWattHour);
   _addMeta("Emission", "GramPerKiloWattHour", GramPerKiloWattHour);
   _addMeta("MassFlow", "KilogramPerSecond", KilogramPerSecond);
   _addMeta("MassFlow", "GramPerSecond", GramPerSecond);
