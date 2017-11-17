@@ -4,11 +4,13 @@ import * as Amount from "../../src/measure/amount";
 import { EnergyConversion } from "../test_utils/conversion_helpers/energy_conversion";
 
 describe("amount_energy_test", () => {
-
   it("ForValue1JouleWeShouldGetValue0001Kilojoules", () => {
     const value: number = 1.0;
     const amountToTest = Amount.create(value, Units.Joule);
-    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
+    const valueInKilojoules: number = Amount.valueAs(
+      Units.Kilojoule,
+      amountToTest
+    );
     assert.equal(valueInKilojoules, EnergyConversion.J2Kj(value));
   });
 
@@ -22,7 +24,10 @@ describe("amount_energy_test", () => {
   it("ForValue0JouleWeShouldGetValue0Kilojoules", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.Joule);
-    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
+    const valueInKilojoules: number = Amount.valueAs(
+      Units.Kilojoule,
+      amountToTest
+    );
     assert.equal(valueInKilojoules, EnergyConversion.J2Kj(value));
   });
 
@@ -43,14 +48,20 @@ describe("amount_energy_test", () => {
   it("ForValue1KilojouleWeShouldGetValue1Kilojoule", () => {
     const value: number = 1.0;
     const amountToTest = Amount.create(value, Units.Kilojoule);
-    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
+    const valueInKilojoules: number = Amount.valueAs(
+      Units.Kilojoule,
+      amountToTest
+    );
     assert.equal(valueInKilojoules, value);
   });
 
   it("ForValue063JouleWeShouldGetValue000063Kilojoules", () => {
     const value: number = 0.63;
     const amountToTest = Amount.create(value, Units.Joule);
-    const valueInKilojoules: number = Amount.valueAs(Units.Kilojoule, amountToTest);
+    const valueInKilojoules: number = Amount.valueAs(
+      Units.Kilojoule,
+      amountToTest
+    );
     assert.equal(valueInKilojoules, EnergyConversion.J2Kj(value));
   });
 
@@ -118,5 +129,4 @@ describe("amount_energy_test", () => {
   //  // Assert
   //  assert.equal(1075, result, 1.0);
   //}
-
 });

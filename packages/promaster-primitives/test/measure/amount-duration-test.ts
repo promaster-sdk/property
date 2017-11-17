@@ -1,10 +1,9 @@
-import {assert} from "chai";
+import { assert } from "chai";
 import * as Amount from "../../src/measure/amount";
 import * as Units from "../../src/measure/units";
-import {DurationConversion} from "../test_utils/conversion_helpers/duration_conversion";
+import { DurationConversion } from "../test_utils/conversion_helpers/duration_conversion";
 
 describe("amount_duration_test", () => {
-
   it("ForValue0SecondsWeShouldGetValue0Minutes", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.Second);
@@ -172,5 +171,4 @@ describe("amount_duration_test", () => {
     const valueInMinutes: number = Amount.valueAs(Units.Minute, amountToTest);
     assert.equal(valueInMinutes, DurationConversion.H2M(value));
   });
-
 });

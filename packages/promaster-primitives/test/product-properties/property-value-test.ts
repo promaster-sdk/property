@@ -5,7 +5,6 @@ import * as Units from "../../src/measure/units";
 import { Quantity } from "../../src/measure/quantity";
 
 describe("property_value_test", () => {
-
   it("should_parse_amount_with_decimal_dot", () => {
     const pv1 = fromStringOrException("2.1:Celsius");
     const amount1 = getAmountOrException(pv1);
@@ -19,7 +18,7 @@ describe("property_value_test", () => {
   });
 
   it("should_parse_text", () => {
-    const pv1 = fromStringOrException("\"Olle\"");
+    const pv1 = fromStringOrException('"Olle"');
     assert.equal(PropertyValue.getText(pv1), "Olle");
   });
 
@@ -60,7 +59,7 @@ describe("property_value_test", () => {
   });
 
   it("should_parse_string_in_quotes_same_as_explicit_text_constructor", () => {
-    const pv1 = fromStringOrException("\"abcABC\"");
+    const pv1 = fromStringOrException('"abcABC"');
     const pv2 = PropertyValue.fromText("abcABC");
     assert.equal(PropertyValue.equals(pv1, pv2), true);
   });
@@ -132,18 +131,18 @@ describe("property_value_test", () => {
   it("should make a correct string from an text value", () => {
     const pv1 = PropertyValue.fromText("TextValue");
     const pv1string = PropertyValue.toString(pv1);
-    assert.equal(pv1string, "\"TextValue\"");
+    assert.equal(pv1string, '"TextValue"');
   });
 
   it("should make a correct string from an text value", () => {
     const pv1 = PropertyValue.fromText("TextValue");
     const pv1string = PropertyValue.toString(pv1);
-    assert.equal(pv1string, "\"TextValue\"");
+    assert.equal(pv1string, '"TextValue"');
   });
 
   it("should make an empty string when amount value is null", () => {
     const amount = Amount.create(0, Units.Ampere, 1);
-    (amount as any).value = null;  //tslint:disable-line
+    (amount as any).value = null; //tslint:disable-line
     const pv1 = PropertyValue.fromAmount(amount);
     const pv1string = PropertyValue.toString(pv1);
     assert.equal(pv1string, "");
@@ -156,20 +155,19 @@ describe("property_value_test", () => {
     }
     assert(pv1.value.unit.quantity === "RelativeHumidity");
   });
-
 });
 
 describe("PropertyValue.greaterOrEqualTo", () => {
-
   it("should assert false for 0:CubicMeterPerSecond >= 16:CubicMeterPerHour", () => {
     const pv1 = fromStringOrException("0:CubicMeterPerSecond");
     const pv2 = fromStringOrException("16:CubicMeterPerHour");
     assert.equal(PropertyValue.greaterOrEqualTo(pv1, pv2), false);
   });
-
 });
 
-function fromStringOrException(encodedValue: string): PropertyValue.PropertyValue {
+function fromStringOrException(
+  encodedValue: string
+): PropertyValue.PropertyValue {
   const f = PropertyValue.fromString(encodedValue);
   if (f === undefined) {
     throw new Error(`Could not parse property value "${encodedValue}".`);
@@ -177,7 +175,9 @@ function fromStringOrException(encodedValue: string): PropertyValue.PropertyValu
   return f;
 }
 
-function getAmountOrException<T extends Quantity>(value: PropertyValue.PropertyValue): Amount.Amount<T> {
+function getAmountOrException<T extends Quantity>(
+  value: PropertyValue.PropertyValue
+): Amount.Amount<T> {
   const f = PropertyValue.getAmount(value);
   if (f === undefined) {
     throw new Error(`Could not get amount from property value "${value}".`);

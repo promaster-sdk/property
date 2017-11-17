@@ -4,34 +4,45 @@ import * as Units from "../../src/measure/units";
 import { PressureConversion } from "../test_utils/conversion_helpers/pressure_conversion";
 
 describe("amount_pressure_test", () => {
-
   //pascal 2 kilopascal
 
   it("For_Value_0_pascal_we_should_get_value_0_kilopascal", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.Pascal);
-    const convertedAmount: number = Amount.valueAs(Units.KiloPascal, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.KiloPascal,
+      amountToTest
+    );
     assert.equal(convertedAmount, PressureConversion.Pa2KPa(value));
   });
 
   it("For_Value_3_pascal_we_should_get_value_0_003_kilopascal", () => {
     const value: number = 3.0;
     const amountToTest = Amount.create(value, Units.Pascal);
-    const convertedAmount: number = Amount.valueAs(Units.KiloPascal, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.KiloPascal,
+      amountToTest
+    );
     assert.equal(convertedAmount, PressureConversion.Pa2KPa(value));
   });
 
   it("For_Value_78945_pascal_we_should_get_value_78_945_kilopascal", () => {
     const value: number = 78945.0;
     const amountToTest = Amount.create(value, Units.Pascal);
-    const convertedAmount: number = Amount.valueAs(Units.KiloPascal, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.KiloPascal,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, PressureConversion.Pa2KPa(value), 0.00001);
   });
 
   it("For_Value_0_5_pascal_we_should_get_value_0_0005_kilopascal", () => {
     const value: number = 0.5;
     const amountToTest = Amount.create(value, Units.Pascal);
-    const convertedAmount: number = Amount.valueAs(Units.KiloPascal, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.KiloPascal,
+      amountToTest
+    );
     assert.closeTo(convertedAmount, PressureConversion.Pa2KPa(value), 0.00001);
   });
 
@@ -93,21 +104,30 @@ describe("amount_pressure_test", () => {
   it("For_Value_0_kilopascal_we_should_get_value_0_kilopascal", () => {
     const value: number = 0.0;
     const amountToTest = Amount.create(value, Units.KiloPascal);
-    const convertedAmount: number = Amount.valueAs(Units.KiloPascal, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.KiloPascal,
+      amountToTest
+    );
     assert.equal(convertedAmount, value);
   });
 
   it("For_Value_3_kilopascal_we_should_get_value_3_kilopascal", () => {
     const value: number = 3.0;
     const amountToTest = Amount.create(value, Units.KiloPascal);
-    const convertedAmount: number = Amount.valueAs(Units.KiloPascal, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.KiloPascal,
+      amountToTest
+    );
     assert.equal(convertedAmount, value);
   });
 
   it("For_Value_5_34_kilopascal_we_should_get_value_5_34_kilopascal", () => {
     const value: number = 5.34;
     const amountToTest = Amount.create(value, Units.KiloPascal);
-    const convertedAmount: number = Amount.valueAs(Units.KiloPascal, amountToTest);
+    const convertedAmount: number = Amount.valueAs(
+      Units.KiloPascal,
+      amountToTest
+    );
     assert.equal(convertedAmount, value);
   });
 
@@ -132,5 +152,4 @@ describe("amount_pressure_test", () => {
     // Assert
     assert.closeTo(result, 6895, 0.5);
   });
-
 });

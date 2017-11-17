@@ -6,67 +6,79 @@ import * as Ast from "../../src/property-filtering/property-filter-ast";
 import { parse } from "../../src/property-filtering/pegjs/property-filter-parser";
 
 describe("main", () => {
-
   describe("parsing", () => {
-
     it("should_parse_a_equals_1", () => {
       const ast = parse("a=1");
-      assert.deepEqual(ast, Ast.newEqualsExpr(
-        Ast.newIdentifierExpr("a"),
-        "equals",
-        [Ast.newValueRangeExpr(Ast.newValueExpr("1"), Ast.newValueExpr("1"))]
-      ));
+      assert.deepEqual(
+        ast,
+        Ast.newEqualsExpr(Ast.newIdentifierExpr("a"), "equals", [
+          Ast.newValueRangeExpr(Ast.newValueExpr("1"), Ast.newValueExpr("1"))
+        ])
+      );
     });
 
     it("should_parse_a_greater_than_1", () => {
       const ast = parse("a>1");
-      assert.deepEqual(ast, Ast.newComparisonExpr(
-        Ast.newIdentifierExpr("a"),
-        "greater",
-        Ast.newValueExpr("1")
-      ));
+      assert.deepEqual(
+        ast,
+        Ast.newComparisonExpr(
+          Ast.newIdentifierExpr("a"),
+          "greater",
+          Ast.newValueExpr("1")
+        )
+      );
     });
 
     it("should_parse_a_greater_or_equal_to_1", () => {
       const ast = parse("a>=1");
-      assert.deepEqual(ast, Ast.newComparisonExpr(
-        Ast.newIdentifierExpr("a"),
-        "greaterOrEqual",
-        Ast.newValueExpr("1")
-      ));
+      assert.deepEqual(
+        ast,
+        Ast.newComparisonExpr(
+          Ast.newIdentifierExpr("a"),
+          "greaterOrEqual",
+          Ast.newValueExpr("1")
+        )
+      );
     });
 
     it("should_parse_a_dot_b_equals_1", () => {
       const ast = parse("a.b=1");
-      assert.deepEqual(ast, Ast.newEqualsExpr(
-        Ast.newIdentifierExpr("a.b"),
-        "equals",
-        [Ast.newValueRangeExpr(Ast.newValueExpr("1"), Ast.newValueExpr("1"))]
-      ));
+      assert.deepEqual(
+        ast,
+        Ast.newEqualsExpr(Ast.newIdentifierExpr("a.b"), "equals", [
+          Ast.newValueRangeExpr(Ast.newValueExpr("1"), Ast.newValueExpr("1"))
+        ])
+      );
     });
 
     it("should_parse_a_equals_20_Celsius", () => {
       const ast = parse("a=20:Celsius");
-      assert.deepEqual(ast, Ast.newEqualsExpr(
-        Ast.newIdentifierExpr("a"),
-        "equals",
-        [Ast.newValueRangeExpr(Ast.newValueExpr("20:Celsius"), Ast.newValueExpr("20:Celsius"))]
-      ));
+      assert.deepEqual(
+        ast,
+        Ast.newEqualsExpr(Ast.newIdentifierExpr("a"), "equals", [
+          Ast.newValueRangeExpr(
+            Ast.newValueExpr("20:Celsius"),
+            Ast.newValueExpr("20:Celsius")
+          )
+        ])
+      );
     });
 
     it("should_parse_a_equals_20_Celsius_range_30_Celsius", () => {
       const ast = parse("a=20:Celsius~30:Celsius");
-      assert.deepEqual(ast, Ast.newEqualsExpr(
-        Ast.newIdentifierExpr("a"),
-        "equals",
-        [Ast.newValueRangeExpr(Ast.newValueExpr("20:Celsius"), Ast.newValueExpr("30:Celsius"))]
-      ));
+      assert.deepEqual(
+        ast,
+        Ast.newEqualsExpr(Ast.newIdentifierExpr("a"), "equals", [
+          Ast.newValueRangeExpr(
+            Ast.newValueExpr("20:Celsius"),
+            Ast.newValueExpr("30:Celsius")
+          )
+        ])
+      );
     });
-
   });
 
   describe("is_syntax_valid", () => {
-
     it("empty_filter_is_valid", () => {
       assert.equal(PropertyFilter.isSyntaxValid(""), true);
     });
@@ -100,7 +112,10 @@ describe("main", () => {
     });
 
     it("and_with_mixed_value_filter_is_valid", () => {
-      assert.equal(PropertyFilter.isSyntaxValid("ccc=20&a=1,2,3~10&d=-50"), true);
+      assert.equal(
+        PropertyFilter.isSyntaxValid("ccc=20&a=1,2,3~10&d=-50"),
+        true
+      );
     });
 
     it("or_value_filter_is_valid", () => {
@@ -112,7 +127,10 @@ describe("main", () => {
     });
 
     it("and_or_mixed_value_filter_with_parenthesis_is_valid", () => {
-      assert.equal(PropertyFilter.isSyntaxValid("(ccc=20|a=1,2)&d=5|z=50"), true);
+      assert.equal(
+        PropertyFilter.isSyntaxValid("(ccc=20|a=1,2)&d=5|z=50"),
+        true
+      );
     });
 
     it("greater_value_filter_syntax_is_valid", () => {
@@ -140,17 +158,20 @@ describe("main", () => {
     });
 
     it("should_accept_properties_when_filter_contains_one_matching_property_with_single_range_value2", () => {
-      assert.equal(PropertyFilter.isSyntaxValid("unitsize=4060&filteraccess=5&filtertype=2~4,6~9,11-13"), false);
+      assert.equal(
+        PropertyFilter.isSyntaxValid(
+          "unitsize=4060&filteraccess=5&filtertype=2~4,6~9,11-13"
+        ),
+        false
+      );
     });
 
     it("should_accept_whitespace", () => {
-      assert.equal(PropertyFilter.isSyntaxValid("a = 2&b=\"test\""), true);
+      assert.equal(PropertyFilter.isSyntaxValid('a = 2&b="test"'), true);
     });
-
   });
 
   describe("Match_PVS", () => {
-
     it("should_not_match_missing_property", () => {
       const pvs = PropertyValueSet.fromString("firstprop=2");
       const f = fromStringOrException("secondprop=2");
@@ -212,7 +233,10 @@ describe("main", () => {
     });
 
     it("amount_value_is_supported", () => {
-      assert.equal(PropertyFilter.isSyntaxValid("a>=20:Celsius&b=20:Meter~30:Meter"), true);
+      assert.equal(
+        PropertyFilter.isSyntaxValid("a>=20:Celsius&b=20:Meter~30:Meter"),
+        true
+      );
     });
 
     it("not_equals_is_supported", () => {
@@ -270,8 +294,8 @@ describe("main", () => {
     });
 
     it("supports_string", () => {
-      const pvs = PropertyValueSet.fromString("a=\"test\"");
-      const filter = fromStringOrException("a=\"test\"");
+      const pvs = PropertyValueSet.fromString('a="test"');
+      const filter = fromStringOrException('a="test"');
       assert.equal(PropertyFilter.isValid(pvs, filter), true);
     });
 
@@ -296,32 +320,28 @@ describe("main", () => {
 
     it("should not assert 0 m3/s as valid for 36 m3/h to 163 m3/h range", () => {
       const pvs = PropertyValueSet.fromString("a=0:CubicMeterPerSecond");
-      const f = fromStringOrException("a=36:CubicMeterPerHour~163:CubicMeterPerHour");
+      const f = fromStringOrException(
+        "a=36:CubicMeterPerHour~163:CubicMeterPerHour"
+      );
       assert.equal(PropertyFilter.isValid(pvs, f), false);
     });
-
   });
 
   describe("getReferencedProperties", () => {
-
     it("should return referenced properties", () => {
       const filter = fromStringOrException("a>b&c=1|d<2");
       const references = PropertyFilter.getReferencedProperties(filter);
       assert.equal(references.length, 4);
     });
-
   });
 
   describe("equals", () => {
-
     it("should see two PropertyFilters with same values as equal", () => {
       const filter1 = fromStringOrException("a>b&c=1|d<2");
       const filter2 = fromStringOrException("a>b&c=1|d<2");
       assert.equal(PropertyFilter.equals(filter2, filter1), true);
     });
-
   });
-
 });
 
 function fromStringOrException(filter: string): PropertyFilter.PropertyFilter {
