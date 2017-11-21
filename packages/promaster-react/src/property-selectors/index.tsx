@@ -1,7 +1,7 @@
 export {
   AmountPropertySelector,
   AmountPropertySelectorProps,
-  createAmountPropertySelector,
+  createAmountPropertySelector
 } from "./amount-property-selector";
 export {
   createComboboxPropertySelector,
@@ -12,5 +12,10 @@ export {
 export {
   TextboxPropertySelector,
   TextboxPropertySelectorProps,
-  createTextboxPropertySelector,
+  createTextboxPropertySelector
 } from "./textbox-property-selector";
+export {
+  RadioGroupPropertySelector,
+  RadioGroupPropertySelectorProps,
+  createRadioGroupPropertySelector
+} from "./radio-group-property-selector";

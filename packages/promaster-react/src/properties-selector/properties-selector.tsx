@@ -2,6 +2,7 @@ import * as React from "react";
 import { Units, PropertyValueSet, Quantity, PropertyValue, PropertyFilter, Unit } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
+  PropertySelectorType,
   PropertySelectionOnChange,
   AmountFormat,
   OnPropertyFormatChanged,
@@ -226,7 +227,10 @@ function createPropertySelectorRenderInfos(
       const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
       const labelHover = translatePropertyLabelHover(property.name);
 
+      const selectorType = getSelectorType(property);
+
       const propertySelectorComponentProps: PropertySelectorProps = {
+        selectorType: selectorType,
         propertyName: property.name,
         quantity: property.quantity,
         validationFilter: property.validation_filter,
@@ -278,6 +282,20 @@ function createPropertySelectorRenderInfos(
 
   return selectorDefinitions;
 
+}
+
+function getSelectorType(property: Property): PropertySelectorType {
+  if (property.quantity === "Text") {
+    return "TextBox";
+  } else if (property.quantity === "Discrete") {
+    if (property.selector_type === "RadioGroup") {
+      return "RadioGroup";
+    } else {
+      return "ComboBox";
+    }
+  } else {
+    return "AmountField";
+  }
 }
 
 function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyType {

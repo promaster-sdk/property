@@ -9,6 +9,7 @@ import {
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import * as PropertySelectors from "../property-selectors/index";
 import {
+  PropertySelectorType,
   PropertySelectionOnChange,
   AmountFormat,
   OnPropertyFormatChanged,
@@ -26,8 +27,11 @@ const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySele
 const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector({});
 // tslint:disable-next-line:variable-name
 const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector({});
+// tslint:disable-next-line:variable-name
+const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector({});
 
 export interface PropertySelectorProps {
+  readonly selectorType: PropertySelectorType,
   readonly propertyName: string,
   readonly quantity: Quantity.Quantity,
   readonly validationFilter: PropertyFilter.PropertyFilter,
@@ -54,6 +58,7 @@ export interface CreatePropertySelectorProps {
   readonly AmountPropertySelector?: PropertySelectors.AmountPropertySelector,
   readonly ComboboxPropertySelector?: PropertySelectors.ComboboxPropertySelector,
   readonly TextboxPropertySelector?: PropertySelectors.TextboxPropertySelector,
+  readonly RadioGroupPropertySelector?: PropertySelectors.RadioGroupPropertySelector
 }
 
 export type PropertySelector = React.StatelessComponent<PropertySelectorProps>;
@@ -62,8 +67,10 @@ export function createPropertySelector({
   AmountPropertySelector = AmountPropertySelectorDefault,
   ComboboxPropertySelector = ComboboxPropertySelectorDefault,
   TextboxPropertySelector = TextboxPropertySelectorDefault,
+  RadioGroupPropertySelector = RadioGroupPropertySelectorDefault
  }: CreatePropertySelectorProps): PropertySelector {
   return function PropertySelector({
+    selectorType,
     propertyName,
     quantity,
     validationFilter,
@@ -110,24 +117,45 @@ export function createPropertySelector({
         );
 
       case "integer":
-        return (
-          <ComboboxPropertySelector
-            sortValidFirst={true}
-            propertyName={propertyName}
-            propertyValueSet={selectedProperties}
-            valueItems={valueItems && valueItems.map((vi) => ({
-              value: vi.value,
-              text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
-              sortNo: vi.sort_no,
-              validationFilter: vi.property_filter,
-              image: vi.image,
-            }))}
-            showCodes={includeCodes}
-            filterPrettyPrint={filterPrettyPrint}
-            onValueChange={onValueChange}
-            readOnly={readOnly}
-            locked={locked} />
-        );
+        if (selectorType === "RadioGroup") {
+          return (
+            <RadioGroupPropertySelector
+              sortValidFirst={true}
+              propertyName={propertyName}
+              propertyValueSet={selectedProperties}
+              valueItems={valueItems && valueItems.map((vi) => ({
+                value: vi.value,
+                text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
+                sortNo: vi.sort_no,
+                validationFilter: vi.property_filter,
+                image: vi.image,
+              }))}
+              showCodes={includeCodes}
+              filterPrettyPrint={filterPrettyPrint}
+              onValueChange={onValueChange}
+              readOnly={readOnly}
+              locked={locked} />
+          );
+        } else {
+          return (
+            <ComboboxPropertySelector
+              sortValidFirst={true}
+              propertyName={propertyName}
+              propertyValueSet={selectedProperties}
+              valueItems={valueItems && valueItems.map((vi) => ({
+                value: vi.value,
+                text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
+                sortNo: vi.sort_no,
+                validationFilter: vi.property_filter,
+                image: vi.image,
+              }))}
+              showCodes={includeCodes}
+              filterPrettyPrint={filterPrettyPrint}
+              onValueChange={onValueChange}
+              readOnly={readOnly}
+              locked={locked} />
+          );
+        }
 
       default:
         return (
