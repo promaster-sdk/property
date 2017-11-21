@@ -16,7 +16,7 @@ export class TextboxPropertySelectorExample1 extends React.Component<{}, State> 
   constructor() {
     super();
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a='This is the value';b=3"),
+      propertyValueSet: PropertyValueSet.fromString("a=\"This is the value\";b=3"),
     };
   }
 
@@ -32,7 +32,8 @@ export class TextboxPropertySelectorExample1 extends React.Component<{}, State> 
         </div>
         <div>
           <TextboxPropertySelector
-            value={PropertyValueSet.getText("a", this.state.propertyValueSet) as string}
+            propertyName="a"
+            propertyValueSet={this.state.propertyValueSet}
             onValueChange={(pv) =>
               this.setState(merge(this.state, {
                 propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, this.state.propertyValueSet)

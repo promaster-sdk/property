@@ -1,9 +1,10 @@
 import * as React from "react";
-import { PropertyValue } from "@promaster/promaster-primitives";
+import { PropertyValue, PropertyValueSet } from "@promaster/promaster-primitives";
 import styled, * as StyledComponents from "styled-components";
 
 export interface TextboxPropertySelectorProps {
-  readonly value: string,
+  readonly propertyName: string,
+  readonly propertyValueSet: PropertyValueSet.PropertyValueSet,
   readonly readOnly: boolean,
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void,
   readonly debounceTime: number,
@@ -45,13 +46,15 @@ export function createTextboxPropertySelector({
     }
 
     componentWillMount(): void {
-      const { value } = this.props;
-      this.setState({ textValue: value });
+      const { propertyName, propertyValueSet } = this.props;
+      const value = PropertyValueSet.getText(propertyName, propertyValueSet);
+      this.setState({ textValue: value || "" });
     }
 
     componentWillReceiveProps(nextProps: TextboxPropertySelectorProps): void {
-      const { value } = nextProps;
-      this.setState({ textValue: value });
+      const { propertyName, propertyValueSet } = nextProps;
+      const value = PropertyValueSet.getText(propertyName, propertyValueSet);
+      this.setState({ textValue: value || "" });
     }
 
     render(): React.ReactElement<TextboxPropertySelectorProps> {

@@ -36,7 +36,6 @@ export interface PropertySelectorProps {
   readonly quantity: Quantity.Quantity,
   readonly validationFilter: PropertyFilter.PropertyFilter,
   readonly valueItems: ReadonlyArray<PropertyValueItem>,
-  readonly selectedValue: PropertyValue.PropertyValue,
   readonly selectedProperties: PropertyValueSet.PropertyValueSet,
   readonly includeCodes: boolean,
   readonly optionalProperties: ReadonlyArray<string>,
@@ -75,7 +74,6 @@ export function createPropertySelector({
     quantity,
     validationFilter,
     valueItems,
-    selectedValue,
     selectedProperties,
     includeCodes,
     optionalProperties,
@@ -102,14 +100,11 @@ export function createPropertySelector({
 
     switch (getPropertyType(quantity)) {
       case "text":
-        const value: string | undefined = selectedValue && PropertyValue.getText(selectedValue);
-        if (value === undefined) {
-          throw new Error("No value!");
-        }
 
         return (
           <TextboxPropertySelector
-            value={value}
+            propertyName={propertyName}
+            propertyValueSet={selectedProperties}
             readOnly={readOnly}
             onValueChange={onValueChange}
             debounceTime={inputDebounceTime}

@@ -235,7 +235,6 @@ function createPropertySelectorRenderInfos(
         quantity: property.quantity,
         validationFilter: property.validation_filter,
         valueItems: property.value,
-        selectedValue,
         selectedProperties,
         includeCodes,
         optionalProperties,
