@@ -25,7 +25,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
     };
   }
 
-  render() {
+  render(): JSX.Element {
 
     const valueItems1: Array<Selectors.ComboBoxPropertyValueItem> = [
       {
@@ -99,4 +99,3 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
 
   }
 }
-

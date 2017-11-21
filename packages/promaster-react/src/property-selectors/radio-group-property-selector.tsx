@@ -13,7 +13,6 @@ export interface RadioGroupPropertyValueItem {
 }
 
 export interface RadioGroupPropertySelectorProps {
-  readonly sortValidFirst: boolean,
   readonly propertyName: string,
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet,
   readonly valueItems: ReadonlyArray<RadioGroupPropertyValueItem>,
@@ -36,7 +35,7 @@ const defaultRadioGroupItem = Styled(RadioGroupItem)`
   display: inline-block;
   margin-right: 10px;
   padding: 10px;
-  border: ${(p: RadioGroupItemProps) => p.selected ? "2px solid #39f" : "2px solid transparent" };
+  border: ${(p: RadioGroupItemProps) => p.selected ? ("2px solid " + (p.isItemValid ? "#39f" : "red")) : "2px solid transparent" };
   color: ${(p: RadioGroupItemProps) => p.isItemValid ? "black" : "grey"};
 
   ${(p: RadioGroupItemProps) => p.isItemValid ? "&:hover { background: #39f; color: white;" : ""}
@@ -48,7 +47,6 @@ export function createRadioGroupPropertySelector({
   RadioGroup = defaultRadioGroup,
 }: CreateRadioGroupPropertySelectorParams): RadioGroupPropertySelector {
   return function RadioGroupPropertySelector({
-    sortValidFirst,
     propertyName,
     propertyValueSet,
     valueItems,
@@ -78,24 +76,7 @@ export function createRadioGroupPropertySelector({
           onClick: () => !readOnly && valueItem.value && onValueChange(valueItem.value),
           isItemValid: isItemValid,
         };
-      }).sort((a, b) => {
-        if (sortValidFirst) {
-          if (a.isItemValid && !b.isItemValid) {
-            return -1;
-          }
-          if (!a.isItemValid && b.isItemValid) {
-            return 1;
-          }
-        }
-
-        if (a.sortNo < b.sortNo) {
-          return -1;
-        }
-        if (a.sortNo > b.sortNo) {
-          return 1;
-        }
-        return 0;
-      });
+      }).sort((a, b) => a.sortNo - b.sortNo);
 
     return (
       <RadioGroup locked={locked}>

@@ -115,7 +115,6 @@ export function createPropertySelector({
         if (selectorType === "RadioGroup") {
           return (
             <RadioGroupPropertySelector
-              sortValidFirst={true}
               propertyName={propertyName}
               propertyValueSet={selectedProperties}
               valueItems={valueItems && valueItems.map((vi) => ({
