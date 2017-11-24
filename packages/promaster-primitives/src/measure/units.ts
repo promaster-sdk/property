@@ -968,6 +968,10 @@ export const StandardCubicMeterPerSecond: Unit.Unit<q.MassFlow> = _register(
   Unit.timesNumber(3600.0, StandardCubicMeterPerHour),
   "Sm³/s"
 );
+export const StandardLiterPerSecond: Unit.Unit<q.MassFlow> = _register(
+  Unit.timesNumber(3600.0 * 1000, StandardCubicMeterPerHour),
+  "Sl/s"
+);
 
 // VolumeFlow
 export const CubicMeterPerSecond: Unit.Unit<q.VolumeFlow> = _register(
@@ -1582,6 +1586,7 @@ function _ensureMetaAdded(): void {
     "StandardCubicMeterPerSecond",
     StandardCubicMeterPerSecond
   );
+  _addMeta("MassFlow", "StandardLiterPerSecond", StandardLiterPerSecond);
   _addMeta("VolumeFlow", "CubicMeterPerSecond", CubicMeterPerSecond);
   _addMeta("VolumeFlow", "CubicMeterPerHour", CubicMeterPerHour);
   _addMeta("VolumeFlow", "CubicFeetPerMinute", CubicFeetPerMinute);
