@@ -8,8 +8,14 @@ For more information check these links:
 
 http://jscience.org/jsr-275/api/
 
+http://jscience.org/api/javax/measure/unit/package-summary.html
+
 http://kenai.com/projects/jsr-275/downloads/download/JSR-275.pdf
 
 http://www.javaworld.com/javaworld/jw-10-2007/jw-10-jsr275.html
 
 http://www.java2s.com/Open-Source/Java-Document/6.0-JDK-Modules/jsr-275/javax/measure/unit/ProductUnit.java.htm
+
+A new library has been accepted as JSR-363:
+
+http://www.baeldung.com/javax-measure
