@@ -1,18 +1,20 @@
 export interface Font {
-  normal: string,
-  bold: string,
-  italic: string,
-  boldItalic: string,
+  normal: FontSource;
+  bold: FontSource;
+  italic: FontSource;
+  boldItalic: FontSource;
 }
+
+export type FontSource = string | Uint8Array;
 
 export interface FontProps {
-  normal: string,
-  bold: string,
-  italic: string,
-  boldItalic: string,
+  normal: FontSource;
+  bold: FontSource;
+  italic: FontSource;
+  boldItalic: FontSource;
 }
 
-export function create({normal, bold, italic, boldItalic}: FontProps): Font {
+export function create({ normal, bold, italic, boldItalic }: FontProps): Font {
   return {
     normal,
     bold,

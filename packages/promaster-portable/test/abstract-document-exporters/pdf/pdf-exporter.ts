@@ -12,7 +12,6 @@ import * as path from "path";
 const pdfKit = require("pdfkit");
 
 describe("PdfExporter", () => {
-
   // it("should not crash", function(done) {
   //   const doc = generateExample();
   //   let stream = fs.createWriteStream("test.pdf");
@@ -96,38 +95,42 @@ describe("PdfExporter", () => {
   //   ADPdf.exportToStream(pdfKit, stream, doc);
   // });
 
-  it("should render tables correctly", function (done) {
-    const tableCellStyle = AD.TableCellStyle.create({ background: "#AAAAFF", padding: AD.LayoutFoundation.create({ top: 10, bottom: 20, left: 30, right: 40 }) });
-    const text = R.range(0, 30).map((i) => "Test" + i.toString()).join(" ");
-    const defaultTextStyle = AD.TextStyle.create({fontSize: 20});
+  it("should render tables correctly", function(done) {
+    const tableCellStyle = AD.TableCellStyle.create({
+      background: "#AAAAFF",
+      padding: AD.LayoutFoundation.create({ top: 10, bottom: 20, left: 30, right: 40 })
+    });
+    const text = R.range(0, 30)
+      .map(i => "Test" + i.toString())
+      .join(" ");
+    const defaultTextStyle = AD.TextStyle.create({ fontSize: 20 });
     const styles: AD.Types.Indexer<AD.Style.Style> = {};
-    styles[AD.StyleKey.create("ParagraphStyle", "Default")] = AD.ParagraphStyle.create({textStyle: defaultTextStyle});
+    styles[AD.StyleKey.create("ParagraphStyle", "Default")] = AD.ParagraphStyle.create({ textStyle: defaultTextStyle });
     styles[AD.StyleKey.create("TextStyle", "Default")] = defaultTextStyle;
-    
+
     const doc = AD.AbstractDoc.create({
       styles: styles,
       children: [
         AD.Section.create({
           children: [
             AD.Table.create({
-              columnWidths: [Infinity, 200], children: [
+              columnWidths: [Infinity, 200],
+              children: [
                 AD.TableRow.create({
                   children: [
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: text })
-                          ]
+                          children: [AD.TextRun.create({ text: text })]
                         })
                       ]
                     }),
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: text })
-                          ]
+                          children: [AD.TextRun.create({ text: text })]
                         })
                       ]
                     })
@@ -136,20 +139,18 @@ describe("PdfExporter", () => {
                 AD.TableRow.create({
                   children: [
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: "Apa apa" })
-                          ]
+                          children: [AD.TextRun.create({ text: "Apa apa" })]
                         })
                       ]
                     }),
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: "123.33 Pa" })
-                          ]
+                          children: [AD.TextRun.create({ text: "123.33 Pa" })]
                         })
                       ]
                     })
@@ -158,20 +159,18 @@ describe("PdfExporter", () => {
                 AD.TableRow.create({
                   children: [
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: "Torsk" })
-                          ]
+                          children: [AD.TextRun.create({ text: "Torsk" })]
                         })
                       ]
                     }),
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: "5.5 l/s" })
-                          ]
+                          children: [AD.TextRun.create({ text: "5.5 l/s" })]
                         })
                       ]
                     })
@@ -180,20 +179,18 @@ describe("PdfExporter", () => {
                 AD.TableRow.create({
                   children: [
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: "Mugg" })
-                          ]
+                          children: [AD.TextRun.create({ text: "Mugg" })]
                         })
                       ]
                     }),
                     AD.TableCell.create({
-                      style: tableCellStyle, children: [
+                      style: tableCellStyle,
+                      children: [
                         AD.Paragraph.create({
-                          children: [
-                            AD.TextRun.create({ text: "23" })
-                          ]
+                          children: [AD.TextRun.create({ text: "23" })]
                         })
                       ]
                     })
@@ -206,57 +203,60 @@ describe("PdfExporter", () => {
       ]
     });
     let stream = createWriteStreamInOutDir("test_table.pdf");
-    stream.on('finish', function () { done(); });
+    stream.on("finish", function() {
+      done();
+    });
     ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
-  // it("should render paragraphs in Daxline correctly", function (done) {
-  //   const fonts = {
-  //     "Daxline": AD.Font.create({
-  //       normal: "fonts/DaxlinePro-Regular_13131.ttf",
-  //       bold: "fonts/DaxlinePro-Regular_13131.ttf",
-  //       italic: "fonts/DaxlinePro-Regular_13131.ttf",
-  //       boldItalic: "fonts/DaxlinePro-Regular_13131.ttf"
-  //     }),
-  //   };
-  //   const fontStyle = AD.TextStyle.create({ fontFamily: "Daxline" });
-  //   const doc = AD.AbstractDoc.create({
-  //     fonts: fonts, children: [
-  //       AD.Section.create({
-  //         children: [
-  //           AD.Paragraph.create({
-  //             styleName: "H1", children: [
-  //               AD.TextRun.create({ text: "Testing" })
-  //             ]
-  //           }),
-  //           AD.Paragraph.create({
-  //             styleName: "H2", children: [
-  //               AD.TextRun.create({ style: fontStyle, text: "Testing" })
-  //             ]
-  //           }),
-  //           AD.Paragraph.create({
-  //             styleName: "H3", children: [
-  //               AD.TextRun.create({ style: fontStyle, text: "Testing" })
-  //             ]
-  //           }),
-  //           AD.Paragraph.create({
-  //             children: [
-  //               AD.TextRun.create({ style: fontStyle, text: "Testing paragraph 1" })
-  //             ]
-  //           }),
-  //           AD.Paragraph.create({
-  //             children: [
-  //               AD.TextRun.create({ style: fontStyle, text: "Testing paragraph 2" })
-  //             ]
-  //           }),
-  //         ]
-  //       })
-  //     ]
-  //   });
-  //   let stream = createWriteStreamInOutDir("test_paragraphstyling_daxline.pdf");
-  //   stream.on('finish', function () { done(); });
-  //   ADPdf.exportToStream(pdfKit, stream, doc);
-  // });
+  it("should render paragraphs in Daxline correctly", function(done) {
+    const loadFile = (fileName: string) => {
+      const buffer = fs.readFileSync(fileName);
+      const array = new Uint8Array(buffer);
+      return array;
+    };
+    const fonts = {
+      Daxline: AD.Font.create({
+        normal: loadFile("fonts/DaxlinePro-Regular_13131.ttf"),
+        bold: loadFile("fonts/DaxlinePro-Regular_13131.ttf"),
+        italic: loadFile("fonts/DaxlinePro-Regular_13131.ttf"),
+        boldItalic: loadFile("fonts/DaxlinePro-Regular_13131.ttf")
+      })
+    };
+    const fontStyle = AD.TextStyle.create({ fontFamily: "Daxline" });
+    const doc = AD.AbstractDoc.create({
+      fonts: fonts,
+      children: [
+        AD.Section.create({
+          children: [
+            AD.Paragraph.create({
+              styleName: "H1",
+              children: [AD.TextRun.create({ text: "Testing" })]
+            }),
+            AD.Paragraph.create({
+              styleName: "H2",
+              children: [AD.TextRun.create({ style: fontStyle, text: "Testing" })]
+            }),
+            AD.Paragraph.create({
+              styleName: "H3",
+              children: [AD.TextRun.create({ style: fontStyle, text: "Testing" })]
+            }),
+            AD.Paragraph.create({
+              children: [AD.TextRun.create({ style: fontStyle, text: "Testing paragraph 1" })]
+            }),
+            AD.Paragraph.create({
+              children: [AD.TextRun.create({ style: fontStyle, text: "Testing paragraph 2" })]
+            })
+          ]
+        })
+      ]
+    });
+    let stream = createWriteStreamInOutDir("test_paragraphstyling_daxline.pdf");
+    stream.on("finish", function() {
+      done();
+    });
+    ADPdf.exportToStream(pdfKit, stream, doc);
+  });
 
   // it("should render paragraphs in Arial correctly", function (done) {
   //   const fonts = {
@@ -415,137 +415,138 @@ describe("PdfExporter", () => {
   //   ADPdf.exportToStream(pdfKit, stream, doc);
   // });
 
-    it("should handle styling correctly", function (done) {
-      const textBlue = AD.TextStyle.create({fontSize: 20});
-      const textRed = AD.TextStyle.create({fontSize: 7});
-      
-      const paragraphBlue = AD.ParagraphStyle.create({textStyle: textBlue})
-      const paragraphRed = AD.ParagraphStyle.create({textStyle: textRed})
+  it("should handle styling correctly", function(done) {
+    const textBlue = AD.TextStyle.create({ fontSize: 20 });
+    const textRed = AD.TextStyle.create({ fontSize: 7 });
 
-      const styles: AD.Types.Indexer<AD.Style.Style> = {};
-      styles[AD.StyleKey.create("ParagraphStyle", "Default")] = paragraphBlue;
-      styles[AD.StyleKey.create("TextStyle", "Default")] = textBlue;
-      styles[AD.StyleKey.create("ParagraphStyle", "Red")] = paragraphRed;
-      styles[AD.StyleKey.create("TextStyle", "Red")] = textRed;
+    const paragraphBlue = AD.ParagraphStyle.create({ textStyle: textBlue });
+    const paragraphRed = AD.ParagraphStyle.create({ textStyle: textRed });
 
-      const doc = AD.AbstractDoc.create({
-        styles: styles,
-        children: [
-          AD.Section.create({
-            children: [
-              AD.Paragraph.create({
-                children: [
-                  AD.TextRun.create({
-                    text: "Blue from default style"
-                  })
-                ]
-              }),
-              AD.Paragraph.create({
-                styleName: "Red",
-                children: [
-                  AD.TextRun.create({
-                    text: "Red from paragraph style name"
-                  })
-                ]
-              }),
-              AD.Paragraph.create({
-                children: [
-                  AD.TextRun.create({
-                    styleName: "Red",
-                    text: "Red from text style name"
-                  })
-                ]
-              }),
-              AD.Paragraph.create({
-                style: paragraphRed,
-                children: [
-                  AD.TextRun.create({
-                    text: "Red from paragraph element"
-                  })
-                ]
-              }),
-              AD.Paragraph.create({
-                children: [
-                  AD.TextRun.create({
-                    style: textRed,
-                    text: "Red from text element"
-                  })
-                ]
-              }),
-              AD.Paragraph.create({
-                style: paragraphBlue,
-                children: [
-                  AD.TextRun.create({
-                    styleName: "Red",
-                    text: "Red from paragraph element, overriding parent style"
-                  })
-                ]
-              }),
-            ]
-          })
-        ]
-      });
-      let stream = createWriteStreamInOutDir("test_paragraphstyling_hierarchy.pdf");
-      stream.on('finish', function () { done(); });
-      ADPdf.exportToStream(pdfKit, stream, doc);
-    });
+    const styles: AD.Types.Indexer<AD.Style.Style> = {};
+    styles[AD.StyleKey.create("ParagraphStyle", "Default")] = paragraphBlue;
+    styles[AD.StyleKey.create("TextStyle", "Default")] = textBlue;
+    styles[AD.StyleKey.create("ParagraphStyle", "Red")] = paragraphRed;
+    styles[AD.StyleKey.create("TextStyle", "Red")] = textRed;
 
-
-    it("should handle new lines correctly", function (done) {
-      const paragraphStyle = AD.ParagraphStyle.create({
-        textStyle: AD.TextStyle.create({
-          fontSize: 12,
-        })
-      });
-      const cellStyle = AD.TableCellStyle.create({
-        padding: AD.LayoutFoundation.create({
-          top: 20,
-          bottom: 20,
-          left: 50,
-          right: 50
-        })
-      });
-
-      const doc = AD.AbstractDoc.create({
-        children: [
-          AD.Section.create({
-            page: AD.MasterPage.create({
-              header: [
-                AD.Table.create({
-                  columnWidths: [Infinity],
-                  children: [
-                    AD.TableRow.create({
-                      children: [
-                        AD.TableCell.create({
-                          style: cellStyle,
-                          children: [
-                            AD.Paragraph.create({
-                              style: paragraphStyle,
-                              children: [
-                                AD.TextRun.create({
-                                  text: "THOR-100, THOR-100, THOR-100, THOR-100"
-                                })
-                              ]
-                            }),
-                          ]
-                        }),
-                        AD.TableCell.create(),
-                      ]
-                    })
-                  ]
-                }),
+    const doc = AD.AbstractDoc.create({
+      styles: styles,
+      children: [
+        AD.Section.create({
+          children: [
+            AD.Paragraph.create({
+              children: [
+                AD.TextRun.create({
+                  text: "Blue from default style"
+                })
               ]
             }),
-            children: [
-            ]
-          })
-        ]
-      });
-      let stream = createWriteStreamInOutDir("test_new_line.pdf");
-      stream.on('finish', function () { done(); });
-      ADPdf.exportToStream(pdfKit, stream, doc);
+            AD.Paragraph.create({
+              styleName: "Red",
+              children: [
+                AD.TextRun.create({
+                  text: "Red from paragraph style name"
+                })
+              ]
+            }),
+            AD.Paragraph.create({
+              children: [
+                AD.TextRun.create({
+                  styleName: "Red",
+                  text: "Red from text style name"
+                })
+              ]
+            }),
+            AD.Paragraph.create({
+              style: paragraphRed,
+              children: [
+                AD.TextRun.create({
+                  text: "Red from paragraph element"
+                })
+              ]
+            }),
+            AD.Paragraph.create({
+              children: [
+                AD.TextRun.create({
+                  style: textRed,
+                  text: "Red from text element"
+                })
+              ]
+            }),
+            AD.Paragraph.create({
+              style: paragraphBlue,
+              children: [
+                AD.TextRun.create({
+                  styleName: "Red",
+                  text: "Red from paragraph element, overriding parent style"
+                })
+              ]
+            })
+          ]
+        })
+      ]
+    });
+    let stream = createWriteStreamInOutDir("test_paragraphstyling_hierarchy.pdf");
+    stream.on("finish", function() {
+      done();
+    });
+    ADPdf.exportToStream(pdfKit, stream, doc);
+  });
+
+  it("should handle new lines correctly", function(done) {
+    const paragraphStyle = AD.ParagraphStyle.create({
+      textStyle: AD.TextStyle.create({
+        fontSize: 12
+      })
+    });
+    const cellStyle = AD.TableCellStyle.create({
+      padding: AD.LayoutFoundation.create({
+        top: 20,
+        bottom: 20,
+        left: 50,
+        right: 50
+      })
     });
 
+    const doc = AD.AbstractDoc.create({
+      children: [
+        AD.Section.create({
+          page: AD.MasterPage.create({
+            header: [
+              AD.Table.create({
+                columnWidths: [Infinity],
+                children: [
+                  AD.TableRow.create({
+                    children: [
+                      AD.TableCell.create({
+                        style: cellStyle,
+                        children: [
+                          AD.Paragraph.create({
+                            style: paragraphStyle,
+                            children: [
+                              AD.TextRun.create({
+                                text: "THOR-100, THOR-100, THOR-100, THOR-100"
+                              })
+                            ]
+                          })
+                        ]
+                      }),
+                      AD.TableCell.create()
+                    ]
+                  })
+                ]
+              })
+            ]
+          }),
+          children: []
+        })
+      ]
+    });
+    let stream = createWriteStreamInOutDir("test_new_line.pdf");
+    stream.on("finish", function() {
+      done();
+    });
+    ADPdf.exportToStream(pdfKit, stream, doc);
+  });
 });
 
 function createWriteStreamInOutDir(pathToStream: string): fs.WriteStream {
