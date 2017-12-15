@@ -143,6 +143,18 @@ describe("property_value_set_test", () => {
       const pvs2 = PropertyValueSet.fromString(str1);
       assert.equal(PropertyValueSet.equals(pvs1, pvs2), true);
     });
+
+    it("toString should remove properties with null or undefined value", () => {
+      const pvs1 = {
+        a: PropertyValue.fromInteger(1),
+        b: PropertyValue.fromInteger(2),
+        c: null,
+        d: undefined
+        // tslint:disable-next-line:no-any
+      } as any;
+      const str1 = PropertyValueSet.toString(pvs1);
+      assert.equal("a=1;b=2", str1);
+    });
   });
 
   describe("isEmpty", () => {

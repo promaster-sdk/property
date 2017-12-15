@@ -278,6 +278,7 @@ export function getProperties(
 
 export function toString(set: PropertyValueSet): string {
   return Object.keys(set)
+    .filter(p => set[p] !== null && set[p] !== undefined)
     .map(p => `${p}=${PropertyValue.toString(set[p])}`)
     .join(";");
 }
