@@ -882,7 +882,7 @@ export const Btu: Unit.Unit<q.Energy> = _register(
   Unit.timesNumber(52752792631.0 / 50000000.0, Joule),
   "BTU"
 );
-export const KiloBtu: Unit.Unit<q.Energy> = _register(Kilo(Btu), "kBTU");
+export const KiloBtu: Unit.Unit<q.Energy> = _register(Kilo(Btu), "MBTU");
 
 /// http://www.wolframalpha.com/input/?i=BTU and select 'Show exact conversions'
 // Per Energy
