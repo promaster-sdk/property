@@ -46,6 +46,8 @@ addUnit(Units.BtuPerHour, "IP", 0);
 addUnit(Units.BtuPerPoundLb, "IP", 3);
 addUnit(Units.Btu, "IP", 3);
 addUnit(Units.KiloBtu, "IP", 3);
+addUnit(Units.MegaBtu, "IP", 3);
+addUnit(Units.Therm, "IP", 3);
 addUnit(Units.Candela, "SI", 0);
 addUnit(Units.Celsius, "SI", 1, Units.Fahrenheit);
 addUnit(Units.CelsiusDewPoint, "SI", 2, Units.FahrenheitDewPoint);

@@ -883,6 +883,11 @@ export const Btu: Unit.Unit<q.Energy> = _register(
   "BTU"
 );
 export const KiloBtu: Unit.Unit<q.Energy> = _register(Kilo(Btu), "MBTU");
+export const MegaBtu: Unit.Unit<q.Energy> = _register(Mega(Btu), "MMBTU");
+export const Therm: Unit.Unit<q.Energy> = _register(
+  Unit.timesNumber(100000, Btu),
+  "Therm"
+);
 
 /// http://www.wolframalpha.com/input/?i=BTU and select 'Show exact conversions'
 // Per Energy
@@ -1559,6 +1564,8 @@ function _ensureMetaAdded(): void {
   _addMeta("Energy", "WattSecond", WattSecond);
   _addMeta("Energy", "Btu", Btu);
   _addMeta("Energy", "KiloBtu", KiloBtu);
+  _addMeta("Energy", "MegaBtu", MegaBtu);
+  _addMeta("Energy", "Therm", Therm);
   _addMeta("DimensionlessPerEnergy", "OnePerKiloWattHour", OnePerKiloWattHour);
   _addMeta("DimensionlessPerEnergy", "OnePerBtu", OnePerBtu);
   _addMeta("DimensionlessPerEnergy", "OnePerKilojoule", OnePerKilojoule);
