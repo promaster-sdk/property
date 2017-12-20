@@ -155,6 +155,8 @@ addUnit(Units.NewtonPerSquareMeter, "SI", 0);
 addUnit(Units.Ohm, "SI", 0);
 addUnit(Units.One, undefined, 2);
 addUnit(Units.OnePerBtu, "IP", 2, Units.OnePerKilojoule);
+addUnit(Units.OnePerMegaBtu, "IP", 2);
+addUnit(Units.OnePerTherm, "IP", 2);
 addUnit(Units.OnePerCubicMeter, "SI", 2, Units.OnePerHundredCubicFeet);
 addUnit(Units.OnePerGallon, "IP", 2, Units.OnePerLiter);
 addUnit(Units.OnePerHundredCubicFeet, "IP", 2, Units.OnePerCubicMeter);

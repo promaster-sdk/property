@@ -898,6 +898,14 @@ export const OnePerBtu: Unit.Unit<q.DimensionlessPerEnergy> = _register(
   UnitDivide.dimensionlessByEnergy(One, Btu),
   "/BTU"
 );
+export const OnePerMegaBtu: Unit.Unit<q.DimensionlessPerEnergy> = _register(
+  UnitDivide.dimensionlessByEnergy(One, MegaBtu),
+  "/MMBTU"
+);
+export const OnePerTherm: Unit.Unit<q.DimensionlessPerEnergy> = _register(
+  UnitDivide.dimensionlessByEnergy(One, Therm),
+  "/Therm"
+);
 export const OnePerKilojoule: Unit.Unit<q.DimensionlessPerEnergy> = _register(
   UnitDivide.dimensionlessByEnergy(One, Kilojoule),
   "/kJ"
@@ -1568,6 +1576,8 @@ function _ensureMetaAdded(): void {
   _addMeta("Energy", "Therm", Therm);
   _addMeta("DimensionlessPerEnergy", "OnePerKiloWattHour", OnePerKiloWattHour);
   _addMeta("DimensionlessPerEnergy", "OnePerBtu", OnePerBtu);
+  _addMeta("DimensionlessPerEnergy", "OnePerMegaBtu", OnePerMegaBtu);
+  _addMeta("DimensionlessPerEnergy", "OnePerTherm", OnePerTherm);
   _addMeta("DimensionlessPerEnergy", "OnePerKilojoule", OnePerKilojoule);
   _addMeta("DimensionlessPerEnergy", "OnePerMegajoule", OnePerMegajoule);
   _addMeta("DimensionlessPerEnergy", "OnePerJoule", OnePerJoule);
