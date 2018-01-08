@@ -68,6 +68,7 @@ export function createRadioGroupPropertySelector({
       .map((valueItem) => {
         const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem);
         return {
+          key: valueItem.sortNo.toString(),
           sortNo: valueItem.sortNo,
           selected: valueItem.value ? PropertyValue.equals(value, valueItem.value) : false,
           label: _getItemLabel(valueItem, showCodes),

@@ -11,19 +11,20 @@ export type RadioGroupItemProps = {
 } & React.HTMLProps<HTMLDivElement>;
 
 export function RadioGroupItem({
-    label,
-    imageUrl,
-    toolTip,
-    onClick,
-    ...htmlProps
+  sortNo: _,
+  isItemValid: _1,
+  label,
+  imageUrl,
+  toolTip,
+  onClick,
+  ...htmlProps
 }: RadioGroupItemProps): JSX.Element {
   return (
     <div
-      key={label}
       onClick={onClick}
       title={toolTip}
       {...htmlProps}
-      >
+    >
       {imageUrl ? <img src={imageUrl} /> : undefined}
       {label}
     </div>
