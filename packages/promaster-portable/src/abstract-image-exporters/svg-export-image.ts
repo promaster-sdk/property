@@ -43,6 +43,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
           x2: component.end.x.toString(),
           y2: component.end.y.toString(),
           stroke: colorToRgb(component.strokeColor),
+          strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString()
         },
         []
@@ -54,6 +55,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
           fill: "none",
           points: component.points.map(p => p.x.toString() + "," + p.y.toString()).join(" "),
           stroke: colorToRgb(component.strokeColor),
+          strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString()
         },
         []
@@ -68,6 +70,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         fontWeight: component.fontWeight,
         fontFamily: component.fontFamily,
         stroke: colorToRgb(component.strokeColor),
+        strokeOpacity: colorToOpacity(component.strokeColor),
         strokeWidth: component.strokeThickness.toString() + "px"
       };
 
@@ -76,7 +79,8 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         fontSize: component.fontSize.toString() + "px",
         fontWeight: component.fontWeight,
         fontFamily: component.fontFamily,
-        fill: colorToRgb(component.textColor)
+        fill: colorToRgb(component.textColor),
+        fillOpacity: colorToOpacity(component.textColor)
       };
 
       const dy = getBaselineAdjustment(component.verticalGrowthDirection);
@@ -146,8 +150,10 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
           rx: rx.toString(),
           ry: ry.toString(),
           stroke: colorToRgb(component.strokeColor),
+          strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString(),
-          fill: colorToRgb(component.fillColor)
+          fill: colorToRgb(component.fillColor),
+          fillOpacity: colorToOpacity(component.fillColor)
         },
         []
       );
@@ -157,8 +163,10 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         {
           points: component.points.map(p => p.x.toString() + "," + p.y.toString()).join(" "),
           stroke: colorToRgb(component.strokeColor),
+          strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString(),
-          fill: colorToRgb(component.fillColor)
+          fill: colorToRgb(component.fillColor),
+          fillOpacity: colorToOpacity(component.fillColor)
         },
         []
       );
@@ -171,8 +179,10 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
           width: Math.abs(component.bottomRight.x - component.topLeft.x).toString(),
           height: Math.abs(component.bottomRight.y - component.topLeft.y).toString(),
           stroke: colorToRgb(component.strokeColor),
+          strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString(),
-          fill: colorToRgb(component.fillColor)
+          fill: colorToRgb(component.fillColor),
+          fillOpacity: colorToOpacity(component.fillColor)
         },
         []
       );
@@ -253,5 +263,9 @@ function getTextAnchor(d: AbstractImage.GrowthDirection): string {
 }
 
 function colorToRgb(color: AbstractImage.Color): string {
-  return `rgba(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()}, ${color.a.toString()})`;
+  return `rgb(${color.r.toString()}, ${color.g.toString()}, ${color.b.toString()})`;
+}
+
+function colorToOpacity(color: AbstractImage.Color): string {
+  return (color.a / 255).toString();
 }
