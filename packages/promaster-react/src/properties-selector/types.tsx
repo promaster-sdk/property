@@ -46,7 +46,7 @@ export interface PropertySelectorRenderInfo {
 
 }
 
-export type PropertySelectorType = "ComboBox" | "RadioGroup" | "AmountField" | "TextBox";
+export type PropertySelectorType = "ComboBox" | "RadioGroup" | "Checkbox" | "AmountField" | "TextBox";
 
 /**
  * This interface has keys with the same names as returned by promaster-api, plus selector_type for choosing appearance of the selector

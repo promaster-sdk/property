@@ -1,5 +1,5 @@
-import {PropertiesSelector} from "@promaster/promaster-react";
-import {PropertyFilter, PropertyValue} from "@promaster/promaster-primitives";
+import { PropertiesSelector } from "@promaster/promaster-react";
+import { PropertyFilter, PropertyValue } from "@promaster/promaster-primitives";
 
 export function exampleProductProperties(): Array<PropertiesSelector.Property> {
   return [
@@ -81,6 +81,28 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
           value: PropertyValue.fromInteger(3),
           property_filter: PropertyFilter.Empty,
         }
+      ],
+    },
+    {
+      sort_no: 5,
+      selector_type: "Checkbox",
+      name: "e",
+      group: "Group1",
+      quantity: "Discrete",
+      validation_filter: PropertyFilter.Empty,
+      visibility_filter: PropertyFilter.Empty,
+      value: [
+        {
+          sort_no: 0,
+          value: PropertyValue.fromInteger(0),
+          property_filter: PropertyFilter.Empty,
+        },
+        {
+          sort_no: 1,
+          value: PropertyValue.fromInteger(1),
+          property_filter: PropertyFilter.Empty,
+          image: "https://s7d1.scene7.com/is/image/BedBathandBeyond/13136517105892p?$478$"
+        },
       ],
     }
   ];

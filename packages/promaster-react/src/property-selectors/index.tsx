@@ -19,3 +19,8 @@ export {
   RadioGroupPropertySelectorProps,
   createRadioGroupPropertySelector
 } from "./radio-group-property-selector";
+export {
+  CheckboxPropertySelector,
+  CheckboxPropertySelectorProps,
+  createCheckboxPropertySelector
+} from "./checkbox-property-selector";

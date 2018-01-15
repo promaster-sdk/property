@@ -26,6 +26,8 @@ const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySele
 // tslint:disable-next-line:variable-name
 const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector({});
 // tslint:disable-next-line:variable-name
+const CheckboxPropertySelectorDefault = PropertySelectors.createCheckboxPropertySelector({});
+// tslint:disable-next-line:variable-name
 const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector({});
 // tslint:disable-next-line:variable-name
 const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector({});
@@ -57,7 +59,8 @@ export interface CreatePropertySelectorProps {
   readonly AmountPropertySelector?: PropertySelectors.AmountPropertySelector,
   readonly ComboboxPropertySelector?: PropertySelectors.ComboboxPropertySelector,
   readonly TextboxPropertySelector?: PropertySelectors.TextboxPropertySelector,
-  readonly RadioGroupPropertySelector?: PropertySelectors.RadioGroupPropertySelector
+  readonly RadioGroupPropertySelector?: PropertySelectors.RadioGroupPropertySelector,
+  readonly CheckboxPropertySelector?: PropertySelectors.CheckboxPropertySelector
 }
 
 export type PropertySelector = React.StatelessComponent<PropertySelectorProps>;
@@ -66,7 +69,8 @@ export function createPropertySelector({
   AmountPropertySelector = AmountPropertySelectorDefault,
   ComboboxPropertySelector = ComboboxPropertySelectorDefault,
   TextboxPropertySelector = TextboxPropertySelectorDefault,
-  RadioGroupPropertySelector = RadioGroupPropertySelectorDefault
+  RadioGroupPropertySelector = RadioGroupPropertySelectorDefault,
+  CheckboxPropertySelector = CheckboxPropertySelectorDefault
  }: CreatePropertySelectorProps): PropertySelector {
   return function PropertySelector({
     selectorType,
@@ -115,6 +119,24 @@ export function createPropertySelector({
         if (selectorType === "RadioGroup") {
           return (
             <RadioGroupPropertySelector
+              propertyName={propertyName}
+              propertyValueSet={selectedProperties}
+              valueItems={valueItems && valueItems.map((vi) => ({
+                value: vi.value,
+                text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
+                sortNo: vi.sort_no,
+                validationFilter: vi.property_filter,
+                image: vi.image,
+              }))}
+              showCodes={includeCodes}
+              filterPrettyPrint={filterPrettyPrint}
+              onValueChange={onValueChange}
+              readOnly={readOnly}
+              locked={locked} />
+          );
+        } else if (selectorType === "Checkbox") {
+          return (
+            <CheckboxPropertySelector
               propertyName={propertyName}
               propertyValueSet={selectedProperties}
               valueItems={valueItems && valueItems.map((vi) => ({

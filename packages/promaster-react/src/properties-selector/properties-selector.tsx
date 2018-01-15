@@ -289,6 +289,8 @@ function getSelectorType(property: Property): PropertySelectorType {
   } else if (property.quantity === "Discrete") {
     if (property.selector_type === "RadioGroup") {
       return "RadioGroup";
+    } else if (property.selector_type === "Checkbox") {
+      return "Checkbox";
     } else {
       return "ComboBox";
     }
