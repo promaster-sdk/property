@@ -20,6 +20,8 @@ export {
   createRadioGroupPropertySelector
 } from "./radio-group-property-selector";
 export {
+  CheckboxProps,
+  CheckboxPropertyValueItem,
   CheckboxPropertySelector,
   CheckboxPropertySelectorProps,
   createCheckboxPropertySelector
