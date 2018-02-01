@@ -56,64 +56,64 @@ export function isEmpty(
   return !propertyValueSet || count(propertyValueSet) === 0;
 }
 
-export function count(set: PropertyValueSet): number {
-  return Object.keys(set).length;
+export function count(pvs: PropertyValueSet): number {
+  return Object.keys(pvs).length;
 }
 
 export function get(
   propertyName: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValue.PropertyValue | undefined {
-  if (!set.hasOwnProperty(propertyName)) {
+  if (!pvs.hasOwnProperty(propertyName)) {
     return undefined;
   }
-  return set[propertyName];
+  return pvs[propertyName];
 }
 
 export function hasProperty(
   propertyName: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): boolean {
-  return set.hasOwnProperty(propertyName);
+  return pvs.hasOwnProperty(propertyName);
 }
 
-export function getPropertyNames(set: PropertyValueSet): Array<string> {
-  return Object.keys(set);
+export function getPropertyNames(pvs: PropertyValueSet): Array<string> {
+  return Object.keys(pvs);
 }
 
 export function merge(
   mergeWith: PropertyValueSet,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   //return amend(set, mergeWith);
-  return { ...set, ...mergeWith };
+  return { ...pvs, ...mergeWith };
 }
 
 /// If a property exists with the same name in the PropertyValueSet as in the
 // replacement set then the value of that property will be replaced.
 export function setValues(
   replacementSet: PropertyValueSet,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   //return amend(set, replacementSet);
-  return { ...set, ...replacementSet };
+  return { ...pvs, ...replacementSet };
 }
 
 export function set(
   propertyName: string,
   propertyValue: PropertyValue.PropertyValue,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
-  return amendProperty(set, propertyName, propertyValue);
+  return amendProperty(pvs, propertyName, propertyValue);
 }
 
 export function setAmount<T extends Quantity>(
   propertyName: string,
   amountValue: Amount.Amount<T>,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   return amendProperty(
-    set,
+    pvs,
     propertyName,
     PropertyValue.fromAmount(amountValue)
   );
@@ -122,10 +122,10 @@ export function setAmount<T extends Quantity>(
 export function setInteger(
   propertyName: string,
   integerValue: number,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   return amendProperty(
-    set,
+    pvs,
     propertyName,
     PropertyValue.fromInteger(integerValue)
   );
@@ -134,30 +134,38 @@ export function setInteger(
 export function setText(
   propertyName: string,
   textValue: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
-  return amendProperty(set, propertyName, PropertyValue.fromText(textValue));
+  return amendProperty(pvs, propertyName, PropertyValue.fromText(textValue));
 }
 
+/**
+ * Only keep properties whos name exist in the propertyNames array
+ * @param propertyNames Array of propertyNames to keep
+ * @param pvs PropertyValueSet to strip unwanted properties from
+ */
 export function keepProperties(
   propertyNames: Array<string>,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
   for (let name of propertyNames) {
-    newSet[name] = set[name];
+    if (pvs[name]) {
+      // Don't create properties that doesn't exist
+      newSet[name] = pvs[name];
+    }
   }
   return newSet;
 }
 
 export function removeProperties(
   propertyNames: Array<string>,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(set)) {
+  for (let name of Object.keys(pvs)) {
     if (propertyNames.indexOf(name) === -1) {
-      newSet[name] = set[name];
+      newSet[name] = pvs[name];
     }
   }
   return newSet;
@@ -165,18 +173,18 @@ export function removeProperties(
 
 export function removeProperty(
   propertyName: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
-  return removeProperties([propertyName], set);
+  return removeProperties([propertyName], pvs);
 }
 
 /// Gets an integer value, if the value is missing the onMissing function's
 /// return value is returned.
 export function getValue(
   propertyName: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValue.PropertyValue {
-  const value = set[propertyName];
+  const value = pvs[propertyName];
   return value;
 }
 
@@ -184,45 +192,45 @@ export function getValue(
 /// return value is returned.
 export function getAmount<T extends Quantity>(
   propertyName: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): Amount.Amount<T> | undefined {
-  if (!hasProperty(propertyName, set)) {
+  if (!hasProperty(propertyName, pvs)) {
     return undefined;
   }
-  return PropertyValue.getAmount(set[propertyName]);
+  return PropertyValue.getAmount(pvs[propertyName]);
 }
 
 /// Gets an integer value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
 export function getText(
   propertyName: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): string | undefined {
-  if (!hasProperty(propertyName, set)) {
+  if (!hasProperty(propertyName, pvs)) {
     return undefined;
   }
-  return PropertyValue.getText(set[propertyName]);
+  return PropertyValue.getText(pvs[propertyName]);
 }
 
 /// Gets an integer value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
 export function getInteger(
   propertyName: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): number | undefined {
-  if (!hasProperty(propertyName, set)) {
+  if (!hasProperty(propertyName, pvs)) {
     return undefined;
   }
-  return PropertyValue.getInteger(set[propertyName]);
+  return PropertyValue.getInteger(pvs[propertyName]);
 }
 
 export function addPrefixToValues(
   prefix: string,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(set)) {
-    newSet[prefix + name] = set[name];
+  for (let name of Object.keys(pvs)) {
+    newSet[prefix + name] = pvs[name];
   }
   return newSet;
 }
@@ -230,12 +238,12 @@ export function addPrefixToValues(
 export function getValuesWithPrefix(
   prefix: string,
   removePrefix: boolean,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(set)) {
+  for (let name of Object.keys(pvs)) {
     if (name.length > 0 && name.substr(0, prefix.length) === prefix) {
-      newSet[removePrefix ? name.substring(prefix.length) : name] = set[name];
+      newSet[removePrefix ? name.substring(prefix.length) : name] = pvs[name];
     }
   }
   return newSet;
@@ -244,12 +252,12 @@ export function getValuesWithPrefix(
 export function getValuesWithoutPrefix(
   prefix: string,
   removePrefix: boolean,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(set)) {
+  for (let name of Object.keys(pvs)) {
     if (name.substr(0, prefix.length) !== prefix) {
-      newSet[removePrefix ? name.substring(prefix.length) : name] = set[name];
+      newSet[removePrefix ? name.substring(prefix.length) : name] = pvs[name];
     }
   }
   return newSet;
@@ -257,55 +265,47 @@ export function getValuesWithoutPrefix(
 
 export function getValuesOfType(
   type: PropertyType,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(set)) {
-    if (set[name].type === type) {
-      newSet[name] = set[name];
+  for (let name of Object.keys(pvs)) {
+    if (pvs[name].type === type) {
+      newSet[name] = pvs[name];
     }
   }
   return newSet;
 }
 
-// TODO: This should not exist as it is the same as keepProperties?
-export function getProperties(
-  propertiesToGet: Array<string>,
-  set: PropertyValueSet
-): PropertyValueSet {
-  return keepProperties(propertiesToGet, set);
-}
-
-export function toString(set: PropertyValueSet): string {
-  return Object.keys(set)
-    .filter(p => set[p] !== null && set[p] !== undefined)
-    .map(p => `${p}=${PropertyValue.toString(set[p])}`)
+export function toString(pvs: PropertyValueSet): string {
+  return Object.keys(pvs)
+    .filter(p => pvs[p] !== null && pvs[p] !== undefined)
+    .map(p => `${p}=${PropertyValue.toString(pvs[p])}`)
     .join(";");
 }
 
 export function toStringInSpecifiedOrder(
   order: Array<string>,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): string {
-  return order.map(p => `${p}=${PropertyValue.toString(set[p])}`).join(";");
+  return order.map(p => `${p}=${PropertyValue.toString(pvs[p])}`).join(";");
 }
 
 export function equals(
   other: PropertyValueSet,
-  set: PropertyValueSet
+  pvs: PropertyValueSet
 ): boolean {
   if (other === null || other === undefined) {
     return false;
   }
-  if (set === other) {
+  if (pvs === other) {
     return true;
   }
-  if (Object.keys(set).length !== Object.keys(other).length) {
+  if (Object.keys(pvs).length !== Object.keys(other).length) {
     return false;
   }
 
-  for (let name of Object.keys(set)) {
-    if (!PropertyValue.equals(other[name], set[name])) {
+  for (let name of Object.keys(pvs)) {
+    if (!PropertyValue.equals(other[name], pvs[name])) {
       return false;
     }
   }
@@ -391,12 +391,12 @@ function _stringToEntriesOrUndefinedIfInvalidString(
 // }
 
 function amendProperty<T2 extends PropertyValue.PropertyValue>(
-  set: PropertyValueSet,
+  pvs: PropertyValueSet,
   name: string,
   value: T2
 ): PropertyValueSet {
   // return amend(set, { [name]: value });
-  return { ...set, [name]: value };
+  return { ...pvs, [name]: value };
 }
 
 // function extend<TOrigin, TAdd>(origin: TOrigin, add: TAdd): TOrigin & TAdd {

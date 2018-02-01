@@ -176,4 +176,27 @@ describe("property_value_set_test", () => {
       assert.isFalse(PropertyValueSet.isEmpty(pvs1));
     });
   });
+
+  describe("keepProperties", () => {
+    it("it should remove unwanted properties", () => {
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const propertyNamesToKeep: Array<string> = ["a", "c"];
+      const resultingPvs = PropertyValueSet.keepProperties(
+        propertyNamesToKeep,
+        pvs1
+      );
+      const resultingPvsString = PropertyValueSet.toString(resultingPvs);
+      assert.equal("a=1;c=3", resultingPvsString);
+    });
+    it("it should not add any properties", () => {
+      const pvs1 = PropertyValueSet.fromString("a=1;c=3");
+      const propertyNamesToKeep: Array<string> = ["a", "b", "c"];
+      const resultingPvs = PropertyValueSet.keepProperties(
+        propertyNamesToKeep,
+        pvs1
+      );
+      const resultingPvsString = PropertyValueSet.toString(resultingPvs);
+      assert.equal("a=1;c=3", resultingPvsString);
+    });
+  });
 });
