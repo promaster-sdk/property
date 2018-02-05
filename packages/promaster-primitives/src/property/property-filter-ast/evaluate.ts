@@ -40,15 +40,11 @@ export function evaluate(
         }
       }
 
-      const left: PropertyValue.PropertyValue | null = evaluatePropertyValueExpr(
-        e.leftValue,
-        properties
-      );
+      const left = evaluatePropertyValueExpr(e.leftValue, properties);
 
       for (const range of e.rightValueRanges) {
-        const rangeResult = evaluateValueRangeExpr(range, properties);
-        const min: PropertyValue.PropertyValue | null = rangeResult[0];
-        const max: PropertyValue.PropertyValue | null = rangeResult[1];
+        const min = evaluatePropertyValueExpr(range.min, properties);
+        const max = evaluatePropertyValueExpr(range.max, properties);
 
         // Match on NULL or inclusive in range
         if (
@@ -75,18 +71,12 @@ export function evaluate(
         return true;
       }
 
-      const left: PropertyValue.PropertyValue | null = evaluatePropertyValueExpr(
-        e.leftValue,
-        properties
-      );
+      const left = evaluatePropertyValueExpr(e.leftValue, properties);
       if (left === null) {
         return false;
       }
 
-      const right: PropertyValue.PropertyValue | null = evaluatePropertyValueExpr(
-        e.rightValue,
-        properties
-      );
+      const right = evaluatePropertyValueExpr(e.rightValue, properties);
       if (right === null) {
         return false;
       }
@@ -139,16 +129,6 @@ function evaluatePropertyValueExpr(
       return exhaustiveCheck(e, true);
     }
   }
-}
-
-function evaluateValueRangeExpr(
-  e: Ast.ValueRangeExpr,
-  properties: PropertyValueSet.PropertyValueSet
-): [PropertyValue.PropertyValue | null, PropertyValue.PropertyValue | null] {
-  return [
-    evaluatePropertyValueExpr(e.min, properties),
-    evaluatePropertyValueExpr(e.max, properties)
-  ];
 }
 
 function _isMissingIdent(

@@ -21,7 +21,8 @@ export function findProperties(
     case "EqualsExpr":
       _findPropertiesInPropertyValueExpr(e.leftValue, properties);
       for (const range of e.rightValueRanges) {
-        _findPropertiesInValueRangeExpr(range, properties);
+        _findPropertiesInPropertyValueExpr(range.min, properties);
+        _findPropertiesInPropertyValueExpr(range.max, properties);
       }
       break;
     case "OrExpr":
@@ -52,12 +53,4 @@ function _findPropertiesInPropertyValueExpr(
     default:
       exhaustiveCheck(e, true);
   }
-}
-
-function _findPropertiesInValueRangeExpr(
-  e: Ast.ValueRangeExpr,
-  properties: Array<string>
-): void {
-  _findPropertiesInPropertyValueExpr(e.min, properties);
-  _findPropertiesInPropertyValueExpr(e.max, properties);
 }
