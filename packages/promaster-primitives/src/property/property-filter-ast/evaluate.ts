@@ -109,15 +109,8 @@ function evaluatePropertyValueExpr(
 ): PropertyValue.PropertyValue | null {
   switch (e.type) {
     case "IdentifierExpr": {
-      if (
-        properties !== null &&
-        PropertyValueSet.hasProperty(e.name, properties)
-      ) {
-        const pv = PropertyValueSet.get(e.name, properties);
-        return pv || null;
-      } else {
-        return null;
-      }
+      const pv = PropertyValueSet.get(e.name, properties);
+      return pv || null;
     }
     case "ValueExpr": {
       return e.parsed;
