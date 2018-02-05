@@ -10,3 +10,4 @@ lib-cjs/
 lib-esm/
 .nyc_output/
 coverage/
+lib/
