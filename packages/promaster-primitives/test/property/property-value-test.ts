@@ -4,7 +4,7 @@ import * as Amount from "../../src/measure/amount";
 import * as Units from "../../src/measure/units";
 import { Quantity } from "../../src/measure/quantity";
 
-describe("property_value_test", () => {
+describe("PropertyValue", () => {
   it("should_parse_amount_with_decimal_dot", () => {
     const pv1 = fromStringOrException("2.1:Celsius");
     const amount1 = getAmountOrException(pv1);

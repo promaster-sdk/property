@@ -4,7 +4,7 @@ import * as PropertyValue from "../../src/property/property-value";
 import * as Units from "../../src/measure/units";
 import * as Amount from "../../src/measure/amount";
 
-describe("property_value_set_test", () => {
+describe("PropertyValueSet", () => {
   describe("getValue", () => {
     it("should get text value", () => {
       let pvs = PropertyValueSet.fromString('message="MyMessage"');

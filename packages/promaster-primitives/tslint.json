@@ -81,7 +81,12 @@
       "check-whitespace"
     ],
     "one-variable-per-declaration": true,
-    "variable-name": [true, "ban-keywords", "check-format"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
     "whitespace": [
       true,
       "check-branch",

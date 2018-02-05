@@ -5,11 +5,13 @@ import { PropertyFilter, PropertyValueSet } from "../../lib-cjs";
 
 const suite = new Benchmark.Suite();
 
-const pf = PropertyFilter.fromString("a=1&b=2");
+const pf = PropertyFilter.fromString(
+  "ccc=20&a=1,2,3~10&d=-50&(ccc=20|a=1,2)&d=5|z=50"
+);
 if (!pf) {
   throw new Error("Could not create property filter.");
 }
-const pvs = PropertyValueSet.fromString("a=1;b=2");
+const pvs = PropertyValueSet.fromString("a=1;b=2;c=3;d=4;z=50");
 
 suite
   // add tests
