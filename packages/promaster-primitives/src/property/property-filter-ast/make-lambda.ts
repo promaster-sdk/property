@@ -1,0 +1,3 @@
+function makeLambda(): string {
+  return "";
+}

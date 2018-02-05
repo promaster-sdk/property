@@ -5,19 +5,22 @@ type ParserCallbacks = {
   createValueExpr(unparsed: string): Ast.ValueExpr;
   createNullExpr(): Ast.NullExpr;
   createIdentifierExpr(identToken: string): Ast.IdentifierExpr;
-  createValueRangeExpr(v1: Ast.Expr, v2: Ast.Expr): Ast.ValueRangeExpr;
+  createValueRangeExpr(
+    v1: Ast.PropertyValueExpr,
+    v2: Ast.PropertyValueExpr
+  ): Ast.ValueRangeExpr;
   createEqualsExpr(
-    leftValue: Ast.Expr,
+    leftValue: Ast.PropertyValueExpr,
     operationType: Ast.EqualsOperationType,
-    rightValueRanges: Array<Ast.Expr>
+    rightValueRanges: Array<Ast.ValueRangeExpr>
   ): Ast.EqualsExpr;
   createComparisonExpr(
-    leftValue: Ast.Expr,
+    leftValue: Ast.PropertyValueExpr,
     operationType: Ast.ComparisonOperationType,
-    rightValue: Ast.Expr
+    rightValue: Ast.PropertyValueExpr
   ): Ast.ComparisonExpr;
-  createAndExpr(children: Array<Ast.Expr>): Ast.AndExpr;
-  createOrExpr(children: Array<Ast.Expr>): Ast.OrExpr;
+  createAndExpr(children: Array<Ast.BooleanExpr>): Ast.AndExpr;
+  createOrExpr(children: Array<Ast.BooleanExpr>): Ast.OrExpr;
 };
 
 const parserCallbacks: ParserCallbacks = {
@@ -26,23 +29,25 @@ const parserCallbacks: ParserCallbacks = {
   createNullExpr: (): Ast.NullExpr => Ast.newNullExpr(),
   createIdentifierExpr: (identToken: string): Ast.IdentifierExpr =>
     Ast.newIdentifierExpr(identToken),
-  createValueRangeExpr: (v1: Ast.Expr, v2: Ast.Expr): Ast.ValueRangeExpr =>
-    Ast.newValueRangeExpr(v1, v2),
+  createValueRangeExpr: (
+    v1: Ast.PropertyValueExpr,
+    v2: Ast.PropertyValueExpr
+  ): Ast.ValueRangeExpr => Ast.newValueRangeExpr(v1, v2),
   createEqualsExpr: (
-    leftValue: Ast.Expr,
+    leftValue: Ast.PropertyValueExpr,
     operationType: Ast.EqualsOperationType,
-    rightValueRanges: Array<Ast.Expr>
+    rightValueRanges: Array<Ast.ValueRangeExpr>
   ): Ast.EqualsExpr =>
     Ast.newEqualsExpr(leftValue, operationType, rightValueRanges),
   createComparisonExpr: (
-    leftValue: Ast.Expr,
+    leftValue: Ast.PropertyValueExpr,
     operationType: Ast.ComparisonOperationType,
-    rightValue: Ast.Expr
+    rightValue: Ast.PropertyValueExpr
   ): Ast.ComparisonExpr =>
     Ast.newComparisonExpr(leftValue, operationType, rightValue),
-  createAndExpr: (children: Array<Ast.Expr>): Ast.AndExpr =>
+  createAndExpr: (children: Array<Ast.BooleanExpr>): Ast.AndExpr =>
     Ast.newAndExpr(children),
-  createOrExpr: (children: Array<Ast.Expr>): Ast.OrExpr =>
+  createOrExpr: (children: Array<Ast.BooleanExpr>): Ast.OrExpr =>
     Ast.newOrExpr(children)
 };
 
@@ -55,7 +60,7 @@ const options = {
 export function parse(
   text: string,
   throwOnInvalidSyntax: boolean = false
-): Ast.Expr | undefined {
+): Ast.BooleanExpr | undefined {
   try {
     const result = Parser.parse(text, options);
     return result;

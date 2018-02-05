@@ -1,152 +1,158 @@
 import * as Ast from "./types";
 import * as PropertyValue from "../property-value";
 import * as PropertyValueSet from "../property-value-set";
+import { exhaustiveCheck } from "../../utils/exhaustive-check";
 
 export function evaluate(
-  e: Ast.Expr,
+  e: Ast.BooleanExpr,
   properties: PropertyValueSet.PropertyValueSet,
   matchMissingIdentifiers: boolean
-  // tslint:disable-next-line:no-any
-): any {
-  if (e.type === "AndExpr") {
-    for (let child of e.children) {
-      if (!evaluate(child, properties, matchMissingIdentifiers)) {
-        return false;
+): boolean {
+  switch (e.type) {
+    case "AndExpr": {
+      for (const child of e.children) {
+        if (!evaluate(child, properties, matchMissingIdentifiers)) {
+          return false;
+        }
       }
-    }
-    return true;
-  } else if (e.type === "ComparisonExpr") {
-    // Handle match missing identifier
-    if (
-      matchMissingIdentifiers &&
-      (_isMissingIdent(e.leftValue, properties) ||
-        _isMissingIdent(e.rightValue, properties))
-    ) {
       return true;
     }
-
-    const left: PropertyValue.PropertyValue = evaluate(
-      e.leftValue,
-      properties,
-      matchMissingIdentifiers
-    );
-    if (left === null) {
+    case "OrExpr": {
+      for (const child of e.children) {
+        if (evaluate(child, properties, matchMissingIdentifiers)) {
+          return true;
+        }
+      }
       return false;
     }
+    case "EqualsExpr": {
+      // Handle match missing identifier
+      if (matchMissingIdentifiers) {
+        if (
+          _isMissingIdent(e.leftValue, properties) ||
+          e.rightValueRanges.filter(
+            (vr: Ast.ValueRangeExpr) =>
+              _isMissingIdent(vr.min, properties) ||
+              _isMissingIdent(vr.max, properties)
+          ).length > 0
+        ) {
+          return true;
+        }
+      }
 
-    const right: PropertyValue.PropertyValue = evaluate(
-      e.rightValue,
-      properties,
-      matchMissingIdentifiers
-    );
-    if (right === null) {
-      return false;
-    }
+      const left: PropertyValue.PropertyValue | null = evaluatePropertyValueExpr(
+        e.leftValue,
+        properties
+      );
 
-    switch (e.operationType) {
-      case "less":
-        return PropertyValue.lessThan(left, right);
-      case "greater":
-        return PropertyValue.greaterThan(left, right);
-      case "lessOrEqual":
-        return PropertyValue.lessOrEqualTo(left, right);
-      case "greaterOrEqual":
-        return PropertyValue.greaterOrEqualTo(left, right);
-      default:
-        throw new Error(`Unknown comparisontype`);
+      for (const range of e.rightValueRanges) {
+        const rangeResult = evaluateValueRangeExpr(range, properties);
+        const min: PropertyValue.PropertyValue | null = rangeResult[0];
+        const max: PropertyValue.PropertyValue | null = rangeResult[1];
+
+        // Match on NULL or inclusive in range
+        if (
+          ((max === null || min === null) && left === null) ||
+          (left !== null &&
+            min !== null &&
+            max !== null &&
+            (PropertyValue.greaterOrEqualTo(left, min) &&
+              PropertyValue.lessOrEqualTo(left, max)))
+        ) {
+          return e.operationType === "equals";
+        }
+      }
+
+      return e.operationType === "notEquals";
     }
-  } else if (e.type === "EmptyExpr") {
-    return true;
-  } else if (e.type === "EqualsExpr") {
-    // Handle match missing identifier
-    if (matchMissingIdentifiers) {
+    case "ComparisonExpr": {
+      // Handle match missing identifier
       if (
-        _isMissingIdent(e.leftValue, properties) ||
-        e.rightValueRanges.filter(
-          (vr: Ast.ValueRangeExpr) =>
-            _isMissingIdent(vr.min, properties) ||
-            _isMissingIdent(vr.max, properties)
-        ).length > 0
+        matchMissingIdentifiers &&
+        (_isMissingIdent(e.leftValue, properties) ||
+          _isMissingIdent(e.rightValue, properties))
       ) {
         return true;
       }
-    }
 
-    const left: PropertyValue.PropertyValue = evaluate(
-      e.leftValue,
-      properties,
-      matchMissingIdentifiers
-    );
+      const left: PropertyValue.PropertyValue | null = evaluatePropertyValueExpr(
+        e.leftValue,
+        properties
+      );
+      if (left === null) {
+        return false;
+      }
 
-    for (let range of e.rightValueRanges) {
-      let rangeResult = evaluate(range, properties, matchMissingIdentifiers);
-      let min: PropertyValue.PropertyValue = rangeResult[0];
-      let max: PropertyValue.PropertyValue = rangeResult[1];
+      const right: PropertyValue.PropertyValue | null = evaluatePropertyValueExpr(
+        e.rightValue,
+        properties
+      );
+      if (right === null) {
+        return false;
+      }
 
-      // console.log("left", JSON.stringify(left));
-      // console.log("min", JSON.stringify(min));
-      // console.log("max", JSON.stringify(max));
-
-      // console.log("left unit is m3/s", (left as any).value.unit === Units.CubicMeterPerSecond);
-      // console.log("min unit is m3/h", (min as any).value.unit === Units.CubicMeterPerHour);
-      //
-      // const pv1 = PropertyValue.fromString("0:CubicMeterPerSecond");
-      // console.log("NISSE", JSON.stringify(pv1) === JSON.stringify(left));
-      // console.log("pv1", JSON.stringify(pv1));
-      // console.log("left", JSON.stringify(left));
-      //
-      // const pv2 = PropertyValue.fromText("16:CubicMeterPerHour");
-      // console.log("OLLE", PropertyValue.greaterOrEqualTo(pv1, pv2));
-
-      // console.log("greaterOrEqualTo(left, min)", PropertyValue.greaterOrEqualTo(left, min));
-      // console.log("PropertyValue.lessOrEqualTo(left, max)", PropertyValue.lessOrEqualTo(left, max));
-
-      // Match on NULL or inclusive in range
-      if (
-        ((max === null || min === null) && left === null) ||
-        (left !== null &&
-          min !== null &&
-          max !== null &&
-          (PropertyValue.greaterOrEqualTo(left, min) &&
-            PropertyValue.lessOrEqualTo(left, max)))
-      ) {
-        return e.operationType === "equals";
+      switch (e.operationType) {
+        case "less":
+          return PropertyValue.lessThan(left, right);
+        case "greater":
+          return PropertyValue.greaterThan(left, right);
+        case "lessOrEqual":
+          return PropertyValue.lessOrEqualTo(left, right);
+        case "greaterOrEqual":
+          return PropertyValue.greaterOrEqualTo(left, right);
+        default:
+          throw new Error(`Unknown comparisontype`);
       }
     }
-
-    return e.operationType === "notEquals";
-  } else if (e.type === "IdentifierExpr") {
-    if (
-      properties !== null &&
-      PropertyValueSet.hasProperty(e.name, properties)
-    ) {
-      return PropertyValueSet.get(e.name, properties);
-    } else {
-      return null;
+    case "EmptyExpr": {
+      return true;
     }
-  } else if (e.type === "OrExpr") {
-    for (let child of e.children) {
-      if (evaluate(child, properties, matchMissingIdentifiers)) {
-        return true;
-      }
+    default: {
+      return exhaustiveCheck(e, true);
     }
-    return false;
-  } else if (e.type === "ValueExpr") {
-    return e.parsed;
-  } else if (e.type === "ValueRangeExpr") {
-    return [
-      evaluate(e.min, properties, matchMissingIdentifiers),
-      evaluate(e.max, properties, matchMissingIdentifiers)
-    ];
-  } else if (e.type === "NullExpr") {
-    return null;
-  } else {
-    throw new Error("invalid type.");
   }
 }
 
+function evaluatePropertyValueExpr(
+  e: Ast.PropertyValueExpr,
+  properties: PropertyValueSet.PropertyValueSet
+): PropertyValue.PropertyValue | null {
+  switch (e.type) {
+    case "IdentifierExpr": {
+      if (
+        properties !== null &&
+        PropertyValueSet.hasProperty(e.name, properties)
+      ) {
+        const pv = PropertyValueSet.get(e.name, properties);
+        return pv || null;
+      } else {
+        return null;
+      }
+    }
+    case "ValueExpr": {
+      return e.parsed;
+    }
+    case "NullExpr": {
+      return null;
+    }
+    default: {
+      return exhaustiveCheck(e, true);
+    }
+  }
+}
+
+function evaluateValueRangeExpr(
+  e: Ast.ValueRangeExpr,
+  properties: PropertyValueSet.PropertyValueSet
+): [PropertyValue.PropertyValue | null, PropertyValue.PropertyValue | null] {
+  return [
+    evaluatePropertyValueExpr(e.min, properties),
+    evaluatePropertyValueExpr(e.max, properties)
+  ];
+}
+
 function _isMissingIdent(
-  e: Ast.Expr,
+  e: Ast.PropertyValueExpr,
   properties: PropertyValueSet.PropertyValueSet
 ): boolean {
   // If expression is an missing identifier it should match anything

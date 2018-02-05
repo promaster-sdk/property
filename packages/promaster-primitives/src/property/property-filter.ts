@@ -5,14 +5,14 @@ import { exhaustiveCheck } from "../utils/exhaustive-check";
 
 export interface PropertyFilter {
   readonly text: string;
-  readonly ast: Ast.Expr;
+  readonly ast: Ast.BooleanExpr;
 }
 
 const _cache: { [key: string]: PropertyFilter } = {}; //tslint:disable-line
 
 export const Empty: PropertyFilter = { text: "", ast: Ast.newEmptyExpr() }; //tslint:disable-line
 
-function create(text: string, ast: Ast.Expr): PropertyFilter {
+function create(text: string, ast: Ast.BooleanExpr): PropertyFilter {
   return { text, ast };
 }
 
@@ -107,7 +107,7 @@ export function getReferencedProperties(filter: PropertyFilter): Array<string> {
     throw new Error("Argument 'filter' must be defined.");
   }
   let properties: Array<string> = [];
-  _findProperties(filter.ast, properties);
+  Ast.findProperties(filter.ast, properties);
   return properties;
 }
 
@@ -129,48 +129,4 @@ export function equals(other: PropertyFilter, filter: PropertyFilter): boolean {
     return false;
   }
   return filter.text === filter.text;
-}
-
-function _findProperties(e: Ast.Expr, properties: Array<string>): void {
-  switch (e.type) {
-    case "AndExpr":
-      for (const child of e.children) {
-        _findProperties(child, properties);
-      }
-      break;
-    case "ComparisonExpr":
-      _findProperties(e.leftValue, properties);
-      _findProperties(e.rightValue, properties);
-      break;
-    case "EmptyExpr":
-      // Do nothing
-      break;
-    case "EqualsExpr":
-      _findProperties(e.leftValue, properties);
-      for (const range of e.rightValueRanges) {
-        _findProperties(range, properties);
-      }
-      break;
-    case "IdentifierExpr": {
-      properties.push(e.name);
-      break;
-    }
-    case "OrExpr":
-      for (const child of e.children) {
-        _findProperties(child, properties);
-      }
-      break;
-    case "ValueExpr":
-      // Do nothing
-      break;
-    case "ValueRangeExpr":
-      _findProperties(e.min, properties);
-      _findProperties(e.max, properties);
-      break;
-    case "NullExpr":
-      // Do nothing
-      break;
-    default:
-      exhaustiveCheck(e, true);
-  }
 }
