@@ -1,4 +1,4 @@
-import * as PropertyFilter from "../../src/property-filtering/property-filter";
+import * as PropertyFilter from "../../src/property/property-filter";
 
 //tslint:disable
 

@@ -1,4 +1,4 @@
-import * as PropertyValue from "../product-properties/property-value";
+import * as PropertyValue from "../property-value";
 
 export type Expr =
   | AndExpr

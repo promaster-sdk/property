@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import * as PropertyValue from "../../src/product-properties/property-value";
+import * as PropertyValue from "../../src/property/property-value";
 import * as Amount from "../../src/measure/amount";
 import * as Units from "../../src/measure/units";
 import { Quantity } from "../../src/measure/quantity";

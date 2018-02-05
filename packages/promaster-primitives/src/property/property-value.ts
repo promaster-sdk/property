@@ -57,9 +57,7 @@ export function fromString(encodedValue: string): PropertyValue | undefined {
   if (result === null) {
     // tslint:disable-next-line:no-console
     console.warn(
-      `PropertyValue.fromString(): Could not parse encoded value: '${
-        encodedValue
-      }'`
+      `PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`
     ); //tslint:disable-line
   }
   return result;

@@ -28,7 +28,7 @@
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "pegjs": "0.9.0",
-    "prettier": "^1.8.2",
+    "prettier": "^1.10.2",
     "rimraf": "^2.5.4",
     "shelljs": "^0.7.8",
     "ts-node": "^3.1.0",
@@ -55,9 +55,9 @@
     "build:esm":
       "tsc -p src --module es2015 --outDir ./lib-esm && node yarn.js build:parser:esm",
     "build:parser:cjs":
-      "cp src/property-filtering/pegjs/generated-parser.* lib-cjs/property-filtering/pegjs/",
+      "mkdirp lib-cjs/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-cjs/property/property-filter-ast/pegjs/",
     "build:parser:esm":
-      "cp src/property-filtering/pegjs/generated-parser.* lib-esm/property-filtering/pegjs/",
+      "mkdirp lib-esm/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-esm/property/property-filter-ast/pegjs/",
     "build:benchmarks": "cd benchmarks && tsc",
     "publish:major": "node scripts/publish.js major",
     "publish:minor": "node scripts/publish.js minor",
@@ -75,11 +75,8 @@
     "test:filtering":
       "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
     "test:parser":
-      "mocha --compilers ts:ts-node/register test/property-filtering/pegjs/property-filter-test.ts",
+      "mocha --compilers ts:ts-node/register test/property/property-filter-ast/pegjs/property-filter-test.ts",
     "generate-parser":
-      "pegjs ./src/property-filtering/pegjs/parser.pegjs ./src/property-filtering/pegjs/generated-parser.js"
-  },
-  "dependencies": {
-    "@types/lodash": "^4.14.66"
+      "pegjs ./src/property/property-filter-ast/pegjs/parser.pegjs ./src/property/property-filter-ast/pegjs/generated-parser.js"
   }
 }

@@ -1,83 +1,8 @@
 import { assert } from "chai";
-import * as PropertyFilter from "../../src/property-filtering/property-filter";
-import * as PropertyValueSet from "../../src/product-properties/property-value-set";
-// import * as FilterEvaluator from "../../src/property-filtering/evaluation/filter-evaluator";
-import * as Ast from "../../src/property-filtering/property-filter-ast";
-import { parse } from "../../src/property-filtering/pegjs/property-filter-parser";
+import * as PropertyFilter from "../../src/property/property-filter";
+import * as PropertyValueSet from "../../src/property/property-value-set";
 
 describe("main", () => {
-  describe("parsing", () => {
-    it("should_parse_a_equals_1", () => {
-      const ast = parse("a=1");
-      assert.deepEqual(
-        ast,
-        Ast.newEqualsExpr(Ast.newIdentifierExpr("a"), "equals", [
-          Ast.newValueRangeExpr(Ast.newValueExpr("1"), Ast.newValueExpr("1"))
-        ])
-      );
-    });
-
-    it("should_parse_a_greater_than_1", () => {
-      const ast = parse("a>1");
-      assert.deepEqual(
-        ast,
-        Ast.newComparisonExpr(
-          Ast.newIdentifierExpr("a"),
-          "greater",
-          Ast.newValueExpr("1")
-        )
-      );
-    });
-
-    it("should_parse_a_greater_or_equal_to_1", () => {
-      const ast = parse("a>=1");
-      assert.deepEqual(
-        ast,
-        Ast.newComparisonExpr(
-          Ast.newIdentifierExpr("a"),
-          "greaterOrEqual",
-          Ast.newValueExpr("1")
-        )
-      );
-    });
-
-    it("should_parse_a_dot_b_equals_1", () => {
-      const ast = parse("a.b=1");
-      assert.deepEqual(
-        ast,
-        Ast.newEqualsExpr(Ast.newIdentifierExpr("a.b"), "equals", [
-          Ast.newValueRangeExpr(Ast.newValueExpr("1"), Ast.newValueExpr("1"))
-        ])
-      );
-    });
-
-    it("should_parse_a_equals_20_Celsius", () => {
-      const ast = parse("a=20:Celsius");
-      assert.deepEqual(
-        ast,
-        Ast.newEqualsExpr(Ast.newIdentifierExpr("a"), "equals", [
-          Ast.newValueRangeExpr(
-            Ast.newValueExpr("20:Celsius"),
-            Ast.newValueExpr("20:Celsius")
-          )
-        ])
-      );
-    });
-
-    it("should_parse_a_equals_20_Celsius_range_30_Celsius", () => {
-      const ast = parse("a=20:Celsius~30:Celsius");
-      assert.deepEqual(
-        ast,
-        Ast.newEqualsExpr(Ast.newIdentifierExpr("a"), "equals", [
-          Ast.newValueRangeExpr(
-            Ast.newValueExpr("20:Celsius"),
-            Ast.newValueExpr("30:Celsius")
-          )
-        ])
-      );
-    });
-  });
-
   describe("is_syntax_valid", () => {
     it("empty_filter_is_valid", () => {
       assert.equal(PropertyFilter.isSyntaxValid(""), true);

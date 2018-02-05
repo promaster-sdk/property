@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import * as PropertyValueSet from "../../src/product-properties/property-value-set";
-import * as PropertyValue from "../../src/product-properties/property-value";
+import * as PropertyValueSet from "../../src/property/property-value-set";
+import * as PropertyValue from "../../src/property/property-value";
 import * as Units from "../../src/measure/units";
 import * as Amount from "../../src/measure/amount";
 
