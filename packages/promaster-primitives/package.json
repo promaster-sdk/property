@@ -13,10 +13,12 @@
   },
   "devDependencies": {
     "@types/assertion-error": "^1.0.30",
+    "@types/benchmark": "^1.0.31",
     "@types/chai": "^3.4.34",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.45",
     "@types/pegjs": "0.0.28",
+    "benchmark": "^2.1.4",
     "chai": "^3.5.0",
     "husky": "^0.14.3",
     "jsdoc-to-markdown": "^2.0.1",
@@ -44,6 +46,8 @@
     "precommit": "lint-staged",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
+    "benchmark":
+      "node ./yarn.js build:benchmarks && node ./yarn.js build:cjs && node benchmarks/lib/property-filter.js",
     "build":
       "node yarn.js build:clean && node yarn.js build:cjs && node yarn.js build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
@@ -54,6 +58,7 @@
       "cp src/property-filtering/pegjs/generated-parser.* lib-cjs/property-filtering/pegjs/",
     "build:parser:esm":
       "cp src/property-filtering/pegjs/generated-parser.* lib-esm/property-filtering/pegjs/",
+    "build:benchmarks": "cd benchmarks && tsc",
     "publish:major": "node scripts/publish.js major",
     "publish:minor": "node scripts/publish.js minor",
     "publish:patch": "node scripts/publish.js patch",

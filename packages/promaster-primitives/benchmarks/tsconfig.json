@@ -1,0 +1,23 @@
+{
+  "extends": "../base-tsconfig.json",
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "rootDir": "src",
+    "outDir": "lib",
+    "declaration": false,
+    "sourceMap": true,
+    "jsx": "react",
+    "downlevelIteration": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "client-lib/*": ["lib/*"],
+      "shared-lib/*": ["../shared/lib/*"]
+    },
+    "lib": ["dom", "es2015", "es2017.object"]
+  },
+  "include": ["**/*"],
+  "exclude": ["node_modules/**/"]
+}
