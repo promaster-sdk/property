@@ -18,19 +18,19 @@ if (!pf) {
 }
 const pvs = PropertyValueSet.fromString("a=1;b=2;ccc=3;d=4;z=50");
 
-const fake1 = (
-  _pvs: PropertyValueSet.PropertyValueSet,
-  _matchMissing: boolean
-) => true;
+// const fake1 = (
+//   _pvs: PropertyValueSet.PropertyValueSet,
+//   _matchMissing: boolean
+// ) => true;
 
-const fake2 = new Function("a", "b", "return a===b && b>a || b<a");
+// const fake2 = new Function("a", "b", "return a===b && b>a || b<a");
 
-const fake3 = new Function("a", "b", "return a()===b() && b()>a() || b()<a()");
+// const fake3 = new Function("a", "b", "return a()===b() && b()>a() || b()<a()");
 
 // const fake2 = new Function("a", "b", "return olle");
 
-const fake4 = (a: () => number, b: () => number) =>
-  (a() === b() && b() > a()) || b() < a();
+// const fake4 = (a: () => number, b: () => number) =>
+//   (a() === b() && b() > a()) || b() < a();
 
 const fake5 = new Function(
   "obj",
