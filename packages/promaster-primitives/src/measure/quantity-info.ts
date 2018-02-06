@@ -15,12 +15,12 @@ export function getQuantityInfo(
   return quantityInfo[quantity];
 }
 
-function createQuantityInfo(
-  siUnit: Unit.Unit<Quantity.Quantity>,
-  ipUnit: Unit.Unit<Quantity.Quantity>
-): QuantityInfo | undefined {
-  return { siUnit, ipUnit };
-}
+// function createQuantityInfo(
+//   siUnit: Unit.Unit<Quantity.Quantity>,
+//   ipUnit: Unit.Unit<Quantity.Quantity>
+// ): QuantityInfo | undefined {
+//   return { siUnit, ipUnit };
+// }
 
 function addQuantity(
   quantity: Quantity.Quantity,

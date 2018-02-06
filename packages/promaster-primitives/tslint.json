@@ -44,7 +44,7 @@
     "no-eval": true,
     "no-invalid-this": true,
     "no-null-keyword": false,
-    "no-shadowed-variable": true,
+    // "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-switch-case-fall-through": true,
     "no-unsafe-finally": true,
@@ -57,7 +57,7 @@
     "eofline": true,
     "indent": [true, "spaces"],
     "linebreak-style": false,
-    "max-file-line-count": [true, 500],
+    "max-file-line-count": [true, 700],
     "max-line-length": [true, 160],
     "no-default-export": true,
     "no-mergeable-namespace": true,
@@ -97,7 +97,6 @@
       "check-type",
       "check-typecast"
     ],
-    "no-arguments": true,
     // From tslint-immutable
     "readonly-keyword": true,
     "no-class": true,
@@ -106,15 +105,6 @@
     // Neec to use new for built-in types like Map, Set, RegEx etc.
     //    "no-new": true,
     "no-this": true,
-    "no-mixed-interface": true,
-    "no-label": true,
-    "import-containment": [
-      true,
-      {
-        "containmentPath": "src/client/containers",
-        "allowedExternalFileNames": ["index", "types", "bootstrap"],
-        "disallowedInternalFileNames": ["index"]
-      }
-    ]
+    "no-mixed-interface": true
   }
 }

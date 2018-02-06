@@ -8,7 +8,7 @@
     "target": "es5",
     "module": "commonjs",
     "declaration": true,
-    "outDir": "../test_js_out",
+    "outDir": "./lib",
     "noEmit": true,
     "sourceMap": true,
     // Lib options
@@ -16,8 +16,5 @@
     "types": ["mocha", "node"],
     "typeRoots": ["./node_modules/@types"]
   },
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+  "exclude": ["node_modules", "lib"]
 }

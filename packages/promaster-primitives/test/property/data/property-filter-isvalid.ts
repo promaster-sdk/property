@@ -1,5 +1,53 @@
 export const tests = [
   {
+    name: "equals_integer_true",
+    pvs: "a=1",
+    f: "a=1",
+    result: true
+  },
+  {
+    name: "equals_integer_false",
+    pvs: "a=1",
+    f: "a=2",
+    result: false
+  },
+  {
+    name: "greater_than_integer_true",
+    pvs: "a=1",
+    f: "a>0",
+    result: true
+  },
+  {
+    name: "greater_than_integer_false",
+    pvs: "a=1",
+    f: "a>1",
+    result: false
+  },
+  {
+    name: "greater_than_integer_name_to_integer_name",
+    pvs: "a=1;b=2",
+    f: "b>a",
+    result: true
+  },
+  {
+    name: "greater_than_amount_name_to_amount_name",
+    pvs: "a=1:Meter;b=2:Meter",
+    f: "b>a",
+    result: true
+  },
+  {
+    name: "equals_amount_name_to_amount_name_false",
+    pvs: "a=1:Meter;b=1:CentiMeter",
+    f: "b=a",
+    result: false
+  },
+  {
+    name: "equals_amount_name_to_amount_name_true",
+    pvs: "a=1:Meter;b=1:Meter",
+    f: "b=a",
+    result: true
+  },
+  {
     name: "should_not_match_missing_property",
     pvs: "firstprop=2",
     f: "secondprop=2",
@@ -79,13 +127,13 @@ export const tests = [
     result: false
   },
   {
-    name: "supports_settings1",
+    name: "greather_than_amount",
     pvs: "a=5:Celsius",
     f: "a>2:Celsius",
     result: true
   },
   {
-    name: "supports_settings2",
+    name: "less_than_amount",
     pvs: "a=5:Celsius",
     f: "a<2:Celsius",
     result: false

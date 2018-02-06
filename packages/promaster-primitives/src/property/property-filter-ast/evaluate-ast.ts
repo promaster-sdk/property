@@ -3,7 +3,7 @@ import * as PropertyValue from "../property-value";
 import * as PropertyValueSet from "../property-value-set";
 import { exhaustiveCheck } from "../../utils/exhaustive-check";
 
-export function evaluate(
+export function evaluateAst(
   e: Ast.BooleanExpr,
   properties: PropertyValueSet.PropertyValueSet,
   matchMissingIdentifiers: boolean
@@ -11,7 +11,7 @@ export function evaluate(
   switch (e.type) {
     case "AndExpr": {
       for (const child of e.children) {
-        if (!evaluate(child, properties, matchMissingIdentifiers)) {
+        if (!evaluateAst(child, properties, matchMissingIdentifiers)) {
           return false;
         }
       }
@@ -19,7 +19,7 @@ export function evaluate(
     }
     case "OrExpr": {
       for (const child of e.children) {
-        if (evaluate(child, properties, matchMissingIdentifiers)) {
+        if (evaluateAst(child, properties, matchMissingIdentifiers)) {
           return true;
         }
       }

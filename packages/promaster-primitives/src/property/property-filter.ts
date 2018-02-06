@@ -1,19 +1,23 @@
-import * as PropertyValue from "./property-value";
 import * as PropertyValueSet from "./property-value-set";
 import * as Ast from "./property-filter-ast/index";
-import { exhaustiveCheck } from "../utils/exhaustive-check";
 
 export interface PropertyFilter {
   readonly text: string;
   readonly ast: Ast.BooleanExpr;
+  readonly _evaluate: Ast.CompiledFilterFunction;
 }
 
 const _cache: { [key: string]: PropertyFilter } = {}; //tslint:disable-line
 
-export const Empty: PropertyFilter = { text: "", ast: Ast.newEmptyExpr() }; //tslint:disable-line
+// tslint:disable-next-line:variable-name
+export const Empty: PropertyFilter = {
+  text: "",
+  ast: Ast.newEmptyExpr(),
+  _evaluate: () => true
+};
 
 function create(text: string, ast: Ast.BooleanExpr): PropertyFilter {
-  return { text, ast };
+  return { text, ast, _evaluate: Ast.compileAst(ast) };
 }
 
 export function fromString(filter: string): PropertyFilter | undefined {
@@ -80,13 +84,7 @@ export function isValid(
   properties: PropertyValueSet.PropertyValueSet,
   filter: PropertyFilter
 ): boolean {
-  if (properties === null || properties === undefined) {
-    throw new Error("Argument 'properties' must be defined.");
-  }
-  if (filter === null || filter === undefined) {
-    throw new Error("Argument 'filter' must be defined.");
-  }
-  return Ast.evaluate(filter.ast, properties, false);
+  return filter._evaluate(properties);
 }
 
 export function isValidMatchMissing(
@@ -99,7 +97,7 @@ export function isValidMatchMissing(
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
-  return Ast.evaluate(filter.ast, properties, true);
+  return Ast.evaluateAst(filter.ast, properties, true);
 }
 
 export function getReferencedProperties(filter: PropertyFilter): Array<string> {

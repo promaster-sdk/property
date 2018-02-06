@@ -22,21 +22,21 @@
     "chai": "^3.5.0",
     "husky": "^0.14.3",
     "jsdoc-to-markdown": "^2.0.1",
-    "lint-staged": "^4.3.0",
-    "madge": "^1.6.0",
+    "lint-staged": "^6.1.0",
+    "madge": "^3.0.1",
     "mkdirp": "^0.5.1",
-    "mocha": "^3.2.0",
-    "nyc": "^10.1.2",
+    "mocha": "^5.0.0",
+    "nyc": "^11.4.1",
     "pegjs": "0.9.0",
     "prettier": "^1.10.2",
     "rimraf": "^2.5.4",
     "shelljs": "^0.7.8",
-    "ts-node": "^3.1.0",
-    "tslint": "^5.2.0",
-    "tslint-immutable": "^3.4.2",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.9.1",
+    "tslint-immutable": "^4.5.1",
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
-    "typescript": "^2.5.2"
+    "typescript": "2.6.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": "tslint",
@@ -47,7 +47,7 @@
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
     "benchmark":
-      "node ./yarn.js build:benchmarks && node ./yarn.js build:cjs && node benchmarks/lib/property-filter.js",
+      "node ./yarn.js build:cjs && node ./yarn.js build:benchmarks &&  node benchmarks/lib/property-filter.js",
     "build":
       "node yarn.js build:clean && node yarn.js build:cjs && node yarn.js build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
@@ -58,24 +58,20 @@
       "mkdirp lib-cjs/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-cjs/property/property-filter-ast/pegjs/",
     "build:parser:esm":
       "mkdirp lib-esm/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-esm/property/property-filter-ast/pegjs/",
+    "build:parser:test":
+      "mkdirp test/lib/src/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* test/lib/src/property/property-filter-ast/pegjs/",
     "build:benchmarks": "cd benchmarks && tsc",
     "publish:major": "node scripts/publish.js major",
     "publish:minor": "node scripts/publish.js minor",
     "publish:patch": "node scripts/publish.js patch",
-    "tsc": "tsc -p src",
-    "tsc:test": "tsc -p test",
+    "build:test": "tsc -p test && yarn build:parser:test",
     "gen-doc": "node yarn.js build && node scripts/gen-doc.js",
     "gen-typedoc":
       "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
-    "test:mocha": "mocha --compilers ts:ts-node/register \"test/**/*.ts\"",
-    "test": "nyc mocha --require ts-node/register \"test/**/*.ts\"",
-    "test:measure": "mocha --compilers ts:ts-node/register test/measure/*.ts",
-    "test:properties":
-      "mocha --compilers ts:ts-node/register test/product-properties/*.ts",
-    "test:filtering":
-      "mocha --compilers ts:ts-node/register test/property-filtering/property-filter-test.ts",
-    "test:parser":
-      "mocha --compilers ts:ts-node/register test/property/property-filter-ast/pegjs/property-filter-test.ts",
+    "test": "mocha",
+    "verify": "yarn build && yarn lint && yarn circular && yarn coverage",
+    "coverage": "rm -rf coverage .nyc_output && nyc yarn test",
+    "testjs": "yarn build:test && mocha \"test/lib/**/*.js\"",
     "generate-parser":
       "pegjs ./src/property/property-filter-ast/pegjs/parser.pegjs ./src/property/property-filter-ast/pegjs/generated-parser.js"
   }

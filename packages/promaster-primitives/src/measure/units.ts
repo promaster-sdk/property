@@ -4,7 +4,7 @@ import * as UnitDivide from "./unit-divide";
 import * as UnitTimes from "./unit-times";
 import * as q from "./quantity";
 import { Quantity } from "./quantity";
-import * as UnitPow from "./unit-pow";
+// import * as UnitPow from "./unit-pow";
 
 // tslint:disable variable-name max-line-length max-file-line-count
 

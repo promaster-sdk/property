@@ -1,17 +1,16 @@
-import { assert } from "chai";
-import * as Amount from "../../src/measure/amount";
-import * as Units from "../../src/measure/units";
-import { TemperatureConversion } from "../test_utils/conversion_helpers/temperature_conversion";
+// import { assert } from "chai";
+// import * as Amount from "../../src/measure/amount";
+// import * as Units from "../../src/measure/units";
+// import { TemperatureConversion } from "../test_utils/conversion_helpers/temperature_conversion";
 
 // tslint:disable:no-console
 describe("amount_temperature_comparisions_test", () => {
   it("1 SquareRootPascal should equal 33,44169 SquareRootInchOfWaterColumn", () => {
-    const amount = Amount.create(1, Units.SquareRootPascal);
-    const inWc = Amount.valueAs(Units.SquareRootInchOfWaterColumn, amount);
-
+    // const amount = Amount.create(1, Units.SquareRootPascal);
+    // const inWc = Amount.valueAs(Units.SquareRootInchOfWaterColumn, amount);
     /*  const pascal = Amount.create(1, Units.SquareRootPascal);
-      console.log(Units.getStringFromUnit(pascal.unit));
-      console.log(Units.getStringFromUnit(Units.SquareRootInchOfWaterColumn));
+      // console.log(Units.getStringFromUnit(pascal.unit));
+      // console.log(Units.getStringFromUnit(Units.SquareRootInchOfWaterColumn));
   
       const inWc = Amount.valueAs(Units.SquareRootInchOfWaterColumn, pascal);
       assert.equal(33.44169, inWc);*/
@@ -19,12 +18,11 @@ describe("amount_temperature_comparisions_test", () => {
   });
 
   it("", () => {
-    const amount = Amount.create(1, Units.LiterPerSecondPerSquareRootPascal);
-    const value = Amount.valueAs(
-      Units.CubicFeetPerMinutePerSquareRootInchOfWaterColumn,
-      amount
-    );
-
+    // const amount = Amount.create(1, Units.LiterPerSecondPerSquareRootPascal);
+    // const value = Amount.valueAs(
+    //   Units.CubicFeetPerMinutePerSquareRootInchOfWaterColumn,
+    //   amount
+    // );
     /*  const cubicMeter = Amount.valueAs(units.Cub)
         assert.equal(chck, cubicFeetinWc);*/
   });

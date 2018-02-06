@@ -3,13 +3,6 @@ import { LengthConversion } from "../test_utils/conversion_helpers/length_conver
 import { DurationConversion } from "../test_utils/conversion_helpers/duration_conversion";
 import * as Amount from "../../src/measure/amount";
 import * as Units from "../../src/measure/units";
-import {
-  Mass,
-  Length,
-  Energy,
-  Temperature,
-  Duration
-} from "../../src/measure/quantity";
 
 describe("amount_test", () => {
   it("should_not_accept_a_string_as_value", () => {

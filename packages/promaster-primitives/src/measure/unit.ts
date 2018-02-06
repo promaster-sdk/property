@@ -37,7 +37,7 @@ export type Unit<T extends Quantity> =
  * the base units of any specific System Of Units (they would have
  * be base units accross all possible systems otherwise).
  */
-export interface BaseUnit<T extends Quantity> {
+export interface BaseUnit<_T extends Quantity> {
   readonly type: "base";
   readonly quantity: Quantity;
   /** Holds the unique symbol for this base unit. */
@@ -48,7 +48,7 @@ export interface BaseUnit<T extends Quantity> {
  * This record represents the units used in expressions to distinguish
  * between quantities of a different nature but of the same dimensions.
  */
-export interface AlternateUnit<T extends Quantity> {
+export interface AlternateUnit<_T extends Quantity> {
   readonly type: "alternate";
   readonly quantity: Quantity;
   readonly symbol: string;
@@ -89,7 +89,7 @@ export interface TransformedUnit<T extends Quantity> {
  * form after factorization). For example:
  * METER.pow(2).divide(METER) returns METER.
  */
-export interface ProductUnit<T extends Quantity> {
+export interface ProductUnit<_T extends Quantity> {
   readonly type: "product";
   readonly quantity: Quantity;
   /// Holds the units composing this product unit.

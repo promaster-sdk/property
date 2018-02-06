@@ -6,15 +6,11 @@ variables:
   YARN: node ./yarn.js
 
 test:
-  image: node:7.6.0
+  image: node:8.9.4
   stage: test
   script:
     - $YARN install --ignore-scripts
-    - $YARN run lint
-    - $YARN run circular
-    - $YARN run tsc
-    - $YARN run tsc:test
-    - $YARN run test
+    - $YARN verify
   coverage: /^All files\s*\|\s*(\d+.\d+)/
   artifacts:
     paths:

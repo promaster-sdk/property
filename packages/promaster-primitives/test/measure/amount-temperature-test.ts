@@ -7,14 +7,14 @@ import { TemperatureConversion } from "../test_utils/conversion_helpers/temperat
 
 describe("amount_temperature_comparisions_test", () => {
   it("0.0 Celsius should equal 273.15 Kelvin", () => {
-    const kelvinInCelsius = Amount.valueAs(
-      Units.Celsius,
-      Amount.create(273.15, Units.Kelvin)
-    );
-    const celsiusInCelsius = Amount.valueAs(
-      Units.Celsius,
-      Amount.create(0.0, Units.Celsius)
-    );
+    // const kelvinInCelsius = Amount.valueAs(
+    //   Units.Celsius,
+    //   Amount.create(273.15, Units.Kelvin)
+    // );
+    // const celsiusInCelsius = Amount.valueAs(
+    //   Units.Celsius,
+    //   Amount.create(0.0, Units.Celsius)
+    // );
 
     assert.isTrue(
       Amount.equals(

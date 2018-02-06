@@ -1,5 +1,8 @@
 import * as PropertyValue from "../property-value";
 
+// All expression
+export type Expr = BooleanExpr | PropertyValueExpr;
+
 // Expressions that result in a boolean
 export type BooleanExpr =
   | AndExpr
