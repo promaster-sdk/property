@@ -347,6 +347,16 @@ describe("amount_test", () => {
 	 assert.equal(compare, isNot(0));
 	 });
 	 */
+
+  it("Assert true for PI rad equals 180 °", () => {
+    const a1 = Amount.create(Math.PI, Units.Radian);
+    const a2 = Amount.create(180, Units.Degrees);
+    assert.closeTo(
+      Amount.valueAs(Units.Radian, a1),
+      Amount.valueAs(Units.Radian, a2),
+      0.000001
+    );
+  });
 });
 
 describe("amount_plus_minus_times_divide", () => {
