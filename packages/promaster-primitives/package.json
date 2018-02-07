@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-primitives",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -18,40 +18,36 @@
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.45",
     "@types/pegjs": "0.0.28",
-    "pegjs": "0.9.0",
-    "benchmark": "^2.1.4"
+    "benchmark": "^2.1.4",
+    "pegjs": "0.9.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": "tslint",
-    "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
+    "*.{ts,tsx,json,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "scripts": {
     "precommit": "lint-staged",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
-    "benchmark":
-      "yarn build:cjs && yarn build:benchmarks &&  node benchmarks/lib/property-filter.js",
+    "benchmark": "yarn build:cjs && yarn build:benchmarks &&  node benchmarks/lib/property-filter.js",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src && yarn build:parser:cjs",
-    "build:esm":
-      "tsc -p src --module es2015 --outDir ./lib-esm && yarn build:parser:esm",
-    "build:parser:cjs":
-      "mkdirp lib-cjs/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-cjs/property/property-filter-ast/pegjs/",
-    "build:parser:esm":
-      "mkdirp lib-esm/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-esm/property/property-filter-ast/pegjs/",
-    "build:parser:test":
-      "mkdirp test/lib/src/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* test/lib/src/property/property-filter-ast/pegjs/",
+    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm && yarn build:parser:esm",
+    "build:parser:cjs": "mkdirp lib-cjs/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-cjs/property/property-filter-ast/pegjs/",
+    "build:parser:esm": "mkdirp lib-esm/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-esm/property/property-filter-ast/pegjs/",
+    "build:parser:test": "mkdirp test/lib/src/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* test/lib/src/property/property-filter-ast/pegjs/",
     "build:benchmarks": "cd benchmarks && tsc",
     "build:test": "tsc -p test && yarn build:parser:test",
     "gen-doc": "yarn build && node scripts/gen-doc.js",
-    "gen-typedoc":
-      "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
+    "gen-typedoc": "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
     "test": "mocha",
     "verify": "yarn build && yarn lint && yarn circular && yarn coverage",
     "coverage": "rm -rf coverage .nyc_output && nyc yarn test",
     "testjs": "yarn build:test && mocha \"test/lib/**/*.js\"",
-    "generate-parser":
-      "pegjs ./src/property/property-filter-ast/pegjs/parser.pegjs ./src/property/property-filter-ast/pegjs/generated-parser.js"
+    "generate-parser": "pegjs ./src/property/property-filter-ast/pegjs/parser.pegjs ./src/property/property-filter-ast/pegjs/generated-parser.js"
   }
 }
