@@ -1,8 +1,6 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/jest": "^22.1.1",
@@ -36,9 +34,10 @@
     "webpack-dev-server": "^2.11.1"
   },
   "scripts": {
-    "publish": "lerna publish",
+    "publish": "lerna run verify && lerna publish",
     "updated": "lerna updated",
     "build": "lerna run build",
-    "clean": "lerna clean && rm -rf node_modules"
+    "clean": "lerna clean && rm -rf node_modules",
+    "lint": "lerna run lint"
   }
 }
