@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-portable",
-  "version": "0.37.0",
+  "version": "0.37.1",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib-cjs/index.js",
@@ -35,8 +35,7 @@
   },
   "scripts": {
     "verify": "yarn test && yarn build",
-    "start":
-      "webpack-dev-server --config example/webpack.config.js --content-base ./example",
+    "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
@@ -46,7 +45,6 @@
     "tsc:example": "tsc -p example",
     "tsc:watch": "tsc --watch -p src",
     "tsc:example:watch": "tsc --watch -p example",
-    "test":
-      "cd test && mocha --timeout 5000 --require \"ts-node/register\" \"**/*.ts{,x}\""
+    "test": "cd test && mocha --timeout 5000 --require \"ts-node/register\" \"**/*.ts{,x}\""
   }
 }
