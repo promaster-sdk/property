@@ -26,7 +26,6 @@
     "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
   },
   "scripts": {
-    "prepublish": "yarn test && yarn build",
     "precommit": "lint-staged",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",

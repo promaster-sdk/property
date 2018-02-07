@@ -34,7 +34,7 @@
     "pdfkit": "^0.8.0"
   },
   "scripts": {
-    "prepublish": "yarn test && yarn build",
+    "verify": "yarn test && yarn build",
     "start":
       "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
