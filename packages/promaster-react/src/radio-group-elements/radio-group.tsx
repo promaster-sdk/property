@@ -1,14 +1,12 @@
 import * as React from "react";
 
 export type RadioGroupProps = {
-  locked: boolean,
+  readonly locked: boolean;
 } & React.HTMLProps<HTMLDivElement>;
 
 export function RadioGroup({
   locked: _1,
-  ...htmlProps,
+  ...htmlProps
 }: RadioGroupProps): JSX.Element {
-  return (
-    <div {...htmlProps}>{htmlProps.children}</div>
-  );
+  return <div {...htmlProps}>{htmlProps.children}</div>;
 }
