@@ -1,7 +1,7 @@
 import * as React from "react";
-import { AbstractImage, AbstractImageExporters } from "../../src/index";
+import { AbstractImage, AbstractImageExporters } from "../../../src/index";
 
-export function AbstractImageExample() {
+export function AbstractImageExample(): JSX.Element {
   const components = [
     AbstractImage.createLine(
       AbstractImage.createPoint(25, 25),

@@ -1,56 +1,56 @@
-const path = require('path');
-const webpack = require('webpack');
-const atl = require('awesome-typescript-loader');
+const path = require("path");
+const webpack = require("webpack");
+const atl = require("awesome-typescript-loader");
 
 module.exports = {
   // context - The base directory, an absolute path, for resolving entry points and loaders from configuration.
   stats: "minimal",
-  context: path.resolve(__dirname, '.'),
-  devtool: 'sourcemap',
-  entry: './app/start',
+  context: path.resolve(__dirname, "./src"),
+  devtool: "sourcemap",
+  entry: "./app/start",
   output: {
-    path: path.join(__dirname, '../dist/example'),
-    filename: 'example-bundle.js',
+    path: path.join(__dirname, "../dist/example"),
+    filename: "example-bundle.js",
     // the url to the output directory resolved relative to the HTML page
-    publicPath: '/assets/'
+    publicPath: "/assets/"
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
+        loader: "awesome-typescript-loader",
         exclude: /^node_modules/,
         query: {
-          configFileName: './example/tsconfig.json'
+          configFileName: "./example/tsconfig.json"
         }
       }
     ]
   },
   node: {
-    fs: "empty",
+    fs: "empty"
   },
   performance: {
     hints: false
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: [".ts", ".tsx", ".js"],
     plugins: [
-      new atl.TsConfigPathsPlugin({configFileName: "./src/client/tsconfig.json"})
+      new atl.TsConfigPathsPlugin({
+        configFileName: "./src/client/tsconfig.json"
+      })
     ],
     alias: {
-      "@promaster/promaster-portable": path.resolve( __dirname, '../')
+      "@promaster/promaster-portable": path.resolve(__dirname, "../")
     }
   },
-  plugins: [
-    new atl.CheckerPlugin(),
-  ],
+  plugins: [new atl.CheckerPlugin()],
   devServer: {
     stats: {
       assets: false,
       hash: false,
       chunks: false,
       errors: true,
-      errorDetails: true,
+      errorDetails: true
     },
     overlay: true
   }

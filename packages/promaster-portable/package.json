@@ -35,14 +35,18 @@
     "pdfkit": "^0.8.0"
   },
   "scripts": {
+    "lint":
+      "tslint --fix -c ../../tslint.json -t msbuild './{src,test/src,example/src}/**/*.ts{,x}'",
     "verify": "yarn test && yarn build",
-    "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
+    "start":
+      "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
     "build:esm": "tsc --module es2015 --outDir ./lib-esm",
-    "test": "cd test && mocha --timeout 5000 --require \"ts-node/register\" \"**/*.ts{,x}\"",
+    "test":
+      "cd test && mocha --timeout 5000 --require \"ts-node/register\" \"**/*.ts{,x}\"",
     "test:build": "tsc -p tsconfig-test.json",
-    "example:build": "tsc -p example"
+    "example:build": "cd example && tsc"
   }
 }

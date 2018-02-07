@@ -7,14 +7,13 @@
     "module": "commonjs",
     "target": "es6",
     "newLine": "LF",
-    "noEmit": true,
     "noEmitOnError": true,
     "noImplicitAny": false,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noResolve": false,
-    "outDir": "../js_out",
+    "outDir": "./lib",
     "preserveConstEnums": true,
     "pretty": false,
     "removeComments": true,
@@ -32,7 +31,16 @@
     "allowSyntheticDefaultImports": true,
     "noImplicitUseStrict": false,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es5", "es2015", "dom", "es2016.array.include", "es2015.promise", "es2017.object", "es2015.iterable", "es2015.symbol"],
+    "lib": [
+      "es5",
+      "es2015",
+      "dom",
+      "es2016.array.include",
+      "es2015.promise",
+      "es2017.object",
+      "es2015.iterable",
+      "es2015.symbol"
+    ],
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
@@ -41,11 +49,6 @@
       "*": ["../custom-typings/*"]
     }
   },
-  "include": [
-    "**/*"
-  ],
-  "exclude": [
-    "node_modules/**/",
-    "jspm_packages/**/"
-  ]
+  "include": ["**/*"],
+  "exclude": ["node_modules/**/", "jspm_packages/**/"]
 }
