@@ -125,6 +125,7 @@ export function PropertiesSelector(
     onChange = (_a: PropertyValueSet.PropertyValueSet) => {}, //tslint:disable-line
     onPropertyFormatChanged = (
       _a: string,
+      // tslint:disable-next-line:no-any
       _b: Unit.Unit<any>,
       _c: number
     ) => {}, //tslint:disable-line
