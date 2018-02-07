@@ -1,7 +1,9 @@
 import { assert } from "chai";
-import { buildAllPropertyValueSetsExtended } from "../../src/variant-listing";
+import { buildAllPropertyValueSetsExtended } from "../../../src/variant-listing";
 import { readFileSync } from "fs";
 import * as Path from "path";
+
+// tslint:disable:max-line-length
 
 describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {

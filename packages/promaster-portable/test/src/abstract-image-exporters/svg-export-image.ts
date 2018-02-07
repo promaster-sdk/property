@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import * as AbstractImage from "../../src/abstract-image/index";
-import * as AbstractImageExporters from "../../src/abstract-image-exporters/index";
+import * as AbstractImage from "../../../src/abstract-image/index";
+import * as AbstractImageExporters from "../../../src/abstract-image-exporters/index";
 
 describe("svg export", () => {
   it("doesnt throw exception and produces output", () => {

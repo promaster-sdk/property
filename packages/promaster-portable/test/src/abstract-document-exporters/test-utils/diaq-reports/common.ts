@@ -1,7 +1,11 @@
-import { ImageResource, Image } from "../../../../src/abstract-document";
-import * as AbstractImage from "../../../../src/abstract-image";
+import { ImageResource, Image } from "../../../../../src/abstract-document";
+import * as AbstractImage from "../../../../../src/abstract-image";
 
-export type ProductCodes = Array<{ type: string; code: string; m3: string }>;
+export type ProductCodes = Array<{
+  readonly type: string;
+  readonly code: string;
+  readonly m3: string;
+}>;
 
 export interface BitmapImage {
   readonly name: string;
@@ -16,9 +20,9 @@ export interface CombinedImageResource {
 }
 
 export interface CombinedImageProps {
-  image: BitmapImage;
-  width?: number | undefined;
-  height?: number | undefined;
+  readonly image: BitmapImage;
+  readonly width?: number | undefined;
+  readonly height?: number | undefined;
 }
 
 export interface ProductDescriptionData {

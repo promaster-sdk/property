@@ -1,3 +1,5 @@
+// tslint:disable:max-line-length
+
 // import {
 //   AbstractDoc, MasterPage,
 //   Section, Paragraph,

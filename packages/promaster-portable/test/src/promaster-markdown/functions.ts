@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { makeHtml } from "../../src/promaster-markdown/index";
+import { makeHtml } from "../../../src/promaster-markdown/index";
 
 describe("makeHtml", () => {
   it("should convert correctly", () => {

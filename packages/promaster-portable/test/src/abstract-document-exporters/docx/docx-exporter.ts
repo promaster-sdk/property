@@ -1,3 +1,5 @@
+//tslint:disable
+
 // import {assert} from "chai";
 // import * as DocxDocumentRenderer from "../../../src/abstract-document-exporters/docx/docx-document-renderer";
 // import {ExportedImage, ImageFormat} from "../../../src/abstract-document-exporters/docx/docx-document-renderer";

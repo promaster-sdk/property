@@ -1,3 +1,4 @@
+// tslint:disable:variable-name
 export const word_Header_rId1_xml = `<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <w:hdr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" />`;
 

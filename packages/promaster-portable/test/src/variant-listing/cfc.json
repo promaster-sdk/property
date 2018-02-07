@@ -2076,7 +2076,8 @@
             "value": 200
           },
           "property_filter": {
-            "text": "design_type=1,2,3&filter_dimension=2,4,6,8,10|design_type=3&filter_dimension=5|design_type=5&filter_dimension=13",
+            "text":
+              "design_type=1,2,3&filter_dimension=2,4,6,8,10|design_type=3&filter_dimension=5|design_type=5&filter_dimension=13",
             "ast": {
               "type": "OrExpr",
               "children": [

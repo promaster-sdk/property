@@ -1,6 +1,6 @@
 import * as R from "ramda";
-import * as ADPdf from "../../../src/abstract-document-exporters/pdf/render";
-import * as AD from "../../../src/abstract-document";
+import * as ADPdf from "../../../../src/abstract-document-exporters/pdf/render";
+import * as AD from "../../../../src/abstract-document";
 // import * as AI from "../../../src/abstract-image";
 // import {assert} from "chai";
 import * as fs from "fs";
@@ -9,6 +9,7 @@ import * as fs from "fs";
 // import {generateText, generateTextInTable, generateMarkdownText} from "../test-utils/textrun";
 import * as path from "path";
 
+// tslint:disable-next-line:no-var-requires no-require-imports
 const pdfKit = require("pdfkit");
 
 describe("PdfExporter", () => {
@@ -95,7 +96,7 @@ describe("PdfExporter", () => {
   //   ADPdf.exportToStream(pdfKit, stream, doc);
   // });
 
-  it("should render tables correctly", function(done) {
+  it("should render tables correctly", done => {
     const tableCellStyle = AD.TableCellStyle.create({
       background: "#AAAAFF",
       padding: AD.LayoutFoundation.create({
@@ -210,13 +211,13 @@ describe("PdfExporter", () => {
       ]
     });
     let stream = createWriteStreamInOutDir("test_table.pdf");
-    stream.on("finish", function() {
+    stream.on("finish", () => {
       done();
     });
     ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
-  it("should render paragraphs in Daxline correctly", function(done) {
+  it("should render paragraphs in Daxline correctly", done => {
     const loadFile = (fileName: string) => {
       const buffer = fs.readFileSync(fileName);
       const array = new Uint8Array(buffer);
@@ -273,7 +274,7 @@ describe("PdfExporter", () => {
       ]
     });
     let stream = createWriteStreamInOutDir("test_paragraphstyling_daxline.pdf");
-    stream.on("finish", function() {
+    stream.on("finish", () => {
       done();
     });
     ADPdf.exportToStream(pdfKit, stream, doc);
@@ -436,7 +437,7 @@ describe("PdfExporter", () => {
   //   ADPdf.exportToStream(pdfKit, stream, doc);
   // });
 
-  it("should handle styling correctly", function(done) {
+  it("should handle styling correctly", done => {
     const textBlue = AD.TextStyle.create({ fontSize: 20 });
     const textRed = AD.TextStyle.create({ fontSize: 7 });
 
@@ -509,13 +510,13 @@ describe("PdfExporter", () => {
     let stream = createWriteStreamInOutDir(
       "test_paragraphstyling_hierarchy.pdf"
     );
-    stream.on("finish", function() {
+    stream.on("finish", () => {
       done();
     });
     ADPdf.exportToStream(pdfKit, stream, doc);
   });
 
-  it("should handle new lines correctly", function(done) {
+  it("should handle new lines correctly", done => {
     const paragraphStyle = AD.ParagraphStyle.create({
       textStyle: AD.TextStyle.create({
         fontSize: 12
@@ -565,7 +566,7 @@ describe("PdfExporter", () => {
       ]
     });
     let stream = createWriteStreamInOutDir("test_new_line.pdf");
-    stream.on("finish", function() {
+    stream.on("finish", () => {
       done();
     });
     ADPdf.exportToStream(pdfKit, stream, doc);

@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { PropertyFilter } from "@promaster/promaster-primitives";
-import * as PrettyPrinting from "../../src/property-filtering/index";
-import { FilterPrettyPrintMessagesEnglish } from "../../src/property-filtering/index";
+import * as PrettyPrinting from "../../../src/property-filtering/index";
+import { FilterPrettyPrintMessagesEnglish } from "../../../src/property-filtering/index";
 
 describe("filterPrettyPrintSimple", () => {
   it("should print a must be 1", () => {
