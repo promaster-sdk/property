@@ -120,7 +120,8 @@ function convertTextTable(
   textTable: ReadonlyArray<any> | undefined
 ): Types.TextTable {
   let table: {
-    readonly [key: string]: Array<{
+    // tslint:disable-next-line:readonly-keyword
+    [key: string]: Array<{
       readonly property_filter: PropertyFilter.PropertyFilter;
       readonly text: string;
     }>;
