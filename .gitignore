@@ -5,10 +5,8 @@
 thumbs.db
 *.log
 node_modules/
-example/js_out
 lib/
 lib-*/
 .nyc_output/
 coverage/
-packages/promaster-portable/example/js_out
-packages/promaster-portable/test/test_out
+test_out/
