@@ -10,7 +10,7 @@ promaster-primitives-test:
   stage: test
   script:
     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
-    - $YARN install --ignore-scripts
+    - $YARN install
     - $YARN lerna run --scope @promaster/promaster-primitives verify
   coverage: /^All files\s*\|\s*(\d+.\d+)/
   artifacts:
@@ -22,7 +22,8 @@ promaster-portable-test:
   stage: test
   script:
     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
-    - $YARN install --ignore-scripts
+    - $YARN install
+    - ls node_modules/@promaster
     - $YARN lerna run --scope @promaster/promaster-portable build
     - $YARN lerna run --scope @promaster/promaster-portable test
 
@@ -31,7 +32,7 @@ promaster-react-test:
   stage: test
   script:
     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
-    - $YARN install --ignore-scripts
+    - $YARN install
     - $YARN lerna run --scope @promaster/promaster-react lint
     - $YARN lerna run --scope @promaster/promaster-react circular
     - $YARN lerna run --scope @promaster/promaster-react build
