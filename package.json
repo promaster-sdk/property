@@ -1,9 +1,10 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "devDependencies": {
+    "@types/assertion-error": "^1.0.30",
+    "@types/benchmark": "^1.0.31",
+    "@types/pegjs": "0.0.28",
     "@types/chai": "^4.1.2",
     "@types/jest": "^22.1.1",
     "@types/mocha": "^2.2.48",
@@ -34,7 +35,9 @@
     "typedoc-markdown-theme": "0.0.4",
     "typescript": "2.6.2",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^2.11.1",
+    "benchmark": "^2.1.4",
+    "pegjs": "0.9.0"
   },
   "scripts": {
     "publish-npm": "lerna run verify && lerna publish",
@@ -42,5 +45,9 @@
     "build": "lerna run build",
     "clean": "lerna clean && rm -rf node_modules",
     "lint": "lerna run lint"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "tslint",
+    "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
   }
 }

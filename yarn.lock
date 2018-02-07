@@ -207,10 +207,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/chai@^3.4.34":
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.5.2.tgz#c11cd2817d3a401b7ba0f5a420f35c56139b1c1e"
-
 "@types/chai@^4.1.2":
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.2.tgz#f1af664769cfb50af805431c407425ed619daa21"
@@ -257,17 +253,13 @@
   version "2.0.29"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-2.0.29.tgz#5002e14f75e2d71e564281df0431c8c1b4a2a36a"
 
-"@types/mocha@^2.2.32", "@types/mocha@^2.2.48":
+"@types/mocha@^2.2.48":
   version "2.2.48"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.48.tgz#3523b126a0b049482e1c3c11877460f76622ffab"
 
 "@types/node@*":
   version "9.4.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.4.1.tgz#0f636f7837e15d2d73a7f6f3ea0e322eb2a5ab65"
-
-"@types/node@^6.0.45":
-  version "6.0.97"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.97.tgz#72199848e8f3cfa975864031ac12e0ef6ccfe054"
 
 "@types/node@^8.0.9":
   version "8.5.10"
