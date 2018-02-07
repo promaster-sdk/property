@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { XmlWriter } from "../../../src/abstract-document-exporters/docx/xml-writer";
+import { XmlWriter } from "../../../../src/abstract-document-exporters/docx/xml-writer";
 
 describe("XmlWriter", () => {
   it("should write xml processing instruction at start-document", () => {

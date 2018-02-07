@@ -225,10 +225,10 @@ describe("PdfExporter", () => {
     };
     const fonts = {
       Daxline: AD.Font.create({
-        normal: loadFile("fonts/DaxlinePro-Regular_13131.ttf"),
-        bold: loadFile("fonts/DaxlinePro-Regular_13131.ttf"),
-        italic: loadFile("fonts/DaxlinePro-Regular_13131.ttf"),
-        boldItalic: loadFile("fonts/DaxlinePro-Regular_13131.ttf")
+        normal: loadFile("test/src/fonts/DaxlinePro-Regular_13131.ttf"),
+        bold: loadFile("test/src/fonts/DaxlinePro-Regular_13131.ttf"),
+        italic: loadFile("test/src/fonts/DaxlinePro-Regular_13131.ttf"),
+        boldItalic: loadFile("test/src/fonts/DaxlinePro-Regular_13131.ttf")
       })
     };
     const fontStyle = AD.TextStyle.create({ fontFamily: "Daxline" });

@@ -44,8 +44,7 @@
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
     "build:esm": "tsc --module es2015 --outDir ./lib-esm",
-    "test":
-      "cd test && mocha --timeout 5000 --require \"ts-node/register\" \"**/*.ts{,x}\"",
+    "test": "rm -rf test/lib && mocha",
     "test:build": "cd test && tsc",
     "example:build": "cd example && tsc"
   }

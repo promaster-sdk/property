@@ -15,7 +15,7 @@
     // Paths options
     "baseUrl": ".",
     "paths": {
-      "*": ["./custom_typings/*"]
+      "*": ["../custom_typings/*"]
     },
     // Module resolution (this will default to classic when you specify es2015 as module system)
     "moduleResolution": "node",
