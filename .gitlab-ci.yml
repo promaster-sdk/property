@@ -30,16 +30,16 @@ promaster-primitives-test:
     paths:
       - coverage/
 
-promaster-primitives-pages:
-  stage: pages
-  dependencies:
-    - promaster-primitives-test
-  script:
-    - cd packages/promaster-primitives
-    - mv coverage/lcov-report/ public/
-  artifacts:
-    paths:
-      - public
-    expire_in: 30 days
-  only:
-    - master
+# promaster-primitives-pages:
+#   stage: pages
+#   dependencies:
+#     - promaster-primitives-test
+#   script:
+#     - cd packages/promaster-primitives
+#     - mv coverage/lcov-report/ public/
+#   artifacts:
+#     paths:
+#       - public
+#     expire_in: 30 days
+#   only:
+#     - master
