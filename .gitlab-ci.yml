@@ -33,7 +33,7 @@ promaster-primitives-test:
 promaster-primitives-pages:
   stage: pages
   dependencies:
-    - test
+    - promaster-primitives-test
   script:
     - cd packages/promaster-primitives
     - mv coverage/lcov-report/ public/
