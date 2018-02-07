@@ -34,7 +34,7 @@
     "webpack-dev-server": "^2.11.1"
   },
   "scripts": {
-    "publish": "lerna run verify && lerna publish",
+    "publish-npm": "lerna run verify && lerna publish",
     "updated": "lerna updated",
     "build": "lerna run build",
     "clean": "lerna clean && rm -rf node_modules",
