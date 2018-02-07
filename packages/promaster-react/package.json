@@ -39,6 +39,7 @@
     "ts-loader": "^2.2.2",
     "tslint": "^5.4.2",
     "tslint-immutable": "^2.1.0",
+    "typescript": "^2.5.2",
     "webpack": "^3.1.0",
     "webpack-dev-server": "^2.5.1"
   },
@@ -52,8 +53,7 @@
     "lint":
       "tslint --project src/tsconfig.json --type-check './src/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.tsx",
-    "build":
-      "node ./yarn.js build:clean && node ./yarn.js build:cjs && node ./yarn.js build:esm",
+    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
     "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",

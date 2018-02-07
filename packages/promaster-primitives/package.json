@@ -35,7 +35,8 @@
     "tslint": "^5.9.1",
     "tslint-immutable": "^4.5.1",
     "typedoc": "^0.5.1",
-    "typedoc-markdown-theme": "0.0.4"
+    "typedoc-markdown-theme": "0.0.4",
+    "typescript": "2.6.2"
   },
   "lint-staged": {
     "*.{ts,tsx}": "tslint",
@@ -48,8 +49,7 @@
     "circular": "madge --circular ./src/index.ts",
     "benchmark":
       "yarn build:cjs && yarn build:benchmarks &&  node benchmarks/lib/property-filter.js",
-    "build":
-      "yarn build:clean && yarn build:cjs && yarn build:esm",
+    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src && yarn build:parser:cjs",
     "build:esm":

@@ -1,14 +1,13 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "devDependencies": {
-    "lerna": "^2.8.0",
-    "typescript": "2.6.2"
+    "lerna": "^2.8.0"
   },
   "scripts": {
     "publish": "lerna publish",
-    "updated": "lerna updated"
+    "updated": "lerna updated",
+    "build": "lerna run build",
+    "clean": "lerna clean"
   }
 }
