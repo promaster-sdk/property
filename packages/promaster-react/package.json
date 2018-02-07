@@ -12,8 +12,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/promaster-portable": "^0.35.0",
-    "@promaster/promaster-primitives": "^1.0.0",
+    "@promaster/promaster-portable": "^0.37.0",
+    "@promaster/promaster-primitives": "^2.2.0",
     "@types/ramda": "^0.25.17",
     "ramda": "^0.25.0",
     "react": "^15.6.1"
