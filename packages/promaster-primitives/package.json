@@ -12,7 +12,6 @@
     "registry": "https://npm.divid.se"
   },
   "scripts": {
-    "precommit": "lint-staged",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
@@ -26,7 +25,7 @@
       "mkdirp lib-esm/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-esm/property/property-filter-ast/pegjs/",
     "benchmark":
       "yarn build:cjs && yarn benchmark:build &&  node benchmark/lib/property-filter.js",
-    "benchmark:build": "tsc -p tsconfig-benchmark.json",
+    "benchmark:build": "cd benchmark && tsc",
     "gen-doc": "yarn build && node scripts/gen-doc.js",
     "gen-typedoc":
       "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
