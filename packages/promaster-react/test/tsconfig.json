@@ -1,5 +1,5 @@
 {
-  "extends": "../base-tsconfig.json",
+  "extends": "../tsconfig-base.json",
   "compilerOptions": {
     // Output options
     "target": "es5",
@@ -10,9 +10,7 @@
     "jsx": "react",
     // import & lib options
     "moduleResolution": "node",
-    "typeRoots": [
-      "../node_modules/@types/"
-    ],
+    "typeRoots": ["../node_modules/@types/"],
     "lib": [
       "es5",
       "dom",
@@ -23,16 +21,9 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "lib/*",
-        "custom_typings/*"
-      ]
+      "*": ["lib/*", "custom_typings/*"]
     }
   },
-  "include": [
-    "**/*"
-  ],
-  "exclude": [
-    "../node_modules/**/"
-  ]
+  "include": ["**/*"],
+  "exclude": ["../node_modules/**/"]
 }

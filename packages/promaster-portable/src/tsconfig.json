@@ -1,7 +1,0 @@
-{
-  "extends": "../base-tsconfig.json",
-  "compilerOptions": {
-    "outDir": "../lib-cjs",
-    "types": ["node", "mocha"]
-  }
-}

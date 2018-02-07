@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "include": ["test/**/*"],
+  "exclude": ["**/*.d.ts"],
+  "compilerOptions": {
+    // Output options
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./lib-test",
+    "sourceMap": true,
+    // Lib options
+    "lib": ["es5", "es2015"],
+    "types": ["node", "mocha"]
+  }
+}

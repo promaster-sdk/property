@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "../test_js_out",
+    "types": ["node", "mocha", "chai"],
+    "noEmit": true,
+    "jsx": "react"
+  }
+}

@@ -7,8 +7,7 @@ thumbs.db
 node_modules/
 example/js_out
 lib/
-lib-cjs/
-lib-esm/
+lib-*/
 .nyc_output/
 coverage/
 packages/promaster-portable/example/js_out

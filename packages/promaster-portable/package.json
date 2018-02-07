@@ -35,16 +35,15 @@
   },
   "scripts": {
     "verify": "yarn test && yarn build",
-    "start": "webpack-dev-server --config example/webpack.config.js --content-base ./example",
+    "start":
+      "webpack-dev-server --config example/webpack.config.js --content-base ./example",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
-    "build:cjs": "tsc -p src",
-    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
-    "tsc": "tsc -p src",
-    "tsc:test": "tsc -p test",
-    "tsc:example": "tsc -p example",
-    "tsc:watch": "tsc --watch -p src",
-    "tsc:example:watch": "tsc --watch -p example",
-    "test": "cd test && mocha --timeout 5000 --require \"ts-node/register\" \"**/*.ts{,x}\""
+    "build:cjs": "tsc",
+    "build:esm": "tsc --module es2015 --outDir ./lib-esm",
+    "test":
+      "cd test && mocha --timeout 5000 --require \"ts-node/register\" \"**/*.ts{,x}\"",
+    "test:build": "tsc -p tsconfig-test.json",
+    "example:build": "tsc -p example"
   }
 }
