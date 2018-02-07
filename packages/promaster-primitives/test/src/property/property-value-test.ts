@@ -1,8 +1,8 @@
 import { assert } from "chai";
-import * as PropertyValue from "../../src/property/property-value";
-import * as Amount from "../../src/measure/amount";
-import * as Units from "../../src/measure/units";
-import { Quantity } from "../../src/measure/quantity";
+import * as PropertyValue from "../../../src/property/property-value";
+import * as Amount from "../../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
+import { Quantity } from "../../../src/measure/quantity";
 
 describe("PropertyValue", () => {
   it("should_parse_amount_with_decimal_dot", () => {

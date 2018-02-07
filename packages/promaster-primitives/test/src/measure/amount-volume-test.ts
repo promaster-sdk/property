@@ -1,8 +1,8 @@
 import { assert } from "chai";
 import { VolumeConversion } from "../test_utils/conversion_helpers/volume_conversion";
-import * as Amount from "../../src/measure/amount";
-import * as Units from "../../src/measure/units";
-import { Volume } from "../../src/measure/quantity";
+import * as Amount from "../../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
+import { Volume } from "../../../src/measure/quantity";
 
 describe("amount_volume_test", () => {
   //liter 2 cubic_meter

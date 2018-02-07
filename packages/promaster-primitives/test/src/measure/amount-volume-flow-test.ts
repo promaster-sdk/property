@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { VolumeFlowConversion } from "../test_utils/conversion_helpers/volume_flow_conversion";
-import * as Amount from "../../src/measure/amount";
-import * as Units from "../../src/measure/units";
+import * as Amount from "../../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
 
 describe("amount_volume_flow_test", () => {
   //m3/sec 2 m3/h

@@ -1,8 +1,8 @@
 //tslint:disable max-file-line-count
 
 import { assert } from "chai";
-import * as Units from "../../src/measure/units";
-import * as Amount from "../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
+import * as Amount from "../../../src/measure/amount";
 import { LengthConversion } from "../test_utils/conversion_helpers/length_conversion";
 
 describe("amount_length_test", () => {

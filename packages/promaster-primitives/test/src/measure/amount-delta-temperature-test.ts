@@ -1,5 +1,5 @@
-import * as Units from "../../src/measure/units";
-import * as Amount from "../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
+import * as Amount from "../../../src/measure/amount";
 import { assert } from "chai";
 
 describe("amount_delta_temperature_test", () => {

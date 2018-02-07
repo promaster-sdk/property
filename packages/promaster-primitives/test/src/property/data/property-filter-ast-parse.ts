@@ -7,7 +7,7 @@ import {
   newEqualsExpr,
   newValueRangeExpr,
   newComparisonExpr
-} from "../../../src/property/property-filter-ast";
+} from "../../../../src/property/property-filter-ast";
 
 // https://github.com/Microsoft/TypeScript/issues/9944
 ((_?: EqualsExpr, __?: ComparisonExpr) => 0)();

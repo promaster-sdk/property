@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
 import { LengthConversion } from "../test_utils/conversion_helpers/length_conversion";
 import { DurationConversion } from "../test_utils/conversion_helpers/duration_conversion";
-import * as Amount from "../../src/measure/amount";
-import * as Units from "../../src/measure/units";
+import * as Amount from "../../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
 
 describe("amount_test", () => {
   it("should_not_accept_a_string_as_value", () => {

@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import * as PropertyFilter from "../../src/property/property-filter";
-import * as PropertyValueSet from "../../src/property/property-value-set";
+import * as PropertyFilter from "../../../src/property/property-filter";
+import * as PropertyValueSet from "../../../src/property/property-value-set";
 import * as IsValidData from "./data/property-filter-isvalid";
 import * as IsSyntaxValidData from "./data/property-filter-is-syntax-valid";
 

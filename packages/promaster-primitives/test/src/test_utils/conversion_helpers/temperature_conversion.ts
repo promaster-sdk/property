@@ -1,7 +1,6 @@
 // tslint:disable no-class
 
 export class TemperatureConversion {
-
   static K2C(k: number): number {
     return k - 273.15;
   }
@@ -49,5 +48,4 @@ export class TemperatureConversion {
   static F2R(f: number): number {
     return f + 459.67;
   }
-
 }

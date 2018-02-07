@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import * as Units from "../../src/measure/units";
-import * as Unit from "../../src/measure/unit";
+import * as Units from "../../../src/measure/units";
+import * as Unit from "../../../src/measure/unit";
 import { VolumeFlowConversion } from "../test_utils/conversion_helpers/volume_flow_conversion";
 
 describe("derived units", () => {

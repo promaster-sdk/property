@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import * as Amount from "../../src/measure/amount";
-import * as Units from "../../src/measure/units";
+import * as Amount from "../../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
 import { DurationConversion } from "../test_utils/conversion_helpers/duration_conversion";
 
 describe("amount_duration_test", () => {

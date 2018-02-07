@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import * as Units from "../../src/measure/units";
-import * as Amount from "../../src/measure/amount";
+import * as Units from "../../../src/measure/units";
+import * as Amount from "../../../src/measure/amount";
 import { EnergyConversion } from "../test_utils/conversion_helpers/energy_conversion";
 
 describe("amount_energy_test", () => {

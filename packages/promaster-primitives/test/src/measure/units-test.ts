@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import * as Units from "../../src/measure/units";
-import * as Unit from "../../src/measure/unit";
+import * as Units from "../../../src/measure/units";
+import * as Unit from "../../../src/measure/unit";
 // import * as Amount from "../../src/measure/amount";
 // import * as squareRoot from "../../src/measure/unit";
 

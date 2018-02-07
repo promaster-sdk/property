@@ -1,7 +1,6 @@
 // tslint:disable no-class
 
 export class DurationConversion {
-
   static S2M(s: number): number {
     return s / 60.0;
   }

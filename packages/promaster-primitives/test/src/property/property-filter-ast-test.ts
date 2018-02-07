@@ -1,9 +1,9 @@
 import { assert } from "chai";
-import * as Ast from "../../src/property/property-filter-ast";
+import * as Ast from "../../../src/property/property-filter-ast";
+import * as PropertyValueSet from "../../../src/property/property-value-set";
+import { BooleanExpr } from "../../../src/property/property-filter-ast";
 import * as ParseData from "./data/property-filter-ast-parse";
 import * as IsValidData from "./data/property-filter-isvalid";
-import * as PropertyValueSet from "../../src/property/property-value-set";
-import { BooleanExpr } from "../../src/property/property-filter-ast";
 
 describe("PropertyFilterAst", () => {
   describe("parse", () => {
