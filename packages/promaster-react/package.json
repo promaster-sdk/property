@@ -14,16 +14,20 @@
   "dependencies": {
     "@promaster/promaster-portable": "^0.35.0",
     "@promaster/promaster-primitives": "^1.0.0",
+    "@types/ramda": "^0.25.17",
+    "ramda": "^0.25.0",
     "react": "^15.6.1"
   },
   "devDependencies": {
-    "@storybook/react": "^3.1.8",
+    "@storybook/react": "^3.3.12",
     "@types/react": "^15.6.0",
     "@types/react-test-renderer": "^15.5.0",
+    "babel-core": "^6.26.0",
     "csjs": "1.0.6",
     "insert-css": "^2.0.0",
+    "react-dom": "^15.4.2",
     "react-test-renderer": "^15.4.2",
-    "styled-components": "^2.1.0"
+    "styled-components": "^3.1.6"
   },
   "scripts": {
     "prepublish": "yarn build",
@@ -32,8 +36,7 @@
     "tsc:test": "tsc -p test --noEmit",
     "tsc:stories": "tsc -p stories --noEmit",
     "test": "jest --config=test/jest.config.json",
-    "lint":
-      "tslint --project src/tsconfig.json --type-check './src/**/*.ts{,x}'",
+    "lint": "tslint --project src/tsconfig.json --type-check './src/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.tsx",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",

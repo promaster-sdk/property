@@ -13,31 +13,34 @@ import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 // tslint:disable no-class no-this
 
 export interface AmountInputBoxProps {
-  readonly key?: string,
-  readonly value: Amount.Amount<Quantity.Quantity> | undefined,
-  readonly inputUnit: Unit.Unit<Quantity.Quantity>,
-  readonly inputDecimalCount: number,
-  readonly notNumericMessage: string,
-  readonly isRequiredMessage: string,
-  readonly errorMessage: string,
-  readonly readOnly: boolean,
-  readonly onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void,
-  readonly debounceTime: number,
+  readonly key?: string;
+  readonly value: Amount.Amount<Quantity.Quantity> | undefined;
+  readonly inputUnit: Unit.Unit<Quantity.Quantity>;
+  readonly inputDecimalCount: number;
+  readonly notNumericMessage: string;
+  readonly isRequiredMessage: string;
+  readonly errorMessage: string;
+  readonly readOnly: boolean;
+  readonly onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void;
+  readonly debounceTime: number;
 }
 
 export interface State {
-  readonly textValue: string,
-  readonly isValid: boolean,
-  readonly effectiveErrorMessage: string
+  readonly textValue: string;
+  readonly isValid: boolean;
+  readonly effectiveErrorMessage: string;
 }
 
 export type AmountInputBox = React.ComponentClass<AmountInputBoxProps>;
 
 export interface CreateAmountInputBoxParams {
-  readonly AmountInputField?: React.ComponentType<AmountInputFieldProps>,
+  readonly AmountInputField?: React.ComponentType<AmountInputFieldProps>;
 }
 
-function inputInvalidLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
+function inputInvalidLocked({
+  isReadonly,
+  effectiveErrorMessage
+}: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
   // tslint:disable-next-line:no-console
   if (isReadonly && effectiveErrorMessage) {
     return StyledComponents.css`
@@ -50,7 +53,10 @@ function inputInvalidLocked({ isReadonly, effectiveErrorMessage }: AmountInputFi
   return [];
 }
 
-function inputLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
+function inputLocked({
+  isReadonly,
+  effectiveErrorMessage
+}: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
   if (isReadonly && !effectiveErrorMessage) {
     return StyledComponents.css`
     background: lightgray;
@@ -62,7 +68,7 @@ function inputLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProp
   return [];
 }
 
-export const defaultAmountInputField = styled(AmountInputField) `
+export const defaultAmountInputField = styled(AmountInputField)`
   color: black;
   height: 30px;
   border: 1px solid #b4b4b4;
@@ -71,22 +77,29 @@ export const defaultAmountInputField = styled(AmountInputField) `
   outline: rgb(131, 131, 131) none 0px;
   padding: 1px 30px 0px 10px;
 
-  ${(props) => inputInvalidLocked(props)}
+  ${props => inputInvalidLocked(props)}
 
-  ${(props) => inputLocked(props)}
+  ${props => inputLocked(props)}
 
-  ${(props) => !props.isReadonly && props.effectiveErrorMessage ? "color: red" : ""}
+  ${props =>
+    !props.isReadonly && props.effectiveErrorMessage ? "color: red" : ""}
 `;
 
 export function createAmountInputBox({
-    AmountInputField = defaultAmountInputField
-  }: CreateAmountInputBoxParams): AmountInputBox {
-  return class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
-
+  AmountInputField = defaultAmountInputField
+}: CreateAmountInputBoxParams): AmountInputBox {
+  return class AmountInputBox extends React.Component<
+    AmountInputBoxProps,
+    State
+  > {
     constructor(props: AmountInputBoxProps) {
       super(props);
       // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-      this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, this.props.debounceTime);
+      this._debouncedOnValueChange = debounce(
+        this,
+        this._debouncedOnValueChange,
+        this.props.debounceTime
+      );
     }
 
     componentWillMount(): void {
@@ -107,14 +120,22 @@ export function createAmountInputBox({
         // tslint:disable-next-line:no-console
         console.error("Missing inputDecimalCount");
       }
-      const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
-      const newState = calculateNewState(value, formattedValue,
-        initProps.isRequiredMessage, initProps.notNumericMessage, initProps.errorMessage);
+      const formattedValue = formatWithUnitAndDecimalCount(
+        value,
+        inputUnit,
+        inputDecimalCount
+      );
+      const newState = calculateNewState(
+        value,
+        formattedValue,
+        initProps.isRequiredMessage,
+        initProps.notNumericMessage,
+        initProps.errorMessage
+      );
       this.setState(newState);
     }
 
     render(): React.ReactElement<AmountInputBoxProps> {
-
       const { onValueChange, readOnly } = this.props;
       const { effectiveErrorMessage, textValue } = this.state;
       // const test = (<input type="text" />);
@@ -123,16 +144,20 @@ export function createAmountInputBox({
           key="input"
           value={textValue}
           readOnly={readOnly}
-          onChange={(e) => this._onChange(e, onValueChange)}
+          onChange={e => this._onChange(e, onValueChange)}
           title={effectiveErrorMessage}
           effectiveErrorMessage={effectiveErrorMessage}
-          isReadonly={readOnly} />
+          isReadonly={readOnly}
+        />
       );
-
     }
 
-    _debouncedOnValueChange(newAmount: Amount.Amount<Quantity.Quantity> | undefined,
-      onValueChange: (newAmount: Amount.Amount<Quantity.Quantity> | undefined) => void): void {
+    _debouncedOnValueChange(
+      newAmount: Amount.Amount<Quantity.Quantity> | undefined,
+      onValueChange: (
+        newAmount: Amount.Amount<Quantity.Quantity> | undefined
+      ) => void
+    ): void {
       // An event can have been received when the input was valid, then the input has gone invalid
       // but we still received the delayed event from when the input was valid. Therefore
       // we need an extra check here to make sure that the current input is valid before we
@@ -142,7 +167,10 @@ export function createAmountInputBox({
       }
     }
 
-    _onChange(e: React.FormEvent<HTMLInputElement>, onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void): void {
+    _onChange(
+      e: React.FormEvent<HTMLInputElement>,
+      onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void
+    ): void {
       const newStringValue = e.currentTarget.value.replace(",", ".");
       const { inputUnit, inputDecimalCount } = this.props;
 
@@ -153,34 +181,61 @@ export function createAmountInputBox({
       }
 
       // Update the internal state and if the change resulted in a valid value then emit a change with that value
-      const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
-      const newState = calculateNewState(newAmount, newStringValue,
-        this.props.isRequiredMessage, this.props.notNumericMessage, this.props.errorMessage);
+      const newAmount = unformatWithUnitAndDecimalCount(
+        newStringValue,
+        inputUnit,
+        inputDecimalCount
+      );
+      const newState = calculateNewState(
+        newAmount,
+        newStringValue,
+        this.props.isRequiredMessage,
+        this.props.notNumericMessage,
+        this.props.errorMessage
+      );
       this.setState(newState);
       // We need to check isValid from the new state because state is not immidiately mutated
       if (newState.isValid) {
         this._debouncedOnValueChange(newAmount, onValueChange);
       }
     }
-
   };
 }
 
-function calculateNewState(newAmount: Amount.Amount<Quantity.Quantity> | undefined, newStringValue: string,
-  isRequiredMessage: string, notNumericMessage: string, errorMessage: string): State {
-  const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
+function calculateNewState(
+  newAmount: Amount.Amount<Quantity.Quantity> | undefined,
+  newStringValue: string,
+  isRequiredMessage: string,
+  notNumericMessage: string,
+  errorMessage: string
+): State {
+  const internalErrorMessage = getInternalErrorMessage(
+    newAmount,
+    newStringValue,
+    isRequiredMessage,
+    notNumericMessage
+  );
   if (internalErrorMessage) {
-    return { isValid: false, textValue: newStringValue, effectiveErrorMessage: internalErrorMessage };
+    return {
+      isValid: false,
+      textValue: newStringValue,
+      effectiveErrorMessage: internalErrorMessage
+    };
   } else {
-    return { isValid: true, textValue: newStringValue, effectiveErrorMessage: errorMessage };
+    return {
+      isValid: true,
+      textValue: newStringValue,
+      effectiveErrorMessage: errorMessage
+    };
   }
 }
 
-function getInternalErrorMessage(newAmount: Amount.Amount<Quantity.Quantity> | undefined,
+function getInternalErrorMessage(
+  newAmount: Amount.Amount<Quantity.Quantity> | undefined,
   newStringValue: string,
   isRequiredMessage: string,
-  notNumericMessage: string): string | undefined {
-
+  notNumericMessage: string
+): string | undefined {
   // Check if blank and if required or not
   if (newStringValue.trim() === "" && isRequiredMessage) {
     // The user has not entred anything, but a value was required
@@ -191,10 +246,13 @@ function getInternalErrorMessage(newAmount: Amount.Amount<Quantity.Quantity> | u
     return notNumericMessage;
   }
   return undefined;
-
 }
 
-function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amount.Amount<T> | undefined, unit: Unit.Unit<T>, decimalCount: number): string {
+function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(
+  amount: Amount.Amount<T> | undefined,
+  unit: Unit.Unit<T>,
+  decimalCount: number
+): string {
   if (!amount) {
     return "";
   }
@@ -218,8 +276,11 @@ function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(amount: Amou
   }
 }
 
-function unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(text: string, unit: Unit.Unit<T>,
-  inputDecimalCount: number): Amount.Amount<T> | undefined {
+function unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(
+  text: string,
+  unit: Unit.Unit<T>,
+  inputDecimalCount: number
+): Amount.Amount<T> | undefined {
   if (!text || text.length === 0) {
     return undefined;
   }
@@ -229,8 +290,12 @@ function unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(text: stri
   }
   // Keep number of decimals from the entered text except if they are more than the formats decimal count
   const textDecimalCount = getDecimalCountFromString(text);
-  const finalDecimalCount = textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
-  const finalFloatValue = textDecimalCount > inputDecimalCount ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount)) : parsedFloatValue;
+  const finalDecimalCount =
+    textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
+  const finalFloatValue =
+    textDecimalCount > inputDecimalCount
+      ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount))
+      : parsedFloatValue;
   return Amount.create(finalFloatValue, unit, finalDecimalCount);
 }
 
@@ -243,8 +308,7 @@ function getDecimalCountFromString(stringValue: string): number {
 }
 
 function filterFloat(value: string): number {
-  if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
-    .test(value)) {
+  if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) {
     return Number(value);
   }
   return NaN;
@@ -254,11 +318,12 @@ function filterFloat(value: string): number {
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
 // N milliseconds.
-function debounce(_this: any, func: Function, wait: number): any { //tslint:disable-line
+function debounce(_this: any, func: Function, wait: number): any {
+  //tslint:disable-line
   let timeout: NodeJS.Timer | null;
-  return function (): void {
+  return function(): void {
     const args = arguments; //tslint:disable-line
-    const later = function (): void {
+    const later = function(): void {
       timeout = null;
       func.apply(_this, args);
     };
