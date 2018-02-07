@@ -1,16 +1,12 @@
 import * as React from "react";
 
 export type ComboBoxImageOptionElementRowProps = {
-  isItemValid?: boolean,
+  readonly isItemValid?: boolean;
 } & React.HTMLProps<HTMLDivElement>;
 
 export function comboBoxImageOptionElementRow({
   isItemValid: _,
-  ...htmlProps,
+  ...htmlProps
 }: ComboBoxImageOptionElementRowProps): JSX.Element {
-  return (
-    <div {...htmlProps}>
-      {htmlProps.children}
-    </div>
-  );
+  return <div {...htmlProps}>{htmlProps.children}</div>;
 }
