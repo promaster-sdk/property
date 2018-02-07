@@ -48,10 +48,10 @@ You may also have to set the `always-auth` option in .npmrc for yarn to work wit
 
 ## How to publish
 
-Publishing is handed by lerna. Run this command
+Publishing is handed by lerna. Run this command:
 
 ```
-yarn publish
+yarn publish-npm
 ```
 
-and it will call `lerna publish` which will figure out which packages has changed, ask for new versions of them, and then publish them.
+It will build the packages and call `lerna publish` which will figure out which packages has changed, ask for new versions of them, and then publish them.
