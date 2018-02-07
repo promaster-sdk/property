@@ -1,27 +1,33 @@
-import {NumberingFormat} from "./numbering-format";
+import { NumberingFormat } from "./numbering-format";
 
 export interface NumberingLevelDefinition {
-  level: number,
-  format: NumberingFormat,
-  start: number,
-  levelText: string,
-  levelIndention: number,
+  readonly level: number;
+  readonly format: NumberingFormat;
+  readonly start: number;
+  readonly levelText: string;
+  readonly levelIndention: number;
 }
 
 export interface NumberingLevelDefinitionProps {
-  level: number,
-  format: NumberingFormat,
-  start: number,
-  levelText: string,
-  levelIndention: number,
+  readonly level: number;
+  readonly format: NumberingFormat;
+  readonly start: number;
+  readonly levelText: string;
+  readonly levelIndention: number;
 }
 
-export function create({level, format, start, levelText, levelIndention}:NumberingLevelDefinitionProps): NumberingLevelDefinition {
+export function create({
+  level,
+  format,
+  start,
+  levelText,
+  levelIndention
+}: NumberingLevelDefinitionProps): NumberingLevelDefinition {
   return {
     level,
     format,
     start,
     levelText,
-    levelIndention,
+    levelIndention
   };
 }

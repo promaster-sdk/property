@@ -98,14 +98,21 @@ describe("PdfExporter", () => {
   it("should render tables correctly", function(done) {
     const tableCellStyle = AD.TableCellStyle.create({
       background: "#AAAAFF",
-      padding: AD.LayoutFoundation.create({ top: 10, bottom: 20, left: 30, right: 40 })
+      padding: AD.LayoutFoundation.create({
+        top: 10,
+        bottom: 20,
+        left: 30,
+        right: 40
+      })
     });
     const text = R.range(0, 30)
       .map(i => "Test" + i.toString())
       .join(" ");
     const defaultTextStyle = AD.TextStyle.create({ fontSize: 20 });
     const styles: AD.Types.Indexer<AD.Style.Style> = {};
-    styles[AD.StyleKey.create("ParagraphStyle", "Default")] = AD.ParagraphStyle.create({ textStyle: defaultTextStyle });
+    styles[
+      AD.StyleKey.create("ParagraphStyle", "Default")
+    ] = AD.ParagraphStyle.create({ textStyle: defaultTextStyle });
     styles[AD.StyleKey.create("TextStyle", "Default")] = defaultTextStyle;
 
     const doc = AD.AbstractDoc.create({
@@ -235,17 +242,31 @@ describe("PdfExporter", () => {
             }),
             AD.Paragraph.create({
               styleName: "H2",
-              children: [AD.TextRun.create({ style: fontStyle, text: "Testing" })]
+              children: [
+                AD.TextRun.create({ style: fontStyle, text: "Testing" })
+              ]
             }),
             AD.Paragraph.create({
               styleName: "H3",
-              children: [AD.TextRun.create({ style: fontStyle, text: "Testing" })]
+              children: [
+                AD.TextRun.create({ style: fontStyle, text: "Testing" })
+              ]
             }),
             AD.Paragraph.create({
-              children: [AD.TextRun.create({ style: fontStyle, text: "Testing paragraph 1" })]
+              children: [
+                AD.TextRun.create({
+                  style: fontStyle,
+                  text: "Testing paragraph 1"
+                })
+              ]
             }),
             AD.Paragraph.create({
-              children: [AD.TextRun.create({ style: fontStyle, text: "Testing paragraph 2" })]
+              children: [
+                AD.TextRun.create({
+                  style: fontStyle,
+                  text: "Testing paragraph 2"
+                })
+              ]
             })
           ]
         })
@@ -485,7 +506,9 @@ describe("PdfExporter", () => {
         })
       ]
     });
-    let stream = createWriteStreamInOutDir("test_paragraphstyling_hierarchy.pdf");
+    let stream = createWriteStreamInOutDir(
+      "test_paragraphstyling_hierarchy.pdf"
+    );
     stream.on("finish", function() {
       done();
     });

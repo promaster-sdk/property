@@ -1,10 +1,23 @@
-import {PropertyFilterAst as Ast, PropertyValue, UnitName} from "@promaster/promaster-primitives";
+import {
+  PropertyFilterAst as Ast,
+  PropertyValue,
+  UnitName
+} from "@promaster/promaster-primitives";
+import { exhaustiveCheck } from "../../exhaustive-check/index";
 
-export function comparisionOperationMessage(op: Ast.ComparisonOperationType, left: string, right: string): string {
+export function comparisionOperationMessage(
+  op: Ast.ComparisonOperationType,
+  left: string,
+  right: string
+): string {
   return `${left} ${_comparisonOperationTypeToString(op)} ${right}`;
 }
 
-export function equalsOperationMessage(op: Ast.EqualsOperationType, left: string, right: string): string {
+export function equalsOperationMessage(
+  op: Ast.EqualsOperationType,
+  left: string,
+  right: string
+): string {
   return `${left} ${_equalsOperationTypeToString(op)} ${right}`;
 }
 
@@ -24,24 +37,35 @@ export function propertyNameMessage(propertyName: string): string {
   return propertyName;
 }
 
-export function propertyValueMessage(propertyName: string, propertyValue: PropertyValue.PropertyValue): string {
+export function propertyValueMessage(
+  propertyName: string,
+  propertyValue: PropertyValue.PropertyValue
+): string {
   switch (propertyValue.type) {
     case "amount":
-      return propertyValue.value.value + " " + UnitName.getName(propertyValue.value.unit);
+      return (
+        propertyValue.value.value +
+        " " +
+        UnitName.getName(propertyValue.value.unit)
+      );
     case "integer":
       const pvString = PropertyValue.toString(propertyValue);
       return `${propertyName}_${pvString}`;
     case "text":
       return propertyValue.value;
+    default:
+      return exhaustiveCheck(propertyValue);
   }
-  return "MESSAGE NOT AVAILABLE";
+  // return "MESSAGE NOT AVAILABLE";
 }
 
 export function nullMessage(): string {
   return "null";
 }
 
-function _comparisonOperationTypeToString(type: Ast.ComparisonOperationType): string {
+function _comparisonOperationTypeToString(
+  type: Ast.ComparisonOperationType
+): string {
   switch (type) {
     case "lessOrEqual":
       return "must be less than or equal to";
@@ -66,4 +90,3 @@ function _equalsOperationTypeToString(type: Ast.EqualsOperationType): string {
       throw new Error(`Unknown EqualsOperationType ${type}.`);
   }
 }
-

@@ -1,15 +1,17 @@
-import {NumberingLevelDefinition} from "./numbering-level-definition";
+import { NumberingLevelDefinition } from "./numbering-level-definition";
 
 export interface NumberingDefinition {
-  levels: NumberingLevelDefinition[],
+  readonly levels: NumberingLevelDefinition[];
 }
 
 export interface NumberingDefinitionProps {
-  levels: NumberingLevelDefinition[],
+  readonly levels: NumberingLevelDefinition[];
 }
 
-export function create({levels}:NumberingDefinitionProps): NumberingDefinition {
+export function create({
+  levels
+}: NumberingDefinitionProps): NumberingDefinition {
   return {
-    levels,
-  }
+    levels
+  };
 }

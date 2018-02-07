@@ -2,7 +2,13 @@ import * as AbstractImage from "../../abstract-image/index";
 import * as AD from "../../abstract-document";
 import * as base64 from "base64-js";
 
-export function renderImage(pdf: any, finalRect: AD.Rect.Rect, image: AD.Image.Image) {
+export function renderImage(
+  // tslint:disable-next-line:no-any
+  pdf: any,
+  finalRect: AD.Rect.Rect,
+  image: AD.Image.Image
+  // tslint:disable-next-line:no-any
+): any {
   const aImage = image.imageResource.abstractImage;
   const position = AD.Point.create(finalRect.x, finalRect.y);
   const scaleX = finalRect.width / aImage.size.width;
@@ -10,26 +16,37 @@ export function renderImage(pdf: any, finalRect: AD.Rect.Rect, image: AD.Image.I
   const scale = Math.min(scaleX, scaleY);
   pdf.save();
   pdf.translate(position.x, position.y).scale(scale);
-  aImage.components.forEach((c: AbstractImage.Component) => abstractComponentToPdf(pdf, c));
+  aImage.components.forEach((c: AbstractImage.Component) =>
+    abstractComponentToPdf(pdf, c)
+  );
   pdf.restore();
 }
 
-function abstractComponentToPdf(pdf: any, component: AbstractImage.Component): void {
+function abstractComponentToPdf(
+  // tslint:disable-next-line:no-any
+  pdf: any,
+  component: AbstractImage.Component
+): void {
   switch (component.type) {
     case "group":
-      component.children.forEach((c) => abstractComponentToPdf(pdf, c));
+      component.children.forEach(c => abstractComponentToPdf(pdf, c));
       break;
     case "bitmapimage":
       const format = component.format.toLowerCase();
       const imageWidth = component.bottomRight.x - component.topLeft.x;
       const imageHeight = component.bottomRight.y - component.topLeft.y;
       if (format === "png") {
-        const data = "data:image/png;base64," + base64.fromByteArray(component.data);
-        pdf.image(data, component.topLeft.x, component.topLeft.y, {fit: [imageWidth, imageHeight]});
-      }
-      else if (format === "jpg") {
-        const data = "data:image/jpeg;base64," + base64.fromByteArray(component.data);
-        pdf.image(data, component.topLeft.x, component.topLeft.y, {fit: [imageWidth, imageHeight]});
+        const data =
+          "data:image/png;base64," + base64.fromByteArray(component.data);
+        pdf.image(data, component.topLeft.x, component.topLeft.y, {
+          fit: [imageWidth, imageHeight]
+        });
+      } else if (format === "jpg") {
+        const data =
+          "data:image/jpeg;base64," + base64.fromByteArray(component.data);
+        pdf.image(data, component.topLeft.x, component.topLeft.y, {
+          fit: [imageWidth, imageHeight]
+        });
       }
       break;
     case "vectorimage":
@@ -46,8 +63,7 @@ function abstractComponentToPdf(pdf: any, component: AbstractImage.Component): v
         const p = component.points[i];
         if (i === 0) {
           pdf.moveTo(p.x, p.y);
-        }
-        else {
+        } else {
           pdf.lineTo(p.x, p.y);
         }
       }
@@ -58,19 +74,34 @@ function abstractComponentToPdf(pdf: any, component: AbstractImage.Component): v
     case "text":
       if (component.clockwiseRotationDegrees !== 0) {
         pdf.save();
-        pdf.rotate(component.clockwiseRotationDegrees, {origin: [component.position.x, component.position.y]});
+        pdf.rotate(component.clockwiseRotationDegrees, {
+          origin: [component.position.x, component.position.y]
+        });
       }
       pdf.font("Helvetica").fontSize(component.fontSize);
       const stringWidth = pdf.widthOfString(component.text);
       const stringHeight = pdf.currentLineHeight();
-      const dx = component.horizontalGrowthDirection === "left" ?  -stringWidth
-        : component.horizontalGrowthDirection === "uniform" ? -stringWidth * 0.5 : 0;
-      const dy = component.verticalGrowthDirection === "up" ?  -stringHeight
-        : component.verticalGrowthDirection === "uniform" ? -stringHeight * 0.5 : 0;
+      const dx =
+        component.horizontalGrowthDirection === "left"
+          ? -stringWidth
+          : component.horizontalGrowthDirection === "uniform"
+            ? -stringWidth * 0.5
+            : 0;
+      const dy =
+        component.verticalGrowthDirection === "up"
+          ? -stringHeight
+          : component.verticalGrowthDirection === "uniform"
+            ? -stringHeight * 0.5
+            : 0;
       pdf
-        .font("Helvetica").fontSize(component.fontSize)
+        .font("Helvetica")
+        .fontSize(component.fontSize)
         .fillColor(colorToRgb(component.textColor))
-        .text(component.text, component.position.x + dx, component.position.y + dy);
+        .text(
+          component.text,
+          component.position.x + dx,
+          component.position.y + dy
+        );
       if (component.clockwiseRotationDegrees !== 0) {
         pdf.restore();
       }
@@ -83,13 +114,19 @@ function abstractComponentToPdf(pdf: any, component: AbstractImage.Component): v
       pdf
         .lineWidth(component.strokeThickness)
         .ellipse(centerX, centerY, width * 0.5, height * 0.5)
-        .fillAndStroke(colorToRgb(component.fillColor), colorToRgb(component.strokeColor));
+        .fillAndStroke(
+          colorToRgb(component.fillColor),
+          colorToRgb(component.strokeColor)
+        );
       break;
     case "polygon":
       pdf
         .lineWidth(component.strokeThickness)
-        .polygon(...component.points.map((p) => [p.x, p.y]))
-        .fillAndStroke(colorToRgb(component.fillColor), colorToRgb(component.strokeColor));
+        .polygon(...component.points.map(p => [p.x, p.y]))
+        .fillAndStroke(
+          colorToRgb(component.fillColor),
+          colorToRgb(component.strokeColor)
+        );
       break;
     case "rectangle":
       const rWidth = component.bottomRight.x - component.topLeft.x;
@@ -97,7 +134,10 @@ function abstractComponentToPdf(pdf: any, component: AbstractImage.Component): v
       pdf
         .lineWidth(component.strokeThickness)
         .rect(component.topLeft.x, component.topLeft.y, rWidth, rHeight)
-        .fillAndStroke(colorToRgb(component.fillColor), colorToRgb(component.strokeColor));
+        .fillAndStroke(
+          colorToRgb(component.fillColor),
+          colorToRgb(component.strokeColor)
+        );
       break;
     default:
       break;

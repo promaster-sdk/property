@@ -20,8 +20,9 @@ function _visit(
   typeMap: Map<Ast.Expr, ExprType>
 ): ExprType {
   if (e.type === "AndExpr") {
-    for (let child of e.children)
+    for (let child of e.children) {
       lastPropertyType = _visit(child, lastPropertyType, typeMap);
+    }
     typeMap.set(e, new ExprType(ExprTypeEnum.Bool));
   } else if (e.type === "ComparisonExpr") {
     lastPropertyType = new ExprType(ExprTypeEnum.Unknown);
@@ -38,19 +39,22 @@ function _visit(
     lastPropertyType = new ExprType(ExprTypeEnum.Unknown);
 
     lastPropertyType = _visit(e.leftValue, lastPropertyType, typeMap);
-    for (const range of e.rightValueRanges)
+    for (const range of e.rightValueRanges) {
       lastPropertyType = _visit(range, lastPropertyType, typeMap);
+    }
     lastPropertyType = _visit(e.leftValue, lastPropertyType, typeMap);
-    for (const range of e.rightValueRanges)
+    for (const range of e.rightValueRanges) {
       lastPropertyType = _visit(range, lastPropertyType, typeMap);
+    }
 
     typeMap.set(e, new ExprType(ExprTypeEnum.Bool));
   } else if (e.type === "IdentifierExpr") {
     typeMap.set(e, new ExprType(ExprTypeEnum.Property, e.name));
     lastPropertyType = typeMap.get(e) || lastPropertyType;
   } else if (e.type === "OrExpr") {
-    for (let child of e.children)
+    for (const child of e.children) {
       lastPropertyType = _visit(child, lastPropertyType, typeMap);
+    }
     typeMap.set(e, new ExprType(ExprTypeEnum.Bool));
   } else if (e.type === "ValueExpr") {
     switch (e.parsed.type) {

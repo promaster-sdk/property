@@ -1,11 +1,15 @@
 import * as AbstractImage from "../abstract-image/index";
 
 export function createSVG(image: AbstractImage.AbstractImage): string {
-  const style = createElement("style", {}, ["* { vector-effect: non-scaling-stroke;}"]);
+  const style = createElement("style", {}, [
+    "* { vector-effect: non-scaling-stroke;}"
+  ]);
 
   let svgElements = [style];
 
-  const imageElements = image.components.map((c: AbstractImage.Component) => abstractComponentToSVG(c));
+  const imageElements = image.components.map((c: AbstractImage.Component) =>
+    abstractComponentToSVG(c)
+  );
   svgElements = svgElements.concat(imageElements);
 
   return createElement(
@@ -53,7 +57,9 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         "polyline",
         {
           fill: "none",
-          points: component.points.map(p => p.x.toString() + "," + p.y.toString()).join(" "),
+          points: component.points
+            .map(p => p.x.toString() + "," + p.y.toString())
+            .join(" "),
           stroke: colorToRgb(component.strokeColor),
           strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString()
@@ -94,7 +100,8 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         component.position.y.toString() +
         ")";
 
-      const lines: Array<string> = component.text != null ? component.text.split("\n") : [];
+      const lines: Array<string> =
+        component.text !== null ? component.text.split("\n") : [];
 
       const tSpans = lines.map(t =>
         createElement(
@@ -108,7 +115,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
 
       const cs: Array<string> = [];
 
-      if (component.strokeThickness > 0 && component.strokeColor != null) {
+      if (component.strokeThickness > 0 && component.strokeColor !== null) {
         cs.push(
           createElement(
             "text",
@@ -161,7 +168,9 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
       return createElement(
         "polygon",
         {
-          points: component.points.map(p => p.x.toString() + "," + p.y.toString()).join(" "),
+          points: component.points
+            .map(p => p.x.toString() + "," + p.y.toString())
+            .join(" "),
           stroke: colorToRgb(component.strokeColor),
           strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString(),
@@ -176,8 +185,12 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         {
           x: component.topLeft.x.toString(),
           y: component.topLeft.y.toString(),
-          width: Math.abs(component.bottomRight.x - component.topLeft.x).toString(),
-          height: Math.abs(component.bottomRight.y - component.topLeft.y).toString(),
+          width: Math.abs(
+            component.bottomRight.x - component.topLeft.x
+          ).toString(),
+          height: Math.abs(
+            component.bottomRight.y - component.topLeft.y
+          ).toString(),
           stroke: colorToRgb(component.strokeColor),
           strokeOpacity: colorToOpacity(component.strokeColor),
           strokeWidth: component.strokeThickness.toString(),
@@ -195,30 +208,45 @@ interface Attributes {
   readonly [key: string]: string;
 }
 
-function createElement(elementName: string, attributes: Attributes, innerElements: string[]): string {
+function createElement(
+  elementName: string,
+  attributes: Attributes,
+  innerElements: string[]
+): string {
   const formattedName = convertUpperToHyphenLower(elementName);
   let element = `<${formattedName}`;
 
   if (Object.keys(attributes).length > 0) {
-    element = Object.keys(attributes).reduce((previousValue: string, currentValue: string) => {
-      if (attributes[currentValue]) {
-        return previousValue + ` ${convertUpperToHyphenLower(currentValue)}="${attributes[currentValue]}"`;
-      } else {
-        return previousValue;
-      }
-    }, element);
+    element = Object.keys(attributes).reduce(
+      (previousValue: string, currentValue: string) => {
+        if (attributes[currentValue]) {
+          return (
+            previousValue +
+            ` ${convertUpperToHyphenLower(currentValue)}="${
+              attributes[currentValue]
+            }"`
+          );
+        } else {
+          return previousValue;
+        }
+      },
+      element
+    );
   }
 
   element += ">";
 
   if (innerElements.length > 0) {
-    element = innerElements.reduce((previousValue: string, currentValue: string) => {
-      if (!currentValue || currentValue.length < 1) {
-        return previousValue;
-      } else {
-        return previousValue + `${currentValue}`;
-      }
-    }, element);
+    element = innerElements.reduce(
+      (previousValue: string, currentValue: string) => {
+        if (!currentValue || currentValue.length < 1) {
+          return previousValue;
+        } else {
+          return previousValue + `${currentValue}`;
+        }
+      },
+      element
+    );
   }
 
   element += `</${formattedName}>`;
@@ -228,37 +256,59 @@ function createElement(elementName: string, attributes: Attributes, innerElement
 
 function objectToAttributeValue(attributes: Attributes): string {
   if (attributes && Object.keys(attributes).length > 0) {
-    return Object.keys(attributes).reduce((previousValue: string, currentValue: string) => {
-      if (attributes[currentValue]) {
-        return previousValue + `${convertUpperToHyphenLower(currentValue)}:${attributes[currentValue]};`;
-      } else {
-        return previousValue;
-      }
-    }, "");
+    return Object.keys(attributes).reduce(
+      (previousValue: string, currentValue: string) => {
+        if (attributes[currentValue]) {
+          return (
+            previousValue +
+            `${convertUpperToHyphenLower(currentValue)}:${
+              attributes[currentValue]
+            };`
+          );
+        } else {
+          return previousValue;
+        }
+      },
+      ""
+    );
   }
 
   return "";
 }
 
 function convertUpperToHyphenLower(elementName: string): string {
-  function upperToHyphenLower(match: string) {
+  function upperToHyphenLower(match: string): string {
     return "-" + match.toLowerCase();
   }
 
-  return elementName !== "viewBox" ? elementName.replace(/[A-Z]/g, upperToHyphenLower) : elementName;
+  return elementName !== "viewBox"
+    ? elementName.replace(/[A-Z]/g, upperToHyphenLower)
+    : elementName;
 }
 
 function getBaselineAdjustment(d: AbstractImage.GrowthDirection): number {
-  if (d === "up") return 0.0;
-  if (d === "uniform") return 0.5;
-  if (d === "down") return 1.0;
+  if (d === "up") {
+    return 0.0;
+  }
+  if (d === "uniform") {
+    return 0.5;
+  }
+  if (d === "down") {
+    return 1.0;
+  }
   throw "Unknown text alignment " + d;
 }
 
 function getTextAnchor(d: AbstractImage.GrowthDirection): string {
-  if (d === "left") return "end";
-  if (d === "uniform") return "middle";
-  if (d === "right") return "start";
+  if (d === "left") {
+    return "end";
+  }
+  if (d === "uniform") {
+    return "middle";
+  }
+  if (d === "right") {
+    return "start";
+  }
   throw "Unknown text alignment " + d;
 }
 

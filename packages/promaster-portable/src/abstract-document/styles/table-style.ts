@@ -4,16 +4,16 @@ import * as TableCellStyle from "./table-cell-style";
 export type TableAlignment = "Left" | "Center" | "Right";
 
 export interface TableStyle {
-  readonly type: "TableStyle",
-  readonly margins: LayoutFoundation.LayoutFoundation,
-  readonly alignment?: TableAlignment,
-  readonly cellStyle: TableCellStyle.TableCellStyle
+  readonly type: "TableStyle";
+  readonly margins: LayoutFoundation.LayoutFoundation;
+  readonly alignment?: TableAlignment;
+  readonly cellStyle: TableCellStyle.TableCellStyle;
 }
 
 export interface TableStyleProps {
-  readonly margins?: LayoutFoundation.LayoutFoundation,
-  readonly alignment?: TableAlignment,
-  readonly cellStyle?: TableCellStyle.TableCellStyle
+  readonly margins?: LayoutFoundation.LayoutFoundation;
+  readonly alignment?: TableAlignment;
+  readonly cellStyle?: TableCellStyle.TableCellStyle;
 }
 
 export function create(props?: TableStyleProps): TableStyle {
@@ -21,7 +21,8 @@ export function create(props?: TableStyleProps): TableStyle {
     margins = LayoutFoundation.create(),
     alignment = undefined,
     cellStyle = TableCellStyle.create()
-  } = props || {};
+  } =
+    props || {};
   return {
     type: "TableStyle",
     margins,
@@ -30,7 +31,10 @@ export function create(props?: TableStyleProps): TableStyle {
   };
 }
 
-export function overrideWith(overrider: TableStyle, toOverride: TableStyle): TableStyle {
+export function overrideWith(
+  overrider: TableStyle,
+  toOverride: TableStyle
+): TableStyle {
   const a: TableStyleProps = overrider || {};
   const b: TableStyleProps = toOverride || {};
   return create({

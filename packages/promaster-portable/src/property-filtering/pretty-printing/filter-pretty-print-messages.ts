@@ -1,21 +1,33 @@
-import {PropertyFilterAst as Ast, PropertyValue} from "@promaster/promaster-primitives";
+import {
+  PropertyFilterAst as Ast,
+  PropertyValue
+} from "@promaster/promaster-primitives";
 
 export interface FilterPrettyPrintMessages {
+  comparisionOperationMessage(
+    op: Ast.ComparisonOperationType,
+    left: string,
+    right: string
+  ): string;
 
-    comparisionOperationMessage(op: Ast.ComparisonOperationType, left: string, right: string): string;
+  equalsOperationMessage(
+    op: Ast.EqualsOperationType,
+    left: string,
+    right: string
+  ): string;
 
-    equalsOperationMessage(op: Ast.EqualsOperationType, left: string, right: string): string;
+  rangeMessage(min: string, max: string): string;
 
-    rangeMessage(min: string, max: string): string ;
+  andMessage(): string;
 
-    andMessage(): string ;
+  orMessage(): string;
 
-    orMessage(): string ;
+  propertyNameMessage(propertyName: string): string;
 
-    propertyNameMessage(propertyName: string): string ;
+  propertyValueMessage(
+    propertyName: string,
+    pv: PropertyValue.PropertyValue
+  ): string;
 
-    propertyValueMessage(propertyName: string, pv: PropertyValue.PropertyValue): string ;
-
-    nullMessage(): string ;
-
+  nullMessage(): string;
 }

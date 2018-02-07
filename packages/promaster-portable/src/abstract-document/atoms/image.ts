@@ -1,16 +1,16 @@
-import {ImageResource} from "../primitives/image-resource";
+import { ImageResource } from "../primitives/image-resource";
 
 export interface Image {
-  readonly type: "Image",
-  readonly imageResource: ImageResource,
-  readonly width: number,
-  readonly height: number,
+  readonly type: "Image";
+  readonly imageResource: ImageResource;
+  readonly width: number;
+  readonly height: number;
 }
 
 export interface ImageProps {
-  readonly imageResource: ImageResource,
-  readonly width: number,
-  readonly height: number,
+  readonly imageResource: ImageResource;
+  readonly width: number;
+  readonly height: number;
 }
 
 export function create(props: ImageProps): Image {

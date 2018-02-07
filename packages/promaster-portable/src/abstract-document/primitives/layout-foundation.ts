@@ -1,24 +1,19 @@
 export interface LayoutFoundation {
-  bottom: number,
-  left: number,
-  right: number,
-  top: number,
+  readonly bottom: number;
+  readonly left: number;
+  readonly right: number;
+  readonly top: number;
 }
 
 export interface LayoutFoundationProps {
-  bottom?: number,
-  left?: number,
-  right?: number,
-  top?: number,
+  readonly bottom?: number;
+  readonly left?: number;
+  readonly right?: number;
+  readonly top?: number;
 }
 
 export function create(props?: LayoutFoundationProps): LayoutFoundation {
-  const {
-    top = 0,
-    bottom = 0,
-    left = 0,
-    right = 0
-  } = props || {};
+  const { top = 0, bottom = 0, left = 0, right = 0 } = props || {};
   return {
     top,
     bottom,
@@ -27,7 +22,10 @@ export function create(props?: LayoutFoundationProps): LayoutFoundation {
   };
 }
 
-export function overrideWith(overrider: LayoutFoundation | undefined, toOverride: LayoutFoundation | undefined): LayoutFoundation {
+export function overrideWith(
+  overrider: LayoutFoundation | undefined,
+  toOverride: LayoutFoundation | undefined
+): LayoutFoundation {
   const a = overrider || create();
   const b = toOverride || create();
   return create({

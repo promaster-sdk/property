@@ -6,7 +6,9 @@ import { RawProduct, RawTree, Release, RawProductData, Marker } from "./types";
  * other functions which requires this parameter.
  * @returns List of releases.
  */
-export async function getReleases(baseAddress: string): Promise<Array<Release>> {
+export async function getReleases(
+  baseAddress: string
+): Promise<Array<Release>> {
   const url = `${baseAddress}/public/releases`;
   const result = await fetch(url);
   const json = await result.json();
@@ -30,7 +32,10 @@ export async function getMarkers(baseAddress: string): Promise<Array<Marker>> {
  * @param markerName The name of the marker.
  * @returns Marker object.
  */
-export async function getMarkerByName(baseAddress: string, markerName: string): Promise<Marker | undefined> {
+export async function getMarkerByName(
+  baseAddress: string,
+  markerName: string
+): Promise<Marker | undefined> {
   const url = `${baseAddress}/public/markers/${markerName}`;
   const result = await fetch(url, { redirect: "follow" });
   if (result.status === 404) {
@@ -48,11 +53,15 @@ export async function getMarkerByName(baseAddress: string, markerName: string): 
  * @param tablesToGet The tables to get.
  * @returns A list of products with the specified tables.
  */
-export async function getProductsAndTablesByReleaseId(baseAddress: string,
+export async function getProductsAndTablesByReleaseId(
+  baseAddress: string,
   releaseId: string,
-  tablesToGet: ReadonlyArray<string> = []): Promise<ReadonlyArray<RawProduct>> {
+  tablesToGet: ReadonlyArray<string> = []
+): Promise<ReadonlyArray<RawProduct>> {
   const publicUrl = `${baseAddress}/public`;
-  const url = `${publicUrl}/releases/${releaseId}` + (tablesToGet.length > 0 ? `?tables=${tablesToGet.join(",")}` : "");
+  const url =
+    `${publicUrl}/releases/${releaseId}` +
+    (tablesToGet.length > 0 ? `?tables=${tablesToGet.join(",")}` : "");
   const result = await fetch(url);
   const json = await result.json();
   return json;
@@ -66,11 +75,15 @@ export async function getProductsAndTablesByReleaseId(baseAddress: string,
  * @param tablesToGet The tables to get.
  * @returns A list of products with the specified tables.
  */
-export async function getProductsAndTablesByTransactionId(baseAddress: string,
+export async function getProductsAndTablesByTransactionId(
+  baseAddress: string,
   transactionId: string,
-  tablesToGet: ReadonlyArray<string> = []): Promise<ReadonlyArray<RawProduct>> {
+  tablesToGet: ReadonlyArray<string> = []
+): Promise<ReadonlyArray<RawProduct>> {
   const publicUrl = `${baseAddress}/public`;
-  const url = `${publicUrl}/transactions/${transactionId}` + (tablesToGet.length > 0 ? `?tables=${tablesToGet.join(",")}` : "");
+  const url =
+    `${publicUrl}/transactions/${transactionId}` +
+    (tablesToGet.length > 0 ? `?tables=${tablesToGet.join(",")}` : "");
   const result = await fetch(url);
   const json = await result.json();
   return json;
@@ -85,11 +98,15 @@ export async function getProductsAndTablesByTransactionId(baseAddress: string,
  * @param tablesToGet The tables to get.
  * @returns A dictionary of table name to table rows.
  */
-export async function getTablesByProductId(baseAddress: string,
+export async function getTablesByProductId(
+  baseAddress: string,
   transactionId: string,
   productId: string,
-  tablesToGet: ReadonlyArray<string>): Promise<RawProductData> {
-  const url = `${baseAddress}/public/transactions/${transactionId}/products/${productId}?tables=${tablesToGet.join(",")}`;
+  tablesToGet: ReadonlyArray<string>
+): Promise<RawProductData> {
+  const url = `${baseAddress}/public/transactions/${transactionId}/products/${productId}?tables=${tablesToGet.join(
+    ","
+  )}`;
   const result = await fetch(url, { redirect: "follow" });
   const json = await result.json();
   return json;
@@ -101,7 +118,9 @@ export async function getTablesByProductId(baseAddress: string,
  * using the `mapRawTree()` function.
  * @returns
  */
-export async function getTrees(baseAddress: string): Promise<ReadonlyArray<RawTree>> {
+export async function getTrees(
+  baseAddress: string
+): Promise<ReadonlyArray<RawTree>> {
   const publicUrl = `${baseAddress}/public`;
   const url = `${publicUrl}/trees`;
   const result = await fetch(url);

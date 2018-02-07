@@ -1,17 +1,17 @@
 export interface Font {
-  normal: FontSource;
-  bold: FontSource;
-  italic: FontSource;
-  boldItalic: FontSource;
+  readonly normal: FontSource;
+  readonly bold: FontSource;
+  readonly italic: FontSource;
+  readonly boldItalic: FontSource;
 }
 
 export type FontSource = string | Uint8Array;
 
 export interface FontProps {
-  normal: FontSource;
-  bold: FontSource;
-  italic: FontSource;
-  boldItalic: FontSource;
+  readonly normal: FontSource;
+  readonly bold: FontSource;
+  readonly italic: FontSource;
+  readonly boldItalic: FontSource;
 }
 
 export function create({ normal, bold, italic, boldItalic }: FontProps): Font {

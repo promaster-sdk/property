@@ -1,8 +1,10 @@
 ﻿import * as DocxConstants from "./docx-constants";
-import {XmlWriter} from "./xml-writer";
+import { XmlWriter } from "./xml-writer";
+
+//tslint:disable:no-class no-this
 
 export class RefContainer {
-
+  // tslint:disable-next-line:readonly-keyword
   _references: Array<string> = [];
 
   private readonly _xmlWriter: XmlWriter = new XmlWriter();
@@ -13,19 +15,23 @@ export class RefContainer {
 
   constructor() {
     this.XMLWriter.WriteStartDocument(true);
-    this.XMLWriter.WriteStartElement("Relationships", DocxConstants.RelationNamespace);
+    this.XMLWriter.WriteStartElement(
+      "Relationships",
+      DocxConstants.RelationNamespace
+    );
   }
 
   AddReference(refId: string, filePath: string, type: string): void {
-
-    if (filePath.startsWith("/") == false)
+    if (filePath.startsWith("/") === false) {
       filePath = "/" + filePath;
+    }
     this.AddReference2(refId, filePath, type);
   }
 
   AddReference2(refId: string, filePath: string, type: string): void {
-    if (this._references.indexOf(refId) !== -1)
+    if (this._references.indexOf(refId) !== -1) {
       return;
+    }
     this.XMLWriter.WriteStartElement("Relationship");
     this.XMLWriter.WriteAttributeString("Type", type);
     filePath = filePath.replace("\\", "/");
@@ -44,5 +50,4 @@ export class RefContainer {
     this.XMLWriter.close();
     this._references = [];
   }
-
 }

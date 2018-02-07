@@ -4,16 +4,16 @@ import * as LayoutFoundation from "../primitives/layout-foundation";
 export type TextAlignment = "Start" | "Center" | "End" | "Justify";
 
 export interface ParagraphStyle {
-  readonly type: "ParagraphStyle",
-  readonly alignment?: TextAlignment,
-  readonly margins: LayoutFoundation.LayoutFoundation,
-  readonly textStyle: TextStyle.TextStyle
+  readonly type: "ParagraphStyle";
+  readonly alignment?: TextAlignment;
+  readonly margins: LayoutFoundation.LayoutFoundation;
+  readonly textStyle: TextStyle.TextStyle;
 }
 
 export interface ParagraphStyleProps {
-  readonly alignment?: TextAlignment,
-  readonly margins?: LayoutFoundation.LayoutFoundation,
-  readonly textStyle?: TextStyle.TextStyle
+  readonly alignment?: TextAlignment;
+  readonly margins?: LayoutFoundation.LayoutFoundation;
+  readonly textStyle?: TextStyle.TextStyle;
 }
 
 export function create(props?: ParagraphStyleProps): ParagraphStyle {
@@ -21,7 +21,8 @@ export function create(props?: ParagraphStyleProps): ParagraphStyle {
     alignment = undefined,
     margins = LayoutFoundation.create(),
     textStyle = TextStyle.create()
-  } = props || {};
+  } =
+    props || {};
   return {
     type: "ParagraphStyle",
     alignment,
@@ -30,7 +31,10 @@ export function create(props?: ParagraphStyleProps): ParagraphStyle {
   };
 }
 
-export function overrideWith(overrider: ParagraphStyle | undefined, toOverride: ParagraphStyle | undefined): ParagraphStyle {
+export function overrideWith(
+  overrider: ParagraphStyle | undefined,
+  toOverride: ParagraphStyle | undefined
+): ParagraphStyle {
   const a: ParagraphStyleProps = overrider || {};
   const b: ParagraphStyleProps = toOverride || {};
   return create({

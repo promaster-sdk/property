@@ -1,3 +1,5 @@
+//tslint:disable
+
 // import {
 //   AbstractDoc,
 //   Table, Paragraph, TextField, TextRun, TableCell,

@@ -1,22 +1,22 @@
 import * as LayoutFoundation from "../primitives/layout-foundation";
 
-export type RowAlignment = "Top" | "Middle"| "Bottom";
+export type RowAlignment = "Top" | "Middle" | "Bottom";
 
 export interface TableCellStyle {
-  readonly type: "TableCellStyle",
-  readonly background?: string,
-  readonly borders: LayoutFoundation.LayoutFoundation,
-  readonly borderColor?: string,
-  readonly padding: LayoutFoundation.LayoutFoundation,
-  readonly verticalAlignment?: RowAlignment,
+  readonly type: "TableCellStyle";
+  readonly background?: string;
+  readonly borders: LayoutFoundation.LayoutFoundation;
+  readonly borderColor?: string;
+  readonly padding: LayoutFoundation.LayoutFoundation;
+  readonly verticalAlignment?: RowAlignment;
 }
 
 export interface TableCellStyleProps {
-  readonly background?: string,
-  readonly borders?: LayoutFoundation.LayoutFoundation,
-  readonly borderColor?: string,
-  readonly padding?: LayoutFoundation.LayoutFoundation,
-  readonly verticalAlignment?: RowAlignment,
+  readonly background?: string;
+  readonly borders?: LayoutFoundation.LayoutFoundation;
+  readonly borderColor?: string;
+  readonly padding?: LayoutFoundation.LayoutFoundation;
+  readonly verticalAlignment?: RowAlignment;
 }
 
 export function create(props?: TableCellStyleProps): TableCellStyle {
@@ -25,8 +25,9 @@ export function create(props?: TableCellStyleProps): TableCellStyle {
     borders = LayoutFoundation.create(),
     borderColor = undefined,
     padding = LayoutFoundation.create(),
-    verticalAlignment = undefined,
-  } = props || {};
+    verticalAlignment = undefined
+  } =
+    props || {};
   return {
     type: "TableCellStyle",
     background,
@@ -37,7 +38,10 @@ export function create(props?: TableCellStyleProps): TableCellStyle {
   };
 }
 
-export function overrideWith(overrider: TableCellStyle | undefined, toOverride: TableCellStyle | undefined): TableCellStyle {
+export function overrideWith(
+  overrider: TableCellStyle | undefined,
+  toOverride: TableCellStyle | undefined
+): TableCellStyle {
   const a: TableCellStyleProps = overrider || {};
   const b: TableCellStyleProps = toOverride || {};
   return create({
@@ -48,4 +52,3 @@ export function overrideWith(overrider: TableCellStyle | undefined, toOverride: 
     verticalAlignment: a.verticalAlignment || b.verticalAlignment
   });
 }
-

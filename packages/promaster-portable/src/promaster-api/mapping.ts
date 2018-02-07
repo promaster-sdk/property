@@ -120,9 +120,9 @@ function convertTextTable(
   textTable: ReadonlyArray<any> | undefined
 ): Types.TextTable {
   let table: {
-    [key: string]: Array<{
-      property_filter: PropertyFilter.PropertyFilter;
-      text: string;
+    readonly [key: string]: Array<{
+      readonly property_filter: PropertyFilter.PropertyFilter;
+      readonly text: string;
     }>;
   } = {};
   for (let text of textTable || []) {

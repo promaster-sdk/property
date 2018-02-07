@@ -1,5 +1,4 @@
-export enum ExprTypeEnum
-{
+export enum ExprTypeEnum {
   Unknown,
   Bool,
   Amount,
@@ -8,13 +7,16 @@ export enum ExprTypeEnum
   Range
 }
 
+//tslint:disable:no-class no-this
 
 export class ExprType {
+  private readonly _exprTypeEnum: ExprTypeEnum;
+  private readonly _propertyName: string | undefined;
 
-  private _exprTypeEnum: ExprTypeEnum;
-  private _propertyName: string | undefined;
-
-  constructor(exprTypeEnum: ExprTypeEnum = ExprTypeEnum.Unknown, propertyName: string | undefined = undefined) {
+  constructor(
+    exprTypeEnum: ExprTypeEnum = ExprTypeEnum.Unknown,
+    propertyName: string | undefined = undefined
+  ) {
     this._exprTypeEnum = exprTypeEnum;
     this._propertyName = propertyName;
   }

@@ -1,12 +1,19 @@
-import {assert} from "chai";
-import {buildAllPropertyValueSetsExtended} from "../../src/variant-listing";
-import {readFileSync} from "fs";
+import { assert } from "chai";
+import { buildAllPropertyValueSetsExtended } from "../../src/variant-listing";
+import { readFileSync } from "fs";
 import * as Path from "path";
 
 describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {
-    const cfcData = JSON.parse(readFileSync(Path.join(__dirname, "./cfc.json")).toString());
-    const sets = buildAllPropertyValueSetsExtended(cfcData.explicitPropertyValueSet, cfcData.variableProperties, cfcData.variableProperties, -1);
+    const cfcData = JSON.parse(
+      readFileSync(Path.join(__dirname, "./cfc.json")).toString()
+    );
+    const sets = buildAllPropertyValueSetsExtended(
+      cfcData.explicitPropertyValueSet,
+      cfcData.variableProperties,
+      cfcData.variableProperties,
+      -1
+    );
     assert.equal(sets.variants.length, cfcData.resultCount);
     assert.equal(sets.pruned, false);
   });
@@ -40,7 +47,6 @@ describe("buildAllPropertyValueSets", () => {
 // const propertyValueSetGenerator = (properties: ProductProperty[]): PromasterPrimitives.PropertyValueSet.PropertyValueSet => properties.reduce((acc, curr) => acc[curr.name] = curr.value[0].value, {});
 
 // const seq = (count) => Array.apply(null, {length: count}).map(Number.call, Number);
-
 
 // describe("buildAllPropertyValueSets", () => {
 //   seq(6).map((q) => {

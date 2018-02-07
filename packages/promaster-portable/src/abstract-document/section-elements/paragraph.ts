@@ -1,22 +1,22 @@
-import {Resources} from "../resources";
-import {Atom} from "../atoms/atom";
-import {ParagraphNumbering} from "./paragraph-numbering";
+import { Resources } from "../resources";
+import { Atom } from "../atoms/atom";
+import { ParagraphNumbering } from "./paragraph-numbering";
 import * as ParagraphStyle from "../styles/paragraph-style";
 
 export type Paragraph = Resources & {
-  readonly type: "Paragraph",
-  readonly styleName: string,
-  readonly style: ParagraphStyle.ParagraphStyle,
-  readonly numbering: ParagraphNumbering | undefined,
-  readonly children: Atom[],
-}
+  readonly type: "Paragraph";
+  readonly styleName: string;
+  readonly style: ParagraphStyle.ParagraphStyle;
+  readonly numbering: ParagraphNumbering | undefined;
+  readonly children: Atom[];
+};
 
 export type ParagraphProps = Resources & {
-  readonly styleName?: string,
-  readonly style?: ParagraphStyle.ParagraphStyle,
-  readonly numbering?: ParagraphNumbering,
-  readonly children?: Atom[],
-}
+  readonly styleName?: string;
+  readonly style?: ParagraphStyle.ParagraphStyle;
+  readonly numbering?: ParagraphNumbering;
+  readonly children?: Atom[];
+};
 
 export function create(props?: ParagraphProps): Paragraph {
   const {
@@ -25,7 +25,8 @@ export function create(props?: ParagraphProps): Paragraph {
     numbering = undefined,
     children = [],
     ...rest
-  } = props || {};
+  } =
+    props || {};
   return {
     type: "Paragraph",
     styleName,

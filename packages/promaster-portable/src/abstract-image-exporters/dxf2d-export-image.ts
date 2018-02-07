@@ -1,16 +1,17 @@
 import * as AbstractImage from "../abstract-image/index";
 
 export function dxf2dExportImage(root: AbstractImage.AbstractImage): string {
-
   const builder: Builder = createBuilder();
   let height: number = root.size.height;
   let layer: number = 0;
 
   builder.append("999\nELIGO DXF GENERATOR\n");
   builder.append("0\nSECTION\n2\nHEADER\n");
-  builder.append("9\n\$ACADVER\n1\nAC1009\n9\n\$INSBASE\n10\n0.0\n20\n0.0\n30\n0.0\n");
-  builder.append("9\n\$EXTMIN\n10\n0.0\n20\n0.0\n");
-  builder.append("9\n\$EXTMAX\n");
+  builder.append(
+    "9\n$ACADVER\n1\nAC1009\n9\n$INSBASE\n10\n0.0\n20\n0.0\n30\n0.0\n"
+  );
+  builder.append("9\n$EXTMIN\n10\n0.0\n20\n0.0\n");
+  builder.append("9\n$EXTMAX\n");
   builder.append("10\n" + root.size.width.toString() + "\n");
   builder.append("20\n" + root.size.height.toString() + "\n");
   builder.append("0\nENDSEC\n");
@@ -26,8 +27,8 @@ export function dxf2dExportImage(root: AbstractImage.AbstractImage): string {
 }
 
 interface Builder {
-  append: (addedStr: string) => void,
-  build: () => string
+  readonly append: (addedStr: string) => void;
+  readonly build: () => string;
 }
 function createBuilder(): Builder {
   let str = "";
@@ -36,11 +37,16 @@ function createBuilder(): Builder {
       str += addedStr;
     },
     build: () => str
-  }
+  };
 }
 
-function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, height: number): void {
-
+function _visit(
+  // tslint:disable-next-line:variable-name
+  c_in: AbstractImage.Component,
+  builder: Builder,
+  layer: number,
+  height: number
+): void {
   /*if (c_in.type === "") {
     let c: AbstractImage.Component = c_in;
     for (let component of c.components)
@@ -54,7 +60,7 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
     }
   }
 
-    if (c_in.type === "bitmapimage") {
+  if (c_in.type === "bitmapimage") {
     //let c:BitmapImageComponent = c_in;
     //let importer = imageImporterFactory(c.format);
     //if (importer == null)
@@ -100,20 +106,22 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
   if (c_in.type === "text") {
     let c: AbstractImage.Text = c_in;
     let horizontalAlignment: number;
-    if (c.horizontalGrowthDirection === "left")
+    if (c.horizontalGrowthDirection === "left") {
       horizontalAlignment = 2;
-    else if (c.horizontalGrowthDirection === "uniform")
+    } else if (c.horizontalGrowthDirection === "uniform") {
       horizontalAlignment = 1;
-    else
+    } else {
       horizontalAlignment = 0;
+    }
 
     let verticalAlignment: number;
-    if (c.verticalGrowthDirection === "up")
+    if (c.verticalGrowthDirection === "up") {
       verticalAlignment = 0;
-    else if (c.verticalGrowthDirection === "uniform")
+    } else if (c.verticalGrowthDirection === "uniform") {
       verticalAlignment = 2;
-    else
+    } else {
       verticalAlignment = 3;
+    }
 
     let fontSize = c.fontSize - 2;
 
@@ -128,16 +136,16 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
     builder.append("40\n" + fontSize.toString() + "\n");
     builder.append("1\n" + c.text + "\n");
     builder.append("72\n" + horizontalAlignment.toString() + "\n");
-    builder.append("73\n" + verticalAlignment.toString() + "\n")
+    builder.append("73\n" + verticalAlignment.toString() + "\n");
   }
 
   if (c_in.type === "ellipse") {
     let c: AbstractImage.Ellipse = c_in;
     layer++;
 
-    builder.append("0\nPOLYLINE\n")
-    builder.append("8\n" + layer.toString() + "\n")
-    builder.append("66\n" + "1" + "\n")
+    builder.append("0\nPOLYLINE\n");
+    builder.append("8\n" + layer.toString() + "\n");
+    builder.append("66\n" + "1" + "\n");
 
     let r1 = Math.abs(c.bottomRight.x - c.topLeft.x) / 2.0;
     let r2 = Math.abs(c.topLeft.y - c.bottomRight.y) / 2.0;
@@ -153,16 +161,15 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
     for (let t of mylist) {
       let x = c.topLeft.x + r1 + r1 * Math.cos(t);
       let y = c.topLeft.y + r2 + r2 * Math.sin(t);
-      builder.append("0\nVERTEX\n")
-      builder.append("8\n" + layer.toString() + "\n")
-      builder.append("10\n" + x.toString() + "\n")
-      builder.append("20\n" + _invert(y, height).toString() + "\n")
-      builder.append("30\n0.0\n")
+      builder.append("0\nVERTEX\n");
+      builder.append("8\n" + layer.toString() + "\n");
+      builder.append("10\n" + x.toString() + "\n");
+      builder.append("20\n" + _invert(y, height).toString() + "\n");
+      builder.append("30\n0.0\n");
     }
-    builder.append("0\nSEQEND\n")
-    builder.append("8\n" + layer.toString() + "\n")
+    builder.append("0\nSEQEND\n");
+    builder.append("8\n" + layer.toString() + "\n");
   }
-
 
   if (c_in.type === "polygon") {
     let c: AbstractImage.Polygon = c_in;
@@ -200,14 +207,12 @@ function _visit(c_in: AbstractImage.Component, builder: Builder, layer: number, 
       builder.append("30\n0.0\n");
     }
     builder.append("0\nSEQEND\n");
-    builder.append("8\n" + layer.toString() + "\n")
+    builder.append("8\n" + layer.toString() + "\n");
   }
-
 }
 
 function _invert(d: number, height: number): number {
   return height - d;
 }
-
 
 //}
