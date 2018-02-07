@@ -78,9 +78,13 @@ function visitAllExpr(e: Ast.Expr, visit: (e: Ast.Expr) => void): void {
       visit(e);
       visitAllExpr(e.leftValue, visit);
       for (const range of e.rightValueRanges) {
-        visitAllExpr(range.min, visit);
-        visitAllExpr(range.max, visit);
+        visitAllExpr(range, visit);
       }
+      return;
+    }
+    case "ValueRangeExpr": {
+      visitAllExpr(e.min, visit);
+      visitAllExpr(e.max, visit);
       return;
     }
     case "ComparisonExpr": {

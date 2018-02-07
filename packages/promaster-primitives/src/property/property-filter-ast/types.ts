@@ -1,7 +1,7 @@
 import * as PropertyValue from "../property-value";
 
 // All expression
-export type Expr = BooleanExpr | PropertyValueExpr;
+export type Expr = BooleanExpr | PropertyValueExpr | ValueRangeExpr;
 
 // Expressions that result in a boolean
 export type BooleanExpr =

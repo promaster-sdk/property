@@ -9697,6 +9697,10 @@ trough@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.1.tgz#a9fd8b0394b0ae8fff82e0633a0a36ccad5b5f86"
 
+ts-exhaustive-check@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ts-exhaustive-check/-/ts-exhaustive-check-1.0.0.tgz#8048c81eccd3b4da45ebd10f01529ad0be7924c7"
+
 ts-jest@^22.0.3:
   version "22.0.3"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-22.0.3.tgz#4d30f42c1b26a78d438ad908f9b0bcb4b1e6e32b"
