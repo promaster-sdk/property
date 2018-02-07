@@ -710,7 +710,7 @@ export const SquareDecimeter: Unit.Unit<q.Area> = _register(
 
 // Angle
 export const Degrees: Unit.Unit<q.Angle> = _register(
-  Unit.timesNumber(180.0 / Math.PI, Radian),
+  Unit.timesNumber(Math.PI / 180.0, Radian),
   "°"
 );
 
