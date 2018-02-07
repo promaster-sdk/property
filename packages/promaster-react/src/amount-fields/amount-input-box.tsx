@@ -318,6 +318,7 @@ function filterFloat(value: string): number {
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
 // N milliseconds.
+// tslint:disable-next-line:no-any
 function debounce(_this: any, func: Function, wait: number): any {
   //tslint:disable-line
   let timeout: NodeJS.Timer | null;

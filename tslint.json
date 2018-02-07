@@ -104,7 +104,7 @@
     //    "no-expression-statement": true,
     // Neec to use new for built-in types like Map, Set, RegEx etc.
     //    "no-new": true,
-    "no-this": true,
-    "no-mixed-interface": true
+    "no-this": true
+    // "no-mixed-interface": true
   }
 }
