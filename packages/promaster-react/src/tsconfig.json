@@ -10,17 +10,18 @@
     "jsx": "react",
     // import & lib options
     "moduleResolution": "node",
-    "typeRoots": ["../node_modules/@types/"],
-    "lib": ["es5", "dom", "es2015", "es2015.promise", "es2015.iterable", "es2015.symbol"],
+    "types": ["node", "jest"],
+    "lib": [
+      "es5",
+      "dom",
+      "es2015",
+      "es2015.promise",
+      "es2015.iterable",
+      "es2015.symbol"
+    ],
     "baseUrl": ".",
     "paths": {
       "*": ["lib/*", "custom_typings/*"]
     }
-  },
-  "include": [
-    "**/*"
-  ],
-  "exclude": [
-    "node_modules/**/"
-  ]
+  }
 }
