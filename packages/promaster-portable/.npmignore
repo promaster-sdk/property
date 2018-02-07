@@ -1,9 +1,5 @@
-.idea/
-.vscode/
-.editorconfig
-.gitattributes
 .npmignore
-tsconfig.json
+base-tsconfig.json
 example/
 test/
 scripts/

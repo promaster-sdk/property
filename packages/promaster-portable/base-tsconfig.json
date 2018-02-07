@@ -1,22 +1,10 @@
 {
+  "extends": "../../base-tsconfig.json",
   "compilerOptions": {
-    // These options has documented reasons for deviating from defaults
-    "forceConsistentCasingInFileNames": true,
-    "newLine": "LF",
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strictNullChecks": true,
     // Paths options
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "./custom_typings/*"
-      ]
+      "*": ["./custom_typings/*"]
     },
     // Output options
     "declaration": true,

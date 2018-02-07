@@ -1,8 +1,6 @@
-.idea/
-.vscode/
-.editorconfig
-.gitattributes
 .npmignore
+.nycrc.json
 example/
-scripts/
+benchmarks/
 test/
+coverage/

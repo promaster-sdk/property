@@ -1,9 +1,6 @@
 {
   "extends": "../base-tsconfig.json",
   "compilerOptions": {
-    "typeRoots": [
-      "../node_modules/@types"
-    ],
     "outDir": "../test_js_out",
     "noEmit": true
   }
