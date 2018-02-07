@@ -10,7 +10,7 @@
     "jsx": "react",
     // import & lib options
     "moduleResolution": "node",
-    "types": ["node", "jest"],
+    "types": ["node", "jest", "react"],
     "lib": [
       "es5",
       "dom",
