@@ -35,8 +35,7 @@
     "tslint": "^5.9.1",
     "tslint-immutable": "^4.5.1",
     "typedoc": "^0.5.1",
-    "typedoc-markdown-theme": "0.0.4",
-    "typescript": "2.6.2"
+    "typedoc-markdown-theme": "0.0.4"
   },
   "lint-staged": {
     "*.{ts,tsx}": "tslint",

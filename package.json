@@ -1,8 +1,11 @@
 {
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "lerna": "^2.8.0"
+    "lerna": "^2.8.0",
+    "typescript": "2.6.2"
   },
   "scripts": {
     "publish": "lerna publish",
