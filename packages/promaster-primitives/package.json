@@ -43,17 +43,18 @@
     "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
   },
   "scripts": {
+    "prepublish": "yarn test && yarn build",
     "precommit": "lint-staged",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "circular": "madge --circular ./src/index.ts",
     "benchmark":
-      "node ./yarn.js build:cjs && node ./yarn.js build:benchmarks &&  node benchmarks/lib/property-filter.js",
+      "yarn build:cjs && yarn build:benchmarks &&  node benchmarks/lib/property-filter.js",
     "build":
-      "node yarn.js build:clean && node yarn.js build:cjs && node yarn.js build:esm",
+      "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
-    "build:cjs": "tsc -p src && node yarn.js build:parser:cjs",
+    "build:cjs": "tsc -p src && yarn build:parser:cjs",
     "build:esm":
-      "tsc -p src --module es2015 --outDir ./lib-esm && node yarn.js build:parser:esm",
+      "tsc -p src --module es2015 --outDir ./lib-esm && yarn build:parser:esm",
     "build:parser:cjs":
       "mkdirp lib-cjs/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* lib-cjs/property/property-filter-ast/pegjs/",
     "build:parser:esm":
@@ -61,11 +62,8 @@
     "build:parser:test":
       "mkdirp test/lib/src/property/property-filter-ast/pegjs/ && cp src/property/property-filter-ast/pegjs/generated-parser.* test/lib/src/property/property-filter-ast/pegjs/",
     "build:benchmarks": "cd benchmarks && tsc",
-    "publish:major": "node scripts/publish.js major",
-    "publish:minor": "node scripts/publish.js minor",
-    "publish:patch": "node scripts/publish.js patch",
     "build:test": "tsc -p test && yarn build:parser:test",
-    "gen-doc": "node yarn.js build && node scripts/gen-doc.js",
+    "gen-doc": "yarn build && node scripts/gen-doc.js",
     "gen-typedoc":
       "typedoc --hideGenerator --theme node_modules/typedoc-markdown-theme/bin --out ./doc/typedoc ./src",
     "test": "mocha",
