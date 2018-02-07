@@ -2,17 +2,30 @@ import { assert } from "chai";
 import { buildAllPropertyValueSetsExtended } from "../../../src/variant-listing";
 import { readFileSync } from "fs";
 import * as Path from "path";
+import { PropertyFilter } from "../../../../promaster-primitives";
 
 // tslint:disable:max-line-length
 
 describe("buildAllPropertyValueSets", () => {
-  it(`should work with CFC`, () => {
+  it.only(`should work with CFC`, () => {
     const cfcData = JSON.parse(
       readFileSync(Path.join(__dirname, "./cfc.json")).toString()
     );
+    // Need to go though and create PropertyFilter for all strings in the data
+    // tslint:disable-next-line:no-any
+    cfcData.variableProperties.map((a: any) => ({
+      ...a,
+      validation_filter: PropertyFilter.fromString(a.validation_filter),
+      visibility_filter: PropertyFilter.fromString(a.validation_filter),
+      // tslint:disable-next-line:no-any
+      values: a.value.map((a: any) => ({
+        ...a,
+        property_filter: PropertyFilter.fromString(a.property_filter)
+      }))
+    }));
     const sets = buildAllPropertyValueSetsExtended(
       cfcData.explicitPropertyValueSet,
-      cfcData.variableProperties,
+      cfcData.variableProerties,
       cfcData.variableProperties,
       -1
     );
