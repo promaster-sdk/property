@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-react",
-  "version": "0.38.2",
+  "version": "0.38.3",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -12,8 +12,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/promaster-portable": "^0.37.2",
-    "@promaster/promaster-primitives": "^2.2.1",
+    "@promaster/promaster-portable": "^0.37.3",
+    "@promaster/promaster-primitives": "^2.2.2",
     "@types/ramda": "^0.25.17",
     "ramda": "^0.25.0",
     "react": "^15.6.1"
