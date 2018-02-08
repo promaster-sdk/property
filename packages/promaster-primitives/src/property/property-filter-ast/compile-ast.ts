@@ -16,8 +16,8 @@ export function compileAst(ast: Ast.BooleanExpr): CompiledFilterFunction {
   // The fastest is to compile to a JS expression string
   // and make a function from that but it does not support:
   // * Amount values (103:Meter)
-  // * Dots in the property names (a.b=10)
   // * Comparing name to name (a<b) (becuase then we don't know if they are Amount)
+  // * Text values (becuase they require case-insensitive comparision)
   if (isCompilable(ast)) {
     return (properties: PropertyValueSet.PropertyValueSet) =>
       evaluateAst(ast, properties, false);
@@ -26,13 +26,9 @@ export function compileAst(ast: Ast.BooleanExpr): CompiledFilterFunction {
 }
 
 function isCompilable(ast: Ast.BooleanExpr): boolean {
-  let hasDot = false;
   let hasAmountOrText = false;
   let hasNameToNameComparision = false;
   visitAllExpr(ast, e => {
-    if (e.type === "IdentifierExpr" && e.name.indexOf(".") !== -1) {
-      hasDot = true;
-    }
     if (e.type === "ValueExpr" && e.parsed.type !== "integer") {
       hasAmountOrText = true;
     }
@@ -55,7 +51,7 @@ function isCompilable(ast: Ast.BooleanExpr): boolean {
       hasNameToNameComparision = true;
     }
   });
-  return hasDot || hasAmountOrText || hasNameToNameComparision;
+  return hasAmountOrText || hasNameToNameComparision;
 }
 
 function visitAllExpr(e: Ast.Expr, visit: (e: Ast.Expr) => void): void {

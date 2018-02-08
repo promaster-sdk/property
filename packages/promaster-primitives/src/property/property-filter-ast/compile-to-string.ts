@@ -3,35 +3,34 @@ import { exhaustiveCheck } from "../../utils/exhaustive-check";
 import { CompiledFilterFunction } from "./compiled-filter";
 
 export function compileToString(e: Ast.BooleanExpr): CompiledFilterFunction {
-  const props: Set<string> = new Set();
-  const funcstr = makeJSExprForBooleanExpr(e, props);
+  const funcstr = makeJSExprForBooleanExpr(e);
   // console.log("funcstr", funcstr, props);
   const func = new Function("p", "return " + funcstr) as CompiledFilterFunction;
   return func;
 }
 
-function makeJSExprForBooleanExpr(e: Ast.BooleanExpr, p: Set<string>): string {
+function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
   switch (e.type) {
     case "AndExpr": {
       let mystr = "";
       for (const child of e.children) {
-        mystr += " && " + makeJSExprForBooleanExpr(child, p);
+        mystr += " && " + makeJSExprForBooleanExpr(child);
       }
       return mystr.length ? mystr.substr(4) : mystr;
     }
     case "OrExpr": {
       let mystr = "";
       for (const child of e.children) {
-        mystr += " || " + makeJSExprForBooleanExpr(child, p);
+        mystr += " || " + makeJSExprForBooleanExpr(child);
       }
       return mystr.length ? mystr.substr(4) : mystr;
     }
     case "EqualsExpr": {
       let mystr = "";
-      const left = makeJsExprForPropertyValueExpr(e.leftValue, p);
+      const left = makeJsExprForPropertyValueExpr(e.leftValue);
       for (const range of e.rightValueRanges) {
-        const min = makeJsExprForPropertyValueExpr(range.min, p);
-        const max = makeJsExprForPropertyValueExpr(range.max, p);
+        const min = makeJsExprForPropertyValueExpr(range.min);
+        const max = makeJsExprForPropertyValueExpr(range.max);
         if (min === max) {
           mystr +=
             e.operationType === "equals"
@@ -45,11 +44,11 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr, p: Set<string>): string {
       return mystr.length ? mystr.substr(4) : mystr;
     }
     case "ComparisonExpr": {
-      const left = makeJsExprForPropertyValueExpr(e.leftValue, p);
+      const left = makeJsExprForPropertyValueExpr(e.leftValue);
       if (left === "null") {
         return " false ";
       }
-      const right = makeJsExprForPropertyValueExpr(e.rightValue, p);
+      const right = makeJsExprForPropertyValueExpr(e.rightValue);
       if (right === "null") {
         return " false ";
       }
@@ -77,19 +76,16 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr, p: Set<string>): string {
 }
 
 // Returns something that evaluates to a PropertyValue or null
-function makeJsExprForPropertyValueExpr(
-  e: Ast.PropertyValueExpr,
-  p: Set<string>
-): string {
+function makeJsExprForPropertyValueExpr(e: Ast.PropertyValueExpr): string {
   switch (e.type) {
     case "IdentifierExpr": {
-      p.add(e.name);
-      // return "p." + e.name + ".value";
-      return "(p." + e.name + " && p." + e.name + ".value)";
+      return "(p['" + e.name + "'] && p['" + e.name + "'].value)";
     }
     case "ValueExpr": {
       if (e.parsed.type !== "integer") {
-        throw new Error("Non integer value.");
+        throw new Error(
+          "PropertyFilter with non integer value cannot be compiled."
+        );
       }
       return e.parsed.value.toString();
     }
