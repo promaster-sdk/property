@@ -2,5 +2,5 @@
 /*
 
 # except
-!lib-cjs
-!lib-esm
+!lib-cjs/*
+!lib-esm/*
