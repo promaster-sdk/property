@@ -1,10 +1,6 @@
-.idea/
-.vscode/
-example/
-test/
-.editorconfig
-.gitattributes
-.gitignore
-.npmignore
-base-tsconfig.json
-npm-packages-offline-cache/
+# ignore everything
+/*
+
+# except
+!lib-cjs
+!lib-esm

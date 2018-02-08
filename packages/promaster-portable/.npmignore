@@ -1,5 +1,6 @@
-.npmignore
-base-tsconfig.json
-example/
-test/
-scripts/
+# ignore everything
+/*
+
+# except
+!lib-cjs
+!lib-esm

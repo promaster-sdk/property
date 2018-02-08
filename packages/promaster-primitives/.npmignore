@@ -1,6 +1,6 @@
-.npmignore
-.nycrc.json
-example/
-benchmarks/
-test/
-coverage/
+# ignore everything
+/*
+
+# except
+!lib-cjs
+!lib-esm
