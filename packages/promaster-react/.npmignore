@@ -1,7 +1,5 @@
 # ignore everything
 */**
-./*
-*.md
 
 # except
 !lib-cjs/**/*
