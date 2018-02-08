@@ -1,28 +1,50 @@
 import { assert } from "chai";
 import { buildAllPropertyValueSetsExtended } from "../../../src/variant-listing";
-import { readFileSync } from "fs";
+import * as fs from "fs";
 import * as Path from "path";
 import { PropertyFilter } from "../../../../promaster-primitives";
+import * as R from "ramda";
 
 // tslint:disable:max-line-length
 
 describe("buildAllPropertyValueSets", () => {
   it.only(`should work with CFC`, () => {
-    const cfcData = JSON.parse(
-      readFileSync(Path.join(__dirname, "./cfc.json")).toString()
+    const cfcDataRaw = JSON.parse(
+      fs.readFileSync(Path.join(__dirname, "./cfc.json")).toString()
     );
+    const explicitPropertyValueSet = R.map(item => {
+      // tslint:disable-next-line:no-console
+      console.log(item.name, item.property_filter);
+      return {
+        ...item,
+        property_filter:
+          item.property_filter &&
+          PropertyFilter.fromString(item.property_filter)
+      };
+    }, cfcDataRaw.explicitPropertyValueSet);
     // Need to go though and create PropertyFilter for all strings in the data
-    // tslint:disable-next-line:no-any
-    cfcData.variableProperties.map((a: any) => ({
-      ...a,
-      validation_filter: PropertyFilter.fromString(a.validation_filter),
-      visibility_filter: PropertyFilter.fromString(a.validation_filter),
+    const cfcData = {
+      ...cfcDataRaw,
+      explicitPropertyValueSet: explicitPropertyValueSet,
       // tslint:disable-next-line:no-any
-      values: a.value.map((a: any) => ({
+      variableProperties: cfcDataRaw.variableProperties.map((a: any) => ({
         ...a,
-        property_filter: PropertyFilter.fromString(a.property_filter)
+        validation_filter:
+          a.validation_filter && PropertyFilter.fromString(a.validation_filter),
+        visibility_filter:
+          a.visibility_filter && PropertyFilter.fromString(a.visibility_filter),
+        // tslint:disable-next-line:no-any
+        value: a.value.map((a: any) => ({
+          ...a,
+          property_filter: PropertyFilter.fromString(a.property_filter)
+        }))
       }))
-    }));
+    };
+    fs.writeFileSync(
+      Path.join(__dirname, "./cfc_out.json"),
+      JSON.stringify(cfcData)
+    );
+    // console.log(JSON.stringify(cfcData));
     const sets = buildAllPropertyValueSetsExtended(
       cfcData.explicitPropertyValueSet,
       cfcData.variableProerties,
