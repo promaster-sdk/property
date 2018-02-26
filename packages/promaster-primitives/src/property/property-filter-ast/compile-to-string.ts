@@ -4,7 +4,7 @@ import { CompiledFilterFunction } from "./compiled-filter";
 
 export function compileToString(e: Ast.BooleanExpr): CompiledFilterFunction {
   const funcstr = makeJSExprForBooleanExpr(e);
-  // console.log("funcstr", funcstr, props);
+  // console.log("funcstr", funcstr);
   const func = new Function("p", "return " + funcstr) as CompiledFilterFunction;
   return func;
 }
@@ -27,11 +27,13 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
     }
     case "EqualsExpr": {
       let mystr = "";
+      let singleOrCount = 0;
       const left = makeJsExprForPropertyValueExpr(e.leftValue);
       for (const range of e.rightValueRanges) {
         const min = makeJsExprForPropertyValueExpr(range.min);
         const max = makeJsExprForPropertyValueExpr(range.max);
         if (min === max) {
+          singleOrCount++;
           mystr +=
             e.operationType === "equals"
               ? " || " + left + " === " + max
@@ -41,7 +43,9 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
             " || (" + left + " >= " + min + " && " + left + " <= " + max + ")";
         }
       }
-      return mystr.length ? mystr.substr(4) : mystr;
+      return mystr.length
+        ? singleOrCount > 1 ? "(" + mystr.substr(4) + ")" : mystr.substr(4)
+        : mystr;
     }
     case "ComparisonExpr": {
       const left = makeJsExprForPropertyValueExpr(e.leftValue);

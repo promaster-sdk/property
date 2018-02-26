@@ -15,12 +15,23 @@ describe("PropertyFilterAst", () => {
     });
   });
 
-  describe("evaluateAst", () => {
+  describe("evaluate with raw AST", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
         const pvs = PropertyValueSet.fromString(test.pvs);
         const f = fromStringOrException(test.f);
         assert.equal(Ast.evaluateAst(f, pvs, false), test.result);
+      });
+    });
+  });
+
+  describe("evaluate with compiled AST", () => {
+    IsValidData.tests.forEach(test => {
+      it(test.name, () => {
+        const pvs = PropertyValueSet.fromString(test.pvs);
+        const f = fromStringOrException(test.f);
+        const func = Ast.compileAst(f);
+        assert.equal(func(pvs), test.result);
       });
     });
   });
@@ -35,29 +46,6 @@ describe("PropertyFilterAst", () => {
   //     });
   //   });
   // });
-
-  describe("evaluate with compiled ast", () => {
-    // it("simple", () => {
-    //   // const pvs = PropertyValueSet.fromString("a=1");
-    //   // const f = fromStringOrException("a=1");
-    //   const pvs = PropertyValueSet.fromString("a=1;b=2;c=3;d=4;z=50");
-    //   const f = fromStringOrException(
-    //     "ccc=20&a=1,2,3~10&d=-50&(ccc=20|a=1,2)&d=5|z=50"
-    //   );
-
-    //   const func = Ast.compileAst(f);
-    //   assert.equal(func(pvs), true);
-    // });
-
-    IsValidData.tests.forEach(test => {
-      it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(test.pvs);
-        const f = fromStringOrException(test.f);
-        const func = Ast.compileAst(f);
-        assert.equal(func(pvs), test.result);
-      });
-    });
-  });
 });
 
 function fromStringOrException(filter: string): BooleanExpr {

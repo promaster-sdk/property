@@ -1,5 +1,11 @@
 export const tests = [
   {
+    name: "should_not_short_circuit_evaluation_when_using_comma",
+    pvs: "a=0;b=3",
+    f: "a=0,1&b=4",
+    result: false
+  },
+  {
     name: "equals_integer_true",
     pvs: "a=1",
     f: "a=1",
@@ -57,12 +63,6 @@ export const tests = [
     name: "should_not_match_null",
     pvs: "firstprop=2",
     f: "firstprop=null",
-    result: false
-  },
-  {
-    name: "should_not_short_circuit_evaluation_when_using_comma",
-    pvs: "a=0;b=3",
-    f: "a=0,1&b=4",
     result: false
   },
   {

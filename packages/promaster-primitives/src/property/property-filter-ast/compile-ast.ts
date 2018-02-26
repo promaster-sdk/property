@@ -18,14 +18,14 @@ export function compileAst(ast: Ast.BooleanExpr): CompiledFilterFunction {
   // * Amount values (103:Meter)
   // * Comparing name to name (a<b) (becuase then we don't know if they are Amount)
   // * Text values (becuase they require case-insensitive comparision)
-  if (isCompilable(ast)) {
+  if (isNotCompilable(ast)) {
     return (properties: PropertyValueSet.PropertyValueSet) =>
       evaluateAst(ast, properties, false);
   }
   return CompileToString.compileToString(ast);
 }
 
-function isCompilable(ast: Ast.BooleanExpr): boolean {
+function isNotCompilable(ast: Ast.BooleanExpr): boolean {
   let hasAmountOrText = false;
   let hasNameToNameComparision = false;
   visitAllExpr(ast, e => {
