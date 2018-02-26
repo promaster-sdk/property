@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-var-keyword
 export const tests = [
   {
     name: "empty_filter_is_valid",
