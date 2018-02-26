@@ -35,9 +35,9 @@
     "pdfkit": "^0.8.0"
   },
   "scripts": {
-    "verify": "yarn test && yarn build",
     "start":
       "webpack-dev-server --config example/webpack.config.js --content-base ./example",
+    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
