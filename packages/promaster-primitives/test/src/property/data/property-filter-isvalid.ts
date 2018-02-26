@@ -1,4 +1,3 @@
-// tslint:disable-next-line:no-var-keyword
 export const tests = [
   {
     name: "equals_integer_true",
