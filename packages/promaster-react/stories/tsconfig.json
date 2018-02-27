@@ -1,5 +1,5 @@
 {
-  "extends": "../base-tsconfig.json",
+  "extends": "../../../tsconfig-base.json",
   "compilerOptions": {
     // Output options
     "target": "es5",
@@ -20,18 +20,10 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@promaster/promaster-react": [
-        "../src"
-      ],
-      "@promaster/promaster-react/*": [
-        "../src/*"
-      ]
+      "@promaster/promaster-react": ["../src"],
+      "@promaster/promaster-react/*": ["../src/*"]
     }
   },
-  "include": [
-    "**/*"
-  ],
-  "exclude": [
-    "node_modules/**/"
-  ]
+  "include": ["**/*"],
+  "exclude": ["node_modules/**/"]
 }
