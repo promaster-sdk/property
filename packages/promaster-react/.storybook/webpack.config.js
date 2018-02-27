@@ -6,10 +6,14 @@
 // When you add this file, we won't add the default configurations which is similar
 // to "React Create App". This only has babel loader to load JavaScript.
 
-const atl = require('awesome-typescript-loader');
+const atl = require("awesome-typescript-loader");
 
 // load the default config generator.
-const genDefaultConfig = require('@storybook/react/dist/server/config/defaults/webpack.config.js');
+const genDefaultConfig = require("@storybook/react/dist/server/config/defaults/webpack.config.js");
+
+const path = require("path");
+
+const tsconfigPath = path.resolve(__dirname, "../stories/tsconfig.json");
 
 module.exports = (baseConfig, env) => {
   const config = genDefaultConfig(baseConfig, env);
@@ -21,21 +25,22 @@ module.exports = (baseConfig, env) => {
     test: /\.tsx?$/,
     loader: "ts-loader",
     options: {
-      configFileName: "./stories/tsconfig.json",
-      visualStudioErrorFormat: true,
+      configFile: tsconfigPath
     }
   });
   config.resolve.extensions.push(".ts", ".tsx");
+  // console.log(JSON.stringify(config));
   if (!config.resolve.plugins) {
     config.resolve.plugins = [];
   }
-  config.resolve.plugins.push(new atl.TsConfigPathsPlugin({ configFileName: "./stories/tsconfig.json" }));
+  config.resolve.plugins.push(
+    new atl.TsConfigPathsPlugin({ configFileName: tsconfigPath })
+  );
   // config.resolve.extensions.push = {
   //   extensions: [".ts", ".tsx"],
   //   plugins: [
   //     new atl.TsConfigPathsPlugin({ configFileName: "./src/client/tsconfig.json" })
   //   ]
   // };
-
   return config;
 };
