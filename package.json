@@ -48,7 +48,7 @@
     "build": "lerna exec -- yarn build",
     "clean": "lerna clean && rm -rf node_modules",
     "lint": "tslint -t msbuild './packages/*/{src,test}/**/*.ts{,x}'",
-    "test": "lerna exec -- yarn test"
+    "test": "lerna run test"
   },
   "lint-staged": {
     "*.{ts,tsx}": "tslint",

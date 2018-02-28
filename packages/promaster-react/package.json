@@ -32,7 +32,7 @@
   "scripts": {
     "start": "yarn run storybook",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
-    "test": "jest --config=test/jest.config.json",
+    "test": "jest --config=test/jest.config.json --colors",
     "circular": "madge --circular ./src/index.tsx",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
