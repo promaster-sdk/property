@@ -35,9 +35,10 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
         if (min === max) {
           singleOrCount++;
           mystr +=
-            e.operationType === "equals"
-              ? " || " + left + " === " + max
-              : " || " + left + " !== " + max;
+            " || " +
+            (e.operationType === "equals"
+              ? `${left} === ${max}`
+              : `${left} !== ${max}`);
         } else {
           mystr +=
             " || " +
