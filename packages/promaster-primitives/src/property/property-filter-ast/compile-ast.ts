@@ -16,12 +16,13 @@ export function compileAst(ast: Ast.BooleanExpr): CompiledFilterFunction {
   // The fastest is to compile to a JS expression string
   // and make a function from that but it does not support:
   // * Amount values (103:Meter)
-  // * Comparing name to name (a<b) (becuase then we don't know if they are Amount)
-  // * Text values (becuase they require case-insensitive comparision)
+  // * Comparing name to name (a<b) (because then we don't know if they are Amount)
+  // * Text values (because they require case-insensitive comparision)
   if (isNotCompilable(ast)) {
     return (properties: PropertyValueSet.PropertyValueSet) =>
       evaluateAst(ast, properties, false);
   }
+
   return CompileToString.compileToString(ast);
 }
 
@@ -51,6 +52,7 @@ function isNotCompilable(ast: Ast.BooleanExpr): boolean {
       hasNameToNameComparision = true;
     }
   });
+
   return hasAmountOrText || hasNameToNameComparision;
 }
 
