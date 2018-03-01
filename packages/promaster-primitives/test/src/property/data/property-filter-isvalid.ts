@@ -185,5 +185,12 @@ export const tests = [
     pvs: "a=0:CubicMeterPerSecond",
     f: "a=36:CubicMeterPerHour~163:CubicMeterPerHour",
     result: false
+  },
+  {
+    name:
+      "should not assert systemarrangement=1 as valid for systemarrangement!=1~2",
+    pvs: "systemarrangement=1",
+    f: "systemarrangement!=1~2",
+    result: false
   }
 ];
