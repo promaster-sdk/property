@@ -40,7 +40,10 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
               : " || " + left + " !== " + max;
         } else {
           mystr +=
-            " || (" + left + " >= " + min + " && " + left + " <= " + max + ")";
+            " || " +
+            (e.operationType === "equals"
+              ? `(${left} >= ${min} && ${left} <= ${max})`
+              : `(${left} < ${min} && ${left} > ${max})`);
         }
       }
       return mystr.length
