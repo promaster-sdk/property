@@ -192,5 +192,11 @@ export const tests = [
     pvs: "systemarrangement=1",
     f: "systemarrangement!=1~2",
     result: false
+  },
+  {
+    name: "supports not equal multiple",
+    pvs: "size=80",
+    f: "size!=80,100",
+    result: false
   }
 ];

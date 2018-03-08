@@ -34,17 +34,17 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
         const max = makeJsExprForPropertyValueExpr(range.max);
         if (min === max) {
           singleOrCount++;
-          mystr +=
-            " || " +
-            (e.operationType === "equals"
-              ? `${left} === ${max}`
-              : `${left} !== ${max}`);
+          if (e.operationType === "equals") {
+            mystr += ` || ${left} === ${max}`;
+          } else {
+            mystr += ` && ${left} !== ${max}`;
+          }
         } else {
-          mystr +=
-            " || " +
-            (e.operationType === "equals"
-              ? `(${left} >= ${min} && ${left} <= ${max})`
-              : `(${left} < ${min} && ${left} > ${max})`);
+          if (e.operationType === "equals") {
+            mystr += ` || (${left} >= ${min} && ${left} <= ${max})`;
+          } else {
+            mystr += ` && (${left} < ${min} || ${left} > ${max})`;
+          }
         }
       }
       return mystr.length
