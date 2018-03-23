@@ -1,26 +1,23 @@
 import * as AbstractImage from "../abstract-image/index";
 
-export function createSVG(image: AbstractImage.AbstractImage): string {
-  const style = createElement("style", {}, [
-    "* { vector-effect: non-scaling-stroke;}"
-  ]);
-
-  let svgElements = [style];
-
+export function createSVG(
+  image: AbstractImage.AbstractImage,
+  pixelWidth?: number,
+  pixelHeight?: number
+): string {
   const imageElements = image.components.map((c: AbstractImage.Component) =>
     abstractComponentToSVG(c)
   );
-  svgElements = svgElements.concat(imageElements);
 
   return createElement(
     "svg",
     {
       xmlns: "http://www.w3.org/2000/svg",
-      width: `${image.size.width}px`,
-      height: `${image.size.height}px`,
+      width: `${pixelWidth || image.size.width}px`,
+      height: `${pixelHeight || image.size.height}px`,
       viewBox: [0, 0, image.size.width, image.size.height].join(" ")
     },
-    svgElements
+    imageElements
   );
 }
 
