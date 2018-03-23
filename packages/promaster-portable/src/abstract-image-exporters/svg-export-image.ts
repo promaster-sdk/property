@@ -70,6 +70,8 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
       if (!component.text) {
         return "";
       }
+      const lineHeight = component.fontSize;
+
       const shadowStyle = {
         textAnchor: getTextAnchor(component.horizontalGrowthDirection),
         fontSize: component.fontSize.toString() + "px",
@@ -107,7 +109,13 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         createElement(
           "tspan",
           {
-            dy: (dy + lines.indexOf(t)).toString() + "em"
+            x: component.position.x.toString(),
+            y: (
+              component.position.y +
+              (lines.indexOf(t) + dy) * lineHeight
+            ).toString(),
+            height: lineHeight.toString() + "px",
+            transform: transform
           },
           [t]
         )
@@ -120,11 +128,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
           createElement(
             "text",
             {
-              x: component.position.x.toString(),
-              y: component.position.y.toString(),
-              dy: dy.toString() + "em",
-              style: objectToAttributeValue(shadowStyle),
-              transform: transform
+              style: objectToAttributeValue(shadowStyle)
             },
             tSpans
           )
@@ -134,11 +138,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         createElement(
           "text",
           {
-            x: component.position.x.toString(),
-            y: component.position.y.toString(),
-            dy: dy.toString() + "em",
-            style: objectToAttributeValue(style),
-            transform: transform
+            style: objectToAttributeValue(style)
           },
           tSpans
         )
