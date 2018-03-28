@@ -56,12 +56,12 @@ export async function getMarkerByName(
 export async function getProductsAndTablesByReleaseId(
   baseAddress: string,
   releaseId: string,
-  tablesToGet: ReadonlyArray<string> = []
+  tablesToGet: ReadonlyArray<string> = [],
+  numbers: boolean = false
 ): Promise<ReadonlyArray<RawProduct>> {
   const publicUrl = `${baseAddress}/public`;
-  const url =
-    `${publicUrl}/releases/${releaseId}` +
-    (tablesToGet.length > 0 ? `?tables=${tablesToGet.join(",")}` : "");
+  const queryParams = getQueryParams(tablesToGet, numbers);
+  const url = `${publicUrl}/releases/${releaseId}${queryParams}`;
   const result = await fetch(url);
   const json = await result.json();
   return json;
@@ -78,12 +78,12 @@ export async function getProductsAndTablesByReleaseId(
 export async function getProductsAndTablesByTransactionId(
   baseAddress: string,
   transactionId: string,
-  tablesToGet: ReadonlyArray<string> = []
+  tablesToGet: ReadonlyArray<string> = [],
+  numbers: boolean = false
 ): Promise<ReadonlyArray<RawProduct>> {
   const publicUrl = `${baseAddress}/public`;
-  const url =
-    `${publicUrl}/transactions/${transactionId}` +
-    (tablesToGet.length > 0 ? `?tables=${tablesToGet.join(",")}` : "");
+  const queryParams = getQueryParams(tablesToGet, numbers);
+  const url = `${publicUrl}/transactions/${transactionId}${queryParams}`;
   const result = await fetch(url);
   const json = await result.json();
   return json;
@@ -102,11 +102,11 @@ export async function getTablesByProductId(
   baseAddress: string,
   transactionId: string,
   productId: string,
-  tablesToGet: ReadonlyArray<string>
+  tablesToGet: ReadonlyArray<string>,
+  numbers: boolean = false
 ): Promise<RawProductData> {
-  const url = `${baseAddress}/public/transactions/${transactionId}/products/${productId}?tables=${tablesToGet.join(
-    ","
-  )}`;
+  const queryParams = getQueryParams(tablesToGet, numbers);
+  const url = `${baseAddress}/public/transactions/${transactionId}/products/${productId}${queryParams}`;
   const result = await fetch(url, { redirect: "follow" });
   const json = await result.json();
   return json;
@@ -126,4 +126,21 @@ export async function getTrees(
   const result = await fetch(url);
   const json = await result.json();
   return json;
+}
+
+function getQueryParams(
+  tablesToGet: ReadonlyArray<string>,
+  numbers: boolean
+): string {
+  const params: Array<string> = [];
+  if (tablesToGet.length > 0) {
+    params.push(`tables=${tablesToGet.join(",")}`);
+  }
+  if (numbers) {
+    params.push(`numbers=true`);
+  }
+  if (params.length > 0) {
+    return "?" + params.join("&");
+  }
+  return "";
 }

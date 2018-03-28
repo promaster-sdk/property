@@ -8,6 +8,7 @@ import {
 } from "@promaster/promaster-primitives";
 import { exhaustiveCheck } from "../exhaustive-check/index";
 import * as Types from "./types";
+import { isNumber } from "util";
 
 //tslint:disable:no-any
 
@@ -89,7 +90,7 @@ function mapValue(
       case "string":
         return rawValue || "";
       case "number":
-        return convertFloat(rawValue);
+        return isNumber(rawValue) ? rawValue : parseFloat(rawValue || "");
       case "PropertyFilter":
         return convertFilter(rawValue);
       case "PropertyValueSet":
@@ -107,7 +108,9 @@ function mapValue(
   } else {
     switch (mapping.type) {
       case "Amount":
-        const amountValue = parseFloat(rawValue as string) || 0;
+        const amountValue = isNumber(rawValue)
+          ? rawValue
+          : parseFloat(rawValue as string) || 0;
         return Amount.create(amountValue, mapping.unit);
       default:
         //exhaustiveCheck(mapping);
@@ -180,7 +183,7 @@ function convertProductPropertyDefValue(
     return undefined;
   }
   return {
-    sort_no: convertInt(defValue.sort_no, 0),
+    sort_no: parseInt(defValue.sort_no, 10),
     value: value,
     property_filter: convertFilter(defValue.property_filter)
   };
@@ -195,7 +198,7 @@ function convertProductPropertyValue(
   }
   const image = propertyValue.image ? propertyValue.image : undefined;
   return {
-    sort_no: convertInt(propertyValue.sort_no, 0),
+    sort_no: parseInt(propertyValue.sort_no, 10),
     value: value,
     property_filter: convertFilter(propertyValue.property_filter),
     description: propertyValue.description,
@@ -283,22 +286,6 @@ function convertPropertyValue(
   value: string | undefined
 ): PropertyValue.PropertyValue | undefined {
   return PropertyValue.fromString(value || "");
-}
-
-function convertInt(value: string | undefined, defaultValue: number): number {
-  const int = parseInt(value || "", 10);
-  if (isNaN(int)) {
-    return defaultValue;
-  }
-  return int;
-}
-
-function convertFloat(value: string | undefined): number | undefined {
-  const float = parseFloat(value || "");
-  if (isNaN(float)) {
-    return undefined;
-  }
-  return float;
 }
 
 // function convertAmount<T extends Quantity.Quantity>(value: string | undefined, unit: Unit.Unit<T>): Amount.Amount<T> | undefined {
