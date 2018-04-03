@@ -42,6 +42,11 @@ addQuantity(
 );
 addQuantity("Angle", Units.Degrees, Units.Degrees);
 addQuantity("Area", Units.SquareMeter, Units.SquareInch);
+addQuantity(
+  "DeltaDewPointTemperature",
+  Units.DeltaCelsiusDewPoint,
+  Units.DeltaFahrenheitDewPoint
+);
 addQuantity("DeltaTemperature", Units.DeltaCelsius, Units.DeltaFahrenheit);
 addQuantity(
   "Density",
