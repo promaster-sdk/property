@@ -79,6 +79,7 @@ export type PropertySelectorType =
  */
 export interface Property {
   readonly selector_type?: PropertySelectorType;
+  readonly field_name?: string;
   readonly sort_no: number;
   readonly name: string;
   readonly group: string;

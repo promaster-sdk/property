@@ -18,49 +18,60 @@ import {
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
-  PropertyValueItem,
+  PropertyValueItem
 } from "./types";
 
 // tslint:disable-next-line:variable-name
-const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector({});
+const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector(
+  {}
+);
 // tslint:disable-next-line:variable-name
-const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector({});
+const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector(
+  {}
+);
 // tslint:disable-next-line:variable-name
-const CheckboxPropertySelectorDefault = PropertySelectors.createCheckboxPropertySelector({});
+const CheckboxPropertySelectorDefault = PropertySelectors.createCheckboxPropertySelector(
+  {}
+);
 // tslint:disable-next-line:variable-name
-const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector({});
+const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector(
+  {}
+);
 // tslint:disable-next-line:variable-name
-const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector({});
+const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector(
+  {}
+);
 
 export interface PropertySelectorProps {
-  readonly selectorType: PropertySelectorType,
-  readonly propertyName: string,
-  readonly quantity: Quantity.Quantity,
-  readonly validationFilter: PropertyFilter.PropertyFilter,
-  readonly valueItems: ReadonlyArray<PropertyValueItem>,
-  readonly selectedProperties: PropertyValueSet.PropertyValueSet,
-  readonly includeCodes: boolean,
-  readonly optionalProperties: ReadonlyArray<string>,
-  readonly onChange: PropertySelectionOnChange,
-  readonly onPropertyFormatChanged: OnPropertyFormatChanged,
-  readonly onPropertyFormatCleared: OnPropertyFormatCleared,
-  readonly onPropertyFormatSelectorToggled: OnPropertyFormatSelectorToggled,
-  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-  readonly propertyFormat: AmountFormat,
-  readonly readOnly: boolean,
-  readonly locked: boolean,
-  readonly translatePropertyValue: TranslatePropertyValue,
-  readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage,
-  readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  readonly inputDebounceTime: number,
+  readonly selectorType: PropertySelectorType;
+  readonly fieldName: string;
+  readonly propertyName: string;
+  readonly quantity: Quantity.Quantity;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly valueItems: ReadonlyArray<PropertyValueItem>;
+  readonly selectedProperties: PropertyValueSet.PropertyValueSet;
+  readonly includeCodes: boolean;
+  readonly optionalProperties: ReadonlyArray<string>;
+  readonly onChange: PropertySelectionOnChange;
+  readonly onPropertyFormatChanged: OnPropertyFormatChanged;
+  readonly onPropertyFormatCleared: OnPropertyFormatCleared;
+  readonly onPropertyFormatSelectorToggled: OnPropertyFormatSelectorToggled;
+  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
+  readonly propertyFormat: AmountFormat;
+  readonly readOnly: boolean;
+  readonly locked: boolean;
+  readonly translatePropertyValue: TranslatePropertyValue;
+  readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage;
+  readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage;
+  readonly inputDebounceTime: number;
 }
 
 export interface CreatePropertySelectorProps {
-  readonly AmountPropertySelector?: PropertySelectors.AmountPropertySelector,
-  readonly ComboboxPropertySelector?: PropertySelectors.ComboboxPropertySelector,
-  readonly TextboxPropertySelector?: PropertySelectors.TextboxPropertySelector,
-  readonly RadioGroupPropertySelector?: PropertySelectors.RadioGroupPropertySelector,
-  readonly CheckboxPropertySelector?: PropertySelectors.CheckboxPropertySelector
+  readonly AmountPropertySelector?: PropertySelectors.AmountPropertySelector;
+  readonly ComboboxPropertySelector?: PropertySelectors.ComboboxPropertySelector;
+  readonly TextboxPropertySelector?: PropertySelectors.TextboxPropertySelector;
+  readonly RadioGroupPropertySelector?: PropertySelectors.RadioGroupPropertySelector;
+  readonly CheckboxPropertySelector?: PropertySelectors.CheckboxPropertySelector;
 }
 
 export type PropertySelector = React.StatelessComponent<PropertySelectorProps>;
@@ -71,9 +82,10 @@ export function createPropertySelector({
   TextboxPropertySelector = TextboxPropertySelectorDefault,
   RadioGroupPropertySelector = RadioGroupPropertySelectorDefault,
   CheckboxPropertySelector = CheckboxPropertySelectorDefault
- }: CreatePropertySelectorProps): PropertySelector {
+}: CreatePropertySelectorProps): PropertySelector {
   return function PropertySelector({
     selectorType,
+    fieldName,
     propertyName,
     quantity,
     validationFilter,
@@ -92,19 +104,18 @@ export function createPropertySelector({
     translatePropertyValue,
     translateValueMustBeNumericMessage,
     translateValueIsRequiredMessage,
-    inputDebounceTime,
+    inputDebounceTime
   }: PropertySelectorProps): JSX.Element {
-
     function onValueChange(newValue: PropertyValue.PropertyValue): void {
-      onChange(newValue
-        ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-        : PropertyValueSet.removeProperty(propertyName, selectedProperties)
+      onChange(
+        newValue
+          ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
+          : PropertyValueSet.removeProperty(propertyName, selectedProperties)
       );
     }
 
     switch (getPropertyType(quantity)) {
       case "text":
-
         return (
           <TextboxPropertySelector
             propertyName={propertyName}
@@ -121,36 +132,48 @@ export function createPropertySelector({
             <RadioGroupPropertySelector
               propertyName={propertyName}
               propertyValueSet={selectedProperties}
-              valueItems={valueItems && valueItems.map((vi) => ({
-                value: vi.value,
-                text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
-                sortNo: vi.sort_no,
-                validationFilter: vi.property_filter,
-                image: vi.image,
-              }))}
+              valueItems={
+                valueItems &&
+                valueItems.map(vi => ({
+                  value: vi.value,
+                  text: translatePropertyValue(propertyName, (vi.value
+                    ? PropertyValue.getInteger(vi.value)
+                    : undefined) as number),
+                  sortNo: vi.sort_no,
+                  validationFilter: vi.property_filter,
+                  image: vi.image
+                }))
+              }
               showCodes={includeCodes}
               filterPrettyPrint={filterPrettyPrint}
               onValueChange={onValueChange}
               readOnly={readOnly}
-              locked={locked} />
+              locked={locked}
+            />
           );
         } else if (selectorType === "Checkbox") {
           return (
             <CheckboxPropertySelector
               propertyName={propertyName}
               propertyValueSet={selectedProperties}
-              valueItems={valueItems && valueItems.map((vi) => ({
-                value: vi.value,
-                text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
-                sortNo: vi.sort_no,
-                validationFilter: vi.property_filter,
-                image: vi.image,
-              }))}
+              valueItems={
+                valueItems &&
+                valueItems.map(vi => ({
+                  value: vi.value,
+                  text: translatePropertyValue(propertyName, (vi.value
+                    ? PropertyValue.getInteger(vi.value)
+                    : undefined) as number),
+                  sortNo: vi.sort_no,
+                  validationFilter: vi.property_filter,
+                  image: vi.image
+                }))
+              }
               showCodes={includeCodes}
               filterPrettyPrint={filterPrettyPrint}
               onValueChange={onValueChange}
               readOnly={readOnly}
-              locked={locked} />
+              locked={locked}
+            />
           );
         } else {
           return (
@@ -158,18 +181,24 @@ export function createPropertySelector({
               sortValidFirst={true}
               propertyName={propertyName}
               propertyValueSet={selectedProperties}
-              valueItems={valueItems && valueItems.map((vi) => ({
-                value: vi.value,
-                text: translatePropertyValue(propertyName, (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number),
-                sortNo: vi.sort_no,
-                validationFilter: vi.property_filter,
-                image: vi.image,
-              }))}
+              valueItems={
+                valueItems &&
+                valueItems.map(vi => ({
+                  value: vi.value,
+                  text: translatePropertyValue(propertyName, (vi.value
+                    ? PropertyValue.getInteger(vi.value)
+                    : undefined) as number),
+                  sortNo: vi.sort_no,
+                  validationFilter: vi.property_filter,
+                  image: vi.image
+                }))
+              }
               showCodes={includeCodes}
               filterPrettyPrint={filterPrettyPrint}
               onValueChange={onValueChange}
               readOnly={readOnly}
-              locked={locked} />
+              locked={locked}
+            />
           );
         }
 
@@ -180,15 +209,24 @@ export function createPropertySelector({
             propertyValueSet={selectedProperties}
             inputUnit={propertyFormat.unit}
             inputDecimalCount={propertyFormat.decimalCount}
-            onFormatChanged={(unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => onPropertyFormatChanged(propertyName, unit, decimalCount)}
+            onFormatChanged={(
+              unit: Unit.Unit<Quantity.Quantity>,
+              decimalCount: number
+            ) => onPropertyFormatChanged(propertyName, unit, decimalCount)}
             onFormatCleared={() => onPropertyFormatCleared(propertyName)}
-            onFormatSelectorToggled={(active: boolean) => onPropertyFormatSelectorToggled(propertyName, active)}
+            onFormatSelectorToggled={(active: boolean) =>
+              onPropertyFormatSelectorToggled(propertyName, active)
+            }
             onValueChange={onValueChange}
             notNumericMessage={translateValueMustBeNumericMessage()}
-
+            fieldName={fieldName}
             // If it is optional then use blank required message
-            isRequiredMessage={optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : translateValueIsRequiredMessage()}
-
+            isRequiredMessage={
+              optionalProperties &&
+              optionalProperties.indexOf(propertyName) !== -1
+                ? ""
+                : translateValueIsRequiredMessage()
+            }
             validationFilter={validationFilter}
             filterPrettyPrint={filterPrettyPrint}
             readOnly={readOnly}
@@ -199,8 +237,9 @@ export function createPropertySelector({
   };
 }
 
-function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyType {
-
+function getPropertyType(
+  quantity: Quantity.Quantity
+): PropertyValue.PropertyType {
   switch (quantity) {
     case "Text":
       return "text";
@@ -209,5 +248,4 @@ function getPropertyType(quantity: Quantity.Quantity): PropertyValue.PropertyTyp
     default:
       return "amount";
   }
-
 }

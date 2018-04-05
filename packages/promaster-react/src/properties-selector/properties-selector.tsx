@@ -297,6 +297,7 @@ function createPropertySelectorRenderInfos(
 
       const propertySelectorComponentProps: PropertySelectorProps = {
         selectorType: selectorType,
+        fieldName: property.field_name || property.name,
         propertyName: property.name,
         quantity: property.quantity,
         validationFilter: property.validation_filter,
