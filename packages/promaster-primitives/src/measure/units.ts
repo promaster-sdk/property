@@ -650,6 +650,20 @@ export const DeltaFahrenheit: Unit.Unit<q.DeltaTemperature> = _register(
   "°F"
 );
 
+// Delta temperature
+export const DeltaCelsiusDewPoint: Unit.Unit<
+  q.DeltaDewPointTemperature
+> = _register(
+  Unit.createBase<q.DeltaDewPointTemperature>(
+    "DeltaDewPointTemperature",
+    "dp°C"
+  ),
+  "dp°C"
+);
+export const DeltaFahrenheitDewPoint: Unit.Unit<
+  q.DeltaDewPointTemperature
+> = _register(Unit.timesNumber(5.0 / 9.0, DeltaCelsiusDewPoint), "dp°F");
+
 // Duration / Time
 export const Minute: Unit.Unit<q.Duration> = _register(
   Unit.timesNumber(60.0, Second),
@@ -1512,6 +1526,16 @@ function _ensureMetaAdded(): void {
   _addMeta("Temperature", "Fahrenheit", Fahrenheit);
   _addMeta("DeltaTemperature", "DeltaCelsius", DeltaCelsius);
   _addMeta("DeltaTemperature", "DeltaFahrenheit", DeltaFahrenheit);
+  _addMeta(
+    "DeltaDewPointTemperature",
+    "DeltaCelsiusDewPoint",
+    DeltaCelsiusDewPoint
+  );
+  _addMeta(
+    "DeltaDewPointTemperature",
+    "DeltaFahrenheitDewPoint",
+    DeltaFahrenheitDewPoint
+  );
   _addMeta("Duration", "Minute", Minute);
   _addMeta("Duration", "Hour", Hour);
   _addMeta("Duration", "Day", Day);

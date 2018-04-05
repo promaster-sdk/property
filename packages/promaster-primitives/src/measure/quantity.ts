@@ -5,6 +5,7 @@ export type Angle = "Angle";
 export type Area = "Area";
 export type CatalyticActivity = "CatalyticActivity";
 export type DataAmount = "DataAmount";
+export type DeltaDewPointTemperature = "DeltaDewPointTemperature";
 export type DeltaTemperature = "DeltaTemperature";
 export type Density = "Density";
 export type DewPointTemperature = "DewPointTemperature";
@@ -76,6 +77,7 @@ export type Quantity =
   | Area
   | CatalyticActivity
   | DataAmount
+  | DeltaDewPointTemperature
   | DeltaTemperature
   | Density
   | DewPointTemperature
