@@ -45,7 +45,7 @@
     "verify":
       "lerna run lint && lerna run build && lerna run circular && lerna run test && lerna run coverage",
     "updated": "lerna updated",
-    "build": "lerna exec -- yarn build",
+    "build": "lerna run build",
     "clean": "lerna clean && rm -rf node_modules",
     "lint": "tslint -t msbuild './packages/*/{src,test}/**/*.ts{,x}'",
     "test": "lerna run test"

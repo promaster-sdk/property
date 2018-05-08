@@ -1,6 +1,0 @@
-# External module "measure/unit-info"
-## Index### Interfaces* [UnitInfo](../interfaces/_measure_unit_info_.unitinfo.html)### Type aliases* [MeasureSystem](_measure_unit_info_.html#measuresystem)### Variables* [getUnitInfo](_measure_unit_info_.html#getunitinfo)* [units](_measure_unit_info_.html#units)### Functions* [addUnit](_measure_unit_info_.html#addunit)## Type aliases### MeasureSystem: "SI" | "IP"
-* Defined in measure/unit-info.ts:4## Variables### getUnitInfo: (Anonymous function)
-* Defined in measure/unit-info.ts:15### units: [key: string]: [UnitInfo](../interfaces/_measure_unit_info_.unitinfo.html)
-* Defined in measure/unit-info.ts:12## Functions### addUnit(unit: [Unit](../interfaces/_measure_unit_.unit.html)<any>, measureSystem: [MeasureSystem](_measure_unit_info_.html#measuresystem), decimalCount: number, coUnit?: [Unit](../interfaces/_measure_unit_.unit.html)<any>): void  * Defined in measure/unit-info.ts:165#### Parameters| Name | Type | Description || ---- | ---- | ---- || unit | [Unit](../interfaces/_measure_unit_.unit.html)<any>|  || measureSystem | [MeasureSystem](_measure_unit_info_.html#measuresystem)|  || decimalCount | number|  || coUnit? | [Unit](../interfaces/_measure_unit_.unit.html)<any>|  |#### Returns: void
-			Generated using [TypeDoc](http://typedoc.io)

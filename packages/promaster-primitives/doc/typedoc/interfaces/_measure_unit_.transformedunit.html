@@ -1,7 +1,0 @@
-# Interface TransformedUnit<T>
-This record represents the units derived from other units usingUnitConverter converters.Examples of transformed units:CELSIUS = KELVIN.add(273.15);FOOT = METER.multiply(0.3048);MILLISECOND = MILLI(SECOND);Transformed units have no label. But like any other units,they may have labels attached to them:UnitFormat.getStandardInstance().label(FOOT, "ft");or aliases:UnitFormat.getStandardInstance().alias(CENTI(METER)), "centimeter");UnitFormat.getStandardInstance().alias(CENTI(METER)), "centimetre");### Type parameters* #### T [Quantity](../modules/_measure_quantity_.html#quantity)
-## Index### Properties* [parentUnit](_measure_unit_.transformedunit.html#parentunit)* [toParentUnitConverter](_measure_unit_.transformedunit.html#toparentunitconverter)* [type](_measure_unit_.transformedunit.html#type)## Properties### parentUnit: [Unit](_measure_unit_.unit.html)<T>
-	Holds the parent unit (not a transformed unit).* Defined in measure/unit.ts:76### toParentUnitConverter: [UnitConverter](../modules/_measure_unit_.html#unitconverter)
-	Holds the converter to the parent unit.* Defined in measure/unit.ts:78### type: "transformed"
-	* Defined in measure/unit.ts:74
-	Generated using [TypeDoc](http://typedoc.io)

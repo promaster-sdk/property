@@ -1,6 +1,0 @@
-# Interface Unit<T>
-This record represents a determinate quantity (as of length, time, heat, or value)adopted as a standard of measurement.It is helpful to think of instances of this record as recording the history by whichthey are created. Thus, for example, the string "g/kg" (which is a dimensionless unit)would result from invoking the method toString() on a unit that was created bydividing a gram unit by a kilogram unit. Yet, "kg" divided by "kg" returns ONE andnot "kg/kg" due to automatic unit factorization.This record supports the multiplication of offsets units. The result is usually a unitnot convertible to its standard unit. Such units may appear in derivative quantities.For example °C/m is an unit of gradient, which is common in atmospheric and oceanographic research.Units raised at rational powers are also supported. For example the cubic root of literis a unit compatible with meter.### Type parameters* #### T [Quantity](../modules/_measure_quantity_.html#quantity)
-## Index### Properties* [innerUnit](_measure_unit_.unit.html#innerunit)* [quantity](_measure_unit_.unit.html#quantity)## Properties### innerUnit: [InnerUnit](../modules/_measure_unit_.html#innerunit)
-* Defined in measure/unit.ts:22### quantity: [Quantity](../modules/_measure_quantity_.html#quantity)
-* Defined in measure/unit.ts:21
-Generated using [TypeDoc](http://typedoc.io)
