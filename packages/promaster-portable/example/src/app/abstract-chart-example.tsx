@@ -1,6 +1,6 @@
 import * as React from "react";
 import { AbstractChart, AbstractImage } from "../../../src/index";
-import * as PromasterReact from "@promaster/promaster-react";
+import * as PromasterReact from "../../../../promaster-react/src/index";
 
 function getRange(
   series: AbstractChart.ChartLine[],
