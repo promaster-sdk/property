@@ -2,6 +2,7 @@ import * as React from "react";
 import { merge } from "./utils";
 import { AbstractImageExample } from "./abstract-image-example";
 import { AbstractImageExampleDxf } from "./abstract-image-example-dxf";
+import { AbstractChartExample } from "./abstract-chart-example";
 // import { AbstractDocumentExample } from "./abstract-document-example";
 
 // tslint:disable
@@ -23,6 +24,10 @@ export class Container extends React.Component<{}, State> {
     this.state = {
       selectedExample: 0,
       examples: [
+        {
+          name: "AbstractChart",
+          component: AbstractChartExample
+        },
         {
           name: "AbstractImage",
           component: AbstractImageExample

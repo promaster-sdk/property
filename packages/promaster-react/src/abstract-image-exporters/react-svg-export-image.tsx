@@ -76,7 +76,7 @@ function _visit(
         component.clockwiseRotationDegrees.toString() +
         " " +
         component.position.x.toString() +
-        "," +
+        " " +
         component.position.y.toString() +
         ")";
 
@@ -88,7 +88,6 @@ function _visit(
           x={component.position.x}
           y={component.position.y + (lines.indexOf(t) + dy) * lineHeight}
           height={lineHeight.toString() + "px"}
-          transform={transform}
         >
           {t}
         </tspan>
@@ -96,13 +95,13 @@ function _visit(
       let cs: Array<React.ReactElement<{}>> = [];
       if (component.strokeThickness > 0 && component.strokeColor) {
         cs.push(
-          <text key={key + "shadow"} style={shadowStyle}>
+          <text key={key + "shadow"} style={shadowStyle} transform={transform}>
             {tSpans}
           </text>
         );
       }
       cs.push(
-        <text key={key} style={style}>
+        <text key={key} style={style} transform={transform}>
           {tSpans}
         </text>
       );

@@ -95,7 +95,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         component.clockwiseRotationDegrees.toString() +
         " " +
         component.position.x.toString() +
-        "," +
+        " " +
         component.position.y.toString() +
         ")";
 
@@ -111,8 +111,7 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
               component.position.y +
               (lines.indexOf(t) + dy) * lineHeight
             ).toString(),
-            height: lineHeight.toString() + "px",
-            transform: transform
+            height: lineHeight.toString() + "px"
           },
           [t]
         )
@@ -125,7 +124,8 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
           createElement(
             "text",
             {
-              style: objectToAttributeValue(shadowStyle)
+              style: objectToAttributeValue(shadowStyle),
+              transform: transform
             },
             tSpans
           )
@@ -135,7 +135,8 @@ function abstractComponentToSVG(component: AbstractImage.Component): string {
         createElement(
           "text",
           {
-            style: objectToAttributeValue(style)
+            style: objectToAttributeValue(style),
+            transform: transform
           },
           tSpans
         )
