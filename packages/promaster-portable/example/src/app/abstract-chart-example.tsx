@@ -60,7 +60,7 @@ export function AbstractChartExample(): JSX.Element {
     chartLines: series,
     xAxisBottom: AbstractChart.createLinearAxis(xMin, xMax, "Days with cold"),
     yAxisLeft: AbstractChart.createLinearAxis(yMin, yMax + 1, "Badness"),
-    labelLayout: "end"
+    labelLayout: "center"
   });
 
   const image = AbstractChart.renderChart(chart);

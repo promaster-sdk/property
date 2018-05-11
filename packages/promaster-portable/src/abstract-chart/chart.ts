@@ -6,7 +6,7 @@ import { exhaustiveCheck } from "ts-exhaustive-check";
 
 export type Partial<T> = { [P in keyof T]?: T[P] };
 
-export type LabelLayout = "original" | "end";
+export type LabelLayout = "original" | "end" | "center";
 
 export interface Chart {
   readonly width: number;
@@ -307,6 +307,17 @@ export function generateXAxisBottom(
       );
       break;
 
+    case "center":
+      xLabel = generateXAxisLabel(
+        (xMin + xMax) / 2,
+        yMin + 25,
+        "uniform",
+        "down",
+        xAxisBottom.label,
+        chart
+      );
+      break;
+
     default:
       return exhaustiveCheck(chart.labelLayout);
   }
@@ -363,6 +374,17 @@ export function generateXAxisTop(
         xMax,
         yMax - 30,
         "left",
+        "up",
+        xAxisTop.label,
+        chart
+      );
+      break;
+
+    case "center":
+      xLabel2 = generateXAxisLabel(
+        (xMin + xMax) / 2,
+        yMax - 30,
+        "uniform",
         "up",
         xAxisTop.label,
         chart
@@ -432,6 +454,17 @@ export function generateYAxisLeft(
       );
       break;
 
+    case "center":
+      yLabel = generateYAxisLabel(
+        xMin - 25,
+        (yMin + yMax) / 2,
+        "uniform",
+        "up",
+        yAxisLeft.label,
+        chart
+      );
+      break;
+
     default:
       return exhaustiveCheck(chart.labelLayout);
   }
@@ -488,6 +521,17 @@ export function generateYAxisRight(
         xMax + 30,
         yMax,
         "left",
+        "up",
+        yAxisRight.label,
+        chart
+      );
+      break;
+
+    case "center":
+      yLabel2 = generateYAxisLabel(
+        xMax + 35,
+        (yMin + yMax) / 2,
+        "uniform",
         "up",
         yAxisRight.label,
         chart
