@@ -279,6 +279,7 @@ export function generateXAxisBottom(
   const xLabel = generateXAxisLabel(
     xMax + 0.5 * padding,
     yMin + 10,
+    "uniform",
     "down",
     xAxisBottom.label,
     chart
@@ -319,6 +320,7 @@ export function generateXAxisTop(
   const xLabel2 = generateXAxisLabel(
     xMax + 0.5 * padding,
     yMax - 13,
+    "uniform",
     "up",
     xAxisTop.label,
     chart
@@ -360,6 +362,8 @@ export function generateYAxisLeft(
   const yLabel = generateYAxisLabel(
     xMin - 0.5 * padding,
     yMax + 0.5 * padding,
+    "uniform",
+    "up",
     yAxisLeft.label,
     chart
   );
@@ -399,6 +403,8 @@ export function generateYAxisRight(
   const yLabel2 = generateYAxisLabel(
     xMax + 35,
     yMax + 0.5 * padding,
+    "uniform",
+    "up",
     yAxisRight.label,
     chart
   );
@@ -599,6 +605,7 @@ export function generateXAxisLabels(
 export function generateXAxisLabel(
   x: number,
   y: number,
+  horizontalGrowthDirection: AbstractImage.GrowthDirection,
   verticalGrowthDirection: AbstractImage.GrowthDirection,
   label: string,
   chart: Chart
@@ -613,7 +620,7 @@ export function generateXAxisLabel(
     "normal",
     0,
     "center",
-    "uniform",
+    horizontalGrowthDirection,
     verticalGrowthDirection,
     0,
     AbstractImage.black
@@ -678,6 +685,8 @@ export function generateYAxisLabels(
 export function generateYAxisLabel(
   x: number,
   y: number,
+  horizontalGrowthDirection: AbstractImage.GrowthDirection,
+  verticalGrowthDirection: AbstractImage.GrowthDirection,
   label: string,
   chart: Chart
 ): AbstractImage.Component {
@@ -691,8 +700,8 @@ export function generateYAxisLabel(
     "normal",
     -90,
     "center",
-    "uniform",
-    "up",
+    horizontalGrowthDirection,
+    verticalGrowthDirection,
     0,
     AbstractImage.black
   );
