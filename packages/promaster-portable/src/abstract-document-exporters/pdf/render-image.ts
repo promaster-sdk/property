@@ -31,7 +31,7 @@ function abstractComponentToPdf(
     case "group":
       component.children.forEach(c => abstractComponentToPdf(pdf, c));
       break;
-    case "bitmapimage":
+    case "binaryimage":
       const format = component.format.toLowerCase();
       const imageWidth = component.bottomRight.x - component.topLeft.x;
       const imageHeight = component.bottomRight.y - component.topLeft.y;
@@ -49,7 +49,7 @@ function abstractComponentToPdf(
         });
       }
       break;
-    case "vectorimage":
+    case "subimage":
       break;
     case "line":
       pdf

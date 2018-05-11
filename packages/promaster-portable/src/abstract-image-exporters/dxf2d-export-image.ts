@@ -60,7 +60,7 @@ function _visit(
     }
   }
 
-  if (c_in.type === "bitmapimage") {
+  if (c_in.type === "binaryimage") {
     //let c:BitmapImageComponent = c_in;
     //let importer = imageImporterFactory(c.format);
     //if (importer == null)
@@ -71,7 +71,7 @@ function _visit(
     return;
   }
 
-  if (c_in.type === "vectorimage") {
+  if (c_in.type === "subimage") {
     throw "TODO!";
   }
 

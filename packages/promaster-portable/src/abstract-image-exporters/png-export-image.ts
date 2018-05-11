@@ -6,7 +6,7 @@ export function createPNG(image: AbstractImage.AbstractImage): Uint8Array {
   }
   const component = image.components[0];
   if (
-    component.type === "bitmapimage" &&
+    component.type === "binaryimage" &&
     component.format.toLowerCase() === "png"
   ) {
     return component.data;

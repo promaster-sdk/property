@@ -1,15 +1,16 @@
 import * as Point from "./point";
 import * as Color from "./color";
+import * as AbstractImage from "./abstract-image";
 
 export type Component =
-  | BitmapImage
+  | BinaryImage
   | Ellipse
   | Line
   | PolyLine
   | Polygon
   | Rectangle
   | Text
-  | VectorImage
+  | SubImage
   | Group;
 
 export interface Group {
@@ -26,22 +27,25 @@ export function createGroup(name: string, children: Array<Component>): Group {
   };
 }
 
-export interface BitmapImage {
-  readonly type: "bitmapimage";
+/**
+ * Embed a foreign binary image in any suported format.
+ */
+export interface BinaryImage {
+  readonly type: "binaryimage";
   readonly topLeft: Point.Point;
   readonly bottomRight: Point.Point;
   readonly format: string;
   readonly data: Uint8Array;
 }
 
-export function createBitmapImage(
+export function createBinaryImage(
   topLeft: Point.Point,
   bottomRight: Point.Point,
   format: string,
   data: Uint8Array
-): BitmapImage {
+): BinaryImage {
   return {
-    type: "bitmapimage",
+    type: "binaryimage",
     topLeft: topLeft,
     bottomRight: bottomRight,
     format: format,
@@ -229,19 +233,27 @@ export function createText(
   };
 }
 
-export interface VectorImage {
-  readonly type: "vectorimage";
+export interface SubImage {
+  readonly type: "subimage";
   readonly topLeft: Point.Point;
   readonly image: Component;
 }
 
-export function createVectorImage(
+export function createSubImage(
   topLeft: Point.Point,
   image: Component
-): VectorImage {
+): SubImage {
   return {
-    type: "vectorimage",
+    type: "subimage",
     topLeft: topLeft,
     image: image
   };
+}
+
+export function embedAbstractImage(
+  topLeft: Point.Point,
+  name: string,
+  image: AbstractImage.AbstractImage
+): Component {
+  return createSubImage(topLeft, createGroup(name, image.components));
 }

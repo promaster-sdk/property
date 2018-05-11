@@ -34,7 +34,7 @@ function _visit(
           )}
         </g>
       ];
-    case "bitmapimage":
+    case "binaryimage":
       return [];
     case "line":
       return [
