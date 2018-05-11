@@ -1,9 +1,12 @@
 import * as AbstractImage from "../abstract-image";
 import * as Axis from "./axis";
+import { exhaustiveCheck } from "ts-exhaustive-check";
 
 // tslint:disable:max-file-line-count
 
 export type Partial<T> = { [P in keyof T]?: T[P] };
+
+export type LabelLayout = "original" | "end";
 
 export interface Chart {
   readonly width: number;
@@ -18,6 +21,7 @@ export interface Chart {
   readonly gridColor: AbstractImage.Color;
   readonly gridThickness: number;
   readonly fontSize: number;
+  readonly labelLayout: LabelLayout;
 }
 
 export type ChartProps = Partial<Chart>;
@@ -35,7 +39,8 @@ export function createChart(props: ChartProps): Chart {
     backgroundColor = AbstractImage.white,
     gridColor = AbstractImage.gray,
     gridThickness = 1,
-    fontSize = 12
+    fontSize = 12,
+    labelLayout = "original"
   } =
     props || {};
   return {
@@ -50,7 +55,8 @@ export function createChart(props: ChartProps): Chart {
     backgroundColor,
     gridColor,
     gridThickness,
-    fontSize
+    fontSize,
+    labelLayout
   };
 }
 
@@ -124,7 +130,7 @@ export function createChartLine(props: ChartLineProps): ChartLine {
   };
 }
 
-const padding = 70;
+const padding = 80;
 
 export function inverseTransformPoint(
   point: AbstractImage.Point,
@@ -276,14 +282,35 @@ export function generateXAxisBottom(
     xAxisBottom,
     chart
   );
-  const xLabel = generateXAxisLabel(
-    xMax + 0.5 * padding,
-    yMin + 10,
-    "uniform",
-    "down",
-    xAxisBottom.label,
-    chart
-  );
+
+  let xLabel: AbstractImage.Component;
+  switch (chart.labelLayout) {
+    case "original":
+      xLabel = generateXAxisLabel(
+        xMax + 0.5 * padding,
+        yMin + 10,
+        "uniform",
+        "down",
+        xAxisBottom.label,
+        chart
+      );
+      break;
+
+    case "end":
+      xLabel = generateXAxisLabel(
+        xMax,
+        yMin + 25,
+        "left",
+        "down",
+        xAxisBottom.label,
+        chart
+      );
+      break;
+
+    default:
+      return exhaustiveCheck(chart.labelLayout);
+  }
+
   return AbstractImage.createGroup("XAxisBottom", [xLines, xLabels, xLabel]);
 }
 
@@ -317,14 +344,35 @@ export function generateXAxisTop(
     xAxisTop,
     chart
   );
-  const xLabel2 = generateXAxisLabel(
-    xMax + 0.5 * padding,
-    yMax - 13,
-    "uniform",
-    "up",
-    xAxisTop.label,
-    chart
-  );
+
+  let xLabel2: AbstractImage.Component;
+  switch (chart.labelLayout) {
+    case "original":
+      xLabel2 = generateXAxisLabel(
+        xMax + 0.5 * padding,
+        yMax - 13,
+        "uniform",
+        "up",
+        xAxisTop.label,
+        chart
+      );
+      break;
+
+    case "end":
+      xLabel2 = generateXAxisLabel(
+        xMax,
+        yMax - 30,
+        "left",
+        "up",
+        xAxisTop.label,
+        chart
+      );
+      break;
+
+    default:
+      return exhaustiveCheck(chart.labelLayout);
+  }
+
   return AbstractImage.createGroup("XAxisTop", [xLines2, xLabels2, xLabel2]);
 }
 
@@ -359,14 +407,35 @@ export function generateYAxisLeft(
     yAxisLeft,
     chart
   );
-  const yLabel = generateYAxisLabel(
-    xMin - 0.5 * padding,
-    yMax + 0.5 * padding,
-    "uniform",
-    "up",
-    yAxisLeft.label,
-    chart
-  );
+
+  let yLabel: AbstractImage.Component;
+  switch (chart.labelLayout) {
+    case "original":
+      yLabel = generateYAxisLabel(
+        xMin - 0.5 * padding,
+        yMax + 0.5 * padding,
+        "uniform",
+        "up",
+        yAxisLeft.label,
+        chart
+      );
+      break;
+
+    case "end":
+      yLabel = generateYAxisLabel(
+        xMin - 25,
+        yMax,
+        "left",
+        "up",
+        yAxisLeft.label,
+        chart
+      );
+      break;
+
+    default:
+      return exhaustiveCheck(chart.labelLayout);
+  }
+
   return AbstractImage.createGroup("YAxisLeft", [yLines, yLabels, yLabel]);
 }
 
@@ -400,14 +469,35 @@ export function generateYAxisRight(
     yAxisRight,
     chart
   );
-  const yLabel2 = generateYAxisLabel(
-    xMax + 35,
-    yMax + 0.5 * padding,
-    "uniform",
-    "up",
-    yAxisRight.label,
-    chart
-  );
+
+  let yLabel2: AbstractImage.Component;
+  switch (chart.labelLayout) {
+    case "original":
+      yLabel2 = generateYAxisLabel(
+        xMax + 35,
+        yMax + 0.5 * padding,
+        "uniform",
+        "up",
+        yAxisRight.label,
+        chart
+      );
+      break;
+
+    case "end":
+      yLabel2 = generateYAxisLabel(
+        xMax + 30,
+        yMax,
+        "left",
+        "up",
+        yAxisRight.label,
+        chart
+      );
+      break;
+
+    default:
+      return exhaustiveCheck(chart.labelLayout);
+  }
+
   return AbstractImage.createGroup("YAxisRight", [yLines2, yLabels2, yLabel2]);
 }
 

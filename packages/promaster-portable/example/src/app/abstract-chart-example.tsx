@@ -59,7 +59,8 @@ export function AbstractChartExample(): JSX.Element {
   const chart = AbstractChart.createChart({
     chartLines: series,
     xAxisBottom: AbstractChart.createLinearAxis(xMin, xMax, "Days with cold"),
-    yAxisLeft: AbstractChart.createLinearAxis(yMin, yMax + 1, "Badness")
+    yAxisLeft: AbstractChart.createLinearAxis(yMin, yMax + 1, "Badness"),
+    labelLayout: "end"
   });
 
   const image = AbstractChart.renderChart(chart);
