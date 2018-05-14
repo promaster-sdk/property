@@ -13,6 +13,7 @@ export interface Chart {
   readonly height: number;
   readonly chartPoints: Array<ChartPoint>;
   readonly chartLines: Array<ChartLine>;
+  readonly chartStack: ChartStack;
   readonly xAxisBottom: Axis.Axis | undefined;
   readonly xAxisTop: Axis.Axis | undefined;
   readonly yAxisLeft: Axis.Axis | undefined;
@@ -32,6 +33,7 @@ export function createChart(props: ChartProps): Chart {
     height = 400,
     chartPoints = [],
     chartLines = [],
+    chartStack = createChartStack({}),
     xAxisBottom = Axis.createLinearAxis(0, 100, ""),
     xAxisTop = undefined,
     yAxisLeft = Axis.createLinearAxis(0, 100, ""),
@@ -48,6 +50,7 @@ export function createChart(props: ChartProps): Chart {
     height,
     chartPoints,
     chartLines,
+    chartStack,
     xAxisBottom,
     xAxisTop,
     yAxisLeft,
@@ -127,6 +130,53 @@ export function createChartLine(props: ChartLineProps): ChartLine {
     label,
     xAxis,
     yAxis
+  };
+}
+
+export interface ChartStackConfig {
+  readonly color: AbstractImage.Color;
+  readonly label: string;
+}
+
+export type ChartStackConfigProps = Partial<ChartStackConfig>;
+
+export function createChartStackConfig(
+  props: ChartStackConfigProps
+): ChartStackConfig {
+  const { color = AbstractImage.black, label = "" } = props || {};
+  return {
+    color,
+    label
+  };
+}
+
+export interface StackPoints {
+  readonly x: number;
+  readonly ys: ReadonlyArray<number>;
+}
+
+export interface ChartStack {
+  readonly points: Array<StackPoints>;
+  readonly xAxis: XAxis;
+  readonly yAxis: YAxis;
+  readonly config: ReadonlyArray<ChartStackConfig>;
+}
+
+export type ChartStackProps = Partial<ChartStack>;
+
+export function createChartStack(props: ChartStackProps): ChartStack {
+  const {
+    points = [],
+    xAxis = "bottom",
+    yAxis = "left",
+    config = [createChartStackConfig({})]
+  } =
+    props || {};
+  return {
+    points,
+    xAxis,
+    yAxis,
+    config
   };
 }
 
@@ -213,6 +263,7 @@ export function renderChart(chart: Chart): AbstractImage.AbstractImage {
 
   const renderedPoints = generatePoints(xMin, xMax, yMin, yMax, chart);
   const renderedLines = generateLines(xMin, xMax, yMin, yMax, chart);
+  const renderedStack = generateStack(xMin, xMax, yMin, yMax, chart);
 
   const components = [
     renderedBackground,
@@ -220,6 +271,7 @@ export function renderChart(chart: Chart): AbstractImage.AbstractImage {
     renderedXAxisTop,
     renderedYAxisLeft,
     renderedYAxisRight,
+    renderedStack,
     renderedLines,
     renderedPoints
   ];
@@ -543,6 +595,74 @@ export function generateYAxisRight(
   }
 
   return AbstractImage.createGroup("YAxisRight", [yLines2, yLabels2, yLabel2]);
+}
+
+export function generateStack(
+  xMin: number,
+  xMax: number,
+  yMin: number,
+  yMax: number,
+  chart: Chart
+): AbstractImage.Component {
+  if (chart.chartStack.points.length < 2) {
+    return AbstractImage.createGroup("stack", []);
+  }
+
+  const xAxis =
+    chart.chartStack.xAxis === "top" ? chart.xAxisTop : chart.xAxisBottom;
+  const yAxis =
+    chart.chartStack.yAxis === "right" ? chart.yAxisRight : chart.yAxisLeft;
+
+  const xPoints = chart.chartStack.points.map(stackPoints => {
+    let sumY = 0;
+    const points = stackPoints.ys.map(y => {
+      sumY += y;
+      return Axis.transformPoint(
+        AbstractImage.createPoint(stackPoints.x, sumY),
+        xMin,
+        xMax,
+        yMin,
+        yMax,
+        xAxis,
+        yAxis
+      );
+    });
+    return points;
+  });
+
+  // Transpose the xPoints data to lines.
+  const lines: Array<Array<AbstractImage.Point>> = [];
+  for (let i = 0; i < xPoints[0].length; ++i) {
+    lines[i] = [];
+    for (const points of xPoints) {
+      lines[i].push(points[i]);
+    }
+  }
+
+  const polygons: Array<AbstractImage.Polygon> = [];
+  let lastLine = chart.chartStack.points.map(stackPoint =>
+    Axis.transformPoint(
+      AbstractImage.createPoint(stackPoint.x, 0),
+      xMin,
+      xMax,
+      yMin,
+      yMax,
+      xAxis,
+      yAxis
+    )
+  );
+  lines.forEach((line, index) => {
+    const config = chart.chartStack.config[index];
+    if (!config) {
+      throw new Error("Missing config for series " + index);
+    }
+    const color = config.color;
+    const points = [...line, ...lastLine.slice().reverse()];
+    lastLine = line;
+    polygons.push(AbstractImage.createPolygon(points, color, 0, color));
+  });
+
+  return AbstractImage.createGroup("Stack", polygons);
 }
 
 export function generateLines(
