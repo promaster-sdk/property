@@ -2,7 +2,7 @@ import * as React from "react";
 import { AbstractChart, AbstractImage } from "../../../src/index";
 import * as PromasterReact from "../../../../promaster-react/src/index";
 
-function getRange(
+function getLineRange(
   series: AbstractChart.ChartLine[],
   axisSelector: (point: AbstractImage.Point) => number
 ): [number, number] {
@@ -15,7 +15,7 @@ function getRange(
   return [Math.min(...axisValues), Math.max(...axisValues)];
 }
 
-export function AbstractChartExample(): JSX.Element {
+function generateLineChart(): AbstractChart.Chart {
   const series = [
     AbstractChart.createChartLine({
       points: [
@@ -53,8 +53,8 @@ export function AbstractChartExample(): JSX.Element {
     })
   ];
 
-  const [xMin, xMax] = getRange(series, point => point.x);
-  const [yMin, yMax] = getRange(series, point => point.y);
+  const [xMin, xMax] = getLineRange(series, point => point.x);
+  const [yMin, yMax] = getLineRange(series, point => point.y);
 
   const chart = AbstractChart.createChart({
     chartLines: series,
@@ -63,8 +63,10 @@ export function AbstractChartExample(): JSX.Element {
     labelLayout: "center"
   });
 
-  const image = AbstractChart.renderChart(chart);
+  return chart;
+}
 
+export function AbstractChartExample(): JSX.Element {
   return (
     <div>
       <h1>Line chart</h1>
@@ -72,7 +74,9 @@ export function AbstractChartExample(): JSX.Element {
         Chart of <a href="https://www.xkcd.com/1612/">XKCD 1612</a>
       </p>
       <p>The worst part of colds</p>
-      {PromasterReact.AbstractImageExporters.createReactSvg(image)}
+      {PromasterReact.AbstractImageExporters.createReactSvg(
+        AbstractChart.renderChart(generateLineChart())
+      )}
     </div>
   );
 }
