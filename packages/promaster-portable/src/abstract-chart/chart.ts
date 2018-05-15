@@ -604,6 +604,36 @@ export function generateStack(
   yMax: number,
   chart: Chart
 ): AbstractImage.Component {
+  const pointsPos = chart.chartStack.points.map(stackPoint => ({
+    x: stackPoint.x,
+    ys: [...stackPoint.ys.map(y => Math.min(0, y))]
+  }));
+
+  const stackPos = generateUnsignedStack(xMin, xMax, yMin, yMax, {
+    ...chart,
+    chartStack: { ...chart.chartStack, points: pointsPos }
+  });
+
+  const pointsNeg = chart.chartStack.points.map(stackPoint => ({
+    x: stackPoint.x,
+    ys: [...stackPoint.ys.map(y => Math.max(0, y))]
+  }));
+
+  const stackNeg = generateUnsignedStack(xMin, xMax, yMin, yMax, {
+    ...chart,
+    chartStack: { ...chart.chartStack, points: pointsNeg }
+  });
+
+  return AbstractImage.createGroup("Stacks", [stackPos, stackNeg]);
+}
+
+function generateUnsignedStack(
+  xMin: number,
+  xMax: number,
+  yMin: number,
+  yMax: number,
+  chart: Chart
+): AbstractImage.Component {
   if (chart.chartStack.points.length < 2) {
     return AbstractImage.createGroup("stack", []);
   }

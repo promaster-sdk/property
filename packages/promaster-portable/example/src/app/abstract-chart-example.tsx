@@ -73,11 +73,16 @@ function getStackRange(
   const axisValues = points
     .map(axisSelector)
     .map(stackedValues => {
-      let sum = 0;
-      return stackedValues.map(value => {
-        sum += value;
-        return sum;
-      });
+      let posSum = 0;
+      let negSum = 0;
+      for (const value of stackedValues) {
+        if (value > 0) {
+          posSum += value;
+        } else {
+          negSum += value;
+        }
+      }
+      return [negSum, posSum];
     })
     .reduce(
       (soFar, current) => {
@@ -128,10 +133,67 @@ function generateStackedChart(): AbstractChart.Chart {
   return chart;
 }
 
+function generateSignedStackedChart(): AbstractChart.Chart {
+  const numPoints = 100;
+  const numYs = 5;
+  const points: Array<AbstractChart.StackPoints> = [];
+  let lastYs: Array<number> = [];
+  for (let yi = 0; yi < numYs; ++yi) {
+    lastYs[yi] = 0;
+  }
+  for (let x = 0; x < numPoints; ++x) {
+    const ys = lastYs.slice();
+    for (let yi = 0; yi < numYs; ++yi) {
+      ys[yi] = Math.sin(x / numPoints * (yi + 1) / numYs * 20);
+    }
+    points.push({ x, ys });
+    lastYs = ys;
+  }
+
+  const stack = AbstractChart.createChartStack({
+    points,
+    xAxis: "bottom",
+    yAxis: "left",
+    config: [
+      AbstractChart.createChartStackConfig({
+        color: AbstractImage.fromArgb(255, 94, 91, 59)
+      }),
+      AbstractChart.createChartStackConfig({
+        color: AbstractImage.fromArgb(255, 125, 188, 169)
+      }),
+      AbstractChart.createChartStackConfig({
+        color: AbstractImage.fromArgb(255, 234, 253, 137)
+      }),
+      AbstractChart.createChartStackConfig({
+        color: AbstractImage.fromArgb(255, 255, 211, 124)
+      }),
+      AbstractChart.createChartStackConfig({
+        color: AbstractImage.fromArgb(255, 255, 155, 109)
+      })
+    ]
+  });
+
+  const [xMin, xMax] = getStackRange(stack.points, point => [point.x]);
+  const [yMin, yMax] = getStackRange(stack.points, point => point.ys);
+
+  const chart = AbstractChart.createChart({
+    chartStack: stack,
+    xAxisBottom: AbstractChart.createLinearAxis(xMin, xMax, "Time"),
+    yAxisLeft: AbstractChart.createLinearAxis(
+      yMin * 1.1,
+      yMax * 1.1,
+      "Sineness"
+    ),
+    labelLayout: "center"
+  });
+
+  return chart;
+}
+
 export function AbstractChartExample(): JSX.Element {
   return (
     <div>
-      <h1>Line chart</h1>
+      <h1>Line Chart</h1>
       <p>
         Chart of <a href="https://www.xkcd.com/1612/">XKCD 1612</a>
       </p>
@@ -139,10 +201,15 @@ export function AbstractChartExample(): JSX.Element {
       {PromasterReact.AbstractImageExporters.createReactSvg(
         AbstractChart.renderChart(generateLineChart())
       )}
-      <h1>Stacked chart</h1>
+      <h1>Stacked Chart</h1>
       <p>Stacked version of above XKCD line graph.</p>
       {PromasterReact.AbstractImageExporters.createReactSvg(
         AbstractChart.renderChart(generateStackedChart())
+      )}
+      <h1>Stacked Signed Chart</h1>
+      <p>Sin(x)</p>
+      {PromasterReact.AbstractImageExporters.createReactSvg(
+        AbstractChart.renderChart(generateSignedStackedChart())
       )}
     </div>
   );
