@@ -72,7 +72,7 @@ function runMapping(
   mapping: Types.Mapping<{}>,
   rawData: Types.RawTableRow
 ): {} {
-  const x = R.toPairs<Types.ValueMapping, {}>(mapping).map(
+  const x = R.toPairs<Types.ValueMapping>(mapping).map(
     ([key, valueMapping]) =>
       [key, mapValue(valueMapping as any, rawData[key as any])] as [string, any]
   ); //tslint:disable-line

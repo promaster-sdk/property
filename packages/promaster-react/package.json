@@ -14,12 +14,12 @@
   "dependencies": {
     "@promaster/promaster-portable": "^2.1.0",
     "@promaster/promaster-primitives": "^3.0.0",
-    "@types/ramda": "^0.25.17",
     "ramda": "^0.25.0",
     "react": "^15.6.1"
   },
   "devDependencies": {
     "@storybook/react": "^3.3.12",
+    "@types/ramda": "^0.25.29",
     "@types/react": "^15.6.0",
     "@types/react-test-renderer": "^15.5.0",
     "babel-core": "^6.26.0",

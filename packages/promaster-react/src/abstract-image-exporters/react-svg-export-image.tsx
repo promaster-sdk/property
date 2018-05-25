@@ -12,7 +12,11 @@ export function createReactSvg(
       viewBox={[0, 0, image.size.width, image.size.height].join(" ")}
     >
       {R.unnest(
-        R.addIndex(R.map)((c, i) => _visit(i.toString(), c), image.components)
+        R.addIndex(R.map)(
+          // tslint:disable-next-line:no-any
+          (c, i) => _visit(i.toString(), c as any),
+          image.components
+        )
       )}
     </svg>
   );
@@ -28,7 +32,8 @@ function _visit(
         <g key={key} name={component.name}>
           {R.unnest(
             R.addIndex(R.map)(
-              (c, i) => _visit(i.toString(), c),
+              // tslint:disable-next-line:no-any
+              (c, i) => _visit(i.toString(), c as any),
               component.children
             )
           )}

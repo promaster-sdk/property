@@ -3,42 +3,63 @@
  */
 import * as React from "react";
 import styled from "styled-components";
-import { Units, Unit, UnitName, Quantity } from "@promaster/promaster-primitives";
-import { AmountFormatWrapper, AmountFormatWrapperProps } from "./amount-format-wrapper";
+import {
+  Units,
+  Unit,
+  UnitName,
+  Quantity
+} from "@promaster/promaster-primitives";
+import {
+  AmountFormatWrapper,
+  AmountFormatWrapperProps
+} from "./amount-format-wrapper";
 
 //tslint:disable no-class no-this
 
 export interface AmountFormatSelectorProps {
-  readonly key?: string,
-  readonly selectedUnit: Unit.Unit<Quantity.Quantity>,
-  readonly selectedDecimalCount: number,
-  readonly onFormatChanged?: OnFormatChanged,
-  readonly onFormatCleared?: OnFormatCleared,
-  readonly onFormatSelectorActiveChanged?: OnFormatSelectorToggled,
+  readonly key?: string;
+  readonly selectedUnit: Unit.Unit<Quantity.Quantity>;
+  readonly selectedDecimalCount: number;
+  readonly onFormatChanged?: OnFormatChanged;
+  readonly onFormatCleared?: OnFormatCleared;
+  readonly onFormatSelectorActiveChanged?: OnFormatSelectorToggled;
 }
 
 export interface State {
-  readonly active: boolean
+  readonly active: boolean;
 }
 
-export type OnFormatChanged = (unit: Unit.Unit<Quantity.Quantity>, decimalCount: number) => void;
+export type OnFormatChanged = (
+  unit: Unit.Unit<Quantity.Quantity>,
+  decimalCount: number
+) => void;
 export type OnFormatCleared = () => void;
 export type OnFormatSelectorToggled = (active: boolean) => void;
 
-export type AmountFormatSelector = React.ComponentClass<AmountFormatSelectorProps>;
+export type AmountFormatSelector = React.ComponentClass<
+  AmountFormatSelectorProps
+>;
 export interface CreateAmountFormatSelectorParams {
-  readonly ClearButton?: React.ComponentType<React.HTMLProps<HTMLButtonElement>>,
-  readonly CancelButton?: React.ComponentType<React.HTMLProps<HTMLButtonElement>>,
-  readonly PrecisionSelector?: React.ComponentType<React.HTMLProps<HTMLSelectElement>>,
-  readonly UnitSelector?: React.ComponentType<React.HTMLProps<HTMLSelectElement>>,
-  readonly AmountFormatWrapper?: React.ComponentType<AmountFormatWrapperProps>,
+  readonly ClearButton?: React.ComponentType<
+    React.HTMLProps<HTMLButtonElement>
+  >;
+  readonly CancelButton?: React.ComponentType<
+    React.HTMLProps<HTMLButtonElement>
+  >;
+  readonly PrecisionSelector?: React.ComponentType<
+    React.HTMLProps<HTMLSelectElement>
+  >;
+  readonly UnitSelector?: React.ComponentType<
+    React.HTMLProps<HTMLSelectElement>
+  >;
+  readonly AmountFormatWrapper?: React.ComponentType<AmountFormatWrapperProps>;
 }
 
 const defaultClearButton = styled.button``;
 const defaultCancelButton = styled.button``;
 const defaultPrecisionSelector = styled.select``;
 const defaultUnitSelector = styled.select``;
-const defaultFormatWrapper = styled(AmountFormatWrapper) ``;
+const defaultFormatWrapper = styled(AmountFormatWrapper)``;
 
 export function createAmountFormatSelector({
   ClearButton = defaultClearButton,
@@ -46,42 +67,48 @@ export function createAmountFormatSelector({
   PrecisionSelector = defaultPrecisionSelector,
   UnitSelector = defaultUnitSelector,
   AmountFormatWrapper = defaultFormatWrapper
-  }: CreateAmountFormatSelectorParams
-): AmountFormatSelector {
-  return class AmountFormatSelector extends React.Component<AmountFormatSelectorProps, State> {
-
+}: CreateAmountFormatSelectorParams): AmountFormatSelector {
+  return class AmountFormatSelector extends React.Component<
+    AmountFormatSelectorProps,
+    State
+  > {
     constructor(props: AmountFormatSelectorProps) {
       super(props);
       this.state = { active: false };
     }
 
     componentDidUpdate(_: AmountFormatSelectorProps, prevState: State): void {
-      if (this.props.onFormatSelectorActiveChanged && prevState.active !== this.state.active) {
+      if (
+        this.props.onFormatSelectorActiveChanged &&
+        prevState.active !== this.state.active
+      ) {
         this.props.onFormatSelectorActiveChanged(this.state.active);
       }
     }
 
     render(): React.ReactElement<AmountFormatSelectorProps> {
-
       const {
-        selectedUnit, selectedDecimalCount, onFormatChanged,
-        onFormatCleared,
-    } = this.props;
+        selectedUnit,
+        selectedDecimalCount,
+        onFormatChanged,
+        onFormatCleared
+      } = this.props;
 
       // If there is no handler for onFormatChanged then the user should not be able to change the format
       if (!this.state.active || !onFormatChanged) {
-
         return (
-          <AmountFormatWrapper active={this.state.active} onClick={() => this.setState({ active: true })}>
+          <AmountFormatWrapper
+            active={this.state.active}
+            onClick={() => this.setState({ active: true })}
+          >
             {UnitName.getName(selectedUnit)}
           </AmountFormatWrapper>
         );
-
       }
 
       // Get a list of all units within the quantity
       const units = Units.getUnitsForQuantity(selectedUnit.quantity);
-      const unitNames = units.map((u) => Units.getStringFromUnit(u));
+      const unitNames = units.map(u => Units.getStringFromUnit(u));
       const selectedUnitName = Units.getStringFromUnit(selectedUnit);
 
       const decimalCounts = [0, 1, 2, 3, 4, 5];
@@ -91,47 +118,70 @@ export function createAmountFormatSelector({
 
       return (
         <AmountFormatWrapper active={this.state.active}>
-          <UnitSelector value={selectedUnitName}
-            onChange={(e) => {
+          <UnitSelector
+            value={selectedUnitName}
+            // tslint:disable-next-line:no-any
+            onChange={(e: any) => {
               this.setState({ active: false });
               _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
-            }}>
-            {units.map((u, index) => <option key={unitNames[index]} value={unitNames[index]}> {UnitName.getName(u)} </option>)}
+            }}
+          >
+            {units.map((u, index) => (
+              <option key={unitNames[index]} value={unitNames[index]}>
+                {" "}
+                {UnitName.getName(u)}{" "}
+              </option>
+            ))}
           </UnitSelector>
           <PrecisionSelector
             value={selectedDecimalCount.toString()}
-            onChange={(e) => {
+            // tslint:disable-next-line:no-any
+            onChange={(e: any) => {
               this.setState({ active: false });
               _onDecimalCountChange(e, selectedUnit, onFormatChanged);
-            }}>{decimalCounts.map((dc) => <option key={dc.toString()} value={dc.toString()}>{dc}</option>)}
+            }}
+          >
+            {decimalCounts.map(dc => (
+              <option key={dc.toString()} value={dc.toString()}>
+                {dc}
+              </option>
+            ))}
           </PrecisionSelector>
-          {onFormatCleared
-            && (
-              <ClearButton onClick={() => {
+          {onFormatCleared && (
+            <ClearButton
+              onClick={() => {
                 this.setState({ active: false });
                 onFormatCleared();
-              }}>
-                {"\u00A0"}
-              </ClearButton>)}
+              }}
+            >
+              {"\u00A0"}
+            </ClearButton>
+          )}
           <CancelButton onClick={() => this.setState({ active: false })}>
             {"\u00A0"}
           </CancelButton>
         </AmountFormatWrapper>
       );
-
     }
   };
 }
 
-function _onDecimalCountChange(e: React.FormEvent<HTMLSelectElement>,
-  selectedUnit: Unit.Unit<Quantity.Quantity>, onFormatChanged: OnFormatChanged): void {
+function _onDecimalCountChange(
+  e: React.FormEvent<HTMLSelectElement>,
+  selectedUnit: Unit.Unit<Quantity.Quantity>,
+  onFormatChanged: OnFormatChanged
+): void {
   const selectedIndex = e.currentTarget.selectedIndex;
   const selectedDecimalCount = selectedIndex;
   onFormatChanged(selectedUnit, selectedDecimalCount);
 }
 
-function _onUnitChange(e: React.FormEvent<HTMLSelectElement>, units: Unit.Unit<Quantity.Quantity>[],
-  selectedDecimalCount: number, onFormatChanged: OnFormatChanged): void {
+function _onUnitChange(
+  e: React.FormEvent<HTMLSelectElement>,
+  units: Unit.Unit<Quantity.Quantity>[],
+  selectedDecimalCount: number,
+  onFormatChanged: OnFormatChanged
+): void {
   const selectedIndex = e.currentTarget.selectedIndex;
   const selectedUnit = units[selectedIndex];
   onFormatChanged(selectedUnit, selectedDecimalCount);

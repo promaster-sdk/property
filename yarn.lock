@@ -275,13 +275,9 @@
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/@types/pegjs/-/pegjs-0.0.28.tgz#55348c1bb2d574efa382405fdb11fd25cc4a3a2d"
 
-"@types/ramda@^0.25.17":
-  version "0.25.17"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.17.tgz#2879779be272ba265415baf4cc3299a1f00e1955"
-
-"@types/ramda@types/npm-ramda":
-  version "0.25.0"
-  resolved "https://codeload.github.com/types/npm-ramda/tar.gz/a28b39930df4fed9764c52fb98552b54351558a5"
+"@types/ramda@^0.25.29":
+  version "0.25.29"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.29.tgz#05a58a3ba728344ecc9d99e37beb2adf822fb01c"
 
 "@types/react-dom@^15.5.1":
   version "15.5.6"
@@ -9881,13 +9877,13 @@ typescript@2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.2.tgz#606022508479b55ffa368b58fee963a03dfd7b0c"
 
-typescript@2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
-
 typescript@^2.4.2, typescript@^2.6.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.1.tgz#bb3682c2c791ac90e7c6210b26478a8da085c359"
+
+typescript@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
 
 typical@^2.4.2, typical@^2.6.0, typical@^2.6.1:
   version "2.6.1"
