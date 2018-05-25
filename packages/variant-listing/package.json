@@ -1,7 +1,6 @@
 {
-  "name": "@promaster/promaster-portable",
-  "version": "2.1.0",
-  "description": "Promaster SDK Portable Libraries",
+  "name": "@promaster/variant-listing",
+  "version": "1.0.0",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
@@ -13,7 +12,6 @@
   },
   "dependencies": {
     "@promaster/promaster-markdown": "^1.0.0",
-    "@promaster/variant-listing": "^1.0.0",
     "@promaster/promaster-primitives": "^3.0.0",
     "base64-js": "^1.2.0",
     "blob-stream": "^0.1.3",

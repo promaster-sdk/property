@@ -1,8 +1,8 @@
 import { assert } from "chai";
-import { buildAllPropertyValueSetsExtended } from "../../../src/variant-listing";
+import { buildAllPropertyValueSetsExtended } from "../../src/index";
 import * as fs from "fs";
 import * as Path from "path";
-import { PropertyFilter } from "../../../../promaster-primitives";
+import { PropertyFilter } from "@promaster/property";
 import * as R from "ramda";
 
 // tslint:disable:max-line-length
