@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import * as AD from "../../abstract-document/index";
 import { getResources } from "../shared/get_resources";
-import { exhaustiveCheck } from "../../exhaustive-check/index";
+import { exhaustiveCheck } from "ts-exhaustive-check";
 
 //tslint:disable:no-any variable-name
 

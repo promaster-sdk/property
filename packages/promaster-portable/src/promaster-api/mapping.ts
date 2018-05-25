@@ -6,7 +6,7 @@ import {
   Amount,
   Units
 } from "@promaster/promaster-primitives";
-import { exhaustiveCheck } from "../exhaustive-check/index";
+import { exhaustiveCheck } from "ts-exhaustive-check";
 import * as Types from "./types";
 import { isNumber } from "util";
 

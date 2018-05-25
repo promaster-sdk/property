@@ -1,5 +1,5 @@
 import * as AD from "../../abstract-document/index";
-import { exhaustiveCheck } from "../../exhaustive-check/index";
+import { exhaustiveCheck } from "ts-exhaustive-check";
 
 export function getResources(
   doc: AD.AbstractDoc.AbstractDoc

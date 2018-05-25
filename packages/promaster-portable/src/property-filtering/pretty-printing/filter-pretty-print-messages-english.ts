@@ -3,7 +3,7 @@ import {
   PropertyValue,
   UnitName
 } from "@promaster/promaster-primitives";
-import { exhaustiveCheck } from "../../exhaustive-check/index";
+import { exhaustiveCheck } from "ts-exhaustive-check";
 
 export function comparisionOperationMessage(
   op: Ast.ComparisonOperationType,
