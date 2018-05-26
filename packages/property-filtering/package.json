@@ -12,7 +12,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/promaster-primitives": "^3.0.0",
+    "@promaster/uom": "^1.0.0",
+    "@promaster/property": "^1.0.0",
     "ts-exhaustive-check": "^1.0.0"
   },
   "devDependencies": {},

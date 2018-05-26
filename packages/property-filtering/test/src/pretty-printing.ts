@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { PropertyFilter } from "@promaster/promaster-primitives";
+import { PropertyFilter } from "@promaster/property";
 import * as PrettyPrinting from "../../src/index";
 import { FilterPrettyPrintMessagesEnglish } from "../../src/index";
 

@@ -2,7 +2,7 @@ import {
   PropertyValue,
   PropertyFilter,
   PropertyFilterAst as Ast
-} from "@promaster/promaster-primitives";
+} from "@promaster/property";
 
 export function filterPrettyPrintSimple(
   f: PropertyFilter.PropertyFilter

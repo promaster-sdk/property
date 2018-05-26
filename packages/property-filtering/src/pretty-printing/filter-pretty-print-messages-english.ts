@@ -1,8 +1,5 @@
-import {
-  PropertyFilterAst as Ast,
-  PropertyValue,
-  UnitName
-} from "@promaster/promaster-primitives";
+import { PropertyFilterAst as Ast, PropertyValue } from "@promaster/property";
+import { UnitName } from "@promaster/uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 
 export function comparisionOperationMessage(
