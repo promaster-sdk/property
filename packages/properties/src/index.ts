@@ -2,13 +2,12 @@
  * Functions related to the "Properties" module in Promaster
  */
 
+import { Amount, Units } from "@promaster/uom";
 import {
   PropertyValueSet,
   PropertyValue,
-  PropertyFilter,
-  Amount,
-  Units
-} from "@promaster/promaster-primitives";
+  PropertyFilter
+} from "@promaster/property";
 import * as Api from "@promaster/promaster-api";
 
 export function getDefaultValues(
