@@ -1,7 +1,16 @@
 import * as PromasterMarkdown from "@promaster/promaster-markdown";
 import * as VariantListing from "@promaster/variant-listing";
+import * as PromasterApi from "@promaster/promaster-api";
+import * as Properties from "@promaster/properties";
+import * as OrderingCode from "@promaster/ordering-code";
 
-export { PromasterMarkdown, VariantListing };
+export {
+  PromasterMarkdown,
+  VariantListing,
+  PromasterApi,
+  Properties,
+  OrderingCode
+};
 
 import * as AbstractChart from "./abstract-chart/index";
 import * as AbstractDoc from "./abstract-document/index";
@@ -10,9 +19,6 @@ import * as AbstractDocJsx from "./abstract-document-jsx/index";
 import * as AbstractImage from "./abstract-image/index";
 import * as AbstractImageExporters from "./abstract-image-exporters/index";
 import * as PropertyFiltering from "./property-filtering/index";
-import * as PromasterApi from "./promaster-api/index";
-import * as Properties from "./properties/index";
-import * as OrderingCode from "./ordering-code/index";
 
 export {
   AbstractChart,
@@ -21,8 +27,5 @@ export {
   AbstractDocJsx,
   AbstractImage,
   AbstractImageExporters,
-  PropertyFiltering,
-  PromasterApi,
-  Properties,
-  OrderingCode
+  PropertyFiltering
 };

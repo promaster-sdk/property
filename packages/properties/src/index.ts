@@ -9,7 +9,7 @@ import {
   Amount,
   Units
 } from "@promaster/promaster-primitives";
-import * as Api from "../promaster-api";
+import * as Api from "@promaster/promaster-api";
 
 export function getDefaultValues(
   productProperties: ReadonlyArray<Api.ProductProperty>
