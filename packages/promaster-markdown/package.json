@@ -13,7 +13,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "showdown": "^1.5.0"
+    "showdown": "^1.5.0",
+    "markdown-to-ast": "^3.4.0"
   },
   "devDependencies": {
     "@types/showdown": "^1.4.31"
