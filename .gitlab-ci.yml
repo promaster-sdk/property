@@ -11,9 +11,9 @@ packages:
   script:
     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
     - yarn install
-    - yarn lerna run lint
-    - yarn lerna run build
-    - yarn lerna run test
+    - yarn lint
+    - yarn build
+    - yarn test
 
 # promaster-primitives-test:
 #   image: node:8.9.4
