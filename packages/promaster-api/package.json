@@ -2,7 +2,7 @@
   "name": "@promaster/promaster-api",
   "version": "1.0.0",
   "description": "Promaster API",
-  "repository": "https://gitlab.divid.se/promaster-sdk/",
+  "repository": "https://gitlab.divid.se/promaster-sdk/packages/promaster-api",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",

@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "@promaster/uom": "^1.0.0",
-    "@promaster/property": "^1.0.0"
+    "@promaster/property": "^1.0.0",
+    "@promaster/promaster-api": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
