@@ -10,7 +10,7 @@ import {
   PropertyFilter,
   Units
 } from "@promaster/promaster-primitives";
-import * as Api from "@promaster/promaster-api";
+import * as Api from "@promaster/api";
 
 export interface BuiltOrderingCode {
   readonly type: string;

@@ -8,7 +8,7 @@ import {
   PropertyValue,
   PropertyFilter
 } from "@promaster/property";
-import * as Api from "@promaster/promaster-api";
+import * as Api from "@promaster/api";
 
 export function getDefaultValues(
   productProperties: ReadonlyArray<Api.ProductProperty>

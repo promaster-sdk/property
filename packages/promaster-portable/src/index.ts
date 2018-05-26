@@ -1,8 +1,8 @@
 import * as PromasterMarkdown from "@promaster/promaster-markdown";
 import * as VariantListing from "@promaster/variant-listing";
-import * as PromasterApi from "@promaster/promaster-api";
-import * as Properties from "@promaster/properties";
-import * as OrderingCode from "@promaster/ordering-code";
+import * as PromasterApi from "@promaster/api";
+import * as Properties from "@promaster/api-properties";
+import * as OrderingCode from "@promaster/api-ordering-code";
 
 export {
   PromasterMarkdown,
