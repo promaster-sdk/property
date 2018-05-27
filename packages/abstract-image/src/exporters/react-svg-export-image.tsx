@@ -1,6 +1,6 @@
 import * as R from "ramda";
 import * as React from "react";
-import { AbstractImage } from "@promaster/promaster-portable";
+import * as AbstractImage from "../model/index";
 
 export function createReactSvg(
   image: AbstractImage.AbstractImage

@@ -14,6 +14,7 @@
   "dependencies": {
     "@promaster/promaster-portable": "^2.1.0",
     "@promaster/promaster-primitives": "^3.0.0",
+    "@promaster/abstract-image": "^1.0.0",
     "ramda": "^0.25.0",
     "react": "^15.6.1"
   },
