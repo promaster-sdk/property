@@ -28,7 +28,6 @@
     "build:cjs": "tsc",
     "build:esm": "tsc --module es2015 --outDir ./lib-esm",
     "test": "rm -rf test/lib && mocha --colors",
-    "test:build": "cd test && tsc",
-    "example:build": "cd example && tsc"
+    "test:build": "cd test && tsc"
   }
 }
