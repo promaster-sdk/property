@@ -1,0 +1,38 @@
+{
+  "name": "@promaster/promaster-portable",
+  "version": "2.1.0",
+  "description": "Promaster SDK Portable Libraries",
+  "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
+  "main": "lib-cjs/index.js",
+  "module": "lib-esm/index.js",
+  "types": "lib-cjs/index",
+  "license": "UNLICENSED",
+  "author": "Divid Promaster AB",
+  "publishConfig": {
+    "registry": "https://npm.divid.se"
+  },
+  "dependencies": {
+    "@promaster/promaster-markdown": "^1.0.0",
+    "@promaster/variant-listing": "^1.0.0",
+    "@promaster/api": "^1.0.0",
+    "@promaster/api-ordering-code": "^1.0.0",
+    "@promaster/api-properties": "^1.0.0",
+    "@promaster/property-filtering": "^1.0.0",
+    "@promaster/abstract-image": "^1.0.0",
+    "@promaster/abstract-chart": "^1.0.0",
+    "@promaster/abstract-document": "^1.0.0",
+    "base64-js": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/base64-js": "^1.2.5",
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1"
+  },
+  "scripts": {
+    "start":
+      "webpack-dev-server --config webpack.config.js --content-base ./src",
+    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
+    "build": "tsc",
+    "clean": "rm -rf ./lib"
+  }
+}

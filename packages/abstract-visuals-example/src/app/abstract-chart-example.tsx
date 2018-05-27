@@ -1,6 +1,6 @@
 import * as React from "react";
-import { AbstractChart, AbstractImage } from "../../../src/index";
-import * as PromasterReact from "../../../../promaster-react/src/index";
+import * as AbstractChart from "@promaster/abstract-chart";
+import * as AbstractImage from "@promaster/abstract-image";
 
 function getLineRange(
   series: AbstractChart.ChartLine[],
@@ -198,17 +198,17 @@ export function AbstractChartExample(): JSX.Element {
         Chart of <a href="https://www.xkcd.com/1612/">XKCD 1612</a>
       </p>
       <p>The worst part of colds</p>
-      {PromasterReact.AbstractImageExporters.createReactSvg(
+      {AbstractImage.createReactSvg(
         AbstractChart.renderChart(generateLineChart())
       )}
       <h1>Stacked Chart</h1>
       <p>Stacked version of above XKCD line graph.</p>
-      {PromasterReact.AbstractImageExporters.createReactSvg(
+      {AbstractImage.createReactSvg(
         AbstractChart.renderChart(generateStackedChart())
       )}
       <h1>Stacked Signed Chart</h1>
       <p>Sin(x)</p>
-      {PromasterReact.AbstractImageExporters.createReactSvg(
+      {AbstractImage.createReactSvg(
         AbstractChart.renderChart(generateSignedStackedChart())
       )}
     </div>

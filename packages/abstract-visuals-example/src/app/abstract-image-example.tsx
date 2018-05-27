@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AbstractImage, AbstractImageExporters } from "../../../src/index";
+import * as AbstractImage from "@promaster/abstract-image";
 
 export function AbstractImageExample(): JSX.Element {
   const components = [
@@ -30,7 +30,7 @@ export function AbstractImageExample(): JSX.Element {
     AbstractImage.white,
     components
   );
-  const svg = AbstractImageExporters.createSVG(image);
+  const svg = AbstractImage.createSVG(image);
   return (
     <div>
       <h1>Svg</h1>

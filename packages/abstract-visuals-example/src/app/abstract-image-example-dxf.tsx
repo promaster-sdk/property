@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AbstractImage, AbstractImageExporters } from "../../../src/index";
+import * as AbstractImage from "@promaster/abstract-image";
 
 export function AbstractImageExampleDxf(): JSX.Element {
   const components = [
@@ -30,8 +30,8 @@ export function AbstractImageExampleDxf(): JSX.Element {
     AbstractImage.white,
     components
   );
-  const dxf = AbstractImageExporters.dxf2dExportImage(image);
-  const svg = AbstractImageExporters.createSVG(image);
+  const dxf = AbstractImage.dxf2dExportImage(image);
+  const svg = AbstractImage.createSVG(image);
   const base64 = btoa(svg);
 
   // Create a new blob from the data.

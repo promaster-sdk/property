@@ -21,7 +21,7 @@ module.exports = {
         loader: "awesome-typescript-loader",
         exclude: /^node_modules/,
         query: {
-          configFileName: "./example/tsconfig.json"
+          configFileName: "./tsconfig.json"
         }
       }
     ]
