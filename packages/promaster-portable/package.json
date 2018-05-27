@@ -20,14 +20,9 @@
     "@promaster/property-filtering": "^1.0.0",
     "@promaster/abstract-image": "^1.0.0",
     "@promaster/abstract-chart": "^1.0.0",
-    "@promaster/abstract-document": "^1.0.0",
-    "base64-js": "^1.2.0"
+    "@promaster/abstract-document": "^1.0.0"
   },
-  "devDependencies": {
-    "@types/base64-js": "^1.2.5",
-    "@types/react": "^15.0.34",
-    "@types/react-dom": "^15.5.1"
-  },
+  "devDependencies": {},
   "scripts": {
     "start":
       "webpack-dev-server --config example/webpack.config.js --content-base ./example",
