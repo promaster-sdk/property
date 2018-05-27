@@ -1,4 +1,4 @@
-import * as AbstractImage from "../abstract-image";
+import * as AbstractImage from "@promaster/abstract-image";
 import * as Axis from "./axis";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 

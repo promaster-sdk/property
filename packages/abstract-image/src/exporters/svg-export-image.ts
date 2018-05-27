@@ -1,4 +1,4 @@
-import * as AbstractImage from "../abstract-image/index";
+import * as AbstractImage from "../model/index";
 
 export function createSVG(
   image: AbstractImage.AbstractImage,

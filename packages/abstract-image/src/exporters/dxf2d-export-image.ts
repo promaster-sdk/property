@@ -1,4 +1,4 @@
-import * as AbstractImage from "../abstract-image/index";
+import * as AbstractImage from "../model/index";
 
 export function dxf2dExportImage(root: AbstractImage.AbstractImage): string {
   const builder: Builder = createBuilder();

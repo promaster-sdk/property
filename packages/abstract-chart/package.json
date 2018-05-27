@@ -1,6 +1,6 @@
 {
-  "name": "@promaster/promaster-portable",
-  "version": "2.1.0",
+  "name": "@promaster/abstract-chart",
+  "version": "1.0.0",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib-cjs/index.js",
@@ -13,14 +13,7 @@
   },
   "dependencies": {
     "@promaster/promaster-primitives": "^3.0.0",
-    "@promaster/promaster-markdown": "^1.0.0",
-    "@promaster/variant-listing": "^1.0.0",
-    "@promaster/api": "^1.0.0",
-    "@promaster/api-ordering-code": "^1.0.0",
-    "@promaster/api-properties": "^1.0.0",
-    "@promaster/property-filtering": "^1.0.0",
     "@promaster/abstract-image": "^1.0.0",
-    "@promaster/abstract-chart": "^1.0.0",
     "base64-js": "^1.2.0",
     "blob-stream": "^0.1.3",
     "isomorphic-fetch": "^2.2.1",

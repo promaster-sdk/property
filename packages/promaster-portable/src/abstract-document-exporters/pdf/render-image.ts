@@ -1,4 +1,4 @@
-import * as AbstractImage from "../../abstract-image/index";
+import * as AbstractImage from "@promaster/abstract-image";
 import * as AD from "../../abstract-document";
 import * as base64 from "base64-js";
 

@@ -1,5 +1,5 @@
 import { ImageResource, Image } from "../../../../../src/abstract-document";
-import * as AbstractImage from "../../../../../src/abstract-image";
+import * as AbstractImage from "@promaster/abstract-image";
 
 export type ProductCodes = Array<{
   readonly type: string;

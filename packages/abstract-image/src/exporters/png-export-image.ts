@@ -1,4 +1,4 @@
-import * as AbstractImage from "../abstract-image/index";
+import * as AbstractImage from "../model/index";
 
 export function createPNG(image: AbstractImage.AbstractImage): Uint8Array {
   if (image.components.length !== 1) {

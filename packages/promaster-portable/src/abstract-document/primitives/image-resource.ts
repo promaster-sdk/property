@@ -1,4 +1,4 @@
-import { AbstractImage } from "../../abstract-image/abstract-image";
+import { AbstractImage } from "@promaster/abstract-image";
 
 export type Guid = string;
 
