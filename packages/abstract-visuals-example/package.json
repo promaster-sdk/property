@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@promaster/abstract-visuals-example",
   "version": "1.0.0",
   "description": "Promaster SDK",
