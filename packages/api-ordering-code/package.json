@@ -1,6 +1,6 @@
 {
   "name": "@promaster/api-ordering-code",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk",
   "main": "lib-cjs/index.js",
@@ -12,9 +12,9 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/api": "^1.0.0",
-    "@promaster/uom": "^1.0.0",
-    "@promaster/property": "^1.0.0",
+    "@promaster/api": "^1.0.1",
+    "@promaster/property": "^1.0.1",
+    "@promaster/uom": "^1.0.1",
     "ramda": "^0.22.1"
   },
   "devDependencies": {

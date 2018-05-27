@@ -1,6 +1,6 @@
 {
   "name": "@promaster/property-filtering",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk",
   "main": "lib-cjs/index.js",
@@ -12,11 +12,10 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/uom": "^1.0.0",
-    "@promaster/property": "^1.0.0",
+    "@promaster/property": "^1.0.1",
+    "@promaster/uom": "^1.0.1",
     "ts-exhaustive-check": "^1.0.0"
   },
-  "devDependencies": {},
   "scripts": {
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",

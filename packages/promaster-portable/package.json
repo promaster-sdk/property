@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-portable",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib-cjs/index.js",
@@ -12,17 +12,16 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/promaster-markdown": "^1.0.0",
-    "@promaster/variant-listing": "^1.0.0",
-    "@promaster/api": "^1.0.0",
-    "@promaster/api-ordering-code": "^1.0.0",
-    "@promaster/api-properties": "^1.0.0",
-    "@promaster/property-filtering": "^1.0.0",
-    "@promaster/abstract-image": "^1.0.0",
-    "@promaster/abstract-chart": "^1.0.0",
-    "@promaster/abstract-document": "^1.0.0"
+    "@promaster/abstract-chart": "^1.0.1",
+    "@promaster/abstract-document": "^1.0.1",
+    "@promaster/abstract-image": "^1.0.1",
+    "@promaster/api": "^1.0.1",
+    "@promaster/api-ordering-code": "^1.0.1",
+    "@promaster/api-properties": "^1.0.1",
+    "@promaster/promaster-markdown": "^1.0.1",
+    "@promaster/property-filtering": "^1.0.1",
+    "@promaster/variant-listing": "^1.0.1"
   },
-  "devDependencies": {},
   "scripts": {
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",

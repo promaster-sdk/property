@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-primitives",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -12,14 +12,13 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/property": "^1.0.0",
-    "@promaster/uom": "^1.0.0"
+    "@promaster/property": "^1.0.1",
+    "@promaster/uom": "^1.0.1"
   },
   "scripts": {
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
-    "build:esm":
-      "tsc --module es2015 --moduleResolution node --outDir ./lib-esm"
+    "build:esm": "tsc --module es2015 --moduleResolution node --outDir ./lib-esm"
   }
 }

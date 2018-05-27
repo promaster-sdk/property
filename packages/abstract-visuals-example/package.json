@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@promaster/abstract-visuals-example",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Promaster SDK",
   "repository": "https://gitlab.divid.se/promaster-sdk",
   "main": "lib-cjs/index.js",
@@ -13,9 +13,9 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/abstract-image": "^1.0.0",
-    "@promaster/abstract-chart": "^1.0.0",
-    "@promaster/abstract-document": "^1.0.0",
+    "@promaster/abstract-chart": "^1.0.1",
+    "@promaster/abstract-document": "^1.0.1",
+    "@promaster/abstract-image": "^1.0.1",
     "base64-js": "^1.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.4.2"
@@ -26,8 +26,7 @@
     "@types/react-dom": "^15.5.1"
   },
   "scripts": {
-    "start":
-      "webpack-dev-server --config webpack.config.js --content-base ./src",
+    "start": "webpack-dev-server --config webpack.config.js --content-base ./src",
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "build": "tsc",
     "clean": "rm -rf ./lib"
