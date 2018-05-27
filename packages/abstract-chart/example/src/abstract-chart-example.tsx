@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AbstractChart } from "../../src/index";
+import * as AbstractChart from "../../src/index";
 
 function getStackRange(
   points: ReadonlyArray<AbstractChart.StackPoints>,
