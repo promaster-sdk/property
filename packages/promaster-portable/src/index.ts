@@ -5,8 +5,6 @@ import * as Properties from "@promaster/api-properties";
 import * as OrderingCode from "@promaster/api-ordering-code";
 import * as PropertyFiltering from "@promaster/property-filtering";
 import * as AI from "@promaster/abstract-image";
-// import * as AbstractImage from "@promaster/abstract-image";
-// import * as AbstractImageExporters from "@promaster/abstract-image";
 import * as AbstractChart from "@promaster/abstract-chart";
 
 export {
@@ -21,8 +19,10 @@ export {
   AbstractChart
 };
 
-import * as AbstractDoc from "./abstract-document/index";
-import * as AbstractDocExporters from "./abstract-document-exporters/index";
-import * as AbstractDocJsx from "./abstract-document-jsx/index";
+import {
+  AbstractDoc,
+  AbstractDocExporters,
+  AbstractDocJsx
+} from "@promaster/abstract-document";
 
 export { AbstractDoc, AbstractDocExporters, AbstractDocJsx };
