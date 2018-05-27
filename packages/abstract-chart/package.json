@@ -20,9 +20,6 @@
     "@types/ramda": "^0.25.29"
   },
   "scripts": {
-    "start":
-      "webpack-dev-server --config example/webpack.config.js --content-base ./example",
-    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
