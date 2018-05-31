@@ -1,0 +1,29 @@
+{
+  "name": "@promaster/promaster-markdown",
+  "version": "1.0.1",
+  "description": "Promaster Markdown",
+  "repository": "https://gitlab.divid.se/promaster-sdk/promaster-sdk/tree/master/packages/promaster-markdown",
+  "main": "lib-cjs/index.js",
+  "module": "lib-esm/index.js",
+  "types": "lib-cjs/index",
+  "license": "UNLICENSED",
+  "author": "Divid Promaster AB",
+  "publishConfig": {
+    "registry": "https://npm.divid.se"
+  },
+  "dependencies": {
+    "markdown-to-ast": "^3.4.0",
+    "showdown": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/showdown": "^1.4.31"
+  },
+  "scripts": {
+    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
+    "build:clean": "rm -rf ./lib-cjs ./lib-esm",
+    "build:cjs": "tsc",
+    "build:esm": "tsc --module es2015 --outDir ./lib-esm",
+    "test": "rm -rf test/lib && mocha --colors",
+    "test:build": "cd test && tsc"
+  }
+}

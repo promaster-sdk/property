@@ -1,27 +1,28 @@
-import * as AbstractChart from "./abstract-chart/index";
-import * as AbstractDoc from "./abstract-document/index";
-import * as AbstractDocExporters from "./abstract-document-exporters/index";
-import * as AbstractDocJsx from "./abstract-document-jsx/index";
-import * as AbstractImage from "./abstract-image/index";
-import * as AbstractImageExporters from "./abstract-image-exporters/index";
-import * as PropertyFiltering from "./property-filtering/index";
-import * as VariantListing from "./variant-listing/index";
-import * as PromasterMarkdown from "./promaster-markdown/index";
-import * as PromasterApi from "./promaster-api/index";
-import * as Properties from "./properties/index";
-import * as OrderingCode from "./ordering-code/index";
+import * as PromasterMarkdown from "@promaster/promaster-markdown";
+import * as VariantListing from "@promaster/variant-listing";
+import * as PromasterApi from "@promaster/api";
+import * as Properties from "@promaster/api-properties";
+import * as OrderingCode from "@promaster/api-ordering-code";
+import * as PropertyFiltering from "@promaster/property-filtering";
+import * as AI from "@promaster/abstract-image";
+import * as AbstractChart from "@promaster/abstract-chart";
 
 export {
-  AbstractChart,
-  AbstractDoc,
-  AbstractDocExporters,
-  AbstractDocJsx,
-  AbstractImage,
-  AbstractImageExporters,
-  PropertyFiltering,
-  VariantListing,
   PromasterMarkdown,
+  VariantListing,
   PromasterApi,
   Properties,
-  OrderingCode
+  OrderingCode,
+  PropertyFiltering,
+  AI as AbstractImage,
+  AI as AbstractImageExporters,
+  AbstractChart
 };
+
+import {
+  AbstractDoc,
+  AbstractDocExporters,
+  AbstractDocJsx
+} from "@promaster/abstract-document";
+
+export { AbstractDoc, AbstractDocExporters, AbstractDocJsx };

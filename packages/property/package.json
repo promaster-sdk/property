@@ -1,6 +1,6 @@
 {
   "name": "@promaster/property",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -12,10 +12,9 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/uom": "^1.0.0"
+    "@promaster/uom": "^1.0.1"
   },
   "scripts": {
-    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc && yarn build:parser:cjs",

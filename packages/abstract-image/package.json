@@ -1,0 +1,30 @@
+{
+  "name": "@promaster/abstract-image",
+  "version": "1.0.1",
+  "description": "Promaster SDK Portable Libraries",
+  "repository": "https://gitlab.divid.se/promaster-sdk",
+  "main": "lib-cjs/index.js",
+  "module": "lib-esm/index.js",
+  "types": "lib-cjs/index",
+  "license": "UNLICENSED",
+  "author": "Divid Promaster AB",
+  "publishConfig": {
+    "registry": "https://npm.divid.se"
+  },
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1"
+  },
+  "scripts": {
+    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
+    "build:clean": "rm -rf ./lib-cjs ./lib-esm",
+    "build:cjs": "tsc",
+    "build:esm": "tsc --module es2015 --outDir ./lib-esm",
+    "test": "rm -rf test/lib && mocha --colors",
+    "test:build": "cd test && tsc"
+  }
+}

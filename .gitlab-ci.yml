@@ -5,40 +5,50 @@ stages:
 variables:
   YARN: yarn
 
-promaster-primitives-test:
+packages:
   image: node:8.9.4
   stage: test
   script:
     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
-    - $YARN install
-    - $YARN lerna run --scope @promaster/promaster-primitives verify
-  coverage: /^All files\s*\|\s*(\d+.\d+)/
-  artifacts:
-    paths:
-      - coverage/
+    - yarn install
+    - yarn lint
+    - yarn build
+    - yarn test
 
-promaster-portable-test:
-  image: node:8.9.4
-  stage: test
-  script:
-    - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
-    - $YARN install
-    - $YARN lerna run build
-    - $YARN lerna run --scope @promaster/promaster-portable build
-    - $YARN lerna run --scope @promaster/promaster-portable test
+# promaster-primitives-test:
+#   image: node:8.9.4
+#   stage: test
+#   script:
+#     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
+#     - $YARN install
+#     - $YARN lerna run --scope @promaster/promaster-primitives verify
+#   coverage: /^All files\s*\|\s*(\d+.\d+)/
+#   artifacts:
+#     paths:
+#       - coverage/
 
-promaster-react-test:
-  image: node:8.9.4
-  stage: test
-  script:
-    - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
-    - $YARN install
-    - $YARN lerna run build
-    - $YARN lerna run --scope @promaster/promaster-react lint
-    - $YARN lerna run --scope @promaster/promaster-react circular
-    - $YARN lerna run --scope @promaster/promaster-react build
-    # - $YARN lerna run --scope @promaster/promaster-react tsc:test
-    # - $YARN lerna run --scope @promaster/promaster-react test
+# promaster-portable-test:
+#   image: node:8.9.4
+#   stage: test
+#   script:
+#     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
+#     - $YARN install
+#     - $YARN lerna run build
+#     - $YARN lerna run --scope @promaster/promaster-portable build
+#     - $YARN lerna run --scope @promaster/promaster-portable test
+
+# promaster-react-test:
+#   image: node:8.9.4
+#   stage: test
+#   script:
+#     - echo $'@promaster:registry=https://npm.divid.se/\n//npm.divid.se/:always-auth=true\n//npm.divid.se/:_authToken="mB+l/jDgu/opzRXfn+VTVg3fT+CDHE5ZmVQCAEkSzfs=\"\n' > .npmrc
+#     - $YARN install
+#     - $YARN lerna run build
+#     - $YARN lerna run --scope @promaster/promaster-react lint
+#     - $YARN lerna run --scope @promaster/promaster-react circular
+#     - $YARN lerna run --scope @promaster/promaster-react build
+#     # - $YARN lerna run --scope @promaster/promaster-react tsc:test
+#     # - $YARN lerna run --scope @promaster/promaster-react test
 
 # promaster-primitives-pages:
 #   stage: pages

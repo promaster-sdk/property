@@ -1,6 +1,6 @@
 {
   "name": "@promaster/uom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -12,12 +12,10 @@
     "registry": "https://npm.divid.se"
   },
   "scripts": {
-    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
     "build:esm": "tsc --module es2015 --moduleResolution node --outDir ./lib-esm",
-    "circular": "madge --circular ./src/index.ts",
     "test": "yarn test:build:clean && mocha --colors",
     "testjs": "yarn test:build && mocha \"lib-test/**/*.js\"",
     "test:build": "cd test && tsc",
