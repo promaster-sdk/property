@@ -1,6 +1,6 @@
 {
   "name": "@promaster/variant-listing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
@@ -11,7 +11,7 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/promaster-primitives": "^3.1.0",
+    "@promaster/promaster-primitives": "^3.1.1",
     "ramda": "^0.22.1"
   },
   "devDependencies": {
