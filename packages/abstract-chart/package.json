@@ -1,6 +1,6 @@
 {
   "name": "@promaster/abstract-chart",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib-cjs/index.js",
@@ -12,7 +12,7 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/abstract-image": "^1.0.1",
+    "@promaster/abstract-image": "^1.0.2",
     "ramda": "^0.22.1",
     "ts-exhaustive-check": "^1.0.0"
   },

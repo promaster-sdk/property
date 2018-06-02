@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-primitives",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -12,7 +12,7 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/property": "^1.0.2",
+    "@promaster/property": "^1.0.3",
     "@promaster/uom": "^1.0.1"
   },
   "scripts": {

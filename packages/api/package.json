@@ -1,6 +1,6 @@
 {
   "name": "@promaster/api",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Promaster API",
   "repository": "https://gitlab.divid.se/promaster-sdk/packages/promaster-api",
   "main": "lib-cjs/index.js",
@@ -12,8 +12,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
+    "@promaster/property": "^1.0.3",
     "@promaster/uom": "^1.0.0",
-    "@promaster/property": "^1.0.0",
     "isomorphic-fetch": "^2.2.1",
     "ramda": "^0.22.1",
     "ts-exhaustive-check": "^1.0.0"
