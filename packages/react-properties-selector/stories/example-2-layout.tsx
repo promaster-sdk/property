@@ -1,8 +1,12 @@
 import * as React from "react";
 import { Expander } from "./expander";
 import { propertiesSelectorLayoutStyles as styles } from "./example-2-layout-styles";
-import * as PropertySelectors from "@promaster/property-selectors";
-import { AmountFields } from "@promaster/property-selectors";
+import * as PropertySelectors from "@promaster/react-property-selectors";
+import {
+  createAmountInputBox,
+  createAmountFormatSelector,
+  AmountFormatWrapper
+} from "@promaster/react-property-selectors";
 import * as PropertiesSelector from "../src/index";
 
 import styled from "styled-components";
@@ -15,9 +19,9 @@ const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector
         background: green;
         padding: 20px;
       `,
-      AmountInputBox: AmountFields.createAmountInputBox({}),
-      AmountFormatSelector: AmountFields.createAmountFormatSelector({
-        AmountFormatWrapper: styled(AmountFields.AmountFormatWrapper)`
+      AmountInputBox: createAmountInputBox({}),
+      AmountFormatSelector: createAmountFormatSelector({
+        AmountFormatWrapper: styled(AmountFormatWrapper)`
           background-color: ${props => (props.active ? "red" : "white")};
           padding: 5px;
         `,
