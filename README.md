@@ -12,7 +12,7 @@ In order to install the packages in this repo you need to have certain settings 
 
 Once you have the [npm registry](#npm-registry) setup and working, you can install the package using this command:
 
-`npm install --save @promaster/promaster-primitives @promaster/promaster-portable @promaster/promaster-react`
+`npm install --save @promaster/property`
 
 ## npm registry
 
