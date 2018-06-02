@@ -1,12 +1,9 @@
 import * as React from "react";
 import * as R from "ramda";
-import { PropertiesSelector } from "@promaster/promaster-react";
-import { PropertyFiltering } from "@promaster/promaster-portable";
-import {
-  Unit,
-  PropertyFilter,
-  PropertyValueSet
-} from "@promaster/promaster-primitives";
+import * as PropertiesSelector from "../src/index";
+import * as PropertyFiltering from "@promaster/property-filtering";
+import { Unit } from "@promaster/uom";
+import { PropertyFilter, PropertyValueSet } from "@promaster/property";
 import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
 import { createPropertiesSelectorExample2Layout } from "./example-2-layout";
