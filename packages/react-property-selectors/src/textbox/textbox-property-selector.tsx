@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-  PropertyValue,
-  PropertyValueSet
-} from "@promaster/promaster-primitives";
+import { PropertyValue, PropertyValueSet } from "@promaster/property";
 import styled, * as StyledComponents from "styled-components";
 
 export interface TextboxPropertySelectorProps {

@@ -3,12 +3,7 @@
  */
 import * as React from "react";
 import styled from "styled-components";
-import {
-  Units,
-  Unit,
-  UnitName,
-  Quantity
-} from "@promaster/promaster-primitives";
+import { Units, Unit, UnitName, Quantity } from "@promaster/uom";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps

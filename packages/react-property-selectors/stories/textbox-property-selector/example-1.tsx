@@ -1,9 +1,6 @@
 import * as React from "react";
 import { createTextboxPropertySelector } from "../../src/textbox/textbox-property-selector";
-import {
-  PropertyValueSet,
-  PropertyValue
-} from "@promaster/promaster-primitives";
+import { PropertyValueSet, PropertyValue } from "@promaster/property";
 import { merge } from "../utils";
 
 // tslint:disable:variable-name no-class no-this no-any

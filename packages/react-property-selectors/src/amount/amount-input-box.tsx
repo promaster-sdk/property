@@ -5,8 +5,7 @@
  It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
 import * as React from "react";
-import { Amount, Unit } from "@promaster/promaster-primitives";
-import { Quantity } from "@promaster/promaster-primitives";
+import { Amount, Unit, Quantity } from "@promaster/uom";
 import styled, * as StyledComponents from "styled-components";
 import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 

@@ -2,14 +2,13 @@ import * as React from "react";
 // import { PropertySelectors } from "../../src";
 import { createAmountPropertySelector } from "../../src/amount/amount-property-selector";
 
-import { PropertyFiltering } from "@promaster/promaster-portable";
+import * as PropertyFiltering from "@promaster/property-filtering";
+import { Unit, Units } from "@promaster/uom";
 import {
-  Unit,
-  Units,
   PropertyFilter,
   PropertyValueSet,
   PropertyValue
-} from "@promaster/promaster-primitives";
+} from "@promaster/property";
 import { merge } from "../utils";
 
 // tslint:disable:variable-name no-class no-this no-any

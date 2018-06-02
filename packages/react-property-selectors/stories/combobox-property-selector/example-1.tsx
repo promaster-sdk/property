@@ -5,7 +5,7 @@ import {
   ComboBoxPropertyValueItem
 } from "../../src/combo-box/combobox-property-selector";
 
-import { PropertyFiltering } from "@promaster/promaster-portable";
+import * as PropertyFiltering from "@promaster/property-filtering";
 import {
   PropertyFilter,
   PropertyValueSet,

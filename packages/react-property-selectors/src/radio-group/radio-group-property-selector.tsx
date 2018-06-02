@@ -3,8 +3,8 @@ import {
   PropertyFilter,
   PropertyValue,
   PropertyValueSet
-} from "@promaster/promaster-primitives";
-import { PropertyFiltering } from "@promaster/promaster-portable";
+} from "@promaster/property";
+import * as PropertyFiltering from "@promaster/property-filtering";
 import { RadioGroupProps, RadioGroup } from "./radio-group";
 import { RadioGroupItemProps, RadioGroupItem } from "./radio-group-item";
 import Styled from "styled-components";

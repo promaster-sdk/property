@@ -1,12 +1,10 @@
 import * as React from "react";
 import {
-  Amount,
   PropertyValueSet,
   PropertyFilter,
-  PropertyValue,
-  Unit,
-  Quantity
-} from "@promaster/promaster-primitives";
+  PropertyValue
+} from "@promaster/property";
+import { Amount, Unit, Quantity } from "@promaster/uom";
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
   AmountFormatSelector,
