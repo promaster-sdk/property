@@ -2,11 +2,13 @@
 
 ## Introduction
 
-This is the unit of measure library.
+This package has functions to handle unit of measures. It works particulary well with typescript in which case it can provice some type safety for amounts of different quantity.
 
-## How to install
+## Installation
 
-Once you have the [promaster npm registry](#npm-registry) setup and working, you can install the package using this command: `npm install --save @promaster/uom`.
+`npm install --save @promaster/uom`
+
+The library is compiled to ES5 and no polyfills are required.
 
 ## Usage
 
@@ -17,30 +19,6 @@ const amount = Amount.create(10, Units.Meter);
 const inch = Amount.valueAs(Units.Inch, amount);
 ```
 
-## Run-time requirements
-
-This libarary is compiled to ES5 and does not require any polyfills. It does not use any ES6 specific API:s like `Map` or `Set`.
-
 ## Prior art
 
-This library is inspired by [JSR-275](JSR-275.pdf).
-
-According to http://kenai.com/projects/jsr-275/pages/HomeJSR-275 has been archived and moved to:
-
-http://code.google.com/p/unitsofmeasure/
-
-For more information check these links:
-
-http://jscience.org/jsr-275/api/
-
-http://jscience.org/api/javax/measure/unit/package-summary.html
-
-http://kenai.com/projects/jsr-275/downloads/download/JSR-275.pdf
-
-http://www.javaworld.com/javaworld/jw-10-2007/jw-10-jsr275.html
-
-http://www.java2s.com/Open-Source/Java-Document/6.0-JDK-Modules/jsr-275/javax/measure/unit/ProductUnit.java.htm
-
-A new library has been accepted as JSR-363:
-
-http://www.baeldung.com/javax-measure
+This library was inspired by [JSR-275](http://download.oracle.com/otn-pub/jcp/untis-0.6-edr-oth-JSpec/Units-v0.6_edr.pdf?AuthParam=1527941513_89b45d975b743c799d22105ff16f961b). See also this [repo](http://code.google.com/p/unitsofmeasure/), this [article](https://www.javaworld.com/article/2077770/core-java/introduction-to-jsr-275--measures-and-units.html). Altough JSR-275 was not accepted but it evolved into [JSR-363](http://www.baeldung.com/javax-measure) which is now accepted.
