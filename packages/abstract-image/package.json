@@ -26,6 +26,9 @@
     "build:cjs": "tsc",
     "build:esm": "tsc --module es2015 --outDir ./lib-esm",
     "test": "rm -rf test/lib && mocha --colors",
-    "test:build": "cd test && tsc"
+    "test:build": "cd test && tsc",
+    "tsc:stories": "tsc -p stories --noEmit",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   }
 }
