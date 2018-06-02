@@ -2,7 +2,7 @@ import * as AmountFields from "@promaster/react-property-selectors";
 import * as ComboBoxElements from "@promaster/react-property-selectors";
 import * as RadioGroupElements from "@promaster/react-property-selectors";
 import * as PropertySelectors from "@promaster/react-property-selectors";
-import * as PropertiesSelector from "./properties-selector/index";
+import * as PropertiesSelector from "@promaster/react-properties-selector";
 import * as AbstractImageExporters from "@promaster/abstract-image";
 import * as Dropdown from "@promaster/react-property-selectors";
 export {
