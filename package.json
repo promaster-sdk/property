@@ -2,6 +2,7 @@
   "private": true,
   "workspaces": ["packages/*"],
   "devDependencies": {
+    "@storybook/react": "^3.3.12",
     "@types/assertion-error": "^1.0.30",
     "@types/benchmark": "^1.0.31",
     "@types/chai": "^4.1.2",
@@ -9,7 +10,6 @@
     "@types/mocha": "^2.2.48",
     "@types/node": "^8.0.9",
     "@types/pegjs": "0.0.28",
-    "@storybook/react": "^3.3.12",
     "awesome-typescript-loader": "^3.0.0-beta.17",
     "benchmark": "^2.1.4",
     "chai": "^4.1.2",

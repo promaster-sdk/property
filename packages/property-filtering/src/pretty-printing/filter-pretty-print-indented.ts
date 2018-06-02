@@ -1,4 +1,4 @@
-import { Units, UnitName } from "@promaster/uom";
+import { Units, UnitName } from "uom";
 import {
   PropertyFilter,
   PropertyFilterAst as Ast,

@@ -1,4 +1,4 @@
-import { Amount, Quantity } from "@promaster/uom";
+import { Amount, Quantity } from "uom";
 import * as PropertyValue from "./property-value";
 import { PropertyType } from "./property-value";
 

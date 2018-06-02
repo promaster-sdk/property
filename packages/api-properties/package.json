@@ -14,7 +14,7 @@
   "dependencies": {
     "@promaster/api": "^1.0.3",
     "@promaster/property": "^1.0.3",
-    "@promaster/uom": "^1.0.1"
+    "uom": "^1.0.0"
   },
   "scripts": {
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",

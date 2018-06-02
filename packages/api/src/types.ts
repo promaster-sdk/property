@@ -1,4 +1,4 @@
-import { Quantity, Unit } from "@promaster/uom";
+import { Quantity, Unit } from "uom";
 import { PropertyFilter, PropertyValue } from "@promaster/property";
 
 export type Url = string;

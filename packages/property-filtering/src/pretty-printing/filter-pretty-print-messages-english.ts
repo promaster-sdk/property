@@ -1,5 +1,5 @@
 import { PropertyFilterAst as Ast, PropertyValue } from "@promaster/property";
-import { UnitName } from "@promaster/uom";
+import { UnitName } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 
 export function comparisionOperationMessage(

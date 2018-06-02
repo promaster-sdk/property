@@ -2,7 +2,7 @@
  * Functions related to the "Properties" module in Promaster
  */
 
-import { Amount, Units } from "@promaster/uom";
+import { Amount, Units } from "uom";
 import {
   PropertyValueSet,
   PropertyValue,

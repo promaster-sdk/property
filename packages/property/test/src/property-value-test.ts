@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { Units, Amount, Quantity } from "@promaster/uom";
+import { Units, Amount, Quantity } from "uom";
 import * as PropertyValue from "../../src/property-value";
 
 describe("PropertyValue", () => {

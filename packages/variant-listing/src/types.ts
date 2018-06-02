@@ -1,4 +1,4 @@
-import { Quantity } from "@promaster/uom";
+import { Quantity } from "uom";
 import {
   PropertyValueSet,
   PropertyFilter,

@@ -1,7 +1,7 @@
-import { Amount } from "@promaster/uom";
-import { Units } from "@promaster/uom";
-import { Unit } from "@promaster/uom";
-import { Quantity } from "@promaster/uom";
+import { Amount } from "uom";
+import { Units } from "uom";
+import { Unit } from "uom";
+import { Quantity } from "uom";
 import { compareNumbers, compareIgnoreCase } from "./utils/compare-utils";
 
 // Types

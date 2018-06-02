@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import * as PropertyValueSet from "../../src/property-value-set";
 import * as PropertyValue from "../../src/property-value";
-import { Units, Amount } from "@promaster/uom";
+import { Units, Amount } from "uom";
 
 describe("PropertyValueSet", () => {
   describe("getValue", () => {

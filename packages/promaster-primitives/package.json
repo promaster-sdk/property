@@ -13,12 +13,13 @@
   },
   "dependencies": {
     "@promaster/property": "^1.0.3",
-    "@promaster/uom": "^1.0.1"
+    "uom": "^1.0.0"
   },
   "scripts": {
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
-    "build:esm": "tsc --module es2015 --moduleResolution node --outDir ./lib-esm"
+    "build:esm":
+      "tsc --module es2015 --moduleResolution node --outDir ./lib-esm"
   }
 }

@@ -10400,6 +10400,10 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
+uom@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/uom/-/uom-1.0.1.tgz#cf8c466aaabf0bfb7858b210ebaf1a2f9f1695e8"
+
 update-notifier@^2.1.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-2.5.0.tgz#d0744593e13f161e406acb1d9408b72cad08aff6"

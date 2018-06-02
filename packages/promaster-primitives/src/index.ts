@@ -9,7 +9,7 @@ export {
   UnitInfo,
   UnitDivide,
   UnitTimes
-} from "@promaster/uom";
+} from "uom";
 export {
   // property-filtering
   PropertyFilter,

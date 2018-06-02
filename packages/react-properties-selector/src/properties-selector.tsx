@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Units, Quantity, Unit } from "@promaster/uom";
+import { Units, Quantity, Unit } from "uom";
 import {
   PropertyValueSet,
   PropertyValue,

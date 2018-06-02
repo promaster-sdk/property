@@ -4,7 +4,7 @@ import {
   PropertyFilter,
   PropertyValue
 } from "@promaster/property";
-import { Amount, Unit, Quantity } from "@promaster/uom";
+import { Amount, Unit, Quantity } from "uom";
 import * as PropertyFiltering from "@promaster/property-filtering";
 import {
   AmountFormatSelector,

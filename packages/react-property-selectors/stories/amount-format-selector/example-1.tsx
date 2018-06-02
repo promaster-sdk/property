@@ -5,7 +5,7 @@ import {
 } from "../../src/amount/amount-format-wrapper";
 import { createAmountFormatSelector } from "../../src/amount/amount-format-selector";
 import { createAmountInputBox } from "../../src/amount/amount-input-box";
-import { Unit, Units, Amount } from "@promaster/uom";
+import { Unit, Units, Amount } from "uom";
 import { merge } from "../utils";
 import styled from "styled-components";
 import { action } from "@storybook/addon-actions";

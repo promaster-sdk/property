@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import { Units } from "@promaster/uom";
+import { Units } from "uom";
 import {
   PropertyValue,
   PropertyValueSet,

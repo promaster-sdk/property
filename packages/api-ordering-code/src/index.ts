@@ -8,7 +8,7 @@ import {
   PropertyValue,
   PropertyFilter
 } from "@promaster/property";
-import { Amount, Units } from "@promaster/uom";
+import { Amount, Units } from "uom";
 import * as Api from "@promaster/api";
 
 export interface BuiltOrderingCode {
