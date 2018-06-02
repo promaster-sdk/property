@@ -9,7 +9,7 @@ import {
   PropertyFilter,
   PropertyValueSet,
   PropertyValue
-} from "@promaster/promaster-primitives";
+} from "@promaster/property";
 import { merge } from "../utils";
 
 // tslint:disable:variable-name no-class no-this no-any

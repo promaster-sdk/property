@@ -1,10 +1,10 @@
 import * as R from "ramda";
+import { Units } from "@promaster/uom";
 import {
   PropertyValue,
   PropertyValueSet,
-  PropertyFilter,
-  Units
-} from "@promaster/promaster-primitives";
+  PropertyFilter
+} from "@promaster/property";
 import { ExtendedVariants, ProductProperty, VariantUrlList } from "./types";
 
 export function buildAllPropertyValueSets(

@@ -3,7 +3,7 @@ import {
   PropertyFilter,
   PropertyValue,
   PropertyValueSet
-} from "@promaster/promaster-primitives";
+} from "@promaster/property";
 import * as PropertyFiltering from "@promaster/property-filtering";
 import Styled from "styled-components";
 

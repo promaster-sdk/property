@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropertiesSelector from "../src/index";
-import { PropertyValueSet } from "@promaster/promaster-primitives";
+import { PropertyValueSet } from "@promaster/property";
 import { exampleProductProperties } from "./example-product-properties";
 import { action } from "@storybook/addon-actions";
 

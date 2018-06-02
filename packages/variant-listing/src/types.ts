@@ -1,9 +1,9 @@
+import { Quantity } from "@promaster/uom";
 import {
-  Quantity,
   PropertyValueSet,
   PropertyFilter,
   PropertyValue
-} from "@promaster/promaster-primitives";
+} from "@promaster/property";
 
 export interface ProductProperty {
   readonly sort_no: number;
