@@ -1,0 +1,16 @@
+{
+  "globals": {
+    "ts-jest": {
+      "tsConfigFile": "test/tsconfig.json"
+    }
+  },
+  "rootDir": "../",
+  "transform": {
+    ".(ts|tsx)": "<rootDir>/../../node_modules/ts-jest/preprocessor.js"
+  },
+  "testRegex": "(/test/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+  "moduleFileExtensions": ["ts", "tsx", "js"],
+  "collectCoverage": true,
+  "mapCoverage": true,
+  "coverageDirectory": "<rootDir>/coverage"
+}
