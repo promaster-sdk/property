@@ -1,5 +1,4 @@
 import * as React from "react";
-// import { PropertySelectors as Selectors } from "@promaster/promaster-react";
 import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem

@@ -19,10 +19,7 @@
       "es2015.symbol"
     ],
     "baseUrl": ".",
-    "paths": {
-      "@promaster/promaster-react": ["../src"],
-      "@promaster/promaster-react/*": ["../src/*"]
-    }
+    "paths": {}
   },
   "include": ["**/*"],
   "exclude": ["node_modules/**/"]

@@ -1,5 +1,4 @@
 import * as React from "react";
-// import { AmountFields } from "@promaster/promaster-react";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps
