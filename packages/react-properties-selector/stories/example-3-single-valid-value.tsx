@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as R from "ramda";
-import { PropertiesSelector } from "@promaster/promaster-react";
-import { PropertyFiltering } from "@promaster/promaster-portable";
+import * as PropertiesSelector from "../src/index";
+import * as PropertyFiltering from "@promaster/property-filtering";
+import { Unit } from "@promaster/uom";
 import {
-  Unit,
   PropertyFilter,
   PropertyValueSet,
   PropertyValue
-} from "@promaster/promaster-primitives";
-import { merge } from "../utils";
+} from "@promaster/property";
+import { merge } from "./utils";
 
 // tslint:disable:variable-name no-class no-this no-any
 

@@ -7,8 +7,9 @@ import {
   PropertyFilter,
   PropertyValueSet
 } from "@promaster/promaster-primitives";
-import { merge } from "../utils";
+import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
+import { createPropertiesSelectorExample2Layout } from "./example-2-layout";
 
 // tslint:disable:variable-name no-class no-this no-any
 
@@ -28,14 +29,11 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
     propertyFilter
   );
 
-export class PropertiesSelectorExampleEmptyPvs extends React.Component<
-  {},
-  State
-> {
+export class PropertiesSelectorExample2 extends React.Component<{}, State> {
   constructor() {
     super();
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString(""),
+      propertyValueSet: PropertyValueSet.fromString("a=10:Celsius;b=1;"),
       closedGroups: [],
       propertyFormats: {}
     };
@@ -46,8 +44,8 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
+        // console.log("onChange", properties);
         this.setState(merge(this.state, { propertyValueSet: properties }));
-        // console.log("updated");
       },
       productProperties: productProperties,
       includeCodes: true,
@@ -55,7 +53,7 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
       filterPrettyPrint: filterPrettyPrint,
       propertyFormats: this.state.propertyFormats,
       readOnlyProperties: [],
-      optionalProperties: [],
+      optionalProperties: ["a"],
       onPropertyFormatChanged: (
         propertyName: string,
         unit: Unit.Unit<any>,
@@ -87,12 +85,15 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
       translateGroupName: () => "translateGroupName",
       closedGroups: [],
       onToggleGroupClosed: () => "",
-      inputDebounceTime: 600
+      LayoutRenderer: createPropertiesSelectorExample2Layout()
     };
 
     return (
       <div>
-        <div>{PropertyValueSet.toString(this.state.propertyValueSet)}</div>
+        <span>{PropertyValueSet.toString(this.state.propertyValueSet)}</span>
+        <div style={{ margin: 20 }}>
+          This example shows how the whole layout can be overridden
+        </div>
         <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
       </div>
     );

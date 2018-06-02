@@ -6,10 +6,10 @@ import { linkTo } from "@storybook/addon-links";
 
 import { Button, Welcome } from "@storybook/react/demo";
 
-import { PropertiesSelectorExample1 } from "./properties-selector/example-1";
-import { PropertiesSelectorExample2 } from "./properties-selector/example-2";
-import { PropertiesSelectorExample3SingleValidValue } from "./properties-selector/example-3-single-valid-value";
-import { PropertiesSelectorExampleEmptyPvs } from "./properties-selector/example-empty-pvs";
+import { PropertiesSelectorExample1 } from "./example-1";
+import { PropertiesSelectorExample2 } from "./example-2";
+import { PropertiesSelectorExample3SingleValidValue } from "./example-3-single-valid-value";
+import { PropertiesSelectorExampleEmptyPvs } from "./example-empty-pvs";
 
 storiesOf("Welcome", module).add("to Storybook", () => (
   <Welcome showApp={linkTo("Button")} />

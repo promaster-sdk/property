@@ -1,11 +1,10 @@
 import * as React from "react";
 import { Expander } from "./expander";
 import { propertiesSelectorLayoutStyles as styles } from "./example-2-layout-styles";
-import {
-  AmountFields,
-  PropertiesSelector,
-  PropertySelectors
-} from "@promaster/promaster-react";
+import * as PropertySelectors from "@promaster/property-selectors";
+import { AmountFields } from "@promaster/property-selectors";
+import * as PropertiesSelector from "../src/index";
+
 import styled from "styled-components";
 
 // tslint:disable:variable-name no-class no-this no-any

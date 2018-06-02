@@ -1,5 +1,5 @@
-import { PropertiesSelector } from "@promaster/promaster-react";
-import { PropertyFilter, PropertyValue } from "@promaster/promaster-primitives";
+import * as PropertiesSelector from "../src/index";
+import { PropertyFilter, PropertyValue } from "@promaster/property";
 
 export function exampleProductProperties(): Array<PropertiesSelector.Property> {
   return [
