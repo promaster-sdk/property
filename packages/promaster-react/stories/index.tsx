@@ -25,20 +25,6 @@ storiesOf("Button", module)
     <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>
   ));
 
-storiesOf("Amount Format Selector", module).add("example 1", () => (
-  <AmountFormatSelectorExample1 />
-));
-
-storiesOf("Amount Property Selector", module).add("example 1", () => (
-  <AmountPropertySelectorExample1 />
-));
-
-storiesOf("Combobox Property Selector", module).add("example 1", () => (
-  <ComboboxPropertySelectorExample1 />
-));
-
-storiesOf("Dropdown", module).add("example 1", () => <DropdownExample1 />);
-
 storiesOf("Properties Selector", module)
   .add("example 1", () => <PropertiesSelectorExample1 />)
   .add("example 2, with custom layout", () => <PropertiesSelectorExample2 />)
@@ -55,8 +41,4 @@ storiesOf("React Svg Export", module).add("example 1", () => (
 
 storiesOf("Svg Export (not a component?)", module).add("example 1", () => (
   <SvgExportExample1 />
-));
-
-storiesOf("Textbox Property Selector", module).add("example 1", () => (
-  <TextboxPropertySelectorExample1 />
 ));
