@@ -20,6 +20,7 @@
     "@types/react-dom": "^15.5.1"
   },
   "scripts": {
+    "start": "yarn run storybook",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc",
