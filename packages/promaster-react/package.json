@@ -34,15 +34,10 @@
   },
   "scripts": {
     "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
-    "test": "jest --config=test/jest.config.json --colors",
     "circular": "madge --circular ./src/index.tsx",
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
     "build:clean": "rm -rf ./lib-cjs ./lib-esm",
     "build:cjs": "tsc -p src",
-    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
-    "tsc:test": "tsc -p test --noEmit",
-    "tsc:stories": "tsc -p stories --noEmit",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm"
   }
 }
