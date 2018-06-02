@@ -1,13 +1,11 @@
 import * as React from "react";
+import { Units, Quantity, Unit } from "@promaster/uom";
 import {
-  Units,
   PropertyValueSet,
-  Quantity,
   PropertyValue,
-  PropertyFilter,
-  Unit
-} from "@promaster/promaster-primitives";
-import { PropertyFiltering } from "@promaster/promaster-portable";
+  PropertyFilter
+} from "@promaster/property";
+import * as PropertyFiltering from "@promaster/property-filtering";
 import {
   PropertySelectorType,
   PropertySelectionOnChange,

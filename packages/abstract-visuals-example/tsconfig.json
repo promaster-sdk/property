@@ -44,8 +44,6 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@promaster/promaster-portable": ["../src"],
-      "@promaster/promaster-portable/*": ["../src/*"],
       "*": ["../custom-typings/*"]
     }
   },

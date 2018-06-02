@@ -14,6 +14,7 @@
   "dependencies": {
     "@promaster/uom": "^1.0.0",
     "@promaster/property": "^1.0.0",
+    "@promaster/property-filtering": "^1.0.0",
     "@promaster/react-property-selectors": "^1.0.0",
     "ramda": "^0.25.0",
     "react": "^15.6.1"

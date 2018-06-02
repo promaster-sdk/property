@@ -1,11 +1,10 @@
 import * as React from "react";
+import { Unit, Quantity } from "@promaster/uom";
 import {
-  Unit,
   PropertyValueSet,
   PropertyValue,
-  PropertyFilter,
-  Quantity
-} from "@promaster/promaster-primitives";
+  PropertyFilter
+} from "@promaster/property";
 import { PropertySelectorProps } from "./default-property-selector-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
 

@@ -38,10 +38,7 @@ module.exports = {
       new atl.TsConfigPathsPlugin({
         configFileName: "./src/client/tsconfig.json"
       })
-    ],
-    alias: {
-      "@promaster/promaster-portable": path.resolve(__dirname, "../")
-    }
+    ]
   },
   plugins: [new atl.CheckerPlugin()],
   devServer: {
