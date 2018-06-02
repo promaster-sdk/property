@@ -1,11 +1,10 @@
 import * as R from "ramda";
+import { Amount, Units } from "@promaster/uom";
 import {
   PropertyFilter,
   PropertyValueSet,
-  PropertyValue,
-  Amount,
-  Units
-} from "@promaster/promaster-primitives";
+  PropertyValue
+} from "@promaster/property";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import * as Types from "./types";
 import { isNumber } from "util";

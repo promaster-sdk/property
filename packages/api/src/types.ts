@@ -1,9 +1,5 @@
-import {
-  PropertyFilter,
-  PropertyValue,
-  Quantity,
-  Unit
-} from "@promaster/promaster-primitives";
+import { Quantity, Unit } from "@promaster/uom";
+import { PropertyFilter, PropertyValue } from "@promaster/property";
 
 export type Url = string;
 export type Uuid = string;
