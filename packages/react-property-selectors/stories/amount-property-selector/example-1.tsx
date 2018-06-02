@@ -1,5 +1,7 @@
 import * as React from "react";
-import { PropertySelectors } from "../../src";
+// import { PropertySelectors } from "../../src";
+import { createAmountPropertySelector } from "../../src/property-selectors/amount-property-selector";
+
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
   Unit,
@@ -30,9 +32,7 @@ const validationFilter = PropertyFilter.fromString(
   "a<100:Celsius"
 ) as PropertyFilter.PropertyFilter;
 
-const AmountPropertySelector = PropertySelectors.createAmountPropertySelector(
-  {}
-);
+const AmountPropertySelector = createAmountPropertySelector({});
 
 export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
   constructor() {

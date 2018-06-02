@@ -1,5 +1,11 @@
 import * as React from "react";
-import { AmountFields } from "@promaster/promaster-react";
+// import { AmountFields } from "@promaster/promaster-react";
+import {
+  AmountFormatWrapper,
+  AmountFormatWrapperProps
+} from "../../src/amount-fields/amount-format-wrapper";
+import { createAmountFormatSelector } from "../../src/amount-fields/amount-format-selector";
+import { createAmountInputBox } from "../../src/amount-fields/amount-input-box";
 import { Unit, Units, Amount } from "@promaster/promaster-primitives";
 import { merge } from "../utils";
 import styled from "styled-components";
@@ -19,8 +25,8 @@ const ClearButton = (props: React.HTMLProps<HTMLButtonElement>) => (
     Clear
   </button>
 );
-const AmountFormatWrapper = (props: AmountFields.AmountFormatWrapperProps) => (
-  <AmountFields.AmountFormatWrapper
+const AmountFormatWrapper2 = (props: AmountFormatWrapperProps) => (
+  <AmountFormatWrapper
     className={props.active ? "active" : "inactive"}
     {...props}
   />
@@ -32,13 +38,13 @@ const precisionSelector = styled.select`
   font-size: 15px;
 `;
 
-const AmountFormatSelector = AmountFields.createAmountFormatSelector({
+const AmountFormatSelector = createAmountFormatSelector({
   PrecisionSelector: precisionSelector,
   ClearButton: ClearButton,
-  AmountFormatWrapper: AmountFormatWrapper
+  AmountFormatWrapper: AmountFormatWrapper2
 });
 
-const AmountInputBox = AmountFields.createAmountInputBox({});
+const AmountInputBox = createAmountInputBox({});
 
 export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
   constructor() {

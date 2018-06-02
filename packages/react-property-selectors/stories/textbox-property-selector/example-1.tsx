@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PropertySelectors as Selectors } from "@promaster/promaster-react";
+import { createTextboxPropertySelector } from "../../src/property-selectors/textbox-property-selector";
 import {
   PropertyValueSet,
   PropertyValue
@@ -12,7 +12,7 @@ interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
 }
 
-const TextboxPropertySelector = Selectors.createTextboxPropertySelector({});
+const TextboxPropertySelector = createTextboxPropertySelector({});
 
 export class TextboxPropertySelectorExample1 extends React.Component<
   {},

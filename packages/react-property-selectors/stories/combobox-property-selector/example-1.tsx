@@ -1,5 +1,10 @@
 import * as React from "react";
-import { PropertySelectors as Selectors } from "@promaster/promaster-react";
+// import { PropertySelectors as Selectors } from "@promaster/promaster-react";
+import {
+  createComboboxPropertySelector,
+  ComboBoxPropertyValueItem
+} from "../../src/property-selectors/combobox-property-selector";
+
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
   PropertyFilter,
@@ -22,7 +27,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
     propertyFilter
   );
 
-const ComboboxPropertySelector = Selectors.createComboboxPropertySelector({});
+const ComboboxPropertySelector = createComboboxPropertySelector({});
 
 export class ComboboxPropertySelectorExample1 extends React.Component<
   {},
@@ -36,7 +41,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
   }
 
   render(): JSX.Element {
-    const valueItems1: Array<Selectors.ComboBoxPropertyValueItem> = [
+    const valueItems1: Array<ComboBoxPropertyValueItem> = [
       {
         value: PropertyValue.create("integer", 1),
         sortNo: 1,
@@ -53,7 +58,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
       }
     ];
 
-    const valueItems2: Array<Selectors.ComboBoxPropertyValueItem> = [
+    const valueItems2: Array<ComboBoxPropertyValueItem> = [
       {
         value: PropertyValue.create("integer", 1),
         sortNo: 1,
