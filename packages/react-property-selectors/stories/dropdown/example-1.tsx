@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createImageDropdownSelector } from "../../src/combo-box-elements/image-dropdown-selector";
+import { createImageDropdownSelector } from "../../src/combo-box/image-dropdown-selector";
 
 // tslint:disable:variable-name
 

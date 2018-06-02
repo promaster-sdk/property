@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createTextboxPropertySelector } from "../../src/property-selectors/textbox-property-selector";
+import { createTextboxPropertySelector } from "../../src/textbox/textbox-property-selector";
 import {
   PropertyValueSet,
   PropertyValue

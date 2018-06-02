@@ -3,9 +3,9 @@ import * as React from "react";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps
-} from "../../src/amount-fields/amount-format-wrapper";
-import { createAmountFormatSelector } from "../../src/amount-fields/amount-format-selector";
-import { createAmountInputBox } from "../../src/amount-fields/amount-input-box";
+} from "../../src/amount/amount-format-wrapper";
+import { createAmountFormatSelector } from "../../src/amount/amount-format-selector";
+import { createAmountInputBox } from "../../src/amount/amount-input-box";
 import { Unit, Units, Amount } from "@promaster/promaster-primitives";
 import { merge } from "../utils";
 import styled from "styled-components";

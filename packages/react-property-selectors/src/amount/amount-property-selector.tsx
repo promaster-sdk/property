@@ -14,11 +14,8 @@ import {
   OnFormatChanged,
   OnFormatCleared,
   OnFormatSelectorToggled
-} from "../amount-fields/amount-format-selector";
-import {
-  AmountInputBox,
-  createAmountInputBox
-} from "../amount-fields/amount-input-box";
+} from "./amount-format-selector";
+import { AmountInputBox, createAmountInputBox } from "./amount-input-box";
 import styled from "styled-components";
 
 // tslint:disable no-class no-this

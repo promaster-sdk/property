@@ -1,6 +1,6 @@
 import * as React from "react";
 // import { PropertySelectors } from "../../src";
-import { createAmountPropertySelector } from "../../src/property-selectors/amount-property-selector";
+import { createAmountPropertySelector } from "../../src/amount/amount-property-selector";
 
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import {

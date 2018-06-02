@@ -3,7 +3,7 @@ import * as React from "react";
 import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem
-} from "../../src/property-selectors/combobox-property-selector";
+} from "../../src/combo-box/combobox-property-selector";
 
 import { PropertyFiltering } from "@promaster/promaster-portable";
 import {

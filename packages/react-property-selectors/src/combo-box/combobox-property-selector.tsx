@@ -8,15 +8,15 @@ import { PropertyFiltering } from "@promaster/promaster-portable";
 import {
   ComboBoxStandardSelect,
   ComboBoxStandardSelectProps
-} from "../combo-box-elements/combo-box-standard-select";
+} from "./combo-box-standard-select";
 import {
   createComboBoxStandardOption,
   ComboBoxStandardOptionProps
-} from "../combo-box-elements/combo-box-standard-option";
+} from "./combo-box-standard-option";
 import {
   ImageDropdownSelector,
   createImageDropdownSelector
-} from "../combo-box-elements/image-dropdown-selector";
+} from "./image-dropdown-selector";
 import styled, * as StyledComponents from "styled-components";
 
 export interface ComboBoxPropertyValueItem {
