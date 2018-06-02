@@ -23,7 +23,6 @@
     "@types/react": "^15.6.0",
     "@types/react-test-renderer": "^15.5.0",
     "babel-core": "^6.26.0",
-    "csjs": "1.0.6",
     "insert-css": "^2.0.0",
     "react-dom": "^15.4.2",
     "react-test-renderer": "^15.4.2",
