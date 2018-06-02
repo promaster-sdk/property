@@ -7,7 +7,7 @@ import {
   PropertyFilter
 } from "@promaster/promaster-primitives";
 import { PropertyFiltering } from "@promaster/promaster-portable";
-import * as PropertySelectors from "../property-selectors/index";
+import * as PropertySelectors from "@promaster/react-property-selectors";
 import {
   PropertySelectorType,
   PropertySelectionOnChange,

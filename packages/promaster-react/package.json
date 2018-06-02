@@ -15,6 +15,7 @@
     "@promaster/abstract-image": "^1.0.1",
     "@promaster/promaster-portable": "^3.0.1",
     "@promaster/promaster-primitives": "^3.1.1",
+    "@promaster/react-property-selectors": "^1.0.0",
     "ramda": "^0.25.0",
     "react": "^15.6.1"
   },
