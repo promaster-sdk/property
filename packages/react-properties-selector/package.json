@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@promaster/property": "^1.0.4",
-    "@promaster/property-filtering": "^1.0.4",
+    "@promaster/property-filter-tools": "^1.0.4",
     "@promaster/react-property-selectors": "^1.0.3",
     "ramda": "^0.25.0",
     "react": "^15.6.1",

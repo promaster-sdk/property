@@ -5,7 +5,7 @@ import {
   PropertyValue,
   PropertyFilter
 } from "@promaster/property";
-import * as PropertyFiltering from "@promaster/property-filtering";
+import * as PropertyFiltering from "@promaster/property-filter-tools";
 import {
   PropertySelectorType,
   PropertySelectionOnChange,

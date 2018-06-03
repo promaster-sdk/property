@@ -1,7 +1,7 @@
 {
-  "name": "@promaster/property-filtering",
+  "name": "@promaster/property-filter-tools",
   "version": "1.0.4",
-  "description": "Promaster SDK Portable Libraries",
+  "description": "Promaster Property Filter Tools",
   "repository": "https://gitlab.divid.se/promaster-sdk",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
