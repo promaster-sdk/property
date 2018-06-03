@@ -1,6 +1,6 @@
 {
   "name": "@promaster/promaster-portable",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
   "main": "lib-cjs/index.js",
@@ -12,9 +12,9 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/abstract-chart": "^1.0.2",
-    "@promaster/abstract-document": "^1.0.2",
-    "@promaster/abstract-image": "^1.0.2",
+    "@promaster/abstract-chart": "^1.0.3",
+    "@promaster/abstract-document": "^1.0.3",
+    "@promaster/abstract-image": "^1.0.3",
     "@promaster/api": "^1.0.4",
     "@promaster/api-ordering-code": "^1.0.4",
     "@promaster/api-properties": "^1.0.4",

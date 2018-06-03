@@ -1,6 +1,6 @@
 {
   "name": "@promaster/abstract-image",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Promaster SDK Portable Libraries",
   "repository": "https://gitlab.divid.se/promaster-sdk",
   "main": "lib-cjs/index.js",
