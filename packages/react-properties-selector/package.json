@@ -1,6 +1,6 @@
 {
   "name": "@promaster/react-properties-selector",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@promaster/property": "^1.0.4",
-    "@promaster/property-filter-tools": "^1.0.4",
-    "@promaster/react-property-selectors": "^1.0.3",
+    "@promaster/property-filter-tools": "^1.0.5",
+    "@promaster/react-property-selectors": "^1.0.4",
     "ramda": "^0.25.0",
     "react": "^15.6.1",
     "uom": "^1.0.0"
