@@ -1,6 +1,6 @@
 {
   "name": "@promaster/api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Promaster API",
   "repository": "https://gitlab.divid.se/promaster-sdk/packages/promaster-api",
   "main": "lib-cjs/index.js",
