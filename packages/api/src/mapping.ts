@@ -109,8 +109,10 @@ function mapValue(
       case "Amount":
         const amountValue = isNumber(rawValue)
           ? rawValue
-          : parseFloat(rawValue as string) || 0;
-        return Amount.create(amountValue, mapping.unit);
+          : parseFloat(rawValue as string);
+        return isFinite(amountValue)
+          ? Amount.create(amountValue, mapping.unit)
+          : undefined;
       default:
         //exhaustiveCheck(mapping);
         throw new Error("Exhaustive check");
