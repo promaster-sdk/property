@@ -28,7 +28,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
     propertyFilter
   );
 
-export class PropertiesSelectorExample3SingleValidValue extends React.Component<
+export class PropertiesSelectorExample3AutoSelectAndLockSingleValidValue extends React.Component<
   {},
   State
 > {

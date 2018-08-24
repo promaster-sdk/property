@@ -62,6 +62,8 @@ export interface PropertiesSelectorProps {
   readonly includeHiddenProperties?: boolean;
   // Will automatically select values for properties that have only one valid value
   readonly autoSelectSingleValidValue?: boolean;
+  // Locks fields with single valid value
+  readonly lockSingleValidValue?: boolean;
 
   // Events
   readonly onChange?: OnPropertiesChanged;
@@ -119,7 +121,7 @@ export function PropertiesSelector(
     includeCodes = false,
     includeHiddenProperties = false,
     autoSelectSingleValidValue = true,
-
+    lockSingleValidValue = false,
     onChange = (
       _a: PropertyValueSet.PropertyValueSet,
       _propertyName: ReadonlyArray<string>
@@ -164,6 +166,7 @@ export function PropertiesSelector(
     includeCodes,
     includeHiddenProperties,
     autoSelectSingleValidValue,
+    lockSingleValidValue,
 
     onChange,
     onPropertyFormatChanged,
@@ -202,6 +205,7 @@ function createPropertySelectorRenderInfos(
   includeCodes: boolean,
   includeHiddenProperties: boolean,
   autoSelectSingleValidValue: boolean,
+  lockSingleValidValue: boolean,
   onChange: OnPropertiesChanged,
   onPropertyFormatChanged: OnPropertyFormatChanged,
   onPropertyFormatCleared: OnPropertyFormatCleared,
@@ -317,9 +321,10 @@ function createPropertySelectorRenderInfos(
         filterPrettyPrint,
         propertyFormat,
         readOnly: isReadOnly,
-        locked: autoSelectSingleValidValue
-          ? shouldBeLocked(selectedValueItem, property, selectedProperties)
-          : false,
+        locked:
+          autoSelectSingleValidValue || lockSingleValidValue
+            ? shouldBeLocked(selectedValueItem, property, selectedProperties)
+            : false,
         translatePropertyValue,
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
         translateValueIsRequiredMessage,
