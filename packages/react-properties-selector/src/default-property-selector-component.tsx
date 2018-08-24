@@ -109,7 +109,8 @@ export function createPropertySelector({
       onChange(
         newValue
           ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-          : PropertyValueSet.removeProperty(propertyName, selectedProperties)
+          : PropertyValueSet.removeProperty(propertyName, selectedProperties),
+        propertyName
       );
     }
 
