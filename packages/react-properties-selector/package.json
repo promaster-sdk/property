@@ -1,6 +1,6 @@
 {
   "name": "@promaster/react-properties-selector",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
