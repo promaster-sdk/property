@@ -23,9 +23,12 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       productProperties: productProperties,
       selectedProperties: this.state.propertyValueSet,
-      onChange: (properties: PropertyValueSet.PropertyValueSet) => {
+      onChange: (
+        properties: PropertyValueSet.PropertyValueSet,
+        _changedProperties: ReadonlyArray<string>
+      ) => {
         this.setState({ ...this.state, propertyValueSet: properties });
-        // console.log("updated");
+        // console.log("updated: ", changedProperties);
       },
       onPropertyFormatSelectorToggled: action("toggle property format selector")
     };

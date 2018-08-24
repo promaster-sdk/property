@@ -45,9 +45,11 @@ export class PropertiesSelectorExample3SingleValidValue extends React.Component<
     const productProperties = exampleProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       selectedProperties: this.state.propertyValueSet,
-      onChange: (properties: PropertyValueSet.PropertyValueSet) => {
+      onChange: (
+        properties: PropertyValueSet.PropertyValueSet,
+        _changedProps: ReadonlyArray<string>
+      ) => {
         this.setState(merge(this.state, { propertyValueSet: properties }));
-        // console.log("updated");
       },
       productProperties: productProperties,
       includeCodes: true,

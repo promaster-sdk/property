@@ -8,7 +8,6 @@ import {
 import * as PropertyFiltering from "@promaster/property-filter-tools";
 import {
   PropertySelectorType,
-  PropertySelectionOnChange,
   AmountFormat,
   OnPropertyFormatChanged,
   OnPropertyFormatCleared,
@@ -24,7 +23,8 @@ import {
   PropertyValueItem,
   ReactComponent,
   OnToggleGroupClosed,
-  PropertyFormats
+  PropertyFormats,
+  OnPropertiesChanged
 } from "./types";
 import {
   DefaultLayoutRenderer,
@@ -64,7 +64,7 @@ export interface PropertiesSelectorProps {
   readonly autoSelectSingleValidValue?: boolean;
 
   // Events
-  readonly onChange?: PropertySelectionOnChange;
+  readonly onChange?: OnPropertiesChanged;
   readonly onPropertyFormatChanged?: OnPropertyFormatChanged;
   readonly onPropertyFormatCleared?: OnPropertyFormatCleared;
   readonly onPropertyFormatSelectorToggled?: OnPropertyFormatSelectorToggled;
@@ -120,7 +120,10 @@ export function PropertiesSelector(
     includeHiddenProperties = false,
     autoSelectSingleValidValue = true,
 
-    onChange = (_a: PropertyValueSet.PropertyValueSet) => {}, //tslint:disable-line
+    onChange = (
+      _a: PropertyValueSet.PropertyValueSet,
+      _propertyName: ReadonlyArray<string>
+    ) => {}, //tslint:disable-line
     onPropertyFormatChanged = (
       _a: string,
       // tslint:disable-next-line:no-any
@@ -199,7 +202,7 @@ function createPropertySelectorRenderInfos(
   includeCodes: boolean,
   includeHiddenProperties: boolean,
   autoSelectSingleValidValue: boolean,
-  onChange: PropertySelectionOnChange,
+  onChange: OnPropertiesChanged,
   onPropertyFormatChanged: OnPropertyFormatChanged,
   onPropertyFormatCleared: OnPropertyFormatCleared,
   onPropertyFormatSelectorToggled: OnPropertyFormatSelectorToggled,
@@ -424,20 +427,31 @@ function shouldBeLocked(
 }
 
 function handleChange(
-  externalOnChange: PropertySelectionOnChange,
+  externalOnChange: OnPropertiesChanged,
   productProperties: ReadonlyArray<Property>,
   autoSelectSingleValidValue: boolean
-): (properties: PropertyValueSet.PropertyValueSet) => void {
-  return (properties: PropertyValueSet.PropertyValueSet) => {
+): (
+  properties: PropertyValueSet.PropertyValueSet,
+  propertyName: string
+) => void {
+  return (
+    properties: PropertyValueSet.PropertyValueSet,
+    propertyName: string
+  ) => {
     if (!autoSelectSingleValidValue) {
-      externalOnChange(properties);
+      externalOnChange(properties, [propertyName]);
       return;
     }
 
     let lastProperties = properties;
+    // tslint:disable-next-line:readonly-keyword
+    const changedProps = new Set([propertyName]);
 
     for (let i = 0; i < 4; i++) {
       for (let productProperty of productProperties) {
+        if (productProperty.name === propertyName) {
+          continue;
+        }
         const propertyValueItem = getSingleValidValueOrUndefined(
           productProperty,
           properties
@@ -448,6 +462,7 @@ function handleChange(
             propertyValueItem.value,
             properties
           );
+          changedProps.add(productProperty.name);
         }
       }
 
@@ -458,6 +473,6 @@ function handleChange(
       lastProperties = properties;
     }
 
-    externalOnChange(properties);
+    externalOnChange(properties, Array.from(changedProps.keys()));
   };
 }

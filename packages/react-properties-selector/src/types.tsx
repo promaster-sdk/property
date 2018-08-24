@@ -13,8 +13,15 @@ export type AmountFormat = {
   readonly decimalCount: number;
 };
 export type PropertySelectionOnChange = (
-  properties: PropertyValueSet.PropertyValueSet
+  properties: PropertyValueSet.PropertyValueSet,
+  propertyNames: string
 ) => void;
+
+export type OnPropertiesChanged = (
+  properties: PropertyValueSet.PropertyValueSet,
+  propertyNames: ReadonlyArray<string>
+) => void;
+
 export type OnPropertyFormatChanged = (
   propertyName: string,
   unit: Unit.Unit<Quantity.Quantity>,
