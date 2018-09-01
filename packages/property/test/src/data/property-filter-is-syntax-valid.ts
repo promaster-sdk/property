@@ -93,8 +93,8 @@ export const tests = [
   {
     name:
       "should_accept_properties_when_filter_contains_one_matching_property_with_single_range_value2",
-    f: "unitsize=4060&filteraccess=5&filtertype=2~4,6~9,11-13",
-    result: false
+    f: "unitsize=4060&filteraccess=5&filtertype=2~4,6~9,11~13",
+    result: true
   },
   {
     name: "should_accept_whitespace",
@@ -114,6 +114,21 @@ export const tests = [
   {
     name: "supports_null",
     f: "a=null",
+    result: true
+  },
+  {
+    name: "supports_add_integers",
+    f: "a=2+2",
+    result: true
+  },
+  {
+    name: "supports_add_amounts",
+    f: "a=b+2:Celsius",
+    result: true
+  },
+  {
+    name: "supports_unary",
+    f: "-a*3=-15",
     result: true
   }
 ];

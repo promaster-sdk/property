@@ -108,6 +108,15 @@ export function makeEvalLambdaForPropertyValueExpr(
     case "NullExpr": {
       return () => null;
     }
+    case "AddExpr": {
+      return () => null;
+    }
+    case "MulExpr": {
+      return () => null;
+    }
+    case "UnaryExpr": {
+      return () => null;
+    }
     default: {
       return exhaustiveCheck(e, true);
     }

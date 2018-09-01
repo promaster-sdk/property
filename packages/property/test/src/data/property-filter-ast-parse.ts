@@ -6,7 +6,8 @@ import {
   newValueExpr,
   newEqualsExpr,
   newValueRangeExpr,
-  newComparisonExpr
+  newComparisonExpr,
+  newAddExpr
 } from "../../../src/property-filter-ast";
 
 // https://github.com/Microsoft/TypeScript/issues/9944
@@ -58,5 +59,14 @@ export const tests = [
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
       newValueRangeExpr(newValueExpr("20:Celsius"), newValueExpr("30:Celsius"))
     ])
+  },
+  {
+    name: "should_parse_addition",
+    f: "1+1=2",
+    result: newEqualsExpr(
+      newAddExpr(newValueExpr("1"), "add", newValueExpr("1")),
+      "equals",
+      [newValueRangeExpr(newValueExpr("2"), newValueExpr("2"))]
+    )
   }
 ];

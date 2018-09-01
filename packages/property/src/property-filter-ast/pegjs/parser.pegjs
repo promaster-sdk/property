@@ -14,6 +14,16 @@
     return "notEquals"; //EqualsOperationType.NotEquals;
   }
 
+  function stringToAddSubOperationType(str) {
+    if (str == "+") return "add";
+    return "subtract";
+  }
+
+  function stringToMulDivOperationType(str) {
+    if (str == "*") return "multiply";
+    return "divide";
+  }
+
 }
 
 start
@@ -49,7 +59,6 @@ OrExpr
   = e:AndExpr e2:("|" i:AndExpr {return i;})*
   {
     e2.unshift(e);
-    //console.log("OrExpr", e2);
     return e2.length == 1 ? e2[0] : callbacks.createOrExpr(e2);
   }
 
@@ -58,7 +67,6 @@ AndExpr
   = e:Expr e2:("&" i:Expr {return i;})*
   {
     e2.unshift(e);
-    //console.log("AndExpr", e2);
     return e2.length == 1 ? e2[0] : callbacks.createAndExpr(e2);
   }
 
@@ -68,18 +76,16 @@ Expr
   /
 	e2:ComparisonExpr
 	{
-	  //console.log("Expr", e2);
 	  return e2;
 	}
 
 //-------------------------------------------------------------
 ComparisonExpr
   = comp:(
-      lh:ValueExpr
+      lh:AddExpr
       (
-        (c:(">=" / "<=" / ">" / "<") rh:ValueExpr)
+        (c:(">=" / "<=" / ">" / "<") rh:AddExpr)
         {
-          //console.log("ComparisonExpr", lh, c, rh);
           const opType = stringToComparisonOperationType(c);
           return callbacks.createComparisonExpr(lh, opType, rh);
         }
@@ -88,10 +94,7 @@ ComparisonExpr
         {
           const opType = stringToEqualsOperationType(c);
           r2.unshift(r1);
-          //console.log("ComparisonExpr:", r2);
-          const a= callbacks.createEqualsExpr(lh, opType, r2);
-          //console.log("ComparisonExpr", a);
-          return a;
+          return callbacks.createEqualsExpr(lh, opType, r2);
         }
       )
     ) { return comp[1]; }
@@ -99,9 +102,8 @@ ComparisonExpr
 
 //-------------------------------------------------------------
 ValueRangeExpr
-  = v1:ValueExpr v2:("~" v:ValueExpr {return v;})?
+  = v1:AddExpr v2:("~" v:AddExpr {return v;})?
   {
-    //console.log("ValueRangeExpr", v1, v2);
     if(v2) return callbacks.createValueRangeExpr(v1, v2);
     else return callbacks.createValueRangeExpr(v1, v1);
   }
@@ -110,41 +112,34 @@ ValueRangeExpr
 // TODO: Fix AddExpr?
 
 //-------------------------------------------------------------
-/*
-AddExpr<out Expr e>											{ AddOperator op; Expr e2; }
-=	MultiplyExpr<out e>
-	{
-		(
-		"+"                                 { op = AddOperator.Plus; }
-		| "-"                               { op = AddOperator.Minus; }
-		)
-		MultiplyExpr<out e2>                { e = new AddExpr(e, op, e2); }
-	}
+AddExpr
+  =	(
+      (lh:MultiplyExpr o:("+" / "-") rh:AddExpr)
+      {
+        const opType = stringToAddSubOperationType(o);
+        return callbacks.createAddExpr(lh, opType, rh);
+      }
+    ) / MultiplyExpr
+
 
 //-------------------------------------------------------------
-MultiplyExpr<out Expr e>	            	{ MultiplyOperator op; Expr e2; }
-=	UnaryExpr<out e>
-	{
-		(
-	  "*"                                 { op = MultiplyOperator.Times; }
-	  | "/"                               { op = MultiplyOperator.Divide; }
-		| "%"																{ op = MultiplyOperator.Modulo; }
-	  )
-		UnaryExpr<out e2>					          { e = new MultiplyExpr(e, op, e2); }
-	}
-.
+MultiplyExpr
+  =	(
+      (lh:UnaryExpr o:("*" / "/") rh:MultiplyExpr)
+      {
+        const opType = stringToMulDivOperationType(o);
+        return callbacks.createMulExpr(lh, opType, rh);
+      }
+    ) / UnaryExpr
 
 //-------------------------------------------------------------
-UnaryExpr<out Expr e>                    { e = null; }
-= (                                      { UnaryOperator op; }
-  (
-  "-"                                    { op = UnaryOperator.Minus; }
-	)
-	 ValueExpr<out e>                      { e = new UnaryExpr(op, e); }
-	)
-	| ValueExpr<out e>
-
-*/
+UnaryExpr
+  = (
+      ("-" val:ValueExpr)
+      {
+        return callbacks.createUnaryExpr("negative", val);
+      }
+    ) / ValueExpr;
 
 //-------------------------------------------------------------
 ValueExpr

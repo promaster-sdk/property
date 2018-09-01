@@ -204,5 +204,41 @@ export const tests = [
     pvs: "",
     f: "(1=1|1=1)&1=2",
     result: false
+  },
+  {
+    name: "adding integers",
+    pvs: "",
+    f: "3=1+2",
+    result: true
+  },
+  {
+    name: "adding integers multiple times",
+    pvs: "",
+    f: "1+2+3=6",
+    result: true
+  },
+  {
+    name: "multiply integers",
+    pvs: "",
+    f: "2*3=6",
+    result: true
+  },
+  {
+    name: "higher priority for multiplication integers",
+    pvs: "",
+    f: "4+2*3=10",
+    result: true
+  },
+  {
+    name: "multiply amount",
+    pvs: "",
+    f: "4*8:Millimeter=32:Millimeter",
+    result: true
+  },
+  {
+    name: "unary amount",
+    pvs: "a=2:Meter",
+    f: "-a=-2:Meter",
+    result: true
   }
 ];

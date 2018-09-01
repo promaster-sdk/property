@@ -58,14 +58,12 @@ module.exports = (function() {
         peg$c19 = function(e, i) {return i;},
         peg$c20 = function(e, e2) {
             e2.unshift(e);
-            //console.log("OrExpr", e2);
             return e2.length == 1 ? e2[0] : callbacks.createOrExpr(e2);
           },
         peg$c21 = "&",
         peg$c22 = { type: "literal", value: "&", description: "\"&\"" },
         peg$c23 = function(e, e2) {
             e2.unshift(e);
-            //console.log("AndExpr", e2);
             return e2.length == 1 ? e2[0] : callbacks.createAndExpr(e2);
           },
         peg$c24 = "(",
@@ -74,7 +72,6 @@ module.exports = (function() {
         peg$c27 = { type: "literal", value: ")", description: "\")\"" },
         peg$c28 = function(e1) {return e1;},
         peg$c29 = function(e2) {
-        	  //console.log("Expr", e2);
         	  return e2;
         	},
         peg$c30 = ">=",
@@ -86,7 +83,6 @@ module.exports = (function() {
         peg$c36 = "<",
         peg$c37 = { type: "literal", value: "<", description: "\"<\"" },
         peg$c38 = function(lh, c, rh) {
-                  //console.log("ComparisonExpr", lh, c, rh);
                   const opType = stringToComparisonOperationType(c);
                   return callbacks.createComparisonExpr(lh, opType, rh);
                 },
@@ -100,30 +96,43 @@ module.exports = (function() {
         peg$c46 = function(lh, c, r1, r2) {
                   const opType = stringToEqualsOperationType(c);
                   r2.unshift(r1);
-                  //console.log("ComparisonExpr:", r2);
-                  const a= callbacks.createEqualsExpr(lh, opType, r2);
-                  //console.log("ComparisonExpr", a);
-                  return a;
+                  return callbacks.createEqualsExpr(lh, opType, r2);
                 },
         peg$c47 = function(comp) { return comp[1]; },
         peg$c48 = "~",
         peg$c49 = { type: "literal", value: "~", description: "\"~\"" },
         peg$c50 = function(v1, v) {return v;},
         peg$c51 = function(v1, v2) {
-            //console.log("ValueRangeExpr", v1, v2);
             if(v2) return callbacks.createValueRangeExpr(v1, v2);
             else return callbacks.createValueRangeExpr(v1, v1);
           },
-        peg$c52 = "null",
-        peg$c53 = { type: "literal", value: "null", description: "\"null\"" },
-        peg$c54 = function() {return callbacks.createNullExpr();},
-        peg$c55 = function(i1, i) {return i;},
-        peg$c56 = function(i1, i2) {
+        peg$c52 = "+",
+        peg$c53 = { type: "literal", value: "+", description: "\"+\"" },
+        peg$c54 = function(lh, o, rh) {
+                const opType = stringToAddSubOperationType(o);
+                return callbacks.createAddExpr(lh, opType, rh);
+              },
+        peg$c55 = "*",
+        peg$c56 = { type: "literal", value: "*", description: "\"*\"" },
+        peg$c57 = "/",
+        peg$c58 = { type: "literal", value: "/", description: "\"/\"" },
+        peg$c59 = function(lh, o, rh) {
+                const opType = stringToMulDivOperationType(o);
+                return callbacks.createMulExpr(lh, opType, rh);
+              },
+        peg$c60 = function(val) {
+                return callbacks.createUnaryExpr("negative", val);
+              },
+        peg$c61 = "null",
+        peg$c62 = { type: "literal", value: "null", description: "\"null\"" },
+        peg$c63 = function() {return callbacks.createNullExpr();},
+        peg$c64 = function(i1, i) {return i;},
+        peg$c65 = function(i1, i2) {
             //console.log("ValueExpr", i1, i2)
             if(i2) return callbacks.createIdentifierAsExpr(i2, i1);
             else return callbacks.createIdentifierExpr(i1);
           },
-        peg$c57 = function(val) { return callbacks.createValueExpr(val); },
+        peg$c66 = function(val) { return callbacks.createValueExpr(val); },
 
         peg$currPos          = 0,
         peg$savedPos         = 0,
@@ -802,7 +811,7 @@ module.exports = (function() {
 
       s0 = peg$currPos;
       s1 = peg$currPos;
-      s2 = peg$parseValueExpr();
+      s2 = peg$parseAddExpr();
       if (s2 !== peg$FAILED) {
         s3 = peg$currPos;
         if (input.substr(peg$currPos, 2) === peg$c30) {
@@ -840,7 +849,7 @@ module.exports = (function() {
           }
         }
         if (s4 !== peg$FAILED) {
-          s5 = peg$parseValueExpr();
+          s5 = peg$parseAddExpr();
           if (s5 !== peg$FAILED) {
             peg$savedPos = s3;
             s4 = peg$c38(s2, s4, s5);
@@ -963,7 +972,7 @@ module.exports = (function() {
       var s0, s1, s2, s3, s4;
 
       s0 = peg$currPos;
-      s1 = peg$parseValueExpr();
+      s1 = peg$parseAddExpr();
       if (s1 !== peg$FAILED) {
         s2 = peg$currPos;
         if (input.charCodeAt(peg$currPos) === 126) {
@@ -974,7 +983,7 @@ module.exports = (function() {
           if (peg$silentFails === 0) { peg$fail(peg$c49); }
         }
         if (s3 !== peg$FAILED) {
-          s4 = peg$parseValueExpr();
+          s4 = peg$parseAddExpr();
           if (s4 !== peg$FAILED) {
             peg$savedPos = s2;
             s3 = peg$c50(s1, s4);
@@ -1006,20 +1015,146 @@ module.exports = (function() {
       return s0;
     }
 
+    function peg$parseAddExpr() {
+      var s0, s1, s2, s3;
+
+      s0 = peg$currPos;
+      s1 = peg$parseMultiplyExpr();
+      if (s1 !== peg$FAILED) {
+        if (input.charCodeAt(peg$currPos) === 43) {
+          s2 = peg$c52;
+          peg$currPos++;
+        } else {
+          s2 = peg$FAILED;
+          if (peg$silentFails === 0) { peg$fail(peg$c53); }
+        }
+        if (s2 === peg$FAILED) {
+          if (input.charCodeAt(peg$currPos) === 45) {
+            s2 = peg$c12;
+            peg$currPos++;
+          } else {
+            s2 = peg$FAILED;
+            if (peg$silentFails === 0) { peg$fail(peg$c13); }
+          }
+        }
+        if (s2 !== peg$FAILED) {
+          s3 = peg$parseAddExpr();
+          if (s3 !== peg$FAILED) {
+            peg$savedPos = s0;
+            s1 = peg$c54(s1, s2, s3);
+            s0 = s1;
+          } else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
+          }
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+      if (s0 === peg$FAILED) {
+        s0 = peg$parseMultiplyExpr();
+      }
+
+      return s0;
+    }
+
+    function peg$parseMultiplyExpr() {
+      var s0, s1, s2, s3;
+
+      s0 = peg$currPos;
+      s1 = peg$parseUnaryExpr();
+      if (s1 !== peg$FAILED) {
+        if (input.charCodeAt(peg$currPos) === 42) {
+          s2 = peg$c55;
+          peg$currPos++;
+        } else {
+          s2 = peg$FAILED;
+          if (peg$silentFails === 0) { peg$fail(peg$c56); }
+        }
+        if (s2 === peg$FAILED) {
+          if (input.charCodeAt(peg$currPos) === 47) {
+            s2 = peg$c57;
+            peg$currPos++;
+          } else {
+            s2 = peg$FAILED;
+            if (peg$silentFails === 0) { peg$fail(peg$c58); }
+          }
+        }
+        if (s2 !== peg$FAILED) {
+          s3 = peg$parseMultiplyExpr();
+          if (s3 !== peg$FAILED) {
+            peg$savedPos = s0;
+            s1 = peg$c59(s1, s2, s3);
+            s0 = s1;
+          } else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
+          }
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+      if (s0 === peg$FAILED) {
+        s0 = peg$parseUnaryExpr();
+      }
+
+      return s0;
+    }
+
+    function peg$parseUnaryExpr() {
+      var s0, s1, s2;
+
+      s0 = peg$currPos;
+      if (input.charCodeAt(peg$currPos) === 45) {
+        s1 = peg$c12;
+        peg$currPos++;
+      } else {
+        s1 = peg$FAILED;
+        if (peg$silentFails === 0) { peg$fail(peg$c13); }
+      }
+      if (s1 !== peg$FAILED) {
+        s2 = peg$parseValueExpr();
+        if (s2 !== peg$FAILED) {
+          peg$savedPos = s0;
+          s1 = peg$c60(s2);
+          s0 = s1;
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+      if (s0 === peg$FAILED) {
+        s0 = peg$parseValueExpr();
+      }
+
+      return s0;
+    }
+
     function peg$parseValueExpr() {
       var s0, s1, s2, s3, s4;
 
       s0 = peg$currPos;
-      if (input.substr(peg$currPos, 4) === peg$c52) {
-        s1 = peg$c52;
+      if (input.substr(peg$currPos, 4) === peg$c61) {
+        s1 = peg$c61;
         peg$currPos += 4;
       } else {
         s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c53); }
+        if (peg$silentFails === 0) { peg$fail(peg$c62); }
       }
       if (s1 !== peg$FAILED) {
         peg$savedPos = s0;
-        s1 = peg$c54();
+        s1 = peg$c63();
       }
       s0 = s1;
       if (s0 === peg$FAILED) {
@@ -1038,7 +1173,7 @@ module.exports = (function() {
             s4 = peg$parseident();
             if (s4 !== peg$FAILED) {
               peg$savedPos = s2;
-              s3 = peg$c55(s1, s4);
+              s3 = peg$c64(s1, s4);
               s2 = s3;
             } else {
               peg$currPos = s2;
@@ -1053,7 +1188,7 @@ module.exports = (function() {
           }
           if (s2 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c56(s1, s2);
+            s1 = peg$c65(s1, s2);
             s0 = s1;
           } else {
             peg$currPos = s0;
@@ -1068,7 +1203,7 @@ module.exports = (function() {
           s1 = peg$parsepropval();
           if (s1 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c57(s1);
+            s1 = peg$c66(s1);
           }
           s0 = s1;
         }
@@ -1091,6 +1226,16 @@ module.exports = (function() {
       function stringToEqualsOperationType(str) {
         if (str == "=") return "equals"; //EqualsOperationType.Equals;
         return "notEquals"; //EqualsOperationType.NotEquals;
+      }
+
+      function stringToAddSubOperationType(str) {
+        if (str == "+") return "add";
+        return "subtract";
+      }
+
+      function stringToMulDivOperationType(str) {
+        if (str == "*") return "multiply";
+        return "divide";
       }
 
 

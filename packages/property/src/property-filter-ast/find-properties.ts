@@ -50,6 +50,18 @@ function _findPropertiesInPropertyValueExpr(
     case "NullExpr":
       // Do nothing
       break;
+    case "AddExpr":
+      _findPropertiesInPropertyValueExpr(e.left, properties);
+      _findPropertiesInPropertyValueExpr(e.right, properties);
+      break;
+    case "MulExpr":
+      _findPropertiesInPropertyValueExpr(e.left, properties);
+      _findPropertiesInPropertyValueExpr(e.right, properties);
+      break;
+    case "UnaryExpr":
+      _findPropertiesInPropertyValueExpr(e.value, properties);
+      break;
+
     default:
       exhaustiveCheck(e, true);
   }

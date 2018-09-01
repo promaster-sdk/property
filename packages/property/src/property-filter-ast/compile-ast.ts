@@ -27,11 +27,15 @@ export function compileAst(ast: Ast.BooleanExpr): CompiledFilterFunction {
 }
 
 function isNotCompilable(ast: Ast.BooleanExpr): boolean {
+  let hasAddOrMul = false;
   let hasAmountOrText = false;
   let hasNameToNameComparision = false;
   visitAllExpr(ast, e => {
     if (e.type === "ValueExpr" && e.parsed.type !== "integer") {
       hasAmountOrText = true;
+    }
+    if (e.type === "AddExpr" || e.type === "MulExpr") {
+      hasAddOrMul = true;
     }
     if (
       e.type === "ComparisonExpr" &&
@@ -53,7 +57,7 @@ function isNotCompilable(ast: Ast.BooleanExpr): boolean {
     }
   });
 
-  return hasAmountOrText || hasNameToNameComparision;
+  return hasAddOrMul || hasAmountOrText || hasNameToNameComparision;
 }
 
 function visitAllExpr(e: Ast.Expr, visit: (e: Ast.Expr) => void): void {
@@ -89,6 +93,23 @@ function visitAllExpr(e: Ast.Expr, visit: (e: Ast.Expr) => void): void {
       visit(e);
       visitAllExpr(e.leftValue, visit);
       visitAllExpr(e.rightValue, visit);
+      return;
+    }
+    case "AddExpr": {
+      visit(e);
+      visitAllExpr(e.left, visit);
+      visitAllExpr(e.right, visit);
+      return;
+    }
+    case "MulExpr": {
+      visit(e);
+      visitAllExpr(e.left, visit);
+      visitAllExpr(e.right, visit);
+      return;
+    }
+    case "UnaryExpr": {
+      visit(e);
+      visitAllExpr(e.value, visit);
       return;
     }
     case "EmptyExpr":

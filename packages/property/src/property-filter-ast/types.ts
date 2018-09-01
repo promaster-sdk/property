@@ -5,30 +5,46 @@ export type Expr = BooleanExpr | PropertyValueExpr | ValueRangeExpr;
 
 // Expressions that result in a boolean
 export type BooleanExpr =
-  | AndExpr
   | OrExpr
+  | AndExpr
   | EqualsExpr
   | ComparisonExpr
   | EmptyExpr;
 
-// Expressions that result in a PropertyValue or null
-export type PropertyValueExpr = IdentifierExpr | ValueExpr | NullExpr;
+export interface OrExpr {
+  readonly type: "OrExpr";
+  readonly children: Array<BooleanExpr>;
+}
+
+export function newOrExpr(children: Array<BooleanExpr>): OrExpr {
+  return { type: "OrExpr", children };
+}
+
+export interface AndExpr {
+  readonly type: "AndExpr";
+  readonly children: Array<BooleanExpr>;
+}
 
 export function newAndExpr(children: Array<BooleanExpr>): AndExpr {
   return { type: "AndExpr", children };
 }
 
-export function newComparisonExpr(
-  leftValue: PropertyValueExpr,
-  operationType: ComparisonOperationType,
-  rightValue: PropertyValueExpr
-): ComparisonExpr {
-  return { type: "ComparisonExpr", leftValue, operationType, rightValue };
+export interface EmptyExpr {
+  readonly type: "EmptyExpr";
 }
 
 export function newEmptyExpr(): EmptyExpr {
   return { type: "EmptyExpr" };
 }
+
+export interface EqualsExpr {
+  readonly type: "EqualsExpr";
+  readonly leftValue: PropertyValueExpr;
+  readonly operationType: EqualsOperationType;
+  readonly rightValueRanges: Array<ValueRangeExpr>;
+}
+
+export type EqualsOperationType = "equals" | "notEquals";
 
 export function newEqualsExpr(
   leftValue: PropertyValueExpr,
@@ -38,16 +54,61 @@ export function newEqualsExpr(
   return { type: "EqualsExpr", leftValue, operationType, rightValueRanges };
 }
 
+export interface ValueRangeExpr {
+  readonly type: "ValueRangeExpr";
+  readonly min: PropertyValueExpr;
+  readonly max: PropertyValueExpr;
+}
+
+export function newValueRangeExpr(
+  min: PropertyValueExpr,
+  max: PropertyValueExpr
+): ValueRangeExpr {
+  return { type: "ValueRangeExpr", min, max };
+}
+
+export interface ComparisonExpr {
+  readonly type: "ComparisonExpr";
+  readonly leftValue: PropertyValueExpr;
+  readonly operationType: ComparisonOperationType;
+  readonly rightValue: PropertyValueExpr;
+}
+
+export type ComparisonOperationType =
+  | "greater"
+  | "less"
+  | "greaterOrEqual"
+  | "lessOrEqual";
+
+export function newComparisonExpr(
+  leftValue: PropertyValueExpr,
+  operationType: ComparisonOperationType,
+  rightValue: PropertyValueExpr
+): ComparisonExpr {
+  return { type: "ComparisonExpr", leftValue, operationType, rightValue };
+}
+
+export type PropertyValueExpr =
+  | IdentifierExpr
+  | ValueExpr
+  | NullExpr
+  | AddExpr
+  | MulExpr
+  | UnaryExpr;
+
+export interface IdentifierExpr {
+  readonly type: "IdentifierExpr";
+  readonly name: string;
+}
+
 export function newIdentifierExpr(name: string): IdentifierExpr {
   return { type: "IdentifierExpr", name };
 }
 
-export function newNullExpr(): NullExpr {
-  return { type: "NullExpr" };
-}
-
-export function newOrExpr(children: Array<BooleanExpr>): OrExpr {
-  return { type: "OrExpr", children };
+export interface ValueExpr {
+  readonly type: "ValueExpr";
+  readonly unParsed: string;
+  readonly parsed: PropertyValue.PropertyValue;
 }
 
 export function newValueExpr(unParsed: string): ValueExpr {
@@ -58,66 +119,63 @@ export function newValueExpr(unParsed: string): ValueExpr {
   return { type: "ValueExpr", unParsed, parsed };
 }
 
-export function newValueRangeExpr(
-  min: PropertyValueExpr,
-  max: PropertyValueExpr
-): ValueRangeExpr {
-  return { type: "ValueRangeExpr", min, max };
-}
-
-export interface AndExpr {
-  readonly type: "AndExpr";
-  readonly children: Array<BooleanExpr>;
-}
-
-export type ComparisonOperationType =
-  | "greater"
-  | "less"
-  | "greaterOrEqual"
-  | "lessOrEqual";
-
-export interface ComparisonExpr {
-  readonly type: "ComparisonExpr";
-  readonly leftValue: PropertyValueExpr;
-  readonly operationType: ComparisonOperationType;
-  readonly rightValue: PropertyValueExpr;
-}
-
-export interface EmptyExpr {
-  readonly type: "EmptyExpr";
-}
-
-export type EqualsOperationType = "equals" | "notEquals";
-
-export interface EqualsExpr {
-  readonly type: "EqualsExpr";
-  readonly leftValue: PropertyValueExpr;
-  readonly operationType: EqualsOperationType;
-  readonly rightValueRanges: Array<ValueRangeExpr>;
-}
-
-export interface IdentifierExpr {
-  readonly type: "IdentifierExpr";
-  readonly name: string;
-}
-
 export interface NullExpr {
   readonly type: "NullExpr";
 }
 
-export interface OrExpr {
-  readonly type: "OrExpr";
-  readonly children: Array<BooleanExpr>;
+export function newNullExpr(): NullExpr {
+  return { type: "NullExpr" };
 }
 
-export interface ValueExpr {
-  readonly type: "ValueExpr";
-  readonly unParsed: string;
-  readonly parsed: PropertyValue.PropertyValue;
+export interface AddExpr {
+  readonly type: "AddExpr";
+  readonly left: PropertyValueExpr;
+  readonly operationType: AddExprOperationType;
+  readonly right: PropertyValueExpr;
 }
 
-export interface ValueRangeExpr {
-  readonly type: "ValueRangeExpr";
-  readonly min: PropertyValueExpr;
-  readonly max: PropertyValueExpr;
+export type AddExprOperationType = "add" | "subtract";
+
+export function newAddExpr(
+  left: PropertyValueExpr,
+  operationType: AddExprOperationType,
+  right: PropertyValueExpr
+): AddExpr {
+  return { type: "AddExpr", left, operationType, right };
+}
+
+export interface MulExpr {
+  readonly type: "MulExpr";
+  readonly left: PropertyValueExpr;
+  readonly operationType: MulExprOperationType;
+  readonly right: PropertyValueExpr;
+}
+
+export type MulExprOperationType = "multiply" | "divide";
+
+export function newMulExpr(
+  left: PropertyValueExpr,
+  operationType: MulExprOperationType,
+  right: PropertyValueExpr
+): MulExpr {
+  return { type: "MulExpr", left, operationType, right };
+}
+
+export type UnaryExprOperationType = "negative";
+
+export interface UnaryExpr {
+  readonly type: "UnaryExpr";
+  readonly operationType: UnaryExprOperationType;
+  readonly value: PropertyValueExpr;
+}
+
+export function newUnaryExpr(
+  operationType: UnaryExprOperationType,
+  value: PropertyValueExpr
+): UnaryExpr {
+  return {
+    type: "UnaryExpr",
+    operationType,
+    value
+  };
 }

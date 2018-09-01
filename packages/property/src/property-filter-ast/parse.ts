@@ -21,34 +21,34 @@ type ParserCallbacks = {
   ): Ast.ComparisonExpr;
   createAndExpr(children: Array<Ast.BooleanExpr>): Ast.AndExpr;
   createOrExpr(children: Array<Ast.BooleanExpr>): Ast.OrExpr;
+  createAddExpr(
+    left: Ast.PropertyValueExpr,
+    operationType: Ast.AddExprOperationType,
+    right: Ast.PropertyValueExpr
+  ): Ast.AddExpr;
+  createMulExpr(
+    left: Ast.PropertyValueExpr,
+    operationType: Ast.MulExprOperationType,
+    right: Ast.PropertyValueExpr
+  ): Ast.MulExpr;
+  createUnaryExpr(
+    operationType: Ast.UnaryExprOperationType,
+    value: Ast.PropertyValueExpr
+  ): Ast.UnaryExpr;
 };
 
 const parserCallbacks: ParserCallbacks = {
-  createValueExpr: (valueToken: string): Ast.ValueExpr =>
-    Ast.newValueExpr(valueToken),
-  createNullExpr: (): Ast.NullExpr => Ast.newNullExpr(),
-  createIdentifierExpr: (identToken: string): Ast.IdentifierExpr =>
-    Ast.newIdentifierExpr(identToken),
-  createValueRangeExpr: (
-    v1: Ast.PropertyValueExpr,
-    v2: Ast.PropertyValueExpr
-  ): Ast.ValueRangeExpr => Ast.newValueRangeExpr(v1, v2),
-  createEqualsExpr: (
-    leftValue: Ast.PropertyValueExpr,
-    operationType: Ast.EqualsOperationType,
-    rightValueRanges: Array<Ast.ValueRangeExpr>
-  ): Ast.EqualsExpr =>
-    Ast.newEqualsExpr(leftValue, operationType, rightValueRanges),
-  createComparisonExpr: (
-    leftValue: Ast.PropertyValueExpr,
-    operationType: Ast.ComparisonOperationType,
-    rightValue: Ast.PropertyValueExpr
-  ): Ast.ComparisonExpr =>
-    Ast.newComparisonExpr(leftValue, operationType, rightValue),
-  createAndExpr: (children: Array<Ast.BooleanExpr>): Ast.AndExpr =>
-    Ast.newAndExpr(children),
-  createOrExpr: (children: Array<Ast.BooleanExpr>): Ast.OrExpr =>
-    Ast.newOrExpr(children)
+  createValueExpr: Ast.newValueExpr,
+  createNullExpr: Ast.newNullExpr,
+  createIdentifierExpr: Ast.newIdentifierExpr,
+  createValueRangeExpr: Ast.newValueRangeExpr,
+  createEqualsExpr: Ast.newEqualsExpr,
+  createComparisonExpr: Ast.newComparisonExpr,
+  createAndExpr: Ast.newAndExpr,
+  createOrExpr: Ast.newOrExpr,
+  createAddExpr: Ast.newAddExpr,
+  createMulExpr: Ast.newMulExpr,
+  createUnaryExpr: Ast.newUnaryExpr
 };
 
 const options = {

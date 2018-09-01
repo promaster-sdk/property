@@ -104,6 +104,35 @@ function makeJsExprForPropertyValueExpr(e: Ast.PropertyValueExpr): string {
     case "NullExpr": {
       return "undefined";
     }
+    case "AddExpr": {
+      const left = makeJsExprForPropertyValueExpr(e.left);
+      const right = makeJsExprForPropertyValueExpr(e.right);
+      switch (e.operationType) {
+        case "add":
+          return left + " + " + right;
+        case "subtract":
+          return left + " - " + right;
+        default:
+          return exhaustiveCheck(e.operationType, true);
+      }
+    }
+    case "MulExpr": {
+      const left = makeJsExprForPropertyValueExpr(e.left);
+      const right = makeJsExprForPropertyValueExpr(e.right);
+      switch (e.operationType) {
+        case "multiply":
+          return left + " * " + right;
+        case "divide":
+          return left + " / " + right;
+        default:
+          return exhaustiveCheck(e.operationType, true);
+      }
+    }
+    case "UnaryExpr": {
+      const value = makeJsExprForPropertyValueExpr(e.value);
+      return "-" + value;
+    }
+
     default: {
       return exhaustiveCheck(e, true);
     }
