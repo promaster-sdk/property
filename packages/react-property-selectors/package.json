@@ -1,6 +1,6 @@
 {
   "name": "@promaster/react-property-selectors",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
@@ -12,8 +12,8 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/property": "^1.0.4",
-    "@promaster/property-filter-tools": "^1.0.5",
+    "@promaster/property": "^1.1.0",
+    "@promaster/property-filter-tools": "^1.0.6",
     "react": "^15.6.1",
     "styled-components": "^3.1.6",
     "uom": "^1.0.0"

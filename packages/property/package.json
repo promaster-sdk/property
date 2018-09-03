@@ -1,6 +1,6 @@
 {
   "name": "@promaster/property",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
