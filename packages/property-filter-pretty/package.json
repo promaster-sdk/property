@@ -1,6 +1,6 @@
 {
   "name": "@promaster/property-filter-pretty",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Promaster Property Filter Tools",
   "repository": "https://gitlab.divid.se/promaster-sdk",
   "main": "lib-cjs/index.js",
