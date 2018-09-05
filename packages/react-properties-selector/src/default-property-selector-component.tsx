@@ -5,7 +5,7 @@ import {
   PropertyValue,
   PropertyFilter
 } from "@promaster/property";
-import * as PropertyFiltering from "@promaster/property-filter-tools";
+import * as PropertyFiltering from "@promaster/property-filter-pretty";
 import * as PropertySelectors from "@promaster/react-property-selectors";
 import {
   PropertySelectorType,

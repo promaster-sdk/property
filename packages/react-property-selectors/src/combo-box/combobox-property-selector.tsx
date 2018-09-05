@@ -4,7 +4,7 @@ import {
   PropertyValue,
   PropertyValueSet
 } from "@promaster/property";
-import * as PropertyFiltering from "@promaster/property-filter-tools";
+import * as PropertyFiltering from "@promaster/property-filter-pretty";
 import {
   ComboBoxStandardSelect,
   ComboBoxStandardSelectProps

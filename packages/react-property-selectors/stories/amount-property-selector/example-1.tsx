@@ -2,7 +2,7 @@ import * as React from "react";
 // import { PropertySelectors } from "../../src";
 import { createAmountPropertySelector } from "../../src/amount/amount-property-selector";
 
-import * as PropertyFiltering from "@promaster/property-filter-tools";
+import * as PropertyFiltering from "@promaster/property-filter-pretty";
 import { Unit, Units } from "uom";
 import {
   PropertyFilter,

@@ -4,7 +4,7 @@ import {
   PropertyValue,
   PropertyValueSet
 } from "@promaster/property";
-import * as PropertyFiltering from "@promaster/property-filter-tools";
+import * as PropertyFiltering from "@promaster/property-filter-pretty";
 import { RadioGroupProps, RadioGroup } from "./radio-group";
 import { RadioGroupItemProps, RadioGroupItem } from "./radio-group-item";
 import Styled from "styled-components";

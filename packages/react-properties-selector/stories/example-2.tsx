@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as R from "ramda";
 import * as PropertiesSelector from "../src/index";
-import * as PropertyFiltering from "@promaster/property-filter-tools";
+import * as PropertyFiltering from "@promaster/property-filter-pretty";
 import { Unit } from "uom";
 import { PropertyFilter, PropertyValueSet } from "@promaster/property";
 import { merge } from "./utils";
