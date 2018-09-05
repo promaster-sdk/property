@@ -3,6 +3,7 @@ import {
   PropertyFilter,
   PropertyFilterAst as Ast
 } from "@promaster/property";
+import { exhaustiveCheck } from "ts-exhaustive-check/lib-cjs";
 
 export function filterPrettyPrintSimple(
   f: PropertyFilter.PropertyFilter
@@ -16,47 +17,89 @@ export function filterPrettyPrintSimple(
 }
 
 function _print(e: Ast.Expr, s: string): string {
-  if (e.type === "AndExpr") {
-    for (let child of e.children) {
-      s = _print(child, s);
-      if (child !== e.children[e.children.length - 1]) {
-        s += " and ";
+  switch (e.type) {
+    case "AndExpr": {
+      for (let child of e.children) {
+        s = _print(child, s);
+        if (child !== e.children[e.children.length - 1]) {
+          s += " and ";
+        }
       }
+      break;
     }
-  } else if (e.type === "ComparisonExpr") {
-    s = _print(e.leftValue, s);
-    s += _comparisonOperationTypeToString(e.operationType);
-    s = _print(e.rightValue, s);
-  } else if (e.type === "EmptyExpr") {
-    // Nothing
-  } else if (e.type === "EqualsExpr") {
-    s = _print(e.leftValue, s);
-    s += _equalsOperationTypeToString(e.operationType);
-    for (let range of e.rightValueRanges) {
-      s = _print(range, s);
-      if (range !== e.rightValueRanges[e.rightValueRanges.length - 1]) {
-        s += ",";
+    case "ComparisonExpr": {
+      s = _print(e.leftValue, s);
+      s += _comparisonOperationTypeToString(e.operationType);
+      s = _print(e.rightValue, s);
+      break;
+    }
+    case "EqualsExpr": {
+      s = _print(e.leftValue, s);
+      s += _equalsOperationTypeToString(e.operationType);
+      for (let range of e.rightValueRanges) {
+        s = _print(range, s);
+        if (range !== e.rightValueRanges[e.rightValueRanges.length - 1]) {
+          s += ",";
+        }
       }
+      break;
     }
-  } else if (e.type === "IdentifierExpr") {
-    s += e.name;
-  } else if (e.type === "OrExpr") {
-    for (let child of e.children) {
-      s = _print(child, s);
-      if (child !== e.children[e.children.length - 1]) {
-        s += " or ";
+
+    case "IdentifierExpr": {
+      s += e.name;
+      break;
+    }
+    case "OrExpr": {
+      for (let child of e.children) {
+        s = _print(child, s);
+        if (child !== e.children[e.children.length - 1]) {
+          s += " or ";
+        }
       }
+      break;
     }
-  } else if (e.type === "ValueExpr") {
-    s += PropertyValue.toString(e.parsed);
-  } else if (e.type === "ValueRangeExpr") {
-    s = _print(e.min, s);
-    if (e.min !== e.max) {
-      s += "-";
-      s = _print(e.max, s);
+
+    case "ValueRangeExpr": {
+      s = _print(e.min, s);
+      if (e.min !== e.max) {
+        s += "-";
+        s = _print(e.max, s);
+      }
+      break;
     }
-  } else if (e.type === "NullExpr") {
-    s += "null";
+
+    case "ValueExpr": {
+      s += PropertyValue.toString(e.parsed);
+      break;
+    }
+
+    case "NullExpr": {
+      s += "null";
+      break;
+    }
+    case "AddExpr": {
+      s += `${_print(e.left, s)} ${
+        e.operationType === "add" ? "+" : "-"
+      } ${_print(e.right, s)}`;
+      break;
+    }
+    case "MulExpr": {
+      s += `${_print(e.left, s)} ${
+        e.operationType === "multiply" ? "*" : "/"
+      } ${_print(e.right, s)}`;
+      break;
+    }
+    case "UnaryExpr": {
+      s += `-${_print(e.value, "")}`;
+      break;
+    }
+    case "EmptyExpr": {
+      break;
+    }
+
+    default: {
+      exhaustiveCheck(e, true);
+    }
   }
 
   return s;
