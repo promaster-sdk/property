@@ -4,9 +4,10 @@
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
-  "description": "React components for applications that use Promaster.",
+  "description": "User interface for selecting a valid property value set",
   "author": "Divid AB",
-  "repository": "https://gitlab.divid.se/promaster-sdk",
+  "repository":
+    "https://gitlab.divid.se/promaster-sdk/packages/react-properties-selector",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"

@@ -6,8 +6,7 @@
   "types": "lib-cjs/index",
   "description": "Property values and filtering",
   "author": "Divid AB",
-  "repository":
-    "https://gitlab.divid.se/promaster-sdk/promaster-primitives/packages/property",
+  "repository": "https://gitlab.divid.se/promaster-sdk/packages/property",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"
