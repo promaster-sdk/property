@@ -1,7 +1,36 @@
-# promaster-portable
+# @promaster/property-filter-pretty
 
-This is the main implementation of Promaster Portable. There are other ports and clones but the goal is
-to keep this single repo well maintained, documented, and tested.
+[![code style: prettier][prettier-image]][prettier-url]
 
-This implementation uses a functional approach with pure data-records and functions that operates on those data-records.
-If desired, other approches such as class-based can be built on top by combining the data-records and functions into classes.
+Pretty printing of property filters
+
+## Introduction
+
+When a user selection of a `PropertyValueSet` is invalid according to a `PropertyFilter` it can be useful to show the filter to the user so he can correct his selections. However showing the raw filter syntax is not very helpful so this package has functions to convert the property filter syntax into human readable form.
+
+## Installation
+
+`npm install --save @promaster/property-filter-pretty`
+
+The library is compiled to ES5 and no polyfills are required.
+
+## Usage
+
+```js
+import { PropertyFilter } from "@promaster/property";
+import {
+  filterPrettyPrintIndented,
+  FilterPrettyPrintMessagesEnglish
+} from "@promaster/property-filter-pretty";
+
+const pf = PropertyFilter.fromString("a=1,2&b=3");
+const pfPretty = filterPrettyPrintIndented(
+  FilterPrettyPrintMessagesEnglish,
+  2,
+  " "
+  pf
+); // a should equal 1 or 2 and b should equal 3
+```
+
+[prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
+[prettier-url]: https://github.com/prettier/prettier
