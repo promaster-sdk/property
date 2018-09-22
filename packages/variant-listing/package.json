@@ -1,7 +1,9 @@
 {
   "name": "@promaster/variant-listing",
   "version": "1.0.5",
-  "repository": "https://gitlab.divid.se/promaster-sdk/promaster-portable",
+  "repository":
+    "https://gitlab.divid.se/promaster-sdk/packages/variant-listing",
+  "description": "Generate list of valid variants",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",

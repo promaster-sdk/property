@@ -1,7 +1,24 @@
-# promaster-portable
+# @promaster/variant-listing
 
-This is the main implementation of Promaster Portable. There are other ports and clones but the goal is
-to keep this single repo well maintained, documented, and tested.
+[![code style: prettier][prettier-image]][prettier-url]
 
-This implementation uses a functional approach with pure data-records and functions that operates on those data-records.
-If desired, other approches such as class-based can be built on top by combining the data-records and functions into classes.
+Generate list of valid variants
+
+## Introduction
+
+Somtimes you want to generate a list of all valid combination of properties.
+
+## Installation
+
+`npm install --save @promaster/variant-listing`
+
+The library is compiled to ES5 and no polyfills are required.
+
+## Usage
+
+```js
+TODO!
+```
+
+[prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
+[prettier-url]: https://github.com/prettier/prettier
