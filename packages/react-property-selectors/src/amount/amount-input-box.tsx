@@ -6,7 +6,6 @@
  */
 import * as React from "react";
 import { Amount, Unit, Quantity } from "uom";
-import styled, * as StyledComponents from "styled-components";
 import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 
 // tslint:disable no-class no-this
@@ -36,53 +35,99 @@ export interface CreateAmountInputBoxParams {
   readonly AmountInputField?: React.ComponentType<AmountInputFieldProps>;
 }
 
+// function inputInvalidLocked({
+//   isReadonly,
+//   effectiveErrorMessage
+// }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
+//   // tslint:disable-next-line:no-console
+//   if (isReadonly && effectiveErrorMessage) {
+//     return StyledComponents.css`
+//     background: lightgray;
+//     color: red;
+//     border: none;
+//   `;
+//   }
+
+//   return [];
+// }
+
 function inputInvalidLocked({
   isReadonly,
   effectiveErrorMessage
-}: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
-  // tslint:disable-next-line:no-console
+}: AmountInputFieldProps): {} {
   if (isReadonly && effectiveErrorMessage) {
-    return StyledComponents.css`
-    background: lightgray;
-    color: red;
-    border: none;
-  `;
+    return {
+      background: "lightgray",
+      color: "red",
+      border: "none"
+    };
   }
-
-  return [];
+  return {};
 }
+
+// function inputLocked({
+//   isReadonly,
+//   effectiveErrorMessage
+// }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
+//   if (isReadonly && !effectiveErrorMessage) {
+//     return StyledComponents.css`
+//     background: lightgray;
+//     color: darkgray;
+//     border: none;
+//   `;
+//   }
+
+//   return [];
+// }
 
 function inputLocked({
   isReadonly,
   effectiveErrorMessage
-}: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
+}: AmountInputFieldProps): {} {
   if (isReadonly && !effectiveErrorMessage) {
-    return StyledComponents.css`
-    background: lightgray;
-    color: darkgray;
-    border: none;
-  `;
+    return {
+      background: "lightgray",
+      color: "darkgray",
+      border: "none"
+    };
   }
-
-  return [];
+  return {};
 }
 
-export const defaultAmountInputField = styled(AmountInputField)`
-  color: black;
-  height: 30px;
-  border: 1px solid #b4b4b4;
-  border-radius: 3px;
-  font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-  outline: rgb(131, 131, 131) none 0px;
-  padding: 1px 30px 0px 10px;
+// export const defaultAmountInputField = styled(AmountInputField)`
+//   color: black;
+//   height: 30px;
+//   border: 1px solid #b4b4b4;
+//   border-radius: 3px;
+//   font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
+//   outline: rgb(131, 131, 131) none 0px;
+//   padding: 1px 30px 0px 10px;
 
-  ${props => inputInvalidLocked(props)}
+//   ${props => inputInvalidLocked(props)}
 
-  ${props => inputLocked(props)}
+//   ${props => inputLocked(props)}
 
-  ${props =>
-    !props.isReadonly && props.effectiveErrorMessage ? "color: red" : ""}
-`;
+//   ${props =>
+//     !props.isReadonly && props.effectiveErrorMessage ? "color: red" : ""}
+// `;
+
+export const defaultAmountInputField = (props: AmountInputFieldProps) => (
+  <AmountInputField
+    {...props}
+    style={{
+      color: !props.isReadonly && props.effectiveErrorMessage ? "red" : "black",
+      height: "30px",
+      border: "1px solid #b4b4b4",
+      borderRadius: "3px",
+      font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+      outline: "rgb(131, 131, 131) none 0px",
+      padding: "1px 30px 0px 10px",
+
+      ...inputInvalidLocked(props),
+      ...inputLocked(props)
+    }}
+  />
+);
 
 export function createAmountInputBox({
   AmountInputField = defaultAmountInputField
@@ -319,8 +364,8 @@ function filterFloat(value: string): number {
 // N milliseconds.
 // tslint:disable-next-line:no-any
 function debounce(_this: any, func: Function, wait: number): any {
-  //tslint:disable-line
-  let timeout: NodeJS.Timer | null;
+  // tslint:disable-next-line:no-any
+  let timeout: any;
   return function(): void {
     const args = arguments; //tslint:disable-line
     const later = function(): void {

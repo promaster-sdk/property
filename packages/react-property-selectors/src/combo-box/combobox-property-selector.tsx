@@ -17,7 +17,6 @@ import {
   ImageDropdownSelector,
   createImageDropdownSelector
 } from "./image-dropdown-selector";
-import styled, * as StyledComponents from "styled-components";
 
 export interface ComboBoxPropertyValueItem {
   readonly value: PropertyValue.PropertyValue | undefined | null;
@@ -53,41 +52,79 @@ export type ComboboxPropertySelector = React.StatelessComponent<
   ComboboxPropertySelectorProps
 >;
 
-function standardSelectStyles(
-  props: ComboBoxStandardSelectProps
-): Array<StyledComponents.InterpolationValue> {
+// function standardSelectStyles(
+//   props: ComboBoxStandardSelectProps
+// ): Array<StyledComponents.InterpolationValue> {
+//   if (!props.isSelectedItemValid && props.locked) {
+//     return StyledComponents.css`
+//       background: lightgray;
+//       color: red;
+//       border: none;
+//     `;
+//   } else if (!props.isSelectedItemValid) {
+//     return StyledComponents.css`color: red;`;
+//   } else if (props.locked) {
+//     return StyledComponents.css`
+//       background: lightgray;
+//       color: darkgray;
+//       border: none;
+//     `;
+//   }
+
+//   return StyledComponents.css``;
+// }
+
+function standardSelectStyles(props: ComboBoxStandardSelectProps): {} {
   if (!props.isSelectedItemValid && props.locked) {
-    return StyledComponents.css`
-      background: lightgray;
-      color: red;
-      border: none;    
-    `;
+    return {
+      background: "lightgray",
+      color: "red",
+      border: "none"
+    };
   } else if (!props.isSelectedItemValid) {
-    return StyledComponents.css`color: red;`;
+    return { color: "red" };
   } else if (props.locked) {
-    return StyledComponents.css`
-      background: lightgray;
-      color: darkgray;
-      border: none;
-    `;
+    return {
+      background: "lightgray",
+      color: "darkgray",
+      border: "none"
+    };
   }
-
-  return StyledComponents.css``;
+  return {};
 }
-
 const defaultComboBoxStandardOption = createComboBoxStandardOption({});
 const defaultImageDropdownSelector = createImageDropdownSelector({});
-export const defaultComboBoxStandardSelect = styled(ComboBoxStandardSelect)`
-  color: black;
-  height: 30px;
-  border: 1px solid #b4b4b4;
-  border-radius: 3px;
-  font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-  outline: rgb(131, 131, 131) none 0px;
-  padding: 1px 30px 0px 10px;
 
-  ${standardSelectStyles};
-`;
+// export const defaultComboBoxStandardSelect = styled(ComboBoxStandardSelect)`
+//   color: black;
+//   height: 30px;
+//   border: 1px solid #b4b4b4;
+//   border-radius: 3px;
+//   font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
+//   outline: rgb(131, 131, 131) none 0px;
+//   padding: 1px 30px 0px 10px;
+
+//   ${standardSelectStyles};
+// `;
+
+export const defaultComboBoxStandardSelect = (
+  props: ComboBoxStandardSelectProps
+) => (
+  <ComboBoxStandardSelect
+    {...props}
+    style={{
+      color: "black",
+      height: "30px",
+      border: "1px solid #b4b4b4",
+      borderRadius: "3px",
+      font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+      outline: "rgb(131, 131, 131) none 0px",
+      padding: "1px 30px 0px 10px",
+
+      ...standardSelectStyles(props)
+    }}
+  />
+);
 
 export function createComboboxPropertySelector({
   ComboBoxStandardOption = defaultComboBoxStandardOption,

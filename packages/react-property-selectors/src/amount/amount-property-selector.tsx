@@ -14,7 +14,6 @@ import {
   OnFormatSelectorToggled
 } from "./amount-format-selector";
 import { AmountInputBox, createAmountInputBox } from "./amount-input-box";
-import styled from "styled-components";
 
 // tslint:disable no-class no-this
 
@@ -49,7 +48,9 @@ export interface CreateAmountPropertySelectorProps {
   readonly AmountInputBox?: AmountInputBox;
 }
 
-const defaultAmountPropertySelectorWrapper = styled.span``;
+const defaultAmountPropertySelectorWrapper = (
+  props: React.HTMLProps<HTMLSpanElement>
+) => <span {...props} />;
 
 const defaultAmountFormatSelector = createAmountFormatSelector({});
 const defaultAmountInputBox = createAmountInputBox({});
