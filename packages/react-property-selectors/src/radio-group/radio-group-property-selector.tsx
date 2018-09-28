@@ -36,22 +36,6 @@ export type RadioGroupPropertySelector = React.StatelessComponent<
   RadioGroupPropertySelectorProps
 >;
 
-// const defaultRadioGroupItem = Styled(RadioGroupItem)`
-//   cursor: ${(p: RadioGroupItemProps) =>
-//     p.isItemValid ? "pointer" : "not-allowed"};
-//   display: inline-block;
-//   margin-right: 10px;
-//   padding: 10px;
-//   border: ${(p: RadioGroupItemProps) =>
-//     p.selected
-//       ? "2px solid " + (p.isItemValid ? "#39f" : "red")
-//       : "2px solid transparent"};
-//   color: ${(p: RadioGroupItemProps) => (p.isItemValid ? "black" : "grey")};
-
-//   ${(p: RadioGroupItemProps) =>
-//     p.isItemValid ? "&:hover { background: #39f; color: white;" : ""}
-// `;
-
 const defaultRadioGroupItem = (props: RadioGroupItemProps) => (
   <RadioGroupItem
     {...props}

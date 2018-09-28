@@ -22,21 +22,6 @@ export interface CreateTextboxPropertySelectorProps {
   >;
 }
 
-// export const defaultStyledInputTextBox: StyledComponents.StyledComponentClass<
-//   React.HTMLProps<HTMLInputElement>,
-//   // tslint:disable-next-line:no-any
-//   any,
-//   React.HTMLProps<HTMLInputElement>
-// > = styled.input`
-//   color: black;
-//   height: 30px;
-//   border: 1px solid #b4b4b4;
-//   border-radius: 3px;
-//   font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-//   outline: rgb(131, 131, 131) none 0px;
-//   padding: 1px 30px 0px 10px;
-// `;
-
 export const defaultStyledInputTextBox = (
   props: React.HTMLProps<HTMLInputElement>
 ) => (

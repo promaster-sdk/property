@@ -95,18 +95,6 @@ function standardSelectStyles(props: ComboBoxStandardSelectProps): {} {
 const defaultComboBoxStandardOption = createComboBoxStandardOption({});
 const defaultImageDropdownSelector = createImageDropdownSelector({});
 
-// export const defaultComboBoxStandardSelect = styled(ComboBoxStandardSelect)`
-//   color: black;
-//   height: 30px;
-//   border: 1px solid #b4b4b4;
-//   border-radius: 3px;
-//   font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-//   outline: rgb(131, 131, 131) none 0px;
-//   padding: 1px 30px 0px 10px;
-
-//   ${standardSelectStyles};
-// `;
-
 export const defaultComboBoxStandardSelect = (
   props: ComboBoxStandardSelectProps
 ) => (

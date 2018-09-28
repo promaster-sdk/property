@@ -94,23 +94,6 @@ function inputLocked({
   return {};
 }
 
-// export const defaultAmountInputField = styled(AmountInputField)`
-//   color: black;
-//   height: 30px;
-//   border: 1px solid #b4b4b4;
-//   border-radius: 3px;
-//   font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-//   outline: rgb(131, 131, 131) none 0px;
-//   padding: 1px 30px 0px 10px;
-
-//   ${props => inputInvalidLocked(props)}
-
-//   ${props => inputLocked(props)}
-
-//   ${props =>
-//     !props.isReadonly && props.effectiveErrorMessage ? "color: red" : ""}
-// `;
-
 export const defaultAmountInputField = (props: AmountInputFieldProps) => (
   <AmountInputField
     {...props}

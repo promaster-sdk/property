@@ -156,32 +156,6 @@ export const DefaultBackgroundElement = (
   />
 );
 
-// export const defaultComboBoxImageButtonElement = styled(ComboBoxImageElement)`
-//   width: 162px;
-//   align-items: center;
-//   background: white;
-//   color: black;
-//   height: 30px;
-//   white-space: nowrap;
-//   border: 1px solid #b4b4b4;
-//   border-radius: 3px;
-//   font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-//   outline: rgb(131, 131, 131) none 0px;
-//   padding: 1px 5px 0px 14px;
-//   text-align: right;
-
-//   i {
-//     margin-left: 10px;
-//   }
-
-//   img {
-//     max-width: 1em;
-//     max-height: 1em;
-//   }
-
-//   ${buttonElementStyles};
-// `;
-
 export const defaultComboBoxImageButtonElement = (
   props: ComboBoxImageElementProps
 ) => (
