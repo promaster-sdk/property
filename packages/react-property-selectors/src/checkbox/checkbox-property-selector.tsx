@@ -66,7 +66,8 @@ const defaultCheckbox = (props: CheckboxProps) => (
       position: "relative",
       backgroundColor: "#ccc",
       width: "22px",
-      height: "22px"
+      height: "22px",
+      background: props.checked ? "red" : "green"
 
       // &:after {
       //   display: ${(p: CheckboxProps) => (p.checked ? "initial" : "none")};
