@@ -9,6 +9,7 @@ import { Button, Welcome } from "@storybook/react/demo";
 import { AmountFormatSelectorExample1 } from "./amount-format-selector/example-1";
 import { AmountPropertySelectorExample1 } from "./amount-property-selector/example-1";
 import { ComboboxPropertySelectorExample1 } from "./combobox-property-selector/example-1";
+import { CheckboxPropertySelectorExample1 } from "./checkbox-property-selector/example-1";
 import { DropdownExample1 } from "./dropdown/example-1";
 import { TextboxPropertySelectorExample1 } from "./textbox-property-selector/example-1";
 
@@ -34,6 +35,10 @@ storiesOf("Amount Property Selector", module).add("example 1", () => (
 
 storiesOf("Combobox Property Selector", module).add("example 1", () => (
   <ComboboxPropertySelectorExample1 />
+));
+
+storiesOf("Checkbox Property Selector", module).add("example 1", () => (
+  <CheckboxPropertySelectorExample1 />
 ));
 
 storiesOf("Dropdown", module).add("example 1", () => <DropdownExample1 />);
