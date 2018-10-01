@@ -1,14 +1,14 @@
 import * as React from "react";
 
-export type ComboBoxImageButtonElementProps = {
+export type ComboBoxImageElementProps = {
   readonly isSelectedItemValid?: boolean;
   readonly locked: boolean;
 } & React.HTMLProps<HTMLDivElement>;
 
-export function comboBoxImageElement({
+export function ComboBoxImageElement({
   isSelectedItemValid: _,
   locked: _1,
   ...htmlProps
-}: ComboBoxImageButtonElementProps): JSX.Element {
+}: ComboBoxImageElementProps): JSX.Element {
   return <div {...htmlProps}>{htmlProps.children}</div>;
 }

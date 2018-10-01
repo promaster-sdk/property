@@ -2,7 +2,6 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import * as React from "react";
-import styled from "styled-components";
 import { Units, Unit, UnitName, Quantity } from "uom";
 import {
   AmountFormatWrapper,
@@ -50,11 +49,19 @@ export interface CreateAmountFormatSelectorParams {
   readonly AmountFormatWrapper?: React.ComponentType<AmountFormatWrapperProps>;
 }
 
-const defaultClearButton = styled.button``;
-const defaultCancelButton = styled.button``;
-const defaultPrecisionSelector = styled.select``;
-const defaultUnitSelector = styled.select``;
-const defaultFormatWrapper = styled(AmountFormatWrapper)``;
+const defaultClearButton = (props: React.HTMLProps<HTMLButtonElement>) => (
+  <button {...props} />
+);
+const defaultCancelButton = (props: React.HTMLProps<HTMLButtonElement>) => (
+  <button {...props} />
+);
+const defaultPrecisionSelector = (
+  props: React.HTMLProps<HTMLSelectElement>
+) => <select {...props} />;
+const defaultUnitSelector = (props: React.HTMLProps<HTMLSelectElement>) => (
+  <select {...props} />
+);
+const defaultFormatWrapper = AmountFormatWrapper;
 
 export function createAmountFormatSelector({
   ClearButton = defaultClearButton,

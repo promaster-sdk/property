@@ -1,6 +1,5 @@
 import * as React from "react";
 import { PropertyValue, PropertyValueSet } from "@promaster/property";
-import styled, * as StyledComponents from "styled-components";
 
 export interface TextboxPropertySelectorProps {
   readonly propertyName: string;
@@ -23,20 +22,22 @@ export interface CreateTextboxPropertySelectorProps {
   >;
 }
 
-export const defaultStyledInputTextBox: StyledComponents.StyledComponentClass<
-  React.HTMLProps<HTMLInputElement>,
-  // tslint:disable-next-line:no-any
-  any,
-  React.HTMLProps<HTMLInputElement>
-> = styled.input`
-  color: black;
-  height: 30px;
-  border: 1px solid #b4b4b4;
-  border-radius: 3px;
-  font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-  outline: rgb(131, 131, 131) none 0px;
-  padding: 1px 30px 0px 10px;
-`;
+export const defaultStyledInputTextBox = (
+  props: React.HTMLProps<HTMLInputElement>
+) => (
+  <input
+    {...props}
+    style={{
+      color: "black",
+      height: "30px",
+      border: "1px solid #b4b4b4",
+      borderRadius: "3px",
+      font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+      outline: "rgb(131, 131, 131) none 0px",
+      padding: "1px 30px 0px 10px"
+    }}
+  />
+);
 
 export function createTextboxPropertySelector({
   StyledInputTextBox = defaultStyledInputTextBox
@@ -109,8 +110,8 @@ export function createTextboxPropertySelector({
 // leading edge, instead of the trailing.
 // tslint:disable-next-line:no-any
 function debounce(func: Function, wait: number, immediate?: boolean): any {
-  //tslint:disable-line
-  let timeout: NodeJS.Timer | null;
+  // tslint:disable-next-line:no-any
+  let timeout: any;
   // tslint:disable-next-line:no-any
   return function(this: any): void {
     //tslint:disable-line

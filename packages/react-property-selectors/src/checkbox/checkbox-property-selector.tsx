@@ -5,7 +5,6 @@ import {
   PropertyValueSet
 } from "@promaster/property";
 import * as PropertyFiltering from "@promaster/property-filter-pretty";
-import Styled from "styled-components";
 
 export interface CheckboxPropertyValueItem {
   readonly value: PropertyValue.PropertyValue | undefined | null;
@@ -40,38 +39,51 @@ export type CheckboxPropertySelector = React.StatelessComponent<
   CheckboxPropertySelectorProps
 >;
 
-const defaultCheckboxContainer = Styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
+const defaultCheckboxContainer = (
+  props: React.ComponentType<CheckboxProps>
+) => (
+  <div
+    {...props}
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      cursor: "pointer"
 
-  img {
-    max-width: 100px;
-    max-height: 100px;
-  }
-`;
+      // img {
+      //   max-width: 100px;
+      //   max-height: 100px;
+      // }
+    }}
+  />
+);
 
-const defaultCheckbox = Styled.div`
-  margin-top: 5px;
-	position: relative;
-	background-color: #ccc;
-  width: 22px;
-  height: 22px;
+const defaultCheckbox = (props: CheckboxProps) => (
+  <div
+    {...props}
+    style={{
+      marginTop: "5px",
+      position: "relative",
+      backgroundColor: "#ccc",
+      width: "22px",
+      height: "22px",
+      background: props.checked ? "red" : "green"
 
-  &:after {
-    display: ${(p: CheckboxProps) => (p.checked ? "initial" : "none")};
-    position: absolute;
-    top: 1px;
-    left: 7px;
-    content: '';
-    border-right: 3px solid black;
-    border-bottom: 3px solid black;
-    width: 6px;
-    height: 12px;
-    transform: rotate(45deg);
-  }
-`;
+      // &:after {
+      //   display: ${(p: CheckboxProps) => (p.checked ? "initial" : "none")};
+      //   position: absolute;
+      //   top: 1px;
+      //   left: 7px;
+      //   content: '';
+      //   border-right: 3px solid black;
+      //   border-bottom: 3px solid black;
+      //   width: 6px;
+      //   height: 12px;
+      //   transform: rotate(45deg);
+      // }
+    }}
+  />
+);
 
 export function createCheckboxPropertySelector({
   CheckboxContainer = defaultCheckboxContainer,

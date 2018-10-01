@@ -7,7 +7,6 @@ import {
 import * as PropertyFiltering from "@promaster/property-filter-pretty";
 import { RadioGroupProps, RadioGroup } from "./radio-group";
 import { RadioGroupItemProps, RadioGroupItem } from "./radio-group-item";
-import Styled from "styled-components";
 
 export interface RadioGroupPropertyValueItem {
   readonly value: PropertyValue.PropertyValue | undefined | null;
@@ -37,22 +36,25 @@ export type RadioGroupPropertySelector = React.StatelessComponent<
   RadioGroupPropertySelectorProps
 >;
 
-const defaultRadioGroupItem = Styled(RadioGroupItem)`
-  cursor: ${(p: RadioGroupItemProps) =>
-    p.isItemValid ? "pointer" : "not-allowed"};
-  display: inline-block;
-  margin-right: 10px;
-  padding: 10px;
-  border: ${(p: RadioGroupItemProps) =>
-    p.selected
-      ? "2px solid " + (p.isItemValid ? "#39f" : "red")
-      : "2px solid transparent"};
-  color: ${(p: RadioGroupItemProps) => (p.isItemValid ? "black" : "grey")};
+const defaultRadioGroupItem = (props: RadioGroupItemProps) => (
+  <RadioGroupItem
+    {...props}
+    style={{
+      cursor: props.isItemValid ? "pointer" : "not-allowed",
+      display: "inline-block",
+      marginRight: "10px",
+      padding: "10px",
+      border: props.selected
+        ? "2px solid " + (props.isItemValid ? "#39f" : "red")
+        : "2px solid transparent",
+      color: props.isItemValid ? "black" : "grey"
+      // ${(p: RadioGroupItemProps) =>
+      //   p.isItemValid ? "&:hover { background: #39f; color: white;" : ""}
+    }}
+  />
+);
 
-  ${(p: RadioGroupItemProps) =>
-    p.isItemValid ? "&:hover { background: #39f; color: white;" : ""}
-`;
-const defaultRadioGroup = Styled(RadioGroup)``;
+const defaultRadioGroup = (props: RadioGroupProps) => <RadioGroup {...props} />;
 
 export function createRadioGroupPropertySelector({
   RadioGroupItem = defaultRadioGroupItem,

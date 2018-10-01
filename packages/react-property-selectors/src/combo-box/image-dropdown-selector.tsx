@@ -1,12 +1,11 @@
 import * as React from "react";
-import styled, * as StyledExports from "styled-components";
 import {
-  comboBoxImageOptionElementRow,
+  ComboBoxImageOptionElementRow,
   ComboBoxImageOptionElementRowProps
 } from "./combo-box-image-element-row";
 import {
-  comboBoxImageElement,
-  ComboBoxImageButtonElementProps
+  ComboBoxImageElement,
+  ComboBoxImageElementProps
 } from "./combo-box-image-button-element";
 
 export interface ImageDropdownSelectorProps {
@@ -41,89 +40,154 @@ export interface CreateImageDropdownSelectorProps {
   readonly DropdownOptionsElement?: React.ComponentType<HTMLDivElement>;
   readonly DropdownSelectElement?: React.ComponentType<HTMLDivElement>;
   readonly ComboBoxImageButtonElement?: React.ComponentType<
-    ComboBoxImageButtonElementProps
+    ComboBoxImageElementProps
   >;
 }
 
-export const defaultOptionImageElement = styled.img`
-  max-width: 2em;
-  max-height: 2em;
-`;
+export const defaultOptionImageElement = (
+  props: React.HTMLProps<HTMLImageElement>
+) => (
+  <img
+    {...props}
+    style={{
+      maxWidth: "2em",
+      maxHeight: "2em"
+    }}
+  />
+);
 
-export const defaultOptionImageElementRow = styled(
-  comboBoxImageOptionElementRow
-)`
-  color: rgb(131, 131, 131);
-  min-height: 18px;
-  align-self: center;
-  border: 0px none rgb(131, 131, 131);
-  font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-  outline: rgb(131, 131, 131) none 0px;
+// export const defaultOptionImageElementRow = styled(
+//   ComboBoxImageOptionElementRow
+// )`
+//   color: rgb(131, 131, 131);
+//   min-height: 18px;
+//   align-self: center;
+//   border: 0px none rgb(131, 131, 131);
+//   font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
+//   outline: rgb(131, 131, 131) none 0px;
 
-  padding: 0.2em 0.5em;
-  cursor: default;
+//   padding: 0.2em 0.5em;
+//   cursor: default;
 
-  &:hover {
-    background-color: blue;
-    color: white;
-  }
+//   &:hover {
+//     background-color: blue;
+//     color: white;
+//   }
 
-  ${props => (props.isItemValid === false ? "color: red;" : "")};
-`;
+//   ${props => (props.isItemValid === false ? "color: red;" : "")};
+// `;
 
-export const defaultDropdownOptionsElement = styled.div`
-  position: absolute;
-  display: block;
-  background: white;
-  border: 1px solid #bbb;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  z-index: 100;
-`;
+export const defaultOptionImageElementRow = (
+  props: ComboBoxImageOptionElementRowProps
+) => (
+  <ComboBoxImageOptionElementRow
+    {...props}
+    style={{
+      color: props.isItemValid === false ? "color: red;" : "rgb(131, 131, 131)",
+      minHeight: "18px",
+      alignSelf: "center",
+      border: "0px none rgb(131, 131, 131)",
+      font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+      outline: "rgb(131, 131, 131) none 0px",
+      padding: "0.2em 0.5em",
+      cursor: "default"
 
-export const defaultDropdownSelectElement = styled.div`
-  user-select: none;
+      // &:hover {
+      //   background-color: blue;
+      //   color: white;
+      // }
+    }}
+  />
+);
 
-  img {
-    vertical-align: middle;
-  }
-`;
+export const defaultDropdownOptionsElement = (
+  props: React.HTMLProps<HTMLDivElement>
+) => (
+  <div
+    {...props}
+    style={{
+      position: "absolute",
+      display: "block",
+      background: "white",
+      border: "1px solid #bbb",
+      listStyle: "none",
+      margin: 0,
+      padding: 0,
+      zIndex: 100
+    }}
+  />
+);
+
+// export const defaultDropdownSelectElement = styled.div`
+//   user-select: none;
+
+//   img {
+//     vertical-align: middle;
+//   }
+// `;
+
+export const defaultDropdownSelectElement = (
+  props: React.HTMLProps<HTMLDivElement>
+) => (
+  <div
+    {...props}
+    style={{
+      userSelect: "none"
+      // img {
+      //   vertical-align: middle;
+      // }
+    }}
+  />
+);
 
 // tslint:disable-next-line:variable-name
-export const DefaultBackgroundElement = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
+export const DefaultBackgroundElement = (
+  props: React.HTMLProps<HTMLDivElement>
+) => (
+  <div
+    {...props}
+    style={{
+      position: "absolute",
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0
+    }}
+  />
+);
 
-export const defaultComboBoxImageButtonElement = styled(comboBoxImageElement)`
-  width: 162px;
-  align-items: center;
-  background: white;
-  color: black;
-  height: 30px;
-  white-space: nowrap;
-  border: 1px solid #b4b4b4;
-  border-radius: 3px;
-  font: normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif;
-  outline: rgb(131, 131, 131) none 0px;
-  padding: 1px 5px 0px 14px;
-  text-align: right;
+export const defaultComboBoxImageButtonElement = (
+  props: ComboBoxImageElementProps
+) => (
+  <ComboBoxImageElement
+    {...props}
+    style={{
+      width: "162px",
+      alignItems: "center",
+      background: "white",
+      color: "black",
+      height: "30px",
+      whiteSpace: "nowrap",
+      border: "1px solid #b4b4b4",
+      borderRadius: "3px",
+      font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+      outline: "rgb(131, 131, 131) none 0px",
+      padding: "1px 5px 0px 14px",
+      textAlign: "right",
 
-  i {
-    margin-left: 10px;
-  }
+      // i {
+      //   margin-left: 10px;
+      // }
 
-  img {
-    max-width: 1em;
-    max-height: 1em;
-  }
+      // img {
+      //   max-width: 1em;
+      //   max-height: 1em;
+      // }
 
-  ${buttonElementStyles};
-`;
+      ...buttonElementStyles(props)
+    }}
+  />
+);
 
 export function createImageDropdownSelector({
   OptionImage = defaultOptionImageElement,
@@ -220,24 +284,44 @@ export function createImageDropdownSelector({
   };
 }
 
-function buttonElementStyles(
-  props: ComboBoxImageButtonElementProps
-): Array<StyledExports.InterpolationValue> {
+// function buttonElementStyles(
+//   props: ComboBoxImageElementProps
+// ): Array<StyledExports.InterpolationValue> {
+//   if (props.isSelectedItemValid === false && props.locked) {
+//     return StyledExports.css`
+//       background: lightgray;
+//       color: red;
+//       border: none;
+//     `;
+//   } else if (props.isSelectedItemValid === false) {
+//     return StyledExports.css`color: red;`;
+//   } else if (props.locked) {
+//     return StyledExports.css`
+//       background: lightgray;
+//       color: darkgray;
+//       border: none;
+//     `;
+//   }
+
+//   return StyledExports.css``;
+// }
+
+function buttonElementStyles(props: ComboBoxImageElementProps): {} {
   if (props.isSelectedItemValid === false && props.locked) {
-    return StyledExports.css`
-      background: lightgray;
-      color: red;
-      border: none;    
-    `;
+    return {
+      background: "lightgray",
+      color: "red",
+      border: "none"
+    };
   } else if (props.isSelectedItemValid === false) {
-    return StyledExports.css`color: red;`;
+    return { color: "red" };
   } else if (props.locked) {
-    return StyledExports.css`
-      background: lightgray;
-      color: darkgray;
-      border: none;
-    `;
+    return {
+      background: "lightgray",
+      color: "darkgray",
+      border: "none"
+    };
   }
 
-  return StyledExports.css``;
+  return {};
 }
