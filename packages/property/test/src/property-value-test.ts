@@ -117,7 +117,7 @@ describe("PropertyValue", () => {
   it("should make a correct string from an amount value", () => {
     const pv1 = fromStringOrException("20.03:Celsius");
     const pv1string = PropertyValue.toString(pv1);
-    assert.equal(pv1string, "20.03:celsius");
+    assert.equal(pv1string, "20.03:Celsius");
   });
 
   it("should make a correct string from an integer value", () => {
