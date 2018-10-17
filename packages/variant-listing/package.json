@@ -1,8 +1,7 @@
 {
   "name": "@promaster/variant-listing",
-  "version": "1.0.6",
-  "repository":
-    "https://gitlab.divid.se/promaster-sdk/packages/variant-listing",
+  "version": "1.0.7",
+  "repository": "https://gitlab.divid.se/promaster-sdk/packages/variant-listing",
   "description": "Generate list of valid variants",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
@@ -13,7 +12,7 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/property": "^1.1.1",
+    "@promaster/property": "^1.1.2",
     "ramda": "^0.25.0"
   },
   "devDependencies": {
