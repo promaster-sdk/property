@@ -9999,9 +9999,9 @@ uom@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/uom/-/uom-1.1.1.tgz#96b69b040ed95773b9424cd2e43d6a5e532cddb5"
 
-uom@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/uom/-/uom-1.0.1.tgz#cf8c466aaabf0bfb7858b210ebaf1a2f9f1695e8"
+uom@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/uom/-/uom-1.1.2.tgz#f28cfd636eef5d5b3b7316f430c207eb2a6663f4"
 
 update-notifier@^2.1.0:
   version "2.5.0"

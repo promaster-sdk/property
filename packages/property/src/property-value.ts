@@ -63,16 +63,16 @@ export function fromString(encodedValue: string): PropertyValue | undefined {
   return result;
 }
 
-export function fromAmount<T extends Quantity.Quantity>(
-  amountValue: Amount.Amount<T>
+export function fromAmount(
+  amountValue: Amount.Amount<Quantity.Quantity>
 ): PropertyValue {
   if (!amountValue) {
     throw new Error("null: value");
   }
-  if (Amount.isQuantity<Quantity.Discrete>("Discrete", amountValue)) {
+  if (amountValue.unit.quantity === "Discrete") {
     return {
       type: "integer",
-      value: Amount.valueAs(Units.Integer, amountValue)
+      value: amountValue.value
     };
   } else {
     return { type: "amount", value: amountValue };
@@ -123,7 +123,7 @@ export function valueAs<T extends Quantity.Quantity>(
   unit: Unit.Unit<T>,
   value: PropertyValue
 ): number | undefined {
-  const amount = getAmount(value);
+  const amount = getAmount<T>(value);
   if (amount === undefined) {
     return undefined;
   }

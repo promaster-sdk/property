@@ -6,7 +6,8 @@
   "types": "lib-cjs/index",
   "description": "User interface for selecting single property values",
   "author": "Divid AB",
-  "repository": "https://gitlab.divid.se/promaster-sdk/packages/react-property-selectors",
+  "repository":
+    "https://gitlab.divid.se/promaster-sdk/packages/react-property-selectors",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"
@@ -15,7 +16,7 @@
     "@promaster/property": "^1.1.1",
     "@promaster/property-filter-pretty": "^1.0.8",
     "react": "^15.6.1",
-    "uom": "^1.0.0"
+    "uom": "1.1.2"
   },
   "devDependencies": {
     "@types/react": "^15.6.0",
