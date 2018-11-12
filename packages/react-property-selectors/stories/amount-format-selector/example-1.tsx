@@ -19,7 +19,12 @@ interface State {
 }
 
 // Usage with standard css
-const ClearButton = (props: React.HTMLProps<HTMLButtonElement>) => (
+const ClearButton = (
+  props: React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >
+) => (
   <button {...props} className="my-own">
     Clear
   </button>
@@ -46,8 +51,8 @@ const AmountFormatSelector = createAmountFormatSelector({
 const AmountInputBox = createAmountInputBox({});
 
 export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
-  constructor() {
-    super();
+  constructor(props: {}) {
+    super(props);
     this.state = {
       amount: Amount.create(10.0, Units.Celsius),
       selectedUnit: Units.Celsius,

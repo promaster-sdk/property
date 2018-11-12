@@ -3,7 +3,10 @@ import * as React from "react";
 export type ComboBoxStandardSelectProps = {
   readonly isSelectedItemValid: boolean;
   readonly locked: boolean;
-} & React.HTMLProps<HTMLSelectElement>;
+} & React.DetailedHTMLProps<
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  HTMLSelectElement
+>;
 
 export function ComboBoxStandardSelect({
   isSelectedItemValid: _,

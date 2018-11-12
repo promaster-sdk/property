@@ -42,14 +42,20 @@ export type AmountPropertySelector = React.ComponentClass<
 >;
 export interface CreateAmountPropertySelectorProps {
   readonly AmountPropertySelectorWrapper?: React.ComponentType<
-    React.HTMLProps<HTMLSpanElement>
+    React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLSpanElement>,
+      HTMLSpanElement
+    >
   >;
   readonly AmountFormatSelector?: AmountFormatSelector;
   readonly AmountInputBox?: AmountInputBox;
 }
 
 const defaultAmountPropertySelectorWrapper = (
-  props: React.HTMLProps<HTMLSpanElement>
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLSpanElement>,
+    HTMLSpanElement
+  >
 ) => <span {...props} />;
 
 const defaultAmountFormatSelector = createAmountFormatSelector({});

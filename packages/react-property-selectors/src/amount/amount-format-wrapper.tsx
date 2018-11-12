@@ -2,7 +2,10 @@ import * as React from "react";
 
 export type AmountFormatWrapperProps = {
   readonly active: boolean;
-} & React.HTMLProps<HTMLSpanElement>;
+} & React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLSpanElement>,
+  HTMLSpanElement
+>;
 
 // tslint:disable-next-line:variable-name
 export const AmountFormatWrapper = ({

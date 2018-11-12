@@ -28,7 +28,10 @@ export interface CheckboxPropertySelectorProps {
 export type CheckboxProps = {
   readonly locked: boolean;
   readonly checked: boolean;
-} & React.HTMLProps<HTMLDivElement>;
+} & React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+>;
 
 export interface CreateCheckboxPropertySelectorParams {
   readonly CheckboxContainer?: React.ComponentType<CheckboxProps>;
@@ -39,9 +42,7 @@ export type CheckboxPropertySelector = React.StatelessComponent<
   CheckboxPropertySelectorProps
 >;
 
-const defaultCheckboxContainer = (
-  props: React.ComponentType<CheckboxProps>
-) => (
+const defaultCheckboxContainer = (props: CheckboxProps) => (
   <div
     {...props}
     style={{
