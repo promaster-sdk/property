@@ -11,6 +11,7 @@
     // import & lib options
     "moduleResolution": "node",
     "typeRoots": ["../node_modules/@types/"],
+    "types": ["jest"],
     "lib": [
       "es5",
       "dom",
