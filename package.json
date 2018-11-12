@@ -40,7 +40,7 @@
     "tslint-immutable": "^4.5.1",
     "typedoc": "^0.5.1",
     "typedoc-markdown-theme": "0.0.4",
-    "typescript": "^2.8.3",
+    "typescript": "^3.1.6",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
   },
