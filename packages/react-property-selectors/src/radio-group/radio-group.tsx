@@ -2,7 +2,10 @@ import * as React from "react";
 
 export type RadioGroupProps = {
   readonly locked: boolean;
-} & React.HTMLProps<HTMLDivElement>;
+} & React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+>;
 
 export function RadioGroup({
   locked: _1,

@@ -2,7 +2,10 @@ import * as React from "react";
 
 export type OptionElementProps = {
   readonly isItemValid: boolean;
-} & React.HTMLProps<HTMLOptionElement>;
+} & React.DetailedHTMLProps<
+  React.OptionHTMLAttributes<HTMLOptionElement>,
+  HTMLOptionElement
+>;
 
 // tslint:disable-next-line:variable-name
 export const OptionElement = ({

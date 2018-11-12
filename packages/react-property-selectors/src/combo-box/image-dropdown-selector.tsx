@@ -109,7 +109,10 @@ export const defaultOptionImageElementRow = (
 );
 
 export const defaultDropdownOptionsElement = (
-  props: React.HTMLProps<HTMLDivElement>
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >
 ) => (
   <div
     {...props}
@@ -135,7 +138,10 @@ export const defaultDropdownOptionsElement = (
 // `;
 
 export const defaultDropdownSelectElement = (
-  props: React.HTMLProps<HTMLDivElement>
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >
 ) => (
   <div
     {...props}
@@ -150,7 +156,10 @@ export const defaultDropdownSelectElement = (
 
 // tslint:disable-next-line:variable-name
 export const DefaultBackgroundElement = (
-  props: React.HTMLProps<HTMLDivElement>
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >
 ) => (
   <div
     {...props}

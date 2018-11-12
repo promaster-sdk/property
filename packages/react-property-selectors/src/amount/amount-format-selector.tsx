@@ -35,32 +35,56 @@ export type AmountFormatSelector = React.ComponentClass<
 >;
 export interface CreateAmountFormatSelectorParams {
   readonly ClearButton?: React.ComponentType<
-    React.HTMLProps<HTMLButtonElement>
+    React.DetailedHTMLProps<
+      React.ButtonHTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    >
   >;
   readonly CancelButton?: React.ComponentType<
-    React.HTMLProps<HTMLButtonElement>
+    React.DetailedHTMLProps<
+      React.ButtonHTMLAttributes<HTMLButtonElement>,
+      HTMLButtonElement
+    >
   >;
   readonly PrecisionSelector?: React.ComponentType<
-    React.HTMLProps<HTMLSelectElement>
+    React.DetailedHTMLProps<
+      React.SelectHTMLAttributes<HTMLSelectElement>,
+      HTMLSelectElement
+    >
   >;
   readonly UnitSelector?: React.ComponentType<
-    React.HTMLProps<HTMLSelectElement>
+    React.DetailedHTMLProps<
+      React.SelectHTMLAttributes<HTMLSelectElement>,
+      HTMLSelectElement
+    >
   >;
   readonly AmountFormatWrapper?: React.ComponentType<AmountFormatWrapperProps>;
 }
 
-const defaultClearButton = (props: React.HTMLProps<HTMLButtonElement>) => (
-  <button {...props} />
-);
-const defaultCancelButton = (props: React.HTMLProps<HTMLButtonElement>) => (
-  <button {...props} />
-);
+const defaultClearButton = (
+  props: React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >
+) => <button {...props} />;
+const defaultCancelButton = (
+  props: React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >
+) => <button {...props} />;
 const defaultPrecisionSelector = (
-  props: React.HTMLProps<HTMLSelectElement>
+  props: React.DetailedHTMLProps<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  >
 ) => <select {...props} />;
-const defaultUnitSelector = (props: React.HTMLProps<HTMLSelectElement>) => (
-  <select {...props} />
-);
+const defaultUnitSelector = (
+  props: React.DetailedHTMLProps<
+    React.SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  >
+) => <select {...props} />;
 const defaultFormatWrapper = AmountFormatWrapper;
 
 export function createAmountFormatSelector({
