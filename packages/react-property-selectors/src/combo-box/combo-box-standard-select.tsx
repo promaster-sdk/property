@@ -4,8 +4,8 @@ export type ComboBoxStandardSelectProps = {
   readonly isSelectedItemValid: boolean;
   readonly locked: boolean;
 } & React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
+  React.SelectHTMLAttributes<HTMLSelectElement>,
+  HTMLSelectElement
 >;
 
 export function ComboBoxStandardSelect({

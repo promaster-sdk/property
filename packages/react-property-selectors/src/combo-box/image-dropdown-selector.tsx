@@ -42,8 +42,18 @@ export interface CreateImageDropdownSelectorProps {
   readonly OptionImageElementRow?: React.ComponentType<
     ComboBoxImageOptionElementRowProps
   >;
-  readonly DropdownOptionsElement?: React.ComponentType<HTMLDivElement>;
-  readonly DropdownSelectElement?: React.ComponentType<HTMLDivElement>;
+  readonly DropdownOptionsElement?: React.ComponentType<
+    React.DetailedHTMLProps<
+      React.HtmlHTMLAttributes<HTMLDivElement>,
+      HTMLDivElement
+    >
+  >;
+  readonly DropdownSelectElement?: React.ComponentType<
+    React.DetailedHTMLProps<
+      React.HtmlHTMLAttributes<HTMLDivElement>,
+      HTMLDivElement
+    >
+  >;
   readonly ComboBoxImageButtonElement?: React.ComponentType<
     ComboBoxImageElementProps
   >;
