@@ -33,7 +33,12 @@ export type ImageDropdownSelector = React.ComponentClass<
 >;
 
 export interface CreateImageDropdownSelectorProps {
-  readonly OptionImage?: React.ComponentType<React.HTMLProps<HTMLImageElement>>;
+  readonly OptionImage?: React.ComponentType<
+    React.DetailedHTMLProps<
+      React.ImgHTMLAttributes<HTMLImageElement>,
+      HTMLImageElement
+    >
+  >;
   readonly OptionImageElementRow?: React.ComponentType<
     ComboBoxImageOptionElementRowProps
   >;
@@ -45,7 +50,10 @@ export interface CreateImageDropdownSelectorProps {
 }
 
 export const defaultOptionImageElement = (
-  props: React.HTMLProps<HTMLImageElement>
+  props: React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  >
 ) => (
   <img
     {...props}
@@ -283,28 +291,6 @@ export function createImageDropdownSelector({
     }
   };
 }
-
-// function buttonElementStyles(
-//   props: ComboBoxImageElementProps
-// ): Array<StyledExports.InterpolationValue> {
-//   if (props.isSelectedItemValid === false && props.locked) {
-//     return StyledExports.css`
-//       background: lightgray;
-//       color: red;
-//       border: none;
-//     `;
-//   } else if (props.isSelectedItemValid === false) {
-//     return StyledExports.css`color: red;`;
-//   } else if (props.locked) {
-//     return StyledExports.css`
-//       background: lightgray;
-//       color: darkgray;
-//       border: none;
-//     `;
-//   }
-
-//   return StyledExports.css``;
-// }
 
 function buttonElementStyles(props: ComboBoxImageElementProps): {} {
   if (props.isSelectedItemValid === false && props.locked) {
