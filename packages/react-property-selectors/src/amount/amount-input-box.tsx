@@ -335,7 +335,7 @@ function getDecimalCountFromString(stringValue: string): number {
 }
 
 function filterFloat(value: string): number {
-  if (/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/.test(value)) {
+  if (/^(\-|\+)?([0-9]*?(\.[0-9]+)?|Infinity)$/.test(value)) {
     return Number(value);
   }
   return NaN;
