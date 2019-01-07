@@ -20,6 +20,8 @@ export interface AmountInputBoxProps {
   readonly errorMessage: string;
   readonly readOnly: boolean;
   readonly onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void;
+  readonly onFocus?: () => void;
+  readonly onBlur?: () => void;
   readonly debounceTime: number;
 }
 
@@ -163,7 +165,7 @@ export function createAmountInputBox({
     }
 
     render(): React.ReactElement<AmountInputBoxProps> {
-      const { onValueChange, readOnly } = this.props;
+      const { onValueChange, readOnly, onBlur, onFocus } = this.props;
       const { effectiveErrorMessage, textValue } = this.state;
       // const test = (<input type="text" />);
       return (
@@ -171,6 +173,8 @@ export function createAmountInputBox({
           key="input"
           value={textValue}
           readOnly={readOnly}
+          onBlur={onBlur}
+          onFocus={onFocus}
           onChange={e => this._onChange(e, onValueChange)}
           title={effectiveErrorMessage}
           effectiveErrorMessage={effectiveErrorMessage}
