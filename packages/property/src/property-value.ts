@@ -1,7 +1,7 @@
 import { Amount } from "uom";
-import { Units } from "uom";
 import { Unit } from "uom";
 import { Quantity } from "uom";
+import { Serialize } from "uom";
 import { compareNumbers, compareIgnoreCase } from "./utils/compare-utils";
 
 // Types
@@ -138,7 +138,7 @@ export function toString(value: PropertyValue): string {
     }
 
     const valueString = value.value.value.toFixed(value.value.decimalCount);
-    const unitString = Units.getStringFromUnit(value.value.unit);
+    const unitString = Serialize.unitToString(value.value.unit);
     return `${valueString}:${unitString}`;
   } else if (value.type === "text") {
     return _encodeToSafeString(value.value);
@@ -269,17 +269,21 @@ function _fromSerializedStringOrUndefinedIfInvalidString(
       if (doubleValue === null) {
         return undefined;
       }
-      if (!Units.isUnit(unitString)) {
+      if (!Serialize.stringToUnit(unitString)) {
         return undefined;
       }
-      const unit = Units.getUnitFromString(unitString);
+      const unit = Serialize.stringToUnit(unitString);
       let decimalCount = 0;
       const pointIndex = stringValue.indexOf(".");
       if (pointIndex >= 0) {
         decimalCount = stringValue.length - pointIndex - 1;
       }
-      const amount = Amount.create(doubleValue, unit, decimalCount);
-      deserializedValue = fromAmount(amount);
+      if (unit) {
+        const amount = Amount.create(doubleValue, unit, decimalCount);
+        deserializedValue = fromAmount(amount);
+      } else {
+        return undefined;
+      }
     }
   } else {
     const integerValue: number = parseInt(encodedValue, 10);

@@ -23,8 +23,8 @@ export class CheckboxPropertySelectorExample1 extends React.Component<
   {},
   State
 > {
-  constructor() {
-    super();
+  constructor(props: {}) {
+    super(props);
     this.state = {
       propertyValueSet: PropertyValueSet.fromString("a=1")
     };

@@ -1,5 +1,4 @@
 import * as R from "ramda";
-import { Units } from "uom";
 import {
   PropertyValue,
   PropertyValueSet,
@@ -32,11 +31,7 @@ export function buildAllPropertyValueSetsExtended(
   const newVariableProperties = variableProperties
     .filter(property => {
       // remove all no discrete properties
-      if (
-        Units.getStringFromQuantityType(
-          property.quantity
-        ).toLocaleLowerCase() !== "discrete"
-      ) {
+      if (property.quantity.toLocaleLowerCase() !== "discrete") {
         blackListedProperties.push(property);
         if (property.validation_filter.text !== "") {
           blacklistedPropertyFilters.push(property.validation_filter);
@@ -87,10 +82,7 @@ export function buildAllPropertyValueSetsExtended(
   // Error check.
   if (
     newVariableProperties.find(
-      property =>
-        Units.getStringFromQuantityType(
-          property.quantity
-        ).toLocaleLowerCase() !== "discrete"
+      property => property.quantity.toLocaleLowerCase() !== "discrete"
     )
   ) {
     throw new Error("Can't build variants from non-discrete properties.");

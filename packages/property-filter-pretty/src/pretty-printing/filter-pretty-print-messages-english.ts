@@ -1,5 +1,5 @@
 import { PropertyFilterAst as Ast, PropertyValue } from "@promaster/property";
-import { UnitName } from "uom";
+import { Format } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 
 export function comparisionOperationMessage(
@@ -39,12 +39,14 @@ export function propertyValueMessage(
   propertyValue: PropertyValue.PropertyValue
 ): string {
   switch (propertyValue.type) {
-    case "amount":
-      return (
-        propertyValue.value.value +
-        " " +
-        UnitName.getName(propertyValue.value.unit)
-      );
+    case "amount": {
+      const unitFormat = Format.getUnitFormat(propertyValue.value.unit);
+      if (unitFormat) {
+        return propertyValue.value.value + " " + unitFormat.label;
+      } else {
+        return propertyValue.value.value.toString();
+      }
+    }
     case "integer":
       const pvString = PropertyValue.toString(propertyValue);
       return `${propertyName}_${pvString}`;
