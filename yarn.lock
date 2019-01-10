@@ -10156,10 +10156,10 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
-uom@2.0.0-alpha.2:
-  version "2.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/uom/-/uom-2.0.0-alpha.2.tgz#963a8c55b07554437347db8f755d3d6cfb579439"
-  integrity sha512-4Oj/vVekTKrRqbvmTcuPSpIRbRgTZP88OeNR4fzKz+ldLluax3UoT5mtpIOvF8B4PRS7QkTtJNCbhGt2ZH/WOw==
+uom@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/uom/-/uom-2.0.0.tgz#cbeb5501d9331183a38200a5754726e1d368d5c6"
+  integrity sha512-7/CnHps/dBw9qbwpRy3JB+X3a3bZin9z+kUf3br+7fyoF7zk4AuXHK/T+T9o+DufgYQvBPTYm86SkgJbOAUcug==
 
 update-notifier@^2.1.0:
   version "2.5.0"

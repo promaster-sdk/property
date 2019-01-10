@@ -6,7 +6,8 @@
   "types": "lib-cjs/index",
   "description": "User interface for selecting a valid property value set",
   "author": "Divid AB",
-  "repository": "https://gitlab.divid.se/promaster-sdk/packages/react-properties-selector",
+  "repository":
+    "https://gitlab.divid.se/promaster-sdk/packages/react-properties-selector",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"
@@ -17,7 +18,7 @@
     "@promaster/react-property-selectors": "^3.0.1-1",
     "ramda": "^0.25.0",
     "react": "^16.6.1",
-    "uom": "2.0.0-alpha.3"
+    "uom": "2.0.0"
   },
   "devDependencies": {
     "@types/ramda": "^0.25.29",
