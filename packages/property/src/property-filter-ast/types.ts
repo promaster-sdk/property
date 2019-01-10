@@ -116,6 +116,13 @@ export function newValueExpr(unParsed: string): ValueExpr {
   if (parsed === undefined) {
     throw new Error(`Invalid property value ${unParsed}`);
   }
+  if (parsed.type === "integer" && unParsed.includes(".")) {
+    return {
+      type: "ValueExpr",
+      unParsed,
+      parsed: PropertyValue.fromInteger(parseFloat(unParsed))
+    };
+  }
   return { type: "ValueExpr", unParsed, parsed };
 }
 

@@ -240,5 +240,12 @@ export const tests = [
     pvs: "a=2:Meter",
     f: "-a=-2:Meter",
     result: true
+  },
+  {
+    name: "expression interval",
+    pvs:
+      "a=18000:StandardCubicFeetPerMinute;b=20000:StandardCubicFeetPerMinute",
+    f: "b=0.5*a~1.5*a",
+    result: true
   }
 ];
