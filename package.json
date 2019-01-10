@@ -1,8 +1,6 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "devDependencies": {
     "@storybook/react": "^3.3.12",
     "@types/assertion-error": "^1.0.30",
@@ -47,7 +45,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "publish-npm": "yarn verify && lerna publish",
-    "verify": "lerna run lint && lerna run build && lerna run circular && lerna run test && lerna run coverage",
+    "verify":
+      "lerna run lint && lerna run build && lerna run circular && lerna run test && lerna run coverage",
     "updated": "lerna updated",
     "build": "lerna run build",
     "clean": "lerna clean && rm -rf node_modules",
@@ -56,12 +55,6 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": "tslint",
-    "*.{ts,tsx,json,css}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "dependencies": {
-    "uom": "1.1.1"
+    "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
   }
 }

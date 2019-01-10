@@ -1,4 +1,4 @@
-import { Units, UnitName } from "uom";
+import { Format, Serialize } from "uom";
 import {
   PropertyFilter,
   PropertyFilterAst as Ast,
@@ -120,9 +120,17 @@ function visit(
       } else if (e.parsed.type === "amount") {
         const split = e.unParsed.split(":");
         if (split.length === 2) {
-          return (
-            split[0] + " " + UnitName.getName(Units.getUnitFromString(split[1]))
-          );
+          const unit = Serialize.stringToUnit(split[1]);
+          if (unit) {
+            const unitFormat = Format.getUnitFormat(unit);
+            if (unitFormat) {
+              return split[0] + " " + unitFormat.label;
+            } else {
+              return split[0];
+            }
+          } else {
+            return split[0];
+          }
         } else {
           return split[0];
         }

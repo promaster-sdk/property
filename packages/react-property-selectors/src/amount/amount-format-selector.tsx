@@ -2,7 +2,7 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import * as React from "react";
-import { Units, Unit, UnitName, Quantity } from "uom";
+import { Unit, Serialize, Quantity, Format } from "uom";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps
@@ -122,20 +122,22 @@ export function createAmountFormatSelector({
 
       // If there is no handler for onFormatChanged then the user should not be able to change the format
       if (!this.state.active || !onFormatChanged) {
+        const format = Format.getUnitFormat(selectedUnit);
+
         return (
           <AmountFormatWrapper
             active={this.state.active}
             onClick={() => this.setState({ active: true })}
           >
-            {UnitName.getName(selectedUnit)}
+            {format ? format.label : ""}
           </AmountFormatWrapper>
         );
       }
 
       // Get a list of all units within the quantity
-      const units = Units.getUnitsForQuantity(selectedUnit.quantity);
-      const unitNames = units.map(u => Units.getStringFromUnit(u));
-      const selectedUnitName = Units.getStringFromUnit(selectedUnit);
+      const units = Format.getUnitsForQuantity(selectedUnit.quantity);
+      const unitNames = units.map(u => Serialize.unitToString(u));
+      const selectedUnitName = Serialize.unitToString(selectedUnit);
 
       const decimalCounts = [0, 1, 2, 3, 4, 5];
       if (decimalCounts.indexOf(selectedDecimalCount) === -1) {
@@ -152,12 +154,15 @@ export function createAmountFormatSelector({
               _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
             }}
           >
-            {units.map((u, index) => (
-              <option key={unitNames[index]} value={unitNames[index]}>
-                {" "}
-                {UnitName.getName(u)}{" "}
-              </option>
-            ))}
+            {units.map((u, index) => {
+              const format = Format.getUnitFormat(u);
+              return (
+                <option key={unitNames[index]} value={unitNames[index]}>
+                  {" "}
+                  {format ? format.label : ""}{" "}
+                </option>
+              );
+            })}
           </UnitSelector>
           <PrecisionSelector
             value={selectedDecimalCount.toString()}

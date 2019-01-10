@@ -34,8 +34,8 @@ const validationFilter = PropertyFilter.fromString(
 const AmountPropertySelector = createAmountPropertySelector({});
 
 export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
-  constructor() {
-    super();
+  constructor(props: {}) {
+    super(props);
     this.state = {
       propertyValueSet: PropertyValueSet.fromString("a=10:Celsius"),
       selectedUnit: Units.Celsius,

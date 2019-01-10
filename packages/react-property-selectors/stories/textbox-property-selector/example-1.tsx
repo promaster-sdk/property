@@ -15,8 +15,8 @@ export class TextboxPropertySelectorExample1 extends React.Component<
   {},
   State
 > {
-  constructor() {
-    super();
+  constructor(props: {}) {
+    super(props);
     this.state = {
       propertyValueSet: PropertyValueSet.fromString('a="This is the value";b=3')
     };
