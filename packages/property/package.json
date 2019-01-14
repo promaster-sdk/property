@@ -12,7 +12,7 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "uom": "2.1.0"
+    "uom": "2.1.1"
   },
   "scripts": {
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
