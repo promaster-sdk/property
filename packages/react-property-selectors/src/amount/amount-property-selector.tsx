@@ -4,7 +4,7 @@ import {
   PropertyFilter,
   PropertyValue
 } from "@promaster/property";
-import { Amount, Unit, Quantity } from "uom";
+import { Amount, Unit, Quantity, UnitFormat } from "uom";
 import * as PropertyFiltering from "@promaster/property-filter-pretty";
 import {
   AmountFormatSelector,
@@ -35,6 +35,9 @@ export interface AmountPropertySelectorProps {
   ) => void;
   readonly debounceTime?: number;
   readonly fieldName: string;
+  readonly unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  };
 }
 
 export type AmountPropertySelector = React.ComponentClass<
@@ -85,7 +88,8 @@ export function createAmountPropertySelector({
         inputUnit,
         inputDecimalCount,
         readOnly,
-        debounceTime = 350
+        debounceTime = 350,
+        unitsFormat
       } = this.props;
 
       const value:
@@ -125,6 +129,7 @@ export function createAmountPropertySelector({
             onFormatChanged={onFormatChanged}
             onFormatCleared={onFormatCleared}
             onFormatSelectorActiveChanged={onFormatSelectorToggled}
+            unitsFormat={unitsFormat}
           />
         </AmountPropertySelectorWrapper>
       );

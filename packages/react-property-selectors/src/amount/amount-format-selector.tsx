@@ -2,7 +2,7 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import * as React from "react";
-import { Unit, Serialize, Quantity, Format } from "uom";
+import { Unit, Serialize, Quantity, Format, UnitFormat } from "uom";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps
@@ -17,6 +17,9 @@ export interface AmountFormatSelectorProps {
   readonly onFormatChanged?: OnFormatChanged;
   readonly onFormatCleared?: OnFormatCleared;
   readonly onFormatSelectorActiveChanged?: OnFormatSelectorToggled;
+  readonly unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  };
 }
 
 export interface State {
@@ -117,12 +120,13 @@ export function createAmountFormatSelector({
         selectedUnit,
         selectedDecimalCount,
         onFormatChanged,
-        onFormatCleared
+        onFormatCleared,
+        unitsFormat
       } = this.props;
 
       // If there is no handler for onFormatChanged then the user should not be able to change the format
       if (!this.state.active || !onFormatChanged) {
-        const format = Format.getUnitFormat(selectedUnit);
+        const format = Format.getUnitFormat(selectedUnit, unitsFormat);
 
         return (
           <AmountFormatWrapper
@@ -135,7 +139,10 @@ export function createAmountFormatSelector({
       }
 
       // Get a list of all units within the quantity
-      const units = Format.getUnitsForQuantity(selectedUnit.quantity);
+      const units = Format.getUnitsForQuantity(
+        selectedUnit.quantity,
+        unitsFormat
+      );
       const unitNames = units.map(u => Serialize.unitToString(u));
       const selectedUnitName = Serialize.unitToString(selectedUnit);
 
@@ -155,7 +162,7 @@ export function createAmountFormatSelector({
             }}
           >
             {units.map((u, index) => {
-              const format = Format.getUnitFormat(u);
+              const format = Format.getUnitFormat(u, unitsFormat);
               return (
                 <option key={unitNames[index]} value={unitNames[index]}>
                   {" "}

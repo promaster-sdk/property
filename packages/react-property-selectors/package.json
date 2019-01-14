@@ -15,7 +15,7 @@
     "@promaster/property": "^2.0.1",
     "@promaster/property-filter-pretty": "^2.0.1",
     "react": "^16.6.1",
-    "uom": "2.1.1"
+    "uom": "2.1.2"
   },
   "devDependencies": {
     "@types/react": "^16.7.3",

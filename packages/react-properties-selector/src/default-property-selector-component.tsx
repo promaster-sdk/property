@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Unit, Quantity } from "uom";
+import { Unit, Quantity, UnitFormat } from "uom";
 import {
   PropertyValueSet,
   PropertyValue,
@@ -63,6 +63,9 @@ export interface PropertySelectorProps {
   readonly translateValueMustBeNumericMessage: TranslateNotNumericMessage;
   readonly translateValueIsRequiredMessage: TranslateValueIsRequiredMessage;
   readonly inputDebounceTime: number;
+  readonly unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  };
 }
 
 export interface CreatePropertySelectorProps {
@@ -103,7 +106,8 @@ export function createPropertySelector({
     translatePropertyValue,
     translateValueMustBeNumericMessage,
     translateValueIsRequiredMessage,
-    inputDebounceTime
+    inputDebounceTime,
+    unitsFormat
   }: PropertySelectorProps): JSX.Element {
     function onValueChange(newValue: PropertyValue.PropertyValue): void {
       onChange(
@@ -231,6 +235,7 @@ export function createPropertySelector({
             filterPrettyPrint={filterPrettyPrint}
             readOnly={readOnly}
             debounceTime={inputDebounceTime}
+            unitsFormat={unitsFormat}
           />
         );
     }

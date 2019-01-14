@@ -5,7 +5,7 @@ import {
 } from "../../src/amount/amount-format-wrapper";
 import { createAmountFormatSelector } from "../../src/amount/amount-format-selector";
 import { createAmountInputBox } from "../../src/amount/amount-input-box";
-import { Unit, Units, Amount } from "uom";
+import { Unit, Units, Amount, UnitsFormat } from "uom";
 import { merge } from "../utils";
 import styled from "styled-components";
 import { action } from "@storybook/addon-actions";
@@ -100,6 +100,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
               )
             }
             onFormatSelectorActiveChanged={action("Toggle format selector")}
+            unitsFormat={UnitsFormat}
           />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Format, Serialize } from "uom";
+import { Format, Serialize, UnitFormat, UnitsFormat } from "uom";
 import {
   PropertyFilter,
   PropertyFilterAst as Ast,
@@ -13,7 +13,10 @@ export function filterPrettyPrintIndented(
   messages: FilterPrettyPrintMessages,
   indentationDepth: number,
   indentionString: string,
-  f: PropertyFilter.PropertyFilter
+  f: PropertyFilter.PropertyFilter,
+  unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  } = UnitsFormat
 ): string {
   const e = f.ast;
   if (e === null) {
@@ -22,7 +25,14 @@ export function filterPrettyPrintIndented(
 
   const typeMap = inferTypeMap(f);
 
-  return visit(e, indentationDepth, indentionString, messages, typeMap);
+  return visit(
+    e,
+    indentationDepth,
+    indentionString,
+    messages,
+    typeMap,
+    unitsFormat
+  );
 }
 
 function visit(
@@ -30,10 +40,13 @@ function visit(
   indentationDepth: number,
   indentionString: string,
   messages: FilterPrettyPrintMessages,
-  typeMap: Map<Ast.Expr, ExprType>
+  typeMap: Map<Ast.Expr, ExprType>,
+  unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  }
 ): string {
   const innerVisit = (indent: number, expr: Ast.Expr): string =>
-    visit(expr, indent, indentionString, messages, typeMap);
+    visit(expr, indent, indentionString, messages, typeMap, unitsFormat);
   switch (e.type) {
     case "AndExpr": {
       let s = "";
@@ -122,7 +135,7 @@ function visit(
         if (split.length === 2) {
           const unit = Serialize.stringToUnit(split[1]);
           if (unit) {
-            const unitFormat = Format.getUnitFormat(unit);
+            const unitFormat = Format.getUnitFormat(unit, unitsFormat);
             if (unitFormat) {
               return split[0] + " " + unitFormat.label;
             } else {

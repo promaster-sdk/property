@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Units, Quantity, Unit } from "uom";
+import { Units, Quantity, Unit, UnitFormat, UnitsFormat } from "uom";
 import {
   PropertyValueSet,
   PropertyValue,
@@ -93,6 +93,11 @@ export interface PropertiesSelectorProps {
   readonly closedGroups?: ReadonlyArray<string>;
   readonly onToggleGroupClosed?: OnToggleGroupClosed;
 
+  // Use customUnits
+  readonly unitsFormat?: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  };
+
   // Override layout
   readonly LayoutRenderer?: (
     props: LayoutRendererProps
@@ -148,6 +153,8 @@ export function PropertiesSelector(
 
     inputDebounceTime = 350,
 
+    unitsFormat = UnitsFormat,
+
     closedGroups = [],
     onToggleGroupClosed = () => {}, // tslint:disable-line
 
@@ -183,7 +190,8 @@ export function PropertiesSelector(
     optionalProperties,
     propertyFormats,
 
-    inputDebounceTime
+    inputDebounceTime,
+    unitsFormat
   );
 
   return LayoutRenderer({
@@ -218,7 +226,10 @@ function createPropertySelectorRenderInfos(
   readOnlyProperties: ReadonlyArray<string>,
   optionalProperties: ReadonlyArray<string>,
   propertyFormats: { readonly [key: string]: AmountFormat },
-  inputDebounceTime: number
+  inputDebounceTime: number,
+  unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  }
 ): ReadonlyArray<PropertySelectorRenderInfo> {
   // Default true if not specified otherwise
   autoSelectSingleValidValue =
@@ -328,7 +339,8 @@ function createPropertySelectorRenderInfos(
         translatePropertyValue,
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
         translateValueIsRequiredMessage,
-        inputDebounceTime
+        inputDebounceTime,
+        unitsFormat
       };
 
       const propertyLabelComponentProps: PropertyLabelComponentProps = {

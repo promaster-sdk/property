@@ -3,7 +3,7 @@ import * as React from "react";
 import { createAmountPropertySelector } from "../../src/amount/amount-property-selector";
 
 import * as PropertyFiltering from "@promaster/property-filter-pretty";
-import { Unit, Units } from "uom";
+import { Unit, Units, UnitsFormat } from "uom";
 import {
   PropertyFilter,
   PropertyValueSet,
@@ -89,6 +89,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
                 })
               )
             }
+            unitsFormat={UnitsFormat}
           />
         </div>
       </div>
