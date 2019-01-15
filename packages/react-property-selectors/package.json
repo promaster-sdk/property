@@ -1,20 +1,19 @@
 {
   "name": "@promaster/react-property-selectors",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-cjs/index",
   "description": "User interface for selecting single property values",
   "author": "Divid AB",
-  "repository":
-    "https://gitlab.divid.se/promaster-sdk/packages/react-property-selectors",
+  "repository": "https://gitlab.divid.se/promaster-sdk/packages/react-property-selectors",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/property": "^2.0.2",
-    "@promaster/property-filter-pretty": "^2.1.0",
+    "@promaster/property": "^2.0.3",
+    "@promaster/property-filter-pretty": "^2.1.1",
     "react": "^16.6.1",
     "uom": "2.1.3"
   },
