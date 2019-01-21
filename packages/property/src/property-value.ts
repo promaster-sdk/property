@@ -137,7 +137,9 @@ export function toString(value: PropertyValue): string {
       return "";
     }
 
-    const valueString = value.value.value.toFixed(value.value.decimalCount);
+    const valueString = value.value.value.toFixed(
+      Math.min(20, value.value.decimalCount)
+    );
     const unitString = Serialize.unitToString(value.value.unit);
     return `${valueString}:${unitString}`;
   } else if (value.type === "text") {
