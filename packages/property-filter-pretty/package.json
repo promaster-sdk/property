@@ -1,6 +1,6 @@
 {
   "name": "@promaster/property-filter-pretty",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Promaster Property Filter Tools",
   "repository": "https://gitlab.divid.se/promaster-sdk",
   "main": "lib-cjs/index.js",
@@ -12,9 +12,9 @@
     "registry": "https://npm.divid.se"
   },
   "dependencies": {
-    "@promaster/property": "^2.0.4",
+    "@promaster/property": "^2.0.5",
     "ts-exhaustive-check": "^1.0.0",
-    "uom": "2.1.3"
+    "uom": "2.1.4"
   },
   "scripts": {
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
