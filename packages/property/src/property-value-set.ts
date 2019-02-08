@@ -9,6 +9,11 @@ export interface PropertyValueSet {
   readonly [key: string]: PropertyValue.PropertyValue;
 }
 
+export interface PropertyKeyValuePair {
+  readonly key: string;
+  readonly value: PropertyValue.PropertyValue;
+}
+
 export const Empty: PropertyValueSet = {}; //tslint:disable-line
 
 // For internal use only
@@ -223,41 +228,27 @@ export function getInteger(
   return PropertyValue.getInteger(pvs[propertyName]);
 }
 
-export function addPrefixToValues(
-  prefix: string,
+export function filter(
+  fn: (kvp: PropertyKeyValuePair) => boolean,
   pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(pvs)) {
-    newSet[prefix + name] = pvs[name];
-  }
-  return newSet;
-}
-
-export function getValuesWithPrefix(
-  prefix: string,
-  removePrefix: boolean,
-  pvs: PropertyValueSet
-): PropertyValueSet {
-  let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(pvs)) {
-    if (name.length > 0 && name.substr(0, prefix.length) === prefix) {
-      newSet[removePrefix ? name.substring(prefix.length) : name] = pvs[name];
+    if (fn({ key: name, value: pvs[name] })) {
+      newSet[name] = pvs[name];
     }
   }
   return newSet;
 }
 
-export function getValuesWithoutPrefix(
-  prefix: string,
-  removePrefix: boolean,
+export function map(
+  fn: (kvp: PropertyKeyValuePair) => PropertyKeyValuePair,
   pvs: PropertyValueSet
 ): PropertyValueSet {
   let newSet: MutablePropertyValueSet = {};
   for (let name of Object.keys(pvs)) {
-    if (name.substr(0, prefix.length) !== prefix) {
-      newSet[removePrefix ? name.substring(prefix.length) : name] = pvs[name];
-    }
+    const map = fn({ key: name, value: pvs[name] });
+    newSet[map.key] = map.value;
   }
   return newSet;
 }

@@ -198,4 +198,61 @@ describe("PropertyValueSet", () => {
       assert.equal("a=1;c=3", resultingPvsString);
     });
   });
+
+  describe("filter", () => {
+    it("it should filter based on key", () => {
+      const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3");
+      const resultingPvs = PropertyValueSet.filter(
+        kvp => !kvp.key.startsWith("pp_"),
+        pvs1
+      );
+      const pvs2 = PropertyValueSet.fromString("b=2");
+      assert.isTrue(PropertyValueSet.equals(resultingPvs, pvs2));
+    });
+    it("it should filter based on value", () => {
+      const pvs1 = PropertyValueSet.fromString(
+        'a=10:Celsius;b="test";c=13:Celsius;d=4'
+      );
+      const resultingPvs = PropertyValueSet.filter(
+        kvp =>
+          kvp.value.type === "amount" &&
+          Amount.lessThan(kvp.value.value, Amount.create(12, Units.Celsius)),
+        pvs1
+      );
+      const pvs2 = PropertyValueSet.fromString("a=10:Celsius");
+      assert.isTrue(PropertyValueSet.equals(resultingPvs, pvs2));
+    });
+  });
+
+  describe("map", () => {
+    it("it should map based on key", () => {
+      const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3");
+      const resultingPvs = PropertyValueSet.map(
+        kvp =>
+          kvp.key.startsWith("pp_") ? { ...kvp, key: kvp.key.substr(3) } : kvp,
+        pvs1
+      );
+      const pvs2 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      assert.isTrue(PropertyValueSet.equals(resultingPvs, pvs2));
+    });
+    it("it should map based on value", () => {
+      const pvs1 = PropertyValueSet.fromString(
+        "a=10:Celsius;b=20:Watt;c=30:Celsius;d=4"
+      );
+      const resultingPvs = PropertyValueSet.map(
+        kvp => ({
+          ...kvp,
+          value: PropertyValue.fromInteger(
+            kvp.value.type === "amount" &&
+            kvp.value.value.unit.quantity === "Temperature"
+              ? 1
+              : 0
+          )
+        }),
+        pvs1
+      );
+      const pvs2 = PropertyValueSet.fromString("a=1;b=0;c=1;d=0");
+      assert.isTrue(PropertyValueSet.equals(resultingPvs, pvs2));
+    });
+  });
 });
