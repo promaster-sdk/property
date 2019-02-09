@@ -31,6 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Initial release.
 
-[unreleased]: https://github.com/jonaskello/tslint-immutable/compare/promaster/property@2.0.5...master
-[v2.0.5]: https://github.com/jonaskello/tslint-immutable/compare/promaster/property@1.0.0...promaster/property@2.0.5
-[v1.0.1]: https://github.com/jonaskello/tslint-immutable/compare/promaster/property@1.0.0...promaster/property@1.0.1
+[unreleased]: https://gitlab.divid.se/promaster/property/compare/promaster/property@2.0.5...master
+[v2.0.5]: https://gitlab.divid.se/promaster/property/compare/property@1.0.0...promaster/property@2.0.5
+[v1.0.1]: https://gitlab.divid.se/promaster/property/compare/property@1.0.0...promaster/property@1.0.1
