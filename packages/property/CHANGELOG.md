@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - More unit tests
 
-## 1.0.0 - 2018-05-08
+## v1.0.0 - 2018-05-08
 
 * Initial release.
 
