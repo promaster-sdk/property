@@ -1,5 +1,6 @@
 import * as Ast from "./types";
 import * as PropertyValueSet from "../property-value-set";
+import * as PropertyValue from "../property-value";
 import * as CompileToString from "./compile-to-string";
 import { CompiledFilterFunction } from "./compiled-filter";
 import { exhaustiveCheck } from "../utils/exhaustive-check";
@@ -19,8 +20,10 @@ export function compileAst(ast: Ast.BooleanExpr): CompiledFilterFunction {
   // * Comparing name to name (a<b) (because then we don't know if they are Amount)
   // * Text values (because they require case-insensitive comparision)
   if (isNotCompilable(ast)) {
-    return (properties: PropertyValueSet.PropertyValueSet) =>
-      evaluateAst(ast, properties, false);
+    return (
+      properties: PropertyValueSet.PropertyValueSet,
+      comparer: PropertyValue.Comparer
+    ) => evaluateAst(ast, properties, false, comparer);
   }
 
   return CompileToString.compileToString(ast);

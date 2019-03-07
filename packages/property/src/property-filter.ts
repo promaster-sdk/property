@@ -1,4 +1,5 @@
 import * as PropertyValueSet from "./property-value-set";
+import * as PropertyValue from "./property-value";
 import * as Ast from "./property-filter-ast/index";
 
 export interface PropertyFilter {
@@ -82,14 +83,16 @@ export function isSyntaxValid(
 
 export function isValid(
   properties: PropertyValueSet.PropertyValueSet,
-  filter: PropertyFilter
+  filter: PropertyFilter,
+  comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): boolean {
-  return filter._evaluate(properties);
+  return filter._evaluate(properties, comparer);
 }
 
 export function isValidMatchMissing(
   properties: PropertyValueSet.PropertyValueSet,
-  filter: PropertyFilter
+  filter: PropertyFilter,
+  comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): boolean {
   if (properties === null || properties === undefined) {
     throw new Error("Argument 'properties' must be defined.");
@@ -97,7 +100,7 @@ export function isValidMatchMissing(
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
-  return Ast.evaluateAst(filter.ast, properties, true);
+  return Ast.evaluateAst(filter.ast, properties, true, comparer);
 }
 
 export function getReferencedProperties(filter: PropertyFilter): Array<string> {

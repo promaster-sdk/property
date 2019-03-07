@@ -99,19 +99,19 @@ describe("PropertyValue", () => {
   it("should_compare_integers_correctly1", () => {
     const pv1 = fromStringOrException("2");
     const pv2 = fromStringOrException("3");
-    assert.equal(PropertyValue.compareTo(pv1, pv2) < 0, true);
+    assert.equal(PropertyValue.defaultComparer(pv1, pv2) < 0, true);
   });
 
   it("should_compare_integers_correctly2", () => {
     const pv2 = fromStringOrException("3");
     const pv3 = fromStringOrException("3");
-    assert.equal(PropertyValue.compareTo(pv2, pv3) === 0, true);
+    assert.equal(PropertyValue.defaultComparer(pv2, pv3) === 0, true);
   });
 
   it("should_compare_integers_correctly3", () => {
     const pv1 = fromStringOrException("2");
     const pv3 = fromStringOrException("3");
-    assert.equal(PropertyValue.compareTo(pv3, pv1) > 0, true);
+    assert.equal(PropertyValue.defaultComparer(pv3, pv1) > 0, true);
   });
 
   it("should make a correct string from an amount value", () => {

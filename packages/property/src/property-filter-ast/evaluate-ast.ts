@@ -7,12 +7,15 @@ import { Amount } from "uom";
 export function evaluateAst(
   e: Ast.BooleanExpr,
   properties: PropertyValueSet.PropertyValueSet,
-  matchMissingIdentifiers: boolean
+  matchMissingIdentifiers: boolean,
+  comparer: PropertyValue.Comparer
 ): boolean {
   switch (e.type) {
     case "AndExpr": {
       for (const child of e.children) {
-        if (!evaluateAst(child, properties, matchMissingIdentifiers)) {
+        if (
+          !evaluateAst(child, properties, matchMissingIdentifiers, comparer)
+        ) {
           return false;
         }
       }
@@ -20,7 +23,7 @@ export function evaluateAst(
     }
     case "OrExpr": {
       for (const child of e.children) {
-        if (evaluateAst(child, properties, matchMissingIdentifiers)) {
+        if (evaluateAst(child, properties, matchMissingIdentifiers, comparer)) {
           return true;
         }
       }
@@ -53,8 +56,8 @@ export function evaluateAst(
           (left !== null &&
             min !== null &&
             max !== null &&
-            (PropertyValue.greaterOrEqualTo(left, min) &&
-              PropertyValue.lessOrEqualTo(left, max)))
+            (PropertyValue.greaterOrEqualTo(left, min, comparer) &&
+              PropertyValue.lessOrEqualTo(left, max, comparer)))
         ) {
           return e.operationType === "equals";
         }
@@ -84,13 +87,13 @@ export function evaluateAst(
 
       switch (e.operationType) {
         case "less":
-          return PropertyValue.lessThan(left, right);
+          return PropertyValue.lessThan(left, right, comparer);
         case "greater":
-          return PropertyValue.greaterThan(left, right);
+          return PropertyValue.greaterThan(left, right, comparer);
         case "lessOrEqual":
-          return PropertyValue.lessOrEqualTo(left, right);
+          return PropertyValue.lessOrEqualTo(left, right, comparer);
         case "greaterOrEqual":
-          return PropertyValue.greaterOrEqualTo(left, right);
+          return PropertyValue.greaterOrEqualTo(left, right, comparer);
         default:
           throw new Error(`Unknown comparisontype`);
       }

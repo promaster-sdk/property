@@ -8,13 +8,17 @@ export function compileToLambdas(e: Ast.BooleanExpr): CompiledFilterFunction {
   switch (e.type) {
     case "AndExpr": {
       const childrenLamdas = e.children.map(compileToLambdas);
-      return (properties: PropertyValueSet.PropertyValueSet) =>
-        childrenLamdas.every(child => child(properties));
+      return (
+        properties: PropertyValueSet.PropertyValueSet,
+        comparer: PropertyValue.Comparer
+      ) => childrenLamdas.every(child => child(properties, comparer));
     }
     case "OrExpr": {
       const childrenLamdas = e.children.map(compileToLambdas);
-      return (properties: PropertyValueSet.PropertyValueSet) =>
-        !!childrenLamdas.find(child => child(properties));
+      return (
+        properties: PropertyValueSet.PropertyValueSet,
+        comparer: PropertyValue.Comparer
+      ) => !!childrenLamdas.find(child => child(properties, comparer));
     }
     case "EqualsExpr": {
       const leftLamda = makeEvalLambdaForPropertyValueExpr(e.leftValue);
@@ -23,7 +27,10 @@ export function compileToLambdas(e: Ast.BooleanExpr): CompiledFilterFunction {
         makeEvalLambdaForPropertyValueExpr(range.max)
       ]);
 
-      return (pvs: PropertyValueSet.PropertyValueSet) => {
+      return (
+        pvs: PropertyValueSet.PropertyValueSet,
+        comparer: PropertyValue.Comparer
+      ) => {
         const left = leftLamda(pvs);
         for (const range of rightLamdas) {
           const min = range[0](pvs);
@@ -34,8 +41,8 @@ export function compileToLambdas(e: Ast.BooleanExpr): CompiledFilterFunction {
             (left !== null &&
               min !== null &&
               max !== null &&
-              (PropertyValue.greaterOrEqualTo(left, min) &&
-                PropertyValue.lessOrEqualTo(left, max)))
+              (PropertyValue.greaterOrEqualTo(left, min, comparer) &&
+                PropertyValue.lessOrEqualTo(left, max, comparer)))
           ) {
             return e.operationType === "equals";
           }
