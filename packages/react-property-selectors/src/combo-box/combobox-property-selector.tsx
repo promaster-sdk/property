@@ -36,6 +36,7 @@ export interface ComboboxPropertySelectorProps {
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
   readonly readOnly: boolean;
   readonly locked: boolean;
+  readonly comparer?: PropertyValue.Comparer;
 }
 
 export interface CreateComboboxPropertySelectorParams {
@@ -128,7 +129,8 @@ export function createComboboxPropertySelector({
     onValueChange,
     filterPrettyPrint,
     readOnly,
-    locked
+    locked,
+    comparer
   }: ComboboxPropertySelectorProps): React.ReactElement<
     ComboboxPropertySelectorProps
   > {
@@ -172,7 +174,8 @@ export function createComboboxPropertySelector({
         const isItemValid = _isValueItemValid(
           propertyName,
           propertyValueSet,
-          valueItem
+          valueItem,
+          comparer || PropertyValue.defaultComparer
         );
         return {
           value: _getItemValue(valueItem),
@@ -298,7 +301,8 @@ function _getItemInvalidMessage(
 function _isValueItemValid(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItem: ComboBoxPropertyValueItem
+  valueItem: ComboBoxPropertyValueItem,
+  comparer: PropertyValue.Comparer
 ): boolean {
   if (valueItem.value === undefined || valueItem.value === null) {
     return true;
@@ -311,5 +315,9 @@ function _isValueItemValid(
   if (!valueItem.validationFilter) {
     return true;
   }
-  return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter);
+  return PropertyFilter.isValid(
+    pvsToCheck,
+    valueItem.validationFilter,
+    comparer
+  );
 }

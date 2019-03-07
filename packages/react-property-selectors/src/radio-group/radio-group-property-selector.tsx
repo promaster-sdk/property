@@ -25,6 +25,7 @@ export interface RadioGroupPropertySelectorProps {
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
   readonly readOnly: boolean;
   readonly locked: boolean;
+  readonly comparer?: PropertyValue.Comparer;
 }
 
 export interface CreateRadioGroupPropertySelectorParams {
@@ -68,7 +69,8 @@ export function createRadioGroupPropertySelector({
     onValueChange,
     filterPrettyPrint,
     readOnly,
-    locked
+    locked,
+    comparer
   }: RadioGroupPropertySelectorProps): React.ReactElement<
     RadioGroupPropertySelectorProps
   > {
@@ -84,7 +86,8 @@ export function createRadioGroupPropertySelector({
         const isItemValid = _isValueItemValid(
           propertyName,
           propertyValueSet,
-          valueItem
+          valueItem,
+          comparer || PropertyValue.defaultComparer
         );
         return {
           key: valueItem.sortNo.toString(),
@@ -136,7 +139,8 @@ function _getItemInvalidMessage(
 function _isValueItemValid(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItem: RadioGroupPropertyValueItem
+  valueItem: RadioGroupPropertyValueItem,
+  comparer: PropertyValue.Comparer
 ): boolean {
   if (valueItem.value === undefined || valueItem.value === null) {
     return true;
@@ -149,5 +153,9 @@ function _isValueItemValid(
   if (!valueItem.validationFilter) {
     return true;
   }
-  return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter);
+  return PropertyFilter.isValid(
+    pvsToCheck,
+    valueItem.validationFilter,
+    comparer
+  );
 }

@@ -23,6 +23,7 @@ export interface CheckboxPropertySelectorProps {
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
   readonly readOnly: boolean;
   readonly locked: boolean;
+  readonly comparer?: PropertyValue.Comparer;
 }
 
 export type CheckboxProps = {
@@ -96,7 +97,8 @@ export function createCheckboxPropertySelector({
     valueItems,
     showCodes,
     onValueChange,
-    locked
+    locked,
+    comparer
   }: CheckboxPropertySelectorProps): React.ReactElement<
     CheckboxPropertySelectorProps
   > {
@@ -111,7 +113,7 @@ export function createCheckboxPropertySelector({
       return <div />;
     }
 
-    const checked = PropertyValue.equals(trueValue.value, value);
+    const checked = PropertyValue.equals(trueValue.value, value, comparer);
     const nextValue = checked ? falseValue.value : trueValue.value;
     return (
       <CheckboxContainer
