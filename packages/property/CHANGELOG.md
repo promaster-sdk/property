@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Added custom compare parameter to `PropertyFilter.isValid`
 
+* Added custom compare parameter to `PropertyValueSet.equals`
+
+* Added custom compare parameter to all Property selectors and to Properties selector.
+
 ### Removed
 
 * Function `addPrefixToValues` was removed, use the new `map` function instead.
