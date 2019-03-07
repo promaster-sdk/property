@@ -9,29 +9,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- Add functions `filter` and `map`, see [#10](https://gitlab.divid.se/promaster/property/issues/10). Thanks to [@JohKri](https://gitlab.divid.se/JohKri) for this addition! See MR [!12](https://gitlab.divid.se/promaster/property/merge_requests/12).
+* Add functions `filter` and `map`, see [#10](https://gitlab.divid.se/promaster/property/issues/10). Thanks to [@JohKri](https://gitlab.divid.se/JohKri) for this addition! See MR [!12](https://gitlab.divid.se/promaster/property/merge_requests/12).
+
+* Added custom compare parameter to all compare functions in `PropertyValue`.
+
+* Added custom compare parameter to `PropertyFilter.isValid`
 
 ### Removed
 
-- Function `addPrefixToValues` was removed, use the new `map` function instead.
+* Function `addPrefixToValues` was removed, use the new `map` function instead.
 
-- Function `getValuesWithoutPrefix` was removed, ust eh new `filter` function instead.
+* Function `getValuesWithoutPrefix` was removed, ust eh new `filter` function instead.
 
 ## [v2.0.5] - 2019-01-01
 
 ### Added
 
-- More unit tests
+* More unit tests
 
 ### Fixed
 
-- Some bugs
+* Some bugs
 
 ## [v1.0.1] - 2018-05-08
 
 ### Added
 
-- More unit tests
+* More unit tests
 
 ## v1.0.0 - 2018-05-08
 
