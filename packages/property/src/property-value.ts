@@ -28,6 +28,13 @@ export type PropertyValue =
   | TextPropertyValue
   | IntegerPropertyValue;
 
+export type Comparer = (left: PropertyValue, right: PropertyValue) => number;
+
+export const defaultComparer: Comparer = (
+  left: PropertyValue,
+  right: PropertyValue
+) => compareTo(left, right);
+
 // Functions
 
 export function create(
@@ -172,29 +179,38 @@ export function compareTo(left: PropertyValue, right: PropertyValue): number {
   }
 }
 
-export function equals(left: PropertyValue, right: PropertyValue): boolean {
+export function equals(
+  left: PropertyValue,
+  right: PropertyValue,
+  comparer: Comparer = defaultComparer
+): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
   if (right.type !== left.type) {
     return false;
   }
-  return compareTo(left, right) === 0;
+  return comparer(left, right) === 0;
 }
 
-export function lessThan(left: PropertyValue, right: PropertyValue): boolean {
+export function lessThan(
+  left: PropertyValue,
+  right: PropertyValue,
+  comparer: Comparer = defaultComparer
+): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
   if (right.type !== left.type) {
     return false;
   }
-  return compareTo(left, right) < 0;
+  return comparer(left, right) < 0;
 }
 
 export function lessOrEqualTo(
   left: PropertyValue,
-  right: PropertyValue
+  right: PropertyValue,
+  comparer: Comparer = defaultComparer
 ): boolean {
   if (left === undefined || right === undefined) {
     return false;
@@ -202,12 +218,13 @@ export function lessOrEqualTo(
   if (right.type !== left.type) {
     return false;
   }
-  return compareTo(left, right) <= 0;
+  return comparer(left, right) <= 0;
 }
 
 export function greaterThan(
   left: PropertyValue,
-  right: PropertyValue
+  right: PropertyValue,
+  comparer: Comparer = defaultComparer
 ): boolean {
   if (left === undefined || right === undefined) {
     return false;
@@ -215,12 +232,13 @@ export function greaterThan(
   if (right.type !== left.type) {
     return false;
   }
-  return compareTo(left, right) > 0;
+  return comparer(left, right) > 0;
 }
 
 export function greaterOrEqualTo(
   left: PropertyValue,
-  right: PropertyValue
+  right: PropertyValue,
+  comparer: Comparer = defaultComparer
 ): boolean {
   if (left === undefined || right === undefined) {
     return false;
@@ -228,7 +246,7 @@ export function greaterOrEqualTo(
   if (right.type !== left.type) {
     return false;
   }
-  return compareTo(left, right) >= 0;
+  return comparer(left, right) >= 0;
 }
 
 /// RULES:
