@@ -35,18 +35,6 @@ export const defaultComparer: Comparer = (
   right: PropertyValue
 ) => _compare(left, right);
 
-export const defaultIntegerComparer = (left: number, right: number) =>
-  compareNumbers(left, right, 0, 0);
-export const defaultTextComparer = (left: string, right: string) =>
-  compareIgnoreCase(left, right);
-export const defaultAmountComparer = <
-  T1 extends Quantity.Quantity,
-  T2 extends T1
->(
-  left: Amount.Amount<T1>,
-  right: Amount.Amount<T2>
-) => Amount.compareTo(left, right);
-
 // Functions
 
 export function create(
@@ -243,17 +231,17 @@ function _compare(left: PropertyValue, right: PropertyValue): number {
   switch (left.type) {
     case "integer":
       if (right.type === "integer") {
-        return defaultIntegerComparer(left.value, right.value);
+        return compareNumbers(left.value, right.value, 0, 0);
       }
       throw new Error("Unexpected error comparing integers");
     case "amount":
       if (right.type === "amount") {
-        return defaultAmountComparer(left.value, right.value);
+        return Amount.compareTo(left.value, right.value);
       }
       throw new Error("Unexpected error comparing amounts");
     case "text":
       if (right.type === "text") {
-        return defaultTextComparer(left.value, right.value);
+        return compareIgnoreCase(left.value, right.value);
       }
       throw new Error("Unexpected error comparing texts");
     default:

@@ -1,5 +1,6 @@
 import * as PropertyValue from "../../../src/property-value";
 import { Amount } from "uom";
+import { compareNumbers } from "../../../src/utils/compare-utils";
 
 export const tests = [
   {
@@ -264,18 +265,13 @@ export const tests = [
     ) => {
       switch (left.type) {
         case "text":
-          if (right.type !== left.type) {
-            throw new Error("Must compare same types");
-          }
-          return PropertyValue.defaultTextComparer(left.value, right.value);
+          return PropertyValue.defaultComparer(left, right);
         case "integer":
           if (right.type !== left.type) {
             throw new Error("Must compare same types");
           }
-          return PropertyValue.defaultIntegerComparer(
-            left.value * 2,
-            right.value
-          );
+          const alteredLeft = left.value * 2;
+          return compareNumbers(alteredLeft, right.value, 0, 0);
         case "amount": {
           if (right.type !== left.type) {
             throw new Error("Must compare same types");
