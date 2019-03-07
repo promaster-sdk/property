@@ -136,6 +136,8 @@ export function createComboboxPropertySelector({
   > {
     const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
 
+    const safeComparer = comparer || PropertyValue.defaultComparer;
+
     if (!valueItems) {
       valueItems = [];
     }
@@ -175,7 +177,7 @@ export function createComboboxPropertySelector({
           propertyName,
           propertyValueSet,
           valueItem,
-          comparer || PropertyValue.defaultComparer
+          safeComparer
         );
         return {
           value: _getItemValue(valueItem),

@@ -76,6 +76,8 @@ export function createRadioGroupPropertySelector({
   > {
     const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
 
+    const safeComparer = comparer || PropertyValue.defaultComparer;
+
     if (!valueItems) {
       valueItems = [];
     }
@@ -87,13 +89,13 @@ export function createRadioGroupPropertySelector({
           propertyName,
           propertyValueSet,
           valueItem,
-          comparer || PropertyValue.defaultComparer
+          safeComparer
         );
         return {
           key: valueItem.sortNo.toString(),
           sortNo: valueItem.sortNo,
           selected: valueItem.value
-            ? PropertyValue.equals(value, valueItem.value)
+            ? PropertyValue.equals(value, valueItem.value, safeComparer)
             : false,
           label: _getItemLabel(valueItem, showCodes),
           imageUrl: valueItem.image,

@@ -202,7 +202,8 @@ export function buildAllPropertyValueSetsExtended(
         const valueItem = property.value.find(v =>
           PropertyValue.equals(
             PropertyValueSet.getValue(property.name, propertyValueSet),
-            v.value
+            v.value,
+            comparer
           )
         );
 

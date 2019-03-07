@@ -275,7 +275,8 @@ function createPropertySelectorRenderInfos(
         property.value.find(
           (value: PropertyValueItem) =>
             (value.value === undefined && selectedValue === undefined) ||
-            (value.value && PropertyValue.equals(selectedValue, value.value))
+            (value.value &&
+              PropertyValue.equals(selectedValue, value.value, comparer))
         );
 
       let isValid: boolean;
