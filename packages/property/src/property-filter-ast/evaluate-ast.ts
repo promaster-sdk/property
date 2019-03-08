@@ -8,7 +8,7 @@ export function evaluateAst(
   e: Ast.BooleanExpr,
   properties: PropertyValueSet.PropertyValueSet,
   matchMissingIdentifiers: boolean,
-  comparer: PropertyValue.Comparer
+  comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): boolean {
   switch (e.type) {
     case "AndExpr": {
