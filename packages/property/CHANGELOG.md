@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v2.2.0] - 2019-03-08
+
 ### Added
 
 * Add functions `filter` and `map`, see [#10](https://gitlab.divid.se/promaster/property/issues/10). Thanks to [@JohKri](https://gitlab.divid.se/JohKri) for this addition! See MR [!12](https://gitlab.divid.se/promaster/property/merge_requests/12).
