@@ -23,7 +23,8 @@ export function buildAllPropertyValueSetsExtended(
   explicitPropertyValueSet: PropertyValueSet.PropertyValueSet,
   variableProperties: ProductProperty[],
   allProperties: ProductProperty[],
-  limit: number
+  limit: number,
+  comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): ExtendedVariants {
   // filter out non-discrete properties and keep a list of them so we can filter other property-values that depend on them
   let blackListedProperties: Array<ProductProperty> = [];
@@ -72,7 +73,11 @@ export function buildAllPropertyValueSetsExtended(
         blacklistedPropertyFilters.reduce(
           (acc, bpf) =>
             acc &&
-            !PropertyFilter.isValid({ [property.name]: value.value }, bpf),
+            !PropertyFilter.isValid(
+              { [property.name]: value.value },
+              bpf,
+              comparer
+            ),
           true
         )
       );
@@ -197,7 +202,8 @@ export function buildAllPropertyValueSetsExtended(
         const valueItem = property.value.find(v =>
           PropertyValue.equals(
             PropertyValueSet.getValue(property.name, propertyValueSet),
-            v.value
+            v.value,
+            comparer
           )
         );
 
@@ -215,7 +221,11 @@ export function buildAllPropertyValueSetsExtended(
 
         return (
           valueItem &&
-          PropertyFilter.isValid(propertyValueSet, valueItem.property_filter)
+          PropertyFilter.isValid(
+            propertyValueSet,
+            valueItem.property_filter,
+            comparer
+          )
         );
       })
   );

@@ -99,19 +99,19 @@ describe("PropertyValue", () => {
   it("should_compare_integers_correctly1", () => {
     const pv1 = fromStringOrException("2");
     const pv2 = fromStringOrException("3");
-    assert.equal(PropertyValue.compareTo(pv1, pv2) < 0, true);
+    assert.equal(PropertyValue.defaultComparer(pv1, pv2) < 0, true);
   });
 
   it("should_compare_integers_correctly2", () => {
     const pv2 = fromStringOrException("3");
     const pv3 = fromStringOrException("3");
-    assert.equal(PropertyValue.compareTo(pv2, pv3) === 0, true);
+    assert.equal(PropertyValue.defaultComparer(pv2, pv3) === 0, true);
   });
 
   it("should_compare_integers_correctly3", () => {
     const pv1 = fromStringOrException("2");
     const pv3 = fromStringOrException("3");
-    assert.equal(PropertyValue.compareTo(pv3, pv1) > 0, true);
+    assert.equal(PropertyValue.defaultComparer(pv3, pv1) > 0, true);
   });
 
   it("should make a correct string from an amount value", () => {
@@ -152,6 +152,65 @@ describe("PropertyValue", () => {
       throw new Error("Bla");
     }
     assert(pv1.value.unit.quantity === "RelativeHumidity");
+  });
+
+  it("custom_comparer_equals", () => {
+    const pv1 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
+    const pv2 = PropertyValue.fromAmount(Amount.create(1234, Units.Watt));
+
+    const pv3 = PropertyValue.fromInteger(1);
+    const pv4 = PropertyValue.fromInteger(555);
+
+    const pv5 = PropertyValue.fromText("123");
+    const pv6 = PropertyValue.fromText("pineapple");
+
+    const comparer = () => 0;
+
+    assert.equal(PropertyValue.equals(pv1, pv2, comparer), true);
+    assert.equal(PropertyValue.equals(pv3, pv4, comparer), true);
+    assert.equal(PropertyValue.equals(pv5, pv6, comparer), true);
+  });
+
+  it("custom_comparer_less_than", () => {
+    const pv1 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
+    const pv2 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
+
+    const pv3 = PropertyValue.fromInteger(8);
+    const pv4 = PropertyValue.fromInteger(8);
+
+    const pv5 = PropertyValue.fromText("Hydralisk");
+    const pv6 = PropertyValue.fromText("Hydralisk");
+
+    const comparer = () => -1;
+
+    assert.equal(PropertyValue.lessThan(pv1, pv2, comparer), true);
+    assert.equal(PropertyValue.lessThan(pv3, pv4, comparer), true);
+    assert.equal(PropertyValue.lessThan(pv5, pv6, comparer), true);
+
+    assert.equal(PropertyValue.lessOrEqualTo(pv1, pv2, comparer), true);
+    assert.equal(PropertyValue.lessOrEqualTo(pv3, pv4, comparer), true);
+    assert.equal(PropertyValue.lessOrEqualTo(pv5, pv6, comparer), true);
+  });
+
+  it("custom_comparer_greater_than", () => {
+    const pv1 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
+    const pv2 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
+
+    const pv3 = PropertyValue.fromInteger(8);
+    const pv4 = PropertyValue.fromInteger(8);
+
+    const pv5 = PropertyValue.fromText("Hydralisk");
+    const pv6 = PropertyValue.fromText("Hydralisk");
+
+    const comparer = () => 1;
+
+    assert.equal(PropertyValue.greaterThan(pv1, pv2, comparer), true);
+    assert.equal(PropertyValue.greaterThan(pv3, pv4, comparer), true);
+    assert.equal(PropertyValue.greaterThan(pv5, pv6, comparer), true);
+
+    assert.equal(PropertyValue.greaterOrEqualTo(pv1, pv2, comparer), true);
+    assert.equal(PropertyValue.greaterOrEqualTo(pv3, pv4, comparer), true);
+    assert.equal(PropertyValue.greaterOrEqualTo(pv5, pv6, comparer), true);
   });
 });
 

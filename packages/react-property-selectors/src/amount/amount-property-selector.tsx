@@ -38,6 +38,7 @@ export interface AmountPropertySelectorProps {
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
+  readonly comparer?: PropertyValue.Comparer;
 }
 
 export type AmountPropertySelector = React.ComponentClass<
@@ -89,7 +90,8 @@ export function createAmountPropertySelector({
         inputDecimalCount,
         readOnly,
         debounceTime = 350,
-        unitsFormat
+        unitsFormat,
+        comparer = PropertyValue.defaultComparer
       } = this.props;
 
       const value:
@@ -111,7 +113,8 @@ export function createAmountPropertySelector({
               propertyValueSet,
               value,
               validationFilter,
-              filterPrettyPrint
+              filterPrettyPrint,
+              comparer
             )}
             readOnly={readOnly}
             onValueChange={newAmount =>
@@ -141,13 +144,14 @@ function _getValidationMessage(
   propertyValueSet: PropertyValueSet.PropertyValueSet,
   value: Amount.Amount<Quantity.Quantity> | undefined,
   validationFilter: PropertyFilter.PropertyFilter,
-  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint
+  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
+  comparer: PropertyValue.Comparer
 ): string {
   if (!value || !validationFilter) {
     return "";
   }
 
-  if (PropertyFilter.isValid(propertyValueSet, validationFilter)) {
+  if (PropertyFilter.isValid(propertyValueSet, validationFilter, comparer)) {
     return "";
   } else {
     return filterPrettyPrint(validationFilter);

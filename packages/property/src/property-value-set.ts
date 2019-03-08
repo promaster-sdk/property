@@ -282,7 +282,8 @@ export function toStringInSpecifiedOrder(
 
 export function equals(
   other: PropertyValueSet,
-  pvs: PropertyValueSet
+  pvs: PropertyValueSet,
+  comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): boolean {
   if (other === null || other === undefined) {
     return false;
@@ -295,7 +296,7 @@ export function equals(
   }
 
   for (let name of Object.keys(pvs)) {
-    if (!PropertyValue.equals(other[name], pvs[name])) {
+    if (!PropertyValue.equals(other[name], pvs[name], comparer)) {
       return false;
     }
   }

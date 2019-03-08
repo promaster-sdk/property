@@ -25,6 +25,7 @@ export interface RadioGroupPropertySelectorProps {
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
   readonly readOnly: boolean;
   readonly locked: boolean;
+  readonly comparer?: PropertyValue.Comparer;
 }
 
 export interface CreateRadioGroupPropertySelectorParams {
@@ -68,11 +69,14 @@ export function createRadioGroupPropertySelector({
     onValueChange,
     filterPrettyPrint,
     readOnly,
-    locked
+    locked,
+    comparer
   }: RadioGroupPropertySelectorProps): React.ReactElement<
     RadioGroupPropertySelectorProps
   > {
     const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
+
+    const safeComparer = comparer || PropertyValue.defaultComparer;
 
     if (!valueItems) {
       valueItems = [];
@@ -84,13 +88,14 @@ export function createRadioGroupPropertySelector({
         const isItemValid = _isValueItemValid(
           propertyName,
           propertyValueSet,
-          valueItem
+          valueItem,
+          safeComparer
         );
         return {
           key: valueItem.sortNo.toString(),
           sortNo: valueItem.sortNo,
           selected: valueItem.value
-            ? PropertyValue.equals(value, valueItem.value)
+            ? PropertyValue.equals(value, valueItem.value, safeComparer)
             : false,
           label: _getItemLabel(valueItem, showCodes),
           imageUrl: valueItem.image,
@@ -136,7 +141,8 @@ function _getItemInvalidMessage(
 function _isValueItemValid(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItem: RadioGroupPropertyValueItem
+  valueItem: RadioGroupPropertyValueItem,
+  comparer: PropertyValue.Comparer
 ): boolean {
   if (valueItem.value === undefined || valueItem.value === null) {
     return true;
@@ -149,5 +155,9 @@ function _isValueItemValid(
   if (!valueItem.validationFilter) {
     return true;
   }
-  return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter);
+  return PropertyFilter.isValid(
+    pvsToCheck,
+    valueItem.validationFilter,
+    comparer
+  );
 }

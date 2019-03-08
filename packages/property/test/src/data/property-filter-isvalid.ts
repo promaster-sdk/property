@@ -1,3 +1,7 @@
+import * as PropertyValue from "../../../src/property-value";
+import { Amount } from "uom";
+import { compareNumbers } from "../../../src/utils/compare-utils";
+
 export const tests = [
   {
     name: "should_not_short_circuit_evaluation_when_using_comma",
@@ -247,5 +251,37 @@ export const tests = [
       "a=18000:StandardCubicFeetPerMinute;b=20000:StandardCubicFeetPerMinute",
     f: "b=0.5*a~1.5*a",
     result: true
+  },
+
+  // Custom compare
+  {
+    name: "custom compare",
+    pvs: "a=100;b=200;c=10:Watt;d=12:Watt",
+    f: "a=b&c>d",
+    result: true,
+    comparer: (
+      left: PropertyValue.PropertyValue,
+      right: PropertyValue.PropertyValue
+    ) => {
+      switch (left.type) {
+        case "text":
+          return PropertyValue.defaultComparer(left, right);
+        case "integer":
+          if (right.type !== left.type) {
+            throw new Error("Must compare same types");
+          }
+          const alteredLeft = left.value * 2;
+          return compareNumbers(alteredLeft, right.value, 0, 0);
+        case "amount": {
+          if (right.type !== left.type) {
+            throw new Error("Must compare same types");
+          }
+          const alteredLeft = Amount.times(left.value, 2);
+          return Amount.compareTo(alteredLeft, right.value);
+        }
+        default:
+          throw new Error("Unsupported type");
+      }
+    }
   }
 ];

@@ -106,6 +106,9 @@ export interface PropertiesSelectorProps {
   readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>;
   readonly PropertySelectorComponent?: ReactComponent<PropertySelectorProps>;
   readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>;
+
+  // Comparer
+  readonly comparer?: PropertyValue.Comparer;
 }
 
 export function PropertiesSelector(
@@ -162,7 +165,9 @@ export function PropertiesSelector(
     GroupComponent = DefaultGroupComponent,
     GroupItemComponent = DefaultGroupItemComponent,
     PropertySelectorComponent = createPropertySelector({}),
-    PropertyLabelComponent = DefaultPropertyLabelComponent
+    PropertyLabelComponent = DefaultPropertyLabelComponent,
+
+    comparer = PropertyValue.defaultComparer
   } = props;
 
   const selectors = createPropertySelectorRenderInfos(
@@ -191,7 +196,9 @@ export function PropertiesSelector(
     propertyFormats,
 
     inputDebounceTime,
-    unitsFormat
+    unitsFormat,
+
+    comparer
   );
 
   return LayoutRenderer({
@@ -229,7 +236,8 @@ function createPropertySelectorRenderInfos(
   inputDebounceTime: number,
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
-  }
+  },
+  comparer: PropertyValue.Comparer
 ): ReadonlyArray<PropertySelectorRenderInfo> {
   // Default true if not specified otherwise
   autoSelectSingleValidValue =
@@ -251,7 +259,11 @@ function createPropertySelectorRenderInfos(
     .filter(
       (property: Property) =>
         includeHiddenProperties ||
-        PropertyFilter.isValid(selectedProperties, property.visibility_filter)
+        PropertyFilter.isValid(
+          selectedProperties,
+          property.visibility_filter,
+          comparer
+        )
     )
     .map((property: Property) => {
       const selectedValue = PropertyValueSet.getValue(
@@ -263,7 +275,8 @@ function createPropertySelectorRenderInfos(
         property.value.find(
           (value: PropertyValueItem) =>
             (value.value === undefined && selectedValue === undefined) ||
-            (value.value && PropertyValue.equals(selectedValue, value.value))
+            (value.value &&
+              PropertyValue.equals(selectedValue, value.value, comparer))
         );
 
       let isValid: boolean;
@@ -273,7 +286,8 @@ function createPropertySelectorRenderInfos(
           isValid = selectedValueItem
             ? PropertyFilter.isValid(
                 selectedProperties,
-                selectedValueItem.property_filter
+                selectedValueItem.property_filter,
+                comparer
               )
             : false;
           break;
@@ -289,7 +303,8 @@ function createPropertySelectorRenderInfos(
             property.validation_filter &&
             PropertyFilter.isValid(
               selectedProperties,
-              property.validation_filter
+              property.validation_filter,
+              comparer
             );
           break;
         default:
@@ -302,7 +317,8 @@ function createPropertySelectorRenderInfos(
 
       const isHidden = !PropertyFilter.isValid(
         selectedProperties,
-        property.visibility_filter
+        property.visibility_filter,
+        comparer
       );
       const label =
         translatePropertyName(property.name) +
@@ -324,7 +340,8 @@ function createPropertySelectorRenderInfos(
         onChange: handleChange(
           onChange,
           productProperties,
-          autoSelectSingleValidValue
+          autoSelectSingleValidValue,
+          comparer
         ),
         onPropertyFormatChanged,
         onPropertyFormatCleared,
@@ -334,7 +351,12 @@ function createPropertySelectorRenderInfos(
         readOnly: isReadOnly,
         locked:
           autoSelectSingleValidValue || lockSingleValidValue
-            ? shouldBeLocked(selectedValueItem, property, selectedProperties)
+            ? shouldBeLocked(
+                selectedValueItem,
+                property,
+                selectedProperties,
+                comparer
+              )
             : false,
         translatePropertyValue,
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
@@ -401,14 +423,16 @@ function getPropertyType(
 
 function getSingleValidValueOrUndefined(
   productProperty: Property,
-  properties: PropertyValueSet.PropertyValueSet
+  properties: PropertyValueSet.PropertyValueSet,
+  comparer: PropertyValue.Comparer
 ): PropertyValueItem | undefined {
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: PropertyValueItem[] = [];
     for (let productValueItem of productProperty.value) {
       const isValid = PropertyFilter.isValid(
         properties,
-        productValueItem.property_filter
+        productValueItem.property_filter,
+        comparer
       );
 
       if (isValid) {
@@ -427,11 +451,13 @@ function getSingleValidValueOrUndefined(
 function shouldBeLocked(
   selectedValueItem: PropertyValueItem | undefined,
   productProperty: Property,
-  properties: PropertyValueSet.PropertyValueSet
+  properties: PropertyValueSet.PropertyValueSet,
+  comparer: PropertyValue.Comparer
 ): boolean {
   const singleValidValue = getSingleValidValueOrUndefined(
     productProperty,
-    properties
+    properties,
+    comparer
   );
 
   // getSingleValidValueOrUndefined only works on onChange.
@@ -446,7 +472,8 @@ function shouldBeLocked(
 function handleChange(
   externalOnChange: OnPropertiesChanged,
   productProperties: ReadonlyArray<Property>,
-  autoSelectSingleValidValue: boolean
+  autoSelectSingleValidValue: boolean,
+  comparer: PropertyValue.Comparer
 ): (
   properties: PropertyValueSet.PropertyValueSet,
   propertyName: string
@@ -471,7 +498,8 @@ function handleChange(
         }
         const propertyValueItem = getSingleValidValueOrUndefined(
           productProperty,
-          properties
+          properties,
+          comparer
         );
         if (propertyValueItem) {
           properties = PropertyValueSet.set(

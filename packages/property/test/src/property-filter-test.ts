@@ -18,7 +18,10 @@ describe("PropertyFilter", () => {
       it(test.name, () => {
         const pvs = PropertyValueSet.fromString(test.pvs);
         const f = fromStringOrException(test.f);
-        assert.equal(PropertyFilter.isValid(pvs, f), test.result);
+        assert.equal(
+          PropertyFilter.isValid(pvs, f, test.comparer),
+          test.result
+        );
       });
     });
   });

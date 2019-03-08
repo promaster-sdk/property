@@ -1,6 +1,7 @@
 import { assert } from "chai";
 import * as Ast from "../../src/property-filter-ast";
 import * as PropertyValueSet from "../../src/property-value-set";
+import * as PropertyValue from "../../src/property-value";
 import { BooleanExpr } from "../../src/property-filter-ast";
 import * as ParseData from "./data/property-filter-ast-parse";
 import * as IsValidData from "./data/property-filter-isvalid";
@@ -20,7 +21,15 @@ describe("PropertyFilterAst", () => {
       it(test.name, () => {
         const pvs = PropertyValueSet.fromString(test.pvs);
         const f = fromStringOrException(test.f);
-        assert.equal(Ast.evaluateAst(f, pvs, false), test.result);
+        assert.equal(
+          Ast.evaluateAst(
+            f,
+            pvs,
+            false,
+            test.comparer || PropertyValue.defaultComparer
+          ),
+          test.result
+        );
       });
     });
   });
@@ -31,7 +40,10 @@ describe("PropertyFilterAst", () => {
         const pvs = PropertyValueSet.fromString(test.pvs);
         const f = fromStringOrException(test.f);
         const func = Ast.compileAst(f);
-        assert.equal(func(pvs), test.result);
+        assert.equal(
+          func(pvs, test.comparer || PropertyValue.defaultComparer),
+          test.result
+        );
       });
     });
   });

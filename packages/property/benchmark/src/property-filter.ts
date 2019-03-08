@@ -4,7 +4,8 @@ import * as Benchmark from "benchmark";
 import {
   PropertyFilter,
   PropertyFilterAst,
-  PropertyValueSet
+  PropertyValueSet,
+  PropertyValue
 } from "../../lib-cjs";
 
 const suite = new Benchmark.Suite();
@@ -43,10 +44,15 @@ suite
     PropertyFilter.isValid(pvs, pf);
   })
   .add("PropertyFilterAst#evaluate", () => {
-    PropertyFilterAst.evaluateAst(pf.ast, pvs, false);
+    PropertyFilterAst.evaluateAst(
+      pf.ast,
+      pvs,
+      false,
+      PropertyValue.defaultComparer
+    );
   })
   .add("PropertyFilter#_evaluate", () => {
-    pf._evaluate(pvs);
+    pf._evaluate(pvs, PropertyValue.defaultComparer);
   })
   // .add("PropertyFilter#lambda", () => {
   //   pf.lambda(pvs, false);
