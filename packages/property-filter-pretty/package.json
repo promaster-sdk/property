@@ -14,7 +14,7 @@
   "dependencies": {
     "@promaster/property": "^2.1.0",
     "ts-exhaustive-check": "^1.0.0",
-    "uom": "2.1.4"
+    "uom": "2.2.1"
   },
   "scripts": {
     "build": "yarn build:clean && yarn build:cjs && yarn build:esm",

@@ -10156,12 +10156,7 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
-uom@2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/uom/-/uom-2.1.4.tgz#464ff78612f0f986b42542d682f0141cf2718c10"
-  integrity sha512-51YcazFFysOXcEAyMyKqJxWI8XMrzr9ys3NQWn2Fe5KJ4TKUOuH/5kxsViUEMpVUTDuo9un0XukzgilHYIYh3w==
-
-uom@^2.2.1:
+uom@2.2.1, uom@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/uom/-/uom-2.2.1.tgz#cbd438a24977248185ef2b5b47b2302c00113245"
   integrity sha512-6/VzST4AaGXw5ay/I5dED2ivWWEN7r+JAwfVZyozzZxjVRlxX0su+TtPBgkBS50Wen8Q9w5ERPlPtdFEL5BJ7A==
