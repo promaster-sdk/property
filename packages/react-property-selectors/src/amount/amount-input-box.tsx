@@ -67,21 +67,6 @@ function inputInvalidLocked({
   return {};
 }
 
-// function inputLocked({
-//   isReadonly,
-//   effectiveErrorMessage
-// }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
-//   if (isReadonly && !effectiveErrorMessage) {
-//     return StyledComponents.css`
-//     background: lightgray;
-//     color: darkgray;
-//     border: none;
-//   `;
-//   }
-
-//   return [];
-// }
-
 function inputLocked({
   isReadonly,
   effectiveErrorMessage
