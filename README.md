@@ -1,4 +1,4 @@
-# promaster-sdk
+# property
 
 This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/). 
 
