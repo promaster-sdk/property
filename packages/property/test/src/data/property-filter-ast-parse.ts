@@ -1,17 +1,12 @@
-// import * as Ast from "../../../src/property/property-filter-ast";
-import {
-  EqualsExpr,
-  ComparisonExpr,
+import { PropertyFilterAst } from "@promaster-sdk/property";
+const {
   newIdentifierExpr,
   newValueExpr,
   newEqualsExpr,
   newValueRangeExpr,
   newComparisonExpr,
   newAddExpr
-} from "../../../src/property-filter-ast";
-
-// https://github.com/Microsoft/TypeScript/issues/9944
-((_?: EqualsExpr, __?: ComparisonExpr) => 0)();
+} = PropertyFilterAst;
 
 export const tests = [
   {

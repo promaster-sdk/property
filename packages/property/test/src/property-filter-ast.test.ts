@@ -1,0 +1,65 @@
+import { PropertyFilterAst as Ast } from "@promaster-sdk/property";
+import { PropertyValueSet } from "@promaster-sdk/property";
+import { PropertyValue } from "@promaster-sdk/property";
+import * as ParseData from "./data/property-filter-ast-parse";
+import * as IsValidData from "./data/property-filter-isvalid";
+
+describe("PropertyFilterAst", () => {
+  describe("parse", () => {
+    ParseData.tests.forEach(test => {
+      it(test.name, () => {
+        const ast = Ast.parse(test.f);
+        expect(ast).toEqual(test.result);
+      });
+    });
+  });
+
+  describe("evaluate with raw AST", () => {
+    IsValidData.tests.forEach(test => {
+      it(test.name, () => {
+        const pvs = PropertyValueSet.fromString(test.pvs);
+        const f = fromStringOrException(test.f);
+        expect(
+          Ast.evaluateAst(
+            f,
+            pvs,
+            false,
+            test.comparer || PropertyValue.defaultComparer
+          )
+        ).toBe(test.result);
+      });
+    });
+  });
+
+  describe("evaluate with compiled AST", () => {
+    IsValidData.tests.forEach(test => {
+      it(test.name, () => {
+        const pvs = PropertyValueSet.fromString(test.pvs);
+        const f = fromStringOrException(test.f);
+        const func = Ast.compileAst(f);
+        expect(func(pvs, test.comparer || PropertyValue.defaultComparer)).toBe(
+          test.result
+        );
+      });
+    });
+  });
+
+  // describe("evaluate with lambda", () => {
+  //   IsValidData.tests.forEach(test => {
+  //     it(test.name, () => {
+  //       const pvs = PropertyValueSet.fromString(test.pvs);
+  //       const f = fromStringOrException(test.f);
+  //       const lamda = Ast.compileToLambdas(f);
+  //       assert.equal(lamda(pvs), test.result);
+  //     });
+  //   });
+  // });
+});
+
+function fromStringOrException(filter: string): Ast.BooleanExpr {
+  const f = Ast.parse(filter);
+  if (f === undefined) {
+    throw new Error(`Could not parse property filter "${filter}".`);
+  }
+  return f;
+}

@@ -1,4 +1,4 @@
-# @promaster/variant-listing
+# @promaster-sdk/variant-listing
 
 [![code style: prettier][prettier-image]][prettier-url]
 
@@ -10,7 +10,7 @@ Somtimes you want to generate a list of all valid combination of properties.
 
 ## Installation
 
-`npm install --save @promaster/variant-listing`
+`npm install --save @promaster-sdk/variant-listing`
 
 The library is compiled to ES5 and no polyfills are required.
 

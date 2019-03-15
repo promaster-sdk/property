@@ -1,6 +1,6 @@
 # property
 
-This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/). 
+This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/).
 
 For more information see the readme for each package:
 
@@ -16,7 +16,23 @@ In order to install the packages in this repo you need to have certain settings 
 
 Once you have the [npm registry](#npm-registry) setup and working, you can install the package using this command:
 
-`npm install --save @promaster/property`
+`npm install --save @promaster-sdk/property`
+
+## How to develop
+
+For development of the react components, use `yarn storybook` to start storybook in development mode.
+
+For the other packages, use `yarn test:packagename` to test them, or run `yarn test` to test all packages.
+
+## How to publish
+
+Publishing is handed by lerna. Run this command:
+
+```
+yarn publish-npm
+```
+
+It will build the packages and call `lerna publish` which will figure out which packages has changed, ask for new versions of them, and then publish them.
 
 ## npm registry
 
@@ -49,13 +65,3 @@ You may also have to set the `always-auth` option in .npmrc for yarn to work wit
 //npm.divid.se/:always-auth=true
 //npm.divid.se/:_authToken="**REDUCTED**"
 ```
-
-## How to publish
-
-Publishing is handed by lerna. Run this command:
-
-```
-yarn publish-npm
-```
-
-It will build the packages and call `lerna publish` which will figure out which packages has changed, ask for new versions of them, and then publish them.

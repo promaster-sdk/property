@@ -1,4 +1,7 @@
-import { PropertyFilterAst as Ast, PropertyValue } from "@promaster/property";
+import {
+  PropertyFilterAst as Ast,
+  PropertyValue
+} from "@promaster-sdk/property";
 import { Format, UnitFormat, UnitsFormat } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 

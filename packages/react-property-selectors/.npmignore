@@ -1,6 +1,6 @@
 # ignore everything
 */**
 
-# except
-!lib-cjs/**/*
-!lib-esm/**/*
+# except js and .d.ts files
+!lib/**/*.js
+!lib/**/*.d.ts

@@ -1,4 +1,4 @@
-# @promaster/property-filter-pretty
+# @promaster-sdk/property-filter-pretty
 
 [![code style: prettier][prettier-image]][prettier-url]
 
@@ -10,18 +10,18 @@ When a user selection of a `PropertyValueSet` is invalid according to a `Propert
 
 ## Installation
 
-`npm install --save @promaster/property-filter-pretty`
+`npm install --save @promaster-sdk/property-filter-pretty`
 
 The library is compiled to ES5 and no polyfills are required.
 
 ## Usage
 
 ```js
-import { PropertyFilter } from "@promaster/property";
+import { PropertyFilter } from "@promaster-sdk/property";
 import {
   filterPrettyPrintIndented,
   FilterPrettyPrintMessagesEnglish
-} from "@promaster/property-filter-pretty";
+} from "@promaster-sdk/property-filter-pretty";
 
 const pf = PropertyFilter.fromString("a=1,2&b=3");
 const pfPretty = filterPrettyPrintIndented(

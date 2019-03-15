@@ -3,8 +3,8 @@ import {
   PropertyFilter,
   PropertyValue,
   PropertyValueSet
-} from "@promaster/property";
-import * as PropertyFiltering from "@promaster/property-filter-pretty";
+} from "@promaster-sdk/property";
+import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
 export interface CheckboxPropertyValueItem {
   readonly value: PropertyValue.PropertyValue | undefined | null;

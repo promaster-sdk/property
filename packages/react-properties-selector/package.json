@@ -1,45 +1,24 @@
 {
-  "name": "@promaster/react-properties-selector",
-  "version": "3.2.2",
-  "main": "lib-cjs/index.js",
-  "module": "lib-esm/index.js",
-  "types": "lib-cjs/index",
-  "description": "User interface for selecting a valid property value set",
-  "author": "Divid AB",
-  "repository": "https://gitlab.divid.se/promaster-sdk/packages/react-properties-selector",
+  "name": "@promaster-sdk/react-properties-selector",
+  "author": "Divid Promaster AB",
   "license": "UNLICENSED",
+  "version": "3.3.0",
+  "main": "lib/index.js",
+  "types": "lib/index",
+  "description": "User interface for selecting a valid property value set",
   "publishConfig": {
-    "registry": "https://npm.divid.se"
+    "access": "public"
   },
   "dependencies": {
-    "@promaster/property": "^2.1.0",
-    "@promaster/property-filter-pretty": "^2.2.1",
-    "@promaster/react-property-selectors": "^3.2.2",
+    "@promaster-sdk/property": "^2.2.0",
+    "@promaster-sdk/property-filter-pretty": "^2.3.0",
+    "@promaster-sdk/react-property-selectors": "^3.3.0",
     "ramda": "^0.25.0",
-    "react": "^16.6.1",
+    "react": "^16.8.4",
     "uom": "2.2.1"
   },
   "devDependencies": {
     "@types/ramda": "^0.25.29",
-    "@types/react": "^16.7.3",
-    "@types/react-test-renderer": "^16.0.3",
-    "@types/styled-components": "^4.0.3",
-    "csjs": "1.0.6",
-    "insert-css": "^2.0.0",
-    "styled-components": "^4.0.3"
-  },
-  "scripts": {
-    "start": "yarn run storybook",
-    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
-    "test": "jest --config=test/jest.config.json --colors",
-    "circular": "madge --circular ./src/index.tsx",
-    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
-    "build:clean": "rm -rf ./lib-cjs ./lib-esm",
-    "build:cjs": "tsc -p src",
-    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
-    "tsc:test": "tsc -p test --noEmit",
-    "tsc:stories": "tsc -p stories --noEmit",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "@types/react": "^16.8.8"
   }
 }

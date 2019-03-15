@@ -1,4 +1,4 @@
-# @promaster/react-property-selectors
+# @promaster-sdk/react-property-selectors
 
 [![code style: prettier][prettier-image]][prettier-url]
 
@@ -10,7 +10,7 @@ A common task in product selection tools is to have an UI that allows the user t
 
 ## Installation
 
-`npm install --save @promaster/react-property-selectors`
+`npm install --save @promaster-sdk/react-property-selectors`
 
 The library is compiled to ES5 and no polyfills are required.
 

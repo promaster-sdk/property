@@ -3,7 +3,7 @@ import {
   PropertyFilter,
   PropertyFilterAst as Ast,
   PropertyValue
-} from "@promaster/property";
+} from "@promaster-sdk/property";
 import { inferTypeMap } from "../type-inference/filter-type-inferrer";
 import { ExprType, ExprTypeEnum } from "../type-inference/expr-type";
 import { FilterPrettyPrintMessages } from "./filter-pretty-print-messages";

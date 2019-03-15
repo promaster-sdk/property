@@ -3,9 +3,9 @@ import {
   PropertyValueSet,
   PropertyFilter,
   PropertyValue
-} from "@promaster/property";
+} from "@promaster-sdk/property";
 import { Amount, Unit, Quantity, UnitFormat } from "uom";
-import * as PropertyFiltering from "@promaster/property-filter-pretty";
+import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
   AmountFormatSelector,
   createAmountFormatSelector,

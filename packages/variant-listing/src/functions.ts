@@ -3,7 +3,7 @@ import {
   PropertyValue,
   PropertyValueSet,
   PropertyFilter
-} from "@promaster/property";
+} from "@promaster-sdk/property";
 import { ExtendedVariants, ProductProperty, VariantUrlList } from "./types";
 
 export function buildAllPropertyValueSets(

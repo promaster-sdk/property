@@ -1,4 +1,4 @@
-# @promaster/property
+# @promaster-sdk/property
 
 [![code style: prettier][prettier-image]][prettier-url]
 
@@ -12,14 +12,14 @@ For more information about the property filter syntax please see the [documentat
 
 ## Installation
 
-`npm install --save @promaster/property`
+`npm install --save @promaster-sdk/property`
 
 The library is compiled to ES5 and no polyfills are required.
 
 ## Usage
 
 ```js
-import { PropertyValueSet, PropertyFilter } from "@promaster/property";
+import { PropertyValueSet, PropertyFilter } from "@promaster-sdk/property";
 
 const pvs1 = PropertyValueSet.fromString("a=1;b=2");
 const pvs2 = PropertyValueSet.fromString("a=1;b=3");

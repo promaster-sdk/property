@@ -1,4 +1,7 @@
-import { PropertyFilterAst as Ast, PropertyValue } from "@promaster/property";
+import {
+  PropertyFilterAst as Ast,
+  PropertyValue
+} from "@promaster-sdk/property";
 
 export interface FilterPrettyPrintMessages {
   comparisionOperationMessage(

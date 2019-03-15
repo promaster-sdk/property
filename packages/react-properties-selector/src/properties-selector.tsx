@@ -4,8 +4,8 @@ import {
   PropertyValueSet,
   PropertyValue,
   PropertyFilter
-} from "@promaster/property";
-import * as PropertyFiltering from "@promaster/property-filter-pretty";
+} from "@promaster-sdk/property";
+import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
   PropertySelectorType,
   AmountFormat,
