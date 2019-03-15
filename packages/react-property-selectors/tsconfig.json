@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.settings.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "lib": ["dom", "es2015", "es2017.object", "esnext.asynciterable"],
+    "types": ["node"]
+  },
+  "references": [
+    { "path": "../property" },
+    { "path": "../property-filter-pretty" }
+  ]
+}

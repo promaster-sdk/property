@@ -1,27 +1,17 @@
 {
-  "name": "@promaster/property-filter-pretty",
-  "version": "2.2.1",
-  "description": "Promaster Property Filter Tools",
-  "repository": "https://gitlab.divid.se/promaster-sdk",
-  "main": "lib-cjs/index.js",
-  "module": "lib-esm/index.js",
-  "types": "lib-cjs/index",
-  "license": "UNLICENSED",
+  "name": "@promaster-sdk/property-filter-pretty",
   "author": "Divid Promaster AB",
+  "license": "UNLICENSED",
+  "version": "2.3.0",
+  "description": "Pretty printing of property filters",
+  "main": "lib/index.js",
+  "types": "lib/index",
   "publishConfig": {
-    "registry": "https://npm.divid.se"
+    "access": "public"
   },
   "dependencies": {
-    "@promaster/property": "^2.1.0",
+    "@promaster-sdk/property": "^2.2.0",
     "ts-exhaustive-check": "^1.0.0",
     "uom": "2.2.1"
-  },
-  "scripts": {
-    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
-    "build:clean": "rm -rf ./lib-cjs ./lib-esm",
-    "build:cjs": "tsc",
-    "build:esm": "tsc --module es2015 --outDir ./lib-esm",
-    "test": "rm -rf test/lib && mocha --colors",
-    "test:build": "cd test && tsc"
   }
 }

@@ -1,22 +1,12 @@
 {
-  "extends": "../../../tsconfig-base.json",
-  "include": ["src/**/*"],
+  "extends": "../../tsconfig.settings.json",
+  "include": ["src"],
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "./lib",
-    "declaration": false,
-    "sourceMap": true,
-    "jsx": "react",
-    "downlevelIteration": true,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "client-lib/*": ["lib/*"],
-      "shared-lib/*": ["../shared/lib/*"]
-    },
-    "lib": ["dom", "es2015", "es2017.object"],
+    "outDir": "lib",
+    "rootDir": "src",
+    "lib": ["dom", "es2015", "es2017.object", "esnext.asynciterable"],
     // If we do not specify this we get clashes in global types
-    "types": ["node", "mocha"]
-  }
+    "types": ["node"]
+  },
+  "references": [{ "path": "../../property" }]
 }

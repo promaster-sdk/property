@@ -6,7 +6,7 @@ import {
   PropertyFilterAst,
   PropertyValueSet,
   PropertyValue
-} from "../../lib-cjs";
+} from "@promaster-sdk/property";
 
 const suite = new Benchmark.Suite();
 

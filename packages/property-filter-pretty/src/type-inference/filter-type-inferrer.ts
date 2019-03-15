@@ -1,4 +1,7 @@
-import { PropertyFilterAst as Ast, PropertyFilter } from "@promaster/property";
+import {
+  PropertyFilterAst as Ast,
+  PropertyFilter
+} from "@promaster-sdk/property";
 import { ExprType, ExprTypeEnum } from "./expr-type";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PropertyValue, PropertyValueSet } from "@promaster/property";
+import { PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 
 export interface TextboxPropertySelectorProps {
   readonly propertyName: string;

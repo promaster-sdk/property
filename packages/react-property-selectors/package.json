@@ -1,39 +1,21 @@
 {
-  "name": "@promaster/react-property-selectors",
-  "version": "3.2.2",
-  "main": "lib-cjs/index.js",
-  "module": "lib-esm/index.js",
-  "types": "lib-cjs/index",
-  "description": "User interface for selecting single property values",
-  "author": "Divid AB",
-  "repository": "https://gitlab.divid.se/promaster-sdk/packages/react-property-selectors",
+  "name": "@promaster-sdk/react-property-selectors",
+  "author": "Divid Promaster AB",
   "license": "UNLICENSED",
+  "version": "3.3.0",
+  "main": "lib/index.js",
+  "types": "lib/index",
+  "description": "User interface for selecting single property values",
   "publishConfig": {
-    "registry": "https://npm.divid.se"
+    "access": "public"
   },
   "dependencies": {
-    "@promaster/property": "^2.1.0",
-    "@promaster/property-filter-pretty": "^2.2.1",
-    "react": "^16.6.1",
+    "@promaster-sdk/property": "^2.2.0",
+    "@promaster-sdk/property-filter-pretty": "^2.3.0",
+    "react": "^16.8.4",
     "uom": "2.2.1"
   },
   "devDependencies": {
-    "@types/react": "^16.7.3",
-    "@types/styled-components": "^4.0.3",
-    "styled-components": "^4.0.3"
-  },
-  "scripts": {
-    "start": "yarn run storybook",
-    "lint": "tslint -t msbuild './{src,test}/**/*.ts{,x}'",
-    "test": "jest --config=test/jest.config.json --colors",
-    "circular": "madge --circular ./src/index.tsx",
-    "build": "yarn build:clean && yarn build:cjs && yarn build:esm",
-    "build:clean": "rm -rf ./lib-cjs ./lib-esm",
-    "build:cjs": "tsc -p src",
-    "build:esm": "tsc -p src --module es2015 --outDir ./lib-esm",
-    "tsc:test": "tsc -p test --noEmit",
-    "tsc:stories": "tsc -p stories --noEmit",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "@types/react": "^16.8.8"
   }
 }

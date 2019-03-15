@@ -83,7 +83,7 @@ module.exports = (function() {
         peg$c36 = "<",
         peg$c37 = { type: "literal", value: "<", description: "\"<\"" },
         peg$c38 = function(lh, c, rh) {
-                  const opType = stringToComparisonOperationType(c);
+                  var opType = stringToComparisonOperationType(c);
                   return callbacks.createComparisonExpr(lh, opType, rh);
                 },
         peg$c39 = "=",
@@ -94,7 +94,7 @@ module.exports = (function() {
         peg$c44 = { type: "literal", value: ",", description: "\",\"" },
         peg$c45 = function(lh, c, r1, r) {return r;},
         peg$c46 = function(lh, c, r1, r2) {
-                  const opType = stringToEqualsOperationType(c);
+                  var opType = stringToEqualsOperationType(c);
                   r2.unshift(r1);
                   return callbacks.createEqualsExpr(lh, opType, r2);
                 },
@@ -109,7 +109,7 @@ module.exports = (function() {
         peg$c52 = "+",
         peg$c53 = { type: "literal", value: "+", description: "\"+\"" },
         peg$c54 = function(lh, o, rh) {
-                const opType = stringToAddSubOperationType(o);
+                var opType = stringToAddSubOperationType(o);
                 return callbacks.createAddExpr(lh, opType, rh);
               },
         peg$c55 = "*",
@@ -117,7 +117,7 @@ module.exports = (function() {
         peg$c57 = "/",
         peg$c58 = { type: "literal", value: "/", description: "\"/\"" },
         peg$c59 = function(lh, o, rh) {
-                const opType = stringToMulDivOperationType(o);
+                var opType = stringToMulDivOperationType(o);
                 return callbacks.createMulExpr(lh, opType, rh);
               },
         peg$c60 = function(val) {
@@ -1213,7 +1213,7 @@ module.exports = (function() {
     }
 
 
-      const callbacks = options.callbacks;
+      var callbacks = options.callbacks;
 
       // Helpers
       function stringToComparisonOperationType(str) {

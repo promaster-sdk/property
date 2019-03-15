@@ -3,7 +3,7 @@ import {
   PropertyValueSet,
   PropertyFilter,
   PropertyValue
-} from "@promaster/property";
+} from "@promaster-sdk/property";
 
 export interface ProductProperty {
   readonly sort_no: number;

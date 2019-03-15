@@ -4,7 +4,7 @@ import {
   PropertyValueSet,
   PropertyValue,
   PropertyFilter
-} from "@promaster/property";
+} from "@promaster-sdk/property";
 import { PropertySelectorProps } from "./default-property-selector-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
 

@@ -2,7 +2,7 @@ import {
   PropertyValue,
   PropertyFilter,
   PropertyFilterAst as Ast
-} from "@promaster/property";
+} from "@promaster-sdk/property";
 import { exhaustiveCheck } from "ts-exhaustive-check/lib-cjs";
 
 export function filterPrettyPrintSimple(

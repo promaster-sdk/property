@@ -1,5 +1,5 @@
 {
-  const callbacks = options.callbacks;
+  var callbacks = options.callbacks;
 
   // Helpers
   function stringToComparisonOperationType(str) {
@@ -86,13 +86,13 @@ ComparisonExpr
       (
         (c:(">=" / "<=" / ">" / "<") rh:AddExpr)
         {
-          const opType = stringToComparisonOperationType(c);
+          var opType = stringToComparisonOperationType(c);
           return callbacks.createComparisonExpr(lh, opType, rh);
         }
         /
         (c:("=" / "!=") r1:ValueRangeExpr r2:("," r:ValueRangeExpr {return r;})*)
         {
-          const opType = stringToEqualsOperationType(c);
+          var opType = stringToEqualsOperationType(c);
           r2.unshift(r1);
           return callbacks.createEqualsExpr(lh, opType, r2);
         }
@@ -116,7 +116,7 @@ AddExpr
   =	(
       (lh:MultiplyExpr o:("+" / "-") rh:AddExpr)
       {
-        const opType = stringToAddSubOperationType(o);
+        var opType = stringToAddSubOperationType(o);
         return callbacks.createAddExpr(lh, opType, rh);
       }
     ) / MultiplyExpr
@@ -127,7 +127,7 @@ MultiplyExpr
   =	(
       (lh:UnaryExpr o:("*" / "/") rh:MultiplyExpr)
       {
-        const opType = stringToMulDivOperationType(o);
+        var opType = stringToMulDivOperationType(o);
         return callbacks.createMulExpr(lh, opType, rh);
       }
     ) / UnaryExpr

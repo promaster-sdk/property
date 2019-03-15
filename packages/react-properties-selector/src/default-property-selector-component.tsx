@@ -4,9 +4,9 @@ import {
   PropertyValueSet,
   PropertyValue,
   PropertyFilter
-} from "@promaster/property";
-import * as PropertyFiltering from "@promaster/property-filter-pretty";
-import * as PropertySelectors from "@promaster/react-property-selectors";
+} from "@promaster-sdk/property";
+import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
+import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
 import {
   PropertySelectorType,
   PropertySelectionOnChange,
