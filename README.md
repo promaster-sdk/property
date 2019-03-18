@@ -4,19 +4,11 @@ This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6
 
 For more information see the readme for each package:
 
-- [property](packages/property/README.md)
-- [property-filter-pretty](packages/property-filter-pretty/README.md)
-- [react-property-selectors](packages/react-property-selectors/README.md)
-- [react-properties-selector](packages/react-properties-selector/README.md)
-- [variant-listing](packages/variant-listing/README.md)
-
-## How to install
-
-In order to install the packages in this repo you need to have certain settings for npm, see [npm registry](#npm-registry).
-
-Once you have the [npm registry](#npm-registry) setup and working, you can install the package using this command:
-
-`npm install --save @promaster-sdk/property`
+* [property](packages/property/README.md)
+* [property-filter-pretty](packages/property-filter-pretty/README.md)
+* [react-property-selectors](packages/react-property-selectors/README.md)
+* [react-properties-selector](packages/react-properties-selector/README.md)
+* [variant-listing](packages/variant-listing/README.md)
 
 ## How to develop
 
