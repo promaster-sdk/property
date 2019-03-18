@@ -4,11 +4,13 @@ This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6
 
 For more information see the readme for each package:
 
-* [property](packages/property/README.md)
-* [property-filter-pretty](packages/property-filter-pretty/README.md)
-* [react-property-selectors](packages/react-property-selectors/README.md)
-* [react-properties-selector](packages/react-properties-selector/README.md)
-* [variant-listing](packages/variant-listing/README.md)
+| Package                                  | README                                                 | CHANGELOG                                                    |
+| ---------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| @promaster-sdk/property                  | [README](packages/property/README.md)                  | [CHANGELOG](packages/property/CHANGELOG.md)                  |
+| @promaster-sdk/property-filter-pretty    | [README](packages/property-filter-pretty/README.md)    | [CHANGELOG](packages/property-filter-pretty/CHANGELOG.md)    |
+| @promaster-sdk/react-property-selectors  | [README](packages/react-property-selectors/README.md)  | [CHANGELOG](packages/react-property-selectors/CHANGELOG.md)  |
+| @promaster-sdk/react-properties-selector | [README](packages/react-properties-selector/README.md) | [CHANGELOG](packages/react-properties-selector/CHANGELOG.md) |
+| @promaster-sdk/variant-listing           | [README](packages/variant-listing/README.md)           | [CHANGELOG](packages/variant-listing/CHANGELOG.md)           |
 
 ## How to develop
 
