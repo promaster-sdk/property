@@ -6,6 +6,7 @@ const fs = require("fs");
 const util = require("util");
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
+const glob = require("glob")
 
 async function uglifyFiles(files) {
   for (filepath of files) {
@@ -19,5 +20,9 @@ async function uglifyFiles(files) {
   }
 }
 
-const myArgs = process.argv.slice(2);
-uglifyFiles(myArgs);
+const globString = process.argv[2];
+// options is optional
+glob(globString, function (er, files) {
+  uglifyFiles(files);
+})
+
