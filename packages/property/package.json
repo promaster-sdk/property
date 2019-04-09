@@ -10,6 +10,6 @@
     "access": "public"
   },
   "dependencies": {
-    "uom": "^2.2.1"
+    "uom": "^2.3.0"
   }
 }

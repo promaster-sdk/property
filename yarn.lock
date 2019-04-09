@@ -14418,10 +14418,10 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
-uom@2.2.1, uom@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/uom/-/uom-2.2.1.tgz#cbd438a24977248185ef2b5b47b2302c00113245"
-  integrity sha512-6/VzST4AaGXw5ay/I5dED2ivWWEN7r+JAwfVZyozzZxjVRlxX0su+TtPBgkBS50Wen8Q9w5ERPlPtdFEL5BJ7A==
+uom@2.3.0, uom@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/uom/-/uom-2.3.0.tgz#e409b7a7efc0155b86e6b3b86eeea3e3fd366726"
+  integrity sha512-Obmzmxnj9wrjN7QOuUCY7EhS8jfMsIhQw2PMbPSf7UU/k0lBz0Dwl/PtpW4UXMD1vM7jjOY49S2CMeziJK/s2Q==
 
 upath@^1.1.0:
   version "1.1.2"
