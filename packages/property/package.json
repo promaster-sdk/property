@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/property",
   "author": "Divid Promaster AB",
   "license": "UNLICENSED",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "main": "lib/index.js",
   "types": "lib/index",
   "description": "Property values and filtering",
