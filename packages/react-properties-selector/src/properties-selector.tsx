@@ -38,7 +38,6 @@ import {
   GroupItemComponentProps,
   DefaultGroupItemComponent
 } from "./default-group-item-component";
-import { PropertiesSelectorProps } from "./properties-selector";
 import {
   PropertyLabelComponentProps,
   DefaultPropertyLabelComponent
@@ -249,8 +248,8 @@ function createPropertySelectorRenderInfos(
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
   const sortedArray = productProperties
     .slice()
-    .sort(
-      (a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0)
+    .sort((a, b) =>
+      a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0
     );
 
   const selectorDefinitions: ReadonlyArray<
