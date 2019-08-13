@@ -98,9 +98,7 @@ export interface PropertiesSelectorProps {
   };
 
   // Override layout
-  readonly LayoutRenderer?: (
-    props: LayoutRendererProps
-  ) => React.ReactElement<LayoutRendererProps>;
+  readonly LayoutRenderer?: (props: LayoutRendererProps) => JSX.Element;
   readonly GroupComponent?: ReactComponent<GroupComponentProps>;
   readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>;
   readonly PropertySelectorComponent?: ReactComponent<PropertySelectorProps>;
