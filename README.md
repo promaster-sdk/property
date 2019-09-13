@@ -14,8 +14,8 @@ For more information see the readme for each package:
 | ------------------------------------------------------------------------------ | ------------------------------ | ------------------------------------------------------ | ------------------------------------------------------------ |
 | [@promaster-sdk/property](packages/property)                                   | [![npm version][i-p]][u-p]     | [README](packages/property/README.md)                  | [CHANGELOG](packages/property/CHANGELOG.md)                  |
 | [@promaster-sdk/property-filter-pretty](packages/property-filter-pretty)       | [![npm version][i-pfp]][u-pfp] | [README](packages/property-filter-pretty/README.md)    | [CHANGELOG](packages/property-filter-pretty/CHANGELOG.md)    |
-| [@promaster-sdk/react-property-selectors](packages/react-property-selectors)   | [![npm version][i-rps]][u-rps] | [README](packages/react-property-selectors/README.md)  | [CHANGELOG](packages/react-property-selectors/CHANGELOG.md)  |
 | [@promaster-sdk/react-properties-selector](packages/react-properties-selector) | [![npm version][i-rp]][u-rp]   | [README](packages/react-properties-selector/README.md) | [CHANGELOG](packages/react-properties-selector/CHANGELOG.md) |
+| [@promaster-sdk/react-property-selectors](packages/react-property-selectors)   | [![npm version][i-rps]][u-rps] | [README](packages/react-property-selectors/README.md)  | [CHANGELOG](packages/react-property-selectors/CHANGELOG.md)  |
 | [@promaster-sdk/variant-listing](packages/variant-listing)                     | [![npm version][i-vl]][u-vl]   | [README](packages/variant-listing/README.md)           | [CHANGELOG](packages/variant-listing/CHANGELOG.md)           |
 
 ## How to develop
