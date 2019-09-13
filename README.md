@@ -1,5 +1,7 @@
 # property
 
+[![MIT license][license-image]][license-url]
+
 This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/).
 
 For more information see the readme for each package:
@@ -27,3 +29,6 @@ yarn publish-npm
 ```
 
 It will build the packages and call `lerna publish` which will figure out which packages has changed, ask for new versions of them, and then publish them.
+
+[license-image]: https://img.shields.io/github/license/promaster-sdk/property.svg?style=flat
+[license-url]: https://opensource.org/licenses/MIT
