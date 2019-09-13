@@ -6,13 +6,13 @@ This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6
 
 For more information see the readme for each package:
 
-| Package                                  | README                                                 | CHANGELOG                                                    |
-| ---------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-| @promaster-sdk/property                  | [README](packages/property/README.md)                  | [CHANGELOG](packages/property/CHANGELOG.md)                  |
-| @promaster-sdk/property-filter-pretty    | [README](packages/property-filter-pretty/README.md)    | [CHANGELOG](packages/property-filter-pretty/CHANGELOG.md)    |
-| @promaster-sdk/react-property-selectors  | [README](packages/react-property-selectors/README.md)  | [CHANGELOG](packages/react-property-selectors/CHANGELOG.md)  |
-| @promaster-sdk/react-properties-selector | [README](packages/react-properties-selector/README.md) | [CHANGELOG](packages/react-properties-selector/CHANGELOG.md) |
-| @promaster-sdk/variant-listing           | [README](packages/variant-listing/README.md)           | [CHANGELOG](packages/variant-listing/CHANGELOG.md)           |
+| Package                                  | Version                        | README                                                 | CHANGELOG                                                    |
+| ---------------------------------------- | ------------------------------ | ------------------------------------------------------ | ------------------------------------------------------------ |
+| @promaster-sdk/property                  | [![npm version][i-p]][u-p]     | [README](packages/property/README.md)                  | [CHANGELOG](packages/property/CHANGELOG.md)                  |
+| @promaster-sdk/property-filter-pretty    | [![npm version][i-pfp]][u-pfp] | [README](packages/property-filter-pretty/README.md)    | [CHANGELOG](packages/property-filter-pretty/CHANGELOG.md)    |
+| @promaster-sdk/react-property-selectors  | [![npm version][i-rps]][u-rps] | [README](packages/react-property-selectors/README.md)  | [CHANGELOG](packages/react-property-selectors/CHANGELOG.md)  |
+| @promaster-sdk/react-properties-selector | [![npm version][i-rp]][u-rp]   | [README](packages/react-properties-selector/README.md) | [CHANGELOG](packages/react-properties-selector/CHANGELOG.md) |
+| @promaster-sdk/variant-listing           | [![npm version][i-vl]][u-vl]   | [README](packages/variant-listing/README.md)           | [CHANGELOG](packages/variant-listing/CHANGELOG.md)           |
 
 ## How to develop
 
@@ -32,3 +32,13 @@ It will build the packages and call `lerna publish` which will figure out which 
 
 [license-image]: https://img.shields.io/github/license/promaster-sdk/property.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
+[i-p]: https://img.shields.io/npm/v/@promaster-sdk/property.svg?style=flat
+[u-p]: https://www.npmjs.com/package/@promaster-sdk/property
+[i-pfp]: https://img.shields.io/npm/v/@promaster-sdk/property-filter-pretty.svg?style=flat
+[u-pfp]: https://www.npmjs.com/package/@promaster-sdk/property-filter-pretty
+[i-rps]: https://img.shields.io/npm/v/@promaster-sdk/react-property-selectors.svg?style=flat
+[u-rps]: https://www.npmjs.com/package/@promaster-sdk/react-property-selectors
+[i-rp]: https://img.shields.io/npm/v/@promaster-sdk/react-properties-selector.svg?style=flat
+[u-rp]: https://www.npmjs.com/package/@promaster-sdk/react-properties-selector
+[i-vl]: https://img.shields.io/npm/v/@promaster-sdk/variant-listing.svg?style=flat
+[u-vl]: https://www.npmjs.com/package/@promaster-sdk/variant-listing
