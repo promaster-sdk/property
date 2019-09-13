@@ -1,8 +1,10 @@
-# property
+# @promaster-sdk/property
 
 [![MIT license][license-image]][license-url]
 
 This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/).
+
+The core package of this repo is `@promaster-sdk/property` and the other packages are dependent on this package.
 
 For more information see the readme for each package:
 
