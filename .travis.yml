@@ -1,0 +1,26 @@
+language: node_js
+cache:
+  yarn: true
+  directories:
+    - node_modules
+notifications:
+  email: false
+node_js:
+  - "12"
+  - "10"
+  - "8"
+env:
+  - TSVERSION=next
+  - TSVERSION=latest
+  - TSVERSION=3.4.1 # Our minimum supported version
+matrix:
+  allow_failures:
+    - env: TSVERSION=next
+before_script:
+  # Nothing for now
+script:
+  - yarn lint
+  - yarn build
+  - yarn test
+after_success:
+  # Nothing for now
