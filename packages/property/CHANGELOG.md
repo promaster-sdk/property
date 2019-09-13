@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-* Add functions `filter` and `map`, see [#10](https://github.com/promaster-sdk/property/issues/10). Thanks to [@JohKri](https://gitlab.divid.se/JohKri) for this addition! See MR [!12](https://github.com/promaster-sdk/property/merge_requests/12).
+* Add functions `filter` and `map`, see [#10](https://github.com/promaster-sdk/property/issues/10). Thanks to [@JohKri](https://github.com/johankristiansson) for this addition!
 
 * Added custom compare parameter to all compare functions in `PropertyValue`.
 
