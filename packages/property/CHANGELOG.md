@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [Unreleased](https://gitlab.divid.se/promaster/property/compare/@promaster%2Fproperty@2.0.5...master)
 
-## [v2.2.0] - 2019-03-08
+## [v2.2.0](https://gitlab.divid.se/promaster/property/compare/@promaster%2Fproperty@2.0.5...@promaster%2Fproperty@2.2.0) - 2019-03-08
 
 ### Added
 
@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Function `getValuesWithoutPrefix` was removed, ust eh new `filter` function instead.
 
-## [v2.0.5] - 2019-01-01
+## [v2.0.5](https://gitlab.divid.se/promaster/property/compare/@promaster%2Fproperty@1.0.1...@promaster%2Fproperty@2.0.5) - 2019-01-01
 
 ### Added
 
@@ -37,7 +37,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Some bugs
 
-## [v1.0.1] - 2018-05-08
+## [v1.0.1](https://gitlab.divid.se/promaster/property/compare/@promaster%2Fproperty@1.0.0...@promaster%2Fproperty@1.0.1) - 2018-05-08
 
 ### Added
 
@@ -46,7 +46,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## v1.0.0 - 2018-05-08
 
 * Initial release.
-
-[unreleased]: https://gitlab.divid.se/promaster/property/compare/@promaster%2Fproperty@2.0.5...master
-[v2.0.5]: https://gitlab.divid.se/promaster/property/compare/@promaster%2Fproperty@1.0.1...@promaster%2Fproperty@2.0.5
-[v1.0.1]: https://gitlab.divid.se/promaster/property/compare/@promaster%2Fproperty@1.0.0...@promaster%2Fproperty@1.0.1
