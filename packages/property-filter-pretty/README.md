@@ -1,5 +1,6 @@
 # @promaster-sdk/property-filter-pretty
 
+[![npm version][version-image]][version-url]
 [![code style: prettier][prettier-image]][prettier-url]
 
 Pretty printing of property filters
@@ -32,5 +33,7 @@ const pfPretty = filterPrettyPrintIndented(
 ); // a should equal 1 or 2 and b should equal 3
 ```
 
+[version-image]: https://img.shields.io/npm/v/@promaster-sdk/property-filter-pretty.svg?style=flat
+[version-url]: https://www.npmjs.com/package/@promaster-sdk/property-filter-pretty
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier

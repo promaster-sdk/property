@@ -1,5 +1,6 @@
 # @promaster-sdk/react-property-selectors
 
+[![npm version][version-image]][version-url]
 [![code style: prettier][prettier-image]][prettier-url]
 
 User interface for selecting single property values
@@ -112,5 +113,7 @@ The library is compiled to ES5 and no polyfills are required.
 />
 ```
 
+[version-image]: https://img.shields.io/npm/v/@promaster-sdk/react-property-selectors.svg?style=flat
+[version-url]: https://www.npmjs.com/package/@promaster-sdk/react-property-selectors
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier

@@ -1,5 +1,6 @@
 # @promaster-sdk/react-properties-selector
 
+[![npm version][version-image]][version-url]
 [![code style: prettier][prettier-image]][prettier-url]
 
 User interface for selecting a valid property value set
@@ -28,5 +29,7 @@ This is a library of react components so it cannot be run directly. To demonstra
 yarn start
 ```
 
+[version-image]: https://img.shields.io/npm/v/@promaster-sdk/react-properties-selector.svg?style=flat
+[version-url]: https://www.npmjs.com/package/@promaster-sdk/react-properties-selector
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier

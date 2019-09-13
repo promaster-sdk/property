@@ -1,5 +1,6 @@
 # @promaster-sdk/variant-listing
 
+[![npm version][version-image]][version-url]
 [![code style: prettier][prettier-image]][prettier-url]
 
 Generate list of valid variants
@@ -20,5 +21,7 @@ The library is compiled to ES5 and no polyfills are required.
 TODO!
 ```
 
+[version-image]: https://img.shields.io/npm/v/@promaster-sdk/variant-listing.svg?style=flat
+[version-url]: https://www.npmjs.com/package/@promaster-sdk/variant-listing
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier

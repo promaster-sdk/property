@@ -1,5 +1,6 @@
 # @promaster-sdk/property
 
+[![npm version][version-image]][version-url]
 [![code style: prettier][prettier-image]][prettier-url]
 
 Property values and filtering
@@ -28,5 +29,7 @@ const pvs1valid = PropertyFilter.isValid(pvs1, pf); // false
 const pvs2valid = PropertyFilter.isValid(pvs2, pf); // true
 ```
 
+[version-image]: https://img.shields.io/npm/v/@promaster-sdk/property.svg?style=flat
+[version-url]: https://www.npmjs.com/package/@promaster-sdk/property
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier
