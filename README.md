@@ -1,5 +1,6 @@
 # @promaster-sdk/property
 
+[![code style: prettier][prettier-image]][prettier-url]
 [![MIT license][license-image]][license-url]
 
 This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/).
@@ -32,6 +33,8 @@ yarn publish-npm
 
 It will build the packages and call `lerna publish` which will figure out which packages has changed, ask for new versions of them, and then publish them.
 
+[prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
+[prettier-url]: https://github.com/prettier/prettier
 [license-image]: https://img.shields.io/github/license/promaster-sdk/property.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
 [i-p]: https://img.shields.io/npm/v/@promaster-sdk/property.svg?style=flat
