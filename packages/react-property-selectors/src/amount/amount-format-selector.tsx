@@ -20,6 +20,9 @@ export interface AmountFormatSelectorProps {
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
+  readonly units: {
+    readonly [key: string]: Unit.Unit;
+  };
 }
 
 export interface State {
@@ -121,7 +124,8 @@ export function createAmountFormatSelector({
         selectedDecimalCount,
         onFormatChanged,
         onFormatCleared,
-        unitsFormat
+        unitsFormat,
+        units
       } = this.props;
 
       // If there is no handler for onFormatChanged then the user should not be able to change the format
@@ -139,11 +143,12 @@ export function createAmountFormatSelector({
       }
 
       // Get a list of all units within the quantity
-      const units = Format.getUnitsForQuantity(
+      const quantityUnits = Format.getUnitsForQuantity(
         selectedUnit.quantity,
-        unitsFormat
+        unitsFormat,
+        units
       );
-      const unitNames = units.map(u => Serialize.unitToString(u));
+      const unitNames = quantityUnits.map(u => Serialize.unitToString(u));
       const selectedUnitName = Serialize.unitToString(selectedUnit);
 
       const decimalCounts = [0, 1, 2, 3, 4, 5];
@@ -158,10 +163,15 @@ export function createAmountFormatSelector({
             // tslint:disable-next-line:no-any
             onChange={(e: any) => {
               this.setState({ active: false });
-              _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
+              _onUnitChange(
+                e,
+                quantityUnits,
+                selectedDecimalCount,
+                onFormatChanged
+              );
             }}
           >
-            {units.map((u, index) => {
+            {quantityUnits.map((u, index) => {
               const format = Format.getUnitFormat(u, unitsFormat);
               return (
                 <option key={unitNames[index]} value={unitNames[index]}>

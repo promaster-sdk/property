@@ -96,6 +96,9 @@ export interface PropertiesSelectorProps {
   readonly unitsFormat?: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
+  readonly units?: {
+    readonly [key: string]: Unit.Unit;
+  };
 
   // Override layout
   readonly LayoutRenderer?: (props: LayoutRendererProps) => JSX.Element;
@@ -154,6 +157,7 @@ export function PropertiesSelector(
     inputDebounceTime = 350,
 
     unitsFormat = UnitsFormat,
+    units = Units,
 
     closedGroups = [],
     onToggleGroupClosed = () => {}, // tslint:disable-line
@@ -194,6 +198,7 @@ export function PropertiesSelector(
 
     inputDebounceTime,
     unitsFormat,
+    units,
 
     comparer
   );
@@ -234,6 +239,7 @@ function createPropertySelectorRenderInfos(
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   },
+  units: { readonly [key: string]: Unit.Unit },
   comparer: PropertyValue.Comparer
 ): ReadonlyArray<PropertySelectorRenderInfo> {
   // Default true if not specified otherwise
@@ -359,7 +365,8 @@ function createPropertySelectorRenderInfos(
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
         translateValueIsRequiredMessage,
         inputDebounceTime,
-        unitsFormat
+        unitsFormat,
+        units
       };
 
       const propertyLabelComponentProps: PropertyLabelComponentProps = {

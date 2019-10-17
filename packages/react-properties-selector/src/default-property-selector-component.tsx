@@ -66,6 +66,9 @@ export interface PropertySelectorProps {
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
+  readonly units: {
+    readonly [key: string]: Unit.Unit;
+  };
 }
 
 export interface CreatePropertySelectorProps {
@@ -107,7 +110,8 @@ export function createPropertySelector({
     translateValueMustBeNumericMessage,
     translateValueIsRequiredMessage,
     inputDebounceTime,
-    unitsFormat
+    unitsFormat,
+    units
   }: PropertySelectorProps): JSX.Element {
     function onValueChange(newValue: PropertyValue.PropertyValue): void {
       onChange(
@@ -236,6 +240,7 @@ export function createPropertySelector({
             readOnly={readOnly}
             debounceTime={inputDebounceTime}
             unitsFormat={unitsFormat}
+            units={units}
           />
         );
     }
