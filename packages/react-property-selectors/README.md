@@ -78,6 +78,7 @@ The library is compiled to ES5 and no polyfills are required.
   onFormatChanged={(selectedUnit, selectedDecimalCount) => console.log("onFormatChanged")}
   onFormatCleared={() => console.log("onFormatCleared")}
   unitsFormat={UnitsFormat}
+  units={Units}
 />
 ```
 
@@ -110,6 +111,7 @@ The library is compiled to ES5 and no polyfills are required.
   onFormatCleared={() => console.log("onFormatCleared")}
   onFormatSelectorActiveChanged={console.log("Toggle format selector")}
   unitsFormat={...}
+  units={...}
 />
 ```
 

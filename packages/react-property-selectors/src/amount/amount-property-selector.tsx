@@ -38,6 +38,9 @@ export interface AmountPropertySelectorProps {
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
+  readonly units: {
+    readonly [key: string]: Unit.Unit;
+  };
   readonly comparer?: PropertyValue.Comparer;
 }
 
@@ -91,6 +94,7 @@ export function createAmountPropertySelector({
         readOnly,
         debounceTime = 350,
         unitsFormat,
+        units,
         comparer = PropertyValue.defaultComparer
       } = this.props;
 
@@ -133,6 +137,7 @@ export function createAmountPropertySelector({
             onFormatCleared={onFormatCleared}
             onFormatSelectorActiveChanged={onFormatSelectorToggled}
             unitsFormat={unitsFormat}
+            units={units}
           />
         </AmountPropertySelectorWrapper>
       );

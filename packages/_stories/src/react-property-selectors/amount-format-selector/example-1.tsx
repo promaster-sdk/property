@@ -101,6 +101,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
             }
             onFormatSelectorActiveChanged={action("Toggle format selector")}
             unitsFormat={UnitsFormat}
+            units={Units}
           />
         </div>
       </div>
