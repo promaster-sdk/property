@@ -12,8 +12,6 @@ import styled from "styled-components";
 import { action } from "@storybook/addon-actions";
 import { merge } from "../utils";
 
-// tslint:disable:variable-name no-class no-this no-any
-
 interface State {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly selectedUnit: Unit.Unit<any>;

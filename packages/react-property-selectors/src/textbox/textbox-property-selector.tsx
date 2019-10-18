@@ -125,7 +125,6 @@ function debounce(func: Function, wait: number, immediate?: boolean): any {
   let timeout: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function(this: any): void {
-    //tslint:disable-line
     const context = this; //eslint-disable-line
     const args = arguments; //eslint-disable-line
     const later = function(): void {

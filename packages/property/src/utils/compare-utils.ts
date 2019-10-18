@@ -57,7 +57,6 @@ export function arraysEqual<T>(array1: Array<T>, array2: Array<T>): boolean {
       // recurse into the nested arrays
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (!arraysEqual<any>(array1[i] as any, array2[i] as any)) {
-        //tslint:disable-line
         return false;
       }
     } else if (array1[i] !== array2[i]) {

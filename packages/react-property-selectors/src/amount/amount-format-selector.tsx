@@ -9,8 +9,6 @@ import {
   AmountFormatWrapperProps
 } from "./amount-format-wrapper";
 
-//tslint:disable no-class no-this
-
 export interface AmountFormatSelectorProps {
   readonly key?: string;
   readonly selectedUnit: Unit.Unit<Quantity.Quantity>;

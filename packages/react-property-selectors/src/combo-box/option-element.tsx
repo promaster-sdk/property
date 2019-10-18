@@ -7,7 +7,6 @@ export type OptionElementProps = {
   HTMLOptionElement
 >;
 
-// tslint:disable-next-line:variable-name
 export const OptionElement = ({
   isItemValid: _,
   ...htmlProps

@@ -6,8 +6,6 @@ import { createTextboxPropertySelector } from "@promaster-sdk/react-property-sel
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../utils";
 
-// tslint:disable:variable-name no-class no-this no-any
-
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
 }

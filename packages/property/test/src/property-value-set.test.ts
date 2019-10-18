@@ -132,7 +132,6 @@ describe("PropertyValueSet", () => {
         b: PropertyValue.fromInteger(2),
         c: null,
         d: undefined
-        // tslint:disable-next-line:no-any
       } as any;
       const str1 = PropertyValueSet.toString(pvs1);
       expect("a=1;b=2").toBe(str1);
@@ -227,7 +226,7 @@ describe("PropertyValueSet", () => {
           ...kvp,
           value: PropertyValue.fromInteger(
             kvp.value.type === "amount" &&
-            kvp.value.value.unit.quantity === "Temperature"
+              kvp.value.value.unit.quantity === "Temperature"
               ? 1
               : 0
           )

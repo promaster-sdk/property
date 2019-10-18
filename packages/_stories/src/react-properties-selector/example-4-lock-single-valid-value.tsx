@@ -12,8 +12,6 @@ import {
 } from "@promaster-sdk/property";
 import { merge } from "./utils";
 
-// tslint:disable:variable-name no-class no-this no-any
-
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly closedGroups: ReadonlyArray<string>;

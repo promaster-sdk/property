@@ -6,8 +6,6 @@ import { PropertyValueSet } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
 import { exampleProductProperties } from "./example-product-properties";
 
-// tslint:disable:variable-name no-class no-this no-any
-
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
 }

@@ -107,7 +107,6 @@ export function buildAllPropertyValueSetsExtended(
     // Temp fix, because generating all might be too slow, and useless anyway.
     // When the propertyValueSets array grows too large, discard some.
     if (limit > 0 && propertyValueSets.length > limit) {
-      // tslint:disable-next-line:no-console
       console.warn(
         `Discarded ${propertyValueSets.length - limit} of ${
           propertyValueSets.length
@@ -128,7 +127,6 @@ export function buildAllPropertyValueSetsExtended(
               .map(propertyValueItem => {
                 // All valueItems should have a set value. Ignore broken data.
                 if (propertyValueItem.value.type !== "integer") {
-                  // tslint:disable-next-line:no-console
                   console.warn("Invalid data in valueItem:", propertyValueItem);
                   return undefined;
                 }
@@ -208,7 +206,6 @@ export function buildAllPropertyValueSetsExtended(
         );
 
         if (!valueItem) {
-          // tslint:disable-next-line:no-console
           console.warn(
             `Property is set to non-existing value (bad default?): ${
               property.name
@@ -232,7 +229,6 @@ export function buildAllPropertyValueSetsExtended(
 
   const loss = propertyValueSets.length - before;
   if (loss > 0) {
-    // tslint:disable-next-line:no-console
     console.warn(
       `Discarded ${loss} variants because they are invalid. Implement recursive search with backtracking over default values to find valid combos.`
     );

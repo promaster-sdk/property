@@ -9,8 +9,6 @@ import * as React from "react";
 import { Amount, Unit, Quantity } from "uom";
 import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 
-// tslint:disable no-class no-this
-
 export interface AmountInputBoxProps {
   readonly key?: string;
   readonly value: Amount.Amount<Quantity.Quantity> | undefined;
@@ -42,7 +40,6 @@ export interface CreateAmountInputBoxParams {
 //   isReadonly,
 //   effectiveErrorMessage
 // }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
-//   // tslint:disable-next-line:no-console
 //   if (isReadonly && effectiveErrorMessage) {
 //     return StyledComponents.css`
 //     background: lightgray;
@@ -131,11 +128,9 @@ export function createAmountInputBox({
     initStateFromProps(initProps: AmountInputBoxProps): void {
       const { value, inputUnit, inputDecimalCount } = initProps;
       if (!inputUnit) {
-        // tslint:disable-next-line:no-console
         console.error("Missing inputUnit");
       }
       if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
-        // tslint:disable-next-line:no-console
         console.error("Missing inputDecimalCount");
       }
       const formattedValue = formatWithUnitAndDecimalCount(

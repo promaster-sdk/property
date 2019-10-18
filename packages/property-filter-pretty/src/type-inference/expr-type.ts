@@ -8,8 +8,6 @@ export enum ExprTypeEnum {
   Range
 }
 
-//tslint:disable:no-class no-this
-
 // eslint-disable-next-line functional/no-class
 export class ExprType {
   private readonly _exprTypeEnum: ExprTypeEnum;

@@ -39,8 +39,6 @@
     "react-test-renderer": "^16.6.1",
     "shelljs": "^0.8.3",
     "ts-node": "^4.1.0",
-    "tslint": "^5.9.1",
-    "tslint-immutable": "^4.5.1",
     "typescript": "^3.3.1",
     "uglify-js": "^3.4.9",
     "webpack": "^4.29.6"
@@ -49,7 +47,6 @@
     "start": "tsc -b -w packages",
     "publish-npm": "yarn pre-publish && lerna publish",
     "pre-publish": "run-s lint clean test build-prod",
-    "lint2": "tslint -t msbuild './packages/*/{src,test/src}/**/*.ts{,x}'",
     "lint": "eslint './packages/*/src/**/*.ts{,x}' --ext .js,.ts,.tsx -f visualstudio",
     "circular": "madge --circular ./packages/*/lib/index.js",
     "updated": "lerna updated",
@@ -77,8 +74,8 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": "tslint",
-    "*.{ts,tsx,json,css}": [
+    "*.{ts,tsx}": "eslint --ext .ts,.tsx -f visualstudio",
+    "*.{ts,tsx,js,json,css,md}": [
       "prettier --write",
       "git add"
     ]

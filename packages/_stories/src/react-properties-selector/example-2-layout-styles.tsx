@@ -17,4 +17,4 @@ export const propertiesSelectorLayoutStyles = csjs`
   }
 `;
 
-insertCss(csjs.getCss(propertiesSelectorLayoutStyles)); //tslint:disable-line
+insertCss(csjs.getCss(propertiesSelectorLayoutStyles));

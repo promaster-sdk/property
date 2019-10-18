@@ -16,7 +16,7 @@ export interface PropertyKeyValuePair {
   readonly value: PropertyValue.PropertyValue;
 }
 
-export const Empty: PropertyValueSet = {}; //tslint:disable-line
+export const Empty: PropertyValueSet = {};
 
 // For internal use only
 interface MutablePropertyValueSet {

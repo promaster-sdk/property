@@ -139,7 +139,7 @@ describe("PropertyValue", () => {
 
   it("should make an empty string when amount value is null", () => {
     const amount = Amount.create(0, Units.Ampere, 1);
-    (amount as any).value = null; //tslint:disable-line
+    (amount as any).value = null;
     const pv1 = PropertyValue.fromAmount(amount);
     const pv1string = PropertyValue.toString(pv1);
     expect(pv1string).toBe("");

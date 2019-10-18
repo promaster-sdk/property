@@ -15,8 +15,6 @@ import {
 } from "./amount-format-selector";
 import { AmountInputBox, createAmountInputBox } from "./amount-input-box";
 
-// tslint:disable no-class no-this
-
 export interface AmountPropertySelectorProps {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;

@@ -13,5 +13,4 @@ export {
 } from "./pretty-printing/filter-pretty-print-simple";
 export { FilterPrettyPrint } from "./pretty-printing/filter-pretty-print";
 
-// tslint:disable-next-line:variable-name
 export const FilterPrettyPrintMessagesEnglish: FilterPrettyPrintMessages = FilterPrettyPrintMessagesEnglish2;

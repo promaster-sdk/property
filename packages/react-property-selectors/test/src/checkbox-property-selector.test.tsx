@@ -10,7 +10,6 @@ import {
   CheckboxPropertyValueItem
 } from "@promaster-sdk/react-property-selectors";
 
-// tslint:disable-next-line:variable-name
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
 test("Simple CheckboxPropertySelector", () => {

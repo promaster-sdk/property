@@ -10,7 +10,6 @@ export interface PropertyFilter {
 
 const _cache: { [key: string]: PropertyFilter } = {}; //eslint-disable-line
 
-// tslint:disable-next-line:variable-name
 export const Empty: PropertyFilter = {
   text: "",
   ast: Ast.newEmptyExpr(),
@@ -34,7 +33,7 @@ export function fromString(filter: string): PropertyFilter | undefined {
     const ast = Ast.parse(adjustedFilter, false);
 
     if (ast === undefined) {
-      console.warn("Invalid property filter syntax: " + adjustedFilter); //tslint:disable-line
+      console.warn("Invalid property filter syntax: " + adjustedFilter);
       return undefined;
     }
     _cache[filter] = create(adjustedFilter, ast);

@@ -485,7 +485,6 @@ function handleChange(
     }
 
     let lastProperties = properties;
-    // tslint:disable-next-line:readonly-keyword
     const changedProps = new Set([propertyName]);
 
     for (let i = 0; i < 4; i++) {

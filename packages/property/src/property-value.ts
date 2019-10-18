@@ -59,10 +59,8 @@ export function create(
 export function fromString(encodedValue: string): PropertyValue | undefined {
   const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue);
   if (result === null) {
-    // tslint:disable-next-line:no-console
     console.warn(
       `PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`
-    ); //tslint:disable-line
   }
   return result;
 }

@@ -21,7 +21,7 @@ const styles = csjs`
   }
 `;
 
-insertCss(csjs.getCss(styles)); //tslint:disable-line
+insertCss(csjs.getCss(styles));
 
 interface Props {
   readonly header: string;

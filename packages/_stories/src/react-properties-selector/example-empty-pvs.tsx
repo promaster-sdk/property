@@ -9,8 +9,6 @@ import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
 
-// tslint:disable:variable-name no-class no-this no-any
-
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly closedGroups: ReadonlyArray<string>;
