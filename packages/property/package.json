@@ -20,6 +20,13 @@
     "promaster",
     "promaster-sdk"
   ],
+  "files": [
+    "/lib",
+    "package.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
   "dependencies": {
     "uom": "^2.3.0"
   }

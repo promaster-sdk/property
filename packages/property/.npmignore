@@ -1,6 +1,0 @@
-# ignore everything
-*/**
-
-# except js and .d.ts files
-!lib/**/*.js
-!lib/**/*.d.ts
