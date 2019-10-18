@@ -36,7 +36,9 @@ const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector
   }
 );
 
-export function createPropertiesSelectorExample2Layout(): Function {
+export function createPropertiesSelectorExample2Layout(): (
+  props: PropertiesSelector.LayoutRendererProps
+) => JSX.Element {
   const helloWorld = "hello world";
 
   return function PropertiesSelectorExample2Layout({
