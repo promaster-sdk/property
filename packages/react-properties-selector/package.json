@@ -9,6 +9,17 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/promaster-sdk/property/tree/master/packages/react-properties-selector"
+  },
+  "bugs": {
+    "url": "https://github.com/promaster-sdk/property/issues"
+  },
+  "keywords": [
+    "promaster",
+    "promaster-sdk"
+  ],
   "dependencies": {
     "@promaster-sdk/property": "^2.3.1",
     "@promaster-sdk/property-filter-pretty": "^2.4.1",

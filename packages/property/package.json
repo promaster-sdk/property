@@ -9,6 +9,17 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/promaster-sdk/property/tree/master/packages/property"
+  },
+  "bugs": {
+    "url": "https://github.com/promaster-sdk/property/issues"
+  },
+  "keywords": [
+    "promaster",
+    "promaster-sdk"
+  ],
   "dependencies": {
     "uom": "^2.3.0"
   }

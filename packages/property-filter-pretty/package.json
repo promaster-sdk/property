@@ -9,6 +9,17 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/promaster-sdk/property/tree/master/packages/property-filter-pretty"
+  },
+  "bugs": {
+    "url": "https://github.com/promaster-sdk/property/issues"
+  },
+  "keywords": [
+    "promaster",
+    "promaster-sdk"
+  ],
   "dependencies": {
     "@promaster-sdk/property": "^2.3.1",
     "ts-exhaustive-check": "^1.0.0",
