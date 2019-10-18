@@ -57,6 +57,7 @@ export function propertyValueMessage(
       }
     }
     case "integer":
+      // eslint-disable-next-line no-case-declarations
       const pvString = PropertyValue.toString(propertyValue);
       return `${propertyName}_${pvString}`;
     case "text":
@@ -84,7 +85,7 @@ function _comparisonOperationTypeToString(
     case "greater":
       return "must be greater than";
     default:
-      throw "Unknown ComparisonOperationType ";
+      throw new Error("Unknown ComparisonOperationType ");
   }
 }
 

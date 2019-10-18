@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-method-signature */
 import * as Ast from "./types";
 import * as Parser from "./pegjs/generated-parser";
 
@@ -12,15 +13,15 @@ type ParserCallbacks = {
   createEqualsExpr(
     leftValue: Ast.PropertyValueExpr,
     operationType: Ast.EqualsOperationType,
-    rightValueRanges: Array<Ast.ValueRangeExpr>
+    rightValueRanges: ReadonlyArray<Ast.ValueRangeExpr>
   ): Ast.EqualsExpr;
   createComparisonExpr(
     leftValue: Ast.PropertyValueExpr,
     operationType: Ast.ComparisonOperationType,
     rightValue: Ast.PropertyValueExpr
   ): Ast.ComparisonExpr;
-  createAndExpr(children: Array<Ast.BooleanExpr>): Ast.AndExpr;
-  createOrExpr(children: Array<Ast.BooleanExpr>): Ast.OrExpr;
+  createAndExpr(children: ReadonlyArray<Ast.BooleanExpr>): Ast.AndExpr;
+  createOrExpr(children: ReadonlyArray<Ast.BooleanExpr>): Ast.OrExpr;
   createAddExpr(
     left: Ast.PropertyValueExpr,
     operationType: Ast.AddExprOperationType,
@@ -84,7 +85,7 @@ export function preProcessString(filter: string): string {
   // Remove whitespace in the middle, but not in string literals
   let inString: boolean = false;
   let newFilter = "";
-  for (let char of filter.split("")) {
+  for (const char of filter.split("")) {
     if (char === '"') {
       inString = !inString;
     }

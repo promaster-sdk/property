@@ -27,7 +27,7 @@ interface Props {
   readonly header: string;
   readonly closed: boolean;
   readonly closedChanged: (closed: boolean) => void;
-  readonly children?: Array<React.ReactElement<{}>>;
+  readonly children?: ReadonlyArray<React.ReactElement<{}>>;
 }
 
 export function Expander({

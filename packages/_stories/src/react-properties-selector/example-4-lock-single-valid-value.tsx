@@ -1,3 +1,5 @@
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable functional/no-class */
 import * as React from "react";
 import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
@@ -14,13 +16,15 @@ import { merge } from "./utils";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly closedGroups: Array<string>;
+  readonly closedGroups: ReadonlyArray<string>;
   readonly propertyFormats: {
     readonly [key: string]: PropertiesSelector.AmountFormat;
   };
 }
 
-const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
+const filterPrettyPrint = (
+  propertyFilter: PropertyFilter.PropertyFilter
+): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish,
     2,
@@ -62,6 +66,7 @@ export class PropertiesSelectorExample4LockSingleValidValue extends React.Compon
       autoSelectSingleValidValue: false,
       onPropertyFormatChanged: (
         propertyName: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         unit: Unit.Unit<any>,
         decimalCount: number
       ) =>

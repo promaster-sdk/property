@@ -2,14 +2,14 @@ import {
   PropertyFilterAst as Ast,
   PropertyFilter
 } from "@promaster-sdk/property";
-import { ExprType, ExprTypeEnum } from "./expr-type";
 import { exhaustiveCheck } from "ts-exhaustive-check";
+import { ExprType, ExprTypeEnum } from "./expr-type";
 
 export function inferTypeMap(
   filter: PropertyFilter.PropertyFilter
 ): Map<Ast.Expr, ExprType> {
-  let typeMap = new Map<Ast.Expr, ExprType>();
-  let lastPropertyType = new ExprType(ExprTypeEnum.Unknown);
+  const typeMap = new Map<Ast.Expr, ExprType>();
+  const lastPropertyType = new ExprType(ExprTypeEnum.Unknown);
   _visit(filter.ast, lastPropertyType, typeMap);
   return typeMap;
 }
@@ -20,7 +20,7 @@ function _visit(
   typeMap: Map<Ast.Expr, ExprType>
 ): ExprType {
   if (e.type === "AndExpr") {
-    for (let child of e.children) {
+    for (const child of e.children) {
       lastPropertyType = _visit(child, lastPropertyType, typeMap);
     }
     typeMap.set(e, new ExprType(ExprTypeEnum.Bool));

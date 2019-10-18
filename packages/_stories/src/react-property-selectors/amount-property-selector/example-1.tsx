@@ -1,9 +1,10 @@
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable functional/no-class */
 import * as React from "react";
-// import { PropertySelectors } from "../../src";
-import { createAmountPropertySelector } from "@promaster-sdk/react-property-selectors";
-
-import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { Unit, Units, UnitsFormat } from "uom";
+import { createAmountPropertySelector } from "@promaster-sdk/react-property-selectors";
+// import { PropertySelectors } from "../../src";
+import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
   PropertyFilter,
   PropertyValueSet,
@@ -15,11 +16,14 @@ import { merge } from "../utils";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly selectedUnit: Unit.Unit<any>;
   readonly selectedDecimalCount: number;
 }
 
-const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
+const filterPrettyPrint = (
+  propertyFilter: PropertyFilter.PropertyFilter
+): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish,
     2,

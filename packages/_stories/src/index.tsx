@@ -1,8 +1,7 @@
 import * as React from "react";
 import { storiesOf } from "@storybook/react";
 import { linkTo } from "@storybook/addon-links";
-import { Welcome } from "@storybook/react/demo";
-import { Button } from "@storybook/react/demo";
+import { Welcome, Button } from "@storybook/react/demo";
 import { action } from "@storybook/addon-actions";
 
 storiesOf("Welcome", module).add("to Storybook", () => (

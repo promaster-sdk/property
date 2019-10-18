@@ -1,15 +1,9 @@
 import * as React from "react";
+import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
+import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
+import styled from "styled-components";
 import { Expander } from "./expander";
 import { propertiesSelectorLayoutStyles as styles } from "./example-2-layout-styles";
-import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
-import {
-  createAmountInputBox,
-  createAmountFormatSelector,
-  AmountFormatWrapper
-} from "@promaster-sdk/react-property-selectors";
-import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
-
-import styled from "styled-components";
 
 // tslint:disable:variable-name no-class no-this no-any
 const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector.createPropertySelector(
@@ -19,9 +13,9 @@ const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector
         background: green;
         padding: 20px;
       `,
-      AmountInputBox: createAmountInputBox({}),
-      AmountFormatSelector: createAmountFormatSelector({
-        AmountFormatWrapper: styled(AmountFormatWrapper)`
+      AmountInputBox: PropertySelectors.createAmountInputBox({}),
+      AmountFormatSelector: PropertySelectors.createAmountFormatSelector({
+        AmountFormatWrapper: styled(PropertySelectors.AmountFormatWrapper)`
           background-color: ${props => (props.active ? "red" : "white")};
           padding: 5px;
         `,
@@ -42,7 +36,7 @@ const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector
   }
 );
 
-export function createPropertiesSelectorExample2Layout(): any {
+export function createPropertiesSelectorExample2Layout(): Function {
   const helloWorld = "hello world";
 
   return function PropertiesSelectorExample2Layout({
@@ -102,7 +96,7 @@ function getGroupDistinctNames(
   >
 ): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
-  for (let property of productPropertiesArray) {
+  for (const property of productPropertiesArray) {
     if (
       groupNames.indexOf(property.groupName) ===
       -1 /*&& !isNullOrWhiteSpace(property.groupName)*/

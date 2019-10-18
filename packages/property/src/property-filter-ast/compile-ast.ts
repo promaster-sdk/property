@@ -123,7 +123,7 @@ function visitAllExpr(e: Ast.Expr, visit: (e: Ast.Expr) => void): void {
       return;
     }
     default: {
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, consistent-return
       return exhaustiveCheck(e, true, (e as any).type);
     }
   }

@@ -1,9 +1,9 @@
+/* eslint-disable functional/no-this-expression */
 import * as React from "react";
 import {
   createCheckboxPropertySelector,
   CheckboxPropertyValueItem
 } from "@promaster-sdk/react-property-selectors";
-
 import {
   PropertyFilter,
   PropertyValueSet,
@@ -19,6 +19,7 @@ interface State {
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
+// eslint-disable-next-line functional/no-class
 export class CheckboxPropertySelectorExample1 extends React.Component<
   {},
   State

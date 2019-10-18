@@ -67,7 +67,7 @@ function getDistinctGroupNames(
   productPropertiesArray: ReadonlyArray<PropertySelectorRenderInfo>
 ): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
-  for (let property of productPropertiesArray) {
+  for (const property of productPropertiesArray) {
     // let groupName = property.groupName;
     if (isNullOrWhiteSpace(property.groupName)) {
       // groupName = "";

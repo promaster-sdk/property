@@ -1,20 +1,24 @@
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable functional/no-class */
 import * as React from "react";
 import {
   AmountFormatWrapper,
-  AmountFormatWrapperProps
+  AmountFormatWrapperProps,
+  createAmountFormatSelector,
+  createAmountInputBox
 } from "@promaster-sdk/react-property-selectors";
-import { createAmountFormatSelector } from "@promaster-sdk/react-property-selectors";
-import { createAmountInputBox } from "@promaster-sdk/react-property-selectors";
 import { Unit, Units, Amount, UnitsFormat } from "uom";
-import { merge } from "../utils";
 import styled from "styled-components";
 import { action } from "@storybook/addon-actions";
+import { merge } from "../utils";
 
 // tslint:disable:variable-name no-class no-this no-any
 
 interface State {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly selectedUnit: Unit.Unit<any>;
   readonly selectedDecimalCount: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly amount: Amount.Amount<any>;
 }
 
@@ -24,12 +28,12 @@ const ClearButton = (
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   >
-) => (
+): JSX.Element => (
   <button {...props} className="my-own">
     Clear
   </button>
 );
-const AmountFormatWrapper2 = (props: AmountFormatWrapperProps) => (
+const AmountFormatWrapper2 = (props: AmountFormatWrapperProps): JSX.Element => (
   <AmountFormatWrapper
     className={props.active ? "active" : "inactive"}
     {...props}
@@ -84,6 +88,7 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
             selectedUnit={this.state.selectedUnit}
             selectedDecimalCount={this.state.selectedDecimalCount}
             onFormatChanged={(
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               selectedUnit: Unit.Unit<any>,
               selectedDecimalCount: number
             ) =>

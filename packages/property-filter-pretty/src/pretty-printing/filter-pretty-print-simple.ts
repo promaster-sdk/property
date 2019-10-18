@@ -19,7 +19,7 @@ export function filterPrettyPrintSimple(
 function _print(e: Ast.Expr, s: string): string {
   switch (e.type) {
     case "AndExpr": {
-      for (let child of e.children) {
+      for (const child of e.children) {
         s = _print(child, s);
         if (child !== e.children[e.children.length - 1]) {
           s += " and ";
@@ -36,7 +36,7 @@ function _print(e: Ast.Expr, s: string): string {
     case "EqualsExpr": {
       s = _print(e.leftValue, s);
       s += _equalsOperationTypeToString(e.operationType);
-      for (let range of e.rightValueRanges) {
+      for (const range of e.rightValueRanges) {
         s = _print(range, s);
         if (range !== e.rightValueRanges[e.rightValueRanges.length - 1]) {
           s += ",";
@@ -50,7 +50,7 @@ function _print(e: Ast.Expr, s: string): string {
       break;
     }
     case "OrExpr": {
-      for (let child of e.children) {
+      for (const child of e.children) {
         s = _print(child, s);
         if (child !== e.children[e.children.length - 1]) {
           s += " or ";
@@ -118,7 +118,7 @@ function _comparisonOperationTypeToString(
     case "greater":
       return " must be greater than ";
     default:
-      throw "Unknown ComparisonOperationType ";
+      throw new Error("Unknown ComparisonOperationType ");
   }
 }
 
@@ -129,6 +129,6 @@ function _equalsOperationTypeToString(type: Ast.EqualsOperationType): string {
     case "notEquals":
       return " must not be ";
     default:
-      throw "Unknown EqualsOperationType ";
+      throw new Error("Unknown EqualsOperationType ");
   }
 }

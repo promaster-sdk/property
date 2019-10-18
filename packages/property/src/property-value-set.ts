@@ -1,5 +1,7 @@
 import { Amount, Quantity } from "uom";
+// eslint-disable-next-line import/no-duplicates
 import * as PropertyValue from "./property-value";
+// eslint-disable-next-line import/no-duplicates
 import { PropertyType } from "./property-value";
 
 // Types
@@ -18,13 +20,13 @@ export const Empty: PropertyValueSet = {}; //tslint:disable-line
 
 // For internal use only
 interface MutablePropertyValueSet {
-  [key: string]: PropertyValue.PropertyValue; //tslint:disable-line
+  [key: string]: PropertyValue.PropertyValue; //eslint-disable-line
 }
 
 // Functions
 
 export function fromString(encodedValueSet: string): PropertyValueSet {
-  const err = () => {
+  const err = (): PropertyValueSet => {
     throw new Error(`${encodedValueSet} is not a valid PropertyValueSet`);
   };
   return fromStringOrError(err, encodedValueSet);
@@ -68,6 +70,7 @@ export function get(
   propertyName: string,
   pvs: PropertyValueSet
 ): PropertyValue.PropertyValue | undefined {
+  // eslint-disable-next-line no-prototype-builtins
   if (!pvs.hasOwnProperty(propertyName)) {
     return undefined;
   }
@@ -78,6 +81,7 @@ export function hasProperty(
   propertyName: string,
   pvs: PropertyValueSet
 ): boolean {
+  // eslint-disable-next-line no-prototype-builtins
   return pvs.hasOwnProperty(propertyName);
 }
 
@@ -152,8 +156,8 @@ export function keepProperties(
   propertyNames: Array<string>,
   pvs: PropertyValueSet
 ): PropertyValueSet {
-  let newSet: MutablePropertyValueSet = {};
-  for (let name of propertyNames) {
+  const newSet: MutablePropertyValueSet = {};
+  for (const name of propertyNames) {
     if (pvs[name]) {
       // Don't create properties that doesn't exist
       newSet[name] = pvs[name];
@@ -166,8 +170,8 @@ export function removeProperties(
   propertyNames: Array<string>,
   pvs: PropertyValueSet
 ): PropertyValueSet {
-  let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(pvs)) {
+  const newSet: MutablePropertyValueSet = {};
+  for (const name of Object.keys(pvs)) {
     if (propertyNames.indexOf(name) === -1) {
       newSet[name] = pvs[name];
     }
@@ -232,8 +236,8 @@ export function filter(
   fn: (kvp: PropertyKeyValuePair) => boolean,
   pvs: PropertyValueSet
 ): PropertyValueSet {
-  let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(pvs)) {
+  const newSet: MutablePropertyValueSet = {};
+  for (const name of Object.keys(pvs)) {
     if (fn({ key: name, value: pvs[name] })) {
       newSet[name] = pvs[name];
     }
@@ -245,8 +249,8 @@ export function map(
   fn: (kvp: PropertyKeyValuePair) => PropertyKeyValuePair,
   pvs: PropertyValueSet
 ): PropertyValueSet {
-  let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(pvs)) {
+  const newSet: MutablePropertyValueSet = {};
+  for (const name of Object.keys(pvs)) {
     const map = fn({ key: name, value: pvs[name] });
     newSet[map.key] = map.value;
   }
@@ -257,8 +261,8 @@ export function getValuesOfType(
   type: PropertyType,
   pvs: PropertyValueSet
 ): PropertyValueSet {
-  let newSet: MutablePropertyValueSet = {};
-  for (let name of Object.keys(pvs)) {
+  const newSet: MutablePropertyValueSet = {};
+  for (const name of Object.keys(pvs)) {
     if (pvs[name].type === type) {
       newSet[name] = pvs[name];
     }
@@ -295,7 +299,7 @@ export function equals(
     return false;
   }
 
-  for (let name of Object.keys(pvs)) {
+  for (const name of Object.keys(pvs)) {
     if (!PropertyValue.equals(other[name], pvs[name], comparer)) {
       return false;
     }
@@ -310,10 +314,10 @@ export function equals(
 function _stringToEntriesOrUndefinedIfInvalidString(
   encodedValueSet: string
 ): PropertyValueSet | undefined {
-  let entries: MutablePropertyValueSet = {};
+  const entries: MutablePropertyValueSet = {};
   // Add extra semicolon on the end to close last name/value pair
   let toParse = encodedValueSet;
-  if (toParse.charAt(toParse.length - 1) !== ";") {
+  if (!toParse.endsWith(";")) {
     toParse += ";";
   }
   //StringBuffer name = new StringBuffer();
@@ -322,8 +326,9 @@ function _stringToEntriesOrUndefinedIfInvalidString(
   let value: string = "";
   let isInNamePart: boolean = true;
   let isInQuote: boolean = false;
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let i: number = 0; i < toParse.length; i++) {
-    let c: string = toParse[i];
+    const c: string = toParse[i];
     switch (c) {
       case "=":
         if (!isInQuote) {
@@ -333,7 +338,7 @@ function _stringToEntriesOrUndefinedIfInvalidString(
           }
           isInNamePart = false;
         } else {
-          value = value + c;
+          value += c;
         }
         break;
       case ";":
@@ -343,6 +348,7 @@ function _stringToEntriesOrUndefinedIfInvalidString(
             return undefined;
           }
           let entryValue: PropertyValue.PropertyValue | undefined;
+          // eslint-disable-next-line prefer-const
           entryValue = PropertyValue.fromString(value.toString());
           //              if (!PropertyValue.TryParse(value.ToString(), out entryValue)) {
           if (entryValue === undefined) {
@@ -356,18 +362,18 @@ function _stringToEntriesOrUndefinedIfInvalidString(
           name = "";
           value = "";
         } else {
-          value = value + c;
+          value += c;
         }
         break;
       case '"':
         isInQuote = !isInQuote;
-        value = value + c;
+        value += c;
         break;
       default:
         if (isInNamePart) {
-          name = name + c;
+          name += c;
         } else {
-          value = value + c;
+          value += c;
         }
         break;
     }
