@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-this-expression */
 /*
  UI to select a unit and a number of decimals independently of each other
  */
@@ -69,25 +70,25 @@ const defaultClearButton = (
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   >
-) => <button {...props} />;
+): JSX.Element => <button {...props} />;
 const defaultCancelButton = (
   props: React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   >
-) => <button {...props} />;
+): JSX.Element => <button {...props} />;
 const defaultPrecisionSelector = (
   props: React.DetailedHTMLProps<
     React.SelectHTMLAttributes<HTMLSelectElement>,
     HTMLSelectElement
   >
-) => <select {...props} />;
+): JSX.Element => <select {...props} />;
 const defaultUnitSelector = (
   props: React.DetailedHTMLProps<
     React.SelectHTMLAttributes<HTMLSelectElement>,
     HTMLSelectElement
   >
-) => <select {...props} />;
+): JSX.Element => <select {...props} />;
 const defaultFormatWrapper = AmountFormatWrapper;
 
 export function createAmountFormatSelector({
@@ -97,6 +98,7 @@ export function createAmountFormatSelector({
   UnitSelector = defaultUnitSelector,
   AmountFormatWrapper = defaultFormatWrapper
 }: CreateAmountFormatSelectorParams): AmountFormatSelector {
+  // eslint-disable-next-line functional/no-class
   return class AmountFormatSelector extends React.Component<
     AmountFormatSelectorProps,
     State
@@ -155,7 +157,7 @@ export function createAmountFormatSelector({
         <AmountFormatWrapper active={this.state.active}>
           <UnitSelector
             value={selectedUnitName}
-            // tslint:disable-next-line:no-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onChange={(e: any) => {
               this.setState({ active: false });
               _onUnitChange(e, units, selectedDecimalCount, onFormatChanged);
@@ -173,7 +175,7 @@ export function createAmountFormatSelector({
           </UnitSelector>
           <PrecisionSelector
             value={selectedDecimalCount.toString()}
-            // tslint:disable-next-line:no-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onChange={(e: any) => {
               this.setState({ active: false });
               _onDecimalCountChange(e, selectedUnit, onFormatChanged);
@@ -216,7 +218,7 @@ function _onDecimalCountChange(
 
 function _onUnitChange(
   e: React.FormEvent<HTMLSelectElement>,
-  units: Unit.Unit<Quantity.Quantity>[],
+  units: Array<Unit.Unit<Quantity.Quantity>>,
   selectedDecimalCount: number,
   onFormatChanged: OnFormatChanged
 ): void {

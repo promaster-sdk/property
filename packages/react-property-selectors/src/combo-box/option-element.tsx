@@ -11,4 +11,6 @@ export type OptionElementProps = {
 export const OptionElement = ({
   isItemValid: _,
   ...htmlProps
-}: OptionElementProps) => <option {...htmlProps}>{htmlProps.children}</option>;
+}: OptionElementProps): JSX.Element => (
+  <option {...htmlProps}>{htmlProps.children}</option>
+);

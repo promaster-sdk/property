@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-this-expression */
 import * as React from "react";
 import {
   ComboBoxImageOptionElementRow,
@@ -11,7 +12,7 @@ import {
 export interface ImageDropdownSelectorProps {
   readonly value: string;
   readonly onChange: (value: string) => void;
-  readonly options: Array<DropdownOption>;
+  readonly options: ReadonlyArray<DropdownOption>;
   readonly isSelectedItemValid?: boolean;
   readonly locked: boolean;
 }
@@ -64,7 +65,7 @@ export const defaultOptionImageElement = (
     React.ImgHTMLAttributes<HTMLImageElement>,
     HTMLImageElement
   >
-) => (
+): JSX.Element => (
   <img
     {...props}
     style={{
@@ -97,7 +98,7 @@ export const defaultOptionImageElement = (
 
 export const defaultOptionImageElementRow = (
   props: ComboBoxImageOptionElementRowProps
-) => (
+): JSX.Element => (
   <ComboBoxImageOptionElementRow
     {...props}
     style={{
@@ -123,7 +124,7 @@ export const defaultDropdownOptionsElement = (
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >
-) => (
+): JSX.Element => (
   <div
     {...props}
     style={{
@@ -152,7 +153,7 @@ export const defaultDropdownSelectElement = (
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >
-) => (
+): JSX.Element => (
   <div
     {...props}
     style={{
@@ -170,7 +171,7 @@ export const DefaultBackgroundElement = (
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
   >
-) => (
+): JSX.Element => (
   <div
     {...props}
     style={{
@@ -185,7 +186,7 @@ export const DefaultBackgroundElement = (
 
 export const defaultComboBoxImageButtonElement = (
   props: ComboBoxImageElementProps
-) => (
+): JSX.Element => (
   <ComboBoxImageElement
     {...props}
     style={{
@@ -223,7 +224,7 @@ export function createImageDropdownSelector({
   DropdownSelectElement = defaultDropdownSelectElement,
   ComboBoxImageButtonElement = defaultComboBoxImageButtonElement
 }: CreateImageDropdownSelectorProps): ImageDropdownSelector {
-  //tslint:disable no-this
+  // eslint-disable-next-line functional/no-class
   return class extends React.Component<ImageDropdownSelectorProps, State> {
     constructor(props: ImageDropdownSelectorProps) {
       super(props);
@@ -290,6 +291,7 @@ export function createImageDropdownSelector({
       );
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _renderItem(item: DropdownOption | undefined): React.ReactElement<{}> {
       if (item === undefined) {
         return <span />;

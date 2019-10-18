@@ -13,7 +13,9 @@ export interface CreateComboBoxStandardOptionParams {
   readonly OptionElement?: React.ComponentType<OptionElementProps>;
 }
 
-export const defaultOptionElement = (props: OptionElementProps) => (
+export const defaultOptionElement = (
+  props: OptionElementProps
+): JSX.Element => (
   <OptionElement
     {...props}
     style={{

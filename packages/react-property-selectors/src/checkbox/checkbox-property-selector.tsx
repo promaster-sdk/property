@@ -43,7 +43,7 @@ export type CheckboxPropertySelector = React.StatelessComponent<
   CheckboxPropertySelectorProps
 >;
 
-const defaultCheckboxContainer = (props: CheckboxProps) => (
+const defaultCheckboxContainer = (props: CheckboxProps): JSX.Element => (
   <div
     {...props}
     style={{
@@ -60,7 +60,7 @@ const defaultCheckboxContainer = (props: CheckboxProps) => (
   />
 );
 
-const defaultCheckbox = (props: CheckboxProps) => (
+const defaultCheckbox = (props: CheckboxProps): JSX.Element => (
   <div
     {...props}
     style={{
