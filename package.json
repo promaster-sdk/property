@@ -47,7 +47,7 @@
     "start": "tsc -b -w packages",
     "publish-npm": "yarn pre-publish && lerna publish",
     "pre-publish": "run-s lint clean test build-prod",
-    "lint": "eslint './packages/*/src/**/*.ts{,x}' --ext .js,.ts,.tsx -f visualstudio",
+    "lint": "eslint './packages/*/{src,test}/**/*.ts{,x}' --ext .js,.ts,.tsx -f visualstudio",
     "circular": "madge --circular ./packages/*/lib/index.js",
     "updated": "lerna updated",
     "clean": "rm -rf packages/*/lib && rm -rf packages/*/test/lib && rm -rf packages/*/benchmark/lib",

@@ -61,6 +61,7 @@ export function fromString(encodedValue: string): PropertyValue | undefined {
   if (result === null) {
     console.warn(
       `PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`
+    );
   }
   return result;
 }
