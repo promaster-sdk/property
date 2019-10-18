@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-this-expression */
 import * as React from "react";
 import { PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 
@@ -30,7 +31,7 @@ export const defaultStyledInputTextBox = (
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >
-) => (
+): JSX.Element => (
   <input
     {...props}
     style={{
@@ -48,7 +49,7 @@ export const defaultStyledInputTextBox = (
 export function createTextboxPropertySelector({
   StyledInputTextBox = defaultStyledInputTextBox
 }: CreateTextboxPropertySelectorProps): TextboxPropertySelector {
-  // tslint:disable no-this no-class
+  // eslint-disable-next-line functional/no-class
   return class TextboxPropertySelector extends React.Component<
     TextboxPropertySelectorProps,
     State
@@ -56,8 +57,11 @@ export function createTextboxPropertySelector({
     constructor(props: TextboxPropertySelectorProps) {
       super(props);
       // What the optimal debounce is may vary between users. 350ms seems like a nice value...
+      // eslint-disable-next-line functional/no-this-expression
       this._debouncedOnValueChange = debounce(
+        // eslint-disable-next-line functional/no-this-expression
         this._debouncedOnValueChange,
+        // eslint-disable-next-line functional/no-this-expression
         this.props.debounceTime
       );
     }
@@ -88,6 +92,7 @@ export function createTextboxPropertySelector({
       );
     }
 
+    // eslint-disable-next-line class-methods-use-this
     _debouncedOnValueChange(
       newValue: PropertyValue.PropertyValue,
       onValueChange: (newValue: PropertyValue.PropertyValue) => void
@@ -99,7 +104,7 @@ export function createTextboxPropertySelector({
       e: React.FormEvent<HTMLInputElement>,
       onValueChange: (newValue: PropertyValue.PropertyValue) => void
     ): void {
-      let newStringValue = (e.target as HTMLInputElement).value;
+      const newStringValue = (e.target as HTMLInputElement).value;
       this.setState({ textValue: newStringValue });
       this._debouncedOnValueChange(
         PropertyValue.create("text", newStringValue),
@@ -114,15 +119,15 @@ export function createTextboxPropertySelector({
 // be triggered. The function will be called after it stops being called for
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function debounce(func: Function, wait: number, immediate?: boolean): any {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timeout: any;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function(this: any): void {
     //tslint:disable-line
-    const context = this; //tslint:disable-line
-    const args = arguments; //tslint:disable-line
+    const context = this; //eslint-disable-line
+    const args = arguments; //eslint-disable-line
     const later = function(): void {
       timeout = null;
       if (!immediate) {
