@@ -1,7 +1,7 @@
 {
   "name": "@promaster-sdk/react-property-selectors",
   "author": "Divid Promaster AB",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "version": "3.4.1",
   "main": "lib/index.js",
   "types": "lib/index",

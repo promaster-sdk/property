@@ -1,7 +1,7 @@
 {
   "name": "@promaster-sdk/property-filter-pretty",
   "author": "Divid Promaster AB",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "version": "2.4.1",
   "description": "Pretty printing of property filters",
   "main": "lib/index.js",
