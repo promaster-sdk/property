@@ -2,6 +2,8 @@
 
 [![npm version][version-image]][version-url]
 [![code style: prettier][prettier-image]][prettier-url]
+[![types][types-image]][types-url]
+[![MIT license][license-image]][license-url]
 
 Property values and filtering
 
@@ -33,3 +35,7 @@ const pvs2valid = PropertyFilter.isValid(pvs2, pf); // true
 [version-url]: https://www.npmjs.com/package/@promaster-sdk/property
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier
+[types-image]: https://img.shields.io/npm/types/scrub-js.svg
+[types-url]: https://www.typescriptlang.org/
+[license-image]: https://img.shields.io/github/license/promaster-sdk/property.svg?style=flat
+[license-url]: https://opensource.org/licenses/MIT

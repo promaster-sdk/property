@@ -2,6 +2,8 @@
 
 [![npm version][version-image]][version-url]
 [![code style: prettier][prettier-image]][prettier-url]
+[![types][types-image]][types-url]
+[![MIT license][license-image]][license-url]
 
 Pretty printing of property filters
 
@@ -37,3 +39,7 @@ const pfPretty = filterPrettyPrintIndented(
 [version-url]: https://www.npmjs.com/package/@promaster-sdk/property-filter-pretty
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier
+[types-image]: https://img.shields.io/npm/types/scrub-js.svg
+[types-url]: https://www.typescriptlang.org/
+[license-image]: https://img.shields.io/github/license/promaster-sdk/property.svg?style=flat
+[license-url]: https://opensource.org/licenses/MIT
