@@ -5,7 +5,7 @@
     "outDir": "lib",
     "rootDir": "src",
     "lib": ["dom", "es2015", "es2017.object", "esnext.asynciterable"],
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "references": [
     { "path": "../property" },

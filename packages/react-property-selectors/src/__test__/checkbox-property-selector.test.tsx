@@ -8,7 +8,7 @@ import {
 import {
   createCheckboxPropertySelector,
   CheckboxPropertyValueItem
-} from "@promaster-sdk/react-property-selectors";
+} from "../index";
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
