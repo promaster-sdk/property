@@ -1,5 +1,6 @@
-import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { Units, Amount } from "uom";
+import * as PropertyValueSet from "../property-value-set";
+import * as PropertyValue from "../property-value";
 
 describe("PropertyValueSet", () => {
   describe("getValue", () => {

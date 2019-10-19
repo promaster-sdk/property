@@ -1,5 +1,5 @@
 import { Units, Amount, Quantity } from "uom";
-import { PropertyValue } from "@promaster-sdk/property";
+import * as PropertyValue from "../property-value";
 
 describe("PropertyValue", () => {
   it("should_parse_amount_with_decimal_dot", () => {

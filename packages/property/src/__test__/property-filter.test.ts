@@ -1,4 +1,5 @@
-import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
+import * as PropertyFilter from "../property-filter";
+import * as PropertyValueSet from "../property-value-set";
 import * as IsValidData from "./data/property-filter-isvalid";
 import * as IsSyntaxValidData from "./data/property-filter-is-syntax-valid";
 

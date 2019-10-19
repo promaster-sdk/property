@@ -1,6 +1,6 @@
 import { Amount } from "uom";
-import { PropertyValue } from "@promaster-sdk/property";
-import { compareNumbers } from "@promaster-sdk/property/lib/utils/compare-utils";
+import * as PropertyValue from "../../property-value";
+import { compareNumbers } from "../../utils/compare-utils";
 
 export const tests = [
   {
