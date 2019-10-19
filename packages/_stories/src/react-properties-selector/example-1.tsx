@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
-import * as React from "react";
+import React from "react";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";

@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import * as React from "react";
+import React from "react";
 import { createTextboxPropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../utils";

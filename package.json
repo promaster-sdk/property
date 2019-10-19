@@ -9,7 +9,7 @@
     "@types/assertion-error": "^1.0.30",
     "@types/benchmark": "^1.0.31",
     "@types/jest": "^24.0.11",
-    "@types/node": "^8.0.9",
+    "@types/node": "^12.11.1",
     "@types/pegjs": "0.0.28",
     "@types/react-test-renderer": "^16.8.1",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
@@ -39,7 +39,7 @@
     "react-test-renderer": "^16.6.1",
     "shelljs": "^0.8.3",
     "ts-node": "^4.1.0",
-    "typescript": "^3.3.1",
+    "typescript": "^3.6.4",
     "uglify-js": "^3.4.9",
     "webpack": "^4.29.6"
   },

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { storiesOf } from "@storybook/react";
 import { PropertiesSelectorExample1 } from "./example-1";
 import { PropertiesSelectorExample2 } from "./example-2";

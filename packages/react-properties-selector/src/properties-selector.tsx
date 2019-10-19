@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Units, Quantity, Unit, UnitFormat, UnitsFormat } from "uom";
 import {
   PropertyValueSet,

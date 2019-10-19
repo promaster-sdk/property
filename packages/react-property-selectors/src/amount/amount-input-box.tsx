@@ -5,7 +5,7 @@
  The UI will ensure that the value is numeric before emitting a change event.
  It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
-import * as React from "react";
+import React from "react";
 import { Amount, Unit, Quantity } from "uom";
 import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 

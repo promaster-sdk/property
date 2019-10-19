@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { PropertySelectorRenderInfo, ReactComponent } from "./types";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
 import { PropertySelectorProps } from "./default-property-selector-component";

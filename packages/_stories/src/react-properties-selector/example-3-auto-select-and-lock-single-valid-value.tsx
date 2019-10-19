@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
-import * as React from "react";
+import React from "react";
 import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { OptionElement, OptionElementProps } from "./option-element";
 
 export interface ComboBoxStandardOptionProps {

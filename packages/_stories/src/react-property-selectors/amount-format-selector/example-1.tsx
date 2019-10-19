@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
-import * as React from "react";
+import React from "react";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps,

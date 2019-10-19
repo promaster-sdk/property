@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-this-expression */
-import * as React from "react";
+import React from "react";
 import {
   ComboBoxImageOptionElementRow,
   ComboBoxImageOptionElementRowProps

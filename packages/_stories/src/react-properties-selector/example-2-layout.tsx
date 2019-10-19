@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import styled from "styled-components";

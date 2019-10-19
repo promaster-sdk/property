@@ -2,7 +2,7 @@
 /*
  UI to select a unit and a number of decimals independently of each other
  */
-import * as React from "react";
+import React from "react";
 import { Unit, Serialize, Quantity, Format, UnitFormat } from "uom";
 import {
   AmountFormatWrapper,

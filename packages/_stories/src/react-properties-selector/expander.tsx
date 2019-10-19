@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { csjs } from "csjs";
 import { insertCss } from "insert-css";
 import * as Values from "./values";
