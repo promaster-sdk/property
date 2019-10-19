@@ -1,8 +1,8 @@
-import { buildAllPropertyValueSetsExtended } from "@promaster-sdk/variant-listing";
 import * as fs from "fs";
 import * as Path from "path";
-import { PropertyFilter } from "@promaster-sdk/property";
 import * as R from "ramda";
+import { PropertyFilter } from "@promaster-sdk/property";
+import { buildAllPropertyValueSetsExtended } from "../functions";
 
 describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {
