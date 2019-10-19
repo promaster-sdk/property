@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-method-signature */
 import {
   PropertyFilterAst as Ast,
   PropertyValue

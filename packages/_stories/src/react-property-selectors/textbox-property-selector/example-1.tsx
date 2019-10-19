@@ -1,9 +1,10 @@
-import * as React from "react";
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable functional/no-class */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import React from "react";
 import { createTextboxPropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../utils";
-
-// tslint:disable:variable-name no-class no-this no-any
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;

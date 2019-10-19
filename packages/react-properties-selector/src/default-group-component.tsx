@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { OnToggleGroupClosed, TranslateGroupName } from "./types";
 
 export interface GroupComponentProps {

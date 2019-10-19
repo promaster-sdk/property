@@ -11,8 +11,8 @@ export interface ProductProperty {
   readonly quantity: Quantity.Quantity;
   readonly validation_filter: PropertyFilter.PropertyFilter;
   readonly visibility_filter: PropertyFilter.PropertyFilter;
-  readonly value: Array<ProductPropertyValue>;
-  readonly def_value: PropertyDefaultValue[];
+  readonly value: ReadonlyArray<ProductPropertyValue>;
+  readonly def_value: ReadonlyArray<PropertyDefaultValue>;
 }
 
 export type ProductPropertyValue = {
@@ -31,6 +31,6 @@ export interface VariantUrlList {
 }
 
 export interface ExtendedVariants {
-  readonly variants: VariantUrlList[];
+  readonly variants: ReadonlyArray<VariantUrlList>;
   readonly pruned: boolean;
 }

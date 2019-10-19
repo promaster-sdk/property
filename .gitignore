@@ -11,3 +11,6 @@ lib-*/
 coverage/
 test_out/
 storybook-static/
+
+# Build cache
+tsconfig.tsbuildinfo

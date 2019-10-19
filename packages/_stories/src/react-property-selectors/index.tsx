@@ -1,11 +1,8 @@
-import * as React from "react";
-
+import React from "react";
 import { storiesOf } from "@storybook/react";
 // import { action } from "@storybook/addon-actions";
 // import { linkTo } from "@storybook/addon-links";
-
 // import { Button, Welcome } from "@storybook/react/demo";
-
 import { AmountFormatSelectorExample1 } from "./amount-format-selector/example-1";
 import { AmountPropertySelectorExample1 } from "./amount-property-selector/example-1";
 import { ComboboxPropertySelectorExample1 } from "./combobox-property-selector/example-1";

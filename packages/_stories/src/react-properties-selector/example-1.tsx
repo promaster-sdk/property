@@ -1,10 +1,10 @@
-import * as React from "react";
+/* eslint-disable functional/no-this-expression */
+/* eslint-disable functional/no-class */
+import React from "react";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
 import { exampleProductProperties } from "./example-product-properties";
-
-// tslint:disable:variable-name no-class no-this no-any
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;

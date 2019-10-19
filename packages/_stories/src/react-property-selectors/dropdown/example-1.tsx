@@ -1,7 +1,5 @@
-import * as React from "react";
+import React from "react";
 import { createImageDropdownSelector } from "@promaster-sdk/react-property-selectors";
-
-// tslint:disable:variable-name
 
 const ImageDropDownSelector = createImageDropdownSelector({});
 
@@ -32,7 +30,6 @@ export function DropdownExample1(): React.ReactElement<{}> {
         isSelectedItemValid={false}
         value="a"
         options={options}
-        // tslint:disable-next-line:no-console
         onChange={(v: string) => console.log(v)}
       />
       <p>Hej</p>

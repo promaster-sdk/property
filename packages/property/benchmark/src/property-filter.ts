@@ -1,4 +1,3 @@
-// tslint:disable:no-unused-expression no-this no-invalid-this no-any no-console
 import * as Benchmark from "benchmark";
 
 import {

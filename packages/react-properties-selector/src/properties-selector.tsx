@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Units, Quantity, Unit, UnitFormat, UnitsFormat } from "uom";
 import {
   PropertyValueSet,
@@ -130,15 +130,15 @@ export function PropertiesSelector(
     onChange = (
       _a: PropertyValueSet.PropertyValueSet,
       _propertyName: ReadonlyArray<string>
-    ) => {}, //tslint:disable-line
+    ) => {}, //eslint-disable-line
     onPropertyFormatChanged = (
       _a: string,
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       _b: Unit.Unit<any>,
       _c: number
-    ) => {}, //tslint:disable-line
-    onPropertyFormatCleared = (_a: string) => {}, //tslint:disable-line
-    onPropertyFormatSelectorToggled = () => {}, //tslint:disable-line
+    ) => {}, //eslint-disable-line
+    onPropertyFormatCleared = (_a: string) => {}, //eslint-disable-line
+    onPropertyFormatSelectorToggled = () => {}, //eslint-disable-line
 
     translatePropertyName = (a: string) => a,
     translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
@@ -156,7 +156,7 @@ export function PropertiesSelector(
     unitsFormat = UnitsFormat,
 
     closedGroups = [],
-    onToggleGroupClosed = () => {}, // tslint:disable-line
+    onToggleGroupClosed = () => {}, // eslint-disable-line
 
     LayoutRenderer = DefaultLayoutRenderer,
     GroupComponent = DefaultGroupComponent,
@@ -424,8 +424,8 @@ function getSingleValidValueOrUndefined(
   comparer: PropertyValue.Comparer
 ): PropertyValueItem | undefined {
   if (productProperty.quantity === "Discrete") {
-    const validPropertyValueItems: PropertyValueItem[] = [];
-    for (let productValueItem of productProperty.value) {
+    const validPropertyValueItems: Array<PropertyValueItem> = [];
+    for (const productValueItem of productProperty.value) {
       const isValid = PropertyFilter.isValid(
         properties,
         productValueItem.property_filter,
@@ -485,11 +485,10 @@ function handleChange(
     }
 
     let lastProperties = properties;
-    // tslint:disable-next-line:readonly-keyword
     const changedProps = new Set([propertyName]);
 
     for (let i = 0; i < 4; i++) {
-      for (let productProperty of productProperties) {
+      for (const productProperty of productProperties) {
         if (productProperty.name === propertyName) {
           continue;
         }

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export type AmountInputFieldProps = {
   readonly isReadonly: boolean;
@@ -8,7 +8,6 @@ export type AmountInputFieldProps = {
   HTMLInputElement
 >;
 
-// tslint:disable-next-line:variable-name
 export const AmountInputField: React.ComponentType<AmountInputFieldProps> = ({
   isReadonly: _,
   effectiveErrorMessage: _1,

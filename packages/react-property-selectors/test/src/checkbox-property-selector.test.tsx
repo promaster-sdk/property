@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import * as renderer from "react-test-renderer";
 import {
   PropertyValueSet,
@@ -10,7 +10,6 @@ import {
   CheckboxPropertyValueItem
 } from "@promaster-sdk/react-property-selectors";
 
-// tslint:disable-next-line:variable-name
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
 test("Simple CheckboxPropertySelector", () => {
@@ -40,7 +39,7 @@ test("Simple CheckboxPropertySelector", () => {
       onValueChange={() => ""}
     />
   );
-  let tree = component.toJSON();
+  const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 
   // // manually trigger the callback

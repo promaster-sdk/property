@@ -1,9 +1,9 @@
-import * as React from "react";
+/* eslint-disable functional/no-this-expression */
+import React from "react";
 import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem
 } from "@promaster-sdk/react-property-selectors";
-
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
   PropertyFilter,
@@ -12,13 +12,13 @@ import {
 } from "@promaster-sdk/property";
 import { merge } from "../utils";
 
-// tslint:disable:variable-name no-class no-this no-any
-
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
 }
 
-const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
+const filterPrettyPrint = (
+  propertyFilter: PropertyFilter.PropertyFilter
+): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.FilterPrettyPrintMessagesEnglish,
     2,
@@ -28,6 +28,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
 
 const ComboboxPropertySelector = createComboboxPropertySelector({});
 
+// eslint-disable-next-line functional/no-class
 export class ComboboxPropertySelectorExample1 extends React.Component<
   {},
   State

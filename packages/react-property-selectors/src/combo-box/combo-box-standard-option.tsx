@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { OptionElement, OptionElementProps } from "./option-element";
 
 export interface ComboBoxStandardOptionProps {
@@ -13,7 +13,9 @@ export interface CreateComboBoxStandardOptionParams {
   readonly OptionElement?: React.ComponentType<OptionElementProps>;
 }
 
-export const defaultOptionElement = (props: OptionElementProps) => (
+export const defaultOptionElement = (
+  props: OptionElementProps
+): JSX.Element => (
   <OptionElement
     {...props}
     style={{

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export type AmountFormatWrapperProps = {
   readonly active: boolean;
@@ -7,7 +7,7 @@ export type AmountFormatWrapperProps = {
   HTMLSpanElement
 >;
 
-// tslint:disable-next-line:variable-name
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const AmountFormatWrapper = ({
   active: _,
   ...htmlProps

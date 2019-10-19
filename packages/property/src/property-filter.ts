@@ -8,9 +8,8 @@ export interface PropertyFilter {
   readonly _evaluate: Ast.CompiledFilterFunction;
 }
 
-const _cache: { [key: string]: PropertyFilter } = {}; //tslint:disable-line
+const _cache: { [key: string]: PropertyFilter } = {}; //eslint-disable-line
 
-// tslint:disable-next-line:variable-name
 export const Empty: PropertyFilter = {
   text: "",
   ast: Ast.newEmptyExpr(),
@@ -25,6 +24,7 @@ export function fromString(filter: string): PropertyFilter | undefined {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
+  // eslint-disable-next-line no-prototype-builtins
   if (!_cache.hasOwnProperty(filter)) {
     const adjustedFilter = Ast.preProcessString(filter);
     if (adjustedFilter === "") {
@@ -33,7 +33,7 @@ export function fromString(filter: string): PropertyFilter | undefined {
     const ast = Ast.parse(adjustedFilter, false);
 
     if (ast === undefined) {
-      console.warn("Invalid property filter syntax: " + adjustedFilter); //tslint:disable-line
+      console.warn("Invalid property filter syntax: " + adjustedFilter);
       return undefined;
     }
     _cache[filter] = create(adjustedFilter, ast);
@@ -73,7 +73,7 @@ export function isSyntaxValid(
   const parsed = create(filter, ast);
 
   const properties = getReferencedProperties(parsed);
-  for (let p of properties) {
+  for (const p of properties) {
     if (propertyNames.indexOf(p) === -1) {
       return false;
     }
@@ -107,7 +107,7 @@ export function getReferencedProperties(filter: PropertyFilter): Array<string> {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
-  let properties: Array<string> = [];
+  const properties: Array<string> = [];
   Ast.findProperties(filter.ast, properties);
   return properties;
 }
@@ -129,5 +129,6 @@ export function equals(other: PropertyFilter, filter: PropertyFilter): boolean {
   if (other === null || other === undefined) {
     return false;
   }
+  // eslint-disable-next-line no-self-compare
   return filter.text === filter.text;
 }

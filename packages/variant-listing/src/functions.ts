@@ -8,8 +8,8 @@ import { ExtendedVariants, ProductProperty, VariantUrlList } from "./types";
 
 export function buildAllPropertyValueSets(
   explicitPropertyValueSet: PropertyValueSet.PropertyValueSet,
-  variableProperties: ProductProperty[],
-  allProperties: ProductProperty[]
+  variableProperties: Array<ProductProperty>,
+  allProperties: Array<ProductProperty>
 ): ReadonlyArray<VariantUrlList> {
   return buildAllPropertyValueSetsExtended(
     explicitPropertyValueSet,
@@ -21,13 +21,13 @@ export function buildAllPropertyValueSets(
 
 export function buildAllPropertyValueSetsExtended(
   explicitPropertyValueSet: PropertyValueSet.PropertyValueSet,
-  variableProperties: ProductProperty[],
-  allProperties: ProductProperty[],
+  variableProperties: Array<ProductProperty>,
+  allProperties: Array<ProductProperty>,
   limit: number,
   comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): ExtendedVariants {
   // filter out non-discrete properties and keep a list of them so we can filter other property-values that depend on them
-  let blackListedProperties: Array<ProductProperty> = [];
+  const blackListedProperties: Array<ProductProperty> = [];
   let blacklistedPropertyFilters: Array<PropertyFilter.PropertyFilter> = [];
   const newVariableProperties = variableProperties
     .filter(property => {
@@ -52,7 +52,7 @@ export function buildAllPropertyValueSetsExtended(
         blacklistedPropertyFilters = blacklistedPropertyFilters.filter(
           bpf =>
             !property.visibility_filter.text.split("&").reduce(
-              // tslint:disable-next-line:no-any
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               (acc: any, filterPart: any) =>
                 acc || filterPart.toLowerCase() === bpf.text.toLowerCase(),
               false
@@ -81,7 +81,7 @@ export function buildAllPropertyValueSetsExtended(
           true
         )
       );
-      return Object.assign({}, property, { value: newPV });
+      return { ...property, value: newPV };
     });
 
   // Error check.
@@ -107,7 +107,6 @@ export function buildAllPropertyValueSetsExtended(
     // Temp fix, because generating all might be too slow, and useless anyway.
     // When the propertyValueSets array grows too large, discard some.
     if (limit > 0 && propertyValueSets.length > limit) {
-      // tslint:disable-next-line:no-console
       console.warn(
         `Discarded ${propertyValueSets.length - limit} of ${
           propertyValueSets.length
@@ -120,7 +119,7 @@ export function buildAllPropertyValueSetsExtended(
     }
 
     // Replace the PVSs with concatenated copies of itself, using each of the valueItems.
-    let propertyValueSets1 = propertyValueSets
+    const propertyValueSets1 = propertyValueSets
       .map(partialPropertyValueSet => {
         return !property.value
           ? []
@@ -128,7 +127,6 @@ export function buildAllPropertyValueSetsExtended(
               .map(propertyValueItem => {
                 // All valueItems should have a set value. Ignore broken data.
                 if (propertyValueItem.value.type !== "integer") {
-                  // tslint:disable-next-line:no-console
                   console.warn("Invalid data in valueItem:", propertyValueItem);
                   return undefined;
                 }
@@ -208,7 +206,6 @@ export function buildAllPropertyValueSetsExtended(
         );
 
         if (!valueItem) {
-          // tslint:disable-next-line:no-console
           console.warn(
             `Property is set to non-existing value (bad default?): ${
               property.name
@@ -232,7 +229,6 @@ export function buildAllPropertyValueSetsExtended(
 
   const loss = propertyValueSets.length - before;
   if (loss > 0) {
-    // tslint:disable-next-line:no-console
     console.warn(
       `Discarded ${loss} variants because they are invalid. Implement recursive search with backtracking over default values to find valid combos.`
     );
@@ -240,7 +236,7 @@ export function buildAllPropertyValueSetsExtended(
 
   // TODO: Instead of just filtering out bad combos, fiddle with the default values until they pass.
 
-  const extendedVariants: VariantUrlList[] = propertyValueSets.map(
+  const extendedVariants: Array<VariantUrlList> = propertyValueSets.map(
     variant => ({
       variants: variant,
       url: Object.keys(variant)

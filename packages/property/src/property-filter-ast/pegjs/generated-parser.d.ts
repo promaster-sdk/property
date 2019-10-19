@@ -1,6 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import {Parser} from "pegjs";
-
-// tslint:disable no-any
 
 interface Parser {
   readonly parse: (input: any, options: any) => any;

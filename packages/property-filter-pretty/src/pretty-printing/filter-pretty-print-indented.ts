@@ -4,10 +4,10 @@ import {
   PropertyFilterAst as Ast,
   PropertyValue
 } from "@promaster-sdk/property";
+import { exhaustiveCheck } from "ts-exhaustive-check/lib-cjs";
 import { inferTypeMap } from "../type-inference/filter-type-inferrer";
 import { ExprType, ExprTypeEnum } from "../type-inference/expr-type";
 import { FilterPrettyPrintMessages } from "./filter-pretty-print-messages";
-import { exhaustiveCheck } from "ts-exhaustive-check/lib-cjs";
 
 export function filterPrettyPrintIndented(
   messages: FilterPrettyPrintMessages,
@@ -50,7 +50,7 @@ function visit(
   switch (e.type) {
     case "AndExpr": {
       let s = "";
-      for (let child of e.children) {
+      for (const child of e.children) {
         s += innerVisit(indentationDepth, child);
         if (child !== e.children[e.children.length - 1]) {
           s +=
@@ -87,7 +87,7 @@ function visit(
       let buf = "";
       const reversed = _reversed(builder);
       for (let i = 0; i < reversed.length; i++) {
-        let x = reversed[i];
+        const x = reversed[i];
         buf += x;
         if (i < reversed.length - 1) {
           buf += " ";
@@ -105,7 +105,7 @@ function visit(
     }
     case "OrExpr": {
       let s = "";
-      for (let child of e.children) {
+      for (const child of e.children) {
         s += innerVisit(indentationDepth + 1, child);
 
         if (child !== e.children[e.children.length - 1]) {
@@ -181,7 +181,7 @@ function visit(
 }
 
 // Returns a reversed copy
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function _reversed(array: Array<any>): Array<any> {
   return array.slice().reverse();
 }

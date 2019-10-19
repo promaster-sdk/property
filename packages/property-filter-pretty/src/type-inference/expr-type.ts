@@ -1,3 +1,4 @@
+/* eslint-disable functional/no-this-expression */
 export enum ExprTypeEnum {
   Unknown,
   Bool,
@@ -7,8 +8,7 @@ export enum ExprTypeEnum {
   Range
 }
 
-//tslint:disable:no-class no-this
-
+// eslint-disable-next-line functional/no-class
 export class ExprType {
   private readonly _exprTypeEnum: ExprTypeEnum;
   private readonly _propertyName: string | undefined;

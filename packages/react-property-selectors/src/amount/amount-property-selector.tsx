@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   PropertyValueSet,
   PropertyFilter,
@@ -14,8 +14,6 @@ import {
   OnFormatSelectorToggled
 } from "./amount-format-selector";
 import { AmountInputBox, createAmountInputBox } from "./amount-input-box";
-
-// tslint:disable no-class no-this
 
 export interface AmountPropertySelectorProps {
   readonly propertyName: string;
@@ -60,7 +58,7 @@ const defaultAmountPropertySelectorWrapper = (
     React.HTMLAttributes<HTMLSpanElement>,
     HTMLSpanElement
   >
-) => <span {...props} />;
+): JSX.Element => <span {...props} />;
 
 const defaultAmountFormatSelector = createAmountFormatSelector({});
 const defaultAmountInputBox = createAmountInputBox({});
@@ -70,6 +68,7 @@ export function createAmountPropertySelector({
   AmountFormatSelector = defaultAmountFormatSelector,
   AmountInputBox = defaultAmountInputBox
 }: CreateAmountPropertySelectorProps): AmountPropertySelector {
+  // eslint-disable-next-line functional/no-class
   return class AmountPropertySelector extends React.Component<
     AmountPropertySelectorProps,
     {}
@@ -92,6 +91,7 @@ export function createAmountPropertySelector({
         debounceTime = 350,
         unitsFormat,
         comparer = PropertyValue.defaultComparer
+        // eslint-disable-next-line functional/no-this-expression
       } = this.props;
 
       const value:

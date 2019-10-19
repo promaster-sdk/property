@@ -1,14 +1,13 @@
+/* eslint-disable functional/no-this-expression */
 /*
  UI to enter an Amount. It will be entered in a specified unit and decimal count.
  The passed Amount value will be converted to the specified unit and decimal count if needed.
  The UI will ensure that the value is numeric before emitting a change event.
  It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
-import * as React from "react";
+import React from "react";
 import { Amount, Unit, Quantity } from "uom";
 import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
-
-// tslint:disable no-class no-this
 
 export interface AmountInputBoxProps {
   readonly key?: string;
@@ -41,7 +40,6 @@ export interface CreateAmountInputBoxParams {
 //   isReadonly,
 //   effectiveErrorMessage
 // }: AmountInputFieldProps): StyledComponents.InterpolationValue[] {
-//   // tslint:disable-next-line:no-console
 //   if (isReadonly && effectiveErrorMessage) {
 //     return StyledComponents.css`
 //     background: lightgray;
@@ -81,7 +79,9 @@ function inputLocked({
   return {};
 }
 
-export const defaultAmountInputField = (props: AmountInputFieldProps) => (
+export const defaultAmountInputField = (
+  props: AmountInputFieldProps
+): JSX.Element => (
   <AmountInputField
     {...props}
     style={{
@@ -102,6 +102,7 @@ export const defaultAmountInputField = (props: AmountInputFieldProps) => (
 export function createAmountInputBox({
   AmountInputField = defaultAmountInputField
 }: CreateAmountInputBoxParams): AmountInputBox {
+  // eslint-disable-next-line functional/no-class
   return class AmountInputBox extends React.Component<
     AmountInputBoxProps,
     State
@@ -127,11 +128,9 @@ export function createAmountInputBox({
     initStateFromProps(initProps: AmountInputBoxProps): void {
       const { value, inputUnit, inputDecimalCount } = initProps;
       if (!inputUnit) {
-        // tslint:disable-next-line:no-console
         console.error("Missing inputUnit");
       }
       if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
-        // tslint:disable-next-line:no-console
         console.error("Missing inputDecimalCount");
       }
       const formattedValue = formatWithUnitAndDecimalCount(
@@ -301,6 +300,7 @@ function unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(
     return undefined;
   }
   const parsedFloatValue = filterFloat(text);
+  // eslint-disable-next-line no-restricted-globals
   if (isNaN(parsedFloatValue)) {
     return undefined;
   }
@@ -324,6 +324,7 @@ function getDecimalCountFromString(stringValue: string): number {
 }
 
 function filterFloat(value: string): number {
+  // eslint-disable-next-line no-useless-escape
   if (/^(\-|\+)?([0-9]*?(\.[0-9]+)?|Infinity)$/.test(value)) {
     return Number(value);
   }
@@ -334,12 +335,12 @@ function filterFloat(value: string): number {
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
 // N milliseconds.
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function debounce(_this: any, func: Function, wait: number): any {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timeout: any;
   return function(): void {
-    const args = arguments; //tslint:disable-line
+    const args = arguments; //eslint-disable-line
     const later = function(): void {
       timeout = null;
       func.apply(_this, args);

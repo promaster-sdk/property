@@ -1,8 +1,8 @@
+import { Amount } from "uom";
 import * as Ast from "./types";
 import * as PropertyValue from "../property-value";
 import * as PropertyValueSet from "../property-value-set";
 import { exhaustiveCheck } from "../utils/exhaustive-check";
-import { Amount } from "uom";
 
 export function evaluateAst(
   e: Ast.BooleanExpr,

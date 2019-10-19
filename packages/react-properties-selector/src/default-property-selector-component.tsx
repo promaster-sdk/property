@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Unit, Quantity, UnitFormat } from "uom";
 import {
   PropertyValueSet,
@@ -20,23 +20,18 @@ import {
   PropertyValueItem
 } from "./types";
 
-// tslint:disable-next-line:variable-name
 const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector(
   {}
 );
-// tslint:disable-next-line:variable-name
 const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector(
   {}
 );
-// tslint:disable-next-line:variable-name
 const CheckboxPropertySelectorDefault = PropertySelectors.createCheckboxPropertySelector(
   {}
 );
-// tslint:disable-next-line:variable-name
 const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector(
   {}
 );
-// tslint:disable-next-line:variable-name
 const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector(
   {}
 );

@@ -1,7 +1,4 @@
-import { Amount } from "uom";
-import { Unit } from "uom";
-import { Quantity } from "uom";
-import { Serialize } from "uom";
+import { Amount, Unit, Quantity, Serialize } from "uom";
 import { compareNumbers, compareIgnoreCase } from "./utils/compare-utils";
 
 // Types
@@ -62,10 +59,9 @@ export function create(
 export function fromString(encodedValue: string): PropertyValue | undefined {
   const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue);
   if (result === null) {
-    // tslint:disable-next-line:no-console
     console.warn(
       `PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`
-    ); //tslint:disable-line
+    );
   }
   return result;
 }
@@ -268,10 +264,7 @@ function _fromSerializedStringOrUndefinedIfInvalidString(
     return undefined;
   }
   let deserializedValue: PropertyValue;
-  if (
-    encodedValue.charAt(0) === '"' &&
-    encodedValue.charAt(encodedValue.length - 1) === '"'
-  ) {
+  if (encodedValue.startsWith('"') && encodedValue.endsWith('"')) {
     const valueString = _decodeFromSafeString(encodedValue);
     deserializedValue = fromText(valueString);
   } else if (encodedValue.indexOf(":") !== -1) {
@@ -285,7 +278,7 @@ function _fromSerializedStringOrUndefinedIfInvalidString(
       deserializedValue = fromInteger(integerValue);
     } else {
       const stringValue = split2[0];
-      let doubleValue: number = parseFloat(stringValue);
+      const doubleValue: number = parseFloat(stringValue);
       if (doubleValue === null) {
         return undefined;
       }
@@ -329,13 +322,10 @@ function _decodeFromSafeString(safeString: string): string {
   // We use '"' to enclose a string so it must be encoded as %22 inside strings
   //    var unsafeString = safeString.Trim('"');
   let unsafeString = safeString;
-  while (unsafeString.length > 0 && unsafeString.charAt(0) === '"') {
+  while (unsafeString.length > 0 && unsafeString.startsWith('"')) {
     unsafeString = unsafeString.substring(1);
   }
-  while (
-    unsafeString.length > 0 &&
-    unsafeString.charAt(unsafeString.length - 1) === '"'
-  ) {
+  while (unsafeString.length > 0 && unsafeString.endsWith('"')) {
     unsafeString = unsafeString.substring(0, unsafeString.length - 1);
   }
 

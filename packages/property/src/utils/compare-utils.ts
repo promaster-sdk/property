@@ -21,7 +21,9 @@ export function compareNumbers(
 ): number {
   const d = Math.max(firstDecimals, secondDecimals); // use the highest number of decimals
 
+  // eslint-disable-next-line no-restricted-properties
   const f = Math.round(first * Math.pow(10, d));
+  // eslint-disable-next-line no-restricted-properties
   const s = Math.round(second * Math.pow(10, d));
 
   if (f === s) {
@@ -48,14 +50,13 @@ export function arraysEqual<T>(array1: Array<T>, array2: Array<T>): boolean {
   if (array1.length !== array2.length) {
     return false;
   }
-  let l = array1.length;
+  const l = array1.length;
   for (let i = 0; i < l; i++) {
     // Check if we have nested arrays
     if (array1[i] instanceof Array && array2[i] instanceof Array) {
       // recurse into the nested arrays
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (!arraysEqual<any>(array1[i] as any, array2[i] as any)) {
-        //tslint:disable-line
         return false;
       }
     } else if (array1[i] !== array2[i]) {

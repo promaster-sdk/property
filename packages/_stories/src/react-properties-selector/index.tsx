@@ -1,7 +1,5 @@
-import * as React from "react";
-
+import React from "react";
 import { storiesOf } from "@storybook/react";
-
 import { PropertiesSelectorExample1 } from "./example-1";
 import { PropertiesSelectorExample2 } from "./example-2";
 import { PropertiesSelectorExample3AutoSelectAndLockSingleValidValue } from "./example-3-auto-select-and-lock-single-valid-value";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { csjs } from "csjs";
 import { insertCss } from "insert-css";
 import * as Values from "./values";
@@ -21,13 +21,13 @@ const styles = csjs`
   }
 `;
 
-insertCss(csjs.getCss(styles)); //tslint:disable-line
+insertCss(csjs.getCss(styles));
 
 interface Props {
   readonly header: string;
   readonly closed: boolean;
   readonly closedChanged: (closed: boolean) => void;
-  readonly children?: Array<React.ReactElement<{}>>;
+  readonly children?: ReadonlyArray<React.ReactElement<{}>>;
 }
 
 export function Expander({

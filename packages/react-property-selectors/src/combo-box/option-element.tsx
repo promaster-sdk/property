@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export type OptionElementProps = {
   readonly isItemValid: boolean;
@@ -7,8 +7,9 @@ export type OptionElementProps = {
   HTMLOptionElement
 >;
 
-// tslint:disable-next-line:variable-name
 export const OptionElement = ({
   isItemValid: _,
   ...htmlProps
-}: OptionElementProps) => <option {...htmlProps}>{htmlProps.children}</option>;
+}: OptionElementProps): JSX.Element => (
+  <option {...htmlProps}>{htmlProps.children}</option>
+);

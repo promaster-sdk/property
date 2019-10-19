@@ -13,7 +13,7 @@ export type BooleanExpr =
 
 export interface OrExpr {
   readonly type: "OrExpr";
-  readonly children: Array<BooleanExpr>;
+  readonly children: ReadonlyArray<BooleanExpr>;
 }
 
 export function newOrExpr(children: Array<BooleanExpr>): OrExpr {
@@ -22,7 +22,7 @@ export function newOrExpr(children: Array<BooleanExpr>): OrExpr {
 
 export interface AndExpr {
   readonly type: "AndExpr";
-  readonly children: Array<BooleanExpr>;
+  readonly children: ReadonlyArray<BooleanExpr>;
 }
 
 export function newAndExpr(children: Array<BooleanExpr>): AndExpr {
@@ -41,7 +41,7 @@ export interface EqualsExpr {
   readonly type: "EqualsExpr";
   readonly leftValue: PropertyValueExpr;
   readonly operationType: EqualsOperationType;
-  readonly rightValueRanges: Array<ValueRangeExpr>;
+  readonly rightValueRanges: ReadonlyArray<ValueRangeExpr>;
 }
 
 export type EqualsOperationType = "equals" | "notEquals";

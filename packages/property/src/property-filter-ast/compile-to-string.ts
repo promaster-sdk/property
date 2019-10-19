@@ -5,6 +5,7 @@ import { CompiledFilterFunction } from "./compiled-filter";
 export function compileToString(e: Ast.BooleanExpr): CompiledFilterFunction {
   const funcstr = makeJSExprForBooleanExpr(e);
   // console.log("funcstr", funcstr);
+  // eslint-disable-next-line no-new-func
   const func = new Function("p", "return " + funcstr) as CompiledFilterFunction;
   return func;
 }
@@ -40,16 +41,16 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
             } else {
               mystr += ` && ${left} !== ${max}`;
             }
+          } else if (e.operationType === "equals") {
+            mystr += ` || (${left} >= ${min} && ${left} <= ${max})`;
           } else {
-            if (e.operationType === "equals") {
-              mystr += ` || (${left} >= ${min} && ${left} <= ${max})`;
-            } else {
-              mystr += ` && (${left} < ${min} || ${left} > ${max})`;
-            }
+            mystr += ` && (${left} < ${min} || ${left} > ${max})`;
           }
         }
         return mystr.length
-          ? singleOrCount > 1 ? "(" + mystr.substr(4) + ")" : mystr.substr(4)
+          ? singleOrCount > 1
+            ? "(" + mystr.substr(4) + ")"
+            : mystr.substr(4)
           : mystr;
       }
       case "ComparisonExpr": {
@@ -78,7 +79,7 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
         return " true ";
       }
       default: {
-        // tslint:disable-next-line:no-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return exhaustiveCheck(e, true, (e as any).type);
       }
     }

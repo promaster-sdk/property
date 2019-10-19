@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   PropertyFilter,
   PropertyValue,
@@ -98,7 +98,7 @@ const defaultImageDropdownSelector = createImageDropdownSelector({});
 
 export const defaultComboBoxStandardSelect = (
   props: ComboBoxStandardSelectProps
-) => (
+): JSX.Element => (
   <ComboBoxStandardSelect
     {...props}
     style={{
@@ -309,7 +309,7 @@ function _isValueItemValid(
   if (valueItem.value === undefined || valueItem.value === null) {
     return true;
   }
-  let pvsToCheck = PropertyValueSet.set(
+  const pvsToCheck = PropertyValueSet.set(
     propertyName,
     valueItem.value,
     propertyValueSet

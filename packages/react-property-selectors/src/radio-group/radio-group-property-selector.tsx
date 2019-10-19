@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {
   PropertyFilter,
   PropertyValue,
@@ -37,7 +37,7 @@ export type RadioGroupPropertySelector = React.StatelessComponent<
   RadioGroupPropertySelectorProps
 >;
 
-const defaultRadioGroupItem = (props: RadioGroupItemProps) => (
+const defaultRadioGroupItem = (props: RadioGroupItemProps): JSX.Element => (
   <RadioGroupItem
     {...props}
     style={{
@@ -55,7 +55,9 @@ const defaultRadioGroupItem = (props: RadioGroupItemProps) => (
   />
 );
 
-const defaultRadioGroup = (props: RadioGroupProps) => <RadioGroup {...props} />;
+const defaultRadioGroup = (props: RadioGroupProps): JSX.Element => (
+  <RadioGroup {...props} />
+);
 
 export function createRadioGroupPropertySelector({
   RadioGroupItem = defaultRadioGroupItem,
@@ -111,7 +113,9 @@ export function createRadioGroupPropertySelector({
 
     return (
       <RadioGroup locked={locked}>
-        {items.map(item => <RadioGroupItem {...item} />)}
+        {items.map(item => (
+          <RadioGroupItem {...item} />
+        ))}
       </RadioGroup>
     );
   };
@@ -147,7 +151,7 @@ function _isValueItemValid(
   if (valueItem.value === undefined || valueItem.value === null) {
     return true;
   }
-  let pvsToCheck = PropertyValueSet.set(
+  const pvsToCheck = PropertyValueSet.set(
     propertyName,
     valueItem.value,
     propertyValueSet
