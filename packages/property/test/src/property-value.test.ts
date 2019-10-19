@@ -139,6 +139,7 @@ describe("PropertyValue", () => {
 
   it("should make an empty string when amount value is null", () => {
     const amount = Amount.create(0, Units.Ampere, 1);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (amount as any).value = null;
     const pv1 = PropertyValue.fromAmount(amount);
     const pv1string = PropertyValue.toString(pv1);
@@ -163,7 +164,7 @@ describe("PropertyValue", () => {
     const pv5 = PropertyValue.fromText("123");
     const pv6 = PropertyValue.fromText("pineapple");
 
-    const comparer = () => 0;
+    const comparer = (): number => 0;
 
     expect(PropertyValue.equals(pv1, pv2, comparer)).toBe(true);
     expect(PropertyValue.equals(pv3, pv4, comparer)).toBe(true);
@@ -180,7 +181,7 @@ describe("PropertyValue", () => {
     const pv5 = PropertyValue.fromText("Hydralisk");
     const pv6 = PropertyValue.fromText("Hydralisk");
 
-    const comparer = () => -1;
+    const comparer = (): number => -1;
 
     expect(PropertyValue.lessThan(pv1, pv2, comparer)).toBe(true);
     expect(PropertyValue.lessThan(pv3, pv4, comparer)).toBe(true);
@@ -201,7 +202,7 @@ describe("PropertyValue", () => {
     const pv5 = PropertyValue.fromText("Hydralisk");
     const pv6 = PropertyValue.fromText("Hydralisk");
 
-    const comparer = () => 1;
+    const comparer = (): number => 1;
 
     expect(PropertyValue.greaterThan(pv1, pv2, comparer)).toBe(true);
     expect(PropertyValue.greaterThan(pv3, pv4, comparer)).toBe(true);

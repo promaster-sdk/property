@@ -39,7 +39,7 @@ test("Simple CheckboxPropertySelector", () => {
       onValueChange={() => ""}
     />
   );
-  let tree = component.toJSON();
+  const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 
   // // manually trigger the callback

@@ -1,4 +1,5 @@
 import { PropertyFilterAst } from "@promaster-sdk/property";
+
 const {
   newIdentifierExpr,
   newValueExpr,

@@ -1,0 +1,4 @@
+# https://eslint.org/docs/user-guide/configuring#ignoring-files-and-directories
+# Important: Note that node_modules directories in, for example, a packages directory in a mono 
+# repo are not ignored by default and need to be added to .eslintignore explicitly.
+node_modules/

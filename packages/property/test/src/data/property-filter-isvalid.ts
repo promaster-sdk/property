@@ -266,12 +266,13 @@ export const tests = [
       switch (left.type) {
         case "text":
           return PropertyValue.defaultComparer(left, right);
-        case "integer":
+        case "integer": {
           if (right.type !== left.type) {
             throw new Error("Must compare same types");
           }
           const alteredLeft = left.value * 2;
           return compareNumbers(alteredLeft, right.value, 0, 0);
+        }
         case "amount": {
           if (right.type !== left.type) {
             throw new Error("Must compare same types");

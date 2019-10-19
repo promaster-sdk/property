@@ -1,6 +1,8 @@
-import { PropertyFilterAst as Ast } from "@promaster-sdk/property";
-import { PropertyValueSet } from "@promaster-sdk/property";
-import { PropertyValue } from "@promaster-sdk/property";
+import {
+  PropertyFilterAst as Ast,
+  PropertyValueSet,
+  PropertyValue
+} from "@promaster-sdk/property";
 import * as ParseData from "./data/property-filter-ast-parse";
 import * as IsValidData from "./data/property-filter-isvalid";
 

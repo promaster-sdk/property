@@ -4,21 +4,21 @@ import { Units, Amount } from "uom";
 describe("PropertyValueSet", () => {
   describe("getValue", () => {
     it("should get text value", () => {
-      let pvs = PropertyValueSet.fromString('message="MyMessage"');
+      const pvs = PropertyValueSet.fromString('message="MyMessage"');
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
         PropertyValue.fromText("MyMessage")
       );
     });
 
     it("should get integer value", () => {
-      let pvs = PropertyValueSet.fromString("message=12");
+      const pvs = PropertyValueSet.fromString("message=12");
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
         PropertyValue.fromInteger(12)
       );
     });
 
     it("should get amount value", () => {
-      let pvs = PropertyValueSet.fromString("message=12:Celsius");
+      const pvs = PropertyValueSet.fromString("message=12:Celsius");
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
         PropertyValue.fromAmount(Amount.create(12, Units.Celsius, 0))
       );
@@ -33,14 +33,14 @@ describe("PropertyValueSet", () => {
 
   describe("parsing", () => {
     it("should parse a=1", () => {
-      let pvs = PropertyValueSet.fromString("a=1");
+      const pvs = PropertyValueSet.fromString("a=1");
       expect(PropertyValueSet.get("a", pvs)).toEqual(
         PropertyValue.fromInteger(1)
       );
     });
 
     it("should parse a=1;b=2;", () => {
-      let pvs = PropertyValueSet.fromString("a=1;b=2;");
+      const pvs = PropertyValueSet.fromString("a=1;b=2;");
       expect(PropertyValueSet.get("a", pvs)).toEqual(
         PropertyValue.fromInteger(1)
       );
@@ -52,8 +52,8 @@ describe("PropertyValueSet", () => {
 
   describe("set", () => {
     it("should set the specified property", () => {
-      let pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
-      let pvs2 = PropertyValueSet.set("b", PropertyValue.fromInteger(5), pvs);
+      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs2 = PropertyValueSet.set("b", PropertyValue.fromInteger(5), pvs);
       expect(PropertyValueSet.get("a", pvs2)).toEqual(
         PropertyValue.fromInteger(1)
       );
@@ -68,8 +68,8 @@ describe("PropertyValueSet", () => {
 
   describe("setInteger", () => {
     it("should set the specified property", () => {
-      let pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
-      let pvs2 = PropertyValueSet.setInteger("b", 5, pvs);
+      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs2 = PropertyValueSet.setInteger("b", 5, pvs);
       expect(PropertyValueSet.get("a", pvs2)).toEqual(
         PropertyValue.fromInteger(1)
       );
@@ -84,8 +84,8 @@ describe("PropertyValueSet", () => {
 
   describe("setAmount", () => {
     it("should set the specified property", () => {
-      let pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
-      let pvs2 = PropertyValueSet.setAmount(
+      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs2 = PropertyValueSet.setAmount(
         "b",
         Amount.create(12, Units.Celsius),
         pvs
@@ -100,20 +100,20 @@ describe("PropertyValueSet", () => {
 
   describe("equals", () => {
     it("should see two sets with same keys and values as equal regardless of order", () => {
-      let pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
-      let pvs2 = PropertyValueSet.fromString("c=3;b=2;a=1");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs2 = PropertyValueSet.fromString("c=3;b=2;a=1");
       expect(PropertyValueSet.equals(pvs1, pvs2)).toBe(true);
     });
 
     it("should see two sets with same keys but different values as unequal", () => {
-      let pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
-      let pvs2 = PropertyValueSet.fromString("a=1;b=2;c=4");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs2 = PropertyValueSet.fromString("a=1;b=2;c=4");
       expect(PropertyValueSet.equals(pvs1, pvs2)).toBe(false);
     });
 
     it("should see two sets with differnet keys as unequal", () => {
-      let pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
-      let pvs2 = PropertyValueSet.fromString("a=1;b=2");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs2 = PropertyValueSet.fromString("a=1;b=2");
       expect(PropertyValueSet.equals(pvs1, pvs2)).toBe(false);
     });
   });
@@ -132,6 +132,7 @@ describe("PropertyValueSet", () => {
         b: PropertyValue.fromInteger(2),
         c: null,
         d: undefined
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any;
       const str1 = PropertyValueSet.toString(pvs1);
       expect("a=1;b=2").toBe(str1);

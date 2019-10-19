@@ -21,10 +21,12 @@ describe("buildAllPropertyValueSets", () => {
     const cfcData = {
       ...cfcDataRaw,
       explicitPropertyValueSet: explicitPropertyValueSet,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       variableProperties: cfcDataRaw.variableProperties.map((a: any) => ({
         ...a,
         validation_filter: PropertyFilter.fromString(a.validation_filter),
         visibility_filter: PropertyFilter.fromString(a.visibility_filter),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         value: a.value.map((a: any) => ({
           ...a,
           property_filter: PropertyFilter.fromString(a.property_filter)
