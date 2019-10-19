@@ -1,11 +1,11 @@
 import React from "react";
 import * as renderer from "react-test-renderer";
-import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import {
   PropertyFilter,
   PropertyValue,
   PropertyValueSet
 } from "@promaster-sdk/property";
+import * as PropertiesSelector from "../index";
 
 test("Simple PropertiesSelector", () => {
   const productProperties = exampleProductProperties();
