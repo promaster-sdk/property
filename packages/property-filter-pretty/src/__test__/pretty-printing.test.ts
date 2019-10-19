@@ -1,5 +1,5 @@
 import { PropertyFilter } from "@promaster-sdk/property";
-import * as PrettyPrinting from "@promaster-sdk/property-filter-pretty";
+import * as PrettyPrinting from "../index";
 
 describe("filterPrettyPrintSimple", () => {
   it("should print a must be 1", () => {

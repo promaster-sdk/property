@@ -7,7 +7,11 @@ import { buildAllPropertyValueSetsExtended } from "../functions";
 describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {
     const cfcDataRaw = JSON.parse(
-      fs.readFileSync(Path.join(__dirname, "../test-data/cfc.json")).toString()
+      fs
+        .readFileSync(
+          Path.join(__dirname, "../../src/__test__/test-data/cfc.json")
+        )
+        .toString()
     );
     const explicitPropertyValueSet = R.map(item => {
       return {
