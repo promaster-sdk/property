@@ -8,7 +8,7 @@ module.exports = {
           tsConfig: "<rootDir>/packages/property/tsconfig.json"
         }
       },
-      testMatch: ["<rootDir>/packages/property/**/*.test.ts"]
+      testMatch: ["<rootDir>/packages/property/**/*.test.ts?(x)"]
     },
     {
       displayName: "property-filter-pretty",
