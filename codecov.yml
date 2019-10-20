@@ -1,0 +1,19 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 10%
+        threshold: null
+      property:
+        flags: property
+        target: 10%
+      property_filter_pretty:
+        target: 10%
+        flags: property-filter-pretty
+flags:
+  property:
+    paths:
+      - packages/property/src
+  property_filter_pretty:
+    paths:
+      - packages/property-filter-pretty/src
