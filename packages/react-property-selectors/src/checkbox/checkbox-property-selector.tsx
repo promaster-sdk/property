@@ -64,7 +64,7 @@ const defaultCheckbox = (props: CheckboxProps): JSX.Element => (
   <div
     {...props}
     style={{
-      marginTop: "5px",
+      marginTop: "6px",
       position: "relative",
       backgroundColor: "#ccc",
       width: "22px",

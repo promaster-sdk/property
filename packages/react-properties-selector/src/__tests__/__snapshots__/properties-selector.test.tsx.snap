@@ -354,7 +354,7 @@ exports[`Simple PropertiesSelector 1`] = `
                     "background": "green",
                     "backgroundColor": "#ccc",
                     "height": "22px",
-                    "marginTop": "5px",
+                    "marginTop": "6px",
                     "position": "relative",
                     "width": "22px",
                   }
