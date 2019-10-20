@@ -1,12 +1,8 @@
 module.exports = {
-  projects: ["<rootDir>/packages/test/*"],
-  preset: "ts-jest",
+  // projects: ["<rootDir>/packages/*/lib/*"],
   coverageDirectory: "<rootDir>/coverage/",
-  collectCoverageFrom: ["<rootDir>/packages/*/src/**/*.{ts,tsx}"],
+  collectCoverageFrom: ["<rootDir>/packages/*/lib/**/*.{js,jsx}"],
   coverageReporters: ["text-summary", "lcov"],
-  globals: {
-    "ts-jest": {
-      tsConfig: "<rootDir>/packages/tsconfig.settings.json"
-    }
-  }
+  // Run only compiled tests (by default typescript files are matched)
+  testMatch: ["**/?(*.)+(spec|test).[j]s?(x)"]
 };

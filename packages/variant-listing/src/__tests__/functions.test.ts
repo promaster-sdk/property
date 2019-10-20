@@ -9,7 +9,7 @@ describe("buildAllPropertyValueSets", () => {
     const cfcDataRaw = JSON.parse(
       fs
         .readFileSync(
-          Path.join(__dirname, "../../src/__test__/test-data/cfc.json")
+          Path.join(__dirname, "../../src/__tests__/test-data/cfc.json")
         )
         .toString()
     );
