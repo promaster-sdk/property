@@ -54,5 +54,11 @@ module.exports = {
       },
       testMatch: ["<rootDir>/packages/variant-listing/**/*.test.ts?(x)"]
     }
+  ],
+  coverageDirectory: "<rootDir>/coverage/",
+  collectCoverageFrom: [
+    "<rootDir>/packages/*/src/**/*.ts?(x)",
+    "!<rootDir>/packages/_stories/**/*",
+    "!<rootDir>/packages/*/src/**/*.test.ts?(x)"
   ]
 };
