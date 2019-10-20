@@ -6,5 +6,5 @@ module.exports = {
       tsConfig: "<rootDir>/tsconfig.json"
     }
   },
-  testMatch: ["<rootDir>/src/**/*.test.ts?(x)"]
+  testMatch: ["<rootDir>/src/**/*.test.{ts,tsx}"]
 };
