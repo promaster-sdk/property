@@ -1,12 +1,10 @@
 coverage:
   status:
     project:
-      default:
-        target: 54%
-        threshold: null
+      default: off
       property:
         flags: property
-        target: 65%
+        target: 64%
       property_filter_pretty:
         target: 66%
         flags: property_filter_pretty
