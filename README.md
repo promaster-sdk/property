@@ -1,6 +1,7 @@
 # @promaster-sdk/property
 
 [![travis build][travis-image]][travis-url]
+[![Coverage Status][codecov-image]][codecov-url]
 [![code style: prettier][prettier-image]][prettier-url]
 [![types][types-image]][types-url]
 [![MIT license][license-image]][license-url]
@@ -37,6 +38,8 @@ It will build the packages and call `lerna publish` which will figure out which 
 
 [travis-image]: https://travis-ci.com/promaster-sdk/property.svg?branch=master&style=flat
 [travis-url]: https://travis-ci.com/promaster-sdk/property
+[codecov-image]: https://codecov.io/gh/promaster-sdk/property/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/promaster-sdk/property
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier
 [types-image]: https://img.shields.io/npm/types/scrub-js.svg
