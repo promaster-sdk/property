@@ -16,7 +16,7 @@ coverage:
         target: 26%
       variant_listing:
         flags: variant_listing
-        target: 80%
+        target: 78%
 flags:
   property:
     paths:
