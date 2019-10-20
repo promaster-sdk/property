@@ -2,23 +2,23 @@ coverage:
   status:
     project:
       default:
-        target: 10%
+        target: 54%
         threshold: null
       property:
         flags: property
-        target: 10%
+        target: 65%
       property_filter_pretty:
-        target: 10%
+        target: 66%
         flags: property_filter_pretty
       react_properties_selector:
-        target: 10%
+        target: 67%
         flags: react_properties_selector
       react_property_selectors:
         flags: react_property_selectors
-        target: 10%
+        target: 26%
       variant_listing:
         flags: variant_listing
-        target: 10%
+        target: 80%
 flags:
   property:
     paths:
