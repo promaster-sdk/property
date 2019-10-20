@@ -5,3 +5,7 @@ node_modules/
 
 # Don't lint build-output in test folders (test/lib)
 lib/
+
+# Root files
+jest-snapshot-resolver.js
+jest.config.js
