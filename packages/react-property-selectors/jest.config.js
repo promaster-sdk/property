@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: "property",
+  displayName: "react-property-selectors",
   preset: "ts-jest",
   globals: {
     "ts-jest": {

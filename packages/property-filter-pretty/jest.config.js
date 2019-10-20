@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: "property",
+  displayName: "property-filter-pretty",
   preset: "ts-jest",
   globals: {
     "ts-jest": {

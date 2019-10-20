@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: "property",
+  displayName: "variant-listing",
   preset: "ts-jest",
   globals: {
     "ts-jest": {

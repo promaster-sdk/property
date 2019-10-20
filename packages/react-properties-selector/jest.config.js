@@ -1,5 +1,10 @@
 module.exports = {
+  displayName: "react-properties-selector",
   preset: "ts-jest",
-  testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
-  roots: ["src"]
+  globals: {
+    "ts-jest": {
+      tsConfig: "<rootDir>/tsconfig.json"
+    }
+  },
+  testMatch: ["<rootDir>/src/**/*.test.ts?(x)"]
 };
