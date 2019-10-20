@@ -16,11 +16,7 @@ env:
 matrix:
   allow_failures:
     - env: TSVERSION=next
-before_script:
-  # Nothing for now
 script:
-  - yarn lint
-  - yarn build
-  - yarn test
+  - yarn verify
 after_success:
-  # Nothing for now
+  - yarn report-coverage
