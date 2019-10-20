@@ -1,0 +1,483 @@
+{
+  "resultCount": 504,
+  "explicitPropertyValueSet": {
+    "installation_type": {
+      "value": {
+        "type": "integer",
+        "value": 0
+      },
+      "property_filter": "",
+      "description": "Ceiling"
+    },
+    "design_type": {
+      "value": {
+        "type": "integer",
+        "value": 1
+      },
+      "property_filter": "installation_type=0",
+      "description": "CFC-C"
+    },
+    "ceiling_type": {
+      "value": {
+        "type": "integer",
+        "value": 1
+      },
+      "property_filter": "design_type=1,2,4",
+      "description": "Plasterboard"
+    },
+    "supply": [
+      {
+        "value": {
+          "type": "integer",
+          "value": 1
+        }
+      }
+    ],
+    "filter_dimension": {
+      "value": {
+        "type": "integer",
+        "value": 0
+      },
+      "property_filter": "design_type=1,2,3,4",
+      "description": "305x305x80"
+    },
+    "inletsize": {
+      "value": {
+        "type": "integer",
+        "value": 100
+      },
+      "property_filter": "design_type=2&filter_dimension=0",
+      "description": "100"
+    },
+    "filter_class": [
+      {
+        "value": {
+          "type": "integer",
+          "value": 1
+        }
+      }
+    ],
+    "front_panel_diffuser": {
+      "value": {
+        "type": "integer",
+        "value": 1
+      },
+      "property_filter": "design_type=5",
+      "description": "NA"
+    },
+    "surface_finish": {
+      "value": {
+        "type": "integer",
+        "value": 0
+      },
+      "property_filter": "",
+      "description": "White (RAL9010, gloss 30%)"
+    }
+  },
+  "variableProperties": [
+    {
+      "sort_no": 0,
+      "name": "installation_type",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "",
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 0
+          },
+          "property_filter": "",
+          "description": "Ceiling"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": "",
+          "description": "Wall"
+        }
+      ]
+    },
+    {
+      "sort_no": 1,
+      "name": "design_type",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "",
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": "installation_type=0",
+          "description": "CFC-C"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 2
+          },
+          "property_filter": "installation_type=0",
+          "description": "CFC-B"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 3
+          },
+          "property_filter": "installation_type=0",
+          "description": "CFC-G"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 4
+          },
+          "property_filter": "installation_type=0",
+          "description": "CFC-R"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 5
+          },
+          "property_filter": "installation_type=1",
+          "description": "CFC-W"
+        }
+      ]
+    },
+    {
+      "sort_no": 3,
+      "name": "ceiling_type",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "installation_type=0&design_type!=3",
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": "design_type=1,2,4",
+          "description": "Plasterboard"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 2
+          },
+          "property_filter": "design_type=1,2,4",
+
+          "description": "T-bar ceiling 600x600"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 3
+          },
+          "property_filter": "design_type=1,2,4",
+          "description": "T-bar ceiling 625x625"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 4
+          },
+          "property_filter": "design_type=1,2,4",
+          "description": "Metalplate 600x600"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 5
+          },
+          "property_filter": "design_type=1,2,4",
+          "description": "Metalplate 625x625"
+        }
+      ]
+    },
+    {
+      "sort_no": 4,
+      "name": "supply",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "design_type!=5",
+      "quantity": "Discrete",
+      "def_value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          }
+        }
+      ],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": "",
+          "description": "horizontal"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 2
+          },
+          "property_filter": "design_type=1,3,5",
+          "description": "vertical"
+        }
+      ]
+    },
+    {
+      "sort_no": 5,
+      "name": "filter_dimension",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "",
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 0
+          },
+          "property_filter": "design_type=1,2,3,4",
+          "description": "305x305x80"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 2
+          },
+          "property_filter": "design_type=1,2,3,4",
+          "description": "457x457x80"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 4
+          },
+          "property_filter": "design_type=1,2,4",
+          "description": "535x535x80"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 5
+          },
+          "property_filter": "design_type=3",
+          "description": "545x545x80"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 6
+          },
+          "property_filter": "design_type=1,2,4",
+          "description": "557x557x80"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 8
+          },
+          "property_filter": "design_type=1,2,4",
+          "description": "575x575x80"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 10
+          },
+          "property_filter": "design_type=1,2,3,4",
+          "description": "610x610x80"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 13
+          },
+          "property_filter": "design_type=5",
+          "description": "610x305x80"
+        }
+      ]
+    },
+    {
+      "sort_no": 6,
+      "name": "inletsize",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "design_type!=4",
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 100
+          },
+          "property_filter": "design_type=2&filter_dimension=0",
+          "description": "100"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 160
+          },
+          "property_filter": "design_type=1,3&filter_dimension=0",
+          "description": "160"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 200
+          },
+          "property_filter": "design_type=1,2,3&filter_dimension=2,4,6,8,10|design_type=3&filter_dimension=5|design_type=5&filter_dimension=13",
+          "description": "200"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 250
+          },
+          "property_filter": "design_type=2&filter_dimension=6,8,10",
+          "description": "250"
+        }
+      ]
+    },
+    {
+      "sort_no": 7,
+      "name": "filter_class",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "",
+      "quantity": "Discrete",
+      "def_value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          }
+        }
+      ],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": "",
+          "description": "H14"
+        }
+      ]
+    },
+    {
+      "sort_no": 8,
+      "name": "front_panel_diffuser",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "",
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": "design_type=5",
+          "description": "NA"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 2
+          },
+          "property_filter": "(design_type=1,2,4)",
+          "description": "PP"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 3
+          },
+          "property_filter": "(design_type=1,2,4)",
+          "description": "SF"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 4
+          },
+          "property_filter": "(design_type=1,2,4)&ceiling_type=2,3,4,5",
+          "description": "AQ"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 5
+          },
+          "property_filter": "(design_type=1,2,3,4)",
+          "description": "VR"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 6
+          },
+          "property_filter": "(design_type=1,2,3,4)",
+          "description": "VN"
+        }
+      ]
+    },
+    {
+      "sort_no": 9,
+      "name": "surface_finish",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "",
+      "quantity": "Discrete",
+      "def_value": [],
+      "value": [
+        {
+          "value": {
+            "type": "integer",
+            "value": 0
+          },
+          "property_filter": "",
+          "description": "White (RAL9010, gloss 30%)"
+        },
+        {
+          "value": {
+            "type": "integer",
+            "value": 1
+          },
+          "property_filter": "",
+          "description": "Other RAL colour"
+        }
+      ]
+    },
+    {
+      "sort_no": 10,
+      "name": "ral_colour",
+      "group": "",
+      "validation_filter": "",
+      "visibility_filter": "surface_finish=1",
+      "quantity": "Text",
+      "def_value": [],
+      "value": []
+    }
+  ]
+}

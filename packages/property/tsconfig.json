@@ -5,8 +5,7 @@
     "outDir": "lib",
     "rootDir": "src",
     "lib": ["dom", "es2015", "es2017.object", "esnext.asynciterable"],
-    // If we do not specify this we get clashes in global types
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "references": []
 }
