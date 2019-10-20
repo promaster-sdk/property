@@ -1,10 +1,8 @@
 module.exports = {
   displayName: "property",
   preset: "ts-jest",
-  globals: {
-    "ts-jest": {
-      tsConfig: "<rootDir>/tsconfig.json"
-    }
-  },
-  testMatch: ["<rootDir>/src/**/*.test.{ts,tsx}"]
+  testMatch: ["<rootDir>/src/**/*.test.{ts,tsx}"],
+  coverageDirectory: "<rootDir>/coverage/",
+  collectCoverage: true,
+  collectCoverageFrom: ["**/src/**/!(*.test).{ts,tsx}", "!(**/__tests__/**)"]
 };

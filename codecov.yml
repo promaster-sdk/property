@@ -1,0 +1,35 @@
+coverage:
+  status:
+    project:
+      default: off
+      property:
+        flags: property
+        target: 64%
+      property_filter_pretty:
+        target: 66%
+        flags: property_filter_pretty
+      react_properties_selector:
+        target: 67%
+        flags: react_properties_selector
+      react_property_selectors:
+        flags: react_property_selectors
+        target: 26%
+      variant_listing:
+        flags: variant_listing
+        target: 78%
+flags:
+  property:
+    paths:
+      - packages/property/src
+  property_filter_pretty:
+    paths:
+      - packages/property-filter-pretty/src
+  react_properties_selector:
+    paths:
+      - packages/react-properties-selector/src
+  react_property_selectors:
+    paths:
+      - packages/react-property-selectors/src
+  variant_listing:
+    paths:
+      - packages/variant-listing/src
