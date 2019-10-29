@@ -92,6 +92,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
               )
             }
             unitsFormat={UnitsFormat}
+            units={Units}
           />
         </div>
       </div>

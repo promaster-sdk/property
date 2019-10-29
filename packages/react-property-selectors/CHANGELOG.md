@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@3.4.1...master)
 
+### Added
+
+- Added custom units prop to `AmountFormatSelector` and `AmountPropertySelector`.
+
 ## [v3.5.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@3.4.1...@promaster-sdk%2Freact-property-selectors@3.5.0) - 2019-10-18
 
 - License changed to MIT.
