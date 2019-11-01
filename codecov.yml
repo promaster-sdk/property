@@ -4,19 +4,19 @@ coverage:
       default: off
       property:
         flags: property
-        target: 64%
+        target: 50%
       property_filter_pretty:
         target: 66%
         flags: property_filter_pretty
       react_properties_selector:
-        target: 67%
+        target: 65%
         flags: react_properties_selector
       react_property_selectors:
         flags: react_property_selectors
         target: 26%
       variant_listing:
         flags: variant_listing
-        target: 78%
+        target: 40%
 flags:
   property:
     paths:
