@@ -12,9 +12,8 @@ script:
   - yarn verify
 after_success:
   # - yarn report-coverage
-  # - bash <(curl -s https://codecov.io/bash) -c -f packages/property/coverage/lcov.info -F property
-  # - bash <(curl -s https://codecov.io/bash) -c -f packages/property-filter-pretty/coverage/lcov.info -F property_filter_pretty
-  # - bash <(curl -s https://codecov.io/bash) -c -f packages/react-properties-selector/coverage/lcov.info -F react_properties_selector
-  # - bash <(curl -s https://codecov.io/bash) -c -f packages/react-property-selectors/coverage/lcov.info -F react_property_selectors
-  # - bash <(curl -s https://codecov.io/bash) -c -f packages/variant-listing/coverage/lcov.info -F variant_listing
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -c -f packages/property/coverage/lcov.info -F property
+  - bash <(curl -s https://codecov.io/bash) -c -f packages/property-filter-pretty/coverage/lcov.info -F property_filter_pretty
+  - bash <(curl -s https://codecov.io/bash) -c -f packages/react-properties-selector/coverage/lcov.info -F react_properties_selector
+  - bash <(curl -s https://codecov.io/bash) -c -f packages/react-property-selectors/coverage/lcov.info -F react_property_selectors
+  - bash <(curl -s https://codecov.io/bash) -c -f packages/variant-listing/coverage/lcov.info -F variant_listing
