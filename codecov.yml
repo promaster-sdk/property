@@ -13,7 +13,7 @@ coverage:
         flags: react_properties_selector
       react_property_selectors:
         flags: react_property_selectors
-        target: 36%
+        target: 26%
       variant_listing:
         flags: variant_listing
         target: 78%
