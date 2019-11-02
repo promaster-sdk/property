@@ -77,13 +77,12 @@
     "test-coverage:react-property-selectors": "jest --coverage --projects packages/react-property-selectors",
     "test-coverage:react-properties-selector": "jest --coverage --projects packages/react-properties-selector",
     "test-coverage:variant-listing": "jest --coverage --projects packages/variant-listing",
-    "report-coverage2": "run-s report-coverage:*",
-    "report-coverage": "codecov",
-    "report-coverage:property": "codecov -f packages/property/coverage/lcov.info -F property",
-    "report-coverage:property-filter-pretty": "codecov -f packages/property-filter-pretty/coverage/lcov.info -F property_filter_pretty",
-    "report-coverage:react-properties-selector": "codecov -f packages/react-properties-selector/coverage/lcov.info -F react_properties_selector",
-    "report-coverage:react-property-selectors": "codecov -f packages/react-property-selectors/coverage/lcov.info -F react_property_selectors",
-    "report-coverage:variant-listing": "codecov -f packages/variant-listing/coverage/lcov.info -F variant_listing"
+    "report-coverage": "run-s report-coverage:*",
+    "report-coverage:property": "codecov -c -f packages/property/coverage/lcov.info -F property",
+    "report-coverage:property-filter-pretty": "codecov -c -f packages/property-filter-pretty/coverage/lcov.info -F property_filter_pretty",
+    "report-coverage:react-properties-selector": "codecov -c -f packages/react-properties-selector/coverage/lcov.info -F react_properties_selector",
+    "report-coverage:react-property-selectors": "codecov -c -f packages/react-property-selectors/coverage/lcov.info -F react_property_selectors",
+    "report-coverage:variant-listing": "codecov -c -f packages/variant-listing/coverage/lcov.info -F variant_listing"
   },
   "husky": {
     "hooks": {
