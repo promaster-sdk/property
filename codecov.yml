@@ -4,7 +4,7 @@ coverage:
       default: off
       property:
         flags: property
-        target: 74%
+        target: 64%
       property_filter_pretty:
         target: 66%
         flags: property_filter_pretty
