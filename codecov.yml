@@ -9,7 +9,7 @@ coverage:
         target: 66%
         flags: property_filter_pretty
       react_properties_selector:
-        target: 57%
+        target: 37%
         flags: react_properties_selector
       react_property_selectors:
         flags: react_property_selectors
