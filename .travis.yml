@@ -8,14 +8,6 @@ notifications:
 node_js:
   - "12"
   - "10"
-  - "8"
-env:
-  - TSVERSION=next
-  - TSVERSION=latest
-  - TSVERSION=3.4.1 # Our minimum supported version
-matrix:
-  allow_failures:
-    - env: TSVERSION=next
 script:
   - yarn verify
 after_success:
