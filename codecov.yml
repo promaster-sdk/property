@@ -1,5 +1,6 @@
 coverage:
   status:
+    patch: off
     project:
       default: off
       property:
@@ -9,7 +10,7 @@ coverage:
         target: 66%
         flags: property_filter_pretty
       react_properties_selector:
-        target: 67%
+        target: 66%
         flags: react_properties_selector
       react_property_selectors:
         flags: react_property_selectors
