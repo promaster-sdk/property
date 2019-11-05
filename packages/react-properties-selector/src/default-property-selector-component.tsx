@@ -1,5 +1,5 @@
 import React from "react";
-import { Unit, Quantity, UnitFormat } from "uom";
+import { Unit, UnitFormat } from "uom";
 import {
   PropertyValueSet,
   PropertyValue,
@@ -40,7 +40,7 @@ export interface PropertySelectorProps {
   readonly selectorType: PropertySelectorType;
   readonly fieldName: string;
   readonly propertyName: string;
-  readonly quantity: Quantity.Quantity;
+  readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly valueItems: ReadonlyArray<PropertyValueItem>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
@@ -61,9 +61,10 @@ export interface PropertySelectorProps {
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
-  readonly units: {
-    readonly [key: string]: Unit.Unit;
-  };
+  // readonly units: {
+  //   readonly [key: string]: Unit.Unit;
+  // };
+  readonly units: Unit.UnitMap;
 }
 
 export interface CreatePropertySelectorProps {
@@ -212,10 +213,9 @@ export function createPropertySelector({
             propertyValueSet={selectedProperties}
             inputUnit={propertyFormat.unit}
             inputDecimalCount={propertyFormat.decimalCount}
-            onFormatChanged={(
-              unit: Unit.Unit<Quantity.Quantity>,
-              decimalCount: number
-            ) => onPropertyFormatChanged(propertyName, unit, decimalCount)}
+            onFormatChanged={(unit: Unit.Unit<unknown>, decimalCount: number) =>
+              onPropertyFormatChanged(propertyName, unit, decimalCount)
+            }
             onFormatCleared={() => onPropertyFormatCleared(propertyName)}
             onFormatSelectorToggled={(active: boolean) =>
               onPropertyFormatSelectorToggled(propertyName, active)
@@ -242,9 +242,7 @@ export function createPropertySelector({
   };
 }
 
-function getPropertyType(
-  quantity: Quantity.Quantity
-): PropertyValue.PropertyType {
+function getPropertyType(quantity: string): PropertyValue.PropertyType {
   switch (quantity) {
     case "Text":
       return "text";

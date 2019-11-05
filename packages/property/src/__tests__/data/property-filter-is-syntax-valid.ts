@@ -103,7 +103,7 @@ export const tests = [
   },
   {
     name: "amount_value_is_supported",
-    f: "a>=20:Celsius&b=20:Meter~30:Meter",
+    f: "a>=20:Kelvin&b=20:Meter~30:Meter",
     result: true
   },
   {
@@ -123,7 +123,7 @@ export const tests = [
   },
   {
     name: "supports_add_amounts",
-    f: "a=b+2:Celsius",
+    f: "a=b+2:Meter",
     result: true
   },
   {

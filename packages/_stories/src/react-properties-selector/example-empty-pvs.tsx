@@ -8,6 +8,7 @@ import { Unit } from "uom";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
+import { units, unitsFormat } from "./units-map";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -21,10 +22,11 @@ const filterPrettyPrint = (
   propertyFilter: PropertyFilter.PropertyFilter
 ): string =>
   PropertyFiltering.filterPrettyPrintIndented(
-    PropertyFiltering.FilterPrettyPrintMessagesEnglish,
+    PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
     " ",
-    propertyFilter
+    propertyFilter,
+    unitsFormat
   );
 
 export class PropertiesSelectorExampleEmptyPvs extends React.Component<
@@ -43,6 +45,8 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
   render(): React.ReactElement<{}> {
     const productProperties = exampleProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
+      units,
+      unitsFormat,
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
         this.setState(merge(this.state, { propertyValueSet: properties }));

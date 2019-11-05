@@ -43,17 +43,17 @@ export const tests = [
     ])
   },
   {
-    name: "should_parse_a_equals_20_Celsius",
-    f: "a=20:Celsius",
+    name: "should_parse_a_equals_20_Meter",
+    f: "a=20:Meter",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
-      newValueRangeExpr(newValueExpr("20:Celsius"), newValueExpr("20:Celsius"))
+      newValueRangeExpr(newValueExpr("20:Meter"), newValueExpr("20:Meter"))
     ])
   },
   {
-    name: "should_parse_a_equals_20_Celsius_range_30_Celsius",
-    f: "a=20:Celsius~30:Celsius",
+    name: "should_parse_a_equals_20_Meters_range_30_Meter",
+    f: "a=20:Meter~30:Meter",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
-      newValueRangeExpr(newValueExpr("20:Celsius"), newValueExpr("30:Celsius"))
+      newValueRangeExpr(newValueExpr("20:Meter"), newValueExpr("30:Meter"))
     ])
   },
   {

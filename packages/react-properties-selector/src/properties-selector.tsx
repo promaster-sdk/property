@@ -1,5 +1,5 @@
 import React from "react";
-import { Units, Quantity, Unit, UnitFormat, UnitsFormat } from "uom";
+import { Unit, UnitFormat } from "uom";
 import {
   PropertyValueSet,
   PropertyValue,
@@ -93,12 +93,13 @@ export interface PropertiesSelectorProps {
   readonly onToggleGroupClosed?: OnToggleGroupClosed;
 
   // Use customUnits
-  readonly unitsFormat?: {
+  readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
-  readonly units?: {
-    readonly [key: string]: Unit.Unit;
-  };
+  // readonly units?: {
+  //   readonly [key: string]: Unit.Unit;
+  // };
+  readonly units: Unit.UnitMap;
 
   // Override layout
   readonly LayoutRenderer?: (props: LayoutRendererProps) => JSX.Element;
@@ -120,10 +121,12 @@ export function PropertiesSelector(
     selectedProperties,
     filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
       PropertyFiltering.filterPrettyPrintIndented(
-        PropertyFiltering.FilterPrettyPrintMessagesEnglish,
+        // PropertyFiltering.FilterPrettyPrintMessagesEnglish,
+        PropertyFiltering.buildEnglishMessages(props.unitsFormat),
         2,
         " ",
-        propertyFilter
+        propertyFilter,
+        props.unitsFormat
       ),
 
     includeCodes = false,
@@ -156,8 +159,11 @@ export function PropertiesSelector(
 
     inputDebounceTime = 350,
 
-    unitsFormat = UnitsFormat,
-    units = Units,
+    // unitsFormat = UnitsFormat,
+    // units = Units,
+
+    unitsFormat,
+    units,
 
     closedGroups = [],
     onToggleGroupClosed = () => {}, // eslint-disable-line
@@ -239,9 +245,10 @@ function createPropertySelectorRenderInfos(
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   },
-  units: {
-    readonly [key: string]: Unit.Unit;
-  },
+  // units: {
+  //   readonly [key: string]: Unit.Unit;
+  // },
+  units: Unit.UnitMap,
   comparer: PropertyValue.Comparer
 ): ReadonlyArray<PropertySelectorRenderInfo> {
   // Default true if not specified otherwise
@@ -285,7 +292,7 @@ function createPropertySelectorRenderInfos(
         );
 
       let isValid: boolean;
-      let defaultFormat: AmountFormat = { unit: Units.One, decimalCount: 2 };
+      let defaultFormat: AmountFormat = { unit: Unit.One, decimalCount: 2 };
       switch (getPropertyType(property.quantity)) {
         case "integer":
           isValid = selectedValueItem
@@ -414,9 +421,7 @@ function getSelectorType(property: Property): PropertySelectorType {
   }
 }
 
-function getPropertyType(
-  quantity: Quantity.Quantity
-): PropertyValue.PropertyType {
+function getPropertyType(quantity: string): PropertyValue.PropertyType {
   switch (quantity) {
     case "Text":
       return "text";

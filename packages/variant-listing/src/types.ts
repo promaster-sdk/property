@@ -1,4 +1,3 @@
-import { Quantity } from "uom";
 import {
   PropertyValueSet,
   PropertyFilter,
@@ -8,7 +7,7 @@ import {
 export interface ProductProperty {
   readonly sort_no: number;
   readonly name: string;
-  readonly quantity: Quantity.Quantity;
+  readonly quantity: string;
   readonly validation_filter: PropertyFilter.PropertyFilter;
   readonly visibility_filter: PropertyFilter.PropertyFilter;
   readonly value: ReadonlyArray<ProductPropertyValue>;

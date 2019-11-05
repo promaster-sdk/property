@@ -11,6 +11,7 @@ import {
   PropertyValue
 } from "@promaster-sdk/property";
 import { merge } from "../utils";
+import { unitsFormat } from "../units-map";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -20,10 +21,11 @@ const filterPrettyPrint = (
   propertyFilter: PropertyFilter.PropertyFilter
 ): string =>
   PropertyFiltering.filterPrettyPrintIndented(
-    PropertyFiltering.FilterPrettyPrintMessagesEnglish,
+    PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
     " ",
-    propertyFilter
+    propertyFilter,
+    unitsFormat
   );
 
 const ComboboxPropertySelector = createComboboxPropertySelector({});
