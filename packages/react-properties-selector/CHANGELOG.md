@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@3.4.1...master)
+## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@4.0.0...master)
+
+## [v4.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@3.5.0...@promaster-sdk%2Freact-properties-selector@4.0.0) - 2019-11-05
+
+## Changed
+
+- Upgrade uom package to 3.0.0. Passing explicit `UnitMap` and `UnitFormatMap` is now required.
 
 ## [v3.5.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@3.4.1...@promaster-sdk%2Freact-properties-selector@3.5.0) - 2019-10-18
 
