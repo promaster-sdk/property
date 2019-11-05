@@ -9,6 +9,7 @@ exports[`Simple PropertiesSelector 1`] = `
         <tr>
           <td>
             <label
+              className="invalid"
               title="translatePropertyLabelHover"
             >
               <span
