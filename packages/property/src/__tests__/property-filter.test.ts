@@ -1,3 +1,4 @@
+import { BaseUnits } from "uom";
 import * as PropertyFilter from "../property-filter";
 import * as PropertyValueSet from "../property-value-set";
 import * as IsValidData from "./data/property-filter-isvalid";
@@ -15,7 +16,7 @@ describe("PropertyFilter", () => {
   describe("isValid", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(test.pvs);
+        const pvs = PropertyValueSet.fromString(test.pvs, BaseUnits);
         const f = fromStringOrException(test.f);
         expect(PropertyFilter.isValid(pvs, f, test.comparer)).toEqual(
           test.result

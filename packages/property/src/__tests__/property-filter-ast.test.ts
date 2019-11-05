@@ -1,3 +1,4 @@
+import { BaseUnits } from "uom";
 import * as Ast from "../property-filter-ast";
 import * as PropertyValueSet from "../property-value-set";
 import * as PropertyValue from "../property-value";
@@ -17,7 +18,7 @@ describe("PropertyFilterAst", () => {
   describe("evaluate with raw AST", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(test.pvs);
+        const pvs = PropertyValueSet.fromString(test.pvs, BaseUnits);
         const f = fromStringOrException(test.f);
         expect(
           Ast.evaluateAst(
@@ -34,7 +35,7 @@ describe("PropertyFilterAst", () => {
   describe("evaluate with compiled AST", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(test.pvs);
+        const pvs = PropertyValueSet.fromString(test.pvs, BaseUnits);
         const f = fromStringOrException(test.f);
         const func = Ast.compileAst(f);
         expect(func(pvs, test.comparer || PropertyValue.defaultComparer)).toBe(
