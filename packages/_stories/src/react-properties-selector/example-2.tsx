@@ -9,6 +9,7 @@ import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
 import { createPropertiesSelectorExample2Layout } from "./example-2-layout";
+import { units, unitsFormat } from "./units-map";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -22,10 +23,11 @@ const filterPrettyPrint = (
   propertyFilter: PropertyFilter.PropertyFilter
 ): string =>
   PropertyFiltering.filterPrettyPrintIndented(
-    PropertyFiltering.FilterPrettyPrintMessagesEnglish,
+    PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
     " ",
-    propertyFilter
+    propertyFilter,
+    unitsFormat
   );
 
 export class PropertiesSelectorExample2 extends React.Component<{}, State> {
@@ -41,6 +43,8 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
   render(): React.ReactElement<{}> {
     const productProperties = exampleProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
+      units,
+      unitsFormat,
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
         // console.log("onChange", properties);

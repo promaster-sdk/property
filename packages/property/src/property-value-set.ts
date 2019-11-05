@@ -1,4 +1,4 @@
-import { Amount, Quantity } from "uom";
+import { Amount } from "uom";
 // eslint-disable-next-line import/no-duplicates
 import * as PropertyValue from "./property-value";
 // eslint-disable-next-line import/no-duplicates
@@ -115,7 +115,7 @@ export function set(
   return amendProperty(pvs, propertyName, propertyValue);
 }
 
-export function setAmount<T extends Quantity.Quantity>(
+export function setAmount<T>(
   propertyName: string,
   amountValue: Amount.Amount<T>,
   pvs: PropertyValueSet
@@ -198,7 +198,7 @@ export function getValue(
 
 /// Gets an amount value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
-export function getAmount<T extends Quantity.Quantity>(
+export function getAmount<T>(
   propertyName: string,
   pvs: PropertyValueSet
 ): Amount.Amount<T> | undefined {

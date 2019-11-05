@@ -11,7 +11,9 @@ test("Simple PropertiesSelector", () => {
   const productProperties = exampleProductProperties();
   const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
     productProperties: productProperties,
-    selectedProperties: PropertyValueSet.Empty
+    selectedProperties: PropertyValueSet.Empty,
+    units: {},
+    unitsFormat: {}
   };
 
   const component = renderer.create(

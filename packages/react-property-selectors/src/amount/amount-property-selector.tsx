@@ -4,7 +4,7 @@ import {
   PropertyFilter,
   PropertyValue
 } from "@promaster-sdk/property";
-import { Amount, Unit, Quantity, UnitFormat } from "uom";
+import { Amount, Unit, UnitFormat } from "uom";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
   AmountFormatSelector,
@@ -18,7 +18,7 @@ import { AmountInputBox, createAmountInputBox } from "./amount-input-box";
 export interface AmountPropertySelectorProps {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly inputUnit: Unit.Unit<Quantity.Quantity>;
+  readonly inputUnit: Unit.Unit<unknown>;
   readonly inputDecimalCount: number;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly notNumericMessage: string;
@@ -37,7 +37,7 @@ export interface AmountPropertySelectorProps {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
   readonly units: {
-    readonly [key: string]: Unit.Unit;
+    readonly [key: string]: Unit.Unit<unknown>;
   };
   readonly comparer?: PropertyValue.Comparer;
 }
@@ -99,7 +99,7 @@ export function createAmountPropertySelector({
       } = this.props;
 
       const value:
-        | Amount.Amount<Quantity.Quantity>
+        | Amount.Amount<unknown>
         | undefined = PropertyValueSet.getAmount(
         propertyName,
         propertyValueSet
@@ -147,7 +147,7 @@ export function createAmountPropertySelector({
 
 function _getValidationMessage(
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  value: Amount.Amount<Quantity.Quantity> | undefined,
+  value: Amount.Amount<unknown> | undefined,
   validationFilter: PropertyFilter.PropertyFilter,
   filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
   comparer: PropertyValue.Comparer

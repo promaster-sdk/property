@@ -1,11 +1,11 @@
-import { Units, Amount, Quantity } from "uom";
+import { Amount, BaseUnits } from "uom";
 import * as PropertyValue from "../property-value";
 
 describe("PropertyValue", () => {
   it("should_parse_amount_with_decimal_dot", () => {
-    const pv1 = fromStringOrException("2.1:Celsius");
+    const pv1 = fromStringOrException("2.1:Meter");
     const amount1 = getAmountOrException(pv1);
-    const amount2 = Amount.create(2.1, Units.Celsius, 1);
+    const amount2 = Amount.create(2.1, BaseUnits.Meter, 1);
     expect(Amount.equals(amount1, amount2)).toBe(true);
   });
 
@@ -26,8 +26,8 @@ describe("PropertyValue", () => {
   });
 
   it("should_do_value_compare_amount_with_equals_method", () => {
-    const pv1 = PropertyValue.fromAmount(Amount.create(2.0, Units.Celsius));
-    const pv2 = PropertyValue.fromAmount(Amount.create(2.0, Units.Celsius));
+    const pv1 = PropertyValue.fromAmount(Amount.create(2.0, BaseUnits.Meter));
+    const pv2 = PropertyValue.fromAmount(Amount.create(2.0, BaseUnits.Meter));
     expect(PropertyValue.equals(pv1, pv2)).toBe(true);
   });
 
@@ -44,8 +44,8 @@ describe("PropertyValue", () => {
   });
 
   it("should_do_value_compare_amount_with_equality_operator", () => {
-    const pv1 = PropertyValue.fromAmount(Amount.create(2.0, Units.Celsius));
-    const pv2 = PropertyValue.fromAmount(Amount.create(2.0, Units.Celsius));
+    const pv1 = PropertyValue.fromAmount(Amount.create(2.0, BaseUnits.Meter));
+    const pv2 = PropertyValue.fromAmount(Amount.create(2.0, BaseUnits.Meter));
     expect(PropertyValue.equals(pv1, pv2)).toBe(true);
   });
 
@@ -138,7 +138,7 @@ describe("PropertyValue", () => {
   });
 
   it("should make an empty string when amount value is null", () => {
-    const amount = Amount.create(0, Units.Ampere, 1);
+    const amount = Amount.create(0, BaseUnits.Ampere, 1);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (amount as any).value = null;
     const pv1 = PropertyValue.fromAmount(amount);
@@ -155,8 +155,8 @@ describe("PropertyValue", () => {
   });
 
   it("custom_comparer_equals", () => {
-    const pv1 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
-    const pv2 = PropertyValue.fromAmount(Amount.create(1234, Units.Watt));
+    const pv1 = PropertyValue.fromAmount(Amount.create(100, BaseUnits.Meter));
+    const pv2 = PropertyValue.fromAmount(Amount.create(1234, BaseUnits.Meter));
 
     const pv3 = PropertyValue.fromInteger(1);
     const pv4 = PropertyValue.fromInteger(555);
@@ -172,8 +172,8 @@ describe("PropertyValue", () => {
   });
 
   it("custom_comparer_less_than", () => {
-    const pv1 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
-    const pv2 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
+    const pv1 = PropertyValue.fromAmount(Amount.create(100, BaseUnits.Meter));
+    const pv2 = PropertyValue.fromAmount(Amount.create(100, BaseUnits.Meter));
 
     const pv3 = PropertyValue.fromInteger(8);
     const pv4 = PropertyValue.fromInteger(8);
@@ -193,8 +193,8 @@ describe("PropertyValue", () => {
   });
 
   it("custom_comparer_greater_than", () => {
-    const pv1 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
-    const pv2 = PropertyValue.fromAmount(Amount.create(100, Units.Watt));
+    const pv1 = PropertyValue.fromAmount(Amount.create(100, BaseUnits.Meter));
+    const pv2 = PropertyValue.fromAmount(Amount.create(100, BaseUnits.Meter));
 
     const pv3 = PropertyValue.fromInteger(8);
     const pv4 = PropertyValue.fromInteger(8);
@@ -232,7 +232,7 @@ function fromStringOrException(
   return f;
 }
 
-function getAmountOrException<T extends Quantity.Quantity>(
+function getAmountOrException<T>(
   value: PropertyValue.PropertyValue
 ): Amount.Amount<T> {
   const f = PropertyValue.getAmount<T>(value);

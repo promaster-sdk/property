@@ -1,4 +1,4 @@
-import { Units, Amount } from "uom";
+import { BaseUnits, Amount } from "uom";
 import * as PropertyValueSet from "../property-value-set";
 import * as PropertyValue from "../property-value";
 
@@ -21,7 +21,7 @@ describe("PropertyValueSet", () => {
     it("should get amount value", () => {
       const pvs = PropertyValueSet.fromString("message=12:Celsius");
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
-        PropertyValue.fromAmount(Amount.create(12, Units.Celsius, 0))
+        PropertyValue.fromAmount(Amount.create(12, BaseUnits.Meter, 0))
       );
     });
 
@@ -88,13 +88,13 @@ describe("PropertyValueSet", () => {
       const pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
       const pvs2 = PropertyValueSet.setAmount(
         "b",
-        Amount.create(12, Units.Celsius),
+        Amount.create(12, BaseUnits.Meter),
         pvs
       );
       expect(PropertyValueSet.getInteger("a", pvs2)).toBe(1);
       const a1 = PropertyValueSet.getAmount("b", pvs2);
       expect(a1).not.toBe(undefined);
-      expect(Amount.equals(a1!, Amount.create(12, Units.Celsius))).toBe(true);
+      expect(Amount.equals(a1!, Amount.create(12, BaseUnits.Meter))).toBe(true);
       expect(PropertyValueSet.getInteger("c", pvs2)).toBe(3);
     });
   });
@@ -200,7 +200,7 @@ describe("PropertyValueSet", () => {
       const resultingPvs = PropertyValueSet.filter(
         kvp =>
           kvp.value.type === "amount" &&
-          Amount.lessThan(kvp.value.value, Amount.create(12, Units.Celsius)),
+          Amount.lessThan(kvp.value.value, Amount.create(12, BaseUnits.Meter)),
         pvs1
       );
       const pvs2 = PropertyValueSet.fromString("a=10:Celsius");

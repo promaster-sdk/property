@@ -2,74 +2,82 @@ import {
   PropertyFilterAst as Ast,
   PropertyValue
 } from "@promaster-sdk/property";
-import { Format, UnitFormat, UnitsFormat } from "uom";
+import { Format, UnitFormat } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
+import { FilterPrettyPrintMessages } from "./filter-pretty-print-messages";
 
-export function comparisionOperationMessage(
-  op: Ast.ComparisonOperationType,
-  left: string,
-  right: string
-): string {
-  return `${left} ${_comparisonOperationTypeToString(op)} ${right}`;
-}
+export function buildEnglishMessages(
+  unitsFormat: UnitFormat.UnitFormatMap
+): FilterPrettyPrintMessages {
+  return {
+    comparisionOperationMessage(
+      op: Ast.ComparisonOperationType,
+      left: string,
+      right: string
+    ): string {
+      return `${left} ${_comparisonOperationTypeToString(op)} ${right}`;
+    },
 
-export function equalsOperationMessage(
-  op: Ast.EqualsOperationType,
-  left: string,
-  right: string
-): string {
-  return `${left} ${_equalsOperationTypeToString(op)} ${right}`;
-}
+    equalsOperationMessage(
+      op: Ast.EqualsOperationType,
+      left: string,
+      right: string
+    ): string {
+      return `${left} ${_equalsOperationTypeToString(op)} ${right}`;
+    },
 
-export function rangeMessage(min: string, max: string): string {
-  return `between ${min} and ${max}`;
-}
+    rangeMessage(min: string, max: string): string {
+      return `between ${min} and ${max}`;
+    },
 
-export function andMessage(): string {
-  return "and";
-}
+    andMessage(): string {
+      return "and";
+    },
 
-export function orMessage(): string {
-  return "or";
-}
+    orMessage(): string {
+      return "or";
+    },
 
-export function propertyNameMessage(propertyName: string): string {
-  return propertyName;
-}
+    propertyNameMessage(propertyName: string): string {
+      return propertyName;
+    },
 
-export function propertyValueMessage(
-  propertyName: string,
-  propertyValue: PropertyValue.PropertyValue,
-  unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  } = UnitsFormat
-): string {
-  switch (propertyValue.type) {
-    case "amount": {
-      const unitFormat = Format.getUnitFormat(
-        propertyValue.value.unit,
-        unitsFormat
-      );
-      if (unitFormat) {
-        return propertyValue.value.value + " " + unitFormat.label;
-      } else {
-        return propertyValue.value.value.toString();
+    propertyValueMessage(
+      propertyName: string,
+      propertyValue: PropertyValue.PropertyValue
+      // unitsFormat: {
+      //   readonly [key: string]: UnitFormat.UnitFormat;
+      // } = UnitsFormat
+      // unitsFormat: UnitFormat.UnitFormatMap
+    ): string {
+      switch (propertyValue.type) {
+        case "amount": {
+          const unitFormat = Format.getUnitFormat(
+            propertyValue.value.unit,
+            unitsFormat
+          );
+          if (unitFormat) {
+            return propertyValue.value.value + " " + unitFormat.label;
+          } else {
+            return propertyValue.value.value.toString();
+          }
+        }
+        case "integer":
+          // eslint-disable-next-line no-case-declarations
+          const pvString = PropertyValue.toString(propertyValue);
+          return `${propertyName}_${pvString}`;
+        case "text":
+          return propertyValue.value;
+        default:
+          return exhaustiveCheck(propertyValue);
       }
-    }
-    case "integer":
-      // eslint-disable-next-line no-case-declarations
-      const pvString = PropertyValue.toString(propertyValue);
-      return `${propertyName}_${pvString}`;
-    case "text":
-      return propertyValue.value;
-    default:
-      return exhaustiveCheck(propertyValue);
-  }
-  // return "MESSAGE NOT AVAILABLE";
-}
+      // return "MESSAGE NOT AVAILABLE";
+    },
 
-export function nullMessage(): string {
-  return "null";
+    nullMessage(): string {
+      return "null";
+    }
+  };
 }
 
 function _comparisonOperationTypeToString(

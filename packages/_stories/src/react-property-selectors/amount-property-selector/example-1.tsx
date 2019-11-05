@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
 import React from "react";
-import { Unit, Units, UnitsFormat } from "uom";
+import { Unit, BaseUnits } from "uom";
 import { createAmountPropertySelector } from "@promaster-sdk/react-property-selectors";
 // import { PropertySelectors } from "../../src";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
@@ -11,6 +11,7 @@ import {
   PropertyValue
 } from "@promaster-sdk/property";
 import { merge } from "../utils";
+import { units, unitsFormat } from "../units-map";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -23,10 +24,11 @@ const filterPrettyPrint = (
   propertyFilter: PropertyFilter.PropertyFilter
 ): string =>
   PropertyFiltering.filterPrettyPrintIndented(
-    PropertyFiltering.FilterPrettyPrintMessagesEnglish,
+    PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
     " ",
-    propertyFilter
+    propertyFilter,
+    unitsFormat
   );
 
 const validationFilter = PropertyFilter.fromString(
@@ -39,8 +41,8 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Celsius"),
-      selectedUnit: Units.Celsius,
+      propertyValueSet: PropertyValueSet.fromString("a=10:Meter"),
+      selectedUnit: BaseUnits.Meter,
       selectedDecimalCount: 2
     };
   }
@@ -86,13 +88,13 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
             onFormatCleared={() =>
               this.setState(
                 merge(this.state, {
-                  selectedUnit: Units.Celsius,
+                  selectedUnit: BaseUnits.Meter,
                   selectedDecimalCount: 2
                 })
               )
             }
-            unitsFormat={UnitsFormat}
-            units={Units}
+            unitsFormat={unitsFormat}
+            units={units}
           />
         </div>
       </div>

@@ -7,10 +7,11 @@ import {
   createAmountFormatSelector,
   createAmountInputBox
 } from "@promaster-sdk/react-property-selectors";
-import { Unit, Units, Amount, UnitsFormat } from "uom";
+import { Unit, Amount, BaseUnits } from "uom";
 import styled from "styled-components";
 import { action } from "@storybook/addon-actions";
 import { merge } from "../utils";
+import { units, unitsFormat } from "../units-map";
 
 interface State {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,8 +57,8 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      amount: Amount.create(10.0, Units.Celsius),
-      selectedUnit: Units.Celsius,
+      amount: Amount.create(10.0, BaseUnits.Meter),
+      selectedUnit: BaseUnits.Meter,
       selectedDecimalCount: 2
     };
   }
@@ -97,14 +98,14 @@ export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
             onFormatCleared={() =>
               this.setState(
                 merge(this.state, {
-                  selectedUnit: Units.Celsius,
+                  selectedUnit: BaseUnits.Meter,
                   selectedDecimalCount: 2
                 })
               )
             }
             onFormatSelectorActiveChanged={action("Toggle format selector")}
-            unitsFormat={UnitsFormat}
-            units={Units}
+            unitsFormat={unitsFormat}
+            units={units}
           />
         </div>
       </div>

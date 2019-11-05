@@ -3,7 +3,7 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import React from "react";
-import { Unit, Serialize, Quantity, Format, UnitFormat } from "uom";
+import { Unit, Serialize, Format, UnitFormat } from "uom";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps
@@ -11,7 +11,7 @@ import {
 
 export interface AmountFormatSelectorProps {
   readonly key?: string;
-  readonly selectedUnit: Unit.Unit<Quantity.Quantity>;
+  readonly selectedUnit: Unit.Unit<unknown>;
   readonly selectedDecimalCount: number;
   readonly onFormatChanged?: OnFormatChanged;
   readonly onFormatCleared?: OnFormatCleared;
@@ -20,7 +20,7 @@ export interface AmountFormatSelectorProps {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
   readonly units: {
-    readonly [key: string]: Unit.Unit;
+    readonly [key: string]: Unit.Unit<unknown>;
   };
 }
 
@@ -29,7 +29,7 @@ export interface State {
 }
 
 export type OnFormatChanged = (
-  unit: Unit.Unit<Quantity.Quantity>,
+  unit: Unit.Unit<unknown>,
   decimalCount: number
 ) => void;
 export type OnFormatCleared = () => void;
@@ -144,7 +144,7 @@ export function createAmountFormatSelector({
 
       // Get a list of all units within the quantity
       const quantityUnits = Format.getUnitsForQuantity(
-        selectedUnit.quantity,
+        selectedUnit.quantity as string,
         unitsFormat,
         units
       );
@@ -216,7 +216,7 @@ export function createAmountFormatSelector({
 
 function _onDecimalCountChange(
   e: React.FormEvent<HTMLSelectElement>,
-  selectedUnit: Unit.Unit<Quantity.Quantity>,
+  selectedUnit: Unit.Unit<unknown>,
   onFormatChanged: OnFormatChanged
 ): void {
   const selectedIndex = e.currentTarget.selectedIndex;
@@ -226,7 +226,7 @@ function _onDecimalCountChange(
 
 function _onUnitChange(
   e: React.FormEvent<HTMLSelectElement>,
-  units: Array<Unit.Unit<Quantity.Quantity>>,
+  units: Array<Unit.Unit<unknown>>,
   selectedDecimalCount: number,
   onFormatChanged: OnFormatChanged
 ): void {

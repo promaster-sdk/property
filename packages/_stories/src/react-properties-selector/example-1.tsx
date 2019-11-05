@@ -5,6 +5,7 @@ import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
 import { exampleProductProperties } from "./example-product-properties";
+import { units, unitsFormat } from "./units-map";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -21,6 +22,8 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
   render(): React.ReactElement<{}> {
     const productProperties = exampleProductProperties();
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
+      units,
+      unitsFormat,
       productProperties: productProperties,
       selectedProperties: this.state.propertyValueSet,
       onChange: (

@@ -6,19 +6,19 @@
  It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
 import React from "react";
-import { Amount, Unit, Quantity } from "uom";
+import { Amount, Unit } from "uom";
 import { AmountInputField, AmountInputFieldProps } from "./amount-input-field";
 
 export interface AmountInputBoxProps {
   readonly key?: string;
-  readonly value: Amount.Amount<Quantity.Quantity> | undefined;
-  readonly inputUnit: Unit.Unit<Quantity.Quantity>;
+  readonly value: Amount.Amount<unknown> | undefined;
+  readonly inputUnit: Unit.Unit<unknown>;
   readonly inputDecimalCount: number;
   readonly notNumericMessage: string;
   readonly isRequiredMessage: string;
   readonly errorMessage: string;
   readonly readOnly: boolean;
-  readonly onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void;
+  readonly onValueChange: (newAmount: Amount.Amount<unknown>) => void;
   readonly onFocus?: () => void;
   readonly onBlur?: () => void;
   readonly debounceTime: number;
@@ -168,10 +168,8 @@ export function createAmountInputBox({
     }
 
     _debouncedOnValueChange(
-      newAmount: Amount.Amount<Quantity.Quantity> | undefined,
-      onValueChange: (
-        newAmount: Amount.Amount<Quantity.Quantity> | undefined
-      ) => void
+      newAmount: Amount.Amount<unknown> | undefined,
+      onValueChange: (newAmount: Amount.Amount<unknown> | undefined) => void
     ): void {
       // An event can have been received when the input was valid, then the input has gone invalid
       // but we still received the delayed event from when the input was valid. Therefore
@@ -184,7 +182,7 @@ export function createAmountInputBox({
 
     _onChange(
       e: React.FormEvent<HTMLInputElement>,
-      onValueChange: (newAmount: Amount.Amount<Quantity.Quantity>) => void
+      onValueChange: (newAmount: Amount.Amount<unknown>) => void
     ): void {
       const newStringValue = e.currentTarget.value.replace(",", ".");
       const { inputUnit, inputDecimalCount } = this.props;
@@ -218,7 +216,7 @@ export function createAmountInputBox({
 }
 
 function calculateNewState(
-  newAmount: Amount.Amount<Quantity.Quantity> | undefined,
+  newAmount: Amount.Amount<unknown> | undefined,
   newStringValue: string,
   isRequiredMessage: string,
   notNumericMessage: string,
@@ -246,7 +244,7 @@ function calculateNewState(
 }
 
 function getInternalErrorMessage(
-  newAmount: Amount.Amount<Quantity.Quantity> | undefined,
+  newAmount: Amount.Amount<unknown> | undefined,
   newStringValue: string,
   isRequiredMessage: string,
   notNumericMessage: string
@@ -263,7 +261,7 @@ function getInternalErrorMessage(
   return undefined;
 }
 
-function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(
+function formatWithUnitAndDecimalCount<T>(
   amount: Amount.Amount<T> | undefined,
   unit: Unit.Unit<T>,
   decimalCount: number
@@ -291,7 +289,7 @@ function formatWithUnitAndDecimalCount<T extends Quantity.Quantity>(
   }
 }
 
-function unformatWithUnitAndDecimalCount<T extends Quantity.Quantity>(
+function unformatWithUnitAndDecimalCount<T>(
   text: string,
   unit: Unit.Unit<T>,
   inputDecimalCount: number

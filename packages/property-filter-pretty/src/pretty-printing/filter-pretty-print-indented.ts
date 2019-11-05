@@ -1,4 +1,4 @@
-import { Format, Serialize, UnitFormat, UnitsFormat } from "uom";
+import { Format, Serialize, UnitFormat, BaseUnits } from "uom";
 import {
   PropertyFilter,
   PropertyFilterAst as Ast,
@@ -14,9 +14,10 @@ export function filterPrettyPrintIndented(
   indentationDepth: number,
   indentionString: string,
   f: PropertyFilter.PropertyFilter,
-  unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  } = UnitsFormat
+  // unitsFormat: {
+  //   readonly [key: string]: UnitFormat.UnitFormat;
+  // } = UnitsFormat
+  unitsFormat: UnitFormat.UnitFormatMap
 ): string {
   const e = f.ast;
   if (e === null) {
@@ -133,7 +134,7 @@ function visit(
       } else if (e.parsed.type === "amount") {
         const split = e.unParsed.split(":");
         if (split.length === 2) {
-          const unit = Serialize.stringToUnit(split[1]);
+          const unit = Serialize.stringToUnit(split[1], BaseUnits);
           if (unit) {
             const unitFormat = Format.getUnitFormat(unit, unitsFormat);
             if (unitFormat) {

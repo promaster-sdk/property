@@ -1,5 +1,5 @@
 import React from "react";
-import { Unit, Quantity } from "uom";
+import { Unit } from "uom";
 import {
   PropertyValueSet,
   PropertyValue,
@@ -9,7 +9,7 @@ import { PropertySelectorProps } from "./default-property-selector-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
 
 export type AmountFormat = {
-  readonly unit: Unit.Unit<Quantity.Quantity>;
+  readonly unit: Unit.Unit<unknown>;
   readonly decimalCount: number;
 };
 export type PropertySelectionOnChange = (
@@ -24,7 +24,7 @@ export type OnPropertiesChanged = (
 
 export type OnPropertyFormatChanged = (
   propertyName: string,
-  unit: Unit.Unit<Quantity.Quantity>,
+  unit: Unit.Unit<unknown>,
   decimalCount: number
 ) => void;
 export type OnPropertyFormatCleared = (propertyName: string) => void;
@@ -89,7 +89,7 @@ export interface Property {
   readonly sort_no: number;
   readonly name: string;
   readonly group: string;
-  readonly quantity: Quantity.Quantity;
+  readonly quantity: string;
   readonly validation_filter: PropertyFilter.PropertyFilter;
   readonly visibility_filter: PropertyFilter.PropertyFilter;
   readonly value: ReadonlyArray<PropertyValueItem>;

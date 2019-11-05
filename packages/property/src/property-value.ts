@@ -1,4 +1,4 @@
-import { Amount, Unit, Quantity, Serialize } from "uom";
+import { Amount, Unit, BaseUnits, Serialize } from "uom";
 import { compareNumbers, compareIgnoreCase } from "./utils/compare-utils";
 
 // Types
@@ -7,7 +7,7 @@ export type PropertyType = "amount" | "text" | "integer";
 
 export interface AmountPropertyValue {
   readonly type: "amount";
-  readonly value: Amount.Amount<Quantity.Quantity>;
+  readonly value: Amount.Amount<unknown>;
 }
 
 export interface TextPropertyValue {
@@ -36,7 +36,7 @@ export const defaultComparer: Comparer = (
 
 export function create(
   type: PropertyType,
-  value: Amount.Amount<Quantity.Quantity> | string | number
+  value: Amount.Amount<unknown> | string | number
 ): PropertyValue {
   if (type === undefined || type === null) {
     throw new Error("Argument 'type' must be specified.");
@@ -45,7 +45,7 @@ export function create(
     throw new Error("Argument 'value' must be specified.");
   }
   if (type === "amount") {
-    return { type: "amount", value: value as Amount.Amount<Quantity.Quantity> };
+    return { type: "amount", value: value as Amount.Amount<unknown> };
   }
   if (type === "text") {
     return { type: "text", value: value as string };
@@ -66,9 +66,7 @@ export function fromString(encodedValue: string): PropertyValue | undefined {
   return result;
 }
 
-export function fromAmount(
-  amountValue: Amount.Amount<Quantity.Quantity>
-): PropertyValue {
+export function fromAmount(amountValue: Amount.Amount<unknown>): PropertyValue {
   if (!amountValue) {
     throw new Error("null: value");
   }
@@ -104,7 +102,7 @@ export function getInteger(value: PropertyValue): number | undefined {
   }
 }
 
-export function getAmount<T extends Quantity.Quantity>(
+export function getAmount<T>(
   value: PropertyValue
 ): Amount.Amount<T> | undefined {
   if (value.type === "amount") {
@@ -122,7 +120,7 @@ export function getText(value: PropertyValue): string | undefined {
   }
 }
 
-export function valueAs<T extends Quantity.Quantity>(
+export function valueAs<T>(
   unit: Unit.Unit<T>,
   value: PropertyValue
 ): number | undefined {
@@ -282,10 +280,10 @@ function _fromSerializedStringOrUndefinedIfInvalidString(
       if (doubleValue === null) {
         return undefined;
       }
-      if (!Serialize.stringToUnit(unitString)) {
+      if (!Serialize.stringToUnit(unitString, BaseUnits)) {
         return undefined;
       }
-      const unit = Serialize.stringToUnit(unitString);
+      const unit = Serialize.stringToUnit(unitString, BaseUnits);
       let decimalCount = 0;
       const pointIndex = stringValue.indexOf(".");
       if (pointIndex >= 0) {
