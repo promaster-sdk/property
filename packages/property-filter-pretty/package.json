@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/property-filter-pretty",
   "author": "Divid Promaster AB",
   "license": "MIT",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Pretty printing of property filters",
   "main": "lib/index.js",
   "types": "lib/index",
@@ -21,7 +21,7 @@
     "promaster-sdk"
   ],
   "dependencies": {
-    "@promaster-sdk/property": "^3.0.0",
+    "@promaster-sdk/property": "^3.0.1",
     "ts-exhaustive-check": "^1.0.0",
     "uom": "^3.0.0"
   }
