@@ -1,6 +1,7 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
 import React from "react";
+import { Units } from "uom-units";
 import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
@@ -39,7 +40,7 @@ export class PropertiesSelectorExample3AutoSelectAndLockSingleValidValue extends
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=20;b=200;"),
+      propertyValueSet: PropertyValueSet.fromString("a=20;b=200;", Units),
       closedGroups: [],
       propertyFormats: {}
     };

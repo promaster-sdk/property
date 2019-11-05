@@ -14948,6 +14948,13 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
+uom-units@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/uom-units/-/uom-units-0.4.0.tgz#91e928576777434e3f20ef1bcdb79d96bf445b96"
+  integrity sha512-ZfoIIU63mEZvQwOWzMJf9lE1xcu/IrzHTifb7UUsJ0ACnGPoQx1Kqg4977fLtregNbimmbLNfc5a9G2ua1hsUg==
+  dependencies:
+    uom "^3.0.0"
+
 uom@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/uom/-/uom-3.0.0.tgz#1467f49ca44234adb8efc6a6e6e4c227f1865142"

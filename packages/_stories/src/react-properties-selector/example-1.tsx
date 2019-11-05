@@ -1,6 +1,7 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
 import React from "react";
+import { Units } from "uom-units";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
@@ -15,7 +16,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Meter;b=1;")
+      propertyValueSet: PropertyValueSet.fromString("a=10:Meter;b=1;", Units)
     };
   }
 

@@ -41,7 +41,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Meter"),
+      propertyValueSet: PropertyValueSet.fromString("a=10:Meter", units),
       selectedUnit: BaseUnits.Meter,
       selectedDecimalCount: 2
     };

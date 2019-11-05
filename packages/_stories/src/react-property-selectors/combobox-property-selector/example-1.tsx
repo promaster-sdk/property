@@ -11,7 +11,7 @@ import {
   PropertyValue
 } from "@promaster-sdk/property";
 import { merge } from "../utils";
-import { unitsFormat } from "../units-map";
+import { unitsFormat, units } from "../units-map";
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -38,7 +38,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=1;b=2")
+      propertyValueSet: PropertyValueSet.fromString("a=1;b=2", units)
     };
   }
 

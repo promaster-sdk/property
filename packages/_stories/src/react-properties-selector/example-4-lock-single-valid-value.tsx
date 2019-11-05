@@ -39,7 +39,7 @@ export class PropertiesSelectorExample4LockSingleValidValue extends React.Compon
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=20;b=200;"),
+      propertyValueSet: PropertyValueSet.fromString("a=20;b=200;", {}),
       closedGroups: [],
       propertyFormats: {}
     };

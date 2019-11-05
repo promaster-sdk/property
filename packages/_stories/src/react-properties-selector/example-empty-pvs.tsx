@@ -36,7 +36,7 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString(""),
+      propertyValueSet: PropertyValueSet.fromString("", {}),
       closedGroups: [],
       propertyFormats: {}
     };

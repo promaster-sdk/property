@@ -2,6 +2,7 @@
 /* eslint-disable functional/no-class */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import React from "react";
+import { Units } from "uom-units";
 import { createTextboxPropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../utils";
@@ -19,7 +20,10 @@ export class TextboxPropertySelectorExample1 extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString('a="This is the value";b=3')
+      propertyValueSet: PropertyValueSet.fromString(
+        'a="This is the value";b=3',
+        Units
+      )
     };
   }
 
