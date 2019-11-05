@@ -15,7 +15,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Celsius;b=1;")
+      propertyValueSet: PropertyValueSet.fromString("a=10:Meter;b=1;")
     };
   }
 

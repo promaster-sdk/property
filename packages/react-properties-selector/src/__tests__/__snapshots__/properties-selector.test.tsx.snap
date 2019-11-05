@@ -9,7 +9,6 @@ exports[`Simple PropertiesSelector 1`] = `
         <tr>
           <td>
             <label
-              className="invalid"
               title="translatePropertyLabelHover"
             >
               <span
@@ -42,7 +41,7 @@ exports[`Simple PropertiesSelector 1`] = `
               <span
                 onClick={[Function]}
               >
-                 
+                
               </span>
             </span>
           </td>

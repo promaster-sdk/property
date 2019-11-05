@@ -1,4 +1,5 @@
 import React from "react";
+import { UnitFormat, BaseUnits } from "uom";
 import * as renderer from "react-test-renderer";
 import {
   PropertyFilter,
@@ -7,13 +8,17 @@ import {
 } from "@promaster-sdk/property";
 import * as PropertiesSelector from "../index";
 
+const unitsFormat: UnitFormat.UnitFormatMap = {
+  Meter: UnitFormat.createUnitFormat("m", 2)
+};
+
 test("Simple PropertiesSelector", () => {
   const productProperties = exampleProductProperties();
   const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
     productProperties: productProperties,
     selectedProperties: PropertyValueSet.Empty,
-    units: {},
-    unitsFormat: {}
+    units: BaseUnits,
+    unitsFormat
   };
 
   const component = renderer.create(
@@ -41,9 +46,9 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
       sort_no: 1,
       name: "a",
       group: "",
-      quantity: "Temperature",
+      quantity: "Length",
       validation_filter:
-        PropertyFilter.fromString("a>100:Celsius") || PropertyFilter.Empty,
+        PropertyFilter.fromString("a>100:Meter") || PropertyFilter.Empty,
       visibility_filter: PropertyFilter.Empty,
       value: []
     },
