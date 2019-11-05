@@ -1,3 +1,4 @@
+import { BaseUnits } from "uom";
 import * as PropertyValue from "../property-value";
 
 // All expression
@@ -112,7 +113,7 @@ export interface ValueExpr {
 }
 
 export function newValueExpr(unParsed: string): ValueExpr {
-  const parsed = PropertyValue.fromString(unParsed);
+  const parsed = PropertyValue.fromString(unParsed, BaseUnits);
   if (parsed === undefined) {
     throw new Error(`Invalid property value ${unParsed}`);
   }

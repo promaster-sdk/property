@@ -1,4 +1,4 @@
-import { Amount, Unit, BaseUnits, Serialize } from "uom";
+import { Amount, Unit, Serialize } from "uom";
 import { compareNumbers, compareIgnoreCase } from "./utils/compare-utils";
 
 // Types
@@ -56,8 +56,14 @@ export function create(
   throw new Error(`Unknown 'type' ${type}.`);
 }
 
-export function fromString(encodedValue: string): PropertyValue | undefined {
-  const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue);
+export function fromString(
+  encodedValue: string,
+  units: Unit.UnitMap
+): PropertyValue | undefined {
+  const result = _fromSerializedStringOrUndefinedIfInvalidString(
+    encodedValue,
+    units
+  );
   if (result === null) {
     console.warn(
       `PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`
@@ -253,7 +259,8 @@ function _compare(left: PropertyValue, right: PropertyValue): number {
 ///
 /// Amount-values must be in format Value:Unit without quotation marks.
 function _fromSerializedStringOrUndefinedIfInvalidString(
-  encodedValue: string
+  encodedValue: string,
+  units: Unit.UnitMap
 ): PropertyValue | undefined {
   if (encodedValue === "") {
     return fromText("");
@@ -280,10 +287,10 @@ function _fromSerializedStringOrUndefinedIfInvalidString(
       if (doubleValue === null) {
         return undefined;
       }
-      if (!Serialize.stringToUnit(unitString, BaseUnits)) {
+      if (!Serialize.stringToUnit(unitString, units)) {
         return undefined;
       }
-      const unit = Serialize.stringToUnit(unitString, BaseUnits);
+      const unit = Serialize.stringToUnit(unitString, units);
       let decimalCount = 0;
       const pointIndex = stringValue.indexOf(".");
       if (pointIndex >= 0) {

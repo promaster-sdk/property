@@ -1,4 +1,4 @@
-import { Amount } from "uom";
+import { Amount, Unit } from "uom";
 // eslint-disable-next-line import/no-duplicates
 import * as PropertyValue from "./property-value";
 // eslint-disable-next-line import/no-duplicates
@@ -25,21 +25,28 @@ interface MutablePropertyValueSet {
 
 // Functions
 
-export function fromString(encodedValueSet: string): PropertyValueSet {
+export function fromString(
+  encodedValueSet: string,
+  units: Unit.UnitMap
+): PropertyValueSet {
   const err = (): PropertyValueSet => {
     throw new Error(`${encodedValueSet} is not a valid PropertyValueSet`);
   };
-  return fromStringOrError(err, encodedValueSet);
+  return fromStringOrError(err, encodedValueSet, units);
 }
 
 export function fromStringOrError(
   onError: (encodedValueSet: string) => PropertyValueSet,
-  encodedValueSet: string
+  encodedValueSet: string,
+  units: Unit.UnitMap
 ): PropertyValueSet {
   if (!encodedValueSet || encodedValueSet.length === 0) {
     return {};
   }
-  const entries = _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet);
+  const entries = _stringToEntriesOrUndefinedIfInvalidString(
+    encodedValueSet,
+    units
+  );
   if (entries === undefined) {
     return onError(encodedValueSet);
   } else {
@@ -312,7 +319,8 @@ export function equals(
 /// Name1=Value1;Name2=Value2;Name3=Value3
 /// Values that represents strings must be enclosed in double quote (") and if they contains double quote characters they must be encoded as %22.
 function _stringToEntriesOrUndefinedIfInvalidString(
-  encodedValueSet: string
+  encodedValueSet: string,
+  units: Unit.UnitMap
 ): PropertyValueSet | undefined {
   const entries: MutablePropertyValueSet = {};
   // Add extra semicolon on the end to close last name/value pair
@@ -349,7 +357,7 @@ function _stringToEntriesOrUndefinedIfInvalidString(
           }
           let entryValue: PropertyValue.PropertyValue | undefined;
           // eslint-disable-next-line prefer-const
-          entryValue = PropertyValue.fromString(value.toString());
+          entryValue = PropertyValue.fromString(value.toString(), units);
           //              if (!PropertyValue.TryParse(value.ToString(), out entryValue)) {
           if (entryValue === undefined) {
             // Parse error

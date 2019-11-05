@@ -147,7 +147,7 @@ describe("PropertyValue", () => {
   });
 
   it("should make an empty string when amount value is null", () => {
-    const pv1 = PropertyValue.fromString("20:Meter");
+    const pv1 = PropertyValue.fromString("20:Meter", BaseUnits);
     if (pv1 === undefined || pv1.type !== "amount") {
       throw new Error("Bla");
     }
@@ -225,7 +225,7 @@ describe("PropertyValue.greaterOrEqualTo", () => {
 function fromStringOrException(
   encodedValue: string
 ): PropertyValue.PropertyValue {
-  const f = PropertyValue.fromString(encodedValue);
+  const f = PropertyValue.fromString(encodedValue, BaseUnits);
   if (f === undefined) {
     throw new Error(`Could not parse property value "${encodedValue}".`);
   }

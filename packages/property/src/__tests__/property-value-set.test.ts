@@ -5,28 +5,28 @@ import * as PropertyValue from "../property-value";
 describe("PropertyValueSet", () => {
   describe("getValue", () => {
     it("should get text value", () => {
-      const pvs = PropertyValueSet.fromString('message="MyMessage"');
+      const pvs = PropertyValueSet.fromString('message="MyMessage"', BaseUnits);
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
         PropertyValue.fromText("MyMessage")
       );
     });
 
     it("should get integer value", () => {
-      const pvs = PropertyValueSet.fromString("message=12");
+      const pvs = PropertyValueSet.fromString("message=12", BaseUnits);
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
         PropertyValue.fromInteger(12)
       );
     });
 
     it("should get amount value", () => {
-      const pvs = PropertyValueSet.fromString("message=12:Meter");
+      const pvs = PropertyValueSet.fromString("message=12:Meter", BaseUnits);
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
         PropertyValue.fromAmount(Amount.create(12, BaseUnits.Meter, 0))
       );
     });
 
     it("should_get_default_if_type_is_not_matching", () => {
-      const pvs = PropertyValueSet.fromString("a=10:Meter");
+      const pvs = PropertyValueSet.fromString("a=10:Meter", BaseUnits);
       const pv2 = PropertyValueSet.getInteger("a", pvs);
       expect(pv2).toBe(undefined);
     });
@@ -34,14 +34,14 @@ describe("PropertyValueSet", () => {
 
   describe("parsing", () => {
     it("should parse a=1", () => {
-      const pvs = PropertyValueSet.fromString("a=1");
+      const pvs = PropertyValueSet.fromString("a=1", BaseUnits);
       expect(PropertyValueSet.get("a", pvs)).toEqual(
         PropertyValue.fromInteger(1)
       );
     });
 
     it("should parse a=1;b=2;", () => {
-      const pvs = PropertyValueSet.fromString("a=1;b=2;");
+      const pvs = PropertyValueSet.fromString("a=1;b=2;", BaseUnits);
       expect(PropertyValueSet.get("a", pvs)).toEqual(
         PropertyValue.fromInteger(1)
       );
@@ -53,7 +53,7 @@ describe("PropertyValueSet", () => {
 
   describe("set", () => {
     it("should set the specified property", () => {
-      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
       const pvs2 = PropertyValueSet.set("b", PropertyValue.fromInteger(5), pvs);
       expect(PropertyValueSet.get("a", pvs2)).toEqual(
         PropertyValue.fromInteger(1)
@@ -69,7 +69,7 @@ describe("PropertyValueSet", () => {
 
   describe("setInteger", () => {
     it("should set the specified property", () => {
-      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
       const pvs2 = PropertyValueSet.setInteger("b", 5, pvs);
       expect(PropertyValueSet.get("a", pvs2)).toEqual(
         PropertyValue.fromInteger(1)
@@ -85,7 +85,7 @@ describe("PropertyValueSet", () => {
 
   describe("setAmount", () => {
     it("should set the specified property", () => {
-      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
       const pvs2 = PropertyValueSet.setAmount(
         "b",
         Amount.create(12, BaseUnits.Meter),
@@ -101,29 +101,29 @@ describe("PropertyValueSet", () => {
 
   describe("equals", () => {
     it("should see two sets with same keys and values as equal regardless of order", () => {
-      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
-      const pvs2 = PropertyValueSet.fromString("c=3;b=2;a=1");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
+      const pvs2 = PropertyValueSet.fromString("c=3;b=2;a=1", BaseUnits);
       expect(PropertyValueSet.equals(pvs1, pvs2)).toBe(true);
     });
 
     it("should see two sets with same keys but different values as unequal", () => {
-      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
-      const pvs2 = PropertyValueSet.fromString("a=1;b=2;c=4");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
+      const pvs2 = PropertyValueSet.fromString("a=1;b=2;c=4", BaseUnits);
       expect(PropertyValueSet.equals(pvs1, pvs2)).toBe(false);
     });
 
     it("should see two sets with differnet keys as unequal", () => {
-      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
-      const pvs2 = PropertyValueSet.fromString("a=1;b=2");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
+      const pvs2 = PropertyValueSet.fromString("a=1;b=2", BaseUnits);
       expect(PropertyValueSet.equals(pvs1, pvs2)).toBe(false);
     });
   });
 
   describe("toString", () => {
     it("toString should result in a valid set, equal to the original", () => {
-      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
       const str1 = PropertyValueSet.toString(pvs1);
-      const pvs2 = PropertyValueSet.fromString(str1);
+      const pvs2 = PropertyValueSet.fromString(str1, BaseUnits);
       expect(PropertyValueSet.equals(pvs1, pvs2)).toBe(true);
     });
 
@@ -142,7 +142,7 @@ describe("PropertyValueSet", () => {
 
   describe("isEmpty", () => {
     it("it should return true on empty object", () => {
-      const pvs1 = PropertyValueSet.fromString("");
+      const pvs1 = PropertyValueSet.fromString("", BaseUnits);
       expect(PropertyValueSet.isEmpty(pvs1)).toBe(true);
     });
 
@@ -155,14 +155,14 @@ describe("PropertyValueSet", () => {
     });
 
     it("it should return false on non empty object", () => {
-      const pvs1 = PropertyValueSet.fromString("a=1");
+      const pvs1 = PropertyValueSet.fromString("a=1", BaseUnits);
       expect(PropertyValueSet.isEmpty(pvs1)).toBe(false);
     });
   });
 
   describe("keepProperties", () => {
     it("it should remove unwanted properties", () => {
-      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
       const propertyNamesToKeep: Array<string> = ["a", "c"];
       const resultingPvs = PropertyValueSet.keepProperties(
         propertyNamesToKeep,
@@ -172,7 +172,7 @@ describe("PropertyValueSet", () => {
       expect("a=1;c=3").toBe(resultingPvsString);
     });
     it("it should not add any properties", () => {
-      const pvs1 = PropertyValueSet.fromString("a=1;c=3");
+      const pvs1 = PropertyValueSet.fromString("a=1;c=3", BaseUnits);
       const propertyNamesToKeep: Array<string> = ["a", "b", "c"];
       const resultingPvs = PropertyValueSet.keepProperties(
         propertyNamesToKeep,
@@ -185,17 +185,18 @@ describe("PropertyValueSet", () => {
 
   describe("filter", () => {
     it("it should filter based on key", () => {
-      const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3");
+      const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3", BaseUnits);
       const resultingPvs = PropertyValueSet.filter(
         kvp => !kvp.key.startsWith("pp_"),
         pvs1
       );
-      const pvs2 = PropertyValueSet.fromString("b=2");
+      const pvs2 = PropertyValueSet.fromString("b=2", BaseUnits);
       expect(PropertyValueSet.equals(resultingPvs, pvs2)).toBe(true);
     });
     it("it should filter based on value", () => {
       const pvs1 = PropertyValueSet.fromString(
-        'a=10:Meter;b="test";c=13:Meter;d=4'
+        'a=10:Meter;b="test";c=13:Meter;d=4',
+        BaseUnits
       );
       const resultingPvs = PropertyValueSet.filter(
         kvp =>
@@ -203,25 +204,26 @@ describe("PropertyValueSet", () => {
           Amount.lessThan(kvp.value.value, Amount.create(12, BaseUnits.Meter)),
         pvs1
       );
-      const pvs2 = PropertyValueSet.fromString("a=10:Meter");
+      const pvs2 = PropertyValueSet.fromString("a=10:Meter", BaseUnits);
       expect(PropertyValueSet.equals(resultingPvs, pvs2)).toBe(true);
     });
   });
 
   describe("map", () => {
     it("it should map based on key", () => {
-      const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3");
+      const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3", BaseUnits);
       const resultingPvs = PropertyValueSet.map(
         kvp =>
           kvp.key.startsWith("pp_") ? { ...kvp, key: kvp.key.substr(3) } : kvp,
         pvs1
       );
-      const pvs2 = PropertyValueSet.fromString("a=1;b=2;c=3");
+      const pvs2 = PropertyValueSet.fromString("a=1;b=2;c=3", BaseUnits);
       expect(PropertyValueSet.equals(resultingPvs, pvs2)).toBe(true);
     });
     it("it should map based on value", () => {
       const pvs1 = PropertyValueSet.fromString(
-        "a=10:Kelvin;b=20:Meter;c=30:Kelvin;d=4"
+        "a=10:Kelvin;b=20:Meter;c=30:Kelvin;d=4",
+        BaseUnits
       );
       const resultingPvs = PropertyValueSet.map(
         kvp => ({
@@ -235,7 +237,7 @@ describe("PropertyValueSet", () => {
         }),
         pvs1
       );
-      const pvs2 = PropertyValueSet.fromString("a=1;b=0;c=1;d=0");
+      const pvs2 = PropertyValueSet.fromString("a=1;b=0;c=1;d=0", BaseUnits);
       expect(PropertyValueSet.equals(resultingPvs, pvs2)).toBe(true);
     });
   });
