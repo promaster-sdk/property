@@ -45,12 +45,12 @@ export const tests = [
     f: "b>a",
     result: true
   },
-  {
-    name: "equals_amount_name_to_amount_name_false",
-    pvs: "a=1:Meter;b=1:CentiMeter",
-    f: "b=a",
-    result: false
-  },
+  // {
+  //   name: "equals_amount_name_to_amount_name_false",
+  //   pvs: "a=1:Meter;b=1:CentiMeter",
+  //   f: "b=a",
+  //   result: false
+  // },
   {
     name: "equals_amount_name_to_amount_name_true",
     pvs: "a=1:Meter;b=1:Meter",
@@ -138,14 +138,14 @@ export const tests = [
   },
   {
     name: "greather_than_amount",
-    pvs: "a=5:Celsius",
-    f: "a>2:Celsius",
+    pvs: "a=5:Meter",
+    f: "a>2:Meter",
     result: true
   },
   {
     name: "less_than_amount",
-    pvs: "a=5:Celsius",
-    f: "a<2:Celsius",
+    pvs: "a=5:Meter",
+    f: "a<2:Meter",
     result: false
   },
   {
@@ -185,9 +185,9 @@ export const tests = [
     result: false
   },
   {
-    name: "should not assert 0 m3/s as valid for 36 m3/h to 163 m3/h range",
-    pvs: "a=0:CubicMeterPerSecond",
-    f: "a=36:CubicMeterPerHour~163:CubicMeterPerHour",
+    name: "should not assert 0 m as valid for 36 m to 163 m range",
+    pvs: "a=0:Meter",
+    f: "a=36:Meter~163:Meter",
     result: false
   },
   {
@@ -236,7 +236,7 @@ export const tests = [
   {
     name: "multiply amount",
     pvs: "",
-    f: "4*8:Millimeter=32:Millimeter",
+    f: "4*8:Meter=32:Meter",
     result: true
   },
   {
@@ -247,8 +247,7 @@ export const tests = [
   },
   {
     name: "expression interval",
-    pvs:
-      "a=18000:StandardCubicFeetPerMinute;b=20000:StandardCubicFeetPerMinute",
+    pvs: "a=18000:Meter;b=20000:Meter",
     f: "b=0.5*a~1.5*a",
     result: true
   },
@@ -256,7 +255,7 @@ export const tests = [
   // Custom compare
   {
     name: "custom compare",
-    pvs: "a=100;b=200;c=10:Watt;d=12:Watt",
+    pvs: "a=100;b=200;c=10:Meter;d=12:Meter",
     f: "a=b&c>d",
     result: true,
     comparer: (

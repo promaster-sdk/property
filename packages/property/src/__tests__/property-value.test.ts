@@ -68,19 +68,19 @@ describe("PropertyValue", () => {
   });
 
   it("should_parse_amount_string_with_two_decimals_to_amount_with_two_decimals", () => {
-    const pv1 = fromStringOrException("12.34:Celsius");
+    const pv1 = fromStringOrException("12.34:Meter");
     const amount = getAmountOrException(pv1);
     expect(amount.decimalCount).toBe(2);
   });
 
   it("should_parse_amount_string_with_one_decimal_to_amount_with_one_decimal", () => {
-    const pv1 = fromStringOrException("532.5:Watt");
+    const pv1 = fromStringOrException("532.5:Meter");
     const amount = getAmountOrException(pv1);
     expect(amount.decimalCount).toBe(1);
   });
 
   it("should_parse_amount_string_with_zero_decimals_to_amount_with_zero_decimals", () => {
-    const pv1 = fromStringOrException("532:Inch");
+    const pv1 = fromStringOrException("532:Meter");
     const amount = getAmountOrException(pv1);
     expect(amount.decimalCount).toBe(0);
   });
@@ -91,7 +91,7 @@ describe("PropertyValue", () => {
   });
 
   it("should_give_undefined_if_type_is_not_matching", () => {
-    const pv1 = fromStringOrException("10:Celsius");
+    const pv1 = fromStringOrException("10:Meter");
     expect(PropertyValue.getInteger(pv1)).toBe(undefined);
   });
 
@@ -114,9 +114,9 @@ describe("PropertyValue", () => {
   });
 
   it("should make a correct string from an amount value", () => {
-    const pv1 = fromStringOrException("20.03:Celsius");
+    const pv1 = fromStringOrException("20.03:Meter");
     const pv1string = PropertyValue.toString(pv1);
-    expect(pv1string).toBe("20.03:Celsius");
+    expect(pv1string).toBe("20.03:Meter");
   });
 
   it("should make a correct string from an integer value", () => {
@@ -147,11 +147,11 @@ describe("PropertyValue", () => {
   });
 
   it("should make an empty string when amount value is null", () => {
-    const pv1 = PropertyValue.fromString("20:PercentHumidity");
+    const pv1 = PropertyValue.fromString("20:Meter");
     if (pv1 === undefined || pv1.type !== "amount") {
       throw new Error("Bla");
     }
-    expect(pv1.value.unit.quantity === "RelativeHumidity").toBe(true);
+    expect(pv1.value.unit.quantity === "Length").toBe(true);
   });
 
   it("custom_comparer_equals", () => {
@@ -215,9 +215,9 @@ describe("PropertyValue", () => {
 });
 
 describe("PropertyValue.greaterOrEqualTo", () => {
-  it("should assert false for 0:CubicMeterPerSecond >= 16:CubicMeterPerHour", () => {
-    const pv1 = fromStringOrException("0:CubicMeterPerSecond");
-    const pv2 = fromStringOrException("16:CubicMeterPerHour");
+  it("should assert false for 0:Meter >= 16:Meter", () => {
+    const pv1 = fromStringOrException("0:Meter");
+    const pv2 = fromStringOrException("16:Meter");
     expect(PropertyValue.greaterOrEqualTo(pv1, pv2)).toBe(false);
   });
 });

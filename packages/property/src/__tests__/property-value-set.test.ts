@@ -19,14 +19,14 @@ describe("PropertyValueSet", () => {
     });
 
     it("should get amount value", () => {
-      const pvs = PropertyValueSet.fromString("message=12:Celsius");
+      const pvs = PropertyValueSet.fromString("message=12:Meter");
       expect(PropertyValueSet.getValue("message", pvs)).toEqual(
         PropertyValue.fromAmount(Amount.create(12, BaseUnits.Meter, 0))
       );
     });
 
     it("should_get_default_if_type_is_not_matching", () => {
-      const pvs = PropertyValueSet.fromString("a=10:Celsius");
+      const pvs = PropertyValueSet.fromString("a=10:Meter");
       const pv2 = PropertyValueSet.getInteger("a", pvs);
       expect(pv2).toBe(undefined);
     });
@@ -195,7 +195,7 @@ describe("PropertyValueSet", () => {
     });
     it("it should filter based on value", () => {
       const pvs1 = PropertyValueSet.fromString(
-        'a=10:Celsius;b="test";c=13:Celsius;d=4'
+        'a=10:Meter;b="test";c=13:Meter;d=4'
       );
       const resultingPvs = PropertyValueSet.filter(
         kvp =>
@@ -203,7 +203,7 @@ describe("PropertyValueSet", () => {
           Amount.lessThan(kvp.value.value, Amount.create(12, BaseUnits.Meter)),
         pvs1
       );
-      const pvs2 = PropertyValueSet.fromString("a=10:Celsius");
+      const pvs2 = PropertyValueSet.fromString("a=10:Meter");
       expect(PropertyValueSet.equals(resultingPvs, pvs2)).toBe(true);
     });
   });
@@ -221,7 +221,7 @@ describe("PropertyValueSet", () => {
     });
     it("it should map based on value", () => {
       const pvs1 = PropertyValueSet.fromString(
-        "a=10:Celsius;b=20:Watt;c=30:Celsius;d=4"
+        "a=10:Kelvin;b=20:Meter;c=30:Kelvin;d=4"
       );
       const resultingPvs = PropertyValueSet.map(
         kvp => ({
