@@ -1,4 +1,5 @@
 /* eslint-disable functional/no-method-signature */
+import { Unit } from "uom";
 import * as Ast from "./types";
 import * as Parser from "./pegjs/generated-parser";
 
@@ -38,32 +39,39 @@ type ParserCallbacks = {
   ): Ast.UnaryExpr;
 };
 
-const parserCallbacks: ParserCallbacks = {
-  createValueExpr: Ast.newValueExpr,
-  createNullExpr: Ast.newNullExpr,
-  createIdentifierExpr: Ast.newIdentifierExpr,
-  createValueRangeExpr: Ast.newValueRangeExpr,
-  createEqualsExpr: Ast.newEqualsExpr,
-  createComparisonExpr: Ast.newComparisonExpr,
-  createAndExpr: Ast.newAndExpr,
-  createOrExpr: Ast.newOrExpr,
-  createAddExpr: Ast.newAddExpr,
-  createMulExpr: Ast.newMulExpr,
-  createUnaryExpr: Ast.newUnaryExpr
-};
+interface Options {
+  readonly startRule: string;
+  readonly tracer: undefined | string;
+  readonly callbacks: ParserCallbacks;
+}
 
-const options = {
-  startRule: "start",
-  tracer: undefined as string | undefined,
-  callbacks: parserCallbacks
-};
+function createOptions(units: Unit.UnitMap): Options {
+  return {
+    startRule: "start",
+    tracer: undefined as string | undefined,
+    callbacks: {
+      createValueExpr: (unparsed: string) => Ast.newValueExpr(unparsed, units),
+      createNullExpr: Ast.newNullExpr,
+      createIdentifierExpr: Ast.newIdentifierExpr,
+      createValueRangeExpr: Ast.newValueRangeExpr,
+      createEqualsExpr: Ast.newEqualsExpr,
+      createComparisonExpr: Ast.newComparisonExpr,
+      createAndExpr: Ast.newAndExpr,
+      createOrExpr: Ast.newOrExpr,
+      createAddExpr: Ast.newAddExpr,
+      createMulExpr: Ast.newMulExpr,
+      createUnaryExpr: Ast.newUnaryExpr
+    }
+  };
+}
 
 export function parse(
   text: string,
-  throwOnInvalidSyntax: boolean = false
+  throwOnInvalidSyntax: boolean = false,
+  units: Unit.UnitMap
 ): Ast.BooleanExpr | undefined {
   try {
-    const result = Parser.parse(text, options);
+    const result = Parser.parse(text, createOptions(units));
     return result;
   } catch (error) {
     if (throwOnInvalidSyntax) {

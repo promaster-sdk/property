@@ -1,4 +1,5 @@
 import { UnitFormat } from "uom";
+import { Units } from "uom-units";
 import { PropertyFilter } from "@promaster-sdk/property";
 import * as PrettyPrinting from "../index";
 
@@ -9,49 +10,49 @@ const unitsFormat = {
 describe("filterPrettyPrintSimple", () => {
   it("should print a must be 1", () => {
     const pretty = PrettyPrinting.filterPrettyPrintSimple(
-      PropertyFilter.fromString("a=1") as PropertyFilter.PropertyFilter
+      PropertyFilter.fromString("a=1", {}) as PropertyFilter.PropertyFilter
     );
     expect(pretty).toBe("a must be 1");
   });
 
   it("should print a must be 1 and b must be 2", () => {
     const pretty = PrettyPrinting.filterPrettyPrintSimple(
-      PropertyFilter.fromString("a=1&b=2") as PropertyFilter.PropertyFilter
+      PropertyFilter.fromString("a=1&b=2", {}) as PropertyFilter.PropertyFilter
     );
     expect(pretty).toBe("a must be 1 and b must be 2");
   });
 
   it("should print a + b must be 2", () => {
     const pretty = PrettyPrinting.filterPrettyPrintSimple(
-      PropertyFilter.fromString("a+b=2") as PropertyFilter.PropertyFilter
+      PropertyFilter.fromString("a+b=2", {}) as PropertyFilter.PropertyFilter
     );
     expect(pretty).toBe("a + b must be 2");
   });
 
   it("should print a - b must be 2", () => {
     const pretty = PrettyPrinting.filterPrettyPrintSimple(
-      PropertyFilter.fromString("a-b=2") as PropertyFilter.PropertyFilter
+      PropertyFilter.fromString("a-b=2", {}) as PropertyFilter.PropertyFilter
     );
     expect(pretty).toBe("a - b must be 2");
   });
 
   it("should print a * b must be 2", () => {
     const pretty = PrettyPrinting.filterPrettyPrintSimple(
-      PropertyFilter.fromString("a*b=2") as PropertyFilter.PropertyFilter
+      PropertyFilter.fromString("a*b=2", {}) as PropertyFilter.PropertyFilter
     );
     expect(pretty).toBe("a * b must be 2");
   });
 
   it("should print a / b must be 2", () => {
     const pretty = PrettyPrinting.filterPrettyPrintSimple(
-      PropertyFilter.fromString("a/b=2") as PropertyFilter.PropertyFilter
+      PropertyFilter.fromString("a/b=2", {}) as PropertyFilter.PropertyFilter
     );
     expect(pretty).toBe("a / b must be 2");
   });
 
   it("should print a must be -2", () => {
     const pretty = PrettyPrinting.filterPrettyPrintSimple(
-      PropertyFilter.fromString("a=-2") as PropertyFilter.PropertyFilter
+      PropertyFilter.fromString("a=-2", {}) as PropertyFilter.PropertyFilter
     );
     expect(pretty).toBe("a must be -2");
   });
@@ -66,7 +67,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "*",
-      PropertyFilter.fromString("a=1") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("a=1", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("a must be a_1");
@@ -77,7 +78,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "*",
-      PropertyFilter.fromString("min<max") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("min<max", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("min must be less than max");
@@ -89,7 +90,8 @@ describe("filterPrettyPrintIndented", () => {
       0,
       "*",
       PropertyFilter.fromString(
-        "min<10:Meter"
+        "min<10:Meter",
+        Units
       ) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
@@ -101,7 +103,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "**",
-      PropertyFilter.fromString("a=1&b=2") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("a=1&b=2", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("a must be a_1\n**and\nb must be b_2");
@@ -112,7 +114,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "**",
-      PropertyFilter.fromString("a+b=2") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("a+b=2", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("a + b must be 2");
@@ -123,7 +125,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "**",
-      PropertyFilter.fromString("a-b=2") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("a-b=2", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("a - b must be 2");
@@ -134,7 +136,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "**",
-      PropertyFilter.fromString("a*b=2") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("a*b=2", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("a * b must be 2");
@@ -145,7 +147,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "**",
-      PropertyFilter.fromString("a/b=2") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("a/b=2", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("a / b must be 2");
@@ -156,7 +158,7 @@ describe("filterPrettyPrintIndented", () => {
       messages,
       0,
       "**",
-      PropertyFilter.fromString("a=-2") as PropertyFilter.PropertyFilter,
+      PropertyFilter.fromString("a=-2", {}) as PropertyFilter.PropertyFilter,
       unitsFormat
     );
     expect(pretty).toBe("a must be -2");

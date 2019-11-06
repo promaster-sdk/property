@@ -1,4 +1,4 @@
-import { BaseUnits } from "uom";
+import { Units } from "uom-units";
 import * as PropertyFilter from "../property-filter";
 import * as PropertyValueSet from "../property-value-set";
 import * as IsValidData from "./data/property-filter-isvalid";
@@ -8,7 +8,9 @@ describe("PropertyFilter", () => {
   describe("isSyntaxValid", () => {
     IsSyntaxValidData.tests.forEach(test => {
       it(test.name, () => {
-        expect(PropertyFilter.isSyntaxValid(test.f)).toEqual(test.result);
+        expect(PropertyFilter.isSyntaxValid(test.f, undefined, Units)).toEqual(
+          test.result
+        );
       });
     });
   });
@@ -16,7 +18,7 @@ describe("PropertyFilter", () => {
   describe("isValid", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(test.pvs, BaseUnits);
+        const pvs = PropertyValueSet.fromString(test.pvs, Units);
         const f = fromStringOrException(test.f);
         expect(PropertyFilter.isValid(pvs, f, test.comparer)).toEqual(
           test.result
@@ -43,7 +45,7 @@ describe("PropertyFilter", () => {
 });
 
 function fromStringOrException(filter: string): PropertyFilter.PropertyFilter {
-  const f = PropertyFilter.fromString(filter);
+  const f = PropertyFilter.fromString(filter, Units);
   if (f === undefined) {
     throw new Error(`Could not parse property filter "${filter}".`);
   }
