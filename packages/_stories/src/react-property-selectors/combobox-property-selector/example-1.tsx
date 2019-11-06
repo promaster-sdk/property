@@ -1,5 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 import React from "react";
+import { BaseUnits } from "uom";
 import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem
@@ -55,7 +56,8 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
         sortNo: 2,
         text: "Alternative 2",
         validationFilter: PropertyFilter.fromString(
-          "b=2"
+          "b=2",
+          BaseUnits
         ) as PropertyFilter.PropertyFilter
       }
     ];
@@ -74,7 +76,8 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
         sortNo: 2,
         text: "Alternative 2",
         validationFilter: PropertyFilter.fromString(
-          "a=2"
+          "a=2",
+          BaseUnits
         ) as PropertyFilter.PropertyFilter
       }
     ];

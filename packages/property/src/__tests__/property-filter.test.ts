@@ -8,7 +8,9 @@ describe("PropertyFilter", () => {
   describe("isSyntaxValid", () => {
     IsSyntaxValidData.tests.forEach(test => {
       it(test.name, () => {
-        expect(PropertyFilter.isSyntaxValid(test.f)).toEqual(test.result);
+        expect(PropertyFilter.isSyntaxValid(test.f, BaseUnits)).toEqual(
+          test.result
+        );
       });
     });
   });
@@ -43,7 +45,7 @@ describe("PropertyFilter", () => {
 });
 
 function fromStringOrException(filter: string): PropertyFilter.PropertyFilter {
-  const f = PropertyFilter.fromString(filter);
+  const f = PropertyFilter.fromString(filter, BaseUnits);
   if (f === undefined) {
     throw new Error(`Could not parse property filter "${filter}".`);
   }

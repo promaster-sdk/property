@@ -4,7 +4,7 @@ import React from "react";
 import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { Unit } from "uom";
+import { Unit, BaseUnits } from "uom";
 import {
   PropertyFilter,
   PropertyValueSet,
@@ -127,7 +127,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 20,
           value: PropertyValue.fromInteger(20),
-          property_filter: PropertyFilter.fromStringOrEmpty("")
+          property_filter: PropertyFilter.fromStringOrEmpty("", BaseUnits)
         }
       ]
     },
@@ -147,7 +147,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 200,
           value: PropertyValue.fromInteger(200),
-          property_filter: PropertyFilter.fromStringOrEmpty("a!=20")
+          property_filter: PropertyFilter.fromStringOrEmpty("a!=20", BaseUnits)
         }
       ]
     }

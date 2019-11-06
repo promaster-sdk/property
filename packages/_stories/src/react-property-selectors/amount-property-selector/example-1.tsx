@@ -32,7 +32,8 @@ const filterPrettyPrint = (
   );
 
 const validationFilter = PropertyFilter.fromString(
-  "a<100:Meter"
+  "a<100:Meter",
+  BaseUnits
 ) as PropertyFilter.PropertyFilter;
 
 const AmountPropertySelector = createAmountPropertySelector({});

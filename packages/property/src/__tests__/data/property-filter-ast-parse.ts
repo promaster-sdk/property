@@ -1,3 +1,4 @@
+import { BaseUnits } from "uom";
 import * as PropertyFilterAst from "../../property-filter-ast";
 
 const {
@@ -14,7 +15,10 @@ export const tests = [
     name: "should_parse_a_equals_1",
     f: "a=1",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
-      newValueRangeExpr(newValueExpr("1"), newValueExpr("1"))
+      newValueRangeExpr(
+        newValueExpr("1", BaseUnits),
+        newValueExpr("1", BaseUnits)
+      )
     ])
   },
   {
@@ -23,7 +27,7 @@ export const tests = [
     result: newComparisonExpr(
       newIdentifierExpr("a"),
       "greater",
-      newValueExpr("1")
+      newValueExpr("1", BaseUnits)
     )
   },
   {
@@ -32,37 +36,55 @@ export const tests = [
     result: newComparisonExpr(
       newIdentifierExpr("a"),
       "greaterOrEqual",
-      newValueExpr("1")
+      newValueExpr("1", BaseUnits)
     )
   },
   {
     name: "should_parse_a_dot_b_equals_1",
     f: "a.b=1",
     result: newEqualsExpr(newIdentifierExpr("a.b"), "equals", [
-      newValueRangeExpr(newValueExpr("1"), newValueExpr("1"))
+      newValueRangeExpr(
+        newValueExpr("1", BaseUnits),
+        newValueExpr("1", BaseUnits)
+      )
     ])
   },
   {
     name: "should_parse_a_equals_20_Meter",
     f: "a=20:Meter",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
-      newValueRangeExpr(newValueExpr("20:Meter"), newValueExpr("20:Meter"))
+      newValueRangeExpr(
+        newValueExpr("20:Meter", BaseUnits),
+        newValueExpr("20:Meter", BaseUnits)
+      )
     ])
   },
   {
     name: "should_parse_a_equals_20_Meters_range_30_Meter",
     f: "a=20:Meter~30:Meter",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
-      newValueRangeExpr(newValueExpr("20:Meter"), newValueExpr("30:Meter"))
+      newValueRangeExpr(
+        newValueExpr("20:Meter", BaseUnits),
+        newValueExpr("30:Meter", BaseUnits)
+      )
     ])
   },
   {
     name: "should_parse_addition",
     f: "1+1=2",
     result: newEqualsExpr(
-      newAddExpr(newValueExpr("1"), "add", newValueExpr("1")),
+      newAddExpr(
+        newValueExpr("1", BaseUnits),
+        "add",
+        newValueExpr("1", BaseUnits)
+      ),
       "equals",
-      [newValueRangeExpr(newValueExpr("2"), newValueExpr("2"))]
+      [
+        newValueRangeExpr(
+          newValueExpr("2", BaseUnits),
+          newValueExpr("2", BaseUnits)
+        )
+      ]
     )
   },
   {
@@ -70,8 +92,8 @@ export const tests = [
     f: "a=0:StandardLiterPerSecondPerSquareMeter",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
       newValueRangeExpr(
-        newValueExpr("0:StandardLiterPerSecondPerSquareMeter"),
-        newValueExpr("0:StandardLiterPerSecondPerSquareMeter")
+        newValueExpr("0:StandardLiterPerSecondPerSquareMeter", BaseUnits),
+        newValueExpr("0:StandardLiterPerSecondPerSquareMeter", BaseUnits)
       )
     ])
   }

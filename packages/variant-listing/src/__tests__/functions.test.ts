@@ -1,3 +1,4 @@
+import { BaseUnits } from "uom";
 import * as fs from "fs";
 import * as Path from "path";
 import * as R from "ramda";
@@ -18,7 +19,7 @@ describe("buildAllPropertyValueSets", () => {
         ...item,
         property_filter:
           item.property_filter &&
-          PropertyFilter.fromString(item.property_filter)
+          PropertyFilter.fromString(item.property_filter, BaseUnits)
       };
     }, cfcDataRaw.explicitPropertyValueSet);
     // Need to go though and create PropertyFilter for all strings in the data
@@ -28,12 +29,21 @@ describe("buildAllPropertyValueSets", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       variableProperties: cfcDataRaw.variableProperties.map((a: any) => ({
         ...a,
-        validation_filter: PropertyFilter.fromString(a.validation_filter),
-        visibility_filter: PropertyFilter.fromString(a.visibility_filter),
+        validation_filter: PropertyFilter.fromString(
+          a.validation_filter,
+          BaseUnits
+        ),
+        visibility_filter: PropertyFilter.fromString(
+          a.visibility_filter,
+          BaseUnits
+        ),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         value: a.value.map((a: any) => ({
           ...a,
-          property_filter: PropertyFilter.fromString(a.property_filter)
+          property_filter: PropertyFilter.fromString(
+            a.property_filter,
+            BaseUnits
+          )
         }))
       }))
     };
