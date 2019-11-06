@@ -64,5 +64,15 @@ export const tests = [
       "equals",
       [newValueRangeExpr(newValueExpr("2"), newValueExpr("2"))]
     )
+  },
+  {
+    name: "should_parse_with_custom_unit",
+    f: "a=0:StandardLiterPerSecondPerSquareMeter",
+    result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
+      newValueRangeExpr(
+        newValueExpr("0:StandardLiterPerSecondPerSquareMeter"),
+        newValueExpr("0:StandardLiterPerSecondPerSquareMeter")
+      )
+    ])
   }
 ];
