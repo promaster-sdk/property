@@ -1,4 +1,4 @@
-import { BaseUnits } from "uom";
+import { BaseUnits, Unit } from "uom";
 import * as PropertyFilterAst from "../../property-filter-ast";
 
 const {
@@ -9,6 +9,10 @@ const {
   newComparisonExpr,
   newAddExpr
 } = PropertyFilterAst;
+
+const customUnitMap = {
+  MyCustomUnit: Unit.createBase<"Foo">("MyCustomUnit", "Foo", "FooSymbol")
+};
 
 export const tests = [
   {
@@ -89,11 +93,11 @@ export const tests = [
   },
   {
     name: "should_parse_with_custom_unit",
-    f: "a=0:StandardLiterPerSecondPerSquareMeter",
+    f: "a=0:MyCustomUnit",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
       newValueRangeExpr(
-        newValueExpr("0:StandardLiterPerSecondPerSquareMeter", BaseUnits),
-        newValueExpr("0:StandardLiterPerSecondPerSquareMeter", BaseUnits)
+        newValueExpr("0:MyCustomUnit", customUnitMap),
+        newValueExpr("0:MyCustomUnit", customUnitMap)
       )
     ])
   }
