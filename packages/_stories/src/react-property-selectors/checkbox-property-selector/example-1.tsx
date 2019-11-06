@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 import React from "react";
-import { Units } from "uom-units";
+import { BaseUnits } from "uom";
 import {
   createCheckboxPropertySelector,
   CheckboxPropertyValueItem
@@ -26,7 +26,7 @@ export class CheckboxPropertySelectorExample1 extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=1", Units)
+      propertyValueSet: PropertyValueSet.fromString("a=1", BaseUnits)
     };
   }
 

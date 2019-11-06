@@ -1,11 +1,10 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
 import React from "react";
-import { Units } from "uom-units";
 import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { Unit } from "uom";
+import { Unit, BaseUnits } from "uom";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
@@ -35,7 +34,10 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Meter;b=1;", Units),
+      propertyValueSet: PropertyValueSet.fromString(
+        "a=10:Meter;b=1;",
+        BaseUnits
+      ),
       closedGroups: [],
       propertyFormats: {}
     };

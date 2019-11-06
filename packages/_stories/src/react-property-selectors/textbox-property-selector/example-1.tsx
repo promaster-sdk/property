@@ -2,7 +2,7 @@
 /* eslint-disable functional/no-class */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import React from "react";
-import { Units } from "uom-units";
+import { BaseUnits } from "uom";
 import { createTextboxPropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../utils";
@@ -22,7 +22,7 @@ export class TextboxPropertySelectorExample1 extends React.Component<
     this.state = {
       propertyValueSet: PropertyValueSet.fromString(
         'a="This is the value";b=3',
-        Units
+        BaseUnits
       )
     };
   }
