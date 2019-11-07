@@ -10,7 +10,8 @@ const {
   newAddExpr
 } = PropertyFilterAst;
 
-const customUnitMap = {
+export const customUnitMap = {
+  ...BaseUnits,
   MyCustomUnit: Unit.createBase<"Foo">("MyCustomUnit", "Foo", "FooSymbol")
 };
 
