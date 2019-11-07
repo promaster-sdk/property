@@ -126,7 +126,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 20,
           value: PropertyValue.fromInteger(20),
-          property_filter: PropertyFilter.fromStringOrEmpty("")
+          property_filter: PropertyFilter.fromStringOrEmpty("", BaseUnits)
         }
       ]
     },
@@ -146,7 +146,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 200,
           value: PropertyValue.fromInteger(200),
-          property_filter: PropertyFilter.fromStringOrEmpty("a!=20")
+          property_filter: PropertyFilter.fromStringOrEmpty("a!=20", BaseUnits)
         }
       ]
     }

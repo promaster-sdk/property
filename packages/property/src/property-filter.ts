@@ -1,3 +1,4 @@
+import { Unit } from "uom";
 import * as PropertyValueSet from "./property-value-set";
 import * as PropertyValue from "./property-value";
 import * as Ast from "./property-filter-ast/index";
@@ -20,7 +21,10 @@ function create(text: string, ast: Ast.BooleanExpr): PropertyFilter {
   return { text, ast, _evaluate: Ast.compileAst(ast) };
 }
 
-export function fromString(filter: string): PropertyFilter | undefined {
+export function fromString(
+  filter: string,
+  units: Unit.UnitMap
+): PropertyFilter | undefined {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
@@ -30,7 +34,7 @@ export function fromString(filter: string): PropertyFilter | undefined {
     if (adjustedFilter === "") {
       return Empty;
     }
-    const ast = Ast.parse(adjustedFilter, false);
+    const ast = Ast.parse(adjustedFilter, units, false);
 
     if (ast === undefined) {
       console.warn("Invalid property filter syntax: " + adjustedFilter);
@@ -41,8 +45,11 @@ export function fromString(filter: string): PropertyFilter | undefined {
   return _cache[filter];
 }
 
-export function fromStringOrEmpty(filterString: string): PropertyFilter {
-  const filter = fromString(filterString);
+export function fromStringOrEmpty(
+  filterString: string,
+  units: Unit.UnitMap
+): PropertyFilter {
+  const filter = fromString(filterString, units);
   if (filter === undefined) {
     return Empty;
   }
@@ -51,6 +58,7 @@ export function fromStringOrEmpty(filterString: string): PropertyFilter {
 
 export function isSyntaxValid(
   filter: string,
+  units: Unit.UnitMap,
   propertyNames: Array<string> | undefined = undefined
 ): boolean {
   if (filter === null || filter === undefined) {
@@ -61,7 +69,7 @@ export function isSyntaxValid(
   if (adjusted === "") {
     return true;
   }
-  const ast = Ast.parse(adjusted, false);
+  const ast = Ast.parse(adjusted, units, false);
 
   if (ast === undefined) {
     return false;

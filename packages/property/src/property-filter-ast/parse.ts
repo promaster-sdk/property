@@ -1,4 +1,5 @@
 /* eslint-disable functional/no-method-signature */
+import { Unit } from "uom";
 import * as Ast from "./types";
 import * as Parser from "./pegjs/generated-parser";
 
@@ -38,31 +39,41 @@ type ParserCallbacks = {
   ): Ast.UnaryExpr;
 };
 
-const parserCallbacks: ParserCallbacks = {
-  createValueExpr: Ast.newValueExpr,
-  createNullExpr: Ast.newNullExpr,
-  createIdentifierExpr: Ast.newIdentifierExpr,
-  createValueRangeExpr: Ast.newValueRangeExpr,
-  createEqualsExpr: Ast.newEqualsExpr,
-  createComparisonExpr: Ast.newComparisonExpr,
-  createAndExpr: Ast.newAndExpr,
-  createOrExpr: Ast.newOrExpr,
-  createAddExpr: Ast.newAddExpr,
-  createMulExpr: Ast.newMulExpr,
-  createUnaryExpr: Ast.newUnaryExpr
+type ParserOptions = {
+  readonly startRule: string;
+  readonly tracer: string | undefined;
+  readonly callbacks: ParserCallbacks;
 };
 
-const options = {
-  startRule: "start",
-  tracer: undefined as string | undefined,
-  callbacks: parserCallbacks
-};
+function buildOptions(units: Unit.UnitMap): ParserOptions {
+  const parserCallbacks: ParserCallbacks = {
+    createValueExpr: (unParsed: string) => Ast.newValueExpr(unParsed, units),
+    createNullExpr: Ast.newNullExpr,
+    createIdentifierExpr: Ast.newIdentifierExpr,
+    createValueRangeExpr: Ast.newValueRangeExpr,
+    createEqualsExpr: Ast.newEqualsExpr,
+    createComparisonExpr: Ast.newComparisonExpr,
+    createAndExpr: Ast.newAndExpr,
+    createOrExpr: Ast.newOrExpr,
+    createAddExpr: Ast.newAddExpr,
+    createMulExpr: Ast.newMulExpr,
+    createUnaryExpr: Ast.newUnaryExpr
+  };
+  const options = {
+    startRule: "start",
+    tracer: undefined as string | undefined,
+    callbacks: parserCallbacks
+  };
+  return options;
+}
 
 export function parse(
   text: string,
+  units: Unit.UnitMap,
   throwOnInvalidSyntax: boolean = false
 ): Ast.BooleanExpr | undefined {
   try {
+    const options = buildOptions(units);
     const result = Parser.parse(text, options);
     return result;
   } catch (error) {
