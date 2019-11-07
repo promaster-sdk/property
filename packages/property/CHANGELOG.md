@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fproperty@3.0.0...master)
+## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fproperty@3.0.2...master)
+
+## [v3.0.2](https://github.com/promaster-sdk/property/compare/@promaster%2Fproperty@3.0.0...@promaster-sdk%2Fproperty@3.0.2) - 2019-11-07
+
+## Fixed
+
+- Add missing parameter for `UnitMap`.
 
 ## [v3.0.0](https://github.com/promaster-sdk/property/compare/@promaster%2Fproperty@2.4.0...@promaster-sdk%2Fproperty@3.0.0) - 2019-11-05
 
