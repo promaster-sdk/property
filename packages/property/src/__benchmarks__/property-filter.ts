@@ -1,22 +1,23 @@
 import * as Benchmark from "benchmark";
-
+import { BaseUnits } from "uom";
 import {
   PropertyFilter,
   PropertyFilterAst,
   PropertyValueSet,
   PropertyValue
-} from "@promaster-sdk/property";
+} from "../index";
 
 const suite = new Benchmark.Suite();
 
 const pf = PropertyFilter.fromString(
-  "ccc=20&a=1,2,3~10&d=-50&(ccc=20|a=1,2)&d=5|z=50"
+  "ccc=20&a=1,2,3~10&d=-50&(ccc=20|a=1,2)&d=5|z=50",
+  BaseUnits
   // "a=1"
 );
 if (!pf) {
   throw new Error("Could not create property filter.");
 }
-const pvs = PropertyValueSet.fromString("a=1;b=2;ccc=3;d=4;z=50");
+const pvs = PropertyValueSet.fromString("a=1;b=2;ccc=3;d=4;z=50", BaseUnits);
 
 // const fake1 = (
 //   _pvs: PropertyValueSet.PropertyValueSet,
@@ -32,6 +33,7 @@ const pvs = PropertyValueSet.fromString("a=1;b=2;ccc=3;d=4;z=50");
 // const fake4 = (a: () => number, b: () => number) =>
 //   (a() === b() && b() > a()) || b() < a();
 
+// eslint-disable-next-line
 const fake5 = new Function(
   "obj",
   "return obj.a===obj.b && obj.b>obj.a || obj.b<obj.a"
@@ -78,9 +80,11 @@ suite
   .on("cycle", (event: Event) => {
     console.log(String(event.target));
   })
+  // eslint-disable-next-line
   .on("complete", function(this: Benchmark.Suite): void {
     console.log(
-      "Fastest is " + this.filter("fastest").map((item: any) => item)
+      // eslint-disable-next-line
+      "Fastest is " + this.filter("fastest").map((item: unknown) => item)
     );
   })
   // run async
