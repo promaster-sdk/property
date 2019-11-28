@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@4.0.2...master)
 
+## Fixed
+
+- Include `src/` folder in npm package so source maps work correctly in for example webpack.
+
 ## [v4.0.2](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@4.0.0...@promaster-sdk%2Freact-property-selectors@4.0.2) - 2019-11-07
 
 ## Fixed
