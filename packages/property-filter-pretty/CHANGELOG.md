@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fproperty-filter-pretty@3.0.2...master)
+## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fproperty-filter-pretty@3.0.3...master)
+
+## [v3.0.3](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fproperty-filter-pretty@3.0.2...@promaster-sdk%2Fproperty-filter-pretty@3.0.3) - 2019-11-28
 
 ## Fixed
 
