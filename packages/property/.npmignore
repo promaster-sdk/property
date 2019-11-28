@@ -1,6 +1,5 @@
 **/__mocks__/**
 **/__tests__/**
 **/__benchmarks__/**
-src
 tsconfig.json
 tsconfig.tsbuildinfo
