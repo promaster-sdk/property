@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/variant-listing",
   "author": "Divid Promaster AB",
   "license": "MIT",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Generate list of valid variants",
   "main": "lib/index.js",
   "types": "lib/index",
@@ -21,7 +21,7 @@
     "promaster-sdk"
   ],
   "dependencies": {
-    "@promaster-sdk/property": "^3.0.2",
+    "@promaster-sdk/property": "^3.0.3",
     "ramda": "^0.25.0",
     "uom": "^3.0.0"
   },
