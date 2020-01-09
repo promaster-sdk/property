@@ -26,7 +26,7 @@
     "@promaster-sdk/react-property-selectors": "^4.0.3",
     "ramda": "^0.25.0",
     "react": "^16.8.4",
-    "uom": "^3.0.0"
+    "uom": "^4.0.0"
   },
   "devDependencies": {
     "@types/ramda": "^0.25.29",

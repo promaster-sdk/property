@@ -23,7 +23,7 @@
   "dependencies": {
     "@promaster-sdk/property": "^3.0.3",
     "ramda": "^0.25.0",
-    "uom": "^3.0.0"
+    "uom": "^4.0.0"
   },
   "devDependencies": {
     "@types/ramda": "^0.25.29"
