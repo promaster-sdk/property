@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fvariant-listing@3.0.3...master)
 
+## [v4.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fvariant-listing@3.0.3...@promaster-sdk%2Fvariant-listing@4.0.0)- 2020-01-09
+
+## Changed
+
+- Upgrade uom package to 4.0.0.
+
 ## [v3.0.3](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fvariant-listing@3.0.2...@promaster-sdk%2Fvariant-listing@3.0.3) - 2019-11-28
 
 ## Fixed
