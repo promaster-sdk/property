@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fvariant-listing@3.0.3...master)
+## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fvariant-listing@4.0.0...master)
 
 ## [v4.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fvariant-listing@3.0.3...@promaster-sdk%2Fvariant-listing@4.0.0)- 2020-01-09
 
