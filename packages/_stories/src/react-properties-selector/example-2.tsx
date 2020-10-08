@@ -11,6 +11,9 @@ import { exampleProductProperties } from "./example-product-properties";
 import { createPropertiesSelectorExample2Layout } from "./example-2-layout";
 import { units, unitsFormat } from "./units-map";
 
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
+
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly closedGroups: ReadonlyArray<string>;
@@ -27,7 +30,8 @@ const filterPrettyPrint = (
     2,
     " ",
     propertyFilter,
-    unitsFormat
+    unitsFormat,
+    unitLookup
   );
 
 export class PropertiesSelectorExample2 extends React.Component<{}, State> {
@@ -36,7 +40,7 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
     this.state = {
       propertyValueSet: PropertyValueSet.fromString(
         "a=10:Meter;b=1;",
-        BaseUnits
+        unitLookup
       ),
       closedGroups: [],
       propertyFormats: {}
@@ -48,6 +52,7 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       units,
       unitsFormat,
+      unitLookup,
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
         // console.log("onChange", properties);

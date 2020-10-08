@@ -13,6 +13,9 @@ import {
 import { merge } from "./utils";
 import { units, unitsFormat } from "./units-map";
 
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
+
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly closedGroups: ReadonlyArray<string>;
@@ -29,7 +32,8 @@ const filterPrettyPrint = (
     2,
     " ",
     propertyFilter,
-    unitsFormat
+    unitsFormat,
+    unitLookup
   );
 
 export class PropertiesSelectorExample4LockSingleValidValue extends React.Component<
@@ -39,7 +43,7 @@ export class PropertiesSelectorExample4LockSingleValidValue extends React.Compon
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=20;b=200;", {}),
+      propertyValueSet: PropertyValueSet.fromString("a=20;b=200;", unitLookup),
       closedGroups: [],
       propertyFormats: {}
     };
@@ -50,6 +54,7 @@ export class PropertiesSelectorExample4LockSingleValidValue extends React.Compon
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       units,
       unitsFormat,
+      unitLookup,
       selectedProperties: this.state.propertyValueSet,
       onChange: (
         properties: PropertyValueSet.PropertyValueSet,
@@ -127,7 +132,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 20,
           value: PropertyValue.fromInteger(20),
-          property_filter: PropertyFilter.fromStringOrEmpty("", BaseUnits)
+          property_filter: PropertyFilter.fromStringOrEmpty("", unitLookup)
         }
       ]
     },
@@ -147,7 +152,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 200,
           value: PropertyValue.fromInteger(200),
-          property_filter: PropertyFilter.fromStringOrEmpty("a!=20", BaseUnits)
+          property_filter: PropertyFilter.fromStringOrEmpty("a!=20", unitLookup)
         }
       ]
     }

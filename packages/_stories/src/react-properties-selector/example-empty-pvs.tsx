@@ -4,11 +4,14 @@ import React from "react";
 import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { Unit } from "uom";
+import { Unit, BaseUnits } from "uom";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
+
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -26,7 +29,8 @@ const filterPrettyPrint = (
     2,
     " ",
     propertyFilter,
-    unitsFormat
+    unitsFormat,
+    unitLookup
   );
 
 export class PropertiesSelectorExampleEmptyPvs extends React.Component<
@@ -36,7 +40,7 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("", {}),
+      propertyValueSet: PropertyValueSet.fromString("", unitLookup),
       closedGroups: [],
       propertyFormats: {}
     };
@@ -47,6 +51,7 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
     const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
       units,
       unitsFormat,
+      unitLookup,
       selectedProperties: this.state.propertyValueSet,
       onChange: (properties: PropertyValueSet.PropertyValueSet) => {
         this.setState(merge(this.state, { propertyValueSet: properties }));

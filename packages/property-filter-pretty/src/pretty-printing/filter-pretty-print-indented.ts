@@ -1,4 +1,4 @@
-import { Format, Serialize, UnitFormat, BaseUnits } from "uom";
+import { Format, Serialize, UnitFormat, Unit } from "uom";
 import {
   PropertyFilter,
   PropertyFilterAst as Ast,
@@ -17,7 +17,8 @@ export function filterPrettyPrintIndented(
   // unitsFormat: {
   //   readonly [key: string]: UnitFormat.UnitFormat;
   // } = UnitsFormat
-  unitsFormat: UnitFormat.UnitFormatMap
+  unitsFormat: UnitFormat.UnitFormatMap,
+  unitLookup: Unit.UnitLookup
 ): string {
   const e = f.ast;
   if (e === null) {
@@ -32,7 +33,8 @@ export function filterPrettyPrintIndented(
     indentionString,
     messages,
     typeMap,
-    unitsFormat
+    unitsFormat,
+    unitLookup
   );
 }
 
@@ -44,10 +46,19 @@ function visit(
   typeMap: Map<Ast.Expr, ExprType>,
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
-  }
+  },
+  unitLookup: Unit.UnitLookup
 ): string {
   const innerVisit = (indent: number, expr: Ast.Expr): string =>
-    visit(expr, indent, indentionString, messages, typeMap, unitsFormat);
+    visit(
+      expr,
+      indent,
+      indentionString,
+      messages,
+      typeMap,
+      unitsFormat,
+      unitLookup
+    );
   switch (e.type) {
     case "AndExpr": {
       let s = "";
@@ -134,7 +145,7 @@ function visit(
       } else if (e.parsed.type === "amount") {
         const split = e.unParsed.split(":");
         if (split.length === 2) {
-          const unit = Serialize.stringToUnit(split[1], BaseUnits);
+          const unit = Serialize.stringToUnit(split[1], unitLookup);
           if (unit) {
             const unitFormat = Format.getUnitFormat(unit, unitsFormat);
             if (unitFormat) {

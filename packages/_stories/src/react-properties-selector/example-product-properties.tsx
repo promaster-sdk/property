@@ -1,6 +1,9 @@
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyFilter, PropertyValue } from "@promaster-sdk/property";
-import { BaseUnits } from "uom";
+import { BaseUnits, Unit } from "uom";
+
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
 
 export function exampleProductProperties(): Array<PropertiesSelector.Property> {
   return [
@@ -10,7 +13,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
       group: "",
       quantity: "Length",
       validation_filter:
-        PropertyFilter.fromString("a>100:Meter", BaseUnits) ||
+        PropertyFilter.fromString("a>100:Meter", unitLookup) ||
         PropertyFilter.Empty,
       visibility_filter: PropertyFilter.Empty,
       value: []
@@ -47,7 +50,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
           sort_no: 10,
           value: PropertyValue.fromInteger(1),
           property_filter:
-            PropertyFilter.fromString("b=1", BaseUnits) || PropertyFilter.Empty
+            PropertyFilter.fromString("b=1", unitLookup) || PropertyFilter.Empty
         },
         {
           sort_no: 20,
@@ -74,7 +77,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
           sort_no: 10,
           value: PropertyValue.fromInteger(1),
           property_filter:
-            PropertyFilter.fromString("c=1", BaseUnits) || PropertyFilter.Empty
+            PropertyFilter.fromString("c=1", unitLookup) || PropertyFilter.Empty
         },
         {
           sort_no: 20,

@@ -13,6 +13,9 @@ import {
 import { merge } from "../utils";
 import { units, unitsFormat } from "../units-map";
 
+const unitLookup: Unit.UnitLookup = unitString =>
+  (units as Unit.UnitMap)[unitString];
+
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,12 +31,13 @@ const filterPrettyPrint = (
     2,
     " ",
     propertyFilter,
-    unitsFormat
+    unitsFormat,
+    unitLookup
   );
 
 const validationFilter = PropertyFilter.fromString(
   "a<100:Meter",
-  BaseUnits
+  unitLookup
 ) as PropertyFilter.PropertyFilter;
 
 const AmountPropertySelector = createAmountPropertySelector({});
@@ -42,7 +46,7 @@ export class AmountPropertySelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=10:Meter", units),
+      propertyValueSet: PropertyValueSet.fromString("a=10:Meter", unitLookup),
       selectedUnit: BaseUnits.Meter,
       selectedDecimalCount: 2
     };

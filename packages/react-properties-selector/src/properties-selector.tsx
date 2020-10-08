@@ -100,6 +100,7 @@ export interface PropertiesSelectorProps {
   //   readonly [key: string]: Unit.Unit;
   // };
   readonly units: Unit.UnitMap;
+  readonly unitLookup: Unit.UnitLookup;
 
   // Override layout
   readonly LayoutRenderer?: (props: LayoutRendererProps) => JSX.Element;
@@ -126,7 +127,8 @@ export function PropertiesSelector(
         2,
         " ",
         propertyFilter,
-        props.unitsFormat
+        props.unitsFormat,
+        props.unitLookup
       ),
 
     includeCodes = false,

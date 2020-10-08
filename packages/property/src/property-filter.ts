@@ -23,7 +23,7 @@ function create(text: string, ast: Ast.BooleanExpr): PropertyFilter {
 
 export function fromString(
   filter: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): PropertyFilter | undefined {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
@@ -34,7 +34,7 @@ export function fromString(
     if (adjustedFilter === "") {
       return Empty;
     }
-    const ast = Ast.parse(adjustedFilter, units, false);
+    const ast = Ast.parse(adjustedFilter, unitLookup, false);
 
     if (ast === undefined) {
       console.warn("Invalid property filter syntax: " + adjustedFilter);
@@ -47,9 +47,9 @@ export function fromString(
 
 export function fromStringOrEmpty(
   filterString: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): PropertyFilter {
-  const filter = fromString(filterString, units);
+  const filter = fromString(filterString, unitLookup);
   if (filter === undefined) {
     return Empty;
   }
@@ -58,7 +58,7 @@ export function fromStringOrEmpty(
 
 export function isSyntaxValid(
   filter: string,
-  units: Unit.UnitMap,
+  unitLookup: Unit.UnitLookup,
   propertyNames: Array<string> | undefined = undefined
 ): boolean {
   if (filter === null || filter === undefined) {
@@ -69,7 +69,7 @@ export function isSyntaxValid(
   if (adjusted === "") {
     return true;
   }
-  const ast = Ast.parse(adjusted, units, false);
+  const ast = Ast.parse(adjusted, unitLookup, false);
 
   if (ast === undefined) {
     return false;

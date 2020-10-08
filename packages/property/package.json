@@ -21,6 +21,6 @@
     "promaster-sdk"
   ],
   "dependencies": {
-    "uom": "^4.0.0"
+    "uom": "^5.0.0"
   }
 }

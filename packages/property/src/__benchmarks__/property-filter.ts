@@ -1,5 +1,5 @@
 import * as Benchmark from "benchmark";
-import { BaseUnits } from "uom";
+import { BaseUnits, Unit } from "uom";
 import {
   PropertyFilter,
   PropertyFilterAst,
@@ -9,15 +9,18 @@ import {
 
 const suite = new Benchmark.Suite();
 
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
+
 const pf = PropertyFilter.fromString(
   "ccc=20&a=1,2,3~10&d=-50&(ccc=20|a=1,2)&d=5|z=50",
-  BaseUnits
+  unitLookup
   // "a=1"
 );
 if (!pf) {
   throw new Error("Could not create property filter.");
 }
-const pvs = PropertyValueSet.fromString("a=1;b=2;ccc=3;d=4;z=50", BaseUnits);
+const pvs = PropertyValueSet.fromString("a=1;b=2;ccc=3;d=4;z=50", unitLookup);
 
 // const fake1 = (
 //   _pvs: PropertyValueSet.PropertyValueSet,

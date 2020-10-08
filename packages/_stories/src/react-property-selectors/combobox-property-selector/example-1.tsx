@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 import React from "react";
-import { BaseUnits } from "uom";
+import { Unit } from "uom";
 import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem
@@ -14,6 +14,9 @@ import {
 import { merge } from "../utils";
 import { unitsFormat, units } from "../units-map";
 
+const unitLookup: Unit.UnitLookup = unitString =>
+  (units as Unit.UnitMap)[unitString];
+
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
 }
@@ -26,7 +29,8 @@ const filterPrettyPrint = (
     2,
     " ",
     propertyFilter,
-    unitsFormat
+    unitsFormat,
+    unitLookup
   );
 
 const ComboboxPropertySelector = createComboboxPropertySelector({});
@@ -39,7 +43,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=1;b=2", units)
+      propertyValueSet: PropertyValueSet.fromString("a=1;b=2", unitLookup)
     };
   }
 
@@ -57,7 +61,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
         text: "Alternative 2",
         validationFilter: PropertyFilter.fromString(
           "b=2",
-          BaseUnits
+          unitLookup
         ) as PropertyFilter.PropertyFilter
       }
     ];
@@ -77,7 +81,7 @@ export class ComboboxPropertySelectorExample1 extends React.Component<
         text: "Alternative 2",
         validationFilter: PropertyFilter.fromString(
           "a=2",
-          BaseUnits
+          unitLookup
         ) as PropertyFilter.PropertyFilter
       }
     ];

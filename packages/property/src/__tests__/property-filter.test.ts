@@ -1,14 +1,17 @@
-import { BaseUnits } from "uom";
+import { BaseUnits, Unit } from "uom";
 import * as PropertyFilter from "../property-filter";
 import * as PropertyValueSet from "../property-value-set";
 import * as IsValidData from "./data/property-filter-isvalid";
 import * as IsSyntaxValidData from "./data/property-filter-is-syntax-valid";
 
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
+
 describe("PropertyFilter", () => {
   describe("isSyntaxValid", () => {
     IsSyntaxValidData.tests.forEach(test => {
       it(test.name, () => {
-        expect(PropertyFilter.isSyntaxValid(test.f, BaseUnits)).toEqual(
+        expect(PropertyFilter.isSyntaxValid(test.f, unitLookup)).toEqual(
           test.result
         );
       });
@@ -18,7 +21,7 @@ describe("PropertyFilter", () => {
   describe("isValid", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(test.pvs, BaseUnits);
+        const pvs = PropertyValueSet.fromString(test.pvs, unitLookup);
         const f = fromStringOrException(test.f);
         expect(PropertyFilter.isValid(pvs, f, test.comparer)).toEqual(
           test.result
@@ -45,7 +48,7 @@ describe("PropertyFilter", () => {
 });
 
 function fromStringOrException(filter: string): PropertyFilter.PropertyFilter {
-  const f = PropertyFilter.fromString(filter, BaseUnits);
+  const f = PropertyFilter.fromString(filter, unitLookup);
   if (f === undefined) {
     throw new Error(`Could not parse property filter "${filter}".`);
   }

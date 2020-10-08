@@ -27,25 +27,25 @@ interface MutablePropertyValueSet {
 
 export function fromString(
   encodedValueSet: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): PropertyValueSet {
   const err = (): PropertyValueSet => {
     throw new Error(`${encodedValueSet} is not a valid PropertyValueSet`);
   };
-  return fromStringOrError(err, encodedValueSet, units);
+  return fromStringOrError(err, encodedValueSet, unitLookup);
 }
 
 export function fromStringOrError(
   onError: (encodedValueSet: string) => PropertyValueSet,
   encodedValueSet: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): PropertyValueSet {
   if (!encodedValueSet || encodedValueSet.length === 0) {
     return {};
   }
   const entries = _stringToEntriesOrUndefinedIfInvalidString(
     encodedValueSet,
-    units
+    unitLookup
   );
   if (entries === undefined) {
     return onError(encodedValueSet);
@@ -320,7 +320,7 @@ export function equals(
 /// Values that represents strings must be enclosed in double quote (") and if they contains double quote characters they must be encoded as %22.
 function _stringToEntriesOrUndefinedIfInvalidString(
   encodedValueSet: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): PropertyValueSet | undefined {
   const entries: MutablePropertyValueSet = {};
   // Add extra semicolon on the end to close last name/value pair
@@ -357,7 +357,7 @@ function _stringToEntriesOrUndefinedIfInvalidString(
           }
           let entryValue: PropertyValue.PropertyValue | undefined;
           // eslint-disable-next-line prefer-const
-          entryValue = PropertyValue.fromString(value.toString(), units);
+          entryValue = PropertyValue.fromString(value.toString(), unitLookup);
           //              if (!PropertyValue.TryParse(value.ToString(), out entryValue)) {
           if (entryValue === undefined) {
             // Parse error

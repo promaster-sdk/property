@@ -1,5 +1,8 @@
-import { Amount, BaseUnits } from "uom";
+import { Amount, BaseUnits, Unit } from "uom";
 import * as PropertyValue from "../property-value";
+
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
 
 describe("PropertyValue", () => {
   it("should_parse_amount_with_decimal_dot", () => {
@@ -147,7 +150,7 @@ describe("PropertyValue", () => {
   });
 
   it("should make an empty string when amount value is null", () => {
-    const pv1 = PropertyValue.fromString("20:Meter", BaseUnits);
+    const pv1 = PropertyValue.fromString("20:Meter", unitLookup);
     if (pv1 === undefined || pv1.type !== "amount") {
       throw new Error("Bla");
     }
@@ -225,7 +228,7 @@ describe("PropertyValue.greaterOrEqualTo", () => {
 function fromStringOrException(
   encodedValue: string
 ): PropertyValue.PropertyValue {
-  const f = PropertyValue.fromString(encodedValue, BaseUnits);
+  const f = PropertyValue.fromString(encodedValue, unitLookup);
   if (f === undefined) {
     throw new Error(`Could not parse property value "${encodedValue}".`);
   }

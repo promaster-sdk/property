@@ -112,8 +112,11 @@ export interface ValueExpr {
   readonly parsed: PropertyValue.PropertyValue;
 }
 
-export function newValueExpr(unParsed: string, units: Unit.UnitMap): ValueExpr {
-  const parsed = PropertyValue.fromString(unParsed, units);
+export function newValueExpr(
+  unParsed: string,
+  unitLookup: Unit.UnitLookup
+): ValueExpr {
+  const parsed = PropertyValue.fromString(unParsed, unitLookup);
   if (parsed === undefined) {
     throw new Error(`Invalid property value ${unParsed}`);
   }

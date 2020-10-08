@@ -10,10 +10,13 @@ const {
   newAddExpr
 } = PropertyFilterAst;
 
-export const customUnitMap = {
+const customUnitMap: Unit.UnitMap = {
   ...BaseUnits,
   MyCustomUnit: Unit.createBase<"Foo">("MyCustomUnit", "Foo", "FooSymbol")
 };
+
+export const unitLookup: Unit.UnitLookup = unitString =>
+  customUnitMap[unitString];
 
 export const tests = [
   {
@@ -21,8 +24,8 @@ export const tests = [
     f: "a=1",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
       newValueRangeExpr(
-        newValueExpr("1", BaseUnits),
-        newValueExpr("1", BaseUnits)
+        newValueExpr("1", unitLookup),
+        newValueExpr("1", unitLookup)
       )
     ])
   },
@@ -32,7 +35,7 @@ export const tests = [
     result: newComparisonExpr(
       newIdentifierExpr("a"),
       "greater",
-      newValueExpr("1", BaseUnits)
+      newValueExpr("1", unitLookup)
     )
   },
   {
@@ -41,7 +44,7 @@ export const tests = [
     result: newComparisonExpr(
       newIdentifierExpr("a"),
       "greaterOrEqual",
-      newValueExpr("1", BaseUnits)
+      newValueExpr("1", unitLookup)
     )
   },
   {
@@ -49,8 +52,8 @@ export const tests = [
     f: "a.b=1",
     result: newEqualsExpr(newIdentifierExpr("a.b"), "equals", [
       newValueRangeExpr(
-        newValueExpr("1", BaseUnits),
-        newValueExpr("1", BaseUnits)
+        newValueExpr("1", unitLookup),
+        newValueExpr("1", unitLookup)
       )
     ])
   },
@@ -59,8 +62,8 @@ export const tests = [
     f: "a=20:Meter",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
       newValueRangeExpr(
-        newValueExpr("20:Meter", BaseUnits),
-        newValueExpr("20:Meter", BaseUnits)
+        newValueExpr("20:Meter", unitLookup),
+        newValueExpr("20:Meter", unitLookup)
       )
     ])
   },
@@ -69,8 +72,8 @@ export const tests = [
     f: "a=20:Meter~30:Meter",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
       newValueRangeExpr(
-        newValueExpr("20:Meter", BaseUnits),
-        newValueExpr("30:Meter", BaseUnits)
+        newValueExpr("20:Meter", unitLookup),
+        newValueExpr("30:Meter", unitLookup)
       )
     ])
   },
@@ -79,15 +82,15 @@ export const tests = [
     f: "1+1=2",
     result: newEqualsExpr(
       newAddExpr(
-        newValueExpr("1", BaseUnits),
+        newValueExpr("1", unitLookup),
         "add",
-        newValueExpr("1", BaseUnits)
+        newValueExpr("1", unitLookup)
       ),
       "equals",
       [
         newValueRangeExpr(
-          newValueExpr("2", BaseUnits),
-          newValueExpr("2", BaseUnits)
+          newValueExpr("2", unitLookup),
+          newValueExpr("2", unitLookup)
         )
       ]
     )
@@ -97,8 +100,8 @@ export const tests = [
     f: "a=0:MyCustomUnit",
     result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
       newValueRangeExpr(
-        newValueExpr("0:MyCustomUnit", customUnitMap),
-        newValueExpr("0:MyCustomUnit", customUnitMap)
+        newValueExpr("0:MyCustomUnit", unitLookup),
+        newValueExpr("0:MyCustomUnit", unitLookup)
       )
     ])
   }
