@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 import React from "react";
-import { BaseUnits } from "uom";
+import { BaseUnits, Unit } from "uom";
 import {
   createCheckboxPropertySelector,
   CheckboxPropertyValueItem
@@ -11,6 +11,9 @@ import {
   PropertyValue
 } from "@promaster-sdk/property";
 import { merge } from "../utils";
+
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -26,7 +29,7 @@ export class CheckboxPropertySelectorExample1 extends React.Component<
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString("a=1", BaseUnits)
+      propertyValueSet: PropertyValueSet.fromString("a=1", unitLookup)
     };
   }
 

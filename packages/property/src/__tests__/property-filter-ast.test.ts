@@ -9,7 +9,7 @@ describe("PropertyFilterAst", () => {
   describe("parse", () => {
     ParseData.tests.forEach(test => {
       it(test.name, () => {
-        const ast = Ast.parse(test.f, ParseData.customUnitMap);
+        const ast = Ast.parse(test.f, ParseData.unitLookup);
         expect(ast).toEqual(test.result);
       });
     });
@@ -18,11 +18,8 @@ describe("PropertyFilterAst", () => {
   describe("evaluate with raw AST", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(
-          test.pvs,
-          ParseData.customUnitMap
-        );
-        const f = fromStringOrException(test.f, ParseData.customUnitMap);
+        const pvs = PropertyValueSet.fromString(test.pvs, ParseData.unitLookup);
+        const f = fromStringOrException(test.f, ParseData.unitLookup);
         expect(
           Ast.evaluateAst(
             f,
@@ -38,11 +35,8 @@ describe("PropertyFilterAst", () => {
   describe("evaluate with compiled AST", () => {
     IsValidData.tests.forEach(test => {
       it(test.name, () => {
-        const pvs = PropertyValueSet.fromString(
-          test.pvs,
-          ParseData.customUnitMap
-        );
-        const f = fromStringOrException(test.f, ParseData.customUnitMap);
+        const pvs = PropertyValueSet.fromString(test.pvs, ParseData.unitLookup);
+        const f = fromStringOrException(test.f, ParseData.unitLookup);
         const func = Ast.compileAst(f);
         expect(func(pvs, test.comparer || PropertyValue.defaultComparer)).toBe(
           test.result
@@ -65,9 +59,9 @@ describe("PropertyFilterAst", () => {
 
 function fromStringOrException(
   filter: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): Ast.BooleanExpr {
-  const f = Ast.parse(filter, units);
+  const f = Ast.parse(filter, unitLookup);
   if (f === undefined) {
     throw new Error(`Could not parse property filter "${filter}".`);
   }

@@ -58,11 +58,11 @@ export function create(
 
 export function fromString(
   encodedValue: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): PropertyValue | undefined {
   const result = _fromSerializedStringOrUndefinedIfInvalidString(
     encodedValue,
-    units
+    unitLookup
   );
   if (result === null) {
     console.warn(
@@ -260,7 +260,7 @@ function _compare(left: PropertyValue, right: PropertyValue): number {
 /// Amount-values must be in format Value:Unit without quotation marks.
 function _fromSerializedStringOrUndefinedIfInvalidString(
   encodedValue: string,
-  units: Unit.UnitMap
+  unitLookup: Unit.UnitLookup
 ): PropertyValue | undefined {
   if (encodedValue === "") {
     return fromText("");
@@ -287,10 +287,10 @@ function _fromSerializedStringOrUndefinedIfInvalidString(
       if (doubleValue === null) {
         return undefined;
       }
-      if (!Serialize.stringToUnit(unitString, units)) {
+      if (!Serialize.stringToUnit(unitString, unitLookup)) {
         return undefined;
       }
-      const unit = Serialize.stringToUnit(unitString, units);
+      const unit = Serialize.stringToUnit(unitString, unitLookup);
       let decimalCount = 0;
       const pointIndex = stringValue.indexOf(".");
       if (pointIndex >= 0) {

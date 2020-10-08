@@ -1,9 +1,12 @@
-import { BaseUnits } from "uom";
+import { BaseUnits, Unit } from "uom";
 import * as fs from "fs";
 import * as Path from "path";
 import * as R from "ramda";
 import { PropertyFilter } from "@promaster-sdk/property";
 import { buildAllPropertyValueSetsExtended } from "../functions";
+
+const unitLookup: Unit.UnitLookup = unitString =>
+  (BaseUnits as Unit.UnitMap)[unitString];
 
 describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {
@@ -19,7 +22,7 @@ describe("buildAllPropertyValueSets", () => {
         ...item,
         property_filter:
           item.property_filter &&
-          PropertyFilter.fromString(item.property_filter, BaseUnits)
+          PropertyFilter.fromString(item.property_filter, unitLookup)
       };
     }, cfcDataRaw.explicitPropertyValueSet);
     // Need to go though and create PropertyFilter for all strings in the data
@@ -31,18 +34,18 @@ describe("buildAllPropertyValueSets", () => {
         ...a,
         validation_filter: PropertyFilter.fromString(
           a.validation_filter,
-          BaseUnits
+          unitLookup
         ),
         visibility_filter: PropertyFilter.fromString(
           a.visibility_filter,
-          BaseUnits
+          unitLookup
         ),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         value: a.value.map((a: any) => ({
           ...a,
           property_filter: PropertyFilter.fromString(
             a.property_filter,
-            BaseUnits
+            unitLookup
           )
         }))
       }))

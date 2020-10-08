@@ -45,9 +45,10 @@ type ParserOptions = {
   readonly callbacks: ParserCallbacks;
 };
 
-function buildOptions(units: Unit.UnitMap): ParserOptions {
+function buildOptions(unitLookup: Unit.UnitLookup): ParserOptions {
   const parserCallbacks: ParserCallbacks = {
-    createValueExpr: (unParsed: string) => Ast.newValueExpr(unParsed, units),
+    createValueExpr: (unParsed: string) =>
+      Ast.newValueExpr(unParsed, unitLookup),
     createNullExpr: Ast.newNullExpr,
     createIdentifierExpr: Ast.newIdentifierExpr,
     createValueRangeExpr: Ast.newValueRangeExpr,
@@ -69,11 +70,11 @@ function buildOptions(units: Unit.UnitMap): ParserOptions {
 
 export function parse(
   text: string,
-  units: Unit.UnitMap,
+  unitLookup: Unit.UnitLookup,
   throwOnInvalidSyntax: boolean = false
 ): Ast.BooleanExpr | undefined {
   try {
-    const options = buildOptions(units);
+    const options = buildOptions(unitLookup);
     const result = Parser.parse(text, options);
     return result;
   } catch (error) {
