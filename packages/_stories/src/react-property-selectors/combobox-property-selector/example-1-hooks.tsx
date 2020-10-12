@@ -4,7 +4,8 @@ import { Unit } from "uom";
 import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem,
-  useComboboxPropertySelector
+  useComboboxPropertySelector,
+  UseComboboxPropertySelector
 } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -130,6 +131,8 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
       readOnly: false
     });
 
+    console.log("selA", selA);
+
     return (
       <div>
         <div>ComboboxPropertySelector:</div>
@@ -138,14 +141,64 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
           {PropertyValueSet.toString(this.state.propertyValueSet)}
         </div>
         <div>
-          <select {...selA.getSelectProps()}>
+          <select
+            {...selA.getSelectProps()}
+            style={{
+              color: "black",
+              height: "30px",
+              border: "1px solid #b4b4b4",
+              borderRadius: "3px",
+              font:
+                "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+              outline: "rgb(131, 131, 131) none 0px",
+              padding: "1px 30px 0px 10px",
+
+              ...standardSelectStyles(selA)
+            }}
+          >
             {selA.options.map(o => (
-              <option {...o.getOptionProps()}>Hello</option>
+              <option
+                {...o.getOptionProps()}
+                style={{
+                  color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
+                  minHeight: "18px",
+                  alignSelf: "center",
+                  border: "0px none rgb(131, 131, 131)",
+                  font:
+                    "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+                  outline: "rgb(131, 131, 131) none 0px"
+                }}
+              />
             ))}
           </select>
-          <select {...selB.getSelectProps()}>
+          <select
+            {...selB.getSelectProps()}
+            style={{
+              color: "black",
+              height: "30px",
+              border: "1px solid #b4b4b4",
+              borderRadius: "3px",
+              font:
+                "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+              outline: "rgb(131, 131, 131) none 0px",
+              padding: "1px 30px 0px 10px",
+
+              ...standardSelectStyles(selB)
+            }}
+          >
             {selA.options.map(o => (
-              <option {...o.getOptionProps()}>Hello</option>
+              <option
+                {...o.getOptionProps()}
+                style={{
+                  color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
+                  minHeight: "18px",
+                  alignSelf: "center",
+                  border: "0px none rgb(131, 131, 131)",
+                  font:
+                    "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+                  outline: "rgb(131, 131, 131) none 0px"
+                }}
+              />
             ))}
           </select>
           <ComboboxPropertySelector
@@ -173,4 +226,23 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
       </div>
     );
   }
+}
+
+function standardSelectStyles(o: UseComboboxPropertySelector): {} {
+  if (!o.isSelectedItemValid && o.locked) {
+    return {
+      background: "lightgray",
+      color: "red",
+      border: "none"
+    };
+  } else if (!o.isSelectedItemValid) {
+    return { color: "red" };
+  } else if (o.locked) {
+    return {
+      background: "lightgray",
+      color: "darkgray",
+      border: "none"
+    };
+  }
+  return {};
 }

@@ -19,6 +19,8 @@ import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 // } from "./image-dropdown-selector";
 
 export type UseComboboxPropertySelector = {
+  readonly isSelectedItemValid: boolean;
+  readonly locked: boolean;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly options: ReadonlyArray<UseComboboxPropertySelectorOption>;
 };
@@ -37,6 +39,8 @@ export type UseComboboxPropertySelectorParams = {
 };
 
 export type UseComboboxPropertySelectorOption = {
+  readonly label: string;
+  readonly isItemValid: boolean;
   readonly getOptionProps: () => React.SelectHTMLAttributes<HTMLOptionElement>;
 };
 
@@ -185,20 +189,36 @@ export function useComboboxPropertySelector({
   //   </ComboBoxStandardSelect>
   // );
 
-  function getSelectProps(): React.SelectHTMLAttributes<HTMLSelectElement> {
-    return {
-      // isSelectedItemValid: selectedOption.isItemValid,
-      // locked: locked,
+  // function getSelectProps(): React.SelectHTMLAttributes<HTMLSelectElement> {
+  //   return {
+  //     disabled: readOnly || locked,
+  //     value: selectedOption!.value,
+  //     title: selectedOption!.toolTip,
+  //     onChange: (event) =>
+  //       _doOnChange(event.currentTarget.value, onValueChange),
+  //   };
+  // }
+
+  return {
+    isSelectedItemValid: selectedOption.isItemValid,
+    locked: locked,
+    getSelectProps: () => ({
       disabled: readOnly || locked,
       value: selectedOption!.value,
       title: selectedOption!.toolTip,
       onChange: event => _doOnChange(event.currentTarget.value, onValueChange)
-    };
-  }
-
-  return {
-    getSelectProps,
-    options: options.map(o => ({ getOptionProps: () => o }))
+    }),
+    options: options.map(o => ({
+      label: o.label,
+      isItemValid: o.isItemValid,
+      getOptionProps: () => ({
+        key: o.value,
+        value: o.value,
+        label: o.label,
+        image: o.image
+        // toolTip: o.toolTip,
+      })
+    }))
   };
 }
 
