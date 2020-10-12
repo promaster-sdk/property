@@ -9,6 +9,7 @@ import { ComboboxPropertySelectorExample1 } from "./combobox-property-selector/e
 import { CheckboxPropertySelectorExample1 } from "./checkbox-property-selector/example-1";
 import { DropdownExample1 } from "./dropdown/example-1";
 import { TextboxPropertySelectorExample1 } from "./textbox-property-selector/example-1";
+import { ComboboxPropertySelectorExample1Hooks } from "./combobox-property-selector/example-1-hooks";
 
 // storiesOf("Welcome", module).add("to Storybook", () => (
 //   <Welcome showApp={linkTo("Button")} />
@@ -32,6 +33,10 @@ storiesOf("Amount Property Selector", module).add("example 1", () => (
 
 storiesOf("Combobox Property Selector", module).add("example 1", () => (
   <ComboboxPropertySelectorExample1 />
+));
+
+storiesOf("Combobox Property Selector", module).add("example hooks1", () => (
+  <ComboboxPropertySelectorExample1Hooks />
 ));
 
 storiesOf("Checkbox Property Selector", module).add("example 1", () => (

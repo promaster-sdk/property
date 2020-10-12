@@ -8,7 +8,7 @@ import {
 import {
   createCheckboxPropertySelector,
   CheckboxPropertyValueItem
-} from "../index";
+} from "../../index";
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
