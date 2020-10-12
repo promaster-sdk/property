@@ -27,7 +27,7 @@ export type UseComboboxPropertySelectorParams = {
   readonly sortValidFirst: boolean;
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly valueItems: ReadonlyArray<ComboBoxPropertyValueItem>;
+  readonly valueItems: ReadonlyArray<UseComboBoxPropertyValueItem>;
   readonly showCodes: boolean;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
@@ -38,6 +38,14 @@ export type UseComboboxPropertySelectorParams = {
 
 export type UseComboboxPropertySelectorOption = {
   readonly getOptionProps: () => React.SelectHTMLAttributes<HTMLOptionElement>;
+};
+
+export type UseComboBoxPropertyValueItem = {
+  readonly value: PropertyValue.PropertyValue | undefined | null;
+  readonly sortNo: number;
+  readonly text: string;
+  readonly image?: string;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
 export function useComboboxPropertySelector({
@@ -62,7 +70,7 @@ export function useComboboxPropertySelector({
   const selectedValueItemOrUndefined = valueItems.find(
     item => (item.value && PropertyValue.getInteger(item.value)) === value
   );
-  let selectedValueItem: ComboBoxPropertyValueItem;
+  let selectedValueItem: UseComboBoxPropertyValueItem;
   if (!selectedValueItemOrUndefined) {
     selectedValueItem = {
       value: undefined,
@@ -73,7 +81,7 @@ export function useComboboxPropertySelector({
     // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
     // valueItems.unshift(selectedValueItem);
     valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<
-      ComboBoxPropertyValueItem
+      UseComboBoxPropertyValueItem
     >;
   } else {
     selectedValueItem = selectedValueItemOrUndefined;
@@ -192,14 +200,6 @@ export function useComboboxPropertySelector({
     getSelectProps,
     options: options.map(o => ({ getOptionProps: () => o }))
   };
-}
-
-export interface ComboBoxPropertyValueItem {
-  readonly value: PropertyValue.PropertyValue | undefined | null;
-  readonly sortNo: number;
-  readonly text: string;
-  readonly image?: string;
-  readonly validationFilter: PropertyFilter.PropertyFilter;
 }
 
 /*
@@ -441,7 +441,7 @@ export function createComboboxPropertySelector({
 */
 
 function _getItemLabel(
-  valueItem: ComboBoxPropertyValueItem,
+  valueItem: UseComboBoxPropertyValueItem,
   showCodes: boolean
 ): string {
   if (valueItem.value === undefined || valueItem.value === null) {
@@ -465,7 +465,7 @@ function _doOnChange(
   }
 }
 
-function _getItemValue(valueItem: ComboBoxPropertyValueItem): string {
+function _getItemValue(valueItem: UseComboBoxPropertyValueItem): string {
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
   }
@@ -474,7 +474,7 @@ function _getItemValue(valueItem: ComboBoxPropertyValueItem): string {
 }
 
 function _getItemInvalidMessage(
-  valueItem: ComboBoxPropertyValueItem,
+  valueItem: UseComboBoxPropertyValueItem,
   filterPrettyPrint: PropertyFiltering.FilterPrettyPrint
 ): string {
   return filterPrettyPrint(valueItem.validationFilter);
@@ -483,7 +483,7 @@ function _getItemInvalidMessage(
 function _isValueItemValid(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItem: ComboBoxPropertyValueItem,
+  valueItem: UseComboBoxPropertyValueItem,
   comparer: PropertyValue.Comparer
 ): boolean {
   if (valueItem.value === undefined || valueItem.value === null) {

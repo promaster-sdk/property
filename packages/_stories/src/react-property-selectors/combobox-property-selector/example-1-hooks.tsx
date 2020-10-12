@@ -3,7 +3,8 @@ import React from "react";
 import { Unit } from "uom";
 import {
   createComboboxPropertySelector,
-  ComboBoxPropertyValueItem
+  ComboBoxPropertyValueItem,
+  useComboboxPropertySelector
 } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -86,6 +87,49 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
       }
     ];
 
+    const selA = useComboboxPropertySelector({
+      propertyName: "a",
+      valueItems: valueItems1,
+      propertyValueSet: this.state.propertyValueSet,
+      locked: false,
+      showCodes: true,
+      sortValidFirst: true,
+      onValueChange: pv =>
+        this.setState(
+          merge(this.state, {
+            propertyValueSet: PropertyValueSet.set(
+              "a",
+              pv as PropertyValue.PropertyValue,
+              this.state.propertyValueSet
+            )
+          })
+        ),
+      filterPrettyPrint: filterPrettyPrint,
+      readOnly: false
+    });
+
+    const selB = useComboboxPropertySelector({
+      propertyName: "b",
+      valueItems: valueItems2,
+      propertyValueSet: this.state.propertyValueSet,
+      locked: false,
+      showCodes: true,
+      sortValidFirst: true,
+      onValueChange: pv =>
+        this.setState(
+          merge(this.state, {
+            propertyValueSet: PropertyValueSet.set(
+              "b",
+              pv as PropertyValue.PropertyValue,
+              this.state.propertyValueSet
+            )
+          })
+        ),
+
+      filterPrettyPrint: filterPrettyPrint,
+      readOnly: false
+    });
+
     return (
       <div>
         <div>ComboboxPropertySelector:</div>
@@ -94,27 +138,16 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
           {PropertyValueSet.toString(this.state.propertyValueSet)}
         </div>
         <div>
-          <ComboboxPropertySelector
-            propertyName="a"
-            valueItems={valueItems1}
-            propertyValueSet={this.state.propertyValueSet}
-            locked={false}
-            showCodes={true}
-            sortValidFirst={true}
-            onValueChange={pv =>
-              this.setState(
-                merge(this.state, {
-                  propertyValueSet: PropertyValueSet.set(
-                    "a",
-                    pv as PropertyValue.PropertyValue,
-                    this.state.propertyValueSet
-                  )
-                })
-              )
-            }
-            filterPrettyPrint={filterPrettyPrint}
-            readOnly={false}
-          />
+          <select {...selA.getSelectProps()}>
+            {selA.options.map(o => (
+              <option {...o.getOptionProps()}>Hello</option>
+            ))}
+          </select>
+          <select {...selB.getSelectProps()}>
+            {selA.options.map(o => (
+              <option {...o.getOptionProps()}>Hello</option>
+            ))}
+          </select>
           <ComboboxPropertySelector
             propertyName="b"
             valueItems={valueItems2}
