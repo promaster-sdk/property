@@ -5,7 +5,8 @@ import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem,
   useComboboxPropertySelector,
-  UseComboboxPropertySelector
+  UseComboboxPropertySelector,
+  UseComboboxPropertySelectorOption
 } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -148,15 +149,7 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
             {selA.options.map(o => (
               <option
                 {...o.getOptionProps()}
-                style={{
-                  color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
-                  minHeight: "18px",
-                  alignSelf: "center",
-                  border: "0px none rgb(131, 131, 131)",
-                  font:
-                    "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-                  outline: "rgb(131, 131, 131) none 0px"
-                }}
+                style={standardSelectOptionStyles(o)}
               />
             ))}
           </select>
@@ -167,15 +160,7 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
             {selA.options.map(o => (
               <option
                 {...o.getOptionProps()}
-                style={{
-                  color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
-                  minHeight: "18px",
-                  alignSelf: "center",
-                  border: "0px none rgb(131, 131, 131)",
-                  font:
-                    "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-                  outline: "rgb(131, 131, 131) none 0px"
-                }}
+                style={standardSelectOptionStyles(o)}
               />
             ))}
           </select>
@@ -204,6 +189,17 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
       </div>
     );
   }
+}
+
+function standardSelectOptionStyles(o: UseComboboxPropertySelectorOption): {} {
+  return {
+    color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
+    minHeight: "18px",
+    alignSelf: "center",
+    border: "0px none rgb(131, 131, 131)",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px"
+  };
 }
 
 function standardSelectStyles(o: UseComboboxPropertySelector): {} {
