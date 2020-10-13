@@ -6,7 +6,6 @@ import {
   createAmountInputBox,
   getDefaultAmountInputBoxStyle,
   useAmountFormatSelector,
-  UseAmountInputBox,
   useAmountInputBox
 } from "@promaster-sdk/react-property-selectors";
 import { Unit, Amount, BaseUnits } from "uom";
