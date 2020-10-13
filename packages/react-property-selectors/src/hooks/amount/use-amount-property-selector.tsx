@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   PropertyValueSet,
   PropertyFilter,
@@ -76,6 +76,24 @@ export function useAmountPropertySelector(
     propertyValueSet
   );
 
+  const errorMessage = getValidationMessage(
+    propertyValueSet,
+    value,
+    validationFilter,
+    filterPrettyPrint,
+    comparer
+  );
+
+  const onValueChangeCallback = useCallback(
+    newAmount =>
+      onValueChange(
+        newAmount !== undefined
+          ? PropertyValue.create("amount", newAmount)
+          : undefined
+      ),
+    [onValueChange]
+  );
+
   const amountInputBox = useAmountInputBox({
     value,
     inputUnit,
@@ -84,19 +102,8 @@ export function useAmountPropertySelector(
     isRequiredMessage,
     readonly,
     debounceTime,
-    errorMessage: getValidationMessage(
-      propertyValueSet,
-      value,
-      validationFilter,
-      filterPrettyPrint,
-      comparer
-    ),
-    onValueChange: newAmount =>
-      onValueChange(
-        newAmount !== undefined
-          ? PropertyValue.create("amount", newAmount)
-          : undefined
-      )
+    errorMessage,
+    onValueChange: onValueChangeCallback
   });
   const amountFormatSelector = useAmountFormatSelector({
     selectedUnit: inputUnit,
