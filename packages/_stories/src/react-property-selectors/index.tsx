@@ -11,6 +11,7 @@ import { DropdownExample1 } from "./dropdown/example-1";
 import { TextboxPropertySelectorExample1 } from "./textbox-property-selector/example-1";
 import { ComboboxPropertySelectorExample1Hooks } from "./combobox-property-selector/example-1-hooks";
 import { TextboxPropertySelectorExample1Hooks } from "./textbox-property-selector/example-1-hooks";
+import { CheckboxPropertySelectorExample1Hooks } from "./checkbox-property-selector/example-1-hooks";
 
 // storiesOf("Welcome", module).add("to Storybook", () => (
 //   <Welcome showApp={linkTo("Button")} />
@@ -36,9 +37,9 @@ storiesOf("Combobox Property Selector", module)
   .add("example 1", () => <ComboboxPropertySelectorExample1 />)
   .add("example 1 hooks", () => <ComboboxPropertySelectorExample1Hooks />);
 
-storiesOf("Checkbox Property Selector", module).add("example 1", () => (
-  <CheckboxPropertySelectorExample1 />
-));
+storiesOf("Checkbox Property Selector", module)
+  .add("example 1", () => <CheckboxPropertySelectorExample1 />)
+  .add("example 1 hooks", () => <CheckboxPropertySelectorExample1Hooks />);
 
 storiesOf("Dropdown", module).add("example 1", () => <DropdownExample1 />);
 
