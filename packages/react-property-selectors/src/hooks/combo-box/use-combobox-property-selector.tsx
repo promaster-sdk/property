@@ -83,7 +83,6 @@ type Option = {
   readonly label: string;
   readonly isItemValid: boolean;
   readonly image: string | undefined;
-  readonly sortNo: number;
   readonly toolTip: string;
 };
 
