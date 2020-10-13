@@ -6,7 +6,8 @@ import {
   useComboboxPropertySelector,
   useImageComboboxPropertySelector,
   getDefaultSelectStyle,
-  getDefaultOptionStyle
+  getDefaultOptionStyle,
+  UseImageComboboxPropertySelector
 } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -171,26 +172,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
               selC.selected !== undefined ? selC.selected.tooltip : undefined
             }
             onClick={() => selC.setIsOpen(!selC.isOpen)}
-            style={{
-              width: "162px",
-              alignItems: "center",
-              background: "white",
-              color: "black",
-              height: "30px",
-              whiteSpace: "nowrap",
-              border: "1px solid #b4b4b4",
-              borderRadius: "3px",
-              font:
-                "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-              outline: "rgb(131, 131, 131) none 0px",
-              padding: "1px 5px 0px 14px",
-              textAlign: "right",
-
-              ...buttonElementStyles({
-                isSelectedItemValid: selC.isSelectedItemValid,
-                locked: selC.locked
-              })
-            }}
+            style={getDefaultToggleButtonStyle(selC)}
           >
             {renderImageListItem(selC.selected)}
             <i className="fa fa-caret-down" />
@@ -213,6 +195,30 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
       </div>
     </div>
   );
+}
+
+function getDefaultToggleButtonStyle(
+  selector: UseImageComboboxPropertySelector
+): {} {
+  return {
+    width: "162px",
+    alignItems: "center",
+    background: "white",
+    color: "black",
+    height: "30px",
+    whiteSpace: "nowrap",
+    border: "1px solid #b4b4b4",
+    borderRadius: "3px",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px",
+    padding: "1px 5px 0px 14px",
+    textAlign: "right",
+
+    ...buttonElementStyles({
+      isSelectedItemValid: selector.isSelectedItemValid,
+      locked: selector.locked
+    })
+  };
 }
 
 function getDefaultMenuStyle(): {} {
