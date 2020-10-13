@@ -192,7 +192,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
               })
             }}
           >
-            {_renderItem(selC.selected)}
+            {renderImageListItem(selC.selected)}
             <i className="fa fa-caret-down" />
           </div>
           {/* optionsList */}
@@ -212,30 +212,8 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
             >
               {selC.options.map(o => {
                 return (
-                  <li
-                    id="OptionImageElementRow, ComboBoxImageOptionElementRow"
-                    key={o.value}
-                    title={o.tooltip}
-                    onClick={() => {
-                      // onChange(o.value);
-                      selC.setIsOpen(false);
-                    }}
-                    style={{
-                      color:
-                        o.isItemValid === false
-                          ? "color: red"
-                          : "rgb(131, 131, 131)",
-                      minHeight: "18px",
-                      alignSelf: "center",
-                      border: "0px none rgb(131, 131, 131)",
-                      font:
-                        "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-                      outline: "rgb(131, 131, 131) none 0px",
-                      padding: "0.2em 0.5em",
-                      cursor: "default"
-                    }}
-                  >
-                    {_renderItem(o)}
+                  <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
+                    {renderImageListItem(o)}
                   </li>
                 );
               })}
@@ -247,6 +225,19 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
       </div>
     </div>
   );
+}
+
+function getDefaultListItemStyle(o: { readonly isItemValid: boolean }): {} {
+  return {
+    color: o.isItemValid === false ? "color: red" : "rgb(131, 131, 131)",
+    minHeight: "18px",
+    alignSelf: "center",
+    border: "0px none rgb(131, 131, 131)",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px",
+    padding: "0.2em 0.5em",
+    cursor: "default"
+  };
 }
 
 function buttonElementStyles({
@@ -275,7 +266,7 @@ function buttonElementStyles({
   return {};
 }
 
-function _renderItem(
+function renderImageListItem(
   item:
     | {
         readonly label: string;

@@ -42,7 +42,7 @@ export type UseImageComboboxPropertySelectorOption = {
   //
   readonly label: string;
   readonly isItemValid: boolean;
-  readonly getOptionProps: () => React.SelectHTMLAttributes<HTMLOptionElement>;
+  readonly getItemProps: () => React.LiHTMLAttributes<HTMLLIElement>;
 };
 
 export type UseImageComboBoxPropertyValueItem = {
@@ -94,12 +94,17 @@ export function useImageComboboxPropertySelector(
       //
       label: o.label,
       isItemValid: o.isItemValid,
-      getOptionProps: () => ({
+      getItemProps: () => ({
         key: o.value,
         value: o.value,
         label: o.label,
         image: o.image,
-        title: o.toolTip
+        title: o.toolTip,
+        onClick: () => {
+          // onChange(o.value);
+          _doOnChange(o.value, onValueChange);
+          setIsOpen(false);
+        }
       })
     }))
   };
