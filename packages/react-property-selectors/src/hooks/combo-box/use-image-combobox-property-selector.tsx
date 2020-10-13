@@ -8,16 +8,13 @@ import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { getOptions, getSelectedOption } from "./option";
 
 export type UseImageComboboxPropertySelector = {
-  readonly selected: {
-    readonly tooltip: string;
-    readonly label: string;
-    readonly imageUrl?: string;
-  };
-  readonly setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  //
+  readonly label: string;
+  readonly imageUrl?: string;
+  //
   readonly isOpen: boolean;
   readonly isSelectedItemValid: boolean;
   readonly locked: boolean;
-  readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly getToggleButtonProps: () => React.SelectHTMLAttributes<
     HTMLButtonElement
   >;
@@ -38,11 +35,7 @@ export type UseImageComboboxPropertySelectorParams = {
 };
 
 export type UseImageComboboxPropertySelectorOption = {
-  //
-  readonly value: string;
-  readonly tooltip: string;
   readonly imageUrl?: string;
-  //
   readonly label: string;
   readonly isItemValid: boolean;
   readonly getItemProps: () => React.LiHTMLAttributes<HTMLLIElement>;
@@ -71,32 +64,19 @@ export function useImageComboboxPropertySelector(
 
   return {
     //
-    selected: {
-      tooltip: selectedOption.toolTip,
-      label: selectedOption.label,
-      imageUrl: selectedOption.image
-    },
-    setIsOpen,
+    label: selectedOption.label,
+    imageUrl: selectedOption.image,
     isOpen,
     //
     isSelectedItemValid: selectedOption.isItemValid,
     locked: locked,
-    getSelectProps: () => ({
-      disabled: readOnly || locked,
-      value: selectedOption!.value,
-      title: selectedOption!.toolTip,
-      onChange: event => _doOnChange(event.currentTarget.value, onValueChange)
-    }),
     getToggleButtonProps: () => ({
+      disabled: readOnly || locked,
       title: selectedOption !== undefined ? selectedOption.toolTip : undefined,
       onClick: () => setIsOpen(!isOpen)
     }),
     options: options.map(o => ({
-      //
-      value: o.value,
-      tooltip: o.toolTip,
       imageUrl: o.image,
-      //
       label: o.label,
       isItemValid: o.isItemValid,
       getItemProps: () => ({

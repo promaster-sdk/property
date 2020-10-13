@@ -155,7 +155,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
             {...selC.getToggleButtonProps()}
             style={getDefaultToggleButtonStyle(selC)}
           >
-            {renderImageListItem(selC.selected)}
+            {renderImageListItem(selC.label, selC.imageUrl)}
             <i className="fa fa-caret-down" />
           </button>
           {/* optionsList */}
@@ -163,7 +163,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
             <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
               {selC.options.map(o => (
                 <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
-                  {renderImageListItem(o)}
+                  {renderImageListItem(o.label, o.imageUrl)}
                 </li>
               ))}
             </ul>
@@ -251,30 +251,15 @@ function buttonElementStyles({
 }
 
 function renderImageListItem(
-  item:
-    | {
-        readonly label: string;
-        readonly imageUrl?: string;
-      }
-    | undefined
+  label: string,
+  imageUrl?: string
 ): React.ReactElement<{}> {
-  console.log("_renderItem imageUrl", item && item.imageUrl);
-  return item ? (
+  return (
     <span>
-      {item.imageUrl ? (
-        <img
-          src={item.imageUrl}
-          style={{
-            maxWidth: "2em",
-            maxHeight: "2em"
-          }}
-        />
-      ) : (
-        <span />
+      {imageUrl && (
+        <img src={imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />
       )}
-      {" " + item.label + " "}
+      {" " + label + " "}
     </span>
-  ) : (
-    <span />
   );
 }
