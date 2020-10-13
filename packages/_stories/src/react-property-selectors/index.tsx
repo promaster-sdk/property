@@ -12,6 +12,7 @@ import { TextboxPropertySelectorExample1 } from "./textbox-property-selector/exa
 import { ComboboxPropertySelectorExample1Hooks } from "./combobox-property-selector/example-1-hooks";
 import { TextboxPropertySelectorExample1Hooks } from "./textbox-property-selector/example-1-hooks";
 import { CheckboxPropertySelectorExample1Hooks } from "./checkbox-property-selector/example-1-hooks";
+import { AmountFormatSelectorExample1Hooks } from "./amount-format-selector/example-1-hooks";
 
 // storiesOf("Welcome", module).add("to Storybook", () => (
 //   <Welcome showApp={linkTo("Button")} />
@@ -25,9 +26,9 @@ import { CheckboxPropertySelectorExample1Hooks } from "./checkbox-property-selec
 //     <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>
 //   ));
 
-storiesOf("Amount Format Selector", module).add("example 1", () => (
-  <AmountFormatSelectorExample1 />
-));
+storiesOf("Amount Format Selector", module)
+  .add("example 1", () => <AmountFormatSelectorExample1 />)
+  .add("example 1 hooks", () => <AmountFormatSelectorExample1Hooks />);
 
 storiesOf("Amount Property Selector", module).add("example 1", () => (
   <AmountPropertySelectorExample1 />

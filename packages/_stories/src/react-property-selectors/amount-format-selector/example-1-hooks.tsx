@@ -51,7 +51,7 @@ const AmountFormatSelector = createAmountFormatSelector({
 
 const AmountInputBox = createAmountInputBox({});
 
-export function AmountFormatSelectorExample1(): React.ReactElement<{}> {
+export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
     amount: Amount.create(10.0, BaseUnits.Meter),
     selectedUnit: BaseUnits.Meter,
