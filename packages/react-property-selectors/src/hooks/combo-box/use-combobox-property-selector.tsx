@@ -78,6 +78,50 @@ export function useComboboxPropertySelector(
   };
 }
 
+export function getDefaultOptionStyle(
+  o: UseComboboxPropertySelectorOption
+): {} {
+  return {
+    color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
+    minHeight: "18px",
+    alignSelf: "center",
+    border: "0px none rgb(131, 131, 131)",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px"
+  };
+}
+
+export function getDefaultSelectStyle(o: UseComboboxPropertySelector): {} {
+  const always = {
+    color: "black",
+    height: "30px",
+    border: "1px solid #b4b4b4",
+    borderRadius: "3px",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px",
+    padding: "1px 30px 0px 10px"
+  };
+
+  if (!o.isSelectedItemValid && o.locked) {
+    return {
+      ...always,
+      background: "lightgray",
+      color: "red",
+      border: "none"
+    };
+  } else if (!o.isSelectedItemValid) {
+    return { ...always, color: "red" };
+  } else if (o.locked) {
+    return {
+      ...always,
+      background: "lightgray",
+      color: "darkgray",
+      border: "none"
+    };
+  }
+  return { ...always };
+}
+
 type Option = {
   readonly value: string;
   readonly label: string;

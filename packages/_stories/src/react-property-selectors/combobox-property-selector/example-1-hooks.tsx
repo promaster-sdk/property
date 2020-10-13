@@ -5,8 +5,8 @@ import {
   createComboboxPropertySelector,
   ComboBoxPropertyValueItem,
   useComboboxPropertySelector,
-  UseComboboxPropertySelector,
-  UseComboboxPropertySelectorOption
+  getDefaultOptionStyle,
+  getDefaultSelectStyle
 } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -144,23 +144,23 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
         <div>
           <select
             {...selA.getSelectProps()}
-            style={{ ...standardSelectStyles(selA) }}
+            style={{ ...getDefaultSelectStyle(selA) }}
           >
             {selA.options.map(o => (
               <option
                 {...o.getOptionProps()}
-                style={standardSelectOptionStyles(o)}
+                style={getDefaultOptionStyle(o)}
               />
             ))}
           </select>
           <select
             {...selB.getSelectProps()}
-            style={{ ...standardSelectStyles(selB) }}
+            style={{ ...getDefaultSelectStyle(selB) }}
           >
             {selA.options.map(o => (
               <option
                 {...o.getOptionProps()}
-                style={standardSelectOptionStyles(o)}
+                style={getDefaultOptionStyle(o)}
               />
             ))}
           </select>
@@ -189,46 +189,4 @@ export class ComboboxPropertySelectorExample1Hooks extends React.Component<
       </div>
     );
   }
-}
-
-function standardSelectOptionStyles(o: UseComboboxPropertySelectorOption): {} {
-  return {
-    color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
-    minHeight: "18px",
-    alignSelf: "center",
-    border: "0px none rgb(131, 131, 131)",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px"
-  };
-}
-
-function standardSelectStyles(o: UseComboboxPropertySelector): {} {
-  const always = {
-    color: "black",
-    height: "30px",
-    border: "1px solid #b4b4b4",
-    borderRadius: "3px",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px",
-    padding: "1px 30px 0px 10px"
-  };
-
-  if (!o.isSelectedItemValid && o.locked) {
-    return {
-      ...always,
-      background: "lightgray",
-      color: "red",
-      border: "none"
-    };
-  } else if (!o.isSelectedItemValid) {
-    return { ...always, color: "red" };
-  } else if (o.locked) {
-    return {
-      ...always,
-      background: "lightgray",
-      color: "darkgray",
-      border: "none"
-    };
-  }
-  return { ...always };
 }
