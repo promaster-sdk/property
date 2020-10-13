@@ -5,7 +5,7 @@
  The UI will ensure that the value is numeric before emitting a change event.
  It is also allowed to have a blank input in which case a change event with value of undefined will be emitted.
  */
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Amount, Unit } from "uom";
 
 export type UseAmountInputBoxParams = {
@@ -54,11 +54,8 @@ export function useAmountInputBox(
     params.value
   ]);
 
-  const debouncedOnValueChange = debounce(
-    (
-      newAmount: Amount.Amount<unknown> | undefined,
-      onValueChange: (newAmount: Amount.Amount<unknown> | undefined) => void
-    ) => {
+  const debouncedOnValueChange = useCallback(
+    debounce((newAmount: Amount.Amount<unknown>) => {
       // An event can have been received when the input was valid, then the input has gone invalid
       // but we still received the delayed event from when the input was valid. Therefore
       // we need an extra check here to make sure that the current input is valid before we
@@ -66,8 +63,8 @@ export function useAmountInputBox(
       if (state.isValid) {
         onValueChange(newAmount);
       }
-    },
-    debounceTime
+    }, debounceTime),
+    [onValueChange, debounceTime]
   );
 
   const { effectiveErrorMessage, textValue } = state;
@@ -81,8 +78,7 @@ export function useAmountInputBox(
       readonly,
       onBlur: onBlur,
       onFocus: onFocus,
-      onChange: e =>
-        _onChange(debouncedOnValueChange, setState, params, e, onValueChange)
+      onChange: e => _onChange(debouncedOnValueChange, setState, params, e)
     })
   };
 }
@@ -127,13 +123,13 @@ function initStateFromParams({
 
 function _onChange(
   debouncedOnValueChange: (
-    newAmount: Amount.Amount<unknown> | undefined,
-    onValueChange: (newAmount: Amount.Amount<unknown> | undefined) => void
-  ) => void,
+    newAmount: Amount.Amount<unknown> | undefined
+  ) => // onValueChange: (newAmount: Amount.Amount<unknown> | undefined) => void
+  void,
   setState: React.Dispatch<React.SetStateAction<State>>,
   params: UseAmountInputBoxParams,
-  e: React.FormEvent<HTMLInputElement>,
-  onValueChange: (newAmount: Amount.Amount<unknown>) => void
+  e: React.FormEvent<HTMLInputElement>
+  // onValueChange: (newAmount: Amount.Amount<unknown>) => void
 ): void {
   const newStringValue = e.currentTarget.value.replace(",", ".");
   const { inputUnit, inputDecimalCount } = params;
@@ -160,7 +156,7 @@ function _onChange(
   setState(newState);
   // We need to check isValid from the new state because state is not immidiately mutated
   if (newState.isValid) {
-    debouncedOnValueChange(newAmount, onValueChange);
+    debouncedOnValueChange(newAmount);
   }
 }
 

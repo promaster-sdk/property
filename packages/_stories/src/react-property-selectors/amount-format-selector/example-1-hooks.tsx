@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps,
@@ -60,13 +60,15 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     selectedDecimalCount: 2
   });
 
+  const onValueChange = useCallback(amount => {
+    setState(merge(state, { amount }));
+  }, []);
+
   const selA = useAmountInputBox({
     value: state.amount,
     inputUnit: state.selectedUnit,
     inputDecimalCount: state.selectedDecimalCount,
-    onValueChange: amount => {
-      setState(merge(state, { amount }));
-    },
+    onValueChange,
     readonly: false,
     errorMessage: "",
     isRequiredMessage: "Is required",
