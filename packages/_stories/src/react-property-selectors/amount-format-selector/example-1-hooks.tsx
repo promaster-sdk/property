@@ -3,7 +3,9 @@ import {
   AmountFormatWrapper,
   AmountFormatWrapperProps,
   createAmountFormatSelector,
-  createAmountInputBox
+  createAmountInputBox,
+  UseAmountInputBox,
+  useAmountInputBox
 } from "@promaster-sdk/react-property-selectors";
 import { Unit, Amount, BaseUnits } from "uom";
 import styled from "styled-components";
@@ -57,11 +59,31 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     selectedUnit: BaseUnits.Meter,
     selectedDecimalCount: 2
   });
+
+  const selA = useAmountInputBox({
+    value: state.amount,
+    inputUnit: state.selectedUnit,
+    inputDecimalCount: state.selectedDecimalCount,
+    onValueChange: amount => {
+      setState(merge(state, { amount }));
+    },
+    readonly: false,
+    errorMessage: "",
+    isRequiredMessage: "Is required",
+    notNumericMessage: "Not numeric",
+    debounceTime: 350
+  });
+
   return (
     <div>
       <div>Amount: {Amount.toString(state.amount)}</div>
       <div>AmountFormatSelector:</div>
       <div>
+        <input
+          {...selA.getInputProps()}
+          style={getDefaultAmountInputBoxStyle(selA)}
+        />
+
         <AmountInputBox
           value={state.amount}
           inputUnit={state.selectedUnit}
@@ -99,4 +121,48 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
       </div>
     </div>
   );
+}
+
+function getDefaultAmountInputBoxStyle(selector: UseAmountInputBox): {} {
+  return {
+    color:
+      !selector.readonly && selector.effectiveErrorMessage ? "red" : "black",
+    height: "30px",
+    border: "1px solid #b4b4b4",
+    borderRadius: "3px",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px",
+    padding: "1px 30px 0px 10px",
+
+    ...inputInvalidLocked(selector),
+    ...inputLocked(selector)
+  };
+}
+
+function inputInvalidLocked({
+  readonly,
+  effectiveErrorMessage
+}: UseAmountInputBox): {} {
+  if (readonly && effectiveErrorMessage) {
+    return {
+      background: "lightgray",
+      color: "red",
+      border: "none"
+    };
+  }
+  return {};
+}
+
+function inputLocked({
+  readonly,
+  effectiveErrorMessage
+}: UseAmountInputBox): {} {
+  if (readonly && !effectiveErrorMessage) {
+    return {
+      background: "lightgray",
+      color: "darkgray",
+      border: "none"
+    };
+  }
+  return {};
 }
