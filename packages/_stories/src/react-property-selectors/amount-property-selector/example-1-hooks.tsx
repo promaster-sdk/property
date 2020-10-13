@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Unit, BaseUnits } from "uom";
 import {
-  createAmountPropertySelector,
   getDefaultAmountInputBoxStyle,
   useAmountPropertySelector
 } from "@promaster-sdk/react-property-selectors";
@@ -19,8 +18,7 @@ const unitLookup: Unit.UnitLookup = unitString =>
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly selectedUnit: Unit.Unit<any>;
+  readonly selectedUnit: Unit.Unit<unknown>;
   readonly selectedDecimalCount: number;
 }
 
@@ -36,12 +34,7 @@ const filterPrettyPrint = (
     unitLookup
   );
 
-const validationFilter = PropertyFilter.fromString(
-  "a<100:Meter",
-  unitLookup
-) as PropertyFilter.PropertyFilter;
-
-const AmountPropertySelector = createAmountPropertySelector({});
+const validationFilter = PropertyFilter.fromString("a<100:Meter", unitLookup)!;
 
 export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
@@ -102,30 +95,6 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
             {...selA.amountInputBox.getInputProps()}
             style={getDefaultAmountInputBoxStyle(selA.amountInputBox)}
           />
-          {/* <AmountInputBox
-            value={value}
-            inputUnit={inputUnit}
-            inputDecimalCount={inputDecimalCount}
-            notNumericMessage={notNumericMessage}
-            isRequiredMessage={isRequiredMessage}
-            errorMessage={_getValidationMessage(
-              propertyValueSet,
-              value,
-              validationFilter,
-              filterPrettyPrint,
-              comparer
-            )}
-            readOnly={readOnly}
-            onValueChange={(newAmount) =>
-              onValueChange(
-                newAmount !== undefined
-                  ? PropertyValue.create("amount", newAmount)
-                  : undefined
-              )
-            }
-            debounceTime={debounceTime}
-          /> */}
-
           {/* AmountFormat */}
           <span {...selA.amountFormatSelector.getWrapperProps()}>
             {selA.amountFormatSelector.active ? (
@@ -155,54 +124,7 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
               selA.amountFormatSelector.label
             )}
           </span>
-          {/* 
-          <AmountFormatSelector
-            selectedUnit={inputUnit}
-            selectedDecimalCount={inputDecimalCount}
-            onFormatChanged={onFormatChanged}
-            onFormatCleared={onFormatCleared}
-            onFormatSelectorActiveChanged={onFormatSelectorToggled}
-            unitsFormat={unitsFormat}
-            units={units}
-          /> */}
         </span>
-
-        <AmountPropertySelector
-          fieldName="a"
-          propertyName="a"
-          propertyValueSet={state.propertyValueSet}
-          inputUnit={state.selectedUnit}
-          inputDecimalCount={state.selectedDecimalCount}
-          onValueChange={pv =>
-            setState(
-              merge(state, {
-                propertyValueSet: PropertyValueSet.set(
-                  "a",
-                  pv as PropertyValue.PropertyValue,
-                  state.propertyValueSet
-                )
-              })
-            )
-          }
-          filterPrettyPrint={filterPrettyPrint}
-          validationFilter={validationFilter}
-          readOnly={false}
-          isRequiredMessage="Is required"
-          notNumericMessage="Not numeric"
-          onFormatChanged={(selectedUnit, selectedDecimalCount) =>
-            setState(merge(state, { selectedUnit, selectedDecimalCount }))
-          }
-          onFormatCleared={() =>
-            setState(
-              merge(state, {
-                selectedUnit: BaseUnits.Meter,
-                selectedDecimalCount: 2
-              })
-            )
-          }
-          unitsFormat={unitsFormat}
-          units={units}
-        />
       </div>
     </div>
   );
