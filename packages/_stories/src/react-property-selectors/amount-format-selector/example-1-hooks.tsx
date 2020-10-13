@@ -4,6 +4,7 @@ import {
   AmountFormatWrapperProps,
   createAmountFormatSelector,
   createAmountInputBox,
+  useAmountFormatSelector,
   UseAmountInputBox,
   useAmountInputBox
 } from "@promaster-sdk/react-property-selectors";
@@ -76,16 +77,61 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     debounceTime: 350
   });
 
+  const fmtSel = useAmountFormatSelector({
+    selectedUnit: state.selectedUnit,
+    selectedDecimalCount: state.selectedDecimalCount,
+    onFormatChanged: (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      selectedUnit: Unit.Unit<any>,
+      selectedDecimalCount: number
+    ) => setState(merge(state, { selectedUnit, selectedDecimalCount })),
+    onFormatCleared: () =>
+      setState(
+        merge(state, {
+          selectedUnit: BaseUnits.Meter,
+          selectedDecimalCount: 2
+        })
+      ),
+    onFormatSelectorActiveChanged: action("Toggle format selector"),
+    unitsFormat: unitsFormat,
+    units: units
+  });
+
   return (
     <div>
       <div>Amount: {Amount.toString(state.amount)}</div>
       <div>AmountFormatSelector:</div>
       <div>
+        {/* AmountInput */}
         <input
           {...selA.getInputProps()}
           style={getDefaultAmountInputBoxStyle(selA)}
         />
+        {/* AmountFormat */}
+        <span {...fmtSel.getWrapperProps()}>
+          {fmtSel.active ? (
+            <>
+              <select {...fmtSel.getUnitSelectorProps()}>
+                {fmtSel.unitSelectorOptions.map(o => (
+                  <option {...o.getOptionProps()}> {o.label} </option>
+                ))}
+              </select>
+              <select {...fmtSel.getPrecisionSelectorProps()}>
+                {fmtSel.precisionSelectorOptions.map(o => (
+                  <option {...o.getOptionProps()}>{o.label}</option>
+                ))}
+              </select>
+              {fmtSel.showClearButton && (
+                <button {...fmtSel.getClearButtonProps()}>{"\u00A0"}</button>
+              )}
+              <button {...fmtSel.getCancelButtonProps()}>{"\u00A0"}</button>
+            </>
+          ) : (
+            fmtSel.label
+          )}
+        </span>
 
+        {/* */}
         <AmountInputBox
           value={state.amount}
           inputUnit={state.selectedUnit}
