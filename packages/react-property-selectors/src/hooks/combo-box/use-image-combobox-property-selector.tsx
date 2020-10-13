@@ -8,10 +8,8 @@ import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { getOptions, getSelectedOption } from "./option";
 
 export type UseImageComboboxPropertySelector = {
-  //
   readonly label: string;
   readonly imageUrl?: string;
-  //
   readonly isOpen: boolean;
   readonly isSelectedItemValid: boolean;
   readonly locked: boolean;
@@ -63,11 +61,9 @@ export function useImageComboboxPropertySelector(
   );
 
   return {
-    //
     label: selectedOption.label,
     imageUrl: selectedOption.image,
     isOpen,
-    //
     isSelectedItemValid: selectedOption.isItemValid,
     locked: locked,
     getToggleButtonProps: () => ({
@@ -86,7 +82,6 @@ export function useImageComboboxPropertySelector(
         image: o.image,
         title: o.toolTip,
         onClick: () => {
-          // onChange(o.value);
           _doOnChange(o.value, onValueChange);
           setIsOpen(false);
         }
@@ -95,50 +90,82 @@ export function useImageComboboxPropertySelector(
   };
 }
 
-export function getDefaultImageOptionStyle(
-  o: UseImageComboboxPropertySelectorOption
+export function getDefaultToggleButtonStyle(
+  selector: UseImageComboboxPropertySelector
 ): {} {
   return {
-    color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
-    minHeight: "18px",
-    alignSelf: "center",
-    border: "0px none rgb(131, 131, 131)",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px"
-  };
-}
-
-export function getDefaultImageSelectStyle(
-  o: UseImageComboboxPropertySelector
-): {} {
-  const always = {
+    width: "162px",
+    alignItems: "center",
+    background: "white",
     color: "black",
     height: "30px",
+    whiteSpace: "nowrap",
     border: "1px solid #b4b4b4",
     borderRadius: "3px",
     font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
     outline: "rgb(131, 131, 131) none 0px",
-    padding: "1px 30px 0px 10px"
-  };
+    padding: "1px 5px 0px 14px",
+    textAlign: "right",
 
-  if (!o.isSelectedItemValid && o.locked) {
+    ...buttonElementStyles({
+      isSelectedItemValid: selector.isSelectedItemValid,
+      locked: selector.locked
+    })
+  };
+}
+
+export function getDefaultMenuStyle(): {} {
+  return {
+    position: "absolute",
+    display: "block",
+    background: "white",
+    border: "1px solid #bbb",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    zIndex: 100
+  };
+}
+
+export function getDefaultListItemStyle(o: {
+  readonly isItemValid: boolean;
+}): {} {
+  return {
+    color: o.isItemValid === false ? "color: red" : "rgb(131, 131, 131)",
+    minHeight: "18px",
+    alignSelf: "center",
+    border: "0px none rgb(131, 131, 131)",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px",
+    padding: "0.2em 0.5em",
+    cursor: "default"
+  };
+}
+
+function buttonElementStyles({
+  isSelectedItemValid,
+  locked
+}: {
+  readonly isSelectedItemValid?: boolean;
+  readonly locked: boolean;
+}): {} {
+  if (isSelectedItemValid === false && locked) {
     return {
-      ...always,
       background: "lightgray",
       color: "red",
       border: "none"
     };
-  } else if (!o.isSelectedItemValid) {
-    return { ...always, color: "red" };
-  } else if (o.locked) {
+  } else if (isSelectedItemValid === false) {
+    return { color: "red" };
+  } else if (locked) {
     return {
-      ...always,
       background: "lightgray",
       color: "darkgray",
       border: "none"
     };
   }
-  return { ...always };
+
+  return {};
 }
 
 function _doOnChange(

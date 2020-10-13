@@ -7,7 +7,9 @@ import {
   useImageComboboxPropertySelector,
   getDefaultSelectStyle,
   getDefaultOptionStyle,
-  UseImageComboboxPropertySelector
+  getDefaultMenuStyle,
+  getDefaultListItemStyle,
+  getDefaultToggleButtonStyle
 } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -155,7 +157,15 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
             {...selC.getToggleButtonProps()}
             style={getDefaultToggleButtonStyle(selC)}
           >
-            {renderImageListItem(selC.label, selC.imageUrl)}
+            <span>
+              {selC.imageUrl && (
+                <img
+                  src={selC.imageUrl}
+                  style={{ maxWidth: "2em", maxHeight: "2em" }}
+                />
+              )}
+              {" " + selC.label + " "}
+            </span>
             <i className="fa fa-caret-down" />
           </button>
           {/* optionsList */}
@@ -163,7 +173,15 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
             <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
               {selC.options.map(o => (
                 <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
-                  {renderImageListItem(o.label, o.imageUrl)}
+                  <span>
+                    {o.imageUrl && (
+                      <img
+                        src={o.imageUrl}
+                        style={{ maxWidth: "2em", maxHeight: "2em" }}
+                      />
+                    )}
+                    {" " + o.label + " "}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -171,95 +189,5 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
         </div>
       </div>
     </div>
-  );
-}
-
-function getDefaultToggleButtonStyle(
-  selector: UseImageComboboxPropertySelector
-): {} {
-  return {
-    width: "162px",
-    alignItems: "center",
-    background: "white",
-    color: "black",
-    height: "30px",
-    whiteSpace: "nowrap",
-    border: "1px solid #b4b4b4",
-    borderRadius: "3px",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px",
-    padding: "1px 5px 0px 14px",
-    textAlign: "right",
-
-    ...buttonElementStyles({
-      isSelectedItemValid: selector.isSelectedItemValid,
-      locked: selector.locked
-    })
-  };
-}
-
-function getDefaultMenuStyle(): {} {
-  return {
-    position: "absolute",
-    display: "block",
-    background: "white",
-    border: "1px solid #bbb",
-    listStyle: "none",
-    margin: 0,
-    padding: 0,
-    zIndex: 100
-  };
-}
-
-function getDefaultListItemStyle(o: { readonly isItemValid: boolean }): {} {
-  return {
-    color: o.isItemValid === false ? "color: red" : "rgb(131, 131, 131)",
-    minHeight: "18px",
-    alignSelf: "center",
-    border: "0px none rgb(131, 131, 131)",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px",
-    padding: "0.2em 0.5em",
-    cursor: "default"
-  };
-}
-
-function buttonElementStyles({
-  isSelectedItemValid,
-  locked
-}: {
-  readonly isSelectedItemValid?: boolean;
-  readonly locked: boolean;
-}): {} {
-  if (isSelectedItemValid === false && locked) {
-    return {
-      background: "lightgray",
-      color: "red",
-      border: "none"
-    };
-  } else if (isSelectedItemValid === false) {
-    return { color: "red" };
-  } else if (locked) {
-    return {
-      background: "lightgray",
-      color: "darkgray",
-      border: "none"
-    };
-  }
-
-  return {};
-}
-
-function renderImageListItem(
-  label: string,
-  imageUrl?: string
-): React.ReactElement<{}> {
-  return (
-    <span>
-      {imageUrl && (
-        <img src={imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />
-      )}
-      {" " + label + " "}
-    </span>
   );
 }
