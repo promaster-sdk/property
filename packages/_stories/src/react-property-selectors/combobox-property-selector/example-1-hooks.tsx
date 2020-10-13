@@ -166,17 +166,13 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
           ) : (
             undefined
           )}
-          <div
-            id="ComboBoxImageButtonElement"
-            title={
-              selC.selected !== undefined ? selC.selected.tooltip : undefined
-            }
-            onClick={() => selC.setIsOpen(!selC.isOpen)}
+          <button
+            {...selC.getToggleButtonProps()}
             style={getDefaultToggleButtonStyle(selC)}
           >
             {renderImageListItem(selC.selected)}
             <i className="fa fa-caret-down" />
-          </div>
+          </button>
           {/* optionsList */}
           {selC.isOpen ? (
             <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>

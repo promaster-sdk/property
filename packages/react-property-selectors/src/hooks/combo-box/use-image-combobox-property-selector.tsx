@@ -18,6 +18,9 @@ export type UseImageComboboxPropertySelector = {
   readonly isSelectedItemValid: boolean;
   readonly locked: boolean;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly getToggleButtonProps: () => React.SelectHTMLAttributes<
+    HTMLButtonElement
+  >;
   readonly options: ReadonlyArray<UseImageComboboxPropertySelectorOption>;
 };
 
@@ -61,12 +64,10 @@ export function useImageComboboxPropertySelector(
   const [isOpen, setIsOpen] = useState(false);
 
   const options = getOptions(useComboboxPropertySelectorParams);
-  console.log("options", options);
   const selectedOption = getSelectedOption(
     useComboboxPropertySelectorParams,
     options
   );
-  console.log("selectedOption", selectedOption);
 
   return {
     //
@@ -85,6 +86,10 @@ export function useImageComboboxPropertySelector(
       value: selectedOption!.value,
       title: selectedOption!.toolTip,
       onChange: event => _doOnChange(event.currentTarget.value, onValueChange)
+    }),
+    getToggleButtonProps: () => ({
+      title: selectedOption !== undefined ? selectedOption.toolTip : undefined,
+      onClick: () => setIsOpen(!isOpen)
     }),
     options: options.map(o => ({
       //
