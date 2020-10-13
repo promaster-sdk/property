@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
-import React from "react";
+import React, { useState } from "react";
 import {
   AmountFormatWrapper,
   AmountFormatWrapperProps,
@@ -53,62 +53,52 @@ const AmountFormatSelector = createAmountFormatSelector({
 
 const AmountInputBox = createAmountInputBox({});
 
-export class AmountFormatSelectorExample1 extends React.Component<{}, State> {
-  constructor(props: {}) {
-    super(props);
-    this.state = {
-      amount: Amount.create(10.0, BaseUnits.Meter),
-      selectedUnit: BaseUnits.Meter,
-      selectedDecimalCount: 2
-    };
-  }
-
-  render(): React.ReactElement<{}> {
-    return (
+export function AmountFormatSelectorExample1(): React.ReactElement<{}> {
+  const [state, setState] = useState<State>({
+    amount: Amount.create(10.0, BaseUnits.Meter),
+    selectedUnit: BaseUnits.Meter,
+    selectedDecimalCount: 2
+  });
+  return (
+    <div>
+      <div>Amount: {Amount.toString(state.amount)}</div>
+      <div>AmountFormatSelector:</div>
       <div>
-        <div>Amount: {Amount.toString(this.state.amount)}</div>
-        <div>AmountFormatSelector:</div>
-        <div>
-          <AmountInputBox
-            value={this.state.amount}
-            inputUnit={this.state.selectedUnit}
-            inputDecimalCount={this.state.selectedDecimalCount}
-            onValueChange={amount => {
-              //console.log("changed");
-              this.setState(merge(this.state, { amount }));
-            }}
-            readOnly={false}
-            errorMessage=""
-            isRequiredMessage="Is required"
-            notNumericMessage="Not numeric"
-            debounceTime={350}
-          />
-          <AmountFormatSelector
-            selectedUnit={this.state.selectedUnit}
-            selectedDecimalCount={this.state.selectedDecimalCount}
-            onFormatChanged={(
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              selectedUnit: Unit.Unit<any>,
-              selectedDecimalCount: number
-            ) =>
-              this.setState(
-                merge(this.state, { selectedUnit, selectedDecimalCount })
-              )
-            }
-            onFormatCleared={() =>
-              this.setState(
-                merge(this.state, {
-                  selectedUnit: BaseUnits.Meter,
-                  selectedDecimalCount: 2
-                })
-              )
-            }
-            onFormatSelectorActiveChanged={action("Toggle format selector")}
-            unitsFormat={unitsFormat}
-            units={units}
-          />
-        </div>
+        <AmountInputBox
+          value={state.amount}
+          inputUnit={state.selectedUnit}
+          inputDecimalCount={state.selectedDecimalCount}
+          onValueChange={amount => {
+            //console.log("changed");
+            setState(merge(state, { amount }));
+          }}
+          readOnly={false}
+          errorMessage=""
+          isRequiredMessage="Is required"
+          notNumericMessage="Not numeric"
+          debounceTime={350}
+        />
+        <AmountFormatSelector
+          selectedUnit={state.selectedUnit}
+          selectedDecimalCount={state.selectedDecimalCount}
+          onFormatChanged={(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            selectedUnit: Unit.Unit<any>,
+            selectedDecimalCount: number
+          ) => setState(merge(state, { selectedUnit, selectedDecimalCount }))}
+          onFormatCleared={() =>
+            setState(
+              merge(state, {
+                selectedUnit: BaseUnits.Meter,
+                selectedDecimalCount: 2
+              })
+            )
+          }
+          onFormatSelectorActiveChanged={action("Toggle format selector")}
+          unitsFormat={unitsFormat}
+          units={units}
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }
