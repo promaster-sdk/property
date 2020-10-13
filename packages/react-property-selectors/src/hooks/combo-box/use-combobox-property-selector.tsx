@@ -44,25 +44,63 @@ export type UseComboBoxPropertyValueItem = {
   readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
-export function useComboboxPropertySelector({
-  sortValidFirst,
-  propertyName,
-  propertyValueSet,
-  valueItems,
-  showCodes,
-  onValueChange,
-  filterPrettyPrint,
-  readOnly,
-  locked,
-  comparer
-}: UseComboboxPropertySelectorParams): UseComboboxPropertySelector {
-  const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
+export function useComboboxPropertySelector(
+  useComboboxPropertySelectorParams: UseComboboxPropertySelectorParams
+): UseComboboxPropertySelector {
+  const { onValueChange, readOnly, locked } = useComboboxPropertySelectorParams;
 
-  const safeComparer = comparer || PropertyValue.defaultComparer;
+  const options = getOptions(useComboboxPropertySelectorParams);
+  const selectedOption = getSelectedOption(
+    useComboboxPropertySelectorParams,
+    options
+  );
 
+  return {
+    isSelectedItemValid: selectedOption.isItemValid,
+    locked: locked,
+    getSelectProps: () => ({
+      disabled: readOnly || locked,
+      value: selectedOption!.value,
+      title: selectedOption!.toolTip,
+      onChange: event => _doOnChange(event.currentTarget.value, onValueChange)
+    }),
+    options: options.map(o => ({
+      label: o.label,
+      isItemValid: o.isItemValid,
+      getOptionProps: () => ({
+        key: o.value,
+        value: o.value,
+        label: o.label,
+        image: o.image,
+        title: o.toolTip
+      })
+    }))
+  };
+}
+
+type Option = {
+  readonly value: string;
+  readonly label: string;
+  readonly isItemValid: boolean;
+  readonly image: string | undefined;
+  readonly sortNo: number;
+  readonly toolTip: string;
+};
+
+function getSelectedOption(
+  {
+    propertyName,
+    propertyValueSet,
+    valueItems
+  }: UseComboboxPropertySelectorParams,
+  options: ReadonlyArray<Option>
+): Option {
   if (!valueItems) {
     valueItems = [];
   }
+
+  // Get selected option
+  const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
   const selectedValueItemOrUndefined = valueItems.find(
     item => (item.value && PropertyValue.getInteger(item.value)) === value
   );
@@ -82,17 +120,30 @@ export function useComboboxPropertySelector({
   } else {
     selectedValueItem = selectedValueItemOrUndefined;
   }
+  const selectedOption = options.find(
+    option => option.value === _getItemValue(selectedValueItem)
+  );
+  if (!selectedOption) {
+    throw new Error("Could not find..");
+  }
+  return selectedOption;
+}
 
-  interface Option {
-    readonly value: string;
-    readonly label: string;
-    readonly isItemValid: boolean;
-    readonly image: string | undefined;
-    readonly sortNo: number;
-    readonly toolTip: string;
+function getOptions({
+  sortValidFirst,
+  propertyName,
+  propertyValueSet,
+  valueItems,
+  showCodes,
+  filterPrettyPrint,
+  comparer
+}: UseComboboxPropertySelectorParams): ReadonlyArray<Option> {
+  if (!valueItems) {
+    valueItems = [];
   }
 
   // Convert value items to options
+  const safeComparer = comparer || PropertyValue.defaultComparer;
   const options: Array<Option> = valueItems
     .map(valueItem => {
       const isItemValid = _isValueItemValid(
@@ -131,35 +182,7 @@ export function useComboboxPropertySelector({
       }
       return 0;
     });
-
-  const selectedOption = options.find(
-    option => option.value === _getItemValue(selectedValueItem)
-  );
-  if (!selectedOption) {
-    throw new Error("Could not find..");
-  }
-
-  return {
-    isSelectedItemValid: selectedOption.isItemValid,
-    locked: locked,
-    getSelectProps: () => ({
-      disabled: readOnly || locked,
-      value: selectedOption!.value,
-      title: selectedOption!.toolTip,
-      onChange: event => _doOnChange(event.currentTarget.value, onValueChange)
-    }),
-    options: options.map(o => ({
-      label: o.label,
-      isItemValid: o.isItemValid,
-      getOptionProps: () => ({
-        key: o.value,
-        value: o.value,
-        label: o.label,
-        image: o.image,
-        title: o.toolTip
-      })
-    }))
-  };
+  return options;
 }
 
 function _getItemLabel(
