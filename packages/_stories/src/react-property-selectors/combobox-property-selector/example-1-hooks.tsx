@@ -197,19 +197,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
           </div>
           {/* optionsList */}
           {selC.isOpen ? (
-            <ul
-              id="DropdownOptionsElement"
-              style={{
-                position: "absolute",
-                display: "block",
-                background: "white",
-                border: "1px solid #bbb",
-                listStyle: "none",
-                margin: 0,
-                padding: 0,
-                zIndex: 100
-              }}
-            >
+            <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
               {selC.options.map(o => {
                 return (
                   <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
@@ -225,6 +213,19 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
       </div>
     </div>
   );
+}
+
+function getDefaultMenuStyle(): {} {
+  return {
+    position: "absolute",
+    display: "block",
+    background: "white",
+    border: "1px solid #bbb",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    zIndex: 100
+  };
 }
 
 function getDefaultListItemStyle(o: { readonly isItemValid: boolean }): {} {
