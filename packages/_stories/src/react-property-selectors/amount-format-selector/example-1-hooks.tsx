@@ -122,9 +122,9 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
                 ))}
               </select>
               {fmtSel.showClearButton && (
-                <button {...fmtSel.getClearButtonProps()}>{"\u00A0"}</button>
+                <button {...fmtSel.getClearButtonProps()}>Cancel</button>
               )}
-              <button {...fmtSel.getCancelButtonProps()}>{"\u00A0"}</button>
+              <button {...fmtSel.getCancelButtonProps()}>Clear</button>
             </>
           ) : (
             fmtSel.label
