@@ -10,7 +10,6 @@ import {
   PropertyValueSet,
   PropertyValue
 } from "@promaster-sdk/property";
-import { merge } from "../utils";
 import { units, unitsFormat } from "../units-map";
 
 const unitLookup: Unit.UnitLookup = unitString =>
@@ -45,16 +44,15 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
 
   const onValueChange = useCallback(
     pv =>
-      setState(
-        merge(state, {
-          propertyValueSet: PropertyValueSet.set(
-            "a",
-            pv as PropertyValue.PropertyValue,
-            state.propertyValueSet
-          )
-        })
-      ),
-    []
+      setState({
+        ...state,
+        propertyValueSet: PropertyValueSet.set(
+          "a",
+          pv as PropertyValue.PropertyValue,
+          state.propertyValueSet
+        )
+      }),
+    [state]
   );
 
   const selA = useAmountPropertySelector({
@@ -70,14 +68,13 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
     isRequiredMessage: "Is required",
     notNumericMessage: "Not numeric",
     onFormatChanged: (selectedUnit, selectedDecimalCount) =>
-      setState(merge(state, { selectedUnit, selectedDecimalCount })),
+      setState({ ...state, selectedUnit, selectedDecimalCount }),
     onFormatCleared: () =>
-      setState(
-        merge(state, {
-          selectedUnit: BaseUnits.Meter,
-          selectedDecimalCount: 2
-        })
-      ),
+      setState({
+        ...state,
+        selectedUnit: BaseUnits.Meter,
+        selectedDecimalCount: 2
+      }),
     unitsFormat: unitsFormat,
     units: units
   });

@@ -1,58 +1,19 @@
 import React, { useCallback, useState } from "react";
 import {
-  AmountFormatWrapper,
-  AmountFormatWrapperProps,
-  createAmountFormatSelector,
-  createAmountInputBox,
   getDefaultAmountInputBoxStyle,
   useAmountFormatSelector,
   useAmountInputBox
 } from "@promaster-sdk/react-property-selectors";
 import { Unit, Amount, BaseUnits } from "uom";
-import styled from "styled-components";
 import { action } from "@storybook/addon-actions";
 import { merge } from "../utils";
 import { units, unitsFormat } from "../units-map";
 
-interface State {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly selectedUnit: Unit.Unit<any>;
+type State = {
+  readonly selectedUnit: Unit.Unit<unknown>;
   readonly selectedDecimalCount: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly amount: Amount.Amount<any>;
-}
-
-// Usage with standard css
-const ClearButton = (
-  props: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
-): JSX.Element => (
-  <button {...props} className="my-own">
-    Clear
-  </button>
-);
-const AmountFormatWrapper2 = (props: AmountFormatWrapperProps): JSX.Element => (
-  <AmountFormatWrapper
-    className={props.active ? "active" : "inactive"}
-    {...props}
-  />
-);
-
-// Usage with styled components
-const precisionSelector = styled.select`
-  background: #eee;
-  font-size: 15px;
-`;
-
-const AmountFormatSelector = createAmountFormatSelector({
-  PrecisionSelector: precisionSelector,
-  ClearButton: ClearButton,
-  AmountFormatWrapper: AmountFormatWrapper2
-});
-
-const AmountInputBox = createAmountInputBox({});
+  readonly amount: Amount.Amount<unknown>;
+};
 
 export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
@@ -84,8 +45,7 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     selectedUnit: state.selectedUnit,
     selectedDecimalCount: state.selectedDecimalCount,
     onFormatChanged: (
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      selectedUnit: Unit.Unit<any>,
+      selectedUnit: Unit.Unit<unknown>,
       selectedDecimalCount: number
     ) => setState(merge(state, { selectedUnit, selectedDecimalCount })),
     onFormatCleared: () =>
@@ -133,42 +93,6 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
             fmtSel.label
           )}
         </span>
-
-        {/* */}
-        <AmountInputBox
-          value={state.amount}
-          inputUnit={state.selectedUnit}
-          inputDecimalCount={state.selectedDecimalCount}
-          onValueChange={amount => {
-            //console.log("changed");
-            setState(merge(state, { amount }));
-          }}
-          readOnly={false}
-          errorMessage=""
-          isRequiredMessage="Is required"
-          notNumericMessage="Not numeric"
-          debounceTime={350}
-        />
-        <AmountFormatSelector
-          selectedUnit={state.selectedUnit}
-          selectedDecimalCount={state.selectedDecimalCount}
-          onFormatChanged={(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            selectedUnit: Unit.Unit<any>,
-            selectedDecimalCount: number
-          ) => setState(merge(state, { selectedUnit, selectedDecimalCount }))}
-          onFormatCleared={() =>
-            setState(
-              merge(state, {
-                selectedUnit: BaseUnits.Meter,
-                selectedDecimalCount: 2
-              })
-            )
-          }
-          onFormatSelectorActiveChanged={action("Toggle format selector")}
-          unitsFormat={unitsFormat}
-          units={units}
-        />
       </div>
     </div>
   );
