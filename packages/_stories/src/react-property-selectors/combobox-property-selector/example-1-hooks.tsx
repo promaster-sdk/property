@@ -151,19 +151,6 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
 
         {/* Selector C Image */}
         <div style={{ userSelect: "none" }}>
-          {selC.isOpen && (
-            <div
-              id="background"
-              onClick={() => selC.setIsOpen(false)}
-              style={{
-                position: "absolute",
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0
-              }}
-            />
-          )}
           <button
             {...selC.getToggleButtonProps()}
             style={getDefaultToggleButtonStyle(selC)}
