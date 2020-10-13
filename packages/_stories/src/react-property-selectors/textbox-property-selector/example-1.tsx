@@ -1,6 +1,3 @@
-/* eslint-disable functional/no-this-expression */
-/* eslint-disable functional/no-class */
-// eslint-disable-next-line import/no-extraneous-dependencies
 import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
 import { createTextboxPropertySelector } from "@promaster-sdk/react-property-selectors";
@@ -39,4 +36,3 @@ export function TextboxPropertySelectorExample1(): React.ReactElement<{}> {
     </div>
   );
 }
-// }
