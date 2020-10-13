@@ -174,18 +174,14 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
             <i className="fa fa-caret-down" />
           </button>
           {/* optionsList */}
-          {selC.isOpen ? (
+          {selC.isOpen && (
             <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
-              {selC.options.map(o => {
-                return (
-                  <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
-                    {renderImageListItem(o)}
-                  </li>
-                );
-              })}
+              {selC.options.map(o => (
+                <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
+                  {renderImageListItem(o)}
+                </li>
+              ))}
             </ul>
-          ) : (
-            undefined
           )}
         </div>
       </div>
