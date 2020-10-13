@@ -8,4 +8,4 @@ export * from "./components/textbox";
 // export * from "./hooks/checkbox/index";
 export * from "./hooks/combo-box/index";
 // export * from "./hooks/radio-group";
-// export * from "./hooks/textbox";
+export * from "./hooks/textbox";

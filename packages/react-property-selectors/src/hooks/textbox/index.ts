@@ -1,5 +1,1 @@
-export {
-  TextboxPropertySelector,
-  TextboxPropertySelectorProps,
-  createTextboxPropertySelector
-} from "./textbox-property-selector";
+export * from "./use-textbox-property-selector";
