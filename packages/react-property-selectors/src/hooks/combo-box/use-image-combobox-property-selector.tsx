@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   PropertyFilter,
   PropertyValue,
@@ -7,18 +7,25 @@ import {
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { getOptions, getSelectedOption } from "./option";
 
-export type UseComboboxPropertySelector = {
+export type UseImageComboboxPropertySelector = {
+  readonly selected: {
+    readonly tooltip: string;
+    readonly label: string;
+    readonly imageUrl?: string;
+  };
+  readonly setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  readonly isOpen: boolean;
   readonly isSelectedItemValid: boolean;
   readonly locked: boolean;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
-  readonly options: ReadonlyArray<UseComboboxPropertySelectorOption>;
+  readonly options: ReadonlyArray<UseImageComboboxPropertySelectorOption>;
 };
 
-export type UseComboboxPropertySelectorParams = {
+export type UseImageComboboxPropertySelectorParams = {
   readonly sortValidFirst: boolean;
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly valueItems: ReadonlyArray<UseComboBoxPropertyValueItem>;
+  readonly valueItems: ReadonlyArray<UseImageComboBoxPropertyValueItem>;
   readonly showCodes: boolean;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
@@ -27,13 +34,18 @@ export type UseComboboxPropertySelectorParams = {
   readonly comparer?: PropertyValue.Comparer;
 };
 
-export type UseComboboxPropertySelectorOption = {
+export type UseImageComboboxPropertySelectorOption = {
+  //
+  readonly value: string;
+  readonly tooltip: string;
+  readonly imageUrl?: string;
+  //
   readonly label: string;
   readonly isItemValid: boolean;
   readonly getOptionProps: () => React.SelectHTMLAttributes<HTMLOptionElement>;
 };
 
-export type UseComboBoxPropertyValueItem = {
+export type UseImageComboBoxPropertyValueItem = {
   readonly value: PropertyValue.PropertyValue | undefined | null;
   readonly sortNo: number;
   readonly text: string;
@@ -41,18 +53,31 @@ export type UseComboBoxPropertyValueItem = {
   readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
-export function useComboboxPropertySelector(
-  useComboboxPropertySelectorParams: UseComboboxPropertySelectorParams
-): UseComboboxPropertySelector {
+export function useImageComboboxPropertySelector(
+  useComboboxPropertySelectorParams: UseImageComboboxPropertySelectorParams
+): UseImageComboboxPropertySelector {
   const { onValueChange, readOnly, locked } = useComboboxPropertySelectorParams;
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const options = getOptions(useComboboxPropertySelectorParams);
+  console.log("options", options);
   const selectedOption = getSelectedOption(
     useComboboxPropertySelectorParams,
     options
   );
+  console.log("selectedOption", selectedOption);
 
   return {
+    //
+    selected: {
+      tooltip: selectedOption.toolTip,
+      label: selectedOption.label,
+      imageUrl: selectedOption.image
+    },
+    setIsOpen,
+    isOpen,
+    //
     isSelectedItemValid: selectedOption.isItemValid,
     locked: locked,
     getSelectProps: () => ({
@@ -62,6 +87,11 @@ export function useComboboxPropertySelector(
       onChange: event => _doOnChange(event.currentTarget.value, onValueChange)
     }),
     options: options.map(o => ({
+      //
+      value: o.value,
+      tooltip: o.toolTip,
+      imageUrl: o.image,
+      //
       label: o.label,
       isItemValid: o.isItemValid,
       getOptionProps: () => ({
@@ -75,8 +105,8 @@ export function useComboboxPropertySelector(
   };
 }
 
-export function getDefaultOptionStyle(
-  o: UseComboboxPropertySelectorOption
+export function getDefaultImageOptionStyle(
+  o: UseImageComboboxPropertySelectorOption
 ): {} {
   return {
     color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
@@ -88,7 +118,9 @@ export function getDefaultOptionStyle(
   };
 }
 
-export function getDefaultSelectStyle(o: UseComboboxPropertySelector): {} {
+export function getDefaultImageSelectStyle(
+  o: UseImageComboboxPropertySelector
+): {} {
   const always = {
     color: "black",
     height: "30px",
