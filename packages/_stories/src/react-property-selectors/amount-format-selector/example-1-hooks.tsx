@@ -61,9 +61,12 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     selectedDecimalCount: 2
   });
 
-  const onValueChange = useCallback(amount => {
-    setState(merge(state, { amount }));
-  }, []);
+  const onValueChange = useCallback(
+    amount => {
+      setState(merge(state, { amount }));
+    },
+    [state]
+  );
 
   const selA = useAmountInputBox({
     value: state.amount,
