@@ -145,7 +145,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
           {/* optionsList */}
           {selB.isOpen && (
             <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
-              {selB.options.map(o => (
+              {selB.items.map(o => (
                 <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
                   <span>
                     {o.imageUrl && (

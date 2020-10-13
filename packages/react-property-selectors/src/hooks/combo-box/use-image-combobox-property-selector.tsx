@@ -16,7 +16,7 @@ export type UseImageComboboxPropertySelector = {
   readonly getToggleButtonProps: () => React.SelectHTMLAttributes<
     HTMLButtonElement
   >;
-  readonly options: ReadonlyArray<UseImageComboboxPropertySelectorOption>;
+  readonly items: ReadonlyArray<UseImageComboboxPropertySelectorItem>;
 };
 
 export type UseImageComboboxPropertySelectorParams = {
@@ -32,7 +32,7 @@ export type UseImageComboboxPropertySelectorParams = {
   readonly comparer?: PropertyValue.Comparer;
 };
 
-export type UseImageComboboxPropertySelectorOption = {
+export type UseImageComboboxPropertySelectorItem = {
   readonly imageUrl?: string;
   readonly label: string;
   readonly isItemValid: boolean;
@@ -71,7 +71,7 @@ export function useImageComboboxPropertySelector(
       title: selectedOption !== undefined ? selectedOption.toolTip : undefined,
       onClick: () => setIsOpen(!isOpen)
     }),
-    options: options.map(o => ({
+    items: options.map(o => ({
       imageUrl: o.image,
       label: o.label,
       isItemValid: o.isItemValid,
