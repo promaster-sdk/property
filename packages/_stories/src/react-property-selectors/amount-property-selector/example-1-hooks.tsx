@@ -52,7 +52,23 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
           state.propertyValueSet
         )
       }),
-    [state]
+    [state, setState]
+  );
+
+  const onFormatChanged = useCallback(
+    (selectedUnit, selectedDecimalCount) =>
+      setState({ ...state, selectedUnit, selectedDecimalCount }),
+    [state, setState]
+  );
+
+  const onFormatCleared = useCallback(
+    () =>
+      setState({
+        ...state,
+        selectedUnit: BaseUnits.Meter,
+        selectedDecimalCount: 2
+      }),
+    [state, setState]
   );
 
   const selA = useAmountPropertySelector({
@@ -67,14 +83,8 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
     readonly: false,
     isRequiredMessage: "Is required",
     notNumericMessage: "Not numeric",
-    onFormatChanged: (selectedUnit, selectedDecimalCount) =>
-      setState({ ...state, selectedUnit, selectedDecimalCount }),
-    onFormatCleared: () =>
-      setState({
-        ...state,
-        selectedUnit: BaseUnits.Meter,
-        selectedDecimalCount: 2
-      }),
+    onFormatChanged,
+    onFormatCleared,
     unitsFormat: unitsFormat,
     units: units
   });

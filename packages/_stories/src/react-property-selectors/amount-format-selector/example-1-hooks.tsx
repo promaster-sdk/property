@@ -26,7 +26,7 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     amount => {
       setState(merge(state, { amount }));
     },
-    [state]
+    [state, setState]
   );
 
   const selA = useAmountInputBox({
