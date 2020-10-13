@@ -197,7 +197,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
           </div>
           {/* optionsList */}
           {selC.isOpen ? (
-            <div
+            <ul
               id="DropdownOptionsElement"
               style={{
                 position: "absolute",
@@ -212,7 +212,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
             >
               {selC.options.map(o => {
                 return (
-                  <div
+                  <li
                     id="OptionImageElementRow, ComboBoxImageOptionElementRow"
                     key={o.value}
                     title={o.tooltip}
@@ -236,10 +236,10 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
                     }}
                   >
                     {_renderItem(o)}
-                  </div>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           ) : (
             undefined
           )}
