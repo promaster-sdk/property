@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 
 export interface UseTextboxPropertySelectorParams {
@@ -20,9 +20,12 @@ export function useTextboxPropertySelector({
   readOnly,
   debounceTime
 }: UseTextboxPropertySelectorParams): UseTextboxPropertySelector {
-  const debouncedOnValueChange = debounce(
-    (newValue: PropertyValue.PropertyValue) => onValueChange(newValue),
-    debounceTime
+  const debouncedOnValueChange = useCallback(
+    debounce(
+      (newValue: PropertyValue.PropertyValue) => onValueChange(newValue),
+      debounceTime
+    ),
+    [onValueChange, debounceTime]
   );
 
   const value = PropertyValueSet.getText(propertyName, propertyValueSet);

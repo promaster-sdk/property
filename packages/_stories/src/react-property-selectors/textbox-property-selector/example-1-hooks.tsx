@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { BaseUnits, Unit } from "uom";
 import {
   // createTextboxPropertySelector,
@@ -16,14 +16,18 @@ export function TextboxPropertySelectorExample1Hooks(): React.ReactElement<{}> {
     PropertyValueSet.fromString('a="This is the value";b=3', unitLookup)
   );
 
-  const { getInputProps } = useTextboxPropertySelector({
-    propertyName: "a",
-    propertyValueSet: myState,
-    onValueChange: pv =>
+  const onValueChange = useCallback(
+    pv =>
       setMyState(
         PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)
       ),
+    []
+  );
 
+  const { getInputProps } = useTextboxPropertySelector({
+    propertyName: "a",
+    propertyValueSet: myState,
+    onValueChange,
     readOnly: false,
     debounceTime: 600
   });
