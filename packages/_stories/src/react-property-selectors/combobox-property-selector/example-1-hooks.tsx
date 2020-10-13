@@ -94,23 +94,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     readOnly: false
   });
 
-  const selB = useComboboxPropertySelector({
-    propertyName: "b",
-    valueItems: valueItems2,
-    propertyValueSet: myState,
-    locked: false,
-    showCodes: true,
-    sortValidFirst: true,
-    onValueChange: pv =>
-      setMyState(
-        PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, myState)
-      ),
-
-    filterPrettyPrint: filterPrettyPrint,
-    readOnly: false
-  });
-
-  const selC = useImageComboboxPropertySelector({
+  const selB = useImageComboboxPropertySelector({
     propertyName: "b",
     valueItems: valueItems2,
     propertyValueSet: myState,
@@ -141,37 +125,27 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
           ))}
         </select>
 
-        {/* Selector B */}
-        <select
-          {...selB.getSelectProps()}
-          style={{ ...getDefaultSelectStyle(selB) }}
-        >
-          {selA.options.map(o => (
-            <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
-          ))}
-        </select>
-
-        {/* Selector C Image */}
+        {/* Selector B Image */}
         <div style={{ userSelect: "none" }}>
           <button
-            {...selC.getToggleButtonProps()}
-            style={getDefaultToggleButtonStyle(selC)}
+            {...selB.getToggleButtonProps()}
+            style={getDefaultToggleButtonStyle(selB)}
           >
             <span>
-              {selC.imageUrl && (
+              {selB.imageUrl && (
                 <img
-                  src={selC.imageUrl}
+                  src={selB.imageUrl}
                   style={{ maxWidth: "2em", maxHeight: "2em" }}
                 />
               )}
-              {" " + selC.label + " "}
+              {" " + selB.label + " "}
             </span>
             <i className="fa fa-caret-down" />
           </button>
           {/* optionsList */}
-          {selC.isOpen && (
+          {selB.isOpen && (
             <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
-              {selC.options.map(o => (
+              {selB.options.map(o => (
                 <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
                   <span>
                     {o.imageUrl && (
