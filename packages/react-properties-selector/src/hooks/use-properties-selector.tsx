@@ -95,7 +95,13 @@ export type UsePropertiesSelectorParams = {
   readonly comparer?: PropertyValue.Comparer;
 };
 
-export type UsePropertiesSelector = {};
+export type UsePropertiesSelector = {
+  readonly groups: ReadonlyArray<string>;
+  readonly closedGroups: ReadonlyArray<string>;
+  readonly onToggleGroupClosed: OnToggleGroupClosed;
+  readonly translateGroupName: TranslateGroupName;
+  readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>;
+};
 
 export function usePropertiesSelector(
   params: UsePropertiesSelectorParams
@@ -137,7 +143,7 @@ export function usePropertiesSelector(
     translateValueMustBeNumericMessage = () => "value_must_be_numeric",
     translateValueIsRequiredMessage = () => "value_is_required",
     translatePropertyLabelHover = () => "translatePropertyLabelHover",
-    // translateGroupName = (a: string) => a,
+    translateGroupName = (a: string) => a,
 
     readOnlyProperties = [],
     optionalProperties = [],
@@ -151,8 +157,8 @@ export function usePropertiesSelector(
     unitsFormat,
     units,
 
-    // closedGroups = [],
-    // onToggleGroupClosed = () => {}, // eslint-disable-line
+    closedGroups = [],
+    onToggleGroupClosed = () => {}, // eslint-disable-line
 
     // LayoutRenderer = DefaultLayoutRenderer,
     // GroupComponent = DefaultGroupComponent,
@@ -206,7 +212,13 @@ export function usePropertiesSelector(
   //   PropertyLabelComponent: PropertyLabelComponent,
   // });
 
-  return { selectors };
+  return {
+    groups: getDistinctGroupNames(selectors),
+    closedGroups,
+    onToggleGroupClosed,
+    translateGroupName,
+    selectors
+  };
 }
 
 function createPropertySelectorRenderInfos(
@@ -233,9 +245,6 @@ function createPropertySelectorRenderInfos(
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   },
-  // units: {
-  //   readonly [key: string]: Unit.Unit;
-  // },
   units: Unit.UnitMap,
   comparer: PropertyValue.Comparer
 ): ReadonlyArray<PropertySelectorRenderInfo> {
@@ -518,4 +527,29 @@ function getSingleValidValueOrUndefined(
   }
 
   return undefined;
+}
+
+function getDistinctGroupNames(
+  productPropertiesArray: ReadonlyArray<PropertySelectorRenderInfo>
+): ReadonlyArray<string> {
+  const groupNames: Array<string> = [];
+  for (const property of productPropertiesArray) {
+    // let groupName = property.groupName;
+    if (isNullOrWhiteSpace(property.groupName)) {
+      // groupName = "";
+    }
+    if (groupNames.indexOf(property.groupName) === -1) {
+      groupNames.push(property.groupName);
+    }
+  }
+  return groupNames;
+}
+
+function isNullOrWhiteSpace(str: string): boolean {
+  return (
+    str === null ||
+    str === undefined ||
+    str.length < 1 ||
+    str.replace(/\s/g, "").length < 1
+  );
 }

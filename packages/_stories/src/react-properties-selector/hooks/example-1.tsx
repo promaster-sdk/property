@@ -33,6 +33,23 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   );
 
   const productProperties = exampleProductProperties();
+
+  const sel = PropertiesSelector.usePropertiesSelector({
+    units,
+    unitsFormat,
+    unitLookup,
+    productProperties: productProperties,
+    selectedProperties: state,
+    onChange: (
+      properties: PropertyValueSet.PropertyValueSet,
+      _changedProperties: ReadonlyArray<string>
+    ) => {
+      setState(properties);
+      // console.log("updated: ", changedProperties);
+    },
+    onPropertyFormatSelectorToggled: action("toggle property format selector")
+  });
+
   const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
     units,
     unitsFormat,
@@ -49,6 +66,8 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
     onPropertyFormatSelectorToggled: action("toggle property format selector")
   };
 
+  console.log("propSel", sel);
+
   return (
     <div>
       <p>
@@ -56,6 +75,105 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
         possible
       </p>
       <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
+      <div id="HOOKS">
+        <div>
+          {sel.groups.map(groupName => {
+            const isClosedGroup = sel.closedGroups.indexOf(groupName) !== -1;
+            const renderedSelectorsForGroup = sel.selectors.filter(
+              selector => selector.groupName === (groupName || "")
+            );
+            return (
+              <>
+                <div id="GroupComponent" key={groupName}>
+                  {groupName !== "" ? (
+                    <div
+                      className="group-container-header"
+                      onClick={() => sel.onToggleGroupClosed(groupName)}
+                    >
+                      <button className="expand-collapse">
+                        &nbsp;&gt;&gt;&nbsp;
+                      </button>
+                      {sel.translateGroupName(groupName)}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <table>
+                    <tbody>
+                      {isClosedGroup
+                        ? ""
+                        : renderedSelectorsForGroup.map(selector => (
+                            // `OLLE!! GroupItemComponent ${
+                            //   selector.propertyName
+                            // }`
+                            // <GroupItemComponent
+                            //   key={selector.propertyName}
+                            //   selector={selector}
+                            //   PropertySelectorComponent={
+                            //     PropertySelectorComponent
+                            //   }
+                            //   PropertyLabelComponent={PropertyLabelComponent}
+                            // />
+                            <tr
+                              id="GroupItemComponent"
+                              key={selector.propertyName}
+                            >
+                              <td>
+                                {/* <PropertyLabelComponent
+                                  {...selector.labelComponentProps}
+                                /> */}
+                                <label
+                                  id="PropertyLabelComponent"
+                                  className={
+                                    !selector.isValid ? "invalid" : undefined
+                                  }
+                                  // title={translatePropertyLabelHover(
+                                  //   selector.propertyName
+                                  // )}
+                                  title={selector.labelHover}
+                                >
+                                  <span
+                                    className={
+                                      selector.isHidden ? "hidden-property" : ""
+                                    }
+                                  >
+                                    {selector.label}
+                                  </span>
+                                </label>
+                              </td>
+                              <td>
+                                {/* <PropertySelectorComponent
+                                  {...selector.selectorComponentProps}
+                                /> */}
+                                PropertySelectorComponent
+                              </td>
+                            </tr>
+                          ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* <GroupComponent
+                  key={groupName}
+                  isClosedGroup={isClosedGroup}
+                  groupName={groupName}
+                  onToggleGroupClosed={onToggleGroupClosed}
+                  translateGroupName={translateGroupName}
+                > */}
+                {/* {renderedSelectorsForGroup.map((selector) => (
+                  <GroupItemComponent
+                    key={selector.propertyName}
+                    selector={selector}
+                    PropertySelectorComponent={PropertySelectorComponent}
+                    PropertyLabelComponent={PropertyLabelComponent}
+                  />
+                ))} */}
+                {/* </GroupComponent> */}
+              </>
+            );
+          })}
+        </div>
+      </div>
       <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
     </div>
   );
