@@ -106,27 +106,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 }
 
 function createPropertySelectorRenderInfos(
-  // productProperties: ReadonlyArray<UsePropertiesSelectorProperty>,
-  // selectedProperties: PropertyValueSet.PropertyValueSet,
-  // filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-  // includeCodes: boolean,
-  // includeHiddenProperties: boolean,
-  // autoSelectSingleValidValue: boolean,
-  // lockSingleValidValue: boolean,
-  // onChange: UsePropertiesSelectorOnPropertiesChanged,
-  // onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged,
-  // onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared,
-  // valueMustBeNumericMessage: string,
-  // valueIsRequiredMessage: string,
-  // readOnlyProperties: ReadonlyArray<string>,
-  // optionalProperties: ReadonlyArray<string>,
-  // propertyFormats: { readonly [key: string]: UsePropertiesSelectorAmountFormat },
-  // inputDebounceTime: number,
-  // unitsFormat: {
-  //   readonly [key: string]: UnitFormat.UnitFormat;
-  // },
-  // units: Unit.UnitMap,
-  // comparer: PropertyValue.Comparer
   params: Required<UsePropertiesSelectorParams>
 ): ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo> {
   const {
