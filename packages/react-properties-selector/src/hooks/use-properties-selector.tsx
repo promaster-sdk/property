@@ -80,75 +80,11 @@ export type UserPropertiesSelectorGroup = {
 };
 
 export function usePropertiesSelector(params: UsePropertiesSelectorParams): UsePropertiesSelector {
-  // Do destructoring and set defaults
-  const {
-    productProperties,
-    selectedProperties,
-    filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
-      PropertyFiltering.filterPrettyPrintIndented(
-        // PropertyFiltering.FilterPrettyPrintMessagesEnglish,
-        PropertyFiltering.buildEnglishMessages(params.unitsFormat),
-        2,
-        " ",
-        propertyFilter,
-        params.unitsFormat,
-        params.unitLookup
-      ),
+  const p = paramsWithDefaults(params);
 
-    includeCodes = false,
-    includeHiddenProperties = false,
-    autoSelectSingleValidValue = true,
-    lockSingleValidValue = false,
-    onChange = (_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({}),
-    onPropertyFormatChanged = (_a: string, _b: Unit.Unit<unknown>, _c: number) => ({}),
-    onPropertyFormatCleared = (_a: string) => ({}),
+  const allSelectors = createPropertySelectorRenderInfos(p);
 
-    valueMustBeNumericMessage = "value_must_be_numeric",
-    valueIsRequiredMessage = "value_is_required",
-
-    readOnlyProperties = [],
-    optionalProperties = [],
-    propertyFormats = {},
-
-    inputDebounceTime = 350,
-
-    unitsFormat,
-    units,
-
-    initiallyClosedGroups = [],
-
-    comparer = PropertyValue.defaultComparer,
-  } = params;
-
-  const allSelectors = createPropertySelectorRenderInfos(
-    productProperties,
-    selectedProperties,
-    filterPrettyPrint,
-
-    includeCodes,
-    includeHiddenProperties,
-    autoSelectSingleValidValue,
-    lockSingleValidValue,
-
-    onChange,
-    onPropertyFormatChanged,
-    onPropertyFormatCleared,
-
-    valueMustBeNumericMessage,
-    valueIsRequiredMessage,
-
-    readOnlyProperties,
-    optionalProperties,
-    propertyFormats,
-
-    inputDebounceTime,
-    unitsFormat,
-    units,
-
-    comparer
-  );
-
-  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(initiallyClosedGroups);
+  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(p.initiallyClosedGroups);
 
   return {
     groups: getDistinctGroupNames(allSelectors).map((name) => {
@@ -170,31 +106,56 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 }
 
 function createPropertySelectorRenderInfos(
-  productProperties: ReadonlyArray<UsePropertiesSelectorProperty>,
-  selectedProperties: PropertyValueSet.PropertyValueSet,
-  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
-  includeCodes: boolean,
-  includeHiddenProperties: boolean,
-  autoSelectSingleValidValue: boolean,
-  lockSingleValidValue: boolean,
-  onChange: UsePropertiesSelectorOnPropertiesChanged,
-  onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged,
-  onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared,
-  valueMustBeNumericMessage: string,
-  valueIsRequiredMessage: string,
-  readOnlyProperties: ReadonlyArray<string>,
-  optionalProperties: ReadonlyArray<string>,
-  propertyFormats: { readonly [key: string]: UsePropertiesSelectorAmountFormat },
-  inputDebounceTime: number,
-  unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  },
-  units: Unit.UnitMap,
-  comparer: PropertyValue.Comparer
+  // productProperties: ReadonlyArray<UsePropertiesSelectorProperty>,
+  // selectedProperties: PropertyValueSet.PropertyValueSet,
+  // filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
+  // includeCodes: boolean,
+  // includeHiddenProperties: boolean,
+  // autoSelectSingleValidValue: boolean,
+  // lockSingleValidValue: boolean,
+  // onChange: UsePropertiesSelectorOnPropertiesChanged,
+  // onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged,
+  // onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared,
+  // valueMustBeNumericMessage: string,
+  // valueIsRequiredMessage: string,
+  // readOnlyProperties: ReadonlyArray<string>,
+  // optionalProperties: ReadonlyArray<string>,
+  // propertyFormats: { readonly [key: string]: UsePropertiesSelectorAmountFormat },
+  // inputDebounceTime: number,
+  // unitsFormat: {
+  //   readonly [key: string]: UnitFormat.UnitFormat;
+  // },
+  // units: Unit.UnitMap,
+  // comparer: PropertyValue.Comparer
+  params: Required<UsePropertiesSelectorParams>
 ): ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo> {
+  const {
+    productProperties,
+    selectedProperties,
+    filterPrettyPrint,
+    includeCodes,
+    includeHiddenProperties,
+    autoSelectSingleValidValue: autoSelectSingleValidValueIn,
+    lockSingleValidValue,
+    onChange,
+    onPropertyFormatChanged,
+    onPropertyFormatCleared,
+    valueMustBeNumericMessage,
+    valueIsRequiredMessage,
+    readOnlyProperties,
+    optionalProperties,
+    propertyFormats,
+    inputDebounceTime,
+    unitsFormat,
+    units,
+    comparer,
+  } = params;
+
   // Default true if not specified otherwise
-  autoSelectSingleValidValue =
-    autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined ? true : autoSelectSingleValidValue;
+  const autoSelectSingleValidValue =
+    autoSelectSingleValidValueIn === null || autoSelectSingleValidValueIn === undefined
+      ? true
+      : autoSelectSingleValidValueIn;
 
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
   const sortedArray = productProperties
@@ -571,4 +532,71 @@ function getDistinctGroupNames(
 
 function isNullOrWhiteSpace(str: string): boolean {
   return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
+}
+
+function paramsWithDefaults(params: UsePropertiesSelectorParams): Required<UsePropertiesSelectorParams> {
+  // Do destructoring and set defaults
+  const {
+    productProperties,
+    selectedProperties,
+    filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
+      PropertyFiltering.filterPrettyPrintIndented(
+        // PropertyFiltering.FilterPrettyPrintMessagesEnglish,
+        PropertyFiltering.buildEnglishMessages(params.unitsFormat),
+        2,
+        " ",
+        propertyFilter,
+        params.unitsFormat,
+        params.unitLookup
+      ),
+
+    includeCodes = false,
+    includeHiddenProperties = false,
+    autoSelectSingleValidValue = true,
+    lockSingleValidValue = false,
+    onChange = (_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({}),
+    onPropertyFormatChanged = (_a: string, _b: Unit.Unit<unknown>, _c: number) => ({}),
+    onPropertyFormatCleared = (_a: string) => ({}),
+
+    valueMustBeNumericMessage = "value_must_be_numeric",
+    valueIsRequiredMessage = "value_is_required",
+
+    readOnlyProperties = [],
+    optionalProperties = [],
+    propertyFormats = {},
+
+    inputDebounceTime = 350,
+
+    unitsFormat,
+    units,
+
+    initiallyClosedGroups = [],
+
+    unitLookup,
+    comparer = PropertyValue.defaultComparer,
+  } = params;
+
+  return {
+    productProperties,
+    selectedProperties,
+    filterPrettyPrint,
+    includeCodes,
+    includeHiddenProperties,
+    autoSelectSingleValidValue,
+    lockSingleValidValue,
+    onChange,
+    onPropertyFormatChanged,
+    onPropertyFormatCleared,
+    valueMustBeNumericMessage,
+    valueIsRequiredMessage,
+    readOnlyProperties,
+    optionalProperties,
+    propertyFormats,
+    inputDebounceTime,
+    initiallyClosedGroups,
+    unitsFormat,
+    units,
+    unitLookup,
+    comparer,
+  };
 }
