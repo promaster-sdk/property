@@ -46,10 +46,10 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
     <div>
       <p>This example shows minimal configuration, using as much defaults as possible</p>
       <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
-      <div id="HOOKS">
+      <div>
         <div>
           {sel.groups.map((group) => (
-            <div id="GroupComponent" key={group.name}>
+            <div key={group.name}>
               {group.name && (
                 <div className="group-container-header" onClick={() => sel.onToggleGroupClosed(group.name)}>
                   <button className="expand-collapse">&nbsp;&gt;&gt;&nbsp;</button>
@@ -60,13 +60,9 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                 <tbody>
                   {!group.isClosed &&
                     group.selectors.map((selector) => (
-                      <tr id="GroupItemComponent" key={selector.propertyName}>
+                      <tr key={selector.propertyName}>
                         <td>
-                          <label
-                            id="PropertyLabelComponent"
-                            className={!selector.isValid ? "invalid" : undefined}
-                            title={selector.propertyName}
-                          >
+                          <label className={!selector.isValid ? "invalid" : undefined} title={selector.propertyName}>
                             <span className={selector.isHidden ? "hidden-property" : ""}>{selector.propertyName}</span>
                           </label>
                         </td>
