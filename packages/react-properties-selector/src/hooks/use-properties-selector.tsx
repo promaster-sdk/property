@@ -92,10 +92,15 @@ export type UsePropertiesSelectorParams = {
 };
 
 export type UsePropertiesSelector = {
-  readonly groups: ReadonlyArray<string>;
-  readonly closedGroups: ReadonlyArray<string>;
+  readonly groups: ReadonlyArray<UserPropertiesSelectorGroup>;
   readonly onToggleGroupClosed: OnToggleGroupClosed;
   readonly translateGroupName: TranslateGroupName;
+  // readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>;
+};
+
+export type UserPropertiesSelectorGroup = {
+  readonly name: string;
+  readonly isClosed: boolean;
   readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>;
 };
 
@@ -146,7 +151,7 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     comparer = PropertyValue.defaultComparer,
   } = params;
 
-  const selectors = createPropertySelectorRenderInfos(
+  const allSelectors = createPropertySelectorRenderInfos(
     productProperties,
     selectedProperties,
     filterPrettyPrint,
@@ -179,11 +184,14 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
   );
 
   return {
-    groups: getDistinctGroupNames(selectors),
-    closedGroups,
+    groups: getDistinctGroupNames(allSelectors).map((name) => {
+      const isClosed = closedGroups.indexOf(name) !== -1;
+      const selectors = allSelectors.filter((selector) => selector.groupName === (name || ""));
+      return { name, isClosed, selectors: selectors };
+    }),
     onToggleGroupClosed,
     translateGroupName,
-    selectors,
+    // selectors: allSelectors,
   };
 }
 
@@ -301,14 +309,6 @@ function createPropertySelectorRenderInfos(
         units,
       };
 
-      // const propertyLabelComponentProps: PropertyLabelComponentProps = {
-      //   propertyName: property.name,
-      //   selectorIsValid: isValid,
-      //   selectorIsHidden: isHidden,
-      //   selectorLabel: label,
-      //   translatePropertyLabelHover,
-      // };
-
       return {
         sortNo: property.sort_no,
         propertyName: property.name,
@@ -321,7 +321,6 @@ function createPropertySelectorRenderInfos(
         labelHover: labelHover,
 
         selectorComponentProps: propertySelectorComponentProps,
-        // labelComponentProps: propertyLabelComponentProps,
       };
     });
 

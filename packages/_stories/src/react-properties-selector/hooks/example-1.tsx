@@ -60,26 +60,25 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
       <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
       <div id="HOOKS">
         <div>
-          {sel.groups.map((groupName) => {
-            const isClosedGroup = sel.closedGroups.indexOf(groupName) !== -1;
-            const renderedSelectorsForGroup = sel.selectors.filter(
-              (selector) => selector.groupName === (groupName || "")
-            );
+          {sel.groups.map((group) => {
+            // const renderedSelectorsForGroup = sel.selectors.filter(
+            //   (selector) => selector.groupName === (group.name || "")
+            // );
             return (
-              <div id="GroupComponent" key={groupName}>
-                {groupName !== "" ? (
-                  <div className="group-container-header" onClick={() => sel.onToggleGroupClosed(groupName)}>
+              <div id="GroupComponent" key={group.name}>
+                {group.name !== "" ? (
+                  <div className="group-container-header" onClick={() => sel.onToggleGroupClosed(group.name)}>
                     <button className="expand-collapse">&nbsp;&gt;&gt;&nbsp;</button>
-                    {sel.translateGroupName(groupName)}
+                    {sel.translateGroupName(group.name)}
                   </div>
                 ) : (
                   ""
                 )}
                 <table>
                   <tbody>
-                    {isClosedGroup
+                    {group.isClosed
                       ? ""
-                      : renderedSelectorsForGroup.map((selector) => (
+                      : group.selectors.map((selector) => (
                           <tr id="GroupItemComponent" key={selector.propertyName}>
                             <td>
                               {/* <PropertyLabelComponent
