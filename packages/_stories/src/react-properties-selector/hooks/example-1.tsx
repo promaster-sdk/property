@@ -74,7 +74,24 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                             </label>
                           </td>
                           <td>
-                            <ThePropertySelector info={selector} />
+                            {(() => {
+                              // Need to put property selectors in separate components because their hooks cannt be declared in a loop
+                              const sel = selector.selectorRenderInfo;
+                              switch (sel.type) {
+                                case "TextBox":
+                                  return <TheTextboxPropertySelector {...sel.getUseTextboxParams()} />;
+                                case "RadioGroup":
+                                  return <div>RadioGroupPropertySelector</div>;
+                                case "Checkbox":
+                                  return <TheCheckboxPropertySelector {...sel.getUseCheckboxParams()} />;
+                                case "ComboBox":
+                                  return <TheComboboxPropertySelector {...sel.getUseComboboxParams()} />;
+                                case "AmountField":
+                                  return <TheAmountPropertySelector {...sel.getUseAmountParams()} />;
+                                default:
+                                  return exhaustiveCheck(sel, true);
+                              }
+                            })()}
                           </td>
                         </tr>
                       ))}
@@ -86,27 +103,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
       </div>
     </div>
   );
-}
-
-// Since we use hooks we need to put this in a separate component becuase hooks cannot be used in a loop
-function ThePropertySelector(props: {
-  readonly info: PropertiesSelector.UsePropertiesSelectorPropertySelectorRenderInfo;
-}): JSX.Element {
-  const sel = props.info.selectorRenderInfo;
-  switch (sel.type) {
-    case "TextBox":
-      return <TheTextboxPropertySelector {...sel.getUseTextboxParams()} />;
-    case "RadioGroup":
-      return <div>RadioGroupPropertySelector</div>;
-    case "Checkbox":
-      return <TheCheckboxPropertySelector {...sel.getUseCheckboxParams()} />;
-    case "ComboBox":
-      return <TheComboboxPropertySelector {...sel.getUseComboboxParams()} />;
-    case "AmountField":
-      return <TheAmountPropertySelector {...sel.getUseAmountParams()} />;
-    default:
-      return exhaustiveCheck(sel, true);
-  }
 }
 
 function TheAmountPropertySelector(props: UseAmountPropertySelectorParams): JSX.Element {
