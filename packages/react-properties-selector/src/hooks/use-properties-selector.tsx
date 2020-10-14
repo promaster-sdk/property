@@ -11,9 +11,9 @@ import {
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
-  TranslatePropertyName,
+  // TranslatePropertyName,
   Property,
-  TranslatePropertyLabelHover,
+  // TranslatePropertyLabelHover,
   // TranslateGroupName,
   PropertySelectorRenderInfo,
   PropertyValueItem,
@@ -48,11 +48,11 @@ export type UsePropertiesSelectorParams = {
   readonly onPropertyFormatSelectorToggled?: OnPropertyFormatSelectorToggled;
 
   // Translations
-  readonly translatePropertyName?: TranslatePropertyName;
+  // readonly translatePropertyName?: TranslatePropertyName;
   readonly translatePropertyValue?: TranslatePropertyValue;
   readonly translateValueMustBeNumericMessage?: TranslateNotNumericMessage;
   readonly translateValueIsRequiredMessage?: TranslateValueIsRequiredMessage;
-  readonly translatePropertyLabelHover?: TranslatePropertyLabelHover;
+  // readonly translatePropertyLabelHover?: TranslatePropertyLabelHover;
   // readonly translateGroupName?: TranslateGroupName;
 
   // Specifies property names of properties that should be read-only
@@ -117,11 +117,11 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared = (_a: string) => ({}),
     onPropertyFormatSelectorToggled = () => ({}),
 
-    translatePropertyName = (a: string) => a,
+    // translatePropertyName = (a: string) => a,
     translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
     translateValueMustBeNumericMessage = () => "value_must_be_numeric",
     translateValueIsRequiredMessage = () => "value_is_required",
-    translatePropertyLabelHover = () => "translatePropertyLabelHover",
+    // translatePropertyLabelHover = () => "translatePropertyLabelHover",
     // translateGroupName = (a: string) => a,
 
     readOnlyProperties = [],
@@ -154,11 +154,11 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared,
     onPropertyFormatSelectorToggled,
 
-    translatePropertyName,
+    // translatePropertyName,
     translatePropertyValue,
     translateValueMustBeNumericMessage,
     translateValueIsRequiredMessage,
-    translatePropertyLabelHover,
+    // translatePropertyLabelHover,
 
     readOnlyProperties,
     optionalProperties,
@@ -194,11 +194,11 @@ function createPropertySelectorRenderInfos(
   onPropertyFormatChanged: OnPropertyFormatChanged,
   onPropertyFormatCleared: OnPropertyFormatCleared,
   onPropertyFormatSelectorToggled: OnPropertyFormatSelectorToggled,
-  translatePropertyName: TranslatePropertyName,
+  // translatePropertyName: TranslatePropertyName,
   translatePropertyValue: TranslatePropertyValue,
   translateValueMustBeNumericMessage: TranslateNotNumericMessage,
   translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  translatePropertyLabelHover: TranslatePropertyLabelHover,
+  // translatePropertyLabelHover: TranslatePropertyLabelHover,
   readOnlyProperties: ReadonlyArray<string>,
   optionalProperties: ReadonlyArray<string>,
   propertyFormats: { readonly [key: string]: AmountFormat },
@@ -262,8 +262,8 @@ function createPropertySelectorRenderInfos(
       const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
       const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer);
-      const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
-      const labelHover = translatePropertyLabelHover(property.name);
+      // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
+      // const labelHover = translatePropertyLabelHover(property.name);
 
       const selectorType = getSelectorType(property);
 
@@ -304,8 +304,8 @@ function createPropertySelectorRenderInfos(
         isValid: isValid,
         isHidden: isHidden,
 
-        label: label,
-        labelHover: labelHover,
+        // label: label,
+        // labelHover: labelHover,
 
         selectorComponentProps: propertySelectorComponentProps,
       };

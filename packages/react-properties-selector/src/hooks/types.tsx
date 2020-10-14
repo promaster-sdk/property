@@ -18,12 +18,12 @@ export type OnPropertyFormatChanged = (propertyName: string, unit: Unit.Unit<unk
 export type OnPropertyFormatCleared = (propertyName: string) => void;
 export type OnPropertyFormatSelectorToggled = (propertyName: string, active: boolean) => void;
 
-export type TranslatePropertyName = (propertyName: string) => string;
+// export type TranslatePropertyName = (propertyName: string) => string;
 export type TranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
 export type TranslateNotNumericMessage = () => string;
 export type TranslateValueIsRequiredMessage = () => string;
 
-export type TranslatePropertyLabelHover = (propertyName: string) => string;
+// export type TranslatePropertyLabelHover = (propertyName: string) => string;
 // export type TranslateGroupName = (groupName: string) => string;
 export type OnToggleGroupClosed = (groupName: string) => void;
 
@@ -43,10 +43,10 @@ export interface PropertySelectorRenderInfo {
   // This flag tells if is was supposed to be hidden
   readonly isHidden: boolean;
 
-  // A default label is provided here that adheres to showCodes,
-  // the layout component can of course choose not to use this label
-  readonly label: string;
-  readonly labelHover: string;
+  // // A default label is provided here that adheres to showCodes,
+  // // the layout component can of course choose not to use this label
+  // readonly label: string;
+  // readonly labelHover: string;
 
   // Props that are used by the components that render the actual property selector and it's label
   readonly selectorComponentProps: PropertySelectorProps;
