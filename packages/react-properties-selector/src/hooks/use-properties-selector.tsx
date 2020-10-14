@@ -408,7 +408,7 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
             text: translatePropertyValue(propertyName, (vi.value
               ? PropertyValue.getInteger(vi.value)
               : undefined) as number),
-            sortNo: vi.sort_no,
+            sortNo: vi.sortNo,
             validationFilter: vi.property_filter,
             image: vi.image,
           })),
@@ -432,7 +432,7 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
             text: translatePropertyValue(propertyName, (vi.value
               ? PropertyValue.getInteger(vi.value)
               : undefined) as number),
-            sortNo: vi.sort_no,
+            sortNo: vi.sortNo,
             validationFilter: vi.property_filter,
             image: vi.image,
           })),
