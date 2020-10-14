@@ -3,30 +3,26 @@ import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
-  PropertySelectorType,
-  AmountFormat,
-  OnPropertyFormatChanged,
-  OnPropertyFormatCleared,
-  OnPropertyFormatSelectorToggled,
-  TranslatePropertyValue,
-  TranslateNotNumericMessage,
-  TranslateValueIsRequiredMessage,
-  // TranslatePropertyName,
-  Property,
-  // TranslatePropertyLabelHover,
-  // TranslateGroupName,
-  PropertySelectorRenderInfo,
-  PropertyValueItem,
-  OnToggleGroupClosed,
-  PropertyFormats,
-  OnPropertiesChanged,
+  UsePropertiesSelectorPropertySelectorType,
+  UsePropertiesSelectorAmountFormat,
+  UsePropertiesSelectorOnPropertyFormatChanged,
+  UsePropertiesSelectorOnPropertyFormatCleared,
+  UsePropertiesSelectorOnPropertyFormatSelectorToggled,
+  UsePropertiesSelectorTranslatePropertyValue,
+  UsePropertiesSelectorTranslateNotNumericMessage,
+  UsePropertiesSelectorTranslateValueIsRequiredMessage,
+  UsePropertiesSelectorProperty,
+  UsePropertiesSelectorPropertySelectorRenderInfo,
+  UsePropertiesSelectorPropertyValueItem,
+  UsePropertiesSelectorOnToggleGroupClosed,
+  UsePropertiesSelectorPropertyFormats,
+  UsePropertiesSelectorOnPropertiesChanged,
+  UsePropertiesSelectorPropertySelectorProps,
 } from "./types";
-import { PropertySelectorProps } from "./property-selector";
-// import { PropertyLabelComponentProps } from "./property-label";
 
 export type UsePropertiesSelectorParams = {
   // Required inputs
-  readonly productProperties: ReadonlyArray<Property>;
+  readonly productProperties: ReadonlyArray<UsePropertiesSelectorProperty>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
 
   // Used to print error messages
@@ -42,32 +38,29 @@ export type UsePropertiesSelectorParams = {
   readonly lockSingleValidValue?: boolean;
 
   // Events
-  readonly onChange?: OnPropertiesChanged;
-  readonly onPropertyFormatChanged?: OnPropertyFormatChanged;
-  readonly onPropertyFormatCleared?: OnPropertyFormatCleared;
-  readonly onPropertyFormatSelectorToggled?: OnPropertyFormatSelectorToggled;
+  readonly onChange?: UsePropertiesSelectorOnPropertiesChanged;
+  readonly onPropertyFormatChanged?: UsePropertiesSelectorOnPropertyFormatChanged;
+  readonly onPropertyFormatCleared?: UsePropertiesSelectorOnPropertyFormatCleared;
+  readonly onPropertyFormatSelectorToggled?: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
 
   // Translations
-  // readonly translatePropertyName?: TranslatePropertyName;
-  readonly translatePropertyValue?: TranslatePropertyValue;
-  readonly translateValueMustBeNumericMessage?: TranslateNotNumericMessage;
-  readonly translateValueIsRequiredMessage?: TranslateValueIsRequiredMessage;
-  // readonly translatePropertyLabelHover?: TranslatePropertyLabelHover;
-  // readonly translateGroupName?: TranslateGroupName;
+  readonly translatePropertyValue?: UsePropertiesSelectorTranslatePropertyValue;
+  readonly translateValueMustBeNumericMessage?: UsePropertiesSelectorTranslateNotNumericMessage;
+  readonly translateValueIsRequiredMessage?: UsePropertiesSelectorTranslateValueIsRequiredMessage;
 
   // Specifies property names of properties that should be read-only
   readonly readOnlyProperties?: ReadonlyArray<string>;
   // Specifies property names of properties that should be optional (only for amounts for now)
   readonly optionalProperties?: ReadonlyArray<string>;
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly propertyFormats?: PropertyFormats;
+  readonly propertyFormats?: UsePropertiesSelectorPropertyFormats;
 
   // Debounce value for inputs in ms. Defaults to 350.
   readonly inputDebounceTime?: number;
 
   // Group handling
   readonly closedGroups?: ReadonlyArray<string>;
-  readonly onToggleGroupClosed?: OnToggleGroupClosed;
+  readonly onToggleGroupClosed?: UsePropertiesSelectorOnToggleGroupClosed;
 
   // Use customUnits
   readonly unitsFormat: {
@@ -82,14 +75,13 @@ export type UsePropertiesSelectorParams = {
 
 export type UsePropertiesSelector = {
   readonly groups: ReadonlyArray<UserPropertiesSelectorGroup>;
-  readonly onToggleGroupClosed: OnToggleGroupClosed;
-  // readonly translateGroupName: TranslateGroupName;
+  readonly onToggleGroupClosed: UsePropertiesSelectorOnToggleGroupClosed;
 };
 
 export type UserPropertiesSelectorGroup = {
   readonly name: string;
   readonly isClosed: boolean;
-  readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>;
+  readonly selectors: ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo>;
 };
 
 export function usePropertiesSelector(params: UsePropertiesSelectorParams): UsePropertiesSelector {
@@ -117,12 +109,9 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared = (_a: string) => ({}),
     onPropertyFormatSelectorToggled = () => ({}),
 
-    // translatePropertyName = (a: string) => a,
     translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
     translateValueMustBeNumericMessage = () => "value_must_be_numeric",
     translateValueIsRequiredMessage = () => "value_is_required",
-    // translatePropertyLabelHover = () => "translatePropertyLabelHover",
-    // translateGroupName = (a: string) => a,
 
     readOnlyProperties = [],
     optionalProperties = [],
@@ -154,11 +143,9 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared,
     onPropertyFormatSelectorToggled,
 
-    // translatePropertyName,
     translatePropertyValue,
     translateValueMustBeNumericMessage,
     translateValueIsRequiredMessage,
-    // translatePropertyLabelHover,
 
     readOnlyProperties,
     optionalProperties,
@@ -183,32 +170,30 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 }
 
 function createPropertySelectorRenderInfos(
-  productProperties: ReadonlyArray<Property>,
+  productProperties: ReadonlyArray<UsePropertiesSelectorProperty>,
   selectedProperties: PropertyValueSet.PropertyValueSet,
   filterPrettyPrint: PropertyFiltering.FilterPrettyPrint,
   includeCodes: boolean,
   includeHiddenProperties: boolean,
   autoSelectSingleValidValue: boolean,
   lockSingleValidValue: boolean,
-  onChange: OnPropertiesChanged,
-  onPropertyFormatChanged: OnPropertyFormatChanged,
-  onPropertyFormatCleared: OnPropertyFormatCleared,
-  onPropertyFormatSelectorToggled: OnPropertyFormatSelectorToggled,
-  // translatePropertyName: TranslatePropertyName,
-  translatePropertyValue: TranslatePropertyValue,
-  translateValueMustBeNumericMessage: TranslateNotNumericMessage,
-  translateValueIsRequiredMessage: TranslateValueIsRequiredMessage,
-  // translatePropertyLabelHover: TranslatePropertyLabelHover,
+  onChange: UsePropertiesSelectorOnPropertiesChanged,
+  onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged,
+  onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared,
+  onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled,
+  translatePropertyValue: UsePropertiesSelectorTranslatePropertyValue,
+  translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage,
+  translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage,
   readOnlyProperties: ReadonlyArray<string>,
   optionalProperties: ReadonlyArray<string>,
-  propertyFormats: { readonly [key: string]: AmountFormat },
+  propertyFormats: { readonly [key: string]: UsePropertiesSelectorAmountFormat },
   inputDebounceTime: number,
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   },
   units: Unit.UnitMap,
   comparer: PropertyValue.Comparer
-): ReadonlyArray<PropertySelectorRenderInfo> {
+): ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo> {
   // Default true if not specified otherwise
   autoSelectSingleValidValue =
     autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined ? true : autoSelectSingleValidValue;
@@ -218,23 +203,23 @@ function createPropertySelectorRenderInfos(
     .slice()
     .sort((a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0));
 
-  const selectorDefinitions: ReadonlyArray<PropertySelectorRenderInfo> = sortedArray
+  const selectorDefinitions: ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo> = sortedArray
     .filter(
-      (property: Property) =>
+      (property: UsePropertiesSelectorProperty) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
     )
-    .map((property: Property) => {
+    .map((property: UsePropertiesSelectorProperty) => {
       const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
       const selectedValueItem =
         property.value &&
         property.value.find(
-          (value: PropertyValueItem) =>
+          (value: UsePropertiesSelectorPropertyValueItem) =>
             (value.value === undefined && selectedValue === undefined) ||
             (value.value && PropertyValue.equals(selectedValue, value.value, comparer))
         );
 
       let isValid: boolean;
-      let defaultFormat: AmountFormat = { unit: Unit.One, decimalCount: 2 };
+      let defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
       switch (getPropertyType(property.quantity)) {
         case "integer":
           isValid = selectedValueItem
@@ -267,11 +252,11 @@ function createPropertySelectorRenderInfos(
 
       const selectorType = getSelectorType(property);
 
-      const propertySelectorComponentProps: PropertySelectorProps = {
-        selectorType: selectorType,
+      const propertySelectorComponentProps: UsePropertiesSelectorPropertySelectorProps = {
+        // selectorType: selectorType,
         fieldName: property.field_name || property.name,
         propertyName: property.name,
-        quantity: property.quantity,
+        // quantity: property.quantity,
         validationFilter: property.validation_filter,
         valueItems: property.value,
         selectedProperties,
@@ -300,21 +285,18 @@ function createPropertySelectorRenderInfos(
         sortNo: property.sort_no,
         propertyName: property.name,
         groupName: property.group,
-
-        isValid: isValid,
-        isHidden: isHidden,
-
-        // label: label,
-        // labelHover: labelHover,
-
+        isValid,
+        isHidden,
         selectorComponentProps: propertySelectorComponentProps,
+        selectorType,
+        propertyType: getPropertyType(property.quantity),
       };
     });
 
   return selectorDefinitions;
 }
 
-function getSelectorType(property: Property): PropertySelectorType {
+function getSelectorType(property: UsePropertiesSelectorProperty): UsePropertiesSelectorPropertySelectorType {
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
@@ -342,8 +324,8 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
 }
 
 function shouldBeLocked(
-  selectedValueItem: PropertyValueItem | undefined,
-  productProperty: Property,
+  selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined,
+  productProperty: UsePropertiesSelectorProperty,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
 ): boolean {
@@ -359,8 +341,8 @@ function shouldBeLocked(
 }
 
 function handleChange(
-  externalOnChange: OnPropertiesChanged,
-  productProperties: ReadonlyArray<Property>,
+  externalOnChange: UsePropertiesSelectorOnPropertiesChanged,
+  productProperties: ReadonlyArray<UsePropertiesSelectorProperty>,
   autoSelectSingleValidValue: boolean,
   comparer: PropertyValue.Comparer
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
@@ -397,12 +379,12 @@ function handleChange(
 }
 
 function getSingleValidValueOrUndefined(
-  productProperty: Property,
+  productProperty: UsePropertiesSelectorProperty,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
-): PropertyValueItem | undefined {
+): UsePropertiesSelectorPropertyValueItem | undefined {
   if (productProperty.quantity === "Discrete") {
-    const validPropertyValueItems: Array<PropertyValueItem> = [];
+    const validPropertyValueItems: Array<UsePropertiesSelectorPropertyValueItem> = [];
     for (const productValueItem of productProperty.value) {
       const isValid = PropertyFilter.isValid(properties, productValueItem.property_filter, comparer);
 
@@ -418,7 +400,7 @@ function getSingleValidValueOrUndefined(
 }
 
 function getDistinctGroupNames(
-  productPropertiesArray: ReadonlyArray<PropertySelectorRenderInfo>
+  productPropertiesArray: ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo>
 ): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const property of productPropertiesArray) {

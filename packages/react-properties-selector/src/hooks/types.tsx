@@ -1,36 +1,65 @@
-import React from "react";
-import { Unit } from "uom";
+import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
-import { PropertySelectorProps } from "./property-selector";
+import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
-export type AmountFormat = {
+export type UsePropertiesSelectorPropertySelectorProps = {
+  // readonly selectorType: PropertySelectorType;
+  readonly fieldName: string;
+  readonly propertyName: string;
+  // readonly quantity: string;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly valueItems: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
+  readonly selectedProperties: PropertyValueSet.PropertyValueSet;
+  readonly includeCodes: boolean;
+  readonly optionalProperties: ReadonlyArray<string>;
+  readonly onChange: UsePropertiesSelectorPropertySelectionOnChange;
+  readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
+  readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
+  readonly onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
+  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
+  readonly propertyFormat: UsePropertiesSelectorAmountFormat;
+  readonly readOnly: boolean;
+  readonly locked: boolean;
+  readonly translatePropertyValue: UsePropertiesSelectorTranslatePropertyValue;
+  readonly translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage;
+  readonly translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage;
+  readonly inputDebounceTime: number;
+  readonly unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  };
+  readonly units: Unit.UnitMap;
+};
+
+export type UsePropertiesSelectorAmountFormat = {
   readonly unit: Unit.Unit<unknown>;
   readonly decimalCount: number;
 };
-export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet, propertyNames: string) => void;
+export type UsePropertiesSelectorPropertySelectionOnChange = (
+  properties: PropertyValueSet.PropertyValueSet,
+  propertyNames: string
+) => void;
 
-export type OnPropertiesChanged = (
+export type UsePropertiesSelectorOnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
 ) => void;
 
-export type OnPropertyFormatChanged = (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
-export type OnPropertyFormatCleared = (propertyName: string) => void;
-export type OnPropertyFormatSelectorToggled = (propertyName: string, active: boolean) => void;
+export type UsePropertiesSelectorOnPropertyFormatChanged = (
+  propertyName: string,
+  unit: Unit.Unit<unknown>,
+  decimalCount: number
+) => void;
+export type UsePropertiesSelectorOnPropertyFormatCleared = (propertyName: string) => void;
+export type UsePropertiesSelectorOnPropertyFormatSelectorToggled = (propertyName: string, active: boolean) => void;
 
-// export type TranslatePropertyName = (propertyName: string) => string;
-export type TranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
-export type TranslateNotNumericMessage = () => string;
-export type TranslateValueIsRequiredMessage = () => string;
+export type UsePropertiesSelectorTranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
+export type UsePropertiesSelectorTranslateNotNumericMessage = () => string;
+export type UsePropertiesSelectorTranslateValueIsRequiredMessage = () => string;
 
-// export type TranslatePropertyLabelHover = (propertyName: string) => string;
-// export type TranslateGroupName = (groupName: string) => string;
-export type OnToggleGroupClosed = (groupName: string) => void;
-
-export type ReactComponent<T> = React.ComponentClass<T> | React.StatelessComponent<T>;
+export type UsePropertiesSelectorOnToggleGroupClosed = (groupName: string) => void;
 
 // Defines information to render one selector
-export interface PropertySelectorRenderInfo {
+export interface UsePropertiesSelectorPropertySelectorRenderInfo {
   // This is information that the layout component can use
   readonly sortNo: number;
   readonly groupName: string;
@@ -43,22 +72,25 @@ export interface PropertySelectorRenderInfo {
   // This flag tells if is was supposed to be hidden
   readonly isHidden: boolean;
 
-  // // A default label is provided here that adheres to showCodes,
-  // // the layout component can of course choose not to use this label
-  // readonly label: string;
-  // readonly labelHover: string;
-
   // Props that are used by the components that render the actual property selector and it's label
-  readonly selectorComponentProps: PropertySelectorProps;
+  readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
+
+  readonly propertyType: PropertyValue.PropertyType;
+  readonly selectorType: UsePropertiesSelectorPropertySelectorType;
 }
 
-export type PropertySelectorType = "ComboBox" | "RadioGroup" | "Checkbox" | "AmountField" | "TextBox";
+export type UsePropertiesSelectorPropertySelectorType =
+  | "ComboBox"
+  | "RadioGroup"
+  | "Checkbox"
+  | "AmountField"
+  | "TextBox";
 
 /**
  * This interface has keys with the same names as returned by promaster-api, plus selector_type for choosing appearance of the selector
  */
-export interface Property {
-  readonly selector_type?: PropertySelectorType;
+export interface UsePropertiesSelectorProperty {
+  readonly selector_type?: UsePropertiesSelectorPropertySelectorType;
   readonly field_name?: string;
   readonly sort_no: number;
   readonly name: string;
@@ -66,19 +98,19 @@ export interface Property {
   readonly quantity: string;
   readonly validation_filter: PropertyFilter.PropertyFilter;
   readonly visibility_filter: PropertyFilter.PropertyFilter;
-  readonly value: ReadonlyArray<PropertyValueItem>;
+  readonly value: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
 }
 
 /**
  * This interface has keys with the same names as returned by promaster-api.
  */
-export interface PropertyValueItem {
+export interface UsePropertiesSelectorPropertyValueItem {
   readonly sort_no: number;
   readonly value: PropertyValue.PropertyValue;
   readonly property_filter: PropertyFilter.PropertyFilter;
   readonly image?: string;
 }
 
-export interface PropertyFormats {
-  readonly [key: string]: AmountFormat;
+export interface UsePropertiesSelectorPropertyFormats {
+  readonly [key: string]: UsePropertiesSelectorAmountFormat;
 }

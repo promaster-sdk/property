@@ -73,7 +73,11 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                             </label>
                           </td>
                           <td>
-                            <ThePropertySelector {...selector.selectorComponentProps} />
+                            <ThePropertySelector
+                              props1={selector.selectorComponentProps}
+                              selectorType={selector.selectorType}
+                              propertyType={selector.propertyType}
+                            />
                           </td>
                         </tr>
                       ))}
@@ -88,10 +92,15 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 }
 
 // Since we use hooks we need to put this in a separate component becuase hooks cannot be used in a loop
-function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): JSX.Element {
+function ThePropertySelector(props: {
+  readonly props1: PropertiesSelector.UsePropertiesSelectorPropertySelectorProps;
+  readonly selectorType: PropertiesSelector.PropertySelectorType;
+  readonly propertyType: PropertyValue.PropertyType;
+}): JSX.Element {
+  const { selectorType, propertyType } = props;
   const {
-    quantity,
-    selectorType,
+    // quantity,
+    // selectorType,
     onChange,
     propertyName,
     selectedProperties,
@@ -111,7 +120,7 @@ function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): J
     optionalProperties,
     translateValueIsRequiredMessage,
     validationFilter,
-  } = props;
+  } = props.props1;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
     onChange(
@@ -122,7 +131,7 @@ function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): J
     );
   }
 
-  switch (getPropertyType(quantity)) {
+  switch (propertyType) {
     case "text": {
       return (
         <TheTextboxPropertySelector
@@ -246,17 +255,6 @@ function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): J
         />
       );
     }
-  }
-}
-
-function getPropertyType(quantity: string): PropertyValue.PropertyType {
-  switch (quantity) {
-    case "Text":
-      return "text";
-    case "Discrete":
-      return "integer";
-    default:
-      return "amount";
   }
 }
 
