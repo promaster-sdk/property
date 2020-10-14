@@ -116,7 +116,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     units,
 
     initiallyClosedGroups = [],
-    // onToggleGroupClosed = () => ({}),
 
     comparer = PropertyValue.defaultComparer,
   } = params;
