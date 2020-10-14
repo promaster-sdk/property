@@ -78,7 +78,7 @@ export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type
 /**
  * This interface has keys with the same names as returned by promaster-api, plus selector_type for choosing appearance of the selector
  */
-export interface UsePropertiesSelectorProperty {
+export type UsePropertiesSelectorProperty = {
   readonly selector_type?: UsePropertiesSelectorPropertySelectorType;
   readonly field_name?: string;
   readonly sort_no: number;
@@ -88,23 +88,20 @@ export interface UsePropertiesSelectorProperty {
   readonly validation_filter: PropertyFilter.PropertyFilter;
   readonly visibility_filter: PropertyFilter.PropertyFilter;
   readonly value: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
-}
+};
 
-/**
- * This interface has keys with the same names as returned by promaster-api.
- */
-export interface UsePropertiesSelectorPropertyValueItem {
+export type UsePropertiesSelectorPropertyValueItem = {
   readonly sort_no: number;
   readonly value: PropertyValue.PropertyValue;
   readonly property_filter: PropertyFilter.PropertyFilter;
   readonly image?: string;
-}
+};
 
 export type UsePropertiesSelectorAmountFormat = {
   readonly unit: Unit.Unit<unknown>;
   readonly decimalCount: number;
 };
 
-export interface UsePropertiesSelectorPropertyFormats {
+export type UsePropertiesSelectorPropertyFormats = {
   readonly [key: string]: UsePropertiesSelectorAmountFormat;
-}
+};
