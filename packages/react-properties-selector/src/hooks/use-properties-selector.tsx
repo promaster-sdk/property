@@ -1,4 +1,4 @@
-// import React from "react";
+import { useState } from "react";
 import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
@@ -11,7 +11,6 @@ import {
   UsePropertiesSelectorProperty,
   UsePropertiesSelectorPropertySelectorRenderInfo,
   UsePropertiesSelectorPropertyValueItem,
-  UsePropertiesSelectorOnToggleGroupClosed,
   UsePropertiesSelectorPropertyFormats,
   UsePropertiesSelectorOnPropertiesChanged,
   SelectorRenderInfo,
@@ -55,8 +54,7 @@ export type UsePropertiesSelectorParams = {
   readonly inputDebounceTime?: number;
 
   // Group handling
-  readonly closedGroups?: ReadonlyArray<string>;
-  readonly onToggleGroupClosed?: UsePropertiesSelectorOnToggleGroupClosed;
+  readonly initiallyClosedGroups?: ReadonlyArray<string>;
 
   // Use customUnits
   readonly unitsFormat: {
@@ -71,13 +69,14 @@ export type UsePropertiesSelectorParams = {
 
 export type UsePropertiesSelector = {
   readonly groups: ReadonlyArray<UserPropertiesSelectorGroup>;
-  readonly onToggleGroupClosed: UsePropertiesSelectorOnToggleGroupClosed;
+  // readonly onToggleGroupClosed: UsePropertiesSelectorOnToggleGroupClosed;
 };
 
 export type UserPropertiesSelectorGroup = {
   readonly name: string;
   readonly isClosed: boolean;
   readonly selectors: ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo>;
+  readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
 export function usePropertiesSelector(params: UsePropertiesSelectorParams): UsePropertiesSelector {
@@ -116,8 +115,8 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     unitsFormat,
     units,
 
-    closedGroups = [],
-    onToggleGroupClosed = () => ({}),
+    initiallyClosedGroups = [],
+    // onToggleGroupClosed = () => ({}),
 
     comparer = PropertyValue.defaultComparer,
   } = params;
@@ -150,13 +149,24 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     comparer
   );
 
+  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(initiallyClosedGroups);
+
   return {
     groups: getDistinctGroupNames(allSelectors).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
       const selectors = allSelectors.filter((selector) => selector.groupName === (name || ""));
-      return { name, isClosed, selectors: selectors };
+      return {
+        name,
+        isClosed,
+        getGroupToggleButtonProps: () => ({
+          onClick: () =>
+            setClosedGroups(
+              closedGroups.indexOf(name) >= 0 ? closedGroups.filter((g) => g !== name) : [...closedGroups, name]
+            ),
+        }),
+        selectors,
+      };
     }),
-    onToggleGroupClosed,
   };
 }
 

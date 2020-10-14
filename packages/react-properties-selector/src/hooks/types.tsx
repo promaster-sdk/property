@@ -24,7 +24,7 @@ export type UsePropertiesSelectorOnPropertyFormatChanged = (
 ) => void;
 export type UsePropertiesSelectorOnPropertyFormatCleared = (propertyName: string) => void;
 
-export type UsePropertiesSelectorOnToggleGroupClosed = (groupName: string) => void;
+// export type UsePropertiesSelectorOnToggleGroupClosed = (groupName: string) => void;
 
 // Defines information to render one selector
 export type UsePropertiesSelectorPropertySelectorRenderInfo = {

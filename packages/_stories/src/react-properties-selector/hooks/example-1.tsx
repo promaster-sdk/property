@@ -49,8 +49,8 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
           {sel.groups.map((group) => (
             <div key={group.name}>
               {group.name && (
-                <div className="group-container-header" onClick={() => sel.onToggleGroupClosed(group.name)}>
-                  <button className="expand-collapse">&nbsp;&gt;&gt;&nbsp;</button>
+                <div>
+                  <button {...group.getGroupToggleButtonProps()}>&nbsp;&gt;&gt;&nbsp;</button>
                   {group.name}
                 </div>
               )}
