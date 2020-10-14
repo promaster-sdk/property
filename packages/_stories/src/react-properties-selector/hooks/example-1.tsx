@@ -52,7 +52,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
               {group.name && (
                 <div className="group-container-header" onClick={() => sel.onToggleGroupClosed(group.name)}>
                   <button className="expand-collapse">&nbsp;&gt;&gt;&nbsp;</button>
-                  {sel.translateGroupName(group.name)}
+                  {group.name}
                 </div>
               )}
               <table>

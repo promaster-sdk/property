@@ -14,10 +14,9 @@ import {
   TranslatePropertyName,
   Property,
   TranslatePropertyLabelHover,
-  TranslateGroupName,
+  // TranslateGroupName,
   PropertySelectorRenderInfo,
   PropertyValueItem,
-  // ReactComponent,
   OnToggleGroupClosed,
   PropertyFormats,
   OnPropertiesChanged,
@@ -54,7 +53,7 @@ export type UsePropertiesSelectorParams = {
   readonly translateValueMustBeNumericMessage?: TranslateNotNumericMessage;
   readonly translateValueIsRequiredMessage?: TranslateValueIsRequiredMessage;
   readonly translatePropertyLabelHover?: TranslatePropertyLabelHover;
-  readonly translateGroupName?: TranslateGroupName;
+  // readonly translateGroupName?: TranslateGroupName;
 
   // Specifies property names of properties that should be read-only
   readonly readOnlyProperties?: ReadonlyArray<string>;
@@ -84,7 +83,7 @@ export type UsePropertiesSelectorParams = {
 export type UsePropertiesSelector = {
   readonly groups: ReadonlyArray<UserPropertiesSelectorGroup>;
   readonly onToggleGroupClosed: OnToggleGroupClosed;
-  readonly translateGroupName: TranslateGroupName;
+  // readonly translateGroupName: TranslateGroupName;
 };
 
 export type UserPropertiesSelectorGroup = {
@@ -123,7 +122,7 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     translateValueMustBeNumericMessage = () => "value_must_be_numeric",
     translateValueIsRequiredMessage = () => "value_is_required",
     translatePropertyLabelHover = () => "translatePropertyLabelHover",
-    translateGroupName = (a: string) => a,
+    // translateGroupName = (a: string) => a,
 
     readOnlyProperties = [],
     optionalProperties = [],
@@ -179,7 +178,7 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
       return { name, isClosed, selectors: selectors };
     }),
     onToggleGroupClosed,
-    translateGroupName,
+    // translateGroupName,
   };
 }
 

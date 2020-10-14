@@ -24,7 +24,7 @@ export type TranslateNotNumericMessage = () => string;
 export type TranslateValueIsRequiredMessage = () => string;
 
 export type TranslatePropertyLabelHover = (propertyName: string) => string;
-export type TranslateGroupName = (groupName: string) => string;
+// export type TranslateGroupName = (groupName: string) => string;
 export type OnToggleGroupClosed = (groupName: string) => void;
 
 export type ReactComponent<T> = React.ComponentClass<T> | React.StatelessComponent<T>;
