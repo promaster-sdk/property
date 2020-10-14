@@ -1,12 +1,16 @@
 import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
+import {
+  UseAmountPropertySelectorParams,
+  UseCheckboxPropertySelectorParams,
+  UseComboboxPropertySelectorParams,
+  UseTextboxPropertySelectorParams,
+} from "@promaster-sdk/react-property-selectors";
 
 export type UsePropertiesSelectorPropertySelectorProps = {
-  // readonly selectorType: PropertySelectorType;
   readonly fieldName: string;
   readonly propertyName: string;
-  // readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly valueItems: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
@@ -73,11 +77,37 @@ export type UsePropertiesSelectorPropertySelectorRenderInfo = {
   readonly isHidden: boolean;
 
   // Props that are used by the components that render the actual property selector and it's label
-  readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
+  // readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
 
-  // readonly propertyType: PropertyValue.PropertyType;
-  readonly selectorType: UsePropertiesSelectorPropertySelectorType;
+  // readonly selectorType: UsePropertiesSelectorPropertySelectorType;
+  readonly selectorRenderInfo: SelectorRenderInfo;
 };
+
+export type SelectorRenderInfo =
+  | {
+      readonly type: "ComboBox";
+      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
+      readonly getUseComboboxParams: () => UseComboboxPropertySelectorParams;
+    }
+  | {
+      readonly type: "RadioGroup";
+      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
+    }
+  | {
+      readonly type: "Checkbox";
+      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
+      readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorParams;
+    }
+  | {
+      readonly type: "AmountField";
+      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
+      readonly getUseAmountParams: () => UseAmountPropertySelectorParams;
+    }
+  | {
+      readonly type: "TextBox";
+      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
+      readonly getUseTextboxParams: () => UseTextboxPropertySelectorParams;
+    };
 
 export type UsePropertiesSelectorPropertySelectorType =
   | "ComboBox"

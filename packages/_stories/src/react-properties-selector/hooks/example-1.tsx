@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
-import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
+import { PropertyValueSet } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
 import {
   getDefaultAmountInputBoxStyle,
@@ -74,10 +74,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                             </label>
                           </td>
                           <td>
-                            <ThePropertySelector
-                              props1={selector.selectorComponentProps}
-                              selectorType={selector.selectorType}
-                            />
+                            <ThePropertySelector info={selector} />
                           </td>
                         </tr>
                       ))}
@@ -93,54 +90,55 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 
 // Since we use hooks we need to put this in a separate component becuase hooks cannot be used in a loop
 function ThePropertySelector(props: {
-  readonly props1: PropertiesSelector.UsePropertiesSelectorPropertySelectorProps;
-  readonly selectorType: PropertiesSelector.PropertySelectorType;
+  readonly info: PropertiesSelector.UsePropertiesSelectorPropertySelectorRenderInfo;
 }): JSX.Element {
-  const { selectorType } = props;
-  const {
-    onChange,
-    propertyName,
-    selectedProperties,
-    readOnly,
-    inputDebounceTime,
-    valueItems,
-    translatePropertyValue,
-    includeCodes,
-    filterPrettyPrint,
-    locked,
-    propertyFormat,
-    onPropertyFormatChanged,
-    onPropertyFormatCleared,
-    onPropertyFormatSelectorToggled,
-    translateValueMustBeNumericMessage,
-    fieldName,
-    optionalProperties,
-    translateValueIsRequiredMessage,
-    validationFilter,
-  } = props.props1;
+  const { info } = props;
+  const sel = info.selectorRenderInfo;
+  // const {
+  //   onChange,
+  //   propertyName,
+  //   selectedProperties,
+  //   readOnly,
+  //   inputDebounceTime,
+  //   valueItems,
+  //   translatePropertyValue,
+  //   includeCodes,
+  //   filterPrettyPrint,
+  //   locked,
+  //   propertyFormat,
+  //   onPropertyFormatChanged,
+  //   onPropertyFormatCleared,
+  //   onPropertyFormatSelectorToggled,
+  //   translateValueMustBeNumericMessage,
+  //   fieldName,
+  //   optionalProperties,
+  //   translateValueIsRequiredMessage,
+  //   validationFilter,
+  // } = props.info.selectorRenderInfo.selectorComponentProps;
 
-  function onValueChange(newValue: PropertyValue.PropertyValue): void {
-    onChange(
-      newValue
-        ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-        : PropertyValueSet.removeProperty(propertyName, selectedProperties),
-      propertyName
-    );
-  }
+  // function onValueChange(newValue: PropertyValue.PropertyValue): void {
+  //   onChange(
+  //     newValue
+  //       ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
+  //       : PropertyValueSet.removeProperty(propertyName, selectedProperties),
+  //     propertyName
+  //   );
+  // }
 
-  switch (selectorType) {
+  switch (sel.type) {
     case "TextBox": {
-      return (
-        <TheTextboxPropertySelector
-          {...{
-            propertyName,
-            propertyValueSet: selectedProperties,
-            readOnly,
-            onValueChange,
-            debounceTime: inputDebounceTime,
-          }}
-        />
-      );
+      // return (
+      //   <TheTextboxPropertySelector
+      //     {...{
+      //       propertyName,
+      //       propertyValueSet: selectedProperties,
+      //       readOnly,
+      //       onValueChange,
+      //       debounceTime: inputDebounceTime,
+      //     }}
+      //   />
+      // );
+      return <TheTextboxPropertySelector {...sel.getUseTextboxParams()} />;
     }
 
     case "RadioGroup":
@@ -169,88 +167,14 @@ function ThePropertySelector(props: {
         // />
       );
     case "Checkbox":
-      return (
-        <TheCheckboxPropertySelector
-          {...{
-            propertyName,
-            propertyValueSet: selectedProperties,
-            valueItems:
-              valueItems &&
-              valueItems.map((vi) => ({
-                value: vi.value,
-                text: translatePropertyValue(propertyName, (vi.value
-                  ? PropertyValue.getInteger(vi.value)
-                  : undefined) as number),
-                sortNo: vi.sort_no,
-                validationFilter: vi.property_filter,
-                image: vi.image,
-              })),
-            showCodes: includeCodes,
-            filterPrettyPrint,
-            onValueChange,
-            readOnly: readOnly,
-            locked,
-          }}
-        />
-      );
+      return <TheCheckboxPropertySelector {...sel.getUseCheckboxParams()} />;
     case "ComboBox":
-      return (
-        <TheComboboxPropertySelector
-          {...{
-            sortValidFirst: true,
-            propertyName,
-            propertyValueSet: selectedProperties,
-            valueItems:
-              valueItems &&
-              valueItems.map((vi) => ({
-                value: vi.value,
-                text: translatePropertyValue(propertyName, (vi.value
-                  ? PropertyValue.getInteger(vi.value)
-                  : undefined) as number),
-                sortNo: vi.sort_no,
-                validationFilter: vi.property_filter,
-                image: vi.image,
-              })),
-            showCodes: includeCodes,
-            filterPrettyPrint,
-            onValueChange,
-            readOnly,
-            locked,
-          }}
-        />
-      );
+      return <TheComboboxPropertySelector {...sel.getUseComboboxParams()} />;
     case "AmountField": {
-      return (
-        <TheAmountPropertySelector
-          {...{
-            propertyName,
-            propertyValueSet: selectedProperties,
-            inputUnit: propertyFormat.unit,
-            inputDecimalCount: propertyFormat.decimalCount,
-            onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
-              onPropertyFormatChanged(propertyName, unit, decimalCount),
-            onFormatCleared: () => onPropertyFormatCleared(propertyName),
-            onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
-            onValueChange,
-            notNumericMessage: translateValueMustBeNumericMessage(),
-            fieldName: fieldName,
-            // If it is optional then use blank required message
-            isRequiredMessage:
-              optionalProperties && optionalProperties.indexOf(propertyName) !== -1
-                ? ""
-                : translateValueIsRequiredMessage(),
-            validationFilter,
-            filterPrettyPrint,
-            readonly: readOnly,
-            debounceTime: inputDebounceTime,
-            unitsFormat,
-            units,
-          }}
-        />
-      );
+      return <TheAmountPropertySelector {...sel.getUseAmountParams()} />;
     }
     default:
-      return exhaustiveCheck(selectorType, true);
+      return exhaustiveCheck(sel, true);
   }
 }
 

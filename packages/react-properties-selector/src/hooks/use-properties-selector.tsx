@@ -2,6 +2,7 @@
 import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
+import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import {
   UsePropertiesSelectorPropertySelectorType,
   UsePropertiesSelectorAmountFormat,
@@ -18,6 +19,7 @@ import {
   UsePropertiesSelectorPropertyFormats,
   UsePropertiesSelectorOnPropertiesChanged,
   UsePropertiesSelectorPropertySelectorProps,
+  SelectorRenderInfo,
 } from "./types";
 
 export type UsePropertiesSelectorParams = {
@@ -281,19 +283,188 @@ function createPropertySelectorRenderInfos(
         units,
       };
 
-      return {
+      const s: UsePropertiesSelectorPropertySelectorRenderInfo = {
         sortNo: property.sort_no,
         propertyName: property.name,
         groupName: property.group,
         isValid,
         isHidden,
-        selectorComponentProps: propertySelectorComponentProps,
-        selectorType,
-        // propertyType: getPropertyType(property.quantity),
+        // selectorComponentProps: propertySelectorComponentProps,
+        // selectorType,
+        selectorRenderInfo: createSelectorRenderInfo(selectorType, propertySelectorComponentProps),
       };
+      return s;
     });
 
   return selectorDefinitions;
+}
+
+function createSelectorRenderInfo(
+  selectorType: UsePropertiesSelectorPropertySelectorType,
+  selectorComponentProps: UsePropertiesSelectorPropertySelectorProps
+): SelectorRenderInfo {
+  // return { type: selectorType, selectorComponentProps: propertySelectorComponentProps };
+
+  const {
+    onChange,
+    propertyName,
+    selectedProperties,
+    readOnly,
+    inputDebounceTime,
+    valueItems,
+    translatePropertyValue,
+    includeCodes,
+    filterPrettyPrint,
+    locked,
+    propertyFormat,
+    onPropertyFormatChanged,
+    onPropertyFormatCleared,
+    onPropertyFormatSelectorToggled,
+    translateValueMustBeNumericMessage,
+    fieldName,
+    optionalProperties,
+    translateValueIsRequiredMessage,
+    validationFilter,
+    units,
+    unitsFormat,
+  } = selectorComponentProps;
+
+  function onValueChange(newValue: PropertyValue.PropertyValue): void {
+    onChange(
+      newValue
+        ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
+        : PropertyValueSet.removeProperty(propertyName, selectedProperties),
+      propertyName
+    );
+  }
+
+  switch (selectorType) {
+    case "TextBox": {
+      return {
+        type: "TextBox",
+        selectorComponentProps,
+        getUseTextboxParams: () => ({
+          propertyName,
+          propertyValueSet: selectedProperties,
+          readOnly,
+          onValueChange,
+          debounceTime: inputDebounceTime,
+        }),
+      };
+    }
+
+    case "RadioGroup":
+      return {
+        type: "RadioGroup",
+        selectorComponentProps,
+      };
+    // <RadioGroupPropertySelector
+    //   propertyName={propertyName}
+    //   propertyValueSet={selectedProperties}
+    //   valueItems={
+    //     valueItems &&
+    //     valueItems.map(vi => ({
+    //       value: vi.value,
+    //       text: translatePropertyValue(propertyName, (vi.value
+    //         ? PropertyValue.getInteger(vi.value)
+    //         : undefined) as number),
+    //       sortNo: vi.sort_no,
+    //       validationFilter: vi.property_filter,
+    //       image: vi.image
+    //     }))
+    //   }
+    //   showCodes={includeCodes}
+    //   filterPrettyPrint={filterPrettyPrint}
+    //   onValueChange={onValueChange}
+    //   readOnly={readOnly}
+    //   locked={locked}
+    // />
+
+    case "Checkbox":
+      return {
+        type: "Checkbox",
+        selectorComponentProps,
+        getUseCheckboxParams: () => ({
+          propertyName,
+          propertyValueSet: selectedProperties,
+          valueItems:
+            valueItems &&
+            valueItems.map((vi) => ({
+              value: vi.value,
+              text: translatePropertyValue(propertyName, (vi.value
+                ? PropertyValue.getInteger(vi.value)
+                : undefined) as number),
+              sortNo: vi.sort_no,
+              validationFilter: vi.property_filter,
+              image: vi.image,
+            })),
+          showCodes: includeCodes,
+          filterPrettyPrint,
+          onValueChange,
+          readOnly: readOnly,
+          locked,
+        }),
+      };
+
+    case "ComboBox":
+      return {
+        type: "ComboBox",
+        selectorComponentProps,
+        getUseComboboxParams: () => ({
+          sortValidFirst: true,
+          propertyName,
+          propertyValueSet: selectedProperties,
+          valueItems:
+            valueItems &&
+            valueItems.map((vi) => ({
+              value: vi.value,
+              text: translatePropertyValue(propertyName, (vi.value
+                ? PropertyValue.getInteger(vi.value)
+                : undefined) as number),
+              sortNo: vi.sort_no,
+              validationFilter: vi.property_filter,
+              image: vi.image,
+            })),
+          showCodes: includeCodes,
+          filterPrettyPrint,
+          onValueChange,
+          readOnly,
+          locked,
+        }),
+      };
+    case "AmountField": {
+      return {
+        type: "AmountField",
+        selectorComponentProps,
+        getUseAmountParams: () => ({
+          propertyName,
+          propertyValueSet: selectedProperties,
+          inputUnit: propertyFormat.unit,
+          inputDecimalCount: propertyFormat.decimalCount,
+          onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
+            onPropertyFormatChanged(propertyName, unit, decimalCount),
+          onFormatCleared: () => onPropertyFormatCleared(propertyName),
+          onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
+          onValueChange,
+          notNumericMessage: translateValueMustBeNumericMessage(),
+          fieldName: fieldName,
+          // If it is optional then use blank required message
+          isRequiredMessage:
+            optionalProperties && optionalProperties.indexOf(propertyName) !== -1
+              ? ""
+              : translateValueIsRequiredMessage(),
+          validationFilter,
+          filterPrettyPrint,
+          readonly: readOnly,
+          debounceTime: inputDebounceTime,
+          unitsFormat,
+          units,
+        }),
+      };
+    }
+    default:
+      return exhaustiveCheck(selectorType, true);
+  }
 }
 
 function getSelectorType(property: UsePropertiesSelectorProperty): UsePropertiesSelectorPropertySelectorType {
