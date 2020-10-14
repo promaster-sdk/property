@@ -77,12 +77,7 @@ export type SelectorRenderInfo =
       readonly getUseTextboxParams: () => UseTextboxPropertySelectorParams;
     };
 
-export type UsePropertiesSelectorPropertySelectorType =
-  | "ComboBox"
-  | "RadioGroup"
-  | "Checkbox"
-  | "AmountField"
-  | "TextBox";
+export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
 
 /**
  * This interface has keys with the same names as returned by promaster-api, plus selector_type for choosing appearance of the selector
