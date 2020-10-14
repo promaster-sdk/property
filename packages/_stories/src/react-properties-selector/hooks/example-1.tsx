@@ -3,13 +3,19 @@ import { BaseUnits, Unit } from "uom";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
+import {
+  getDefaultOptionStyle,
+  getDefaultSelectStyle,
+  useComboboxPropertySelector,
+  UseComboboxPropertySelectorParams,
+} from "@promaster-sdk/react-property-selectors";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 export function PropertiesSelectorExample1(): React.ReactElement<{}> {
-  const [state, setState] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
+  const [state, setState] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;c=1;d=1;e=1;", unitLookup));
 
   const productProperties = exampleProductProperties();
 
@@ -38,8 +44,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   //   },
   //   onPropertyFormatSelectorToggled: action("toggle property format selector"),
   // };
-
-  console.log("propSel", sel);
 
   return (
     <div>
@@ -104,44 +108,22 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 }
 
 // Since we use hooks we need to put this in a separate component becuase hooks cannot be used in a loop
-function ThePropertySelector({
-  selectorType,
-  // fieldName,
-  // propertyName,
-  quantity,
-}: // validationFilter,
-// valueItems,
-// selectedProperties,
-// includeCodes,
-// optionalProperties,
-// onChange,
-// onPropertyFormatChanged,
-// onPropertyFormatCleared,
-// onPropertyFormatSelectorToggled,
-// filterPrettyPrint,
-// propertyFormat,
-// readOnly,
-// locked,
-// translatePropertyValue,
-// translateValueMustBeNumericMessage,
-// translateValueIsRequiredMessage,
-// inputDebounceTime,
-// unitsFormat,
-// units,
-PropertiesSelector.PropertySelectorProps): JSX.Element {
-  // function onValueChange(newValue: PropertyValue.PropertyValue): void {
-  //   onChange(
-  //     newValue
-  //       ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-  //       : PropertyValueSet.removeProperty(propertyName, selectedProperties),
-  //     propertyName
-  //   );
-  // }
+function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): JSX.Element {
+  const { quantity, selectorType, onChange, propertyName, selectedProperties } = props;
+
+  function onValueChange(newValue: PropertyValue.PropertyValue): void {
+    onChange(
+      newValue
+        ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
+        : PropertyValueSet.removeProperty(propertyName, selectedProperties),
+      propertyName
+    );
+  }
 
   switch (getPropertyType(quantity)) {
     case "text":
       return (
-        <div>TextboxPropertySelector</div>
+        <TheTextboxPropertySelector {...props} />
         // <TextboxPropertySelector
         //   propertyName={propertyName}
         //   propertyValueSet={selectedProperties}
@@ -203,8 +185,29 @@ PropertiesSelector.PropertySelectorProps): JSX.Element {
           // />
         );
       } else {
+        const theProps = {
+          sortValidFirst: true,
+          propertyName: props.propertyName,
+          propertyValueSet: props.selectedProperties,
+          valueItems:
+            props.valueItems &&
+            props.valueItems.map((vi) => ({
+              value: vi.value,
+              text: props.translatePropertyValue(props.propertyName, (vi.value
+                ? PropertyValue.getInteger(vi.value)
+                : undefined) as number),
+              sortNo: vi.sort_no,
+              validationFilter: vi.property_filter,
+              image: vi.image,
+            })),
+          showCodes: props.includeCodes,
+          filterPrettyPrint: props.filterPrettyPrint,
+          onValueChange: onValueChange,
+          readOnly: props.readOnly,
+          locked: props.locked,
+        };
         return (
-          <div>ComboboxPropertySelector</div>
+          <TheComboboxPropertySelector {...theProps} />
           // <ComboboxPropertySelector
           //   sortValidFirst={true}
           //   propertyName={propertyName}
@@ -277,4 +280,19 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
     default:
       return "amount";
   }
+}
+
+function TheTextboxPropertySelector(_props: PropertiesSelector.PropertySelectorProps): JSX.Element {
+  return <div>TheTextboxPropertySelector</div>;
+}
+
+function TheComboboxPropertySelector(props: UseComboboxPropertySelectorParams): JSX.Element {
+  const sel = useComboboxPropertySelector(props);
+  return (
+    <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
+      {sel.options.map((o) => (
+        <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
+      ))}
+    </select>
+  );
 }
