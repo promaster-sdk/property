@@ -6,8 +6,8 @@ import {
 } from "@promaster-sdk/react-property-selectors";
 import { Unit, Amount, BaseUnits } from "uom";
 import { action } from "@storybook/addon-actions";
-import { merge } from "../utils";
-import { units, unitsFormat } from "../units-map";
+import { merge } from "../../utils";
+import { units, unitsFormat } from "../../units-map";
 
 type State = {
   readonly selectedUnit: Unit.Unit<unknown>;

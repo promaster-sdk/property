@@ -11,8 +11,8 @@ import {
   PropertyValueSet,
   PropertyValue
 } from "@promaster-sdk/property";
-import { merge } from "../utils";
-import { unitsFormat, units } from "../units-map";
+import { merge } from "../../utils";
+import { unitsFormat, units } from "../../units-map";
 
 const unitLookup: Unit.UnitLookup = unitString =>
   (units as Unit.UnitMap)[unitString];
