@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
-import React from "react";
+import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
@@ -15,7 +15,7 @@ interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
 }
 
-export class PropertiesSelectorExample1 extends React.Component<{}, State> {
+export class PropertiesSelectorExample12 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -25,33 +25,38 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       )
     };
   }
+}
 
-  render(): React.ReactElement<{}> {
-    const productProperties = exampleProductProperties();
-    const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
-      units,
-      unitsFormat,
-      unitLookup,
-      productProperties: productProperties,
-      selectedProperties: this.state.propertyValueSet,
-      onChange: (
-        properties: PropertyValueSet.PropertyValueSet,
-        _changedProperties: ReadonlyArray<string>
-      ) => {
-        this.setState({ ...this.state, propertyValueSet: properties });
-        // console.log("updated: ", changedProperties);
-      },
-      onPropertyFormatSelectorToggled: action("toggle property format selector")
-    };
+export function PropertiesSelectorExample1(): React.ReactElement<{}> {
+  const [state, setState] = useState(
+    PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup)
+  );
 
-    return (
-      <div>
-        <p>
-          This example shows minimal configuration, using as much defaults as
-          possible
-        </p>
-        <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
-      </div>
-    );
-  }
+  const productProperties = exampleProductProperties();
+  const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
+    units,
+    unitsFormat,
+    unitLookup,
+    productProperties: productProperties,
+    selectedProperties: state,
+    onChange: (
+      properties: PropertyValueSet.PropertyValueSet,
+      _changedProperties: ReadonlyArray<string>
+    ) => {
+      setState(properties);
+      // console.log("updated: ", changedProperties);
+    },
+    onPropertyFormatSelectorToggled: action("toggle property format selector")
+  };
+
+  return (
+    <div>
+      <p>
+        This example shows minimal configuration, using as much defaults as
+        possible
+      </p>
+      <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
+      <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
+    </div>
+  );
 }
