@@ -95,5 +95,10 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "trailingComma": "es5",
+    "arrowParens": "always"
   }
 }
