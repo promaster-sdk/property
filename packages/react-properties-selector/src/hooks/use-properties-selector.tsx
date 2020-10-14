@@ -23,7 +23,7 @@ import {
   OnPropertiesChanged,
 } from "./types";
 import { PropertySelectorProps } from "./property-selector";
-import { PropertyLabelComponentProps } from "./property-label";
+// import { PropertyLabelComponentProps } from "./property-label";
 
 export type UsePropertiesSelectorParams = {
   // Required inputs
@@ -119,15 +119,10 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     includeHiddenProperties = false,
     autoSelectSingleValidValue = true,
     lockSingleValidValue = false,
-    onChange = (_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => {}, //eslint-disable-line
-    onPropertyFormatChanged = (
-      _a: string,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      _b: Unit.Unit<any>,
-      _c: number
-    ) => {}, //eslint-disable-line
-    onPropertyFormatCleared = (_a: string) => {}, //eslint-disable-line
-    onPropertyFormatSelectorToggled = () => {}, //eslint-disable-line
+    onChange = (_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({}),
+    onPropertyFormatChanged = (_a: string, _b: Unit.Unit<unknown>, _c: number) => ({}),
+    onPropertyFormatCleared = (_a: string) => ({}),
+    onPropertyFormatSelectorToggled = () => ({}),
 
     translatePropertyName = (a: string) => a,
     translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
@@ -142,20 +137,11 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 
     inputDebounceTime = 350,
 
-    // unitsFormat = UnitsFormat,
-    // units = Units,
-
     unitsFormat,
     units,
 
     closedGroups = [],
-    onToggleGroupClosed = () => {}, // eslint-disable-line
-
-    // LayoutRenderer = DefaultLayoutRenderer,
-    // GroupComponent = DefaultGroupComponent,
-    // GroupItemComponent = DefaultGroupItemComponent,
-    // PropertySelectorComponent = createPropertySelector({}),
-    // PropertyLabelComponent = DefaultPropertyLabelComponent,
+    onToggleGroupClosed = () => ({}),
 
     comparer = PropertyValue.defaultComparer,
   } = params;
@@ -191,17 +177,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 
     comparer
   );
-
-  // return LayoutRenderer({
-  //   selectors: selectors,
-  //   translateGroupName: translateGroupName,
-  //   closedGroups: closedGroups,
-  //   onToggleGroupClosed: onToggleGroupClosed,
-  //   GroupComponent: GroupComponent,
-  //   GroupItemComponent: GroupItemComponent,
-  //   PropertySelectorComponent: PropertySelectorComponent,
-  //   PropertyLabelComponent: PropertyLabelComponent,
-  // });
 
   return {
     groups: getDistinctGroupNames(selectors),
@@ -326,13 +301,13 @@ function createPropertySelectorRenderInfos(
         units,
       };
 
-      const propertyLabelComponentProps: PropertyLabelComponentProps = {
-        propertyName: property.name,
-        selectorIsValid: isValid,
-        selectorIsHidden: isHidden,
-        selectorLabel: label,
-        translatePropertyLabelHover,
-      };
+      // const propertyLabelComponentProps: PropertyLabelComponentProps = {
+      //   propertyName: property.name,
+      //   selectorIsValid: isValid,
+      //   selectorIsHidden: isHidden,
+      //   selectorLabel: label,
+      //   translatePropertyLabelHover,
+      // };
 
       return {
         sortNo: property.sort_no,
@@ -346,7 +321,7 @@ function createPropertySelectorRenderInfos(
         labelHover: labelHover,
 
         selectorComponentProps: propertySelectorComponentProps,
-        labelComponentProps: propertyLabelComponentProps,
+        // labelComponentProps: propertyLabelComponentProps,
       };
     });
 

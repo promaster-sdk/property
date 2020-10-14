@@ -1,19 +1,11 @@
 import React, { useCallback, useState } from "react";
 import { Unit, BaseUnits } from "uom";
-import {
-  getDefaultAmountInputBoxStyle,
-  useAmountPropertySelector
-} from "@promaster-sdk/react-property-selectors";
+import { getDefaultAmountInputBoxStyle, useAmountPropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import {
-  PropertyFilter,
-  PropertyValueSet,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { units, unitsFormat } from "../../units-map";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (units as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -21,9 +13,7 @@ interface State {
   readonly selectedDecimalCount: number;
 }
 
-const filterPrettyPrint = (
-  propertyFilter: PropertyFilter.PropertyFilter
-): string =>
+const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
@@ -39,25 +29,20 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
     propertyValueSet: PropertyValueSet.fromString("a=10:Meter", unitLookup),
     selectedUnit: BaseUnits.Meter,
-    selectedDecimalCount: 2
+    selectedDecimalCount: 2,
   });
 
   const onValueChange = useCallback(
-    pv =>
+    (pv) =>
       setState({
         ...state,
-        propertyValueSet: PropertyValueSet.set(
-          "a",
-          pv as PropertyValue.PropertyValue,
-          state.propertyValueSet
-        )
+        propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state.propertyValueSet),
       }),
     [state, setState]
   );
 
   const onFormatChanged = useCallback(
-    (selectedUnit, selectedDecimalCount) =>
-      setState({ ...state, selectedUnit, selectedDecimalCount }),
+    (selectedUnit, selectedDecimalCount) => setState({ ...state, selectedUnit, selectedDecimalCount }),
     [state, setState]
   );
 
@@ -66,7 +51,7 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
       setState({
         ...state,
         selectedUnit: BaseUnits.Meter,
-        selectedDecimalCount: 2
+        selectedDecimalCount: 2,
       }),
     [state, setState]
   );
@@ -86,46 +71,35 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
     onFormatChanged,
     onFormatCleared,
     unitsFormat: unitsFormat,
-    units: units
+    units: units,
   });
 
   return (
     <div>
       <div>AmountPropertySelector:</div>
+      <div>PropertyValueSet: {PropertyValueSet.toString(state.propertyValueSet)}</div>
       <div>
-        PropertyValueSet: {PropertyValueSet.toString(state.propertyValueSet)}
-      </div>
-      <div>
-        <span id="AmountPropertySelectorWrapper" {...selA.getWrapperProps()}>
+        <span {...selA.getWrapperProps()}>
           {/* AmountInput */}
-          <input
-            {...selA.amountInputBox.getInputProps()}
-            style={getDefaultAmountInputBoxStyle(selA.amountInputBox)}
-          />
+          <input {...selA.amountInputBox.getInputProps()} style={getDefaultAmountInputBoxStyle(selA.amountInputBox)} />
           {/* AmountFormat */}
           <span {...selA.amountFormatSelector.getWrapperProps()}>
             {selA.amountFormatSelector.active ? (
               <>
                 <select {...selA.amountFormatSelector.getUnitSelectorProps()}>
-                  {selA.amountFormatSelector.unitSelectorOptions.map(o => (
+                  {selA.amountFormatSelector.unitSelectorOptions.map((o) => (
                     <option {...o.getOptionProps()}> {o.label} </option>
                   ))}
                 </select>
-                <select
-                  {...selA.amountFormatSelector.getPrecisionSelectorProps()}
-                >
-                  {selA.amountFormatSelector.precisionSelectorOptions.map(o => (
+                <select {...selA.amountFormatSelector.getPrecisionSelectorProps()}>
+                  {selA.amountFormatSelector.precisionSelectorOptions.map((o) => (
                     <option {...o.getOptionProps()}>{o.label}</option>
                   ))}
                 </select>
                 {selA.amountFormatSelector.showClearButton && (
-                  <button {...selA.amountFormatSelector.getClearButtonProps()}>
-                    Cancel
-                  </button>
+                  <button {...selA.amountFormatSelector.getClearButtonProps()}>Cancel</button>
                 )}
-                <button {...selA.amountFormatSelector.getCancelButtonProps()}>
-                  Clear
-                </button>
+                <button {...selA.amountFormatSelector.getCancelButtonProps()}>Clear</button>
               </>
             ) : (
               selA.amountFormatSelector.label

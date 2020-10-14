@@ -4,10 +4,19 @@ import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
 import {
+  getDefaultAmountInputBoxStyle,
+  getDefaultCheckboxContainerStyle,
+  getDefaultCheckboxStyle,
   getDefaultOptionStyle,
   getDefaultSelectStyle,
+  useAmountPropertySelector,
+  UseAmountPropertySelectorParams,
+  useCheckboxPropertySelector,
+  UseCheckboxPropertySelectorParams,
   useComboboxPropertySelector,
   UseComboboxPropertySelectorParams,
+  useTextboxPropertySelector,
+  UseTextboxPropertySelectorParams,
 } from "@promaster-sdk/react-property-selectors";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
@@ -109,7 +118,29 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 
 // Since we use hooks we need to put this in a separate component becuase hooks cannot be used in a loop
 function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): JSX.Element {
-  const { quantity, selectorType, onChange, propertyName, selectedProperties } = props;
+  const {
+    quantity,
+    selectorType,
+    onChange,
+    propertyName,
+    selectedProperties,
+    readOnly,
+    inputDebounceTime,
+    valueItems,
+    translatePropertyValue,
+    includeCodes,
+    filterPrettyPrint,
+    locked,
+    propertyFormat,
+    onPropertyFormatChanged,
+    onPropertyFormatCleared,
+    onPropertyFormatSelectorToggled,
+    translateValueMustBeNumericMessage,
+    fieldName,
+    optionalProperties,
+    translateValueIsRequiredMessage,
+    validationFilter,
+  } = props;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
     onChange(
@@ -121,17 +152,19 @@ function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): J
   }
 
   switch (getPropertyType(quantity)) {
-    case "text":
+    case "text": {
       return (
-        <TheTextboxPropertySelector {...props} />
-        // <TextboxPropertySelector
-        //   propertyName={propertyName}
-        //   propertyValueSet={selectedProperties}
-        //   readOnly={readOnly}
-        //   onValueChange={onValueChange}
-        //   debounceTime={inputDebounceTime}
-        // />
+        <TheTextboxPropertySelector
+          {...{
+            propertyName,
+            propertyValueSet: selectedProperties,
+            readOnly,
+            onValueChange,
+            debounceTime: inputDebounceTime,
+          }}
+        />
       );
+    }
 
     case "integer":
       if (selectorType === "RadioGroup") {
@@ -161,114 +194,88 @@ function ThePropertySelector(props: PropertiesSelector.PropertySelectorProps): J
         );
       } else if (selectorType === "Checkbox") {
         return (
-          <div>CheckboxPropertySelector</div>
-          // <CheckboxPropertySelector
-          //   propertyName={propertyName}
-          //   propertyValueSet={selectedProperties}
-          //   valueItems={
-          //     valueItems &&
-          //     valueItems.map(vi => ({
-          //       value: vi.value,
-          //       text: translatePropertyValue(propertyName, (vi.value
-          //         ? PropertyValue.getInteger(vi.value)
-          //         : undefined) as number),
-          //       sortNo: vi.sort_no,
-          //       validationFilter: vi.property_filter,
-          //       image: vi.image
-          //     }))
-          //   }
-          //   showCodes={includeCodes}
-          //   filterPrettyPrint={filterPrettyPrint}
-          //   onValueChange={onValueChange}
-          //   readOnly={readOnly}
-          //   locked={locked}
-          // />
+          <TheCheckboxPropertySelector
+            {...{
+              propertyName,
+              propertyValueSet: selectedProperties,
+              valueItems:
+                valueItems &&
+                valueItems.map((vi) => ({
+                  value: vi.value,
+                  text: translatePropertyValue(propertyName, (vi.value
+                    ? PropertyValue.getInteger(vi.value)
+                    : undefined) as number),
+                  sortNo: vi.sort_no,
+                  validationFilter: vi.property_filter,
+                  image: vi.image,
+                })),
+              showCodes: includeCodes,
+              filterPrettyPrint,
+              onValueChange,
+              readOnly: readOnly,
+              locked,
+            }}
+          />
         );
       } else {
-        const theProps = {
-          sortValidFirst: true,
-          propertyName: props.propertyName,
-          propertyValueSet: props.selectedProperties,
-          valueItems:
-            props.valueItems &&
-            props.valueItems.map((vi) => ({
-              value: vi.value,
-              text: props.translatePropertyValue(props.propertyName, (vi.value
-                ? PropertyValue.getInteger(vi.value)
-                : undefined) as number),
-              sortNo: vi.sort_no,
-              validationFilter: vi.property_filter,
-              image: vi.image,
-            })),
-          showCodes: props.includeCodes,
-          filterPrettyPrint: props.filterPrettyPrint,
-          onValueChange: onValueChange,
-          readOnly: props.readOnly,
-          locked: props.locked,
-        };
         return (
-          <TheComboboxPropertySelector {...theProps} />
-          // <ComboboxPropertySelector
-          //   sortValidFirst={true}
-          //   propertyName={propertyName}
-          //   propertyValueSet={selectedProperties}
-          //   valueItems={
-          //     valueItems &&
-          //     valueItems.map(vi => ({
-          //       value: vi.value,
-          //       text: translatePropertyValue(propertyName, (vi.value
-          //         ? PropertyValue.getInteger(vi.value)
-          //         : undefined) as number),
-          //       sortNo: vi.sort_no,
-          //       validationFilter: vi.property_filter,
-          //       image: vi.image
-          //     }))
-          //   }
-          //   showCodes={includeCodes}
-          //   filterPrettyPrint={filterPrettyPrint}
-          //   onValueChange={onValueChange}
-          //   readOnly={readOnly}
-          //   locked={locked}
-          // />
+          <TheComboboxPropertySelector
+            {...{
+              sortValidFirst: true,
+              propertyName,
+              propertyValueSet: selectedProperties,
+              valueItems:
+                valueItems &&
+                valueItems.map((vi) => ({
+                  value: vi.value,
+                  text: translatePropertyValue(propertyName, (vi.value
+                    ? PropertyValue.getInteger(vi.value)
+                    : undefined) as number),
+                  sortNo: vi.sort_no,
+                  validationFilter: vi.property_filter,
+                  image: vi.image,
+                })),
+              showCodes: includeCodes,
+              filterPrettyPrint,
+              onValueChange,
+              readOnly,
+              locked,
+            }}
+          />
         );
       }
 
-    default:
+    default: {
       return (
-        <div>AmountPropertySelector</div>
-        // <AmountPropertySelector
-        //   propertyName={propertyName}
-        //   propertyValueSet={selectedProperties}
-        //   inputUnit={propertyFormat.unit}
-        //   inputDecimalCount={propertyFormat.decimalCount}
-        //   onFormatChanged={(unit: Unit.Unit<unknown>, decimalCount: number) =>
-        //     onPropertyFormatChanged(propertyName, unit, decimalCount)
-        //   }
-        //   onFormatCleared={() => onPropertyFormatCleared(propertyName)}
-        //   onFormatSelectorToggled={(active: boolean) =>
-        //     onPropertyFormatSelectorToggled(propertyName, active)
-        //   }
-        //   onValueChange={onValueChange}
-        //   notNumericMessage={translateValueMustBeNumericMessage()}
-        //   fieldName={fieldName}
-        //   // If it is optional then use blank required message
-        //   isRequiredMessage={
-        //     optionalProperties &&
-        //     optionalProperties.indexOf(propertyName) !== -1
-        //       ? ""
-        //       : translateValueIsRequiredMessage()
-        //   }
-        //   validationFilter={validationFilter}
-        //   filterPrettyPrint={filterPrettyPrint}
-        //   readOnly={readOnly}
-        //   debounceTime={inputDebounceTime}
-        //   unitsFormat={unitsFormat}
-        //   units={units}
-        // />
+        <TheAmountPropertySelector
+          {...{
+            propertyName,
+            propertyValueSet: selectedProperties,
+            inputUnit: propertyFormat.unit,
+            inputDecimalCount: propertyFormat.decimalCount,
+            onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
+              onPropertyFormatChanged(propertyName, unit, decimalCount),
+            onFormatCleared: () => onPropertyFormatCleared(propertyName),
+            onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
+            onValueChange,
+            notNumericMessage: translateValueMustBeNumericMessage(),
+            fieldName: fieldName,
+            // If it is optional then use blank required message
+            isRequiredMessage:
+              optionalProperties && optionalProperties.indexOf(propertyName) !== -1
+                ? ""
+                : translateValueIsRequiredMessage(),
+            validationFilter,
+            filterPrettyPrint,
+            readonly: readOnly,
+            debounceTime: inputDebounceTime,
+            unitsFormat,
+            units,
+          }}
+        />
       );
+    }
   }
-
-  // return <div>{props.propertyName}</div>;
 }
 
 function getPropertyType(quantity: string): PropertyValue.PropertyType {
@@ -282,8 +289,51 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
   }
 }
 
-function TheTextboxPropertySelector(_props: PropertiesSelector.PropertySelectorProps): JSX.Element {
-  return <div>TheTextboxPropertySelector</div>;
+function TheAmountPropertySelector(props: UseAmountPropertySelectorParams): JSX.Element {
+  const sel = useAmountPropertySelector(props);
+  return (
+    <span {...sel.getWrapperProps()}>
+      <input {...sel.amountInputBox.getInputProps()} style={getDefaultAmountInputBoxStyle(sel.amountInputBox)} />
+      <span {...sel.amountFormatSelector.getWrapperProps()}>
+        {sel.amountFormatSelector.active ? (
+          <>
+            <select {...sel.amountFormatSelector.getUnitSelectorProps()}>
+              {sel.amountFormatSelector.unitSelectorOptions.map((o) => (
+                <option {...o.getOptionProps()}> {o.label} </option>
+              ))}
+            </select>
+            <select {...sel.amountFormatSelector.getPrecisionSelectorProps()}>
+              {sel.amountFormatSelector.precisionSelectorOptions.map((o) => (
+                <option {...o.getOptionProps()}>{o.label}</option>
+              ))}
+            </select>
+            {sel.amountFormatSelector.showClearButton && (
+              <button {...sel.amountFormatSelector.getClearButtonProps()}>Cancel</button>
+            )}
+            <button {...sel.amountFormatSelector.getCancelButtonProps()}>Clear</button>
+          </>
+        ) : (
+          sel.amountFormatSelector.label
+        )}
+      </span>
+    </span>
+  );
+}
+
+function TheCheckboxPropertySelector(props: UseCheckboxPropertySelectorParams): JSX.Element {
+  const sel = useCheckboxPropertySelector(props);
+  return (
+    <div {...sel.getContainerDivProps()} style={getDefaultCheckboxContainerStyle()}>
+      {sel.image && <img src={sel.image} />}
+      <div>{sel.label}</div>
+      <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxStyle(sel)} />
+    </div>
+  );
+}
+
+function TheTextboxPropertySelector(props: UseTextboxPropertySelectorParams): JSX.Element {
+  const sel = useTextboxPropertySelector(props);
+  return <input {...sel.getInputProps()} />;
 }
 
 function TheComboboxPropertySelector(props: UseComboboxPropertySelectorParams): JSX.Element {
