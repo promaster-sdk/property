@@ -25,7 +25,6 @@ export type UsePropertiesSelectorOnPropertyFormatChanged = (
 export type UsePropertiesSelectorOnPropertyFormatCleared = (propertyName: string) => void;
 export type UsePropertiesSelectorOnPropertyFormatSelectorToggled = (propertyName: string, active: boolean) => void;
 
-export type UsePropertiesSelectorTranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
 export type UsePropertiesSelectorTranslateNotNumericMessage = () => string;
 export type UsePropertiesSelectorTranslateValueIsRequiredMessage = () => string;
 
@@ -94,6 +93,7 @@ export type UsePropertiesSelectorPropertyValueItem = {
   readonly sortNo: number;
   readonly value: PropertyValue.PropertyValue;
   readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly text: string;
   readonly image?: string;
 };
 

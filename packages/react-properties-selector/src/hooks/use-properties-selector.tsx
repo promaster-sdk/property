@@ -9,7 +9,6 @@ import {
   UsePropertiesSelectorOnPropertyFormatChanged,
   UsePropertiesSelectorOnPropertyFormatCleared,
   UsePropertiesSelectorOnPropertyFormatSelectorToggled,
-  UsePropertiesSelectorTranslatePropertyValue,
   UsePropertiesSelectorTranslateNotNumericMessage,
   UsePropertiesSelectorTranslateValueIsRequiredMessage,
   UsePropertiesSelectorProperty,
@@ -46,7 +45,6 @@ export type UsePropertiesSelectorParams = {
   readonly onPropertyFormatSelectorToggled?: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
 
   // Translations
-  readonly translatePropertyValue?: UsePropertiesSelectorTranslatePropertyValue;
   readonly translateValueMustBeNumericMessage?: UsePropertiesSelectorTranslateNotNumericMessage;
   readonly translateValueIsRequiredMessage?: UsePropertiesSelectorTranslateValueIsRequiredMessage;
 
@@ -111,7 +109,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared = (_a: string) => ({}),
     onPropertyFormatSelectorToggled = () => ({}),
 
-    translatePropertyValue = (a: string, b: number | undefined) => `${a}_${b}`,
     translateValueMustBeNumericMessage = () => "value_must_be_numeric",
     translateValueIsRequiredMessage = () => "value_is_required",
 
@@ -145,7 +142,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared,
     onPropertyFormatSelectorToggled,
 
-    translatePropertyValue,
     translateValueMustBeNumericMessage,
     translateValueIsRequiredMessage,
 
@@ -182,7 +178,6 @@ function createPropertySelectorRenderInfos(
   onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged,
   onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared,
   onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled,
-  translatePropertyValue: UsePropertiesSelectorTranslatePropertyValue,
   translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage,
   translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage,
   readOnlyProperties: ReadonlyArray<string>,
@@ -273,7 +268,6 @@ function createPropertySelectorRenderInfos(
           autoSelectSingleValidValue || lockSingleValidValue
             ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
             : false,
-        translatePropertyValue,
         translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
         translateValueIsRequiredMessage,
         inputDebounceTime,
@@ -312,7 +306,6 @@ type CreateSelectorRenderInfoParams = {
   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
   readonly readOnly: boolean;
   readonly locked: boolean;
-  readonly translatePropertyValue: UsePropertiesSelectorTranslatePropertyValue;
   readonly translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage;
   readonly translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage;
   readonly inputDebounceTime: number;
@@ -331,7 +324,6 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
     readOnly,
     inputDebounceTime,
     valueItems,
-    translatePropertyValue,
     includeCodes,
     filterPrettyPrint,
     locked,
@@ -405,9 +397,10 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
           propertyValueSet: selectedProperties,
           valueItems: valueItems.map((vi) => ({
             value: vi.value,
-            text: translatePropertyValue(propertyName, (vi.value
-              ? PropertyValue.getInteger(vi.value)
-              : undefined) as number),
+            // text: translatePropertyValue(propertyName, (vi.value
+            //   ? PropertyValue.getInteger(vi.value)
+            //   : undefined) as number),
+            text: vi.text,
             sortNo: vi.sortNo,
             validationFilter: vi.validationFilter,
             image: vi.image,
@@ -429,9 +422,10 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
           propertyValueSet: selectedProperties,
           valueItems: valueItems.map((vi) => ({
             value: vi.value,
-            text: translatePropertyValue(propertyName, (vi.value
-              ? PropertyValue.getInteger(vi.value)
-              : undefined) as number),
+            // text: translatePropertyValue(propertyName, (vi.value
+            //   ? PropertyValue.getInteger(vi.value)
+            //   : undefined) as number),
+            text: vi.text,
             sortNo: vi.sortNo,
             validationFilter: vi.validationFilter,
             image: vi.image,
