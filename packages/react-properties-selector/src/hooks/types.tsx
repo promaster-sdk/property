@@ -93,7 +93,7 @@ export type UsePropertiesSelectorProperty = {
 export type UsePropertiesSelectorPropertyValueItem = {
   readonly sortNo: number;
   readonly value: PropertyValue.PropertyValue;
-  readonly property_filter: PropertyFilter.PropertyFilter;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly image?: string;
 };
 

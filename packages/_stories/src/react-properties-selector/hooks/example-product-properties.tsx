@@ -26,12 +26,12 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
         {
           sortNo: 10,
           value: PropertyValue.fromInteger(1),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
         },
         {
           sortNo: 20,
           value: PropertyValue.fromInteger(2),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
         },
       ],
     },
@@ -46,17 +46,17 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
         {
           sortNo: 10,
           value: PropertyValue.fromInteger(1),
-          property_filter: PropertyFilter.fromString("b=1", unitLookup) || PropertyFilter.Empty,
+          validationFilter: PropertyFilter.fromString("b=1", unitLookup) || PropertyFilter.Empty,
         },
         {
           sortNo: 20,
           value: PropertyValue.fromInteger(2),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
         },
         {
           sortNo: 30,
           value: PropertyValue.fromInteger(3),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
         },
       ],
     },
@@ -72,17 +72,17 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
         {
           sortNo: 10,
           value: PropertyValue.fromInteger(1),
-          property_filter: PropertyFilter.fromString("c=1", unitLookup) || PropertyFilter.Empty,
+          validationFilter: PropertyFilter.fromString("c=1", unitLookup) || PropertyFilter.Empty,
         },
         {
           sortNo: 20,
           value: PropertyValue.fromInteger(2),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
         },
         {
           sortNo: 30,
           value: PropertyValue.fromInteger(3),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
         },
       ],
     },
@@ -98,12 +98,12 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
         {
           sortNo: 0,
           value: PropertyValue.fromInteger(0),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
         },
         {
           sortNo: 1,
           value: PropertyValue.fromInteger(1),
-          property_filter: PropertyFilter.Empty,
+          validationFilter: PropertyFilter.Empty,
           image: "https://s7d1.scene7.com/is/image/BedBathandBeyond/13136517105892p?$478$",
         },
       ],

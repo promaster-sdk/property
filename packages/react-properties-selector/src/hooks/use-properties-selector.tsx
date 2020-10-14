@@ -224,7 +224,7 @@ function createPropertySelectorRenderInfos(
       switch (getPropertyType(property.quantity)) {
         case "integer":
           isValid = selectedValueItem
-            ? PropertyFilter.isValid(selectedProperties, selectedValueItem.property_filter, comparer)
+            ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter, comparer)
             : false;
           break;
         case "amount":
@@ -409,7 +409,7 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
               ? PropertyValue.getInteger(vi.value)
               : undefined) as number),
             sortNo: vi.sortNo,
-            validationFilter: vi.property_filter,
+            validationFilter: vi.validationFilter,
             image: vi.image,
           })),
           showCodes: includeCodes,
@@ -433,7 +433,7 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
               ? PropertyValue.getInteger(vi.value)
               : undefined) as number),
             sortNo: vi.sortNo,
-            validationFilter: vi.property_filter,
+            validationFilter: vi.validationFilter,
             image: vi.image,
           })),
           showCodes: includeCodes,
@@ -567,7 +567,7 @@ function getSingleValidValueOrUndefined(
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: Array<UsePropertiesSelectorPropertyValueItem> = [];
     for (const productValueItem of productProperty.value) {
-      const isValid = PropertyFilter.isValid(properties, productValueItem.property_filter, comparer);
+      const isValid = PropertyFilter.isValid(properties, productValueItem.validationFilter, comparer);
 
       if (isValid) {
         validPropertyValueItems.push(productValueItem);
