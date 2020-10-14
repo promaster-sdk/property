@@ -74,18 +74,8 @@ export type UsePropertiesSelectorParams = {
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
-  // readonly units?: {
-  //   readonly [key: string]: Unit.Unit;
-  // };
   readonly units: Unit.UnitMap;
   readonly unitLookup: Unit.UnitLookup;
-
-  // // Override layout
-  // readonly LayoutRenderer?: (props: LayoutRendererProps) => JSX.Element;
-  // readonly GroupComponent?: ReactComponent<GroupComponentProps>;
-  // readonly GroupItemComponent?: ReactComponent<GroupItemComponentProps>;
-  // readonly PropertySelectorComponent?: ReactComponent<PropertySelectorProps>;
-  // readonly PropertyLabelComponent?: ReactComponent<PropertyLabelComponentProps>;
 
   // Comparer
   readonly comparer?: PropertyValue.Comparer;
@@ -95,7 +85,6 @@ export type UsePropertiesSelector = {
   readonly groups: ReadonlyArray<UserPropertiesSelectorGroup>;
   readonly onToggleGroupClosed: OnToggleGroupClosed;
   readonly translateGroupName: TranslateGroupName;
-  // readonly selectors: ReadonlyArray<PropertySelectorRenderInfo>;
 };
 
 export type UserPropertiesSelectorGroup = {
@@ -191,7 +180,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     }),
     onToggleGroupClosed,
     translateGroupName,
-    // selectors: allSelectors,
   };
 }
 

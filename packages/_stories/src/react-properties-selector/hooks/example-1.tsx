@@ -41,76 +41,51 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
     onPropertyFormatSelectorToggled: action("toggle property format selector"),
   });
 
-  // const propertiesSelectorProps: PropertiesSelector.PropertiesSelectorProps = {
-  //   units,
-  //   unitsFormat,
-  //   unitLookup,
-  //   productProperties: productProperties,
-  //   selectedProperties: state,
-  //   onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
-  //     setState(properties);
-  //     // console.log("updated: ", changedProperties);
-  //   },
-  //   onPropertyFormatSelectorToggled: action("toggle property format selector"),
-  // };
-
   return (
     <div>
       <p>This example shows minimal configuration, using as much defaults as possible</p>
       <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
       <div id="HOOKS">
         <div>
-          {sel.groups.map((group) => {
-            // const renderedSelectorsForGroup = sel.selectors.filter(
-            //   (selector) => selector.groupName === (group.name || "")
-            // );
-            return (
-              <div id="GroupComponent" key={group.name}>
-                {group.name !== "" ? (
-                  <div className="group-container-header" onClick={() => sel.onToggleGroupClosed(group.name)}>
-                    <button className="expand-collapse">&nbsp;&gt;&gt;&nbsp;</button>
-                    {sel.translateGroupName(group.name)}
-                  </div>
-                ) : (
-                  ""
-                )}
-                <table>
-                  <tbody>
-                    {group.isClosed
-                      ? ""
-                      : group.selectors.map((selector) => (
-                          <tr id="GroupItemComponent" key={selector.propertyName}>
-                            <td>
-                              {/* <PropertyLabelComponent
-                                  {...selector.labelComponentProps}
-                                /> */}
-                              <label
-                                id="PropertyLabelComponent"
-                                className={!selector.isValid ? "invalid" : undefined}
-                                // title={translatePropertyLabelHover(
-                                //   selector.propertyName
-                                // )}
-                                title={selector.labelHover}
-                              >
-                                <span className={selector.isHidden ? "hidden-property" : ""}>{selector.label}</span>
-                              </label>
-                            </td>
-                            <td>
-                              {/* <PropertySelectorComponent
-                                  {...selector.selectorComponentProps}
-                                /> */}
-                              <ThePropertySelector {...selector.selectorComponentProps} />
-                            </td>
-                          </tr>
-                        ))}
-                  </tbody>
-                </table>
-              </div>
-            );
-          })}
+          {sel.groups.map((group) => (
+            <div id="GroupComponent" key={group.name}>
+              {group.name !== "" ? (
+                <div className="group-container-header" onClick={() => sel.onToggleGroupClosed(group.name)}>
+                  <button className="expand-collapse">&nbsp;&gt;&gt;&nbsp;</button>
+                  {sel.translateGroupName(group.name)}
+                </div>
+              ) : (
+                ""
+              )}
+              <table>
+                <tbody>
+                  {group.isClosed
+                    ? ""
+                    : group.selectors.map((selector) => (
+                        <tr id="GroupItemComponent" key={selector.propertyName}>
+                          <td>
+                            <label
+                              id="PropertyLabelComponent"
+                              className={!selector.isValid ? "invalid" : undefined}
+                              // title={translatePropertyLabelHover(
+                              //   selector.propertyName
+                              // )}
+                              title={selector.labelHover}
+                            >
+                              <span className={selector.isHidden ? "hidden-property" : ""}>{selector.label}</span>
+                            </label>
+                          </td>
+                          <td>
+                            <ThePropertySelector {...selector.selectorComponentProps} />
+                          </td>
+                        </tr>
+                      ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
         </div>
       </div>
-      {/* <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} /> */}
     </div>
   );
 }
