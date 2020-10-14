@@ -86,7 +86,6 @@ export type UsePropertiesSelectorPropertySelectorRenderInfo = {
 export type SelectorRenderInfo =
   | {
       readonly type: "ComboBox";
-      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
       readonly getUseComboboxParams: () => UseComboboxPropertySelectorParams;
     }
   | {
@@ -95,17 +94,14 @@ export type SelectorRenderInfo =
     }
   | {
       readonly type: "Checkbox";
-      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
       readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorParams;
     }
   | {
       readonly type: "AmountField";
-      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
       readonly getUseAmountParams: () => UseAmountPropertySelectorParams;
     }
   | {
       readonly type: "TextBox";
-      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
       readonly getUseTextboxParams: () => UseTextboxPropertySelectorParams;
     };
 

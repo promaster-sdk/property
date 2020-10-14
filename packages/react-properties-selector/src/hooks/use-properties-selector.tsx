@@ -289,8 +289,6 @@ function createPropertySelectorRenderInfos(
         groupName: property.group,
         isValid,
         isHidden,
-        // selectorComponentProps: propertySelectorComponentProps,
-        // selectorType,
         selectorRenderInfo: createSelectorRenderInfo(selectorType, propertySelectorComponentProps),
       };
       return s;
@@ -303,8 +301,6 @@ function createSelectorRenderInfo(
   selectorType: UsePropertiesSelectorPropertySelectorType,
   selectorComponentProps: UsePropertiesSelectorPropertySelectorProps
 ): SelectorRenderInfo {
-  // return { type: selectorType, selectorComponentProps: propertySelectorComponentProps };
-
   const {
     onChange,
     propertyName,
@@ -342,7 +338,6 @@ function createSelectorRenderInfo(
     case "TextBox": {
       return {
         type: "TextBox",
-        selectorComponentProps,
         getUseTextboxParams: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
@@ -383,7 +378,6 @@ function createSelectorRenderInfo(
     case "Checkbox":
       return {
         type: "Checkbox",
-        selectorComponentProps,
         getUseCheckboxParams: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
@@ -409,7 +403,6 @@ function createSelectorRenderInfo(
     case "ComboBox":
       return {
         type: "ComboBox",
-        selectorComponentProps,
         getUseComboboxParams: () => ({
           sortValidFirst: true,
           propertyName,
@@ -435,7 +428,6 @@ function createSelectorRenderInfo(
     case "AmountField": {
       return {
         type: "AmountField",
-        selectorComponentProps,
         getUseAmountParams: () => ({
           propertyName,
           propertyValueSet: selectedProperties,

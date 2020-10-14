@@ -92,87 +92,18 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 function ThePropertySelector(props: {
   readonly info: PropertiesSelector.UsePropertiesSelectorPropertySelectorRenderInfo;
 }): JSX.Element {
-  const { info } = props;
-  const sel = info.selectorRenderInfo;
-  // const {
-  //   onChange,
-  //   propertyName,
-  //   selectedProperties,
-  //   readOnly,
-  //   inputDebounceTime,
-  //   valueItems,
-  //   translatePropertyValue,
-  //   includeCodes,
-  //   filterPrettyPrint,
-  //   locked,
-  //   propertyFormat,
-  //   onPropertyFormatChanged,
-  //   onPropertyFormatCleared,
-  //   onPropertyFormatSelectorToggled,
-  //   translateValueMustBeNumericMessage,
-  //   fieldName,
-  //   optionalProperties,
-  //   translateValueIsRequiredMessage,
-  //   validationFilter,
-  // } = props.info.selectorRenderInfo.selectorComponentProps;
-
-  // function onValueChange(newValue: PropertyValue.PropertyValue): void {
-  //   onChange(
-  //     newValue
-  //       ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-  //       : PropertyValueSet.removeProperty(propertyName, selectedProperties),
-  //     propertyName
-  //   );
-  // }
-
+  const sel = props.info.selectorRenderInfo;
   switch (sel.type) {
-    case "TextBox": {
-      // return (
-      //   <TheTextboxPropertySelector
-      //     {...{
-      //       propertyName,
-      //       propertyValueSet: selectedProperties,
-      //       readOnly,
-      //       onValueChange,
-      //       debounceTime: inputDebounceTime,
-      //     }}
-      //   />
-      // );
+    case "TextBox":
       return <TheTextboxPropertySelector {...sel.getUseTextboxParams()} />;
-    }
-
     case "RadioGroup":
-      return (
-        <div>RadioGroupPropertySelector</div>
-        // <RadioGroupPropertySelector
-        //   propertyName={propertyName}
-        //   propertyValueSet={selectedProperties}
-        //   valueItems={
-        //     valueItems &&
-        //     valueItems.map(vi => ({
-        //       value: vi.value,
-        //       text: translatePropertyValue(propertyName, (vi.value
-        //         ? PropertyValue.getInteger(vi.value)
-        //         : undefined) as number),
-        //       sortNo: vi.sort_no,
-        //       validationFilter: vi.property_filter,
-        //       image: vi.image
-        //     }))
-        //   }
-        //   showCodes={includeCodes}
-        //   filterPrettyPrint={filterPrettyPrint}
-        //   onValueChange={onValueChange}
-        //   readOnly={readOnly}
-        //   locked={locked}
-        // />
-      );
+      return <div>RadioGroupPropertySelector</div>;
     case "Checkbox":
       return <TheCheckboxPropertySelector {...sel.getUseCheckboxParams()} />;
     case "ComboBox":
       return <TheComboboxPropertySelector {...sel.getUseComboboxParams()} />;
-    case "AmountField": {
+    case "AmountField":
       return <TheAmountPropertySelector {...sel.getUseAmountParams()} />;
-    }
     default:
       return exhaustiveCheck(sel, true);
   }
