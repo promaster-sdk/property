@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
-import { action } from "@storybook/addon-actions";
 import {
   getDefaultAmountInputBoxStyle,
   getDefaultCheckboxContainerStyle,
@@ -39,7 +38,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
       setState(properties);
       // console.log("updated: ", changedProperties);
     },
-    onPropertyFormatSelectorToggled: action("toggle property format selector"),
   });
 
   return (

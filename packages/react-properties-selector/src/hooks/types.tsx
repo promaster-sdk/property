@@ -23,10 +23,6 @@ export type UsePropertiesSelectorOnPropertyFormatChanged = (
   decimalCount: number
 ) => void;
 export type UsePropertiesSelectorOnPropertyFormatCleared = (propertyName: string) => void;
-export type UsePropertiesSelectorOnPropertyFormatSelectorToggled = (propertyName: string, active: boolean) => void;
-
-// export type UsePropertiesSelectorTranslateNotNumericMessage = () => string;
-// export type UsePropertiesSelectorTranslateValueIsRequiredMessage = () => string;
 
 export type UsePropertiesSelectorOnToggleGroupClosed = (groupName: string) => void;
 

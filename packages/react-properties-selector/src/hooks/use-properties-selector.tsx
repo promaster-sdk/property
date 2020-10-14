@@ -8,7 +8,6 @@ import {
   UsePropertiesSelectorAmountFormat,
   UsePropertiesSelectorOnPropertyFormatChanged,
   UsePropertiesSelectorOnPropertyFormatCleared,
-  UsePropertiesSelectorOnPropertyFormatSelectorToggled,
   UsePropertiesSelectorProperty,
   UsePropertiesSelectorPropertySelectorRenderInfo,
   UsePropertiesSelectorPropertyValueItem,
@@ -40,7 +39,6 @@ export type UsePropertiesSelectorParams = {
   readonly onChange?: UsePropertiesSelectorOnPropertiesChanged;
   readonly onPropertyFormatChanged?: UsePropertiesSelectorOnPropertyFormatChanged;
   readonly onPropertyFormatCleared?: UsePropertiesSelectorOnPropertyFormatCleared;
-  readonly onPropertyFormatSelectorToggled?: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
 
   // Translations
   readonly valueMustBeNumericMessage?: string;
@@ -105,7 +103,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onChange = (_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({}),
     onPropertyFormatChanged = (_a: string, _b: Unit.Unit<unknown>, _c: number) => ({}),
     onPropertyFormatCleared = (_a: string) => ({}),
-    onPropertyFormatSelectorToggled = () => ({}),
 
     valueMustBeNumericMessage = "value_must_be_numeric",
     valueIsRequiredMessage = "value_is_required",
@@ -138,7 +135,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onChange,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
-    onPropertyFormatSelectorToggled,
 
     valueMustBeNumericMessage,
     valueIsRequiredMessage,
@@ -175,7 +171,6 @@ function createPropertySelectorRenderInfos(
   onChange: UsePropertiesSelectorOnPropertiesChanged,
   onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged,
   onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared,
-  onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled,
   valueMustBeNumericMessage: string,
   valueIsRequiredMessage: string,
   readOnlyProperties: ReadonlyArray<string>,
@@ -258,7 +253,6 @@ function createPropertySelectorRenderInfos(
         onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer),
         onPropertyFormatChanged,
         onPropertyFormatCleared,
-        onPropertyFormatSelectorToggled,
         filterPrettyPrint,
         propertyFormat,
         readOnly: isReadOnly,
@@ -299,7 +293,6 @@ type CreateSelectorRenderInfoParams = {
   readonly onChange: UsePropertiesSelectorPropertySelectionOnChange;
   readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
   readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
-  readonly onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
   readonly readOnly: boolean;
@@ -328,7 +321,6 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
     propertyFormat,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
-    onPropertyFormatSelectorToggled,
     valueMustBeNumericMessage,
     valueIsRequiredMessage,
     fieldName,
@@ -428,7 +420,7 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
           onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
             onPropertyFormatChanged(propertyName, unit, decimalCount),
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
-          onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
+          // onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
           fieldName: fieldName,
