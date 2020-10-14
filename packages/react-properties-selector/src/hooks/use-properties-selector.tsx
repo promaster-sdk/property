@@ -18,8 +18,8 @@ import {
   UsePropertiesSelectorOnToggleGroupClosed,
   UsePropertiesSelectorPropertyFormats,
   UsePropertiesSelectorOnPropertiesChanged,
-  UsePropertiesSelectorPropertySelectorProps,
   SelectorRenderInfo,
+  UsePropertiesSelectorPropertySelectionOnChange,
 } from "./types";
 
 export type UsePropertiesSelectorParams = {
@@ -254,11 +254,10 @@ function createPropertySelectorRenderInfos(
 
       const selectorType = getSelectorType(property);
 
-      const propertySelectorComponentProps: UsePropertiesSelectorPropertySelectorProps = {
-        // selectorType: selectorType,
+      const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
+        selectorType,
         fieldName: property.field_name || property.name,
         propertyName: property.name,
-        // quantity: property.quantity,
         validationFilter: property.validation_filter,
         valueItems: property.value,
         selectedProperties,
@@ -289,7 +288,7 @@ function createPropertySelectorRenderInfos(
         groupName: property.group,
         isValid,
         isHidden,
-        selectorRenderInfo: createSelectorRenderInfo(selectorType, propertySelectorComponentProps),
+        selectorRenderInfo: createSelectorRenderInfo(createSelectorRenderInfoParams),
       };
       return s;
     });
@@ -297,11 +296,36 @@ function createPropertySelectorRenderInfos(
   return selectorDefinitions;
 }
 
-function createSelectorRenderInfo(
-  selectorType: UsePropertiesSelectorPropertySelectorType,
-  selectorComponentProps: UsePropertiesSelectorPropertySelectorProps
-): SelectorRenderInfo {
+type CreateSelectorRenderInfoParams = {
+  readonly selectorType: UsePropertiesSelectorPropertySelectorType;
+  readonly fieldName: string;
+  readonly propertyName: string;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly valueItems: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
+  readonly selectedProperties: PropertyValueSet.PropertyValueSet;
+  readonly includeCodes: boolean;
+  readonly optionalProperties: ReadonlyArray<string>;
+  readonly onChange: UsePropertiesSelectorPropertySelectionOnChange;
+  readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
+  readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
+  readonly onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
+  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
+  readonly propertyFormat: UsePropertiesSelectorAmountFormat;
+  readonly readOnly: boolean;
+  readonly locked: boolean;
+  readonly translatePropertyValue: UsePropertiesSelectorTranslatePropertyValue;
+  readonly translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage;
+  readonly translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage;
+  readonly inputDebounceTime: number;
+  readonly unitsFormat: {
+    readonly [key: string]: UnitFormat.UnitFormat;
+  };
+  readonly units: Unit.UnitMap;
+};
+
+function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): SelectorRenderInfo {
   const {
+    selectorType,
     onChange,
     propertyName,
     selectedProperties,
@@ -323,7 +347,7 @@ function createSelectorRenderInfo(
     validationFilter,
     units,
     unitsFormat,
-  } = selectorComponentProps;
+  } = params;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
     onChange(
@@ -351,7 +375,6 @@ function createSelectorRenderInfo(
     case "RadioGroup":
       return {
         type: "RadioGroup",
-        selectorComponentProps,
       };
     // <RadioGroupPropertySelector
     //   propertyName={propertyName}

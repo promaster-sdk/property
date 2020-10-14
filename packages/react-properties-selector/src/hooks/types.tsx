@@ -1,38 +1,11 @@
-import { Unit, UnitFormat } from "uom";
+import { Unit } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
-import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
   UseAmountPropertySelectorParams,
   UseCheckboxPropertySelectorParams,
   UseComboboxPropertySelectorParams,
   UseTextboxPropertySelectorParams,
 } from "@promaster-sdk/react-property-selectors";
-
-export type UsePropertiesSelectorPropertySelectorProps = {
-  readonly fieldName: string;
-  readonly propertyName: string;
-  readonly validationFilter: PropertyFilter.PropertyFilter;
-  readonly valueItems: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
-  readonly selectedProperties: PropertyValueSet.PropertyValueSet;
-  readonly includeCodes: boolean;
-  readonly optionalProperties: ReadonlyArray<string>;
-  readonly onChange: UsePropertiesSelectorPropertySelectionOnChange;
-  readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
-  readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
-  readonly onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
-  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
-  readonly propertyFormat: UsePropertiesSelectorAmountFormat;
-  readonly readOnly: boolean;
-  readonly locked: boolean;
-  readonly translatePropertyValue: UsePropertiesSelectorTranslatePropertyValue;
-  readonly translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage;
-  readonly translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage;
-  readonly inputDebounceTime: number;
-  readonly unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  };
-  readonly units: Unit.UnitMap;
-};
 
 export type UsePropertiesSelectorAmountFormat = {
   readonly unit: Unit.Unit<unknown>;
@@ -90,7 +63,6 @@ export type SelectorRenderInfo =
     }
   | {
       readonly type: "RadioGroup";
-      readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
     }
   | {
       readonly type: "Checkbox";
