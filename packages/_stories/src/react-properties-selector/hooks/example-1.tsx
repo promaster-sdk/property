@@ -18,6 +18,7 @@ import {
   useTextboxPropertySelector,
   UseTextboxPropertySelectorParams,
 } from "@promaster-sdk/react-property-selectors";
+import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
 
@@ -76,7 +77,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                             <ThePropertySelector
                               props1={selector.selectorComponentProps}
                               selectorType={selector.selectorType}
-                              propertyType={selector.propertyType}
                             />
                           </td>
                         </tr>
@@ -95,12 +95,9 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 function ThePropertySelector(props: {
   readonly props1: PropertiesSelector.UsePropertiesSelectorPropertySelectorProps;
   readonly selectorType: PropertiesSelector.PropertySelectorType;
-  readonly propertyType: PropertyValue.PropertyType;
 }): JSX.Element {
-  const { selectorType, propertyType } = props;
+  const { selectorType } = props;
   const {
-    // quantity,
-    // selectorType,
     onChange,
     propertyName,
     selectedProperties,
@@ -131,8 +128,8 @@ function ThePropertySelector(props: {
     );
   }
 
-  switch (propertyType) {
-    case "text": {
+  switch (selectorType) {
+    case "TextBox": {
       return (
         <TheTextboxPropertySelector
           {...{
@@ -146,86 +143,83 @@ function ThePropertySelector(props: {
       );
     }
 
-    case "integer":
-      if (selectorType === "RadioGroup") {
-        return (
-          <div>RadioGroupPropertySelector</div>
-          // <RadioGroupPropertySelector
-          //   propertyName={propertyName}
-          //   propertyValueSet={selectedProperties}
-          //   valueItems={
-          //     valueItems &&
-          //     valueItems.map(vi => ({
-          //       value: vi.value,
-          //       text: translatePropertyValue(propertyName, (vi.value
-          //         ? PropertyValue.getInteger(vi.value)
-          //         : undefined) as number),
-          //       sortNo: vi.sort_no,
-          //       validationFilter: vi.property_filter,
-          //       image: vi.image
-          //     }))
-          //   }
-          //   showCodes={includeCodes}
-          //   filterPrettyPrint={filterPrettyPrint}
-          //   onValueChange={onValueChange}
-          //   readOnly={readOnly}
-          //   locked={locked}
-          // />
-        );
-      } else if (selectorType === "Checkbox") {
-        return (
-          <TheCheckboxPropertySelector
-            {...{
-              propertyName,
-              propertyValueSet: selectedProperties,
-              valueItems:
-                valueItems &&
-                valueItems.map((vi) => ({
-                  value: vi.value,
-                  text: translatePropertyValue(propertyName, (vi.value
-                    ? PropertyValue.getInteger(vi.value)
-                    : undefined) as number),
-                  sortNo: vi.sort_no,
-                  validationFilter: vi.property_filter,
-                  image: vi.image,
-                })),
-              showCodes: includeCodes,
-              filterPrettyPrint,
-              onValueChange,
-              readOnly: readOnly,
-              locked,
-            }}
-          />
-        );
-      } else {
-        return (
-          <TheComboboxPropertySelector
-            {...{
-              sortValidFirst: true,
-              propertyName,
-              propertyValueSet: selectedProperties,
-              valueItems:
-                valueItems &&
-                valueItems.map((vi) => ({
-                  value: vi.value,
-                  text: translatePropertyValue(propertyName, (vi.value
-                    ? PropertyValue.getInteger(vi.value)
-                    : undefined) as number),
-                  sortNo: vi.sort_no,
-                  validationFilter: vi.property_filter,
-                  image: vi.image,
-                })),
-              showCodes: includeCodes,
-              filterPrettyPrint,
-              onValueChange,
-              readOnly,
-              locked,
-            }}
-          />
-        );
-      }
-
-    default: {
+    case "RadioGroup":
+      return (
+        <div>RadioGroupPropertySelector</div>
+        // <RadioGroupPropertySelector
+        //   propertyName={propertyName}
+        //   propertyValueSet={selectedProperties}
+        //   valueItems={
+        //     valueItems &&
+        //     valueItems.map(vi => ({
+        //       value: vi.value,
+        //       text: translatePropertyValue(propertyName, (vi.value
+        //         ? PropertyValue.getInteger(vi.value)
+        //         : undefined) as number),
+        //       sortNo: vi.sort_no,
+        //       validationFilter: vi.property_filter,
+        //       image: vi.image
+        //     }))
+        //   }
+        //   showCodes={includeCodes}
+        //   filterPrettyPrint={filterPrettyPrint}
+        //   onValueChange={onValueChange}
+        //   readOnly={readOnly}
+        //   locked={locked}
+        // />
+      );
+    case "Checkbox":
+      return (
+        <TheCheckboxPropertySelector
+          {...{
+            propertyName,
+            propertyValueSet: selectedProperties,
+            valueItems:
+              valueItems &&
+              valueItems.map((vi) => ({
+                value: vi.value,
+                text: translatePropertyValue(propertyName, (vi.value
+                  ? PropertyValue.getInteger(vi.value)
+                  : undefined) as number),
+                sortNo: vi.sort_no,
+                validationFilter: vi.property_filter,
+                image: vi.image,
+              })),
+            showCodes: includeCodes,
+            filterPrettyPrint,
+            onValueChange,
+            readOnly: readOnly,
+            locked,
+          }}
+        />
+      );
+    case "ComboBox":
+      return (
+        <TheComboboxPropertySelector
+          {...{
+            sortValidFirst: true,
+            propertyName,
+            propertyValueSet: selectedProperties,
+            valueItems:
+              valueItems &&
+              valueItems.map((vi) => ({
+                value: vi.value,
+                text: translatePropertyValue(propertyName, (vi.value
+                  ? PropertyValue.getInteger(vi.value)
+                  : undefined) as number),
+                sortNo: vi.sort_no,
+                validationFilter: vi.property_filter,
+                image: vi.image,
+              })),
+            showCodes: includeCodes,
+            filterPrettyPrint,
+            onValueChange,
+            readOnly,
+            locked,
+          }}
+        />
+      );
+    case "AmountField": {
       return (
         <TheAmountPropertySelector
           {...{
@@ -255,6 +249,8 @@ function ThePropertySelector(props: {
         />
       );
     }
+    default:
+      return exhaustiveCheck(selectorType, true);
   }
 }
 

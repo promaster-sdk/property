@@ -289,7 +289,7 @@ function createPropertySelectorRenderInfos(
         isHidden,
         selectorComponentProps: propertySelectorComponentProps,
         selectorType,
-        propertyType: getPropertyType(property.quantity),
+        // propertyType: getPropertyType(property.quantity),
       };
     });
 

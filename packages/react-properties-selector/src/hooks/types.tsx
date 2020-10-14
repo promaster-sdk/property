@@ -59,7 +59,7 @@ export type UsePropertiesSelectorTranslateValueIsRequiredMessage = () => string;
 export type UsePropertiesSelectorOnToggleGroupClosed = (groupName: string) => void;
 
 // Defines information to render one selector
-export interface UsePropertiesSelectorPropertySelectorRenderInfo {
+export type UsePropertiesSelectorPropertySelectorRenderInfo = {
   // This is information that the layout component can use
   readonly sortNo: number;
   readonly groupName: string;
@@ -75,9 +75,9 @@ export interface UsePropertiesSelectorPropertySelectorRenderInfo {
   // Props that are used by the components that render the actual property selector and it's label
   readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
 
-  readonly propertyType: PropertyValue.PropertyType;
+  // readonly propertyType: PropertyValue.PropertyType;
   readonly selectorType: UsePropertiesSelectorPropertySelectorType;
-}
+};
 
 export type UsePropertiesSelectorPropertySelectorType =
   | "ComboBox"
