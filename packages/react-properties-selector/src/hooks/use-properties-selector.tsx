@@ -395,16 +395,7 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
         getUseCheckboxParams: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
-          valueItems: valueItems.map((vi) => ({
-            value: vi.value,
-            // text: translatePropertyValue(propertyName, (vi.value
-            //   ? PropertyValue.getInteger(vi.value)
-            //   : undefined) as number),
-            text: vi.text,
-            sortNo: vi.sortNo,
-            validationFilter: vi.validationFilter,
-            image: vi.image,
-          })),
+          valueItems,
           showCodes: includeCodes,
           filterPrettyPrint,
           onValueChange,
@@ -420,16 +411,7 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
           sortValidFirst: true,
           propertyName,
           propertyValueSet: selectedProperties,
-          valueItems: valueItems.map((vi) => ({
-            value: vi.value,
-            // text: translatePropertyValue(propertyName, (vi.value
-            //   ? PropertyValue.getInteger(vi.value)
-            //   : undefined) as number),
-            text: vi.text,
-            sortNo: vi.sortNo,
-            validationFilter: vi.validationFilter,
-            image: vi.image,
-          })),
+          valueItems,
           showCodes: includeCodes,
           filterPrettyPrint,
           onValueChange,
