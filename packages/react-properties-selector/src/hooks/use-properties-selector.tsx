@@ -167,7 +167,6 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
       return { name, isClosed, selectors: selectors };
     }),
     onToggleGroupClosed,
-    // translateGroupName,
   };
 }
 

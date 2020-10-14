@@ -7,10 +7,6 @@ import {
   UseTextboxPropertySelectorParams,
 } from "@promaster-sdk/react-property-selectors";
 
-export type UsePropertiesSelectorAmountFormat = {
-  readonly unit: Unit.Unit<unknown>;
-  readonly decimalCount: number;
-};
 export type UsePropertiesSelectorPropertySelectionOnChange = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: string
@@ -103,6 +99,11 @@ export interface UsePropertiesSelectorPropertyValueItem {
   readonly property_filter: PropertyFilter.PropertyFilter;
   readonly image?: string;
 }
+
+export type UsePropertiesSelectorAmountFormat = {
+  readonly unit: Unit.Unit<unknown>;
+  readonly decimalCount: number;
+};
 
 export interface UsePropertiesSelectorPropertyFormats {
   readonly [key: string]: UsePropertiesSelectorAmountFormat;
