@@ -403,17 +403,15 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
         getUseCheckboxParams: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
-          valueItems:
-            valueItems &&
-            valueItems.map((vi) => ({
-              value: vi.value,
-              text: translatePropertyValue(propertyName, (vi.value
-                ? PropertyValue.getInteger(vi.value)
-                : undefined) as number),
-              sortNo: vi.sort_no,
-              validationFilter: vi.property_filter,
-              image: vi.image,
-            })),
+          valueItems: valueItems.map((vi) => ({
+            value: vi.value,
+            text: translatePropertyValue(propertyName, (vi.value
+              ? PropertyValue.getInteger(vi.value)
+              : undefined) as number),
+            sortNo: vi.sort_no,
+            validationFilter: vi.property_filter,
+            image: vi.image,
+          })),
           showCodes: includeCodes,
           filterPrettyPrint,
           onValueChange,
@@ -429,17 +427,15 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
           sortValidFirst: true,
           propertyName,
           propertyValueSet: selectedProperties,
-          valueItems:
-            valueItems &&
-            valueItems.map((vi) => ({
-              value: vi.value,
-              text: translatePropertyValue(propertyName, (vi.value
-                ? PropertyValue.getInteger(vi.value)
-                : undefined) as number),
-              sortNo: vi.sort_no,
-              validationFilter: vi.property_filter,
-              image: vi.image,
-            })),
+          valueItems: valueItems.map((vi) => ({
+            value: vi.value,
+            text: translatePropertyValue(propertyName, (vi.value
+              ? PropertyValue.getInteger(vi.value)
+              : undefined) as number),
+            sortNo: vi.sort_no,
+            validationFilter: vi.property_filter,
+            image: vi.image,
+          })),
           showCodes: includeCodes,
           filterPrettyPrint,
           onValueChange,
