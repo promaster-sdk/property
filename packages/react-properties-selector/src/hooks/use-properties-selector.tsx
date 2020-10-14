@@ -9,8 +9,6 @@ import {
   UsePropertiesSelectorOnPropertyFormatChanged,
   UsePropertiesSelectorOnPropertyFormatCleared,
   UsePropertiesSelectorOnPropertyFormatSelectorToggled,
-  UsePropertiesSelectorTranslateNotNumericMessage,
-  UsePropertiesSelectorTranslateValueIsRequiredMessage,
   UsePropertiesSelectorProperty,
   UsePropertiesSelectorPropertySelectorRenderInfo,
   UsePropertiesSelectorPropertyValueItem,
@@ -45,8 +43,8 @@ export type UsePropertiesSelectorParams = {
   readonly onPropertyFormatSelectorToggled?: UsePropertiesSelectorOnPropertyFormatSelectorToggled;
 
   // Translations
-  readonly translateValueMustBeNumericMessage?: UsePropertiesSelectorTranslateNotNumericMessage;
-  readonly translateValueIsRequiredMessage?: UsePropertiesSelectorTranslateValueIsRequiredMessage;
+  readonly valueMustBeNumericMessage?: string;
+  readonly valueIsRequiredMessage?: string;
 
   // Specifies property names of properties that should be read-only
   readonly readOnlyProperties?: ReadonlyArray<string>;
@@ -109,8 +107,8 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared = (_a: string) => ({}),
     onPropertyFormatSelectorToggled = () => ({}),
 
-    translateValueMustBeNumericMessage = () => "value_must_be_numeric",
-    translateValueIsRequiredMessage = () => "value_is_required",
+    valueMustBeNumericMessage = "value_must_be_numeric",
+    valueIsRequiredMessage = "value_is_required",
 
     readOnlyProperties = [],
     optionalProperties = [],
@@ -142,8 +140,8 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     onPropertyFormatCleared,
     onPropertyFormatSelectorToggled,
 
-    translateValueMustBeNumericMessage,
-    translateValueIsRequiredMessage,
+    valueMustBeNumericMessage,
+    valueIsRequiredMessage,
 
     readOnlyProperties,
     optionalProperties,
@@ -178,8 +176,8 @@ function createPropertySelectorRenderInfos(
   onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged,
   onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared,
   onPropertyFormatSelectorToggled: UsePropertiesSelectorOnPropertyFormatSelectorToggled,
-  translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage,
-  translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage,
+  valueMustBeNumericMessage: string,
+  valueIsRequiredMessage: string,
   readOnlyProperties: ReadonlyArray<string>,
   optionalProperties: ReadonlyArray<string>,
   propertyFormats: { readonly [key: string]: UsePropertiesSelectorAmountFormat },
@@ -268,8 +266,8 @@ function createPropertySelectorRenderInfos(
           autoSelectSingleValidValue || lockSingleValidValue
             ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
             : false,
-        translateValueMustBeNumericMessage: translateValueMustBeNumericMessage,
-        translateValueIsRequiredMessage,
+        valueMustBeNumericMessage,
+        valueIsRequiredMessage,
         inputDebounceTime,
         unitsFormat,
         units,
@@ -306,8 +304,8 @@ type CreateSelectorRenderInfoParams = {
   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
   readonly readOnly: boolean;
   readonly locked: boolean;
-  readonly translateValueMustBeNumericMessage: UsePropertiesSelectorTranslateNotNumericMessage;
-  readonly translateValueIsRequiredMessage: UsePropertiesSelectorTranslateValueIsRequiredMessage;
+  readonly valueMustBeNumericMessage: string;
+  readonly valueIsRequiredMessage: string;
   readonly inputDebounceTime: number;
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
@@ -331,10 +329,10 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
     onPropertyFormatChanged,
     onPropertyFormatCleared,
     onPropertyFormatSelectorToggled,
-    translateValueMustBeNumericMessage,
+    valueMustBeNumericMessage,
+    valueIsRequiredMessage,
     fieldName,
     optionalProperties,
-    translateValueIsRequiredMessage,
     validationFilter,
     units,
     unitsFormat,
@@ -432,13 +430,11 @@ function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): Selec
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
           onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
           onValueChange,
-          notNumericMessage: translateValueMustBeNumericMessage(),
+          notNumericMessage: valueMustBeNumericMessage,
           fieldName: fieldName,
           // If it is optional then use blank required message
           isRequiredMessage:
-            optionalProperties && optionalProperties.indexOf(propertyName) !== -1
-              ? ""
-              : translateValueIsRequiredMessage(),
+            optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : valueIsRequiredMessage,
           validationFilter,
           filterPrettyPrint,
           readonly: readOnly,
