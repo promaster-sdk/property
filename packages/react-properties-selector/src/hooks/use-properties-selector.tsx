@@ -111,8 +111,8 @@ function createPropertySelectorRenderInfos(
     productProperties,
     selectedProperties,
     includeHiddenProperties,
-    autoSelectSingleValidValue: autoSelectSingleValidValueIn,
-    lockSingleValidValue,
+    // autoSelectSingleValidValue: autoSelectSingleValidValueIn,
+    // lockSingleValidValue,
     // onPropertyFormatChanged,
     // onPropertyFormatCleared,
     readOnlyProperties,
@@ -120,11 +120,11 @@ function createPropertySelectorRenderInfos(
     comparer,
   } = params;
 
-  // Default true if not specified otherwise
-  const autoSelectSingleValidValue =
-    autoSelectSingleValidValueIn === null || autoSelectSingleValidValueIn === undefined
-      ? true
-      : autoSelectSingleValidValueIn;
+  // // Default true if not specified otherwise
+  // const autoSelectSingleValidValue =
+  //   autoSelectSingleValidValueIn === null || autoSelectSingleValidValueIn === undefined
+  //     ? true
+  //     : autoSelectSingleValidValueIn;
 
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
   const sortedArray = productProperties
@@ -183,14 +183,9 @@ function createPropertySelectorRenderInfos(
       const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
         property,
         selectorType,
-        // onPropertyFormatChanged,
-        // onPropertyFormatCleared,
+        selectedValueItem,
         propertyFormat,
         readOnly: isReadOnly,
-        locked:
-          autoSelectSingleValidValue || lockSingleValidValue
-            ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
-            : false,
       };
 
       const s: UsePropertiesSelectorPropertySelectorRenderInfo = {
@@ -210,12 +205,9 @@ function createPropertySelectorRenderInfos(
 type CreateSelectorRenderInfoParams = {
   readonly property: UsePropertiesSelectorProperty;
   readonly selectorType: UsePropertiesSelectorPropertySelectorType;
-  // readonly selectedProperties: PropertyValueSet.PropertyValueSet;
-  // readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
-  // readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
+  readonly selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined;
   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
   readonly readOnly: boolean;
-  readonly locked: boolean;
 };
 
 function createSelectorRenderInfo(
@@ -238,15 +230,26 @@ function createSelectorRenderInfo(
     selectedProperties,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
+    lockSingleValidValue,
   } = params1;
-  const { property, selectorType, readOnly, locked, propertyFormat } = params;
+  const { property, selectorType, readOnly, propertyFormat, selectedValueItem } = params;
 
-  const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
+  // // Default true if not specified otherwise
+  // const myAutoSelectSingleValidValue =
+  //   autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined ? true : autoSelectSingleValidValue;
+
+  const myAutoSelectSingleValidValue = autoSelectSingleValidValue;
+  const propertyOnChange = handleChange(onChange, productProperties, myAutoSelectSingleValidValue, comparer);
 
   const fieldName = property.field_name || property.name;
   const propertyName = property.name;
   const validationFilter = property.validation_filter;
   const valueItems = property.value;
+
+  const locked =
+    myAutoSelectSingleValidValue || lockSingleValidValue
+      ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
+      : false;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
     propertyOnChange(
