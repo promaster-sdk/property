@@ -129,29 +129,8 @@ function createPropertySelectorRenderInfos(
             (value.value && PropertyValue.equals(selectedValue, value.value, comparer))
         );
 
-      let isValid: boolean;
-      let defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
-      switch (getPropertyType(property.quantity)) {
-        case "integer":
-          isValid = selectedValueItem
-            ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter, comparer)
-            : false;
-          break;
-        case "amount":
-          defaultFormat =
-            selectedValue && selectedValue.type === "amount"
-              ? {
-                  unit: selectedValue.value.unit,
-                  decimalCount: selectedValue.value.decimalCount,
-                }
-              : defaultFormat;
-          isValid =
-            property.validation_filter &&
-            PropertyFilter.isValid(selectedProperties, property.validation_filter, comparer);
-          break;
-        default:
-          isValid = true;
-      }
+      const defaultFormat = getDefaultFormat(property, selectedValue);
+      const isValid = getIsValid(property, selectedValueItem, selectedProperties, comparer);
 
       // TODO: Better handling of format to use when the format is missing in the map
       const propertyFormat = propertyFormats[property.name] || defaultFormat;
@@ -178,6 +157,49 @@ function createPropertySelectorRenderInfos(
     });
 
   return selectorDefinitions;
+}
+
+function getDefaultFormat(
+  property: UsePropertiesSelectorProperty,
+  selectedValue: PropertyValue.PropertyValue
+): UsePropertiesSelectorAmountFormat {
+  let defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
+  switch (getPropertyType(property.quantity)) {
+    case "integer":
+      break;
+    case "amount":
+      defaultFormat =
+        selectedValue && selectedValue.type === "amount"
+          ? {
+              unit: selectedValue.value.unit,
+              decimalCount: selectedValue.value.decimalCount,
+            }
+          : defaultFormat;
+      break;
+    default:
+    // isValid = true;
+  }
+  return defaultFormat;
+}
+
+function getIsValid(
+  property: UsePropertiesSelectorProperty,
+  selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined,
+  selectedProperties: PropertyValueSet.PropertyValueSet,
+  comparer: PropertyValue.Comparer
+): boolean {
+  switch (getPropertyType(property.quantity)) {
+    case "integer":
+      return selectedValueItem
+        ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter, comparer)
+        : false;
+    case "amount":
+      return (
+        property.validation_filter && PropertyFilter.isValid(selectedProperties, property.validation_filter, comparer)
+      );
+    default:
+      return true;
+  }
 }
 
 type CreateSelectorRenderInfoParams = {
