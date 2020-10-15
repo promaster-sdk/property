@@ -6,11 +6,8 @@ import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-ch
 import {
   UsePropertiesSelectorPropertySelectorType,
   UsePropertiesSelectorAmountFormat,
-  UsePropertiesSelectorOnPropertyFormatChanged,
-  UsePropertiesSelectorOnPropertyFormatCleared,
   UsePropertiesSelectorProperty,
   UsePropertiesSelectorPropertyValueItem,
-  UsePropertiesSelectorPropertyFormats,
   UsePropertiesSelectorOnPropertiesChanged,
   SelectorRenderInfo,
   SelectorRenderInfoBase,
@@ -35,8 +32,8 @@ export type UsePropertiesSelectorParams = {
 
   // Events
   readonly onChange?: UsePropertiesSelectorOnPropertiesChanged;
-  readonly onPropertyFormatChanged?: UsePropertiesSelectorOnPropertyFormatChanged;
-  readonly onPropertyFormatCleared?: UsePropertiesSelectorOnPropertyFormatCleared;
+  readonly onPropertyFormatChanged?: (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
+  readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
   // Translations
   readonly valueMustBeNumericMessage?: string;
@@ -47,7 +44,9 @@ export type UsePropertiesSelectorParams = {
   // Specifies property names of properties that should be optional (only for amounts for now)
   readonly optionalProperties?: ReadonlyArray<string>;
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly propertyFormats?: UsePropertiesSelectorPropertyFormats;
+  readonly propertyFormats?: {
+    readonly [key: string]: UsePropertiesSelectorAmountFormat;
+  };
 
   // Debounce value for inputs in ms. Defaults to 350.
   readonly inputDebounceTime?: number;

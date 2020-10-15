@@ -7,22 +7,10 @@ import {
   UseTextboxPropertySelectorParams,
 } from "@promaster-sdk/react-property-selectors";
 
-export type UsePropertiesSelectorPropertySelectionOnChange = (
-  properties: PropertyValueSet.PropertyValueSet,
-  propertyNames: string
-) => void;
-
 export type UsePropertiesSelectorOnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
 ) => void;
-
-export type UsePropertiesSelectorOnPropertyFormatChanged = (
-  propertyName: string,
-  unit: Unit.Unit<unknown>,
-  decimalCount: number
-) => void;
-export type UsePropertiesSelectorOnPropertyFormatCleared = (propertyName: string) => void;
 
 export type SelectorRenderInfoBase = {
   readonly sortNo: number;
@@ -86,8 +74,4 @@ export type UsePropertiesSelectorPropertyValueItem = {
 export type UsePropertiesSelectorAmountFormat = {
   readonly unit: Unit.Unit<unknown>;
   readonly decimalCount: number;
-};
-
-export type UsePropertiesSelectorPropertyFormats = {
-  readonly [key: string]: UsePropertiesSelectorAmountFormat;
 };
