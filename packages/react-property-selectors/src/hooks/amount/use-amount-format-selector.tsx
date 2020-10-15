@@ -7,7 +7,6 @@ import { Unit, Serialize, Format, UnitFormat } from "uom";
 
 export type UseAmountFormatSelectorOnFormatChanged = (unit: Unit.Unit<unknown>, decimalCount: number) => void;
 export type UseAmountFormatSelectorOnFormatCleared = () => void;
-export type UseAmountFormatSelectorOnFormatSelectorToggled = (active: boolean) => void;
 
 export type UseAmountFormatSelectorOptions = {
   readonly key?: string;
@@ -15,7 +14,6 @@ export type UseAmountFormatSelectorOptions = {
   readonly selectedDecimalCount: number;
   readonly onFormatChanged?: UseAmountFormatSelectorOnFormatChanged;
   readonly onFormatCleared?: UseAmountFormatSelectorOnFormatCleared;
-  readonly onFormatSelectorActiveChanged?: UseAmountFormatSelectorOnFormatSelectorToggled;
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };

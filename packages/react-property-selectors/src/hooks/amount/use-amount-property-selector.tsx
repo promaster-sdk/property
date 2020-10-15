@@ -7,7 +7,6 @@ import {
   useAmountFormatSelector,
   UseAmountFormatSelectorOnFormatChanged,
   UseAmountFormatSelectorOnFormatCleared,
-  UseAmountFormatSelectorOnFormatSelectorToggled,
 } from "./use-amount-format-selector";
 import { UseAmountInputBox, useAmountInputBox } from "./use-amount-input-box";
 
@@ -23,7 +22,6 @@ export type UseAmountPropertySelectorOptions = {
   readonly readonly: boolean;
   readonly onFormatChanged: UseAmountFormatSelectorOnFormatChanged;
   readonly onFormatCleared: UseAmountFormatSelectorOnFormatCleared;
-  readonly onFormatSelectorToggled?: UseAmountFormatSelectorOnFormatSelectorToggled;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
   readonly fieldName: string;
@@ -47,7 +45,6 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     onValueChange,
     onFormatChanged,
     onFormatCleared,
-    onFormatSelectorToggled,
     notNumericMessage,
     isRequiredMessage,
     validationFilter,
@@ -88,7 +85,6 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     selectedDecimalCount: inputDecimalCount,
     onFormatChanged,
     onFormatCleared,
-    onFormatSelectorActiveChanged: onFormatSelectorToggled,
     unitsFormat,
     units,
   });
