@@ -8,6 +8,7 @@ import {
   UseCheckboxPropertySelectorOptions,
   UseComboboxPropertySelectorOptions,
   UseImageComboboxPropertySelectorOptions,
+  UseRadioGroupPropertySelectorOptions,
   UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
 
@@ -120,26 +121,27 @@ export type SelectorRenderInfoBase = {
 export type SelectorRenderInfo =
   | ({
       readonly type: "ComboBox";
-      readonly getUseComboboxParams: () => UseComboboxPropertySelectorOptions;
+      readonly getUseComboboxOptions: () => UseComboboxPropertySelectorOptions;
     } & SelectorRenderInfoBase)
   | ({
       readonly type: "ImageComboBox";
-      readonly getUseImageComboboxParams: () => UseImageComboboxPropertySelectorOptions;
+      readonly getUseImageComboboxOptions: () => UseImageComboboxPropertySelectorOptions;
     } & SelectorRenderInfoBase)
   | ({
       readonly type: "RadioGroup";
+      readonly getUseRadioGroupOptions: () => UseRadioGroupPropertySelectorOptions;
     } & SelectorRenderInfoBase)
   | ({
       readonly type: "Checkbox";
-      readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorOptions;
+      readonly getUseCheckboxOptions: () => UseCheckboxPropertySelectorOptions;
     } & SelectorRenderInfoBase)
   | ({
       readonly type: "AmountField";
-      readonly getUseAmountParams: () => UseAmountPropertySelectorOptions;
+      readonly getUseAmountOptions: () => UseAmountPropertySelectorOptions;
     } & SelectorRenderInfoBase)
   | ({
       readonly type: "TextBox";
-      readonly getUseTextboxParams: () => UseTextboxPropertySelectorOptions;
+      readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
     } & SelectorRenderInfoBase);
 
 export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
@@ -259,7 +261,7 @@ function createSelector(
       return {
         ...myBase,
         type: "TextBox",
-        getUseTextboxParams: () => ({
+        getUseTextboxOptions: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
           readOnly,
@@ -273,6 +275,28 @@ function createSelector(
       return {
         ...myBase,
         type: "RadioGroup",
+        getUseRadioGroupOptions: () => ({
+          propertyName: propertyName,
+          propertyValueSet: selectedProperties,
+          // valueItems:
+          //   valueItems &&
+          //   valueItems.map((vi) => ({
+          //     value: vi.value,
+          //     text: translatePropertyValue(
+          //       propertyName,
+          //       (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number
+          //     ),
+          //     sortNo: vi.sort_no,
+          //     validationFilter: vi.property_filter,
+          //     image: vi.image,
+          //   })),
+          valueItems,
+          showCodes: includeCodes,
+          filterPrettyPrint: filterPrettyPrint,
+          onValueChange: onValueChange,
+          readOnly: readOnly,
+          locked: locked,
+        }),
       };
     // <RadioGroupPropertySelector
     //   propertyName={propertyName}
@@ -300,7 +324,7 @@ function createSelector(
       return {
         ...myBase,
         type: "Checkbox",
-        getUseCheckboxParams: () => ({
+        getUseCheckboxOptions: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
@@ -315,7 +339,7 @@ function createSelector(
       return {
         ...myBase,
         type: "ComboBox",
-        getUseComboboxParams: () => ({
+        getUseComboboxOptions: () => ({
           sortValidFirst: true,
           propertyName,
           propertyValueSet: selectedProperties,
@@ -331,7 +355,7 @@ function createSelector(
       return {
         ...myBase,
         type: "ImageComboBox",
-        getUseImageComboboxParams: () => ({
+        getUseImageComboboxOptions: () => ({
           sortValidFirst: true,
           propertyName,
           propertyValueSet: selectedProperties,
@@ -347,7 +371,7 @@ function createSelector(
       return {
         ...myBase,
         type: "AmountField",
-        getUseAmountParams: () => ({
+        getUseAmountOptions: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
           inputUnit: propertyFormat.unit,

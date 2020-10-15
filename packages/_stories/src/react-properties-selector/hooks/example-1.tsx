@@ -9,6 +9,7 @@ import {
   getDefaultListItemStyle,
   getDefaultMenuStyle,
   getDefaultOptionStyle,
+  getDefaultRadioItemStyle,
   getDefaultSelectStyle,
   getDefaultToggleButtonStyle,
   useAmountPropertySelector,
@@ -19,6 +20,8 @@ import {
   UseComboboxPropertySelectorOptions,
   useImageComboboxPropertySelector,
   UseImageComboboxPropertySelectorOptions,
+  useRadioGroupPropertySelector,
+  UseRadioGroupPropertySelectorOptions,
   useTextboxPropertySelector,
   UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
@@ -74,17 +77,17 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                             // Need to put property selectors in separate components because their hooks cannt be declared in a loop
                             switch (selector.type) {
                               case "TextBox":
-                                return <MyTextboxSelector {...selector.getUseTextboxParams()} />;
+                                return <MyTextboxSelector {...selector.getUseTextboxOptions()} />;
                               case "RadioGroup":
-                                return <div>RadioGroupPropertySelector</div>;
+                                return <MyRadioGroupSelector {...selector.getUseRadioGroupOptions()} />;
                               case "Checkbox":
-                                return <MyCheckboxSelector {...selector.getUseCheckboxParams()} />;
+                                return <MyCheckboxSelector {...selector.getUseCheckboxOptions()} />;
                               case "ComboBox":
-                                return <MyComboboxSelector {...selector.getUseComboboxParams()} />;
+                                return <MyComboboxSelector {...selector.getUseComboboxOptions()} />;
                               case "ImageComboBox":
-                                return <MyImageComboboxSelector {...selector.getUseImageComboboxParams()} />;
+                                return <MyImageComboboxSelector {...selector.getUseImageComboboxOptions()} />;
                               case "AmountField":
-                                return <MyAmountSelector {...selector.getUseAmountParams()} />;
+                                return <MyAmountSelector {...selector.getUseAmountOptions()} />;
                               default:
                                 return exhaustiveCheck(selector, true);
                             }
@@ -184,6 +187,20 @@ function MyImageComboboxSelector(props: UseImageComboboxPropertySelectorOptions)
           ))}
         </ul>
       )}
+    </div>
+  );
+}
+
+function MyRadioGroupSelector(props: UseRadioGroupPropertySelectorOptions): JSX.Element {
+  const sel = useRadioGroupPropertySelector(props);
+  return (
+    <div {...sel.getGroupProps()}>
+      {sel.items.map((item) => (
+        <div {...item.getItemProps()} title={item.toolTip} style={getDefaultRadioItemStyle(item)}>
+          {item.imageUrl ? <img src={item.imageUrl} /> : undefined}
+          {item.label}
+        </div>
+      ))}
     </div>
   );
 }

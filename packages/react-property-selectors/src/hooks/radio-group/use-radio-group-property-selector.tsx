@@ -112,3 +112,16 @@ function _isValueItemValid(
   }
   return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter, comparer);
 }
+
+export function getDefaultRadioItemStyle(item: RadioGroupItemInfo): {} {
+  return {
+    cursor: item.isItemValid ? "pointer" : "not-allowed",
+    display: "inline-block",
+    marginRight: "10px",
+    padding: "10px",
+    border: item.selected ? "2px solid " + (item.isItemValid ? "#39f" : "red") : "2px solid transparent",
+    color: item.isItemValid ? "black" : "grey",
+    // ${(p: RadioGroupItemProps) =>
+    //   p.isItemValid ? "&:hover { background: #39f; color: white;" : ""}
+  };
+}
