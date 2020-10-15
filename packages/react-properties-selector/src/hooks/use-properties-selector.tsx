@@ -14,7 +14,6 @@ import {
   UsePropertiesSelectorPropertyFormats,
   UsePropertiesSelectorOnPropertiesChanged,
   SelectorRenderInfo,
-  UsePropertiesSelectorPropertySelectionOnChange,
 } from "./types";
 
 export type UsePropertiesSelectorParams = {
@@ -112,19 +111,15 @@ function createPropertySelectorRenderInfos(
     productProperties,
     selectedProperties,
     filterPrettyPrint,
-    includeCodes,
     includeHiddenProperties,
     autoSelectSingleValidValue: autoSelectSingleValidValueIn,
     lockSingleValidValue,
     onChange,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
-    valueMustBeNumericMessage,
-    valueIsRequiredMessage,
     readOnlyProperties,
     optionalProperties,
     propertyFormats,
-    inputDebounceTime,
     unitsFormat,
     units,
     comparer,
@@ -191,15 +186,13 @@ function createPropertySelectorRenderInfos(
       const selectorType = getSelectorType(property);
 
       const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
+        property,
+        // autoSelectSingleValidValue,
         selectorType,
-        fieldName: property.field_name || property.name,
-        propertyName: property.name,
-        validationFilter: property.validation_filter,
-        valueItems: property.value,
         selectedProperties,
-        includeCodes,
+        // includeCodes,
         optionalProperties,
-        onChange: handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer),
+        onChange,
         onPropertyFormatChanged,
         onPropertyFormatCleared,
         filterPrettyPrint,
@@ -209,9 +202,9 @@ function createPropertySelectorRenderInfos(
           autoSelectSingleValidValue || lockSingleValidValue
             ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
             : false,
-        valueMustBeNumericMessage,
-        valueIsRequiredMessage,
-        inputDebounceTime,
+        // valueMustBeNumericMessage,
+        // valueIsRequiredMessage,
+        // inputDebounceTime,
         unitsFormat,
         units,
       };
@@ -222,7 +215,7 @@ function createPropertySelectorRenderInfos(
         groupName: property.group,
         isValid,
         isHidden,
-        selectorRenderInfo: createSelectorRenderInfo(createSelectorRenderInfoParams),
+        selectorRenderInfo: createSelectorRenderInfo(params, createSelectorRenderInfoParams),
       };
       return s;
     });
@@ -231,56 +224,67 @@ function createPropertySelectorRenderInfos(
 }
 
 type CreateSelectorRenderInfoParams = {
+  readonly property: UsePropertiesSelectorProperty;
+  // readonly autoSelectSingleValidValue: boolean;
   readonly selectorType: UsePropertiesSelectorPropertySelectorType;
-  readonly fieldName: string;
-  readonly propertyName: string;
-  readonly validationFilter: PropertyFilter.PropertyFilter;
-  readonly valueItems: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
-  readonly includeCodes: boolean;
+  // readonly includeCodes: boolean;
   readonly optionalProperties: ReadonlyArray<string>;
-  readonly onChange: UsePropertiesSelectorPropertySelectionOnChange;
+  // readonly onChange: UsePropertiesSelectorPropertySelectionOnChange;
+  readonly onChange: UsePropertiesSelectorOnPropertiesChanged;
   readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
   readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
   readonly readOnly: boolean;
   readonly locked: boolean;
-  readonly valueMustBeNumericMessage: string;
-  readonly valueIsRequiredMessage: string;
-  readonly inputDebounceTime: number;
+  // readonly valueMustBeNumericMessage: string;
+  // readonly valueIsRequiredMessage: string;
+  // readonly inputDebounceTime: number;
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
   readonly units: Unit.UnitMap;
 };
 
-function createSelectorRenderInfo(params: CreateSelectorRenderInfoParams): SelectorRenderInfo {
+function createSelectorRenderInfo(
+  params1: Required<UsePropertiesSelectorParams>,
+  params: CreateSelectorRenderInfoParams
+): SelectorRenderInfo {
   const {
+    productProperties,
+    comparer,
+    autoSelectSingleValidValue,
+    includeCodes,
+    inputDebounceTime,
+    valueMustBeNumericMessage,
+    valueIsRequiredMessage,
+  } = params1;
+  const {
+    property,
     selectorType,
     onChange,
-    propertyName,
     selectedProperties,
     readOnly,
-    inputDebounceTime,
-    valueItems,
-    includeCodes,
     filterPrettyPrint,
     locked,
     propertyFormat,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
-    valueMustBeNumericMessage,
-    valueIsRequiredMessage,
-    fieldName,
     optionalProperties,
-    validationFilter,
     units,
     unitsFormat,
   } = params;
 
+  const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
+
+  const fieldName = property.field_name || property.name;
+  const propertyName = property.name;
+  const validationFilter = property.validation_filter;
+  const valueItems = property.value;
+
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
-    onChange(
+    propertyOnChange(
       newValue
         ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
         : PropertyValueSet.removeProperty(propertyName, selectedProperties),
