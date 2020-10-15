@@ -107,24 +107,7 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 function createPropertySelectorRenderInfos(
   params: Required<UsePropertiesSelectorParams>
 ): ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo> {
-  const {
-    productProperties,
-    selectedProperties,
-    includeHiddenProperties,
-    // autoSelectSingleValidValue: autoSelectSingleValidValueIn,
-    // lockSingleValidValue,
-    // onPropertyFormatChanged,
-    // onPropertyFormatCleared,
-    readOnlyProperties,
-    propertyFormats,
-    comparer,
-  } = params;
-
-  // // Default true if not specified otherwise
-  // const autoSelectSingleValidValue =
-  //   autoSelectSingleValidValueIn === null || autoSelectSingleValidValueIn === undefined
-  //     ? true
-  //     : autoSelectSingleValidValueIn;
+  const { productProperties, selectedProperties, includeHiddenProperties, propertyFormats, comparer } = params;
 
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
   const sortedArray = productProperties
@@ -170,7 +153,6 @@ function createPropertySelectorRenderInfos(
           isValid = true;
       }
 
-      const isReadOnly = readOnlyProperties.indexOf(property.name) !== -1;
       // TODO: Better handling of format to use when the format is missing in the map
       const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
@@ -178,14 +160,10 @@ function createPropertySelectorRenderInfos(
       // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
       // const labelHover = translatePropertyLabelHover(property.name);
 
-      const selectorType = getSelectorType(property);
-
       const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
         property,
-        selectorType,
         selectedValueItem,
         propertyFormat,
-        readOnly: isReadOnly,
       };
 
       const s: UsePropertiesSelectorPropertySelectorRenderInfo = {
@@ -204,10 +182,8 @@ function createPropertySelectorRenderInfos(
 
 type CreateSelectorRenderInfoParams = {
   readonly property: UsePropertiesSelectorProperty;
-  readonly selectorType: UsePropertiesSelectorPropertySelectorType;
   readonly selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined;
   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
-  readonly readOnly: boolean;
 };
 
 function createSelectorRenderInfo(
@@ -231,8 +207,13 @@ function createSelectorRenderInfo(
     onPropertyFormatChanged,
     onPropertyFormatCleared,
     lockSingleValidValue,
+    readOnlyProperties,
   } = params1;
-  const { property, selectorType, readOnly, propertyFormat, selectedValueItem } = params;
+  const { property, propertyFormat, selectedValueItem } = params;
+
+  const selectorType = getSelectorType(property);
+
+  const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
 
   // // Default true if not specified otherwise
   // const myAutoSelectSingleValidValue =
