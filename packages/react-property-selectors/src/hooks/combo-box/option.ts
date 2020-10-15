@@ -14,6 +14,9 @@ export type GetSelectedOptionParams = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly valueItems: ReadonlyArray<ValueItem>;
+  readonly showCodes: boolean;
+  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
+  readonly comparer?: PropertyValue.Comparer;
 };
 
 export type ValueItem = {
@@ -95,7 +98,7 @@ export function getSelectableOptions({
 }
 
 export function getSelectedOption(
-  { propertyName, propertyValueSet, valueItems }: GetSelectedOptionParams,
+  { propertyName, propertyValueSet, valueItems, showCodes, filterPrettyPrint, comparer }: GetSelectedOptionParams,
   options: ReadonlyArray<Option>
 ): [Option, ReadonlyArray<Option>] {
   if (!valueItems) {
@@ -118,8 +121,12 @@ export function getSelectedOption(
     };
     // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
     // valueItems.unshift(selectedValueItem);
-    valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<ValueItem>;
-    // options = [selectedValueItem, ...options];
+    // valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<ValueItem>;
+    const safeComparer = comparer || PropertyValue.defaultComparer;
+    options = [
+      makeOption(selectedValueItem, propertyName, propertyValueSet, safeComparer, showCodes, filterPrettyPrint),
+      ...options,
+    ];
   } else {
     selectedValueItem = selectedValueItemOrUndefined;
   }
