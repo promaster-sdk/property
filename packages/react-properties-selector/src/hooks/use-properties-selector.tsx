@@ -4,14 +4,11 @@ import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import {
-  UsePropertiesSelectorPropertySelectorType,
-  UsePropertiesSelectorAmountFormat,
-  UsePropertiesSelectorProperty,
-  UsePropertiesSelectorPropertyValueItem,
-  UsePropertiesSelectorOnPropertiesChanged,
-  SelectorRenderInfo,
-  SelectorRenderInfoBase,
-} from "./types";
+  UseAmountPropertySelectorParams,
+  UseCheckboxPropertySelectorParams,
+  UseComboboxPropertySelectorParams,
+  UseTextboxPropertySelectorParams,
+} from "@promaster-sdk/react-property-selectors";
 
 export type UsePropertiesSelectorParams = {
   // Required inputs
@@ -65,16 +62,82 @@ export type UsePropertiesSelectorParams = {
   readonly comparer?: PropertyValue.Comparer;
 };
 
-export type UsePropertiesSelector = {
-  readonly groups: ReadonlyArray<UserPropertiesSelectorGroup>;
+export type UsePropertiesSelectorProperty = {
+  readonly selector_type?: UsePropertiesSelectorPropertySelectorType;
+  readonly field_name?: string;
+  readonly sort_no: number;
+  readonly name: string;
+  readonly group: string;
+  readonly quantity: string;
+  readonly validation_filter: PropertyFilter.PropertyFilter;
+  readonly visibility_filter: PropertyFilter.PropertyFilter;
+  readonly value: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
 };
 
-export type UserPropertiesSelectorGroup = {
+export type UsePropertiesSelectorPropertyValueItem = {
+  readonly sortNo: number;
+  readonly value: PropertyValue.PropertyValue;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly text: string;
+  readonly image?: string;
+};
+
+export type UsePropertiesSelectorAmountFormat = {
+  readonly unit: Unit.Unit<unknown>;
+  readonly decimalCount: number;
+};
+
+export type UsePropertiesSelector = {
+  readonly groups: ReadonlyArray<UsePropertiesSelectorGroup>;
+};
+
+export type UsePropertiesSelectorGroup = {
   readonly name: string;
   readonly isClosed: boolean;
   readonly selectors: ReadonlyArray<SelectorRenderInfo>;
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
+
+export type UsePropertiesSelectorOnPropertiesChanged = (
+  properties: PropertyValueSet.PropertyValueSet,
+  propertyNames: ReadonlyArray<string>
+) => void;
+
+export type SelectorRenderInfoBase = {
+  readonly sortNo: number;
+  readonly groupName: string;
+  readonly propertyName: string;
+
+  // This flag tells if the selector currently holds a valid selection
+  readonly isValid: boolean;
+
+  // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
+  // This flag tells if is was supposed to be hidden
+  readonly isHidden: boolean;
+};
+
+export type SelectorRenderInfo =
+  | {
+      readonly type: "ComboBox";
+      readonly getUseComboboxParams: () => UseComboboxPropertySelectorParams;
+    } & SelectorRenderInfoBase
+  | {
+      readonly type: "RadioGroup";
+    } & SelectorRenderInfoBase
+  | {
+      readonly type: "Checkbox";
+      readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorParams;
+    } & SelectorRenderInfoBase
+  | {
+      readonly type: "AmountField";
+      readonly getUseAmountParams: () => UseAmountPropertySelectorParams;
+    } & SelectorRenderInfoBase
+  | {
+      readonly type: "TextBox";
+      readonly getUseTextboxParams: () => UseTextboxPropertySelectorParams;
+    } & SelectorRenderInfoBase;
+
+export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
 
 export function usePropertiesSelector(params: UsePropertiesSelectorParams): UsePropertiesSelector {
   const requiredParams = paramsWithDefaults(params);
