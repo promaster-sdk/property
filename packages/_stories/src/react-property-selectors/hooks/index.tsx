@@ -8,6 +8,7 @@ import { TextboxPropertySelectorExample1Hooks } from "./textbox-property-selecto
 import { CheckboxPropertySelectorExample1Hooks } from "./checkbox-property-selector/example-1-hooks";
 import { AmountFormatSelectorExample1Hooks } from "./amount-format-selector/example-1-hooks";
 import { AmountPropertySelectorExample1Hooks } from "./amount-property-selector/example-1-hooks";
+import { RadioGroupPropertySelectorExample1 } from "./radiogroup-property-selector/example-1";
 
 // storiesOf("Welcome", module).add("to Storybook", () => (
 //   <Welcome showApp={linkTo("Button")} />
@@ -28,6 +29,8 @@ storiesOf("HOOKS: Amount Property Selector", module).add("example 1", () => <Amo
 storiesOf("HOOKS: Combobox Property Selector", module).add("example 1", () => (
   <ComboboxPropertySelectorExample1Hooks />
 ));
+
+storiesOf("HOOKS: Radiogroup Property Selector", module).add("example 1", () => <RadioGroupPropertySelectorExample1 />);
 
 storiesOf("HOOKS: Checkbox Property Selector", module).add("example 1", () => (
   <CheckboxPropertySelectorExample1Hooks />
