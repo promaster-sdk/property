@@ -24,7 +24,7 @@ import { units, unitsFormat } from "./units-map";
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 export function PropertiesSelectorExample1(): React.ReactElement<{}> {
-  const [state, setState] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;c=1;d=1;e=1;", unitLookup));
+  const [state, setState] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
 
   const productProperties = exampleProductProperties();
 
