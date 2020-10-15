@@ -68,7 +68,6 @@ export type UsePropertiesSelectorParams = {
 
 export type UsePropertiesSelector = {
   readonly groups: ReadonlyArray<UserPropertiesSelectorGroup>;
-  // readonly onToggleGroupClosed: UsePropertiesSelectorOnToggleGroupClosed;
 };
 
 export type UserPropertiesSelectorGroup = {
@@ -79,11 +78,9 @@ export type UserPropertiesSelectorGroup = {
 };
 
 export function usePropertiesSelector(params: UsePropertiesSelectorParams): UsePropertiesSelector {
-  const requiedParams = paramsWithDefaults(params);
+  const requiredParams = paramsWithDefaults(params);
 
-  // const allSelectors = createPropertySelectorRenderInfos(p);
-
-  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = params;
+  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = requiredParams;
 
   const sortedArray = productProperties
     .slice()
@@ -97,11 +94,11 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     .map((p) =>
       createSelector(
         p,
-        requiedParams
+        requiredParams
       )
     );
 
-  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiedParams.initiallyClosedGroups);
+  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredParams.initiallyClosedGroups);
 
   return {
     groups: getDistinctGroupNames(allSelectors).map((name) => {
