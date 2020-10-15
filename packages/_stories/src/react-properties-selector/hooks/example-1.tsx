@@ -9,11 +9,11 @@ import {
   getDefaultOptionStyle,
   getDefaultSelectStyle,
   useAmountPropertySelector,
-  UseAmountPropertySelectorParams,
+  UseAmountPropertySelectorOptions,
   useCheckboxPropertySelector,
-  UseCheckboxPropertySelectorParams,
+  UseCheckboxPropertySelectorOptions,
   useComboboxPropertySelector,
-  UseComboboxPropertySelectorParams,
+  UseComboboxPropertySelectorOptions,
   useTextboxPropertySelector,
   UseTextboxPropertySelectorParams,
 } from "@promaster-sdk/react-property-selectors";
@@ -95,7 +95,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   );
 }
 
-function TheAmountPropertySelector(props: UseAmountPropertySelectorParams): JSX.Element {
+function TheAmountPropertySelector(props: UseAmountPropertySelectorOptions): JSX.Element {
   const sel = useAmountPropertySelector(props);
   return (
     <span {...sel.getWrapperProps()}>
@@ -126,7 +126,7 @@ function TheAmountPropertySelector(props: UseAmountPropertySelectorParams): JSX.
   );
 }
 
-function TheCheckboxPropertySelector(props: UseCheckboxPropertySelectorParams): JSX.Element {
+function TheCheckboxPropertySelector(props: UseCheckboxPropertySelectorOptions): JSX.Element {
   const sel = useCheckboxPropertySelector(props);
   return (
     <div {...sel.getContainerDivProps()} style={getDefaultCheckboxContainerStyle()}>
@@ -142,7 +142,7 @@ function TheTextboxPropertySelector(props: UseTextboxPropertySelectorParams): JS
   return <input {...sel.getInputProps()} />;
 }
 
-function TheComboboxPropertySelector(props: UseComboboxPropertySelectorParams): JSX.Element {
+function TheComboboxPropertySelector(props: UseComboboxPropertySelectorOptions): JSX.Element {
   const sel = useComboboxPropertySelector(props);
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>

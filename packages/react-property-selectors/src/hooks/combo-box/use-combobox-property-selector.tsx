@@ -1,11 +1,7 @@
 import React from "react";
-import {
-  PropertyFilter,
-  PropertyValue,
-  PropertyValueSet
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { getOptions, getSelectedOption } from "./option";
+import { getSelectableOptions, getSelectedOption } from "./option";
 
 export type UseComboboxPropertySelector = {
   readonly isSelectedItemValid: boolean;
@@ -14,7 +10,7 @@ export type UseComboboxPropertySelector = {
   readonly options: ReadonlyArray<UseComboboxPropertySelectorOption>;
 };
 
-export type UseComboboxPropertySelectorParams = {
+export type UseComboboxPropertySelectorOptions = {
   readonly sortValidFirst: boolean;
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -42,15 +38,12 @@ export type UseComboBoxPropertyValueItem = {
 };
 
 export function useComboboxPropertySelector(
-  useComboboxPropertySelectorParams: UseComboboxPropertySelectorParams
+  hookOptions: UseComboboxPropertySelectorOptions
 ): UseComboboxPropertySelector {
-  const { onValueChange, readOnly, locked } = useComboboxPropertySelectorParams;
+  const { onValueChange, readOnly, locked } = hookOptions;
 
-  const options = getOptions(useComboboxPropertySelectorParams);
-  const selectedOption = getSelectedOption(
-    useComboboxPropertySelectorParams,
-    options
-  );
+  const selectableOptions = getSelectableOptions(hookOptions);
+  const selectedOption = getSelectedOption(hookOptions, selectableOptions);
 
   return {
     isSelectedItemValid: selectedOption.isItemValid,
@@ -59,9 +52,9 @@ export function useComboboxPropertySelector(
       disabled: readOnly || locked,
       value: selectedOption!.value,
       title: selectedOption!.toolTip,
-      onChange: event => _doOnChange(event.currentTarget.value, onValueChange)
+      onChange: (event) => _doOnChange(event.currentTarget.value, onValueChange),
     }),
-    options: options.map(o => ({
+    options: selectableOptions.map((o) => ({
       label: o.label,
       isItemValid: o.isItemValid,
       getOptionProps: () => ({
@@ -69,22 +62,20 @@ export function useComboboxPropertySelector(
         value: o.value,
         label: o.label,
         image: o.image,
-        title: o.toolTip
-      })
-    }))
+        title: o.toolTip,
+      }),
+    })),
   };
 }
 
-export function getDefaultOptionStyle(
-  o: UseComboboxPropertySelectorOption
-): {} {
+export function getDefaultOptionStyle(o: UseComboboxPropertySelectorOption): {} {
   return {
     color: o.isItemValid ? "rgb(131, 131, 131)" : "red",
     minHeight: "18px",
     alignSelf: "center",
     border: "0px none rgb(131, 131, 131)",
     font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px"
+    outline: "rgb(131, 131, 131) none 0px",
   };
 }
 
@@ -96,7 +87,7 @@ export function getDefaultSelectStyle(o: UseComboboxPropertySelector): {} {
     borderRadius: "3px",
     font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
     outline: "rgb(131, 131, 131) none 0px",
-    padding: "1px 30px 0px 10px"
+    padding: "1px 30px 0px 10px",
   };
 
   if (!o.isSelectedItemValid && o.locked) {
@@ -104,7 +95,7 @@ export function getDefaultSelectStyle(o: UseComboboxPropertySelector): {} {
       ...always,
       background: "lightgray",
       color: "red",
-      border: "none"
+      border: "none",
     };
   } else if (!o.isSelectedItemValid) {
     return { ...always, color: "red" };
@@ -113,7 +104,7 @@ export function getDefaultSelectStyle(o: UseComboboxPropertySelector): {} {
       ...always,
       background: "lightgray",
       color: "darkgray",
-      border: "none"
+      border: "none",
     };
   }
   return { ...always };

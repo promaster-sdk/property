@@ -1,12 +1,8 @@
 import React from "react";
-import {
-  PropertyFilter,
-  PropertyValue,
-  PropertyValueSet
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
-export type UseCheckboxPropertySelectorParams = {
+export type UseCheckboxPropertySelectorOptions = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly valueItems: ReadonlyArray<UseCheckboxPropertyValueItem>;
@@ -40,7 +36,7 @@ const errorSelector = {
   getContainerDivProps: () => ({}),
   getCheckboxDivProps: () => ({}),
   locked: false,
-  checked: false
+  checked: false,
 };
 
 export function useCheckboxPropertySelector({
@@ -50,8 +46,8 @@ export function useCheckboxPropertySelector({
   locked,
   onValueChange,
   showCodes,
-  comparer
-}: UseCheckboxPropertySelectorParams): UseCheckboxPropertySelector {
+  comparer,
+}: UseCheckboxPropertySelectorOptions): UseCheckboxPropertySelector {
   const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
 
   if (!valueItems || valueItems.length !== 2) {
@@ -74,36 +70,28 @@ export function useCheckboxPropertySelector({
     getContainerDivProps: () => ({
       locked: locked,
       checked: checked,
-      onClick: () => onValueChange(nextValue)
+      onClick: () => onValueChange(nextValue),
     }),
-    getCheckboxDivProps: () => ({})
+    getCheckboxDivProps: () => ({}),
   };
 }
 
-function _getItemLabel(
-  valueItem: UseCheckboxPropertyValueItem,
-  showCodes: boolean
-): string {
+function _getItemLabel(valueItem: UseCheckboxPropertyValueItem, showCodes: boolean): string {
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
   }
 
-  return (
-    valueItem.text +
-    (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "")
-  );
+  return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "");
 }
 
-export function getDefaultCheckboxStyle(
-  selector: UseCheckboxPropertySelector
-): {} {
+export function getDefaultCheckboxStyle(selector: UseCheckboxPropertySelector): {} {
   return {
     marginTop: "6px",
     position: "relative",
     backgroundColor: "#ccc",
     width: "22px",
     height: "22px",
-    background: selector.checked ? "red" : "green"
+    background: selector.checked ? "red" : "green",
   };
 }
 
@@ -112,6 +100,6 @@ export function getDefaultCheckboxContainerStyle(): {} {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    cursor: "pointer"
+    cursor: "pointer",
   };
 }

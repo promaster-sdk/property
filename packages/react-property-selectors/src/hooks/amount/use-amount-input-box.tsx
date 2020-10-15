@@ -8,7 +8,7 @@
 import React, { useCallback, useState } from "react";
 import { Amount, Unit } from "uom";
 
-export type UseAmountInputBoxParams = {
+export type UseAmountInputBoxOptions = {
   readonly key?: string;
   readonly value: Amount.Amount<unknown> | undefined;
   readonly inputUnit: Unit.Unit<unknown>;
@@ -35,23 +35,21 @@ type State = {
   readonly effectiveErrorMessage: string;
 };
 
-export function useAmountInputBox(
-  params: UseAmountInputBoxParams
-): UseAmountInputBox {
-  const { readonly, onBlur, onFocus, onValueChange, debounceTime } = params;
-  const [state, setState] = useState<State>(initStateFromParams(params));
+export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountInputBox {
+  const { readonly, onBlur, onFocus, onValueChange, debounceTime } = options;
+  const [state, setState] = useState<State>(initStateFromParams(options));
 
   // Re-init state if specific params change
   React.useEffect(() => {
-    const newState = initStateFromParams(params);
+    const newState = initStateFromParams(options);
     setState(newState);
   }, [
-    params.inputUnit,
-    params.inputDecimalCount,
-    params.isRequiredMessage,
-    params.notNumericMessage,
-    params.errorMessage,
-    params.value
+    options.inputUnit,
+    options.inputDecimalCount,
+    options.isRequiredMessage,
+    options.notNumericMessage,
+    options.errorMessage,
+    options.value,
   ]);
 
   const debouncedOnValueChange = useCallback(
@@ -78,15 +76,14 @@ export function useAmountInputBox(
       readonly,
       onBlur: onBlur,
       onFocus: onFocus,
-      onChange: e => _onChange(debouncedOnValueChange, setState, params, e)
-    })
+      onChange: (e) => _onChange(debouncedOnValueChange, setState, options, e),
+    }),
   };
 }
 
 export function getDefaultAmountInputBoxStyle(selector: UseAmountInputBox): {} {
   return {
-    color:
-      !selector.readonly && selector.effectiveErrorMessage ? "red" : "black",
+    color: !selector.readonly && selector.effectiveErrorMessage ? "red" : "black",
     height: "30px",
     border: "1px solid #b4b4b4",
     borderRadius: "3px",
@@ -95,33 +92,27 @@ export function getDefaultAmountInputBoxStyle(selector: UseAmountInputBox): {} {
     padding: "1px 30px 0px 10px",
 
     ...inputInvalidLocked(selector),
-    ...inputLocked(selector)
+    ...inputLocked(selector),
   };
 }
 
-function inputInvalidLocked({
-  readonly,
-  effectiveErrorMessage
-}: UseAmountInputBox): {} {
+function inputInvalidLocked({ readonly, effectiveErrorMessage }: UseAmountInputBox): {} {
   if (readonly && effectiveErrorMessage) {
     return {
       background: "lightgray",
       color: "red",
-      border: "none"
+      border: "none",
     };
   }
   return {};
 }
 
-function inputLocked({
-  readonly,
-  effectiveErrorMessage
-}: UseAmountInputBox): {} {
+function inputLocked({ readonly, effectiveErrorMessage }: UseAmountInputBox): {} {
   if (readonly && !effectiveErrorMessage) {
     return {
       background: "lightgray",
       color: "darkgray",
-      border: "none"
+      border: "none",
     };
   }
   return {};
@@ -142,7 +133,7 @@ function initStateFromParams({
   isRequiredMessage,
   notNumericMessage,
   errorMessage,
-  value
+  value,
 }: StateInitParams): State {
   if (!inputUnit) {
     console.error("Missing inputUnit");
@@ -150,18 +141,8 @@ function initStateFromParams({
   if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
     console.error("Missing inputDecimalCount");
   }
-  const formattedValue = formatWithUnitAndDecimalCount(
-    value,
-    inputUnit,
-    inputDecimalCount
-  );
-  const newState = calculateNewState(
-    value,
-    formattedValue,
-    isRequiredMessage,
-    notNumericMessage,
-    errorMessage
-  );
+  const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
+  const newState = calculateNewState(value, formattedValue, isRequiredMessage, notNumericMessage, errorMessage);
   return newState;
 }
 
@@ -171,7 +152,7 @@ function _onChange(
   ) => // onValueChange: (newAmount: Amount.Amount<unknown> | undefined) => void
   void,
   setState: React.Dispatch<React.SetStateAction<State>>,
-  params: UseAmountInputBoxParams,
+  params: UseAmountInputBoxOptions,
   e: React.FormEvent<HTMLInputElement>
   // onValueChange: (newAmount: Amount.Amount<unknown>) => void
 ): void {
@@ -185,11 +166,7 @@ function _onChange(
   }
 
   // Update the internal state and if the change resulted in a valid value then emit a change with that value
-  const newAmount = unformatWithUnitAndDecimalCount(
-    newStringValue,
-    inputUnit,
-    inputDecimalCount
-  );
+  const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
   const newState = calculateNewState(
     newAmount,
     newStringValue,
@@ -211,23 +188,18 @@ function calculateNewState(
   notNumericMessage: string,
   errorMessage: string
 ): State {
-  const internalErrorMessage = getInternalErrorMessage(
-    newAmount,
-    newStringValue,
-    isRequiredMessage,
-    notNumericMessage
-  );
+  const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
   if (internalErrorMessage) {
     return {
       isValid: false,
       textValue: newStringValue,
-      effectiveErrorMessage: internalErrorMessage
+      effectiveErrorMessage: internalErrorMessage,
     };
   } else {
     return {
       isValid: true,
       textValue: newStringValue,
-      effectiveErrorMessage: errorMessage
+      effectiveErrorMessage: errorMessage,
     };
   }
 }
@@ -293,12 +265,9 @@ function unformatWithUnitAndDecimalCount<T>(
   }
   // Keep number of decimals from the entered text except if they are more than the formats decimal count
   const textDecimalCount = getDecimalCountFromString(text);
-  const finalDecimalCount =
-    textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
+  const finalDecimalCount = textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
   const finalFloatValue =
-    textDecimalCount > inputDecimalCount
-      ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount))
-      : parsedFloatValue;
+    textDecimalCount > inputDecimalCount ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount)) : parsedFloatValue;
   return Amount.create(finalFloatValue, unit, finalDecimalCount);
 }
 

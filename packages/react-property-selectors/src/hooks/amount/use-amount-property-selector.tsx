@@ -1,9 +1,5 @@
 import React, { useCallback } from "react";
-import {
-  PropertyValueSet,
-  PropertyFilter,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyValueSet, PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { Amount, Unit, UnitFormat } from "uom";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -11,11 +7,11 @@ import {
   useAmountFormatSelector,
   UseAmountFormatSelectorOnFormatChanged,
   UseAmountFormatSelectorOnFormatCleared,
-  UseAmountFormatSelectorOnFormatSelectorToggled
+  UseAmountFormatSelectorOnFormatSelectorToggled,
 } from "./use-amount-format-selector";
 import { UseAmountInputBox, useAmountInputBox } from "./use-amount-input-box";
 
-export type UseAmountPropertySelectorParams = {
+export type UseAmountPropertySelectorOptions = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly inputUnit: Unit.Unit<unknown>;
@@ -28,9 +24,7 @@ export type UseAmountPropertySelectorParams = {
   readonly onFormatChanged: UseAmountFormatSelectorOnFormatChanged;
   readonly onFormatCleared: UseAmountFormatSelectorOnFormatCleared;
   readonly onFormatSelectorToggled?: UseAmountFormatSelectorOnFormatSelectorToggled;
-  readonly onValueChange: (
-    newValue: PropertyValue.PropertyValue | undefined
-  ) => void;
+  readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
   readonly fieldName: string;
   readonly unitsFormat: {
@@ -48,9 +42,7 @@ export type UseAmountPropertySelector = {
   readonly amountFormatSelector: UseAmountFormatSelector;
 };
 
-export function useAmountPropertySelector(
-  params: UseAmountPropertySelectorParams
-): UseAmountPropertySelector {
+export function useAmountPropertySelector(options: UseAmountPropertySelectorOptions): UseAmountPropertySelector {
   const {
     onValueChange,
     onFormatChanged,
@@ -68,29 +60,15 @@ export function useAmountPropertySelector(
     debounceTime = 350,
     unitsFormat,
     units,
-    comparer = PropertyValue.defaultComparer
-  } = params;
+    comparer = PropertyValue.defaultComparer,
+  } = options;
 
-  const value: Amount.Amount<unknown> | undefined = PropertyValueSet.getAmount(
-    propertyName,
-    propertyValueSet
-  );
+  const value: Amount.Amount<unknown> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
 
-  const errorMessage = getValidationMessage(
-    propertyValueSet,
-    value,
-    validationFilter,
-    filterPrettyPrint,
-    comparer
-  );
+  const errorMessage = getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint, comparer);
 
   const onValueChangeCallback = useCallback(
-    newAmount =>
-      onValueChange(
-        newAmount !== undefined
-          ? PropertyValue.create("amount", newAmount)
-          : undefined
-      ),
+    (newAmount) => onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount) : undefined),
     [onValueChange]
   );
 
@@ -103,7 +81,7 @@ export function useAmountPropertySelector(
     readonly,
     debounceTime,
     errorMessage,
-    onValueChange: onValueChangeCallback
+    onValueChange: onValueChangeCallback,
   });
   const amountFormatSelector = useAmountFormatSelector({
     selectedUnit: inputUnit,
@@ -112,7 +90,7 @@ export function useAmountPropertySelector(
     onFormatCleared,
     onFormatSelectorActiveChanged: onFormatSelectorToggled,
     unitsFormat,
-    units
+    units,
   });
 
   return { getWrapperProps: () => ({}), amountInputBox, amountFormatSelector };

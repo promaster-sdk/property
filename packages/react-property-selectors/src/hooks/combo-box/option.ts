@@ -33,7 +33,7 @@ export type GetOptionsParams = {
   readonly comparer?: PropertyValue.Comparer;
 };
 
-export function getOptions({
+export function getSelectableOptions({
   sortValidFirst,
   propertyName,
   propertyValueSet,

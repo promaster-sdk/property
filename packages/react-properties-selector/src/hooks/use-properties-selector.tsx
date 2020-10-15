@@ -4,13 +4,13 @@ import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import {
-  UseAmountPropertySelectorParams,
-  UseCheckboxPropertySelectorParams,
-  UseComboboxPropertySelectorParams,
+  UseAmountPropertySelectorOptions,
+  UseCheckboxPropertySelectorOptions,
+  UseComboboxPropertySelectorOptions,
   UseTextboxPropertySelectorParams,
 } from "@promaster-sdk/react-property-selectors";
 
-export type UsePropertiesSelectorParams = {
+export type UsePropertiesSelectorOptions = {
   // Required inputs
   readonly productProperties: ReadonlyArray<UsePropertiesSelectorProperty>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
@@ -119,18 +119,18 @@ export type SelectorRenderInfoBase = {
 export type SelectorRenderInfo =
   | {
       readonly type: "ComboBox";
-      readonly getUseComboboxParams: () => UseComboboxPropertySelectorParams;
+      readonly getUseComboboxParams: () => UseComboboxPropertySelectorOptions;
     } & SelectorRenderInfoBase
   | {
       readonly type: "RadioGroup";
     } & SelectorRenderInfoBase
   | {
       readonly type: "Checkbox";
-      readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorParams;
+      readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorOptions;
     } & SelectorRenderInfoBase
   | {
       readonly type: "AmountField";
-      readonly getUseAmountParams: () => UseAmountPropertySelectorParams;
+      readonly getUseAmountParams: () => UseAmountPropertySelectorOptions;
     } & SelectorRenderInfoBase
   | {
       readonly type: "TextBox";
@@ -139,10 +139,10 @@ export type SelectorRenderInfo =
 
 export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
 
-export function usePropertiesSelector(params: UsePropertiesSelectorParams): UsePropertiesSelector {
-  const requiredParams = paramsWithDefaults(params);
+export function usePropertiesSelector(options: UsePropertiesSelectorOptions): UsePropertiesSelector {
+  const requiredOptions = optionsWithDefaults(options);
 
-  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = requiredParams;
+  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = requiredOptions;
 
   const sortedArray = productProperties
     .slice()
@@ -156,11 +156,11 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
     .map((p) =>
       createSelector(
         p,
-        requiredParams
+        requiredOptions
       )
     );
 
-  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredParams.initiallyClosedGroups);
+  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
     groups: getDistinctGroupNames(allSelectors).map((name) => {
@@ -183,7 +183,7 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 
 function createSelector(
   property: UsePropertiesSelectorProperty,
-  params: Required<UsePropertiesSelectorParams>
+  params: Required<UsePropertiesSelectorOptions>
 ): SelectorRenderInfo {
   const {
     selectedProperties,
@@ -523,7 +523,7 @@ function isNullOrWhiteSpace(str: string): boolean {
   return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
 }
 
-function paramsWithDefaults(params: UsePropertiesSelectorParams): Required<UsePropertiesSelectorParams> {
+function optionsWithDefaults(params: UsePropertiesSelectorOptions): Required<UsePropertiesSelectorOptions> {
   // Do destructoring and set defaults
   const {
     productProperties,

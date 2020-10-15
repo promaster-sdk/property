@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import {
-  PropertyFilter,
-  PropertyValue,
-  PropertyValueSet
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { getOptions, getSelectedOption } from "./option";
+import { getSelectableOptions, getSelectedOption } from "./option";
 
 export type UseImageComboboxPropertySelector = {
   readonly label: string;
@@ -13,13 +9,11 @@ export type UseImageComboboxPropertySelector = {
   readonly isOpen: boolean;
   readonly isSelectedItemValid: boolean;
   readonly locked: boolean;
-  readonly getToggleButtonProps: () => React.SelectHTMLAttributes<
-    HTMLButtonElement
-  >;
+  readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly items: ReadonlyArray<UseImageComboboxPropertySelectorItem>;
 };
 
-export type UseImageComboboxPropertySelectorParams = {
+export type UseImageComboboxPropertySelectorOptions = {
   readonly sortValidFirst: boolean;
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -48,17 +42,14 @@ export type UseImageComboBoxPropertyValueItem = {
 };
 
 export function useImageComboboxPropertySelector(
-  useComboboxPropertySelectorParams: UseImageComboboxPropertySelectorParams
+  hookOptions: UseImageComboboxPropertySelectorOptions
 ): UseImageComboboxPropertySelector {
-  const { onValueChange, readOnly, locked } = useComboboxPropertySelectorParams;
+  const { onValueChange, readOnly, locked } = hookOptions;
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const options = getOptions(useComboboxPropertySelectorParams);
-  const selectedOption = getSelectedOption(
-    useComboboxPropertySelectorParams,
-    options
-  );
+  const selectableOptions = getSelectableOptions(hookOptions);
+  const selectedOption = getSelectedOption(hookOptions, selectableOptions);
 
   return {
     label: selectedOption.label,
@@ -69,9 +60,9 @@ export function useImageComboboxPropertySelector(
     getToggleButtonProps: () => ({
       disabled: readOnly || locked,
       title: selectedOption !== undefined ? selectedOption.toolTip : undefined,
-      onClick: () => setIsOpen(!isOpen)
+      onClick: () => setIsOpen(!isOpen),
     }),
-    items: options.map(o => ({
+    items: selectableOptions.map((o) => ({
       imageUrl: o.image,
       label: o.label,
       isItemValid: o.isItemValid,
@@ -84,15 +75,13 @@ export function useImageComboboxPropertySelector(
         onClick: () => {
           _doOnChange(o.value, onValueChange);
           setIsOpen(false);
-        }
-      })
-    }))
+        },
+      }),
+    })),
   };
 }
 
-export function getDefaultToggleButtonStyle(
-  selector: UseImageComboboxPropertySelector
-): {} {
+export function getDefaultToggleButtonStyle(selector: UseImageComboboxPropertySelector): {} {
   return {
     width: "162px",
     alignItems: "center",
@@ -109,8 +98,8 @@ export function getDefaultToggleButtonStyle(
 
     ...buttonElementStyles({
       isSelectedItemValid: selector.isSelectedItemValid,
-      locked: selector.locked
-    })
+      locked: selector.locked,
+    }),
   };
 }
 
@@ -123,13 +112,11 @@ export function getDefaultMenuStyle(): {} {
     listStyle: "none",
     margin: 0,
     padding: 0,
-    zIndex: 100
+    zIndex: 100,
   };
 }
 
-export function getDefaultListItemStyle(o: {
-  readonly isItemValid: boolean;
-}): {} {
+export function getDefaultListItemStyle(o: { readonly isItemValid: boolean }): {} {
   return {
     color: o.isItemValid === false ? "color: red" : "rgb(131, 131, 131)",
     minHeight: "18px",
@@ -138,13 +125,13 @@ export function getDefaultListItemStyle(o: {
     font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
     outline: "rgb(131, 131, 131) none 0px",
     padding: "0.2em 0.5em",
-    cursor: "default"
+    cursor: "default",
   };
 }
 
 function buttonElementStyles({
   isSelectedItemValid,
-  locked
+  locked,
 }: {
   readonly isSelectedItemValid?: boolean;
   readonly locked: boolean;
@@ -153,7 +140,7 @@ function buttonElementStyles({
     return {
       background: "lightgray",
       color: "red",
-      border: "none"
+      border: "none",
     };
   } else if (isSelectedItemValid === false) {
     return { color: "red" };
@@ -161,7 +148,7 @@ function buttonElementStyles({
     return {
       background: "lightgray",
       color: "darkgray",
-      border: "none"
+      border: "none",
     };
   }
 
