@@ -27,6 +27,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
           sort_no: 10,
           value: PropertyValue.fromInteger(1),
           property_filter: PropertyFilter.Empty,
+          image: "http://vignette4.wikia.nocookie.net/mrmen/images/5/52/Small.gif/revision/latest?cb=20100731114437",
         },
         {
           sort_no: 20,

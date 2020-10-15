@@ -28,6 +28,7 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
           value: PropertyValue.fromInteger(1),
           validationFilter: PropertyFilter.Empty,
           text: "1",
+          image: "http://vignette4.wikia.nocookie.net/mrmen/images/5/52/Small.gif/revision/latest?cb=20100731114437",
         },
         {
           sortNo: 20,
