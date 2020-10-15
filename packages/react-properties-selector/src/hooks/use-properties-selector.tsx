@@ -7,7 +7,8 @@ import {
   UseAmountPropertySelectorOptions,
   UseCheckboxPropertySelectorOptions,
   UseComboboxPropertySelectorOptions,
-  UseTextboxPropertySelectorParams,
+  UseImageComboboxPropertySelectorOptions,
+  UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
 
 export type UsePropertiesSelectorOptions = {
@@ -122,6 +123,10 @@ export type SelectorRenderInfo =
       readonly getUseComboboxParams: () => UseComboboxPropertySelectorOptions;
     } & SelectorRenderInfoBase)
   | ({
+      readonly type: "ImageComboBox";
+      readonly getUseImageComboboxParams: () => UseImageComboboxPropertySelectorOptions;
+    } & SelectorRenderInfoBase)
+  | ({
       readonly type: "RadioGroup";
     } & SelectorRenderInfoBase)
   | ({
@@ -134,7 +139,7 @@ export type SelectorRenderInfo =
     } & SelectorRenderInfoBase)
   | ({
       readonly type: "TextBox";
-      readonly getUseTextboxParams: () => UseTextboxPropertySelectorParams;
+      readonly getUseTextboxParams: () => UseTextboxPropertySelectorOptions;
     } & SelectorRenderInfoBase);
 
 export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
@@ -306,12 +311,27 @@ function createSelector(
           locked,
         }),
       };
-
     case "ComboBox":
       return {
         ...myBase,
         type: "ComboBox",
         getUseComboboxParams: () => ({
+          sortValidFirst: true,
+          propertyName,
+          propertyValueSet: selectedProperties,
+          valueItems,
+          showCodes: includeCodes,
+          filterPrettyPrint,
+          onValueChange,
+          readOnly,
+          locked,
+        }),
+      };
+    case "ImageComboBox":
+      return {
+        ...myBase,
+        type: "ImageComboBox",
+        getUseImageComboboxParams: () => ({
           sortValidFirst: true,
           propertyName,
           propertyValueSet: selectedProperties,

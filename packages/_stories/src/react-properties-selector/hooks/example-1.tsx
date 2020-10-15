@@ -6,16 +6,21 @@ import {
   getDefaultAmountInputBoxStyle,
   getDefaultCheckboxContainerStyle,
   getDefaultCheckboxStyle,
+  getDefaultListItemStyle,
+  getDefaultMenuStyle,
   getDefaultOptionStyle,
   getDefaultSelectStyle,
+  getDefaultToggleButtonStyle,
   useAmountPropertySelector,
   UseAmountPropertySelectorOptions,
   useCheckboxPropertySelector,
   UseCheckboxPropertySelectorOptions,
   useComboboxPropertySelector,
   UseComboboxPropertySelectorOptions,
+  useImageComboboxPropertySelector,
+  UseImageComboboxPropertySelectorOptions,
   useTextboxPropertySelector,
-  UseTextboxPropertySelectorParams,
+  UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import { exampleProductProperties } from "./example-product-properties";
@@ -76,6 +81,8 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                                 return <TheCheckboxPropertySelector {...selector.getUseCheckboxParams()} />;
                               case "ComboBox":
                                 return <TheComboboxPropertySelector {...selector.getUseComboboxParams()} />;
+                              case "ImageComboBox":
+                                return <TheImageComboboxPropertySelector {...selector.getUseImageComboboxParams()} />;
                               case "AmountField":
                                 return <TheAmountPropertySelector {...selector.getUseAmountParams()} />;
                               default:
@@ -137,7 +144,7 @@ function TheCheckboxPropertySelector(props: UseCheckboxPropertySelectorOptions):
   );
 }
 
-function TheTextboxPropertySelector(props: UseTextboxPropertySelectorParams): JSX.Element {
+function TheTextboxPropertySelector(props: UseTextboxPropertySelectorOptions): JSX.Element {
   const sel = useTextboxPropertySelector(props);
   return <input {...sel.getInputProps()} />;
 }
@@ -150,5 +157,33 @@ function TheComboboxPropertySelector(props: UseComboboxPropertySelectorOptions):
         <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
       ))}
     </select>
+  );
+}
+
+function TheImageComboboxPropertySelector(props: UseImageComboboxPropertySelectorOptions): JSX.Element {
+  const sel = useImageComboboxPropertySelector(props);
+  return (
+    <div style={{ userSelect: "none" }}>
+      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle(sel)}>
+        <span>
+          {sel.imageUrl && <img src={sel.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+          {" " + sel.label + " "}
+        </span>
+        <i className="fa fa-caret-down" />
+      </button>
+      {/* optionsList */}
+      {sel.isOpen && (
+        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
+          {sel.items.map((o) => (
+            <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
+              <span>
+                {o.imageUrl && <img src={o.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+                {" " + o.label + " "}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
