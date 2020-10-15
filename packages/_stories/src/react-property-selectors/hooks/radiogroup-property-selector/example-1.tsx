@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Unit } from "uom";
-import { createRadioGroupPropertySelector, RadioGroupPropertyValueItem } from "@promaster-sdk/react-property-selectors";
+import {
+  createRadioGroupPropertySelector,
+  RadioGroupItemInfo,
+  RadioGroupPropertyValueItem,
+  useRadioGroupPropertySelector,
+} from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { unitsFormat, units } from "../../units-map";
@@ -52,21 +57,51 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
     },
   ];
 
+  const selA = useRadioGroupPropertySelector({
+    propertyName: "a",
+    valueItems: valueItems1,
+    propertyValueSet: state,
+    locked: false,
+    showCodes: true,
+    onValueChange: (pv) => setState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state)),
+    filterPrettyPrint: filterPrettyPrint,
+    readOnly: false,
+  });
+
+  const selB = useRadioGroupPropertySelector({
+    propertyName: "b",
+    valueItems: valueItems2,
+    propertyValueSet: state,
+    locked: false,
+    showCodes: true,
+    onValueChange: (pv) => setState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, state)),
+    filterPrettyPrint: filterPrettyPrint,
+    readOnly: false,
+  });
+
+  console.log(selB);
+
   return (
     <div>
       <div>ComboboxPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
       <div>
-        <RadioGroupPropertySelector
-          propertyName="a"
-          valueItems={valueItems1}
-          propertyValueSet={state}
-          locked={false}
-          showCodes={true}
-          onValueChange={(pv) => setState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state))}
-          filterPrettyPrint={filterPrettyPrint}
-          readOnly={false}
-        />
+        <div id="RadioGroup" {...selA.getGroupProps()}>
+          {selA.items.map((item) => (
+            // <RadioGroupItem {...item} />
+            <div
+              id="RadioGroupItem"
+              {...item.getItemProps()}
+              // onClick={onClick}
+              title={item.toolTip}
+              style={getDefaultRadioItemStyle(item)}
+            >
+              {item.imageUrl ? <img src={item.imageUrl} /> : undefined}
+              {item.label}
+            </div>
+          ))}
+        </div>
+
         <RadioGroupPropertySelector
           propertyName="b"
           valueItems={valueItems2}
@@ -80,4 +115,17 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
       </div>
     </div>
   );
+}
+
+function getDefaultRadioItemStyle(item: RadioGroupItemInfo): {} {
+  return {
+    cursor: item.isItemValid ? "pointer" : "not-allowed",
+    display: "inline-block",
+    marginRight: "10px",
+    padding: "10px",
+    border: item.selected ? "2px solid " + (item.isItemValid ? "#39f" : "red") : "2px solid transparent",
+    color: item.isItemValid ? "black" : "grey",
+    // ${(p: RadioGroupItemProps) =>
+    //   p.isItemValid ? "&:hover { background: #39f; color: white;" : ""}
+  };
 }
