@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/react-property-selectors",
   "author": "Divid Promaster AB",
   "license": "MIT",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "main": "lib/index.js",
   "types": "lib/index",
   "description": "User interface for selecting single property values",
@@ -21,8 +21,8 @@
     "promaster-sdk"
   ],
   "dependencies": {
-    "@promaster-sdk/property": "^5.0.0",
-    "@promaster-sdk/property-filter-pretty": "^5.0.0",
+    "@promaster-sdk/property": "^5.0.1",
+    "@promaster-sdk/property-filter-pretty": "^5.0.1",
     "react": "^16.8.4",
     "uom": "^5.0.0"
   },
