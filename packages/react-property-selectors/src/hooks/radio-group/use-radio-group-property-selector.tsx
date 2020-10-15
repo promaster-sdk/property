@@ -34,7 +34,6 @@ export type RadioGroupItemInfo = {
   readonly label: string;
   readonly imageUrl: string | undefined;
   readonly toolTip: string;
-  // readonly onClick: () => void;
   readonly isItemValid: boolean;
 };
 
@@ -75,14 +74,6 @@ export function useRadioGroupPropertySelector({
       };
     })
     .sort((a, b) => a.sortNo - b.sortNo);
-
-  // return (
-  //   <RadioGroup locked={locked}>
-  //     {items.map((item) => (
-  //       <RadioGroupItem {...item} />
-  //     ))}
-  //   </RadioGroup>
-  // );
 
   return {
     isLocked: locked,

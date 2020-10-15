@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Unit } from "uom";
 import {
-  createRadioGroupPropertySelector,
   RadioGroupItemInfo,
   RadioGroupPropertyValueItem,
+  UseRadioGroupPropertySelector,
   useRadioGroupPropertySelector,
 } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
@@ -21,8 +21,6 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
     unitsFormat,
     unitLookup
   );
-
-const RadioGroupPropertySelector = createRadioGroupPropertySelector({});
 
 export function RadioGroupPropertySelectorExample1(): JSX.Element {
   const [state, setState] = useState(PropertyValueSet.fromString("a=1;b=2", unitLookup));
@@ -86,33 +84,22 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
       <div>ComboboxPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
       <div>
-        <div id="RadioGroup" {...selA.getGroupProps()}>
-          {selA.items.map((item) => (
-            // <RadioGroupItem {...item} />
-            <div
-              id="RadioGroupItem"
-              {...item.getItemProps()}
-              // onClick={onClick}
-              title={item.toolTip}
-              style={getDefaultRadioItemStyle(item)}
-            >
-              {item.imageUrl ? <img src={item.imageUrl} /> : undefined}
-              {item.label}
-            </div>
-          ))}
-        </div>
-
-        <RadioGroupPropertySelector
-          propertyName="b"
-          valueItems={valueItems2}
-          propertyValueSet={state}
-          locked={false}
-          showCodes={true}
-          onValueChange={(pv) => setState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, state))}
-          filterPrettyPrint={filterPrettyPrint}
-          readOnly={false}
-        />
+        <MyRadioGroupSelector {...selA} />
+        <MyRadioGroupSelector {...selB} />
       </div>
+    </div>
+  );
+}
+
+function MyRadioGroupSelector(sel: UseRadioGroupPropertySelector): JSX.Element {
+  return (
+    <div {...sel.getGroupProps()}>
+      {sel.items.map((item) => (
+        <div {...item.getItemProps()} title={item.toolTip} style={getDefaultRadioItemStyle(item)}>
+          {item.imageUrl ? <img src={item.imageUrl} /> : undefined}
+          {item.label}
+        </div>
+      ))}
     </div>
   );
 }
