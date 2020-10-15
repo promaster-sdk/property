@@ -13,13 +13,21 @@ A common task in product selection tools is to have an UI that allows the user t
 
 This package uses [hooks](https://reactjs.org/docs/hooks-reference.html) and [prop-getters](https://kentcdodds.com/blog/how-to-give-rendering-control-to-users-with-prop-getters/) to create headless UI components. Similar to [downshift](https://github.com/downshift-js/downshift) and [react-table](https://github.com/tannerlinsley/react-table).
 
-> NOTE: Starting with v6 the old component based versions of the selectors are deprecated. See the [old README](README_v5.md) for info on them.
+> NOTE: Starting with v7 the old component based versions of the selectors are deprecated. See the [old README](README_v6.md) for info on them.
 
 ## Installation
 
 `npm install --save @promaster-sdk/react-property-selectors`
 
 The library is compiled to ES5 and no polyfills are required.
+
+## How to run
+
+This is a library of react components so it cannot be run directly. To demonstrate and test the react component [react-storybook](https://storybook.js.org/) is used. To start storybook just run:
+
+```bash
+yarn storybook
+```
 
 ## Examples
 
