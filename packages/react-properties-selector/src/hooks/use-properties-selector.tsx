@@ -79,11 +79,29 @@ export type UserPropertiesSelectorGroup = {
 };
 
 export function usePropertiesSelector(params: UsePropertiesSelectorParams): UsePropertiesSelector {
-  const p = paramsWithDefaults(params);
+  const requiedParams = paramsWithDefaults(params);
 
-  const allSelectors = createPropertySelectorRenderInfos(p);
+  // const allSelectors = createPropertySelectorRenderInfos(p);
 
-  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(p.initiallyClosedGroups);
+  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = params;
+
+  const sortedArray = productProperties
+    .slice()
+    .sort((a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0));
+
+  const allSelectors: ReadonlyArray<SelectorRenderInfo> = sortedArray
+    .filter(
+      (property: UsePropertiesSelectorProperty) =>
+        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
+    )
+    .map((p) =>
+      createSelector(
+        p,
+        requiedParams
+      )
+    );
+
+  const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiedParams.initiallyClosedGroups);
 
   return {
     groups: getDistinctGroupNames(allSelectors).map((name) => {
@@ -104,26 +122,7 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
   };
 }
 
-function createPropertySelectorRenderInfos(
-  params: Required<UsePropertiesSelectorParams>
-): ReadonlyArray<SelectorRenderInfo> {
-  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = params;
-
-  const sortedArray = productProperties
-    .slice()
-    .sort((a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0));
-
-  const selectorDefinitions: ReadonlyArray<SelectorRenderInfo> = sortedArray
-    .filter(
-      (property: UsePropertiesSelectorProperty) =>
-        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
-    )
-    .map((p) => doIt(p, params));
-
-  return selectorDefinitions;
-}
-
-function doIt(
+function createSelector(
   property: UsePropertiesSelectorProperty,
   params: Required<UsePropertiesSelectorParams>
 ): SelectorRenderInfo {
