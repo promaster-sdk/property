@@ -159,48 +159,6 @@ function createPropertySelectorRenderInfos(
   return selectorDefinitions;
 }
 
-function getDefaultFormat(
-  property: UsePropertiesSelectorProperty,
-  selectedValue: PropertyValue.PropertyValue
-): UsePropertiesSelectorAmountFormat {
-  const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
-  const propertyType = getPropertyType(property.quantity);
-  switch (propertyType) {
-    case "text":
-    case "integer":
-      return defaultFormat;
-    case "amount":
-      return selectedValue && selectedValue.type === "amount"
-        ? {
-            unit: selectedValue.value.unit,
-            decimalCount: selectedValue.value.decimalCount,
-          }
-        : defaultFormat;
-    default:
-      return exhaustiveCheck(propertyType, true);
-  }
-}
-
-function getIsValid(
-  property: UsePropertiesSelectorProperty,
-  selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined,
-  selectedProperties: PropertyValueSet.PropertyValueSet,
-  comparer: PropertyValue.Comparer
-): boolean {
-  switch (getPropertyType(property.quantity)) {
-    case "integer":
-      return selectedValueItem
-        ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter, comparer)
-        : false;
-    case "amount":
-      return (
-        property.validation_filter && PropertyFilter.isValid(selectedProperties, property.validation_filter, comparer)
-      );
-    default:
-      return true;
-  }
-}
-
 type CreateSelectorRenderInfoParams = {
   readonly property: UsePropertiesSelectorProperty;
   readonly selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined;
@@ -361,6 +319,48 @@ function createSelectorRenderInfo(
     }
     default:
       return exhaustiveCheck(selectorType, true);
+  }
+}
+
+function getDefaultFormat(
+  property: UsePropertiesSelectorProperty,
+  selectedValue: PropertyValue.PropertyValue
+): UsePropertiesSelectorAmountFormat {
+  const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
+  const propertyType = getPropertyType(property.quantity);
+  switch (propertyType) {
+    case "text":
+    case "integer":
+      return defaultFormat;
+    case "amount":
+      return selectedValue && selectedValue.type === "amount"
+        ? {
+            unit: selectedValue.value.unit,
+            decimalCount: selectedValue.value.decimalCount,
+          }
+        : defaultFormat;
+    default:
+      return exhaustiveCheck(propertyType, true);
+  }
+}
+
+function getIsValid(
+  property: UsePropertiesSelectorProperty,
+  selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined,
+  selectedProperties: PropertyValueSet.PropertyValueSet,
+  comparer: PropertyValue.Comparer
+): boolean {
+  switch (getPropertyType(property.quantity)) {
+    case "integer":
+      return selectedValueItem
+        ? PropertyFilter.isValid(selectedProperties, selectedValueItem.validationFilter, comparer)
+        : false;
+    case "amount":
+      return (
+        property.validation_filter && PropertyFilter.isValid(selectedProperties, property.validation_filter, comparer)
+      );
+    default:
+      return true;
   }
 }
 
