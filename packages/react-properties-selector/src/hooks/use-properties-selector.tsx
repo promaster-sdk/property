@@ -174,46 +174,13 @@ function createSelector(
     isHidden,
   };
 
-  // const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
-  //   property,
-  //   selectedValueItem,
-  //   propertyFormat,
-  // };
-
-  // return createSelectorRenderInfo(myBase, params, createSelectorRenderInfoParams);
-
-  // const {
-  //   productProperties,
-  //   comparer,
-  //   autoSelectSingleValidValue,
-  //   includeCodes,
-  //   inputDebounceTime,
-  //   valueMustBeNumericMessage,
-  //   valueIsRequiredMessage,
-  //   onChange,
-  //   optionalProperties,
-  //   filterPrettyPrint,
-  //   units,
-  //   unitsFormat,
-  //   selectedProperties,
-  //   onPropertyFormatChanged,
-  //   onPropertyFormatCleared,
-  //   lockSingleValidValue,
-  //   readOnlyProperties,
-  // } = params1;
-  // const { property, propertyFormat, selectedValueItem } = params;
-
   const selectorType = getSelectorType(property);
-
   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
-
   const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
-
   const fieldName = property.field_name || property.name;
   const propertyName = property.name;
   const validationFilter = property.validation_filter;
   const valueItems = property.value;
-
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
       ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
@@ -314,7 +281,6 @@ function createSelector(
           onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
             onPropertyFormatChanged(propertyName, unit, decimalCount),
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
-          // onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
           fieldName: fieldName,
@@ -334,170 +300,6 @@ function createSelector(
       return exhaustiveCheck(selectorType, true);
   }
 }
-
-// type CreateSelectorRenderInfoParams = {
-//   readonly property: UsePropertiesSelectorProperty;
-//   readonly selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined;
-//   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
-// };
-
-// function createSelectorRenderInfo(
-//   myBase: SelectorRenderInfoBase,
-//   params1: Required<UsePropertiesSelectorParams>,
-//   params: CreateSelectorRenderInfoParams
-// ): SelectorRenderInfo {
-//   const {
-//     productProperties,
-//     comparer,
-//     autoSelectSingleValidValue,
-//     includeCodes,
-//     inputDebounceTime,
-//     valueMustBeNumericMessage,
-//     valueIsRequiredMessage,
-//     onChange,
-//     optionalProperties,
-//     filterPrettyPrint,
-//     units,
-//     unitsFormat,
-//     selectedProperties,
-//     onPropertyFormatChanged,
-//     onPropertyFormatCleared,
-//     lockSingleValidValue,
-//     readOnlyProperties,
-//   } = params1;
-//   const { property, propertyFormat, selectedValueItem } = params;
-
-//   const selectorType = getSelectorType(property);
-
-//   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
-
-//   const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
-
-//   const fieldName = property.field_name || property.name;
-//   const propertyName = property.name;
-//   const validationFilter = property.validation_filter;
-//   const valueItems = property.value;
-
-//   const locked =
-//     autoSelectSingleValidValue || lockSingleValidValue
-//       ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
-//       : false;
-
-//   function onValueChange(newValue: PropertyValue.PropertyValue): void {
-//     propertyOnChange(
-//       newValue
-//         ? PropertyValueSet.set(propertyName, newValue, selectedProperties)
-//         : PropertyValueSet.removeProperty(propertyName, selectedProperties),
-//       propertyName
-//     );
-//   }
-
-//   switch (selectorType) {
-//     case "TextBox": {
-//       return {
-//         ...myBase,
-//         type: "TextBox",
-//         getUseTextboxParams: () => ({
-//           propertyName,
-//           propertyValueSet: selectedProperties,
-//           readOnly,
-//           onValueChange,
-//           debounceTime: inputDebounceTime,
-//         }),
-//       };
-//     }
-
-//     case "RadioGroup":
-//       return {
-//         ...myBase,
-//         type: "RadioGroup",
-//       };
-//     // <RadioGroupPropertySelector
-//     //   propertyName={propertyName}
-//     //   propertyValueSet={selectedProperties}
-//     //   valueItems={
-//     //     valueItems &&
-//     //     valueItems.map(vi => ({
-//     //       value: vi.value,
-//     //       text: translatePropertyValue(propertyName, (vi.value
-//     //         ? PropertyValue.getInteger(vi.value)
-//     //         : undefined) as number),
-//     //       sortNo: vi.sort_no,
-//     //       validationFilter: vi.property_filter,
-//     //       image: vi.image
-//     //     }))
-//     //   }
-//     //   showCodes={includeCodes}
-//     //   filterPrettyPrint={filterPrettyPrint}
-//     //   onValueChange={onValueChange}
-//     //   readOnly={readOnly}
-//     //   locked={locked}
-//     // />
-
-//     case "Checkbox":
-//       return {
-//         ...myBase,
-//         type: "Checkbox",
-//         getUseCheckboxParams: () => ({
-//           propertyName,
-//           propertyValueSet: selectedProperties,
-//           valueItems,
-//           showCodes: includeCodes,
-//           filterPrettyPrint,
-//           onValueChange,
-//           readOnly: readOnly,
-//           locked,
-//         }),
-//       };
-
-//     case "ComboBox":
-//       return {
-//         ...myBase,
-//         type: "ComboBox",
-//         getUseComboboxParams: () => ({
-//           sortValidFirst: true,
-//           propertyName,
-//           propertyValueSet: selectedProperties,
-//           valueItems,
-//           showCodes: includeCodes,
-//           filterPrettyPrint,
-//           onValueChange,
-//           readOnly,
-//           locked,
-//         }),
-//       };
-//     case "AmountField": {
-//       return {
-//         ...myBase,
-//         type: "AmountField",
-//         getUseAmountParams: () => ({
-//           propertyName,
-//           propertyValueSet: selectedProperties,
-//           inputUnit: propertyFormat.unit,
-//           inputDecimalCount: propertyFormat.decimalCount,
-//           onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
-//             onPropertyFormatChanged(propertyName, unit, decimalCount),
-//           onFormatCleared: () => onPropertyFormatCleared(propertyName),
-//           // onFormatSelectorToggled: (active: boolean) => onPropertyFormatSelectorToggled(propertyName, active),
-//           onValueChange,
-//           notNumericMessage: valueMustBeNumericMessage,
-//           fieldName: fieldName,
-//           // If it is optional then use blank required message
-//           isRequiredMessage:
-//             optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : valueIsRequiredMessage,
-//           validationFilter,
-//           filterPrettyPrint,
-//           readonly: readOnly,
-//           debounceTime: inputDebounceTime,
-//           unitsFormat,
-//           units,
-//         }),
-//       };
-//     }
-//     default:
-//       return exhaustiveCheck(selectorType, true);
-//   }
-// }
 
 function getDefaultFormat(
   property: UsePropertiesSelectorProperty,
