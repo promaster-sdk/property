@@ -9,7 +9,6 @@ import {
   UsePropertiesSelectorOnPropertyFormatChanged,
   UsePropertiesSelectorOnPropertyFormatCleared,
   UsePropertiesSelectorProperty,
-  // UsePropertiesSelectorPropertySelectorRenderInfo,
   UsePropertiesSelectorPropertyValueItem,
   UsePropertiesSelectorPropertyFormats,
   UsePropertiesSelectorOnPropertiesChanged,
@@ -108,9 +107,8 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 function createPropertySelectorRenderInfos(
   params: Required<UsePropertiesSelectorParams>
 ): ReadonlyArray<SelectorRenderInfo> {
-  const { productProperties, selectedProperties, includeHiddenProperties, propertyFormats, comparer } = params;
+  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = params;
 
-  // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
   const sortedArray = productProperties
     .slice()
     .sort((a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0));
@@ -120,49 +118,51 @@ function createPropertySelectorRenderInfos(
       (property: UsePropertiesSelectorProperty) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
     )
-    .map((property: UsePropertiesSelectorProperty) => {
-      const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
-      const selectedValueItem =
-        property.value &&
-        property.value.find(
-          (value: UsePropertiesSelectorPropertyValueItem) =>
-            (value.value === undefined && selectedValue === undefined) ||
-            (value.value && PropertyValue.equals(selectedValue, value.value, comparer))
-        );
-
-      const defaultFormat = getDefaultFormat(property, selectedValue);
-      const isValid = getIsValid(property, selectedValueItem, selectedProperties, comparer);
-
-      // TODO: Better handling of format to use when the format is missing in the map
-      const propertyFormat = propertyFormats[property.name] || defaultFormat;
-
-      const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer);
-      // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
-      // const labelHover = translatePropertyLabelHover(property.name);
-
-      const myBase: SelectorRenderInfoBase = {
-        sortNo: property.sort_no,
-        propertyName: property.name,
-        groupName: property.group,
-        isValid,
-        isHidden,
-      };
-
-      const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
-        property,
-        selectedValueItem,
-        propertyFormat,
-      };
-
-      // const s: UsePropertiesSelectorPropertySelectorRenderInfo = {
-      //   ...myBase,
-      //   selectorRenderInfo: createSelectorRenderInfo(myBase, params, createSelectorRenderInfoParams),
-      // };
-      // return s;
-      return createSelectorRenderInfo(myBase, params, createSelectorRenderInfoParams);
-    });
+    .map((p) => doIt(p, params));
 
   return selectorDefinitions;
+}
+
+function doIt(
+  property: UsePropertiesSelectorProperty,
+  params: Required<UsePropertiesSelectorParams>
+): SelectorRenderInfo {
+  const { selectedProperties, propertyFormats, comparer } = params;
+
+  const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
+  const selectedValueItem =
+    property.value &&
+    property.value.find(
+      (value: UsePropertiesSelectorPropertyValueItem) =>
+        (value.value === undefined && selectedValue === undefined) ||
+        (value.value && PropertyValue.equals(selectedValue, value.value, comparer))
+    );
+
+  const defaultFormat = getDefaultFormat(property, selectedValue);
+  const isValid = getIsValid(property, selectedValueItem, selectedProperties, comparer);
+
+  // TODO: Better handling of format to use when the format is missing in the map
+  const propertyFormat = propertyFormats[property.name] || defaultFormat;
+
+  const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer);
+  // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
+  // const labelHover = translatePropertyLabelHover(property.name);
+
+  const myBase: SelectorRenderInfoBase = {
+    sortNo: property.sort_no,
+    propertyName: property.name,
+    groupName: property.group,
+    isValid,
+    isHidden,
+  };
+
+  const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
+    property,
+    selectedValueItem,
+    propertyFormat,
+  };
+
+  return createSelectorRenderInfo(myBase, params, createSelectorRenderInfoParams);
 }
 
 type CreateSelectorRenderInfoParams = {
