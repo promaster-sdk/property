@@ -5,11 +5,15 @@
 [![types][types-image]][types-url]
 [![MIT license][license-image]][license-url]
 
-User interface for selecting single property values
+Hooks for building UI for selection of a single property value.
 
 ## Introduction
 
 A common task in product selection tools is to have an UI that allows the user to make a valid property value selection. This package contains a react components for showing different UI for selection of a single property, such as a dropdown, textbox etc.
+
+This package uses [hooks](https://reactjs.org/docs/hooks-reference.html) and [prop-getters](https://kentcdodds.com/blog/how-to-give-rendering-control-to-users-with-prop-getters/) to create headless UI components. Similar to [downshift](https://github.com/downshift-js/downshift) and [react-table](https://github.com/tannerlinsley/react-table).
+
+> NOTE: Starting with v6 the old component based versions of the selectors are deprecated. See the [old README](README_v5.md) for info on them.
 
 ## Installation
 
@@ -17,104 +21,146 @@ A common task in product selection tools is to have an UI that allows the user t
 
 The library is compiled to ES5 and no polyfills are required.
 
-## Usage
+## Examples
 
-### ComboboxPropertySelector
+The [storybooks stories](https://github.com/promaster-sdk/property/tree/master/packages/_stories/src/react-property-selectors) is currently the best examples how to use this package.
+
+## Available hooks
+
+### useAmountInputBox
 
 ```ts
-<ComboboxPropertySelector
-  propertyName="..."
-  valueItems={...}
-  propertyValueSet={...}
-  locked={false}
-  showCodes={true}
-  sortValidFirst={true}
-  onValueChange={pv => console.log("onValueChange")}
-  filterPrettyPrint={filterPrettyPrint}
-  readOnly={false}
-/>
+const sel = useAmountInputBox({
+  value: state.amount,
+  inputUnit: state.selectedUnit,
+  inputDecimalCount: state.selectedDecimalCount,
+  onValueChange,
+  readonly: false,
+  errorMessage: "",
+  isRequiredMessage: "Is required",
+  notNumericMessage: "Not numeric",
+  debounceTime: 350,
+});
 ```
 
-### TextboxPropertySelector
+### useAmountFormatSelector
 
 ```ts
-<TextboxPropertySelector
-  propertyName="..."
-  propertyValueSet={...}
-  onValueChange={pv => console.log("onValueChange")}
-  readOnly={false}
-  debounceTime={600}
-/>
+const sel = useAmountFormatSelector({
+  selectedUnit: state.selectedUnit,
+  selectedDecimalCount: state.selectedDecimalCount,
+  onFormatChanged: (selectedUnit: Unit.Unit<unknown>, selectedDecimalCount: number) =>
+    setState(merge(state, { selectedUnit, selectedDecimalCount })),
+  onFormatCleared: () =>
+    setState(
+      merge(state, {
+        selectedUnit: BaseUnits.Meter,
+        selectedDecimalCount: 2,
+      })
+    ),
+  unitsFormat: unitsFormat,
+  units: units,
+});
 ```
 
-### CheckboxPropertySelector
+### useAmountPropertySelector
 
 ```ts
-<CheckboxPropertySelector
-  propertyName="..."
-  valueItems={...}
-  propertyValueSet={...}
-  locked={false}
-  showCodes={true}
-  onValueChange={pv => console.log("onValueChange")}
-  filterPrettyPrint={() => ""}
-  readOnly={false}
-/>
+const sel = useAmountPropertySelector({
+  fieldName: "a",
+  propertyName: "a",
+  propertyValueSet: state.propertyValueSet,
+  inputUnit: state.selectedUnit,
+  inputDecimalCount: state.selectedDecimalCount,
+  onValueChange,
+  filterPrettyPrint: filterPrettyPrint,
+  validationFilter: validationFilter,
+  readonly: false,
+  isRequiredMessage: "Is required",
+  notNumericMessage: "Not numeric",
+  onFormatChanged,
+  onFormatCleared,
+  unitsFormat: unitsFormat,
+  units: units,
+});
 ```
 
-### AmountPropertySelector
+### useCheckboxPropertySelector
 
 ```ts
-<AmountPropertySelector
-  fieldName="..."
-  propertyName="..."
-  propertyValueSet={...}
-  inputUnit={...}
-  inputDecimalCount={...}
-  onValueChange={pv => console.log("onValueChange)}
-  filterPrettyPrint={...}
-  validationFilter={...}
-  readOnly={false}
-  isRequiredMessage="Is required"
-  notNumericMessage="Not numeric"
-  onFormatChanged={(selectedUnit, selectedDecimalCount) => console.log("onFormatChanged")}
-  onFormatCleared={() => console.log("onFormatCleared")}
-  unitsFormat={UnitsFormat}
-  units={Units}
-/>
+const sel = useCheckboxPropertySelector({
+  propertyName: "a",
+  valueItems: valueItems1,
+  propertyValueSet: myState,
+  locked: false,
+  showCodes: true,
+  onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
+
+  filterPrettyPrint: () => "",
+  readOnly: false,
+});
 ```
 
-### AmountInputBox
+### useComboboxPropertySelector
 
 ```ts
-<AmountInputBox
-  value={...}
-  inputUnit={...}
-  inputDecimalCount={...}
-  onValueChange={amount => console.log("changed")}
-  readOnly={false}
-  errorMessage=""
-  isRequiredMessage="Is required"
-  notNumericMessage="Not numeric"
-  debounceTime={350}
-/>
+const sel = useComboboxPropertySelector({
+  propertyName: "a",
+  valueItems: valueItems1,
+  propertyValueSet: myState,
+  locked: false,
+  showCodes: true,
+  sortValidFirst: true,
+
+  onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
+
+  filterPrettyPrint: filterPrettyPrint,
+  readOnly: false,
+});
 ```
 
-### AmountFormatSelector
+### useImageComboboxPropertySelector
 
 ```ts
-<AmountFormatSelector
-  selectedUnit={...}
-  selectedDecimalCount={...}
-  onFormatChanged={(
-    selectedUnit: Unit.Unit<any>,
-    selectedDecimalCount: number
-  ) => console.log(selectedUnit, selectedDecimalCount))}
-  onFormatCleared={() => console.log("onFormatCleared")}
-  onFormatSelectorActiveChanged={console.log("Toggle format selector")}
-  unitsFormat={...}
-  units={...}
-/>
+const sel = useImageComboboxPropertySelector({
+  propertyName: "b",
+  valueItems: valueItems2,
+  propertyValueSet: myState,
+  locked: false,
+  showCodes: true,
+  sortValidFirst: true,
+  onValueChange: (pv) => setMyState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, myState)),
+
+  filterPrettyPrint: filterPrettyPrint,
+  readOnly: false,
+});
+```
+
+### useRadiogroupPropertySelector
+
+```ts
+const sel = useRadioGroupPropertySelector({
+  propertyName: "a",
+  valueItems: valueItems1,
+  propertyValueSet: state,
+  locked: false,
+  showCodes: true,
+  onValueChange: (pv) => setState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state)),
+  filterPrettyPrint: filterPrettyPrint,
+  readOnly: false,
+});
+```
+
+## useTextboxPropertySelector
+
+```ts
+const { getInputProps } = useTextboxPropertySelector({
+  propertyName: "a",
+  propertyValueSet: myState,
+  onValueChange,
+  readOnly: false,
+  debounceTime: 600,
+});
 ```
 
 [version-image]: https://img.shields.io/npm/v/@promaster-sdk/react-property-selectors.svg?style=flat
