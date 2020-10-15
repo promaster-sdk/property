@@ -2,6 +2,7 @@ import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
 export type Option = {
+  readonly sortNo: number;
   readonly value: string;
   readonly label: string;
   readonly isItemValid: boolean;
@@ -33,6 +34,26 @@ export type GetOptionsParams = {
   readonly comparer?: PropertyValue.Comparer;
 };
 
+function makeOption(
+  valueItem: ValueItem,
+  propertyName: string,
+  propertyValueSet: PropertyValueSet.PropertyValueSet,
+  safeComparer: PropertyValue.Comparer,
+  showCodes: boolean,
+  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint
+): Option {
+  const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem, safeComparer);
+  return {
+    value: _getItemValue(valueItem),
+    label: _getItemLabel(valueItem, showCodes),
+    isItemValid: isItemValid,
+    image: valueItem.image,
+    sortNo: valueItem.sortNo,
+    toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint),
+    // getOptionProps: () => ({}),
+  };
+}
+
 export function getSelectableOptions({
   sortValidFirst,
   propertyName,
@@ -50,16 +71,7 @@ export function getSelectableOptions({
   const safeComparer = comparer || PropertyValue.defaultComparer;
   const options: Array<Option> = valueItems
     .map((valueItem) => {
-      const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem, safeComparer);
-      return {
-        value: _getItemValue(valueItem),
-        label: _getItemLabel(valueItem, showCodes),
-        isItemValid: isItemValid,
-        image: valueItem.image,
-        sortNo: valueItem.sortNo,
-        toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint),
-        getOptionProps: () => ({}),
-      };
+      return makeOption(valueItem, propertyName, propertyValueSet, safeComparer, showCodes, filterPrettyPrint);
     })
     .sort((a, b) => {
       if (sortValidFirst) {
@@ -85,7 +97,7 @@ export function getSelectableOptions({
 export function getSelectedOption(
   { propertyName, propertyValueSet, valueItems }: GetSelectedOptionParams,
   options: ReadonlyArray<Option>
-): Option {
+): [Option, ReadonlyArray<Option>] {
   if (!valueItems) {
     valueItems = [];
   }
@@ -107,6 +119,7 @@ export function getSelectedOption(
     // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
     // valueItems.unshift(selectedValueItem);
     valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<ValueItem>;
+    // options = [selectedValueItem, ...options];
   } else {
     selectedValueItem = selectedValueItemOrUndefined;
   }
@@ -115,7 +128,7 @@ export function getSelectedOption(
     console.log("OLLLE!!", selectedValueItem);
     throw new Error("Could not find..");
   }
-  return selectedOption;
+  return [selectedOption, options];
 }
 
 function _getItemLabel(valueItem: ValueItem, showCodes: boolean): string {

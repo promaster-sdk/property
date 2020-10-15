@@ -42,8 +42,8 @@ export function useComboboxPropertySelector(
 ): UseComboboxPropertySelector {
   const { onValueChange, readOnly, locked } = hookOptions;
 
-  const selectableOptions = getSelectableOptions(hookOptions);
-  const selectedOption = getSelectedOption(hookOptions, selectableOptions);
+  const originallySelectableOptions = getSelectableOptions(hookOptions);
+  const [selectedOption, selectableOptions] = getSelectedOption(hookOptions, originallySelectableOptions);
 
   return {
     isSelectedItemValid: selectedOption.isItemValid,

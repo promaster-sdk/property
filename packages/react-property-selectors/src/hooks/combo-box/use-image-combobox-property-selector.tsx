@@ -48,8 +48,8 @@ export function useImageComboboxPropertySelector(
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectableOptions = getSelectableOptions(hookOptions);
-  const selectedOption = getSelectedOption(hookOptions, selectableOptions);
+  const originallySelectableOptions = getSelectableOptions(hookOptions);
+  const [selectedOption, selectableOptions] = getSelectedOption(hookOptions, originallySelectableOptions);
 
   return {
     label: selectedOption.label,
