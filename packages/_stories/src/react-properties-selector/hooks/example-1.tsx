@@ -74,17 +74,17 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                             // Need to put property selectors in separate components because their hooks cannt be declared in a loop
                             switch (selector.type) {
                               case "TextBox":
-                                return <TheTextboxPropertySelector {...selector.getUseTextboxParams()} />;
+                                return <MyTextboxSelector {...selector.getUseTextboxParams()} />;
                               case "RadioGroup":
                                 return <div>RadioGroupPropertySelector</div>;
                               case "Checkbox":
-                                return <TheCheckboxPropertySelector {...selector.getUseCheckboxParams()} />;
+                                return <MyCheckboxSelector {...selector.getUseCheckboxParams()} />;
                               case "ComboBox":
-                                return <TheComboboxPropertySelector {...selector.getUseComboboxParams()} />;
+                                return <MyComboboxSelector {...selector.getUseComboboxParams()} />;
                               case "ImageComboBox":
-                                return <TheImageComboboxPropertySelector {...selector.getUseImageComboboxParams()} />;
+                                return <MyImageComboboxSelector {...selector.getUseImageComboboxParams()} />;
                               case "AmountField":
-                                return <TheAmountPropertySelector {...selector.getUseAmountParams()} />;
+                                return <MyAmountSelector {...selector.getUseAmountParams()} />;
                               default:
                                 return exhaustiveCheck(selector, true);
                             }
@@ -102,7 +102,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   );
 }
 
-function TheAmountPropertySelector(props: UseAmountPropertySelectorOptions): JSX.Element {
+function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.Element {
   const sel = useAmountPropertySelector(props);
   return (
     <span {...sel.getWrapperProps()}>
@@ -133,7 +133,7 @@ function TheAmountPropertySelector(props: UseAmountPropertySelectorOptions): JSX
   );
 }
 
-function TheCheckboxPropertySelector(props: UseCheckboxPropertySelectorOptions): JSX.Element {
+function MyCheckboxSelector(props: UseCheckboxPropertySelectorOptions): JSX.Element {
   const sel = useCheckboxPropertySelector(props);
   return (
     <div {...sel.getContainerDivProps()} style={getDefaultCheckboxContainerStyle()}>
@@ -144,12 +144,12 @@ function TheCheckboxPropertySelector(props: UseCheckboxPropertySelectorOptions):
   );
 }
 
-function TheTextboxPropertySelector(props: UseTextboxPropertySelectorOptions): JSX.Element {
+function MyTextboxSelector(props: UseTextboxPropertySelectorOptions): JSX.Element {
   const sel = useTextboxPropertySelector(props);
   return <input {...sel.getInputProps()} />;
 }
 
-function TheComboboxPropertySelector(props: UseComboboxPropertySelectorOptions): JSX.Element {
+function MyComboboxSelector(props: UseComboboxPropertySelectorOptions): JSX.Element {
   const sel = useComboboxPropertySelector(props);
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
@@ -160,7 +160,7 @@ function TheComboboxPropertySelector(props: UseComboboxPropertySelectorOptions):
   );
 }
 
-function TheImageComboboxPropertySelector(props: UseImageComboboxPropertySelectorOptions): JSX.Element {
+function MyImageComboboxSelector(props: UseImageComboboxPropertySelectorOptions): JSX.Element {
   const sel = useImageComboboxPropertySelector(props);
   return (
     <div style={{ userSelect: "none" }}>
