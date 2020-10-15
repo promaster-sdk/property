@@ -194,12 +194,7 @@ function createSelectorRenderInfo(
 
   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
 
-  // // Default true if not specified otherwise
-  // const myAutoSelectSingleValidValue =
-  //   autoSelectSingleValidValue === null || autoSelectSingleValidValue === undefined ? true : autoSelectSingleValidValue;
-
-  const myAutoSelectSingleValidValue = autoSelectSingleValidValue;
-  const propertyOnChange = handleChange(onChange, productProperties, myAutoSelectSingleValidValue, comparer);
+  const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
 
   const fieldName = property.field_name || property.name;
   const propertyName = property.name;
@@ -207,7 +202,7 @@ function createSelectorRenderInfo(
   const valueItems = property.value;
 
   const locked =
-    myAutoSelectSingleValidValue || lockSingleValidValue
+    autoSelectSingleValidValue || lockSingleValidValue
       ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
       : false;
 
