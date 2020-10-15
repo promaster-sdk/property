@@ -10,6 +10,7 @@ import { ComboboxPropertySelectorExample1 } from "./combobox-property-selector/e
 import { CheckboxPropertySelectorExample1 } from "./checkbox-property-selector/example-1";
 import { DropdownExample1 } from "./dropdown/example-1";
 import { TextboxPropertySelectorExample1 } from "./textbox-property-selector/example-1";
+import { RadioGroupPropertySelectorExample1 } from "./radiogroup-property-selector/example-1";
 
 // setOptions({
 //   hierarchySeparator: /\/|\./, // matches a . or /
@@ -23,6 +24,8 @@ storiesOf("COMP: Amount Format Selector", module).add("example 1", () => <Amount
 storiesOf("COMP: Amount Property Selector", module).add("example 1", () => <AmountPropertySelectorExample1 />);
 
 storiesOf("COMP: Combobox Property Selector", module).add("example 1", () => <ComboboxPropertySelectorExample1 />);
+
+storiesOf("COMP: Radiogroup Property Selector", module).add("example 1", () => <RadioGroupPropertySelectorExample1 />);
 
 storiesOf("COMP: Checkbox Property Selector", module).add("example 1", () => <CheckboxPropertySelectorExample1 />);
 
