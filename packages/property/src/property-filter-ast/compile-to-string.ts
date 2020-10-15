@@ -47,11 +47,7 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
             mystr += ` && (${left} < ${min} || ${left} > ${max})`;
           }
         }
-        return mystr.length
-          ? singleOrCount > 1
-            ? "(" + mystr.substr(4) + ")"
-            : mystr.substr(4)
-          : mystr;
+        return mystr.length ? (singleOrCount > 1 ? "(" + mystr.substr(4) + ")" : mystr.substr(4)) : mystr;
       }
       case "ComparisonExpr": {
         const left = makeJsExprForPropertyValueExpr(e.leftValue);
@@ -96,9 +92,7 @@ function makeJsExprForPropertyValueExpr(e: Ast.PropertyValueExpr): string {
     }
     case "ValueExpr": {
       if (e.parsed.type !== "integer") {
-        throw new Error(
-          "PropertyFilter with non integer value cannot be compiled."
-        );
+        throw new Error("PropertyFilter with non integer value cannot be compiled.");
       }
       return e.parsed.value.toString();
     }

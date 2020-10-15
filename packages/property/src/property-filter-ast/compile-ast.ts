@@ -20,10 +20,8 @@ export function compileAst(ast: Ast.BooleanExpr): CompiledFilterFunction {
   // * Comparing name to name (a<b) (because then we don't know if they are Amount)
   // * Text values (because they require case-insensitive comparision)
   if (isNotCompilable(ast)) {
-    return (
-      properties: PropertyValueSet.PropertyValueSet,
-      comparer: PropertyValue.Comparer
-    ) => evaluateAst(ast, properties, false, comparer);
+    return (properties: PropertyValueSet.PropertyValueSet, comparer: PropertyValue.Comparer) =>
+      evaluateAst(ast, properties, false, comparer);
   }
 
   return CompileToString.compileToString(ast);
@@ -33,7 +31,7 @@ function isNotCompilable(ast: Ast.BooleanExpr): boolean {
   let hasAddOrMul = false;
   let hasAmountOrText = false;
   let hasNameToNameComparision = false;
-  visitAllExpr(ast, e => {
+  visitAllExpr(ast, (e) => {
     if (e.type === "ValueExpr" && e.parsed.type !== "integer") {
       hasAmountOrText = true;
     }
@@ -50,11 +48,7 @@ function isNotCompilable(ast: Ast.BooleanExpr): boolean {
     if (
       e.type === "EqualsExpr" &&
       e.leftValue.type === "IdentifierExpr" &&
-      e.rightValueRanges.find(
-        item =>
-          item.min.type === "IdentifierExpr" ||
-          item.max.type === "IdentifierExpr"
-      )
+      e.rightValueRanges.find((item) => item.min.type === "IdentifierExpr" || item.max.type === "IdentifierExpr")
     ) {
       hasNameToNameComparision = true;
     }

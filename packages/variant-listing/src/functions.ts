@@ -1,9 +1,5 @@
 import * as R from "ramda";
-import {
-  PropertyValue,
-  PropertyValueSet,
-  PropertyFilter
-} from "@promaster-sdk/property";
+import { PropertyValue, PropertyValueSet, PropertyFilter } from "@promaster-sdk/property";
 import { ExtendedVariants, ProductProperty, VariantUrlList } from "./types";
 
 export function buildAllPropertyValueSets(
@@ -11,12 +7,7 @@ export function buildAllPropertyValueSets(
   variableProperties: Array<ProductProperty>,
   allProperties: Array<ProductProperty>
 ): ReadonlyArray<VariantUrlList> {
-  return buildAllPropertyValueSetsExtended(
-    explicitPropertyValueSet,
-    variableProperties,
-    allProperties,
-    100
-  ).variants;
+  return buildAllPropertyValueSetsExtended(explicitPropertyValueSet, variableProperties, allProperties, 100).variants;
 }
 
 export function buildAllPropertyValueSetsExtended(
@@ -30,7 +21,7 @@ export function buildAllPropertyValueSetsExtended(
   const blackListedProperties: Array<ProductProperty> = [];
   let blacklistedPropertyFilters: Array<PropertyFilter.PropertyFilter> = [];
   const newVariableProperties = variableProperties
-    .filter(property => {
+    .filter((property) => {
       // remove all no discrete properties
       if (property.quantity.toLocaleLowerCase() !== "discrete") {
         blackListedProperties.push(property);
@@ -47,14 +38,13 @@ export function buildAllPropertyValueSetsExtended(
     })
     // If the current valid (all properties are valid when we get this far) property has a filter
     // that uses a blacklisted propertyfilter value we should remove it from the blacklist.
-    .map(property => {
+    .map((property) => {
       if (property.visibility_filter.text !== "") {
         blacklistedPropertyFilters = blacklistedPropertyFilters.filter(
-          bpf =>
+          (bpf) =>
             !property.visibility_filter.text.split("&").reduce(
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (acc: any, filterPart: any) =>
-                acc || filterPart.toLowerCase() === bpf.text.toLowerCase(),
+              (acc: any, filterPart: any) => acc || filterPart.toLowerCase() === bpf.text.toLowerCase(),
               false
             )
         );
@@ -67,17 +57,11 @@ export function buildAllPropertyValueSetsExtended(
     // ----
     //
 
-    .map(property => {
+    .map((property) => {
       // remove all propertyValues that are blacklisted
-      const newPV = property.value.filter(value =>
+      const newPV = property.value.filter((value) =>
         blacklistedPropertyFilters.reduce(
-          (acc, bpf) =>
-            acc &&
-            !PropertyFilter.isValid(
-              { [property.name]: value.value },
-              bpf,
-              comparer
-            ),
+          (acc, bpf) => acc && !PropertyFilter.isValid({ [property.name]: value.value }, bpf, comparer),
           true
         )
       );
@@ -85,11 +69,7 @@ export function buildAllPropertyValueSetsExtended(
     });
 
   // Error check.
-  if (
-    newVariableProperties.find(
-      property => property.quantity.toLocaleLowerCase() !== "discrete"
-    )
-  ) {
+  if (newVariableProperties.find((property) => property.quantity.toLocaleLowerCase() !== "discrete")) {
     throw new Error("Can't build variants from non-discrete properties.");
   }
 
@@ -98,19 +78,15 @@ export function buildAllPropertyValueSetsExtended(
   // properties = sortByDependencyDepth(properties);
 
   // One explicit PVS to start with.
-  let propertyValueSets = new Array<PropertyValueSet.PropertyValueSet>(
-    explicitPropertyValueSet
-  );
+  let propertyValueSets = new Array<PropertyValueSet.PropertyValueSet>(explicitPropertyValueSet);
 
-  newVariableProperties.forEach(property => {
+  newVariableProperties.forEach((property) => {
     // TODO: Fix this properly.
     // Temp fix, because generating all might be too slow, and useless anyway.
     // When the propertyValueSets array grows too large, discard some.
     if (limit > 0 && propertyValueSets.length > limit) {
       console.warn(
-        `Discarded ${propertyValueSets.length - limit} of ${
-          propertyValueSets.length
-        } propertyValueSets for ${
+        `Discarded ${propertyValueSets.length - limit} of ${propertyValueSets.length} propertyValueSets for ${
           property.name
         }, since there are too many combinations.`
       );
@@ -120,11 +96,11 @@ export function buildAllPropertyValueSetsExtended(
 
     // Replace the PVSs with concatenated copies of itself, using each of the valueItems.
     const propertyValueSets1 = propertyValueSets
-      .map(partialPropertyValueSet => {
+      .map((partialPropertyValueSet) => {
         return !property.value
           ? []
           : property.value
-              .map(propertyValueItem => {
+              .map((propertyValueItem) => {
                 // All valueItems should have a set value. Ignore broken data.
                 if (propertyValueItem.value.type !== "integer") {
                   console.warn("Invalid data in valueItem:", propertyValueItem);
@@ -132,53 +108,41 @@ export function buildAllPropertyValueSetsExtended(
                 }
 
                 // Add new variant to propertyValueSet
-                const propertyValueSet = R.mergeWith(
-                  R.merge,
-                  partialPropertyValueSet,
-                  {
-                    [property.name]: {
-                      type: "integer",
-                      value: propertyValueItem.value.value as number
-                    }
-                  }
-                );
+                const propertyValueSet = R.mergeWith(R.merge, partialPropertyValueSet, {
+                  [property.name]: {
+                    type: "integer",
+                    value: propertyValueItem.value.value as number,
+                  },
+                });
 
                 // Check validity, so invalid ones can be filtered out.
                 // This will not catch PVSes that get invalidated by a later added property.
                 // (They get filtered out in a separate step below.)
-                return PropertyFilter.isValidMatchMissing(
-                  propertyValueSet,
-                  propertyValueItem.property_filter
-                )
+                return PropertyFilter.isValidMatchMissing(propertyValueSet, propertyValueItem.property_filter)
                   ? propertyValueSet
                   : undefined;
               })
               // Filtering out invalid combos after each property prevents the array size from exploding too bad.
-              .filter(possiblyUndefined => possiblyUndefined !== undefined);
+              .filter((possiblyUndefined) => possiblyUndefined !== undefined);
       })
       // Flatten.
       .reduce((soFar, next) => soFar.concat(next), []);
 
-    propertyValueSets = propertyValueSets1 as Array<
-      PropertyValueSet.PropertyValueSet
-    >;
+    propertyValueSets = propertyValueSets1 as Array<PropertyValueSet.PropertyValueSet>;
   });
 
   // Complete the PVS'es with default values.
   const defaults1 = allProperties
-    .filter(property => !!property.def_value && !!property.def_value.length)
-    .map(property => ({
-      [property.name]: property.def_value[0].value
+    .filter((property) => !!property.def_value && !!property.def_value.length)
+    .map((property) => ({
+      [property.name]: property.def_value[0].value,
     }));
-  const defaults = defaults1.reduce(
-    (soFar, next) => PropertyValueSet.merge(soFar, next),
-    PropertyValueSet.Empty
-  );
+  const defaults = defaults1.reduce((soFar, next) => PropertyValueSet.merge(soFar, next), PropertyValueSet.Empty);
 
   const firstOptions1 = allProperties
-    .filter(property => !!property.value && !!property.value.length)
-    .map(property => ({
-      [property.name]: property.value[0].value
+    .filter((property) => !!property.value && !!property.value.length)
+    .map((property) => ({
+      [property.name]: property.value[0].value,
     }));
   const firstOptions = firstOptions1.reduce(
     (soFar, next) => PropertyValueSet.merge(soFar, next),
@@ -186,44 +150,27 @@ export function buildAllPropertyValueSetsExtended(
   );
 
   const fallbacks = PropertyValueSet.setValues(defaults, firstOptions);
-  propertyValueSets = propertyValueSets.map(propertyValueSet =>
+  propertyValueSets = propertyValueSets.map((propertyValueSet) =>
     PropertyValueSet.setValues(propertyValueSet, fallbacks)
   );
 
   // The filtering above won't catch properties that get invalidated by following properties.
   const before = propertyValueSets.length;
-  propertyValueSets = propertyValueSets.filter(propertyValueSet =>
+  propertyValueSets = propertyValueSets.filter((propertyValueSet) =>
     allProperties // PropertyValueSets needs to have...
-      .filter(property => !!property.value && !!property.value.length) // ...their every (discrete) propertyValue...
-      .every(property => {
+      .filter((property) => !!property.value && !!property.value.length) // ...their every (discrete) propertyValue...
+      .every((property) => {
         // ...set to a valid value.
-        const valueItem = property.value.find(v =>
-          PropertyValue.equals(
-            PropertyValueSet.getValue(property.name, propertyValueSet),
-            v.value,
-            comparer
-          )
+        const valueItem = property.value.find((v) =>
+          PropertyValue.equals(PropertyValueSet.getValue(property.name, propertyValueSet), v.value, comparer)
         );
 
         if (!valueItem) {
-          console.warn(
-            `Property is set to non-existing value (bad default?): ${
-              property.name
-            }`
-          );
-          throw new Error(
-            "Property is set to non-existing value (bad default?)"
-          );
+          console.warn(`Property is set to non-existing value (bad default?): ${property.name}`);
+          throw new Error("Property is set to non-existing value (bad default?)");
         }
 
-        return (
-          valueItem &&
-          PropertyFilter.isValid(
-            propertyValueSet,
-            valueItem.property_filter,
-            comparer
-          )
-        );
+        return valueItem && PropertyFilter.isValid(propertyValueSet, valueItem.property_filter, comparer);
       })
   );
 
@@ -237,17 +184,17 @@ export function buildAllPropertyValueSetsExtended(
   // TODO: Instead of just filtering out bad combos, fiddle with the default values until they pass.
 
   const extendedVariants: Array<VariantUrlList> = propertyValueSets.map(
-    variant => ({
+    (variant) => ({
       variants: variant,
       url: Object.keys(variant)
-        .map(property => `${property}=${variant[property].value}`)
-        .join("&")
+        .map((property) => `${property}=${variant[property].value}`)
+        .join("&"),
     }),
     {}
   );
 
   return {
     variants: extendedVariants,
-    pruned: prunedValues
+    pruned: prunedValues,
   };
 }

@@ -5,7 +5,7 @@ export enum ExprTypeEnum {
   Amount,
   Property,
   Text,
-  Range
+  Range,
 }
 
 // eslint-disable-next-line functional/no-class
@@ -13,10 +13,7 @@ export class ExprType {
   private readonly _exprTypeEnum: ExprTypeEnum;
   private readonly _propertyName: string | undefined;
 
-  constructor(
-    exprTypeEnum: ExprTypeEnum = ExprTypeEnum.Unknown,
-    propertyName: string | undefined = undefined
-  ) {
+  constructor(exprTypeEnum: ExprTypeEnum = ExprTypeEnum.Unknown, propertyName: string | undefined = undefined) {
     this._exprTypeEnum = exprTypeEnum;
     this._propertyName = propertyName;
   }

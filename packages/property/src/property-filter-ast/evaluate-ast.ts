@@ -13,9 +13,7 @@ export function evaluateAst(
   switch (e.type) {
     case "AndExpr": {
       for (const child of e.children) {
-        if (
-          !evaluateAst(child, properties, matchMissingIdentifiers, comparer)
-        ) {
+        if (!evaluateAst(child, properties, matchMissingIdentifiers, comparer)) {
           return false;
         }
       }
@@ -35,9 +33,7 @@ export function evaluateAst(
         if (
           _isMissingIdent(e.leftValue, properties) ||
           e.rightValueRanges.filter(
-            (vr: Ast.ValueRangeExpr) =>
-              _isMissingIdent(vr.min, properties) ||
-              _isMissingIdent(vr.max, properties)
+            (vr: Ast.ValueRangeExpr) => _isMissingIdent(vr.min, properties) || _isMissingIdent(vr.max, properties)
           ).length > 0
         ) {
           return true;
@@ -56,8 +52,8 @@ export function evaluateAst(
           (left !== null &&
             min !== null &&
             max !== null &&
-            (PropertyValue.greaterOrEqualTo(left, min, comparer) &&
-              PropertyValue.lessOrEqualTo(left, max, comparer)))
+            PropertyValue.greaterOrEqualTo(left, min, comparer) &&
+            PropertyValue.lessOrEqualTo(left, max, comparer))
         ) {
           return e.operationType === "equals";
         }
@@ -69,8 +65,7 @@ export function evaluateAst(
       // Handle match missing identifier
       if (
         matchMissingIdentifiers &&
-        (_isMissingIdent(e.leftValue, properties) ||
-          _isMissingIdent(e.rightValue, properties))
+        (_isMissingIdent(e.leftValue, properties) || _isMissingIdent(e.rightValue, properties))
       ) {
         return true;
       }
@@ -147,9 +142,7 @@ function evaluatePropertyValueExpr(
         if (e.operationType === "add") {
           return PropertyValue.fromAmount(Amount.plus(left.value, right.value));
         } else {
-          return PropertyValue.fromAmount(
-            Amount.minus(left.value, right.value)
-          );
+          return PropertyValue.fromAmount(Amount.minus(left.value, right.value));
         }
       }
       return null;
@@ -168,19 +161,13 @@ function evaluatePropertyValueExpr(
         }
       } else if (left.type === "amount" && right.type === "integer") {
         if (e.operationType === "multiply") {
-          return PropertyValue.fromAmount(
-            Amount.times(left.value, right.value)
-          );
+          return PropertyValue.fromAmount(Amount.times(left.value, right.value));
         } else {
-          return PropertyValue.fromAmount(
-            Amount.divide(left.value, right.value)
-          );
+          return PropertyValue.fromAmount(Amount.divide(left.value, right.value));
         }
       } else if (left.type === "integer" && right.type === "amount") {
         if (e.operationType === "multiply") {
-          return PropertyValue.fromAmount(
-            Amount.times(right.value, left.value)
-          );
+          return PropertyValue.fromAmount(Amount.times(right.value, left.value));
         }
       }
       return null;
@@ -202,10 +189,7 @@ function evaluatePropertyValueExpr(
   }
 }
 
-function _isMissingIdent(
-  e: Ast.PropertyValueExpr,
-  properties: PropertyValueSet.PropertyValueSet
-): boolean {
+function _isMissingIdent(e: Ast.PropertyValueExpr, properties: PropertyValueSet.PropertyValueSet): boolean {
   // If expression is an missing identifier it should match anything
   if (e.type === "IdentifierExpr") {
     if (!PropertyValueSet.hasProperty(e.name, properties)) {

@@ -13,12 +13,7 @@
  *                                      1  = second > first
  *
  */
-export function compareNumbers(
-  first: number,
-  second: number,
-  firstDecimals: number,
-  secondDecimals: number
-): number {
+export function compareNumbers(first: number, second: number, firstDecimals: number, secondDecimals: number): number {
   const d = Math.max(firstDecimals, secondDecimals); // use the highest number of decimals
 
   // eslint-disable-next-line no-restricted-properties

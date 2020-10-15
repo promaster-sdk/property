@@ -7,8 +7,5 @@
     "lib": ["dom", "es2015", "es2017.object", "esnext.asynciterable"],
     "types": ["node"]
   },
-  "references": [
-    { "path": "../react-properties-selector" },
-    { "path": "../react-property-selectors" }
-  ]
+  "references": [{ "path": "../react-properties-selector" }, { "path": "../react-property-selectors" }]
 }

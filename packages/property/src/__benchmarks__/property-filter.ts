@@ -1,16 +1,10 @@
 import * as Benchmark from "benchmark";
 import { BaseUnits, Unit } from "uom";
-import {
-  PropertyFilter,
-  PropertyFilterAst,
-  PropertyValueSet,
-  PropertyValue
-} from "../index";
+import { PropertyFilter, PropertyFilterAst, PropertyValueSet, PropertyValue } from "../index";
 
 const suite = new Benchmark.Suite();
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 const pf = PropertyFilter.fromString(
   "ccc=20&a=1,2,3~10&d=-50&(ccc=20|a=1,2)&d=5|z=50",
@@ -37,10 +31,7 @@ const pvs = PropertyValueSet.fromString("a=1;b=2;ccc=3;d=4;z=50", unitLookup);
 //   (a() === b() && b() > a()) || b() < a();
 
 // eslint-disable-next-line
-const fake5 = new Function(
-  "obj",
-  "return obj.a===obj.b && obj.b>obj.a || obj.b<obj.a"
-);
+const fake5 = new Function("obj", "return obj.a===obj.b && obj.b>obj.a || obj.b<obj.a");
 
 suite
   // add tests
@@ -48,12 +39,7 @@ suite
     PropertyFilter.isValid(pvs, pf);
   })
   .add("PropertyFilterAst#evaluate", () => {
-    PropertyFilterAst.evaluateAst(
-      pf.ast,
-      pvs,
-      false,
-      PropertyValue.defaultComparer
-    );
+    PropertyFilterAst.evaluateAst(pf.ast, pvs, false, PropertyValue.defaultComparer);
   })
   .add("PropertyFilter#_evaluate", () => {
     pf._evaluate(pvs, PropertyValue.defaultComparer);
@@ -84,7 +70,7 @@ suite
     console.log(String(event.target));
   })
   // eslint-disable-next-line
-  .on("complete", function(this: Benchmark.Suite): void {
+  .on("complete", function (this: Benchmark.Suite): void {
     console.log(
       // eslint-disable-next-line
       "Fastest is " + this.filter("fastest").map((item: unknown) => item)

@@ -4,28 +4,23 @@ import * as PropertyValueSet from "../property-value-set";
 import * as IsValidData from "./data/property-filter-isvalid";
 import * as IsSyntaxValidData from "./data/property-filter-is-syntax-valid";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 describe("PropertyFilter", () => {
   describe("isSyntaxValid", () => {
-    IsSyntaxValidData.tests.forEach(test => {
+    IsSyntaxValidData.tests.forEach((test) => {
       it(test.name, () => {
-        expect(PropertyFilter.isSyntaxValid(test.f, unitLookup)).toEqual(
-          test.result
-        );
+        expect(PropertyFilter.isSyntaxValid(test.f, unitLookup)).toEqual(test.result);
       });
     });
   });
 
   describe("isValid", () => {
-    IsValidData.tests.forEach(test => {
+    IsValidData.tests.forEach((test) => {
       it(test.name, () => {
         const pvs = PropertyValueSet.fromString(test.pvs, unitLookup);
         const f = fromStringOrException(test.f);
-        expect(PropertyFilter.isValid(pvs, f, test.comparer)).toEqual(
-          test.result
-        );
+        expect(PropertyFilter.isValid(pvs, f, test.comparer)).toEqual(test.result);
       });
     });
   });

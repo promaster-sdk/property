@@ -7,10 +7,10 @@ module.exports = {
       "./packages/property-filter-pretty/tsconfig.json",
       "./packages/react-properties-selector/tsconfig.json",
       "./packages/react-property-selectors/tsconfig.json",
-      "./packages/variant-listing/tsconfig.json"
-    ]
+      "./packages/variant-listing/tsconfig.json",
+    ],
   },
   rules: {
-    "import/no-extraneous-dependencies": "off"
-  }
+    "import/no-extraneous-dependencies": "off",
+  },
 };

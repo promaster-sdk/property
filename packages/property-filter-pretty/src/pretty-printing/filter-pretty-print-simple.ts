@@ -1,13 +1,7 @@
-import {
-  PropertyValue,
-  PropertyFilter,
-  PropertyFilterAst as Ast
-} from "@promaster-sdk/property";
+import { PropertyValue, PropertyFilter, PropertyFilterAst as Ast } from "@promaster-sdk/property";
 import { exhaustiveCheck } from "ts-exhaustive-check/lib-cjs";
 
-export function filterPrettyPrintSimple(
-  f: PropertyFilter.PropertyFilter
-): string {
+export function filterPrettyPrintSimple(f: PropertyFilter.PropertyFilter): string {
   if (f.ast === null) {
     return "";
   }
@@ -78,15 +72,11 @@ function _print(e: Ast.Expr, s: string): string {
       break;
     }
     case "AddExpr": {
-      s += `${_print(e.left, s)} ${
-        e.operationType === "add" ? "+" : "-"
-      } ${_print(e.right, s)}`;
+      s += `${_print(e.left, s)} ${e.operationType === "add" ? "+" : "-"} ${_print(e.right, s)}`;
       break;
     }
     case "MulExpr": {
-      s += `${_print(e.left, s)} ${
-        e.operationType === "multiply" ? "*" : "/"
-      } ${_print(e.right, s)}`;
+      s += `${_print(e.left, s)} ${e.operationType === "multiply" ? "*" : "/"} ${_print(e.right, s)}`;
       break;
     }
     case "UnaryExpr": {
@@ -105,9 +95,7 @@ function _print(e: Ast.Expr, s: string): string {
   return s;
 }
 
-function _comparisonOperationTypeToString(
-  type: Ast.ComparisonOperationType
-): string {
+function _comparisonOperationTypeToString(type: Ast.ComparisonOperationType): string {
   switch (type) {
     case "lessOrEqual":
       return " must be less than or equal to ";

@@ -5,12 +5,7 @@ import * as PropertyValue from "../property-value";
 export type Expr = BooleanExpr | PropertyValueExpr | ValueRangeExpr;
 
 // Expressions that result in a boolean
-export type BooleanExpr =
-  | OrExpr
-  | AndExpr
-  | EqualsExpr
-  | ComparisonExpr
-  | EmptyExpr;
+export type BooleanExpr = OrExpr | AndExpr | EqualsExpr | ComparisonExpr | EmptyExpr;
 
 export interface OrExpr {
   readonly type: "OrExpr";
@@ -61,10 +56,7 @@ export interface ValueRangeExpr {
   readonly max: PropertyValueExpr;
 }
 
-export function newValueRangeExpr(
-  min: PropertyValueExpr,
-  max: PropertyValueExpr
-): ValueRangeExpr {
+export function newValueRangeExpr(min: PropertyValueExpr, max: PropertyValueExpr): ValueRangeExpr {
   return { type: "ValueRangeExpr", min, max };
 }
 
@@ -75,11 +67,7 @@ export interface ComparisonExpr {
   readonly rightValue: PropertyValueExpr;
 }
 
-export type ComparisonOperationType =
-  | "greater"
-  | "less"
-  | "greaterOrEqual"
-  | "lessOrEqual";
+export type ComparisonOperationType = "greater" | "less" | "greaterOrEqual" | "lessOrEqual";
 
 export function newComparisonExpr(
   leftValue: PropertyValueExpr,
@@ -89,13 +77,7 @@ export function newComparisonExpr(
   return { type: "ComparisonExpr", leftValue, operationType, rightValue };
 }
 
-export type PropertyValueExpr =
-  | IdentifierExpr
-  | ValueExpr
-  | NullExpr
-  | AddExpr
-  | MulExpr
-  | UnaryExpr;
+export type PropertyValueExpr = IdentifierExpr | ValueExpr | NullExpr | AddExpr | MulExpr | UnaryExpr;
 
 export interface IdentifierExpr {
   readonly type: "IdentifierExpr";
@@ -112,10 +94,7 @@ export interface ValueExpr {
   readonly parsed: PropertyValue.PropertyValue;
 }
 
-export function newValueExpr(
-  unParsed: string,
-  unitLookup: Unit.UnitLookup
-): ValueExpr {
+export function newValueExpr(unParsed: string, unitLookup: Unit.UnitLookup): ValueExpr {
   const parsed = PropertyValue.fromString(unParsed, unitLookup);
   if (parsed === undefined) {
     throw new Error(`Invalid property value ${unParsed}`);
@@ -124,7 +103,7 @@ export function newValueExpr(
     return {
       type: "ValueExpr",
       unParsed,
-      parsed: PropertyValue.fromInteger(parseFloat(unParsed))
+      parsed: PropertyValue.fromInteger(parseFloat(unParsed)),
     };
   }
   return { type: "ValueExpr", unParsed, parsed };
@@ -180,13 +159,10 @@ export interface UnaryExpr {
   readonly value: PropertyValueExpr;
 }
 
-export function newUnaryExpr(
-  operationType: UnaryExprOperationType,
-  value: PropertyValueExpr
-): UnaryExpr {
+export function newUnaryExpr(operationType: UnaryExprOperationType, value: PropertyValueExpr): UnaryExpr {
   return {
     type: "UnaryExpr",
     operationType,
-    value
+    value,
   };
 }

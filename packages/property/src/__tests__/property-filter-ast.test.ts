@@ -7,7 +7,7 @@ import * as IsValidData from "./data/property-filter-isvalid";
 
 describe("PropertyFilterAst", () => {
   describe("parse", () => {
-    ParseData.tests.forEach(test => {
+    ParseData.tests.forEach((test) => {
       it(test.name, () => {
         const ast = Ast.parse(test.f, ParseData.unitLookup);
         expect(ast).toEqual(test.result);
@@ -16,31 +16,22 @@ describe("PropertyFilterAst", () => {
   });
 
   describe("evaluate with raw AST", () => {
-    IsValidData.tests.forEach(test => {
+    IsValidData.tests.forEach((test) => {
       it(test.name, () => {
         const pvs = PropertyValueSet.fromString(test.pvs, ParseData.unitLookup);
         const f = fromStringOrException(test.f, ParseData.unitLookup);
-        expect(
-          Ast.evaluateAst(
-            f,
-            pvs,
-            false,
-            test.comparer || PropertyValue.defaultComparer
-          )
-        ).toBe(test.result);
+        expect(Ast.evaluateAst(f, pvs, false, test.comparer || PropertyValue.defaultComparer)).toBe(test.result);
       });
     });
   });
 
   describe("evaluate with compiled AST", () => {
-    IsValidData.tests.forEach(test => {
+    IsValidData.tests.forEach((test) => {
       it(test.name, () => {
         const pvs = PropertyValueSet.fromString(test.pvs, ParseData.unitLookup);
         const f = fromStringOrException(test.f, ParseData.unitLookup);
         const func = Ast.compileAst(f);
-        expect(func(pvs, test.comparer || PropertyValue.defaultComparer)).toBe(
-          test.result
-        );
+        expect(func(pvs, test.comparer || PropertyValue.defaultComparer)).toBe(test.result);
       });
     });
   });
@@ -57,10 +48,7 @@ describe("PropertyFilterAst", () => {
   // });
 });
 
-function fromStringOrException(
-  filter: string,
-  unitLookup: Unit.UnitLookup
-): Ast.BooleanExpr {
+function fromStringOrException(filter: string, unitLookup: Unit.UnitLookup): Ast.BooleanExpr {
   const f = Ast.parse(filter, unitLookup);
   if (f === undefined) {
     throw new Error(`Could not parse property filter "${filter}".`);
