@@ -233,7 +233,6 @@ function createSelector(
     isHidden,
   };
 
-  const selectorType = getSelectorType(property);
   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
   const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
   const fieldName = property.field_name || property.name;
@@ -254,6 +253,7 @@ function createSelector(
     );
   }
 
+  const selectorType = getSelectorType(property);
   switch (selectorType) {
     case "TextBox": {
       return {
@@ -425,6 +425,8 @@ function getSelectorType(property: UsePropertiesSelectorProperty): UseProperties
       return "RadioGroup";
     } else if (property.selector_type === "Checkbox") {
       return "Checkbox";
+    } else if (property.value.some((i) => i.image !== undefined)) {
+      return "ImageComboBox";
     } else {
       return "ComboBox";
     }
