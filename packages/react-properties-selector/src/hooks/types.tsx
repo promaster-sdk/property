@@ -26,9 +26,12 @@ export type UsePropertiesSelectorOnPropertyFormatCleared = (propertyName: string
 
 // export type UsePropertiesSelectorOnToggleGroupClosed = (groupName: string) => void;
 
-// Defines information to render one selector
-export type UsePropertiesSelectorPropertySelectorRenderInfo = {
-  // This is information that the layout component can use
+// // Defines information to render one selector
+// export type UsePropertiesSelectorPropertySelectorRenderInfo = {
+//   readonly selectorRenderInfo: SelectorRenderInfo;
+// };
+
+export type SelectorRenderInfoBase = {
   readonly sortNo: number;
   readonly groupName: string;
   readonly propertyName: string;
@@ -39,34 +42,28 @@ export type UsePropertiesSelectorPropertySelectorRenderInfo = {
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   // This flag tells if is was supposed to be hidden
   readonly isHidden: boolean;
-
-  // Props that are used by the components that render the actual property selector and it's label
-  // readonly selectorComponentProps: UsePropertiesSelectorPropertySelectorProps;
-
-  // readonly selectorType: UsePropertiesSelectorPropertySelectorType;
-  readonly selectorRenderInfo: SelectorRenderInfo;
 };
 
 export type SelectorRenderInfo =
   | {
       readonly type: "ComboBox";
       readonly getUseComboboxParams: () => UseComboboxPropertySelectorParams;
-    }
+    } & SelectorRenderInfoBase
   | {
       readonly type: "RadioGroup";
-    }
+    } & SelectorRenderInfoBase
   | {
       readonly type: "Checkbox";
       readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorParams;
-    }
+    } & SelectorRenderInfoBase
   | {
       readonly type: "AmountField";
       readonly getUseAmountParams: () => UseAmountPropertySelectorParams;
-    }
+    } & SelectorRenderInfoBase
   | {
       readonly type: "TextBox";
       readonly getUseTextboxParams: () => UseTextboxPropertySelectorParams;
-    };
+    } & SelectorRenderInfoBase;
 
 export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
 

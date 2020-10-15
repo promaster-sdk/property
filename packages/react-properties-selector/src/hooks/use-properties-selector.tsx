@@ -9,11 +9,12 @@ import {
   UsePropertiesSelectorOnPropertyFormatChanged,
   UsePropertiesSelectorOnPropertyFormatCleared,
   UsePropertiesSelectorProperty,
-  UsePropertiesSelectorPropertySelectorRenderInfo,
+  // UsePropertiesSelectorPropertySelectorRenderInfo,
   UsePropertiesSelectorPropertyValueItem,
   UsePropertiesSelectorPropertyFormats,
   UsePropertiesSelectorOnPropertiesChanged,
   SelectorRenderInfo,
+  SelectorRenderInfoBase,
 } from "./types";
 
 export type UsePropertiesSelectorParams = {
@@ -74,7 +75,7 @@ export type UsePropertiesSelector = {
 export type UserPropertiesSelectorGroup = {
   readonly name: string;
   readonly isClosed: boolean;
-  readonly selectors: ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo>;
+  readonly selectors: ReadonlyArray<SelectorRenderInfo>;
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
@@ -106,7 +107,7 @@ export function usePropertiesSelector(params: UsePropertiesSelectorParams): UseP
 
 function createPropertySelectorRenderInfos(
   params: Required<UsePropertiesSelectorParams>
-): ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo> {
+): ReadonlyArray<SelectorRenderInfo> {
   const { productProperties, selectedProperties, includeHiddenProperties, propertyFormats, comparer } = params;
 
   // const sortedArray = R.sortBy((p) => p.sortNo, productProperties);
@@ -114,7 +115,7 @@ function createPropertySelectorRenderInfos(
     .slice()
     .sort((a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0));
 
-  const selectorDefinitions: ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo> = sortedArray
+  const selectorDefinitions: ReadonlyArray<SelectorRenderInfo> = sortedArray
     .filter(
       (property: UsePropertiesSelectorProperty) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
@@ -139,21 +140,26 @@ function createPropertySelectorRenderInfos(
       // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
       // const labelHover = translatePropertyLabelHover(property.name);
 
+      const myBase: SelectorRenderInfoBase = {
+        sortNo: property.sort_no,
+        propertyName: property.name,
+        groupName: property.group,
+        isValid,
+        isHidden,
+      };
+
       const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
         property,
         selectedValueItem,
         propertyFormat,
       };
 
-      const s: UsePropertiesSelectorPropertySelectorRenderInfo = {
-        sortNo: property.sort_no,
-        propertyName: property.name,
-        groupName: property.group,
-        isValid,
-        isHidden,
-        selectorRenderInfo: createSelectorRenderInfo(params, createSelectorRenderInfoParams),
-      };
-      return s;
+      // const s: UsePropertiesSelectorPropertySelectorRenderInfo = {
+      //   ...myBase,
+      //   selectorRenderInfo: createSelectorRenderInfo(myBase, params, createSelectorRenderInfoParams),
+      // };
+      // return s;
+      return createSelectorRenderInfo(myBase, params, createSelectorRenderInfoParams);
     });
 
   return selectorDefinitions;
@@ -166,6 +172,7 @@ type CreateSelectorRenderInfoParams = {
 };
 
 function createSelectorRenderInfo(
+  myBase: SelectorRenderInfoBase,
   params1: Required<UsePropertiesSelectorParams>,
   params: CreateSelectorRenderInfoParams
 ): SelectorRenderInfo {
@@ -218,6 +225,7 @@ function createSelectorRenderInfo(
   switch (selectorType) {
     case "TextBox": {
       return {
+        ...myBase,
         type: "TextBox",
         getUseTextboxParams: () => ({
           propertyName,
@@ -231,6 +239,7 @@ function createSelectorRenderInfo(
 
     case "RadioGroup":
       return {
+        ...myBase,
         type: "RadioGroup",
       };
     // <RadioGroupPropertySelector
@@ -257,6 +266,7 @@ function createSelectorRenderInfo(
 
     case "Checkbox":
       return {
+        ...myBase,
         type: "Checkbox",
         getUseCheckboxParams: () => ({
           propertyName,
@@ -272,6 +282,7 @@ function createSelectorRenderInfo(
 
     case "ComboBox":
       return {
+        ...myBase,
         type: "ComboBox",
         getUseComboboxParams: () => ({
           sortValidFirst: true,
@@ -287,6 +298,7 @@ function createSelectorRenderInfo(
       };
     case "AmountField": {
       return {
+        ...myBase,
         type: "AmountField",
         getUseAmountParams: () => ({
           propertyName,
@@ -462,9 +474,7 @@ function getSingleValidValueOrUndefined(
   return undefined;
 }
 
-function getDistinctGroupNames(
-  productPropertiesArray: ReadonlyArray<UsePropertiesSelectorPropertySelectorRenderInfo>
-): ReadonlyArray<string> {
+function getDistinctGroupNames(productPropertiesArray: ReadonlyArray<SelectorRenderInfo>): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const property of productPropertiesArray) {
     // let groupName = property.groupName;

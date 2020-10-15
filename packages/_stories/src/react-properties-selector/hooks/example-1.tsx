@@ -67,20 +67,19 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                         <td>
                           {(() => {
                             // Need to put property selectors in separate components because their hooks cannt be declared in a loop
-                            const sel = selector.selectorRenderInfo;
-                            switch (sel.type) {
+                            switch (selector.type) {
                               case "TextBox":
-                                return <TheTextboxPropertySelector {...sel.getUseTextboxParams()} />;
+                                return <TheTextboxPropertySelector {...selector.getUseTextboxParams()} />;
                               case "RadioGroup":
                                 return <div>RadioGroupPropertySelector</div>;
                               case "Checkbox":
-                                return <TheCheckboxPropertySelector {...sel.getUseCheckboxParams()} />;
+                                return <TheCheckboxPropertySelector {...selector.getUseCheckboxParams()} />;
                               case "ComboBox":
-                                return <TheComboboxPropertySelector {...sel.getUseComboboxParams()} />;
+                                return <TheComboboxPropertySelector {...selector.getUseComboboxParams()} />;
                               case "AmountField":
-                                return <TheAmountPropertySelector {...sel.getUseAmountParams()} />;
+                                return <TheAmountPropertySelector {...selector.getUseAmountParams()} />;
                               default:
-                                return exhaustiveCheck(sel, true);
+                                return exhaustiveCheck(selector, true);
                             }
                           })()}
                         </td>
