@@ -1,8 +1,4 @@
-import {
-  PropertyValueSet,
-  PropertyFilter,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyValueSet, PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 
 export interface ProductProperty {
   readonly sort_no: number;

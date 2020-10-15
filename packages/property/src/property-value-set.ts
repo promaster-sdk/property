@@ -25,10 +25,7 @@ interface MutablePropertyValueSet {
 
 // Functions
 
-export function fromString(
-  encodedValueSet: string,
-  unitLookup: Unit.UnitLookup
-): PropertyValueSet {
+export function fromString(encodedValueSet: string, unitLookup: Unit.UnitLookup): PropertyValueSet {
   const err = (): PropertyValueSet => {
     throw new Error(`${encodedValueSet} is not a valid PropertyValueSet`);
   };
@@ -43,10 +40,7 @@ export function fromStringOrError(
   if (!encodedValueSet || encodedValueSet.length === 0) {
     return {};
   }
-  const entries = _stringToEntriesOrUndefinedIfInvalidString(
-    encodedValueSet,
-    unitLookup
-  );
+  const entries = _stringToEntriesOrUndefinedIfInvalidString(encodedValueSet, unitLookup);
   if (entries === undefined) {
     return onError(encodedValueSet);
   } else {
@@ -54,18 +48,13 @@ export function fromStringOrError(
   }
 }
 
-export function fromProperty(
-  propertyName: string,
-  propertyValue: PropertyValue.PropertyValue
-): PropertyValueSet {
+export function fromProperty(propertyName: string, propertyValue: PropertyValue.PropertyValue): PropertyValueSet {
   return {
-    [propertyName]: propertyValue
+    [propertyName]: propertyValue,
   };
 }
 
-export function isEmpty(
-  propertyValueSet: PropertyValueSet | null | undefined
-): boolean {
+export function isEmpty(propertyValueSet: PropertyValueSet | null | undefined): boolean {
   return !propertyValueSet || count(propertyValueSet) === 0;
 }
 
@@ -73,10 +62,7 @@ export function count(pvs: PropertyValueSet): number {
   return Object.keys(pvs).length;
 }
 
-export function get(
-  propertyName: string,
-  pvs: PropertyValueSet
-): PropertyValue.PropertyValue | undefined {
+export function get(propertyName: string, pvs: PropertyValueSet): PropertyValue.PropertyValue | undefined {
   // eslint-disable-next-line no-prototype-builtins
   if (!pvs.hasOwnProperty(propertyName)) {
     return undefined;
@@ -84,10 +70,7 @@ export function get(
   return pvs[propertyName];
 }
 
-export function hasProperty(
-  propertyName: string,
-  pvs: PropertyValueSet
-): boolean {
+export function hasProperty(propertyName: string, pvs: PropertyValueSet): boolean {
   // eslint-disable-next-line no-prototype-builtins
   return pvs.hasOwnProperty(propertyName);
 }
@@ -96,20 +79,14 @@ export function getPropertyNames(pvs: PropertyValueSet): Array<string> {
   return Object.keys(pvs);
 }
 
-export function merge(
-  mergeWith: PropertyValueSet,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function merge(mergeWith: PropertyValueSet, pvs: PropertyValueSet): PropertyValueSet {
   //return amend(set, mergeWith);
   return { ...pvs, ...mergeWith };
 }
 
 /// If a property exists with the same name in the PropertyValueSet as in the
 // replacement set then the value of that property will be replaced.
-export function setValues(
-  replacementSet: PropertyValueSet,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function setValues(replacementSet: PropertyValueSet, pvs: PropertyValueSet): PropertyValueSet {
   //return amend(set, replacementSet);
   return { ...pvs, ...replacementSet };
 }
@@ -127,30 +104,14 @@ export function setAmount<T>(
   amountValue: Amount.Amount<T>,
   pvs: PropertyValueSet
 ): PropertyValueSet {
-  return amendProperty(
-    pvs,
-    propertyName,
-    PropertyValue.fromAmount(amountValue)
-  );
+  return amendProperty(pvs, propertyName, PropertyValue.fromAmount(amountValue));
 }
 
-export function setInteger(
-  propertyName: string,
-  integerValue: number,
-  pvs: PropertyValueSet
-): PropertyValueSet {
-  return amendProperty(
-    pvs,
-    propertyName,
-    PropertyValue.fromInteger(integerValue)
-  );
+export function setInteger(propertyName: string, integerValue: number, pvs: PropertyValueSet): PropertyValueSet {
+  return amendProperty(pvs, propertyName, PropertyValue.fromInteger(integerValue));
 }
 
-export function setText(
-  propertyName: string,
-  textValue: string,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function setText(propertyName: string, textValue: string, pvs: PropertyValueSet): PropertyValueSet {
   return amendProperty(pvs, propertyName, PropertyValue.fromText(textValue));
 }
 
@@ -159,10 +120,7 @@ export function setText(
  * @param propertyNames Array of propertyNames to keep
  * @param pvs PropertyValueSet to strip unwanted properties from
  */
-export function keepProperties(
-  propertyNames: Array<string>,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function keepProperties(propertyNames: Array<string>, pvs: PropertyValueSet): PropertyValueSet {
   const newSet: MutablePropertyValueSet = {};
   for (const name of propertyNames) {
     if (pvs[name]) {
@@ -173,10 +131,7 @@ export function keepProperties(
   return newSet;
 }
 
-export function removeProperties(
-  propertyNames: Array<string>,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function removeProperties(propertyNames: Array<string>, pvs: PropertyValueSet): PropertyValueSet {
   const newSet: MutablePropertyValueSet = {};
   for (const name of Object.keys(pvs)) {
     if (propertyNames.indexOf(name) === -1) {
@@ -186,29 +141,20 @@ export function removeProperties(
   return newSet;
 }
 
-export function removeProperty(
-  propertyName: string,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function removeProperty(propertyName: string, pvs: PropertyValueSet): PropertyValueSet {
   return removeProperties([propertyName], pvs);
 }
 
 /// Gets an integer value, if the value is missing the onMissing function's
 /// return value is returned.
-export function getValue(
-  propertyName: string,
-  pvs: PropertyValueSet
-): PropertyValue.PropertyValue {
+export function getValue(propertyName: string, pvs: PropertyValueSet): PropertyValue.PropertyValue {
   const value = pvs[propertyName];
   return value;
 }
 
 /// Gets an amount value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
-export function getAmount<T>(
-  propertyName: string,
-  pvs: PropertyValueSet
-): Amount.Amount<T> | undefined {
+export function getAmount<T>(propertyName: string, pvs: PropertyValueSet): Amount.Amount<T> | undefined {
   if (!hasProperty(propertyName, pvs)) {
     return undefined;
   }
@@ -217,10 +163,7 @@ export function getAmount<T>(
 
 /// Gets an integer value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
-export function getText(
-  propertyName: string,
-  pvs: PropertyValueSet
-): string | undefined {
+export function getText(propertyName: string, pvs: PropertyValueSet): string | undefined {
   if (!hasProperty(propertyName, pvs)) {
     return undefined;
   }
@@ -229,20 +172,14 @@ export function getText(
 
 /// Gets an integer value, if the value is missing or of the wrong type the onError function's
 /// return value is returned.
-export function getInteger(
-  propertyName: string,
-  pvs: PropertyValueSet
-): number | undefined {
+export function getInteger(propertyName: string, pvs: PropertyValueSet): number | undefined {
   if (!hasProperty(propertyName, pvs)) {
     return undefined;
   }
   return PropertyValue.getInteger(pvs[propertyName]);
 }
 
-export function filter(
-  fn: (kvp: PropertyKeyValuePair) => boolean,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function filter(fn: (kvp: PropertyKeyValuePair) => boolean, pvs: PropertyValueSet): PropertyValueSet {
   const newSet: MutablePropertyValueSet = {};
   for (const name of Object.keys(pvs)) {
     if (fn({ key: name, value: pvs[name] })) {
@@ -252,10 +189,7 @@ export function filter(
   return newSet;
 }
 
-export function map(
-  fn: (kvp: PropertyKeyValuePair) => PropertyKeyValuePair,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function map(fn: (kvp: PropertyKeyValuePair) => PropertyKeyValuePair, pvs: PropertyValueSet): PropertyValueSet {
   const newSet: MutablePropertyValueSet = {};
   for (const name of Object.keys(pvs)) {
     const map = fn({ key: name, value: pvs[name] });
@@ -264,10 +198,7 @@ export function map(
   return newSet;
 }
 
-export function getValuesOfType(
-  type: PropertyType,
-  pvs: PropertyValueSet
-): PropertyValueSet {
+export function getValuesOfType(type: PropertyType, pvs: PropertyValueSet): PropertyValueSet {
   const newSet: MutablePropertyValueSet = {};
   for (const name of Object.keys(pvs)) {
     if (pvs[name].type === type) {
@@ -279,16 +210,13 @@ export function getValuesOfType(
 
 export function toString(pvs: PropertyValueSet): string {
   return Object.keys(pvs)
-    .filter(p => pvs[p] !== null && pvs[p] !== undefined)
-    .map(p => `${p}=${PropertyValue.toString(pvs[p])}`)
+    .filter((p) => pvs[p] !== null && pvs[p] !== undefined)
+    .map((p) => `${p}=${PropertyValue.toString(pvs[p])}`)
     .join(";");
 }
 
-export function toStringInSpecifiedOrder(
-  order: Array<string>,
-  pvs: PropertyValueSet
-): string {
-  return order.map(p => `${p}=${PropertyValue.toString(pvs[p])}`).join(";");
+export function toStringInSpecifiedOrder(order: Array<string>, pvs: PropertyValueSet): string {
+  return order.map((p) => `${p}=${PropertyValue.toString(pvs[p])}`).join(";");
 }
 
 export function equals(

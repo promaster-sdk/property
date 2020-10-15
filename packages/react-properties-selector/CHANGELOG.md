@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@5.0.0...master)
 
+### Added
+
+- Added hooks-based properties-selector. See PR [#23](https://github.com/promaster-sdk/property/pull/23).
+- The component based property-selectors and properties-selector are deprecated and will be removed in a future major release.
+
 ## [v5.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@4.0.3...@promaster-sdk%2Freact-properties-selector@5.0.0) - 2020-01-09
 
 ## Changed

@@ -7,8 +7,5 @@
     "lib": ["dom", "es2015", "es2017.object", "esnext.asynciterable"],
     "types": ["node", "jest"]
   },
-  "references": [
-    { "path": "../property" },
-    { "path": "../property-filter-pretty" }
-  ]
+  "references": [{ "path": "../property" }, { "path": "../property-filter-pretty" }]
 }
