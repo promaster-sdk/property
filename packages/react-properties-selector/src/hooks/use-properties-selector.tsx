@@ -110,18 +110,13 @@ function createPropertySelectorRenderInfos(
   const {
     productProperties,
     selectedProperties,
-    // filterPrettyPrint,
     includeHiddenProperties,
     autoSelectSingleValidValue: autoSelectSingleValidValueIn,
     lockSingleValidValue,
-    // onChange,
-    onPropertyFormatChanged,
-    onPropertyFormatCleared,
+    // onPropertyFormatChanged,
+    // onPropertyFormatCleared,
     readOnlyProperties,
-    // optionalProperties,
     propertyFormats,
-    // unitsFormat,
-    // units,
     comparer,
   } = params;
 
@@ -188,18 +183,14 @@ function createPropertySelectorRenderInfos(
       const createSelectorRenderInfoParams: CreateSelectorRenderInfoParams = {
         property,
         selectorType,
-        selectedProperties,
-        onPropertyFormatChanged,
-        onPropertyFormatCleared,
-        // filterPrettyPrint,
+        // onPropertyFormatChanged,
+        // onPropertyFormatCleared,
         propertyFormat,
         readOnly: isReadOnly,
         locked:
           autoSelectSingleValidValue || lockSingleValidValue
             ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
             : false,
-        // unitsFormat,
-        // units,
       };
 
       const s: UsePropertiesSelectorPropertySelectorRenderInfo = {
@@ -218,26 +209,13 @@ function createPropertySelectorRenderInfos(
 
 type CreateSelectorRenderInfoParams = {
   readonly property: UsePropertiesSelectorProperty;
-  // readonly autoSelectSingleValidValue: boolean;
   readonly selectorType: UsePropertiesSelectorPropertySelectorType;
-  readonly selectedProperties: PropertyValueSet.PropertyValueSet;
-  // readonly includeCodes: boolean;
-  // readonly optionalProperties: ReadonlyArray<string>;
-  // readonly onChange: UsePropertiesSelectorPropertySelectionOnChange;
-  // readonly onChange: UsePropertiesSelectorOnPropertiesChanged;
-  readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
-  readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
-  // readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
+  // readonly selectedProperties: PropertyValueSet.PropertyValueSet;
+  // readonly onPropertyFormatChanged: UsePropertiesSelectorOnPropertyFormatChanged;
+  // readonly onPropertyFormatCleared: UsePropertiesSelectorOnPropertyFormatCleared;
   readonly propertyFormat: UsePropertiesSelectorAmountFormat;
   readonly readOnly: boolean;
   readonly locked: boolean;
-  // readonly valueMustBeNumericMessage: string;
-  // readonly valueIsRequiredMessage: string;
-  // readonly inputDebounceTime: number;
-  // readonly unitsFormat: {
-  //   readonly [key: string]: UnitFormat.UnitFormat;
-  // };
-  // readonly units: Unit.UnitMap;
 };
 
 function createSelectorRenderInfo(
@@ -257,17 +235,11 @@ function createSelectorRenderInfo(
     filterPrettyPrint,
     units,
     unitsFormat,
-  } = params1;
-  const {
-    property,
-    selectorType,
     selectedProperties,
-    readOnly,
-    locked,
-    propertyFormat,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
-  } = params;
+  } = params1;
+  const { property, selectorType, readOnly, locked, propertyFormat } = params;
 
   const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
 
