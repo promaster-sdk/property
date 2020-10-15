@@ -18,13 +18,10 @@ export function useTextboxPropertySelector({
   propertyValueSet,
   onValueChange,
   readOnly,
-  debounceTime
+  debounceTime,
 }: UseTextboxPropertySelectorParams): UseTextboxPropertySelector {
   const debouncedOnValueChange = useCallback(
-    debounce(
-      (newValue: PropertyValue.PropertyValue) => onValueChange(newValue),
-      debounceTime
-    ),
+    debounce((newValue: PropertyValue.PropertyValue) => onValueChange(newValue), debounceTime),
     [onValueChange, debounceTime]
   );
 
@@ -35,12 +32,12 @@ export function useTextboxPropertySelector({
       type: "text",
       value: myState,
       readOnly: readOnly,
-      onChange: e => {
+      onChange: (e) => {
         const newStringValue = (e.target as HTMLInputElement).value;
         setMyState(newStringValue);
         debouncedOnValueChange(PropertyValue.create("text", newStringValue));
-      }
-    })
+      },
+    }),
   };
 }
 
@@ -54,10 +51,10 @@ function debounce(func: Function, wait: number, immediate?: boolean): any {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timeout: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function(this: any): void {
+  return function (this: any): void {
     const context = this; //eslint-disable-line
     const args = arguments; //eslint-disable-line
-    const later = function(): void {
+    const later = function (): void {
       timeout = null;
       if (!immediate) {
         func.apply(context, args);

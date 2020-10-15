@@ -8,10 +8,7 @@ export type RadioGroupItemProps = {
   readonly toolTip: string;
   readonly onClick: () => void;
   readonly isItemValid: boolean;
-} & React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export function RadioGroupItem({
   sortNo: _,

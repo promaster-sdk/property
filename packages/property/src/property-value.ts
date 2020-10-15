@@ -20,24 +20,15 @@ export interface IntegerPropertyValue {
   readonly value: number;
 }
 
-export type PropertyValue =
-  | AmountPropertyValue
-  | TextPropertyValue
-  | IntegerPropertyValue;
+export type PropertyValue = AmountPropertyValue | TextPropertyValue | IntegerPropertyValue;
 
 export type Comparer = (left: PropertyValue, right: PropertyValue) => number;
 
-export const defaultComparer: Comparer = (
-  left: PropertyValue,
-  right: PropertyValue
-) => _compare(left, right);
+export const defaultComparer: Comparer = (left: PropertyValue, right: PropertyValue) => _compare(left, right);
 
 // Functions
 
-export function create(
-  type: PropertyType,
-  value: Amount.Amount<unknown> | string | number
-): PropertyValue {
+export function create(type: PropertyType, value: Amount.Amount<unknown> | string | number): PropertyValue {
   if (type === undefined || type === null) {
     throw new Error("Argument 'type' must be specified.");
   }
@@ -56,18 +47,10 @@ export function create(
   throw new Error(`Unknown 'type' ${type}.`);
 }
 
-export function fromString(
-  encodedValue: string,
-  unitLookup: Unit.UnitLookup
-): PropertyValue | undefined {
-  const result = _fromSerializedStringOrUndefinedIfInvalidString(
-    encodedValue,
-    unitLookup
-  );
+export function fromString(encodedValue: string, unitLookup: Unit.UnitLookup): PropertyValue | undefined {
+  const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue, unitLookup);
   if (result === null) {
-    console.warn(
-      `PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`
-    );
+    console.warn(`PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`);
   }
   return result;
 }
@@ -79,7 +62,7 @@ export function fromAmount(amountValue: Amount.Amount<unknown>): PropertyValue {
   if (amountValue.unit.quantity === "Discrete") {
     return {
       type: "integer",
-      value: amountValue.value
+      value: amountValue.value,
     };
   } else {
     return { type: "amount", value: amountValue };
@@ -108,9 +91,7 @@ export function getInteger(value: PropertyValue): number | undefined {
   }
 }
 
-export function getAmount<T>(
-  value: PropertyValue
-): Amount.Amount<T> | undefined {
+export function getAmount<T>(value: PropertyValue): Amount.Amount<T> | undefined {
   if (value.type === "amount") {
     return value.value as Amount.Amount<T>;
   } else {
@@ -126,10 +107,7 @@ export function getText(value: PropertyValue): string | undefined {
   }
 }
 
-export function valueAs<T>(
-  unit: Unit.Unit<T>,
-  value: PropertyValue
-): number | undefined {
+export function valueAs<T>(unit: Unit.Unit<T>, value: PropertyValue): number | undefined {
   const amount = getAmount<T>(value);
   if (amount === undefined) {
     return undefined;
@@ -144,9 +122,7 @@ export function toString(value: PropertyValue): string {
       return "";
     }
 
-    const valueString = value.value.value.toFixed(
-      Math.min(20, value.value.decimalCount)
-    );
+    const valueString = value.value.value.toFixed(Math.min(20, value.value.decimalCount));
     const unitString = Serialize.unitToString(value.value.unit);
     return `${valueString}:${unitString}`;
   } else if (value.type === "text") {
@@ -157,11 +133,7 @@ export function toString(value: PropertyValue): string {
   throw new Error("Invalid type.");
 }
 
-export function equals(
-  left: PropertyValue,
-  right: PropertyValue,
-  comparer: Comparer = defaultComparer
-): boolean {
+export function equals(left: PropertyValue, right: PropertyValue, comparer: Comparer = defaultComparer): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
@@ -171,11 +143,7 @@ export function equals(
   return comparer(left, right) === 0;
 }
 
-export function lessThan(
-  left: PropertyValue,
-  right: PropertyValue,
-  comparer: Comparer = defaultComparer
-): boolean {
+export function lessThan(left: PropertyValue, right: PropertyValue, comparer: Comparer = defaultComparer): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }
@@ -199,11 +167,7 @@ export function lessOrEqualTo(
   return comparer(left, right) <= 0;
 }
 
-export function greaterThan(
-  left: PropertyValue,
-  right: PropertyValue,
-  comparer: Comparer = defaultComparer
-): boolean {
+export function greaterThan(left: PropertyValue, right: PropertyValue, comparer: Comparer = defaultComparer): boolean {
   if (left === undefined || right === undefined) {
     return false;
   }

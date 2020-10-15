@@ -1,14 +1,7 @@
 import React from "react";
 import * as renderer from "react-test-renderer";
-import {
-  PropertyValueSet,
-  PropertyValue,
-  PropertyFilter
-} from "@promaster-sdk/property";
-import {
-  createCheckboxPropertySelector,
-  CheckboxPropertyValueItem
-} from "../../index";
+import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
+import { createCheckboxPropertySelector, CheckboxPropertyValueItem } from "../../index";
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
@@ -18,14 +11,14 @@ test("Simple CheckboxPropertySelector", () => {
       value: PropertyValue.create("integer", 0),
       sortNo: 1,
       text: "unchecked",
-      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter
+      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter,
     },
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 2,
       text: "checked",
-      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter
-    }
+      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter,
+    },
   ];
   const component = renderer.create(
     <CheckboxPropertySelector

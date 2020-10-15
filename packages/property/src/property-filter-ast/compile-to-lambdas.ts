@@ -8,29 +8,22 @@ export function compileToLambdas(e: Ast.BooleanExpr): CompiledFilterFunction {
   switch (e.type) {
     case "AndExpr": {
       const childrenLamdas = e.children.map(compileToLambdas);
-      return (
-        properties: PropertyValueSet.PropertyValueSet,
-        comparer: PropertyValue.Comparer
-      ) => childrenLamdas.every(child => child(properties, comparer));
+      return (properties: PropertyValueSet.PropertyValueSet, comparer: PropertyValue.Comparer) =>
+        childrenLamdas.every((child) => child(properties, comparer));
     }
     case "OrExpr": {
       const childrenLamdas = e.children.map(compileToLambdas);
-      return (
-        properties: PropertyValueSet.PropertyValueSet,
-        comparer: PropertyValue.Comparer
-      ) => !!childrenLamdas.find(child => child(properties, comparer));
+      return (properties: PropertyValueSet.PropertyValueSet, comparer: PropertyValue.Comparer) =>
+        !!childrenLamdas.find((child) => child(properties, comparer));
     }
     case "EqualsExpr": {
       const leftLamda = makeEvalLambdaForPropertyValueExpr(e.leftValue);
-      const rightLamdas = e.rightValueRanges.map(range => [
+      const rightLamdas = e.rightValueRanges.map((range) => [
         makeEvalLambdaForPropertyValueExpr(range.min),
-        makeEvalLambdaForPropertyValueExpr(range.max)
+        makeEvalLambdaForPropertyValueExpr(range.max),
       ]);
 
-      return (
-        pvs: PropertyValueSet.PropertyValueSet,
-        comparer: PropertyValue.Comparer
-      ) => {
+      return (pvs: PropertyValueSet.PropertyValueSet, comparer: PropertyValue.Comparer) => {
         const left = leftLamda(pvs);
         for (const range of rightLamdas) {
           const min = range[0](pvs);
@@ -41,8 +34,8 @@ export function compileToLambdas(e: Ast.BooleanExpr): CompiledFilterFunction {
             (left !== null &&
               min !== null &&
               max !== null &&
-              (PropertyValue.greaterOrEqualTo(left, min, comparer) &&
-                PropertyValue.lessOrEqualTo(left, max, comparer)))
+              PropertyValue.greaterOrEqualTo(left, min, comparer) &&
+              PropertyValue.lessOrEqualTo(left, max, comparer))
           ) {
             return e.operationType === "equals";
           }
@@ -99,9 +92,7 @@ export type EvaluatePropertyValueExprFunc = (
   properties: PropertyValueSet.PropertyValueSet
 ) => PropertyValue.PropertyValue | null;
 
-export function makeEvalLambdaForPropertyValueExpr(
-  e: Ast.PropertyValueExpr
-): EvaluatePropertyValueExprFunc {
+export function makeEvalLambdaForPropertyValueExpr(e: Ast.PropertyValueExpr): EvaluatePropertyValueExprFunc {
   switch (e.type) {
     case "IdentifierExpr": {
       return (pvs: PropertyValueSet.PropertyValueSet) => {

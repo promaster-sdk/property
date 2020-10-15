@@ -1,10 +1,6 @@
 import React from "react";
 import { Unit, UnitFormat } from "uom";
-import {
-  PropertyValueSet,
-  PropertyValue,
-  PropertyFilter
-} from "@promaster-sdk/property";
+import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
 import {
@@ -17,24 +13,14 @@ import {
   TranslatePropertyValue,
   TranslateNotNumericMessage,
   TranslateValueIsRequiredMessage,
-  PropertyValueItem
+  PropertyValueItem,
 } from "./types";
 
-const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector(
-  {}
-);
-const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector(
-  {}
-);
-const CheckboxPropertySelectorDefault = PropertySelectors.createCheckboxPropertySelector(
-  {}
-);
-const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector(
-  {}
-);
-const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector(
-  {}
-);
+const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector({});
+const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector({});
+const CheckboxPropertySelectorDefault = PropertySelectors.createCheckboxPropertySelector({});
+const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector({});
+const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector({});
 
 export interface PropertySelectorProps {
   readonly selectorType: PropertySelectorType;
@@ -82,7 +68,7 @@ export function createPropertySelector({
   ComboboxPropertySelector = ComboboxPropertySelectorDefault,
   TextboxPropertySelector = TextboxPropertySelectorDefault,
   RadioGroupPropertySelector = RadioGroupPropertySelectorDefault,
-  CheckboxPropertySelector = CheckboxPropertySelectorDefault
+  CheckboxPropertySelector = CheckboxPropertySelectorDefault,
 }: CreatePropertySelectorProps): PropertySelector {
   return function PropertySelector({
     selectorType,
@@ -107,7 +93,7 @@ export function createPropertySelector({
     translateValueIsRequiredMessage,
     inputDebounceTime,
     unitsFormat,
-    units
+    units,
   }: PropertySelectorProps): JSX.Element {
     function onValueChange(newValue: PropertyValue.PropertyValue): void {
       onChange(
@@ -138,14 +124,15 @@ export function createPropertySelector({
               propertyValueSet={selectedProperties}
               valueItems={
                 valueItems &&
-                valueItems.map(vi => ({
+                valueItems.map((vi) => ({
                   value: vi.value,
-                  text: translatePropertyValue(propertyName, (vi.value
-                    ? PropertyValue.getInteger(vi.value)
-                    : undefined) as number),
+                  text: translatePropertyValue(
+                    propertyName,
+                    (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number
+                  ),
                   sortNo: vi.sort_no,
                   validationFilter: vi.property_filter,
-                  image: vi.image
+                  image: vi.image,
                 }))
               }
               showCodes={includeCodes}
@@ -162,14 +149,15 @@ export function createPropertySelector({
               propertyValueSet={selectedProperties}
               valueItems={
                 valueItems &&
-                valueItems.map(vi => ({
+                valueItems.map((vi) => ({
                   value: vi.value,
-                  text: translatePropertyValue(propertyName, (vi.value
-                    ? PropertyValue.getInteger(vi.value)
-                    : undefined) as number),
+                  text: translatePropertyValue(
+                    propertyName,
+                    (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number
+                  ),
                   sortNo: vi.sort_no,
                   validationFilter: vi.property_filter,
-                  image: vi.image
+                  image: vi.image,
                 }))
               }
               showCodes={includeCodes}
@@ -187,14 +175,15 @@ export function createPropertySelector({
               propertyValueSet={selectedProperties}
               valueItems={
                 valueItems &&
-                valueItems.map(vi => ({
+                valueItems.map((vi) => ({
                   value: vi.value,
-                  text: translatePropertyValue(propertyName, (vi.value
-                    ? PropertyValue.getInteger(vi.value)
-                    : undefined) as number),
+                  text: translatePropertyValue(
+                    propertyName,
+                    (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number
+                  ),
                   sortNo: vi.sort_no,
                   validationFilter: vi.property_filter,
-                  image: vi.image
+                  image: vi.image,
                 }))
               }
               showCodes={includeCodes}
@@ -217,16 +206,13 @@ export function createPropertySelector({
               onPropertyFormatChanged(propertyName, unit, decimalCount)
             }
             onFormatCleared={() => onPropertyFormatCleared(propertyName)}
-            onFormatSelectorToggled={(active: boolean) =>
-              onPropertyFormatSelectorToggled(propertyName, active)
-            }
+            onFormatSelectorToggled={(active: boolean) => onPropertyFormatSelectorToggled(propertyName, active)}
             onValueChange={onValueChange}
             notNumericMessage={translateValueMustBeNumericMessage()}
             fieldName={fieldName}
             // If it is optional then use blank required message
             isRequiredMessage={
-              optionalProperties &&
-              optionalProperties.indexOf(propertyName) !== -1
+              optionalProperties && optionalProperties.indexOf(propertyName) !== -1
                 ? ""
                 : translateValueIsRequiredMessage()
             }

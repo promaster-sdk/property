@@ -3,5 +3,5 @@ export {
   CheckboxPropertyValueItem,
   CheckboxPropertySelector,
   CheckboxPropertySelectorProps,
-  createCheckboxPropertySelector
+  createCheckboxPropertySelector,
 } from "./checkbox-property-selector";

@@ -13,9 +13,7 @@ export interface CreateComboBoxStandardOptionParams {
   readonly OptionElement?: React.ComponentType<OptionElementProps>;
 }
 
-export const defaultOptionElement = (
-  props: OptionElementProps
-): JSX.Element => (
+export const defaultOptionElement = (props: OptionElementProps): JSX.Element => (
   <OptionElement
     {...props}
     style={{
@@ -24,29 +22,22 @@ export const defaultOptionElement = (
       alignSelf: "center",
       border: "0px none rgb(131, 131, 131)",
       font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-      outline: "rgb(131, 131, 131) none 0px"
+      outline: "rgb(131, 131, 131) none 0px",
     }}
   />
 );
 
 export function createComboBoxStandardOption({
-  OptionElement = defaultOptionElement
-}: CreateComboBoxStandardOptionParams): React.StatelessComponent<
-  ComboBoxStandardOptionProps
-> {
+  OptionElement = defaultOptionElement,
+}: CreateComboBoxStandardOptionParams): React.StatelessComponent<ComboBoxStandardOptionProps> {
   return function ComboBoxStandardOption({
     value,
     toolTip,
     label,
-    isItemValid
+    isItemValid,
   }: ComboBoxStandardOptionProps): JSX.Element {
     return (
-      <OptionElement
-        key={`${label}-${value}`}
-        value={value}
-        title={toolTip}
-        isItemValid={isItemValid}
-      >
+      <OptionElement key={`${label}-${value}`} value={value} title={toolTip} isItemValid={isItemValid}>
         {(isItemValid ? "" : "✘ ") + label}
       </OptionElement>
     );

@@ -30,18 +30,10 @@ interface Props {
   readonly children?: ReadonlyArray<React.ReactElement<{}>>;
 }
 
-export function Expander({
-  header,
-  closed,
-  closedChanged,
-  children
-}: Props): React.ReactElement<Props> {
+export function Expander({ header, closed, closedChanged, children }: Props): React.ReactElement<Props> {
   return (
     <div className={styles.expander}>
-      <div
-        className={styles.expanderHeader}
-        onClick={() => closedChanged(!closed)}
-      >
+      <div className={styles.expanderHeader} onClick={() => closedChanged(!closed)}>
         <i className={closed ? "fa fa-chevron-right" : "fa fa-chevron-down"} />
         {" " + header}
       </div>

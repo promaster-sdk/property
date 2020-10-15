@@ -6,9 +6,7 @@ import { PropertiesSelectorExample1 } from "./example-1";
 // import { PropertiesSelectorExample4LockSingleValidValue } from "./example-4-lock-single-valid-value";
 // import { PropertiesSelectorExampleEmptyPvs } from "./example-empty-pvs";
 
-storiesOf("HOOKS: Properties Selector", module).add("example 1", () => (
-  <PropertiesSelectorExample1 />
-));
+storiesOf("HOOKS: Properties Selector", module).add("example 1", () => <PropertiesSelectorExample1 />);
 // .add("example 2, with custom layout", () => <PropertiesSelectorExample2 />)
 // .add("example 3, Auto select and lock with single valid value", () => (
 //   <PropertiesSelectorExample3AutoSelectAndLockSingleValidValue />

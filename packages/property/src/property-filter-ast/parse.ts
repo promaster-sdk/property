@@ -7,10 +7,7 @@ type ParserCallbacks = {
   createValueExpr(unparsed: string): Ast.ValueExpr;
   createNullExpr(): Ast.NullExpr;
   createIdentifierExpr(identToken: string): Ast.IdentifierExpr;
-  createValueRangeExpr(
-    v1: Ast.PropertyValueExpr,
-    v2: Ast.PropertyValueExpr
-  ): Ast.ValueRangeExpr;
+  createValueRangeExpr(v1: Ast.PropertyValueExpr, v2: Ast.PropertyValueExpr): Ast.ValueRangeExpr;
   createEqualsExpr(
     leftValue: Ast.PropertyValueExpr,
     operationType: Ast.EqualsOperationType,
@@ -33,10 +30,7 @@ type ParserCallbacks = {
     operationType: Ast.MulExprOperationType,
     right: Ast.PropertyValueExpr
   ): Ast.MulExpr;
-  createUnaryExpr(
-    operationType: Ast.UnaryExprOperationType,
-    value: Ast.PropertyValueExpr
-  ): Ast.UnaryExpr;
+  createUnaryExpr(operationType: Ast.UnaryExprOperationType, value: Ast.PropertyValueExpr): Ast.UnaryExpr;
 };
 
 type ParserOptions = {
@@ -47,8 +41,7 @@ type ParserOptions = {
 
 function buildOptions(unitLookup: Unit.UnitLookup): ParserOptions {
   const parserCallbacks: ParserCallbacks = {
-    createValueExpr: (unParsed: string) =>
-      Ast.newValueExpr(unParsed, unitLookup),
+    createValueExpr: (unParsed: string) => Ast.newValueExpr(unParsed, unitLookup),
     createNullExpr: Ast.newNullExpr,
     createIdentifierExpr: Ast.newIdentifierExpr,
     createValueRangeExpr: Ast.newValueRangeExpr,
@@ -58,12 +51,12 @@ function buildOptions(unitLookup: Unit.UnitLookup): ParserOptions {
     createOrExpr: Ast.newOrExpr,
     createAddExpr: Ast.newAddExpr,
     createMulExpr: Ast.newMulExpr,
-    createUnaryExpr: Ast.newUnaryExpr
+    createUnaryExpr: Ast.newUnaryExpr,
   };
   const options = {
     startRule: "start",
     tracer: undefined as string | undefined,
-    callbacks: parserCallbacks
+    callbacks: parserCallbacks,
   };
   return options;
 }

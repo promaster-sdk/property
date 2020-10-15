@@ -10,8 +10,7 @@ import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -21,9 +20,7 @@ interface State {
   };
 }
 
-const filterPrettyPrint = (
-  propertyFilter: PropertyFilter.PropertyFilter
-): string =>
+const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
@@ -33,16 +30,13 @@ const filterPrettyPrint = (
     unitLookup
   );
 
-export class PropertiesSelectorExampleEmptyPvs extends React.Component<
-  {},
-  State
-> {
+export class PropertiesSelectorExampleEmptyPvs extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
       propertyValueSet: PropertyValueSet.fromString("", unitLookup),
       closedGroups: [],
-      propertyFormats: {}
+      propertyFormats: {},
     };
   }
 
@@ -73,30 +67,27 @@ export class PropertiesSelectorExampleEmptyPvs extends React.Component<
         this.setState(
           merge(this.state, {
             propertyFormats: merge(this.state.propertyFormats, {
-              [propertyName]: { unit, decimalCount }
-            })
+              [propertyName]: { unit, decimalCount },
+            }),
           })
         ),
       onPropertyFormatCleared: (propertyName: string) =>
         this.setState(
           merge(this.state, {
-            propertyFormats: R.dissoc(propertyName, this.state.propertyFormats)
+            propertyFormats: R.dissoc(propertyName, this.state.propertyFormats),
           })
         ),
       autoSelectSingleValidValue: true,
-      translatePropertyName: (propertyName: string) =>
-        `${propertyName}_Translation`,
-      translatePropertyValue: (
-        propertyName: string,
-        value: number | undefined
-      ) => `${propertyName}_${value}_Translation`,
+      translatePropertyName: (propertyName: string) => `${propertyName}_Translation`,
+      translatePropertyValue: (propertyName: string, value: number | undefined) =>
+        `${propertyName}_${value}_Translation`,
       translateValueMustBeNumericMessage: () => "value_must_be_numeric",
       translateValueIsRequiredMessage: () => "value_is_required",
       translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: () => "translateGroupName",
       closedGroups: [],
       onToggleGroupClosed: () => "",
-      inputDebounceTime: 600
+      inputDebounceTime: 600,
     };
 
     return (

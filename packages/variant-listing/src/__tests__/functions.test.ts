@@ -5,24 +5,17 @@ import * as R from "ramda";
 import { PropertyFilter } from "@promaster-sdk/property";
 import { buildAllPropertyValueSetsExtended } from "../functions";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {
     const cfcDataRaw = JSON.parse(
-      fs
-        .readFileSync(
-          Path.join(__dirname, "../../src/__tests__/test-data/cfc.json")
-        )
-        .toString()
+      fs.readFileSync(Path.join(__dirname, "../../src/__tests__/test-data/cfc.json")).toString()
     );
-    const explicitPropertyValueSet = R.map(item => {
+    const explicitPropertyValueSet = R.map((item) => {
       return {
         ...item,
-        property_filter:
-          item.property_filter &&
-          PropertyFilter.fromString(item.property_filter, unitLookup)
+        property_filter: item.property_filter && PropertyFilter.fromString(item.property_filter, unitLookup),
       };
     }, cfcDataRaw.explicitPropertyValueSet);
     // Need to go though and create PropertyFilter for all strings in the data
@@ -32,23 +25,14 @@ describe("buildAllPropertyValueSets", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       variableProperties: cfcDataRaw.variableProperties.map((a: any) => ({
         ...a,
-        validation_filter: PropertyFilter.fromString(
-          a.validation_filter,
-          unitLookup
-        ),
-        visibility_filter: PropertyFilter.fromString(
-          a.visibility_filter,
-          unitLookup
-        ),
+        validation_filter: PropertyFilter.fromString(a.validation_filter, unitLookup),
+        visibility_filter: PropertyFilter.fromString(a.visibility_filter, unitLookup),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         value: a.value.map((a: any) => ({
           ...a,
-          property_filter: PropertyFilter.fromString(
-            a.property_filter,
-            unitLookup
-          )
-        }))
-      }))
+          property_filter: PropertyFilter.fromString(a.property_filter, unitLookup),
+        })),
+      })),
     };
     // fs.writeFileSync(
     //   Path.join(__dirname, "./cfc_out.json"),

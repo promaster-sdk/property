@@ -14,17 +14,14 @@ const _cache: { [key: string]: PropertyFilter } = {}; //eslint-disable-line
 export const Empty: PropertyFilter = {
   text: "",
   ast: Ast.newEmptyExpr(),
-  _evaluate: () => true
+  _evaluate: () => true,
 };
 
 function create(text: string, ast: Ast.BooleanExpr): PropertyFilter {
   return { text, ast, _evaluate: Ast.compileAst(ast) };
 }
 
-export function fromString(
-  filter: string,
-  unitLookup: Unit.UnitLookup
-): PropertyFilter | undefined {
+export function fromString(filter: string, unitLookup: Unit.UnitLookup): PropertyFilter | undefined {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
@@ -45,10 +42,7 @@ export function fromString(
   return _cache[filter];
 }
 
-export function fromStringOrEmpty(
-  filterString: string,
-  unitLookup: Unit.UnitLookup
-): PropertyFilter {
+export function fromStringOrEmpty(filterString: string, unitLookup: Unit.UnitLookup): PropertyFilter {
   const filter = fromString(filterString, unitLookup);
   if (filter === undefined) {
     return Empty;

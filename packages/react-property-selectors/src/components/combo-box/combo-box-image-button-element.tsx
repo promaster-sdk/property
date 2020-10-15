@@ -3,10 +3,7 @@ import React from "react";
 export type ComboBoxImageElementProps = {
   readonly isSelectedItemValid?: boolean;
   readonly locked: boolean;
-} & React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export function ComboBoxImageElement({
   isSelectedItemValid: _,

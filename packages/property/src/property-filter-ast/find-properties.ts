@@ -1,10 +1,7 @@
 import * as Ast from "./types";
 import { exhaustiveCheck } from "../utils/exhaustive-check";
 
-export function findProperties(
-  e: Ast.BooleanExpr,
-  properties: Array<string>
-): void {
+export function findProperties(e: Ast.BooleanExpr, properties: Array<string>): void {
   switch (e.type) {
     case "AndExpr":
       for (const child of e.children) {
@@ -35,10 +32,7 @@ export function findProperties(
   }
 }
 
-function _findPropertiesInPropertyValueExpr(
-  e: Ast.PropertyValueExpr,
-  properties: Array<string>
-): void {
+function _findPropertiesInPropertyValueExpr(e: Ast.PropertyValueExpr, properties: Array<string>): void {
   switch (e.type) {
     case "IdentifierExpr": {
       properties.push(e.name);

@@ -1,9 +1,5 @@
 import { Format, Serialize, UnitFormat, Unit } from "uom";
-import {
-  PropertyFilter,
-  PropertyFilterAst as Ast,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyFilterAst as Ast, PropertyValue } from "@promaster-sdk/property";
 import { exhaustiveCheck } from "ts-exhaustive-check/lib-cjs";
 import { inferTypeMap } from "../type-inference/filter-type-inferrer";
 import { ExprType, ExprTypeEnum } from "../type-inference/expr-type";
@@ -27,15 +23,7 @@ export function filterPrettyPrintIndented(
 
   const typeMap = inferTypeMap(f);
 
-  return visit(
-    e,
-    indentationDepth,
-    indentionString,
-    messages,
-    typeMap,
-    unitsFormat,
-    unitLookup
-  );
+  return visit(e, indentationDepth, indentionString, messages, typeMap, unitsFormat, unitLookup);
 }
 
 function visit(
@@ -50,26 +38,14 @@ function visit(
   unitLookup: Unit.UnitLookup
 ): string {
   const innerVisit = (indent: number, expr: Ast.Expr): string =>
-    visit(
-      expr,
-      indent,
-      indentionString,
-      messages,
-      typeMap,
-      unitsFormat,
-      unitLookup
-    );
+    visit(expr, indent, indentionString, messages, typeMap, unitsFormat, unitLookup);
   switch (e.type) {
     case "AndExpr": {
       let s = "";
       for (const child of e.children) {
         s += innerVisit(indentationDepth, child);
         if (child !== e.children[e.children.length - 1]) {
-          s +=
-            "\n" +
-            _generateIndention(indentationDepth + 1, indentionString) +
-            messages.andMessage() +
-            "\n";
+          s += "\n" + _generateIndention(indentationDepth + 1, indentionString) + messages.andMessage() + "\n";
         }
       }
       return s;
@@ -121,22 +97,14 @@ function visit(
         s += innerVisit(indentationDepth + 1, child);
 
         if (child !== e.children[e.children.length - 1]) {
-          s +=
-            "\n" +
-            _generateIndention(indentationDepth, indentionString) +
-            messages.orMessage() +
-            "\n";
+          s += "\n" + _generateIndention(indentationDepth, indentionString) + messages.orMessage() + "\n";
         }
       }
       return s;
     }
     case "ValueExpr": {
       const type = typeMap.get(e);
-      if (
-        type &&
-        type.exprTypeEnum === ExprTypeEnum.Property &&
-        type.propertyName !== null
-      ) {
+      if (type && type.exprTypeEnum === ExprTypeEnum.Property && type.propertyName !== null) {
         return messages.propertyValueMessage(type.propertyName!, e.parsed);
       } else if (e.parsed.type === "integer") {
         const integer = PropertyValue.getInteger(e.parsed);
@@ -173,14 +141,16 @@ function visit(
       return messages.nullMessage();
     }
     case "AddExpr": {
-      return `${innerVisit(indentationDepth, e.left)} ${
-        e.operationType === "add" ? "+" : "-"
-      } ${innerVisit(indentationDepth, e.right)}`;
+      return `${innerVisit(indentationDepth, e.left)} ${e.operationType === "add" ? "+" : "-"} ${innerVisit(
+        indentationDepth,
+        e.right
+      )}`;
     }
     case "MulExpr": {
-      return `${innerVisit(indentationDepth, e.left)} ${
-        e.operationType === "multiply" ? "*" : "/"
-      } ${innerVisit(indentationDepth, e.right)}`;
+      return `${innerVisit(indentationDepth, e.left)} ${e.operationType === "multiply" ? "*" : "/"} ${innerVisit(
+        indentationDepth,
+        e.right
+      )}`;
     }
     case "UnaryExpr": {
       return `-${innerVisit(indentationDepth, e.value)}`;
@@ -198,10 +168,7 @@ function _reversed(array: Array<any>): Array<any> {
   return array.slice().reverse();
 }
 
-function _generateIndention(
-  indentationDepth: number,
-  indentionString: string
-): string {
+function _generateIndention(indentationDepth: number, indentionString: string): string {
   let b = "";
   for (let i = 0; i < indentationDepth; i++) {
     b += indentionString;

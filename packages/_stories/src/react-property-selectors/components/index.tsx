@@ -16,30 +16,16 @@ import { TextboxPropertySelectorExample1 } from "./textbox-property-selector/exa
 //   hierarchyRootSeparator: /\|/, //matches a |
 // });
 
-storiesOf("Addons|Links.Select", module).add("example 1", () => (
-  <AmountFormatSelectorExample1 />
-));
+storiesOf("Addons|Links.Select", module).add("example 1", () => <AmountFormatSelectorExample1 />);
 
-storiesOf("COMP: Amount Format Selector", module).add("example 1", () => (
-  <AmountFormatSelectorExample1 />
-));
+storiesOf("COMP: Amount Format Selector", module).add("example 1", () => <AmountFormatSelectorExample1 />);
 
-storiesOf("COMP: Amount Property Selector", module).add("example 1", () => (
-  <AmountPropertySelectorExample1 />
-));
+storiesOf("COMP: Amount Property Selector", module).add("example 1", () => <AmountPropertySelectorExample1 />);
 
-storiesOf("COMP: Combobox Property Selector", module).add("example 1", () => (
-  <ComboboxPropertySelectorExample1 />
-));
+storiesOf("COMP: Combobox Property Selector", module).add("example 1", () => <ComboboxPropertySelectorExample1 />);
 
-storiesOf("COMP: Checkbox Property Selector", module).add("example 1", () => (
-  <CheckboxPropertySelectorExample1 />
-));
+storiesOf("COMP: Checkbox Property Selector", module).add("example 1", () => <CheckboxPropertySelectorExample1 />);
 
-storiesOf("COMP: Dropdown", module).add("example 1", () => (
-  <DropdownExample1 />
-));
+storiesOf("COMP: Dropdown", module).add("example 1", () => <DropdownExample1 />);
 
-storiesOf("COMP: Textbox Property Selector", module).add("example 1", () => (
-  <TextboxPropertySelectorExample1 />
-));
+storiesOf("COMP: Textbox Property Selector", module).add("example 1", () => <TextboxPropertySelectorExample1 />);

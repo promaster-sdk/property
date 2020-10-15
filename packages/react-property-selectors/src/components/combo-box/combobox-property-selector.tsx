@@ -1,22 +1,9 @@
 import React from "react";
-import {
-  PropertyFilter,
-  PropertyValue,
-  PropertyValueSet
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import {
-  ComboBoxStandardSelect,
-  ComboBoxStandardSelectProps
-} from "./combo-box-standard-select";
-import {
-  createComboBoxStandardOption,
-  ComboBoxStandardOptionProps
-} from "./combo-box-standard-option";
-import {
-  ImageDropdownSelector,
-  createImageDropdownSelector
-} from "./image-dropdown-selector";
+import { ComboBoxStandardSelect, ComboBoxStandardSelectProps } from "./combo-box-standard-select";
+import { createComboBoxStandardOption, ComboBoxStandardOptionProps } from "./combo-box-standard-option";
+import { ImageDropdownSelector, createImageDropdownSelector } from "./image-dropdown-selector";
 
 export interface ComboBoxPropertyValueItem {
   readonly value: PropertyValue.PropertyValue | undefined | null;
@@ -40,18 +27,12 @@ export interface ComboboxPropertySelectorProps {
 }
 
 export interface CreateComboboxPropertySelectorParams {
-  readonly ComboBoxStandardOption?: React.ComponentType<
-    ComboBoxStandardOptionProps
-  >;
-  readonly ComboBoxStandardSelect?: React.ComponentType<
-    ComboBoxStandardSelectProps
-  >;
+  readonly ComboBoxStandardOption?: React.ComponentType<ComboBoxStandardOptionProps>;
+  readonly ComboBoxStandardSelect?: React.ComponentType<ComboBoxStandardSelectProps>;
   readonly ComboBoxImageDropdownSelector?: ImageDropdownSelector;
 }
 
-export type ComboboxPropertySelector = React.StatelessComponent<
-  ComboboxPropertySelectorProps
->;
+export type ComboboxPropertySelector = React.StatelessComponent<ComboboxPropertySelectorProps>;
 
 // function standardSelectStyles(
 //   props: ComboBoxStandardSelectProps
@@ -80,7 +61,7 @@ function standardSelectStyles(props: ComboBoxStandardSelectProps): {} {
     return {
       background: "lightgray",
       color: "red",
-      border: "none"
+      border: "none",
     };
   } else if (!props.isSelectedItemValid) {
     return { color: "red" };
@@ -88,7 +69,7 @@ function standardSelectStyles(props: ComboBoxStandardSelectProps): {} {
     return {
       background: "lightgray",
       color: "darkgray",
-      border: "none"
+      border: "none",
     };
   }
   return {};
@@ -96,9 +77,7 @@ function standardSelectStyles(props: ComboBoxStandardSelectProps): {} {
 const defaultComboBoxStandardOption = createComboBoxStandardOption({});
 const defaultImageDropdownSelector = createImageDropdownSelector({});
 
-export const defaultComboBoxStandardSelect = (
-  props: ComboBoxStandardSelectProps
-): JSX.Element => (
+export const defaultComboBoxStandardSelect = (props: ComboBoxStandardSelectProps): JSX.Element => (
   <ComboBoxStandardSelect
     {...props}
     style={{
@@ -110,7 +89,7 @@ export const defaultComboBoxStandardSelect = (
       outline: "rgb(131, 131, 131) none 0px",
       padding: "1px 30px 0px 10px",
 
-      ...standardSelectStyles(props)
+      ...standardSelectStyles(props),
     }}
   />
 );
@@ -118,7 +97,7 @@ export const defaultComboBoxStandardSelect = (
 export function createComboboxPropertySelector({
   ComboBoxStandardOption = defaultComboBoxStandardOption,
   ComboBoxStandardSelect = defaultComboBoxStandardSelect,
-  ComboBoxImageDropdownSelector = defaultImageDropdownSelector
+  ComboBoxImageDropdownSelector = defaultImageDropdownSelector,
 }: CreateComboboxPropertySelectorParams): ComboboxPropertySelector {
   return function ComboboxPropertySelector({
     sortValidFirst,
@@ -130,10 +109,8 @@ export function createComboboxPropertySelector({
     filterPrettyPrint,
     readOnly,
     locked,
-    comparer
-  }: ComboboxPropertySelectorProps): React.ReactElement<
-    ComboboxPropertySelectorProps
-  > {
+    comparer,
+  }: ComboboxPropertySelectorProps): React.ReactElement<ComboboxPropertySelectorProps> {
     const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
 
     const safeComparer = comparer || PropertyValue.defaultComparer;
@@ -142,7 +119,7 @@ export function createComboboxPropertySelector({
       valueItems = [];
     }
     const selectedValueItemOrUndefined = valueItems.find(
-      item => (item.value && PropertyValue.getInteger(item.value)) === value
+      (item) => (item.value && PropertyValue.getInteger(item.value)) === value
     );
     let selectedValueItem: ComboBoxPropertyValueItem;
     if (!selectedValueItemOrUndefined) {
@@ -150,13 +127,11 @@ export function createComboboxPropertySelector({
         value: undefined,
         sortNo: -1,
         text: value === undefined || value === null ? "" : value.toString(),
-        validationFilter: PropertyFilter.Empty
+        validationFilter: PropertyFilter.Empty,
       };
       // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
       // valueItems.unshift(selectedValueItem);
-      valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<
-        ComboBoxPropertyValueItem
-      >;
+      valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<ComboBoxPropertyValueItem>;
     } else {
       selectedValueItem = selectedValueItemOrUndefined;
     }
@@ -172,22 +147,15 @@ export function createComboboxPropertySelector({
 
     // Convert value items to options
     const options: Array<Option> = valueItems
-      .map(valueItem => {
-        const isItemValid = _isValueItemValid(
-          propertyName,
-          propertyValueSet,
-          valueItem,
-          safeComparer
-        );
+      .map((valueItem) => {
+        const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem, safeComparer);
         return {
           value: _getItemValue(valueItem),
           label: _getItemLabel(valueItem, showCodes),
           isItemValid: isItemValid,
           image: valueItem.image,
           sortNo: valueItem.sortNo,
-          toolTip: isItemValid
-            ? ""
-            : _getItemInvalidMessage(valueItem, filterPrettyPrint)
+          toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint),
         };
       })
       .sort((a, b) => {
@@ -209,20 +177,18 @@ export function createComboboxPropertySelector({
         return 0;
       });
 
-    const selectedOption = options.find(
-      option => option.value === _getItemValue(selectedValueItem)
-    );
+    const selectedOption = options.find((option) => option.value === _getItemValue(selectedValueItem));
     if (!selectedOption) {
       throw new Error("Could not find..");
     }
 
-    if (valueItems.some(i => i.image !== undefined)) {
-      const dropdownOptions = options.map(option => ({
+    if (valueItems.some((i) => i.image !== undefined)) {
+      const dropdownOptions = options.map((option) => ({
         value: option.value,
         label: (option.isItemValid ? "" : "✘ ") + option.label,
         tooltip: option.toolTip,
         isItemValid: option.isItemValid,
-        imageUrl: option.image
+        imageUrl: option.image,
       }));
       return (
         <ComboBoxImageDropdownSelector
@@ -230,7 +196,7 @@ export function createComboboxPropertySelector({
           locked={locked}
           value={selectedOption.value}
           options={dropdownOptions}
-          onChange={e => _doOnChange(e, onValueChange)}
+          onChange={(e) => _doOnChange(e, onValueChange)}
         />
       );
     }
@@ -242,11 +208,9 @@ export function createComboboxPropertySelector({
         disabled={readOnly || locked}
         value={selectedOption.value}
         title={selectedOption.toolTip}
-        onChange={event =>
-          _doOnChange(event.currentTarget.value, onValueChange)
-        }
+        onChange={(event) => _doOnChange(event.currentTarget.value, onValueChange)}
       >
-        {options.map(option => (
+        {options.map((option) => (
           <ComboBoxStandardOption
             key={option.value}
             toolTip={option.toolTip}
@@ -260,18 +224,12 @@ export function createComboboxPropertySelector({
   };
 }
 
-function _getItemLabel(
-  valueItem: ComboBoxPropertyValueItem,
-  showCodes: boolean
-): string {
+function _getItemLabel(valueItem: ComboBoxPropertyValueItem, showCodes: boolean): string {
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
   }
 
-  return (
-    valueItem.text +
-    (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "")
-  );
+  return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "");
 }
 
 function _doOnChange(
@@ -309,17 +267,9 @@ function _isValueItemValid(
   if (valueItem.value === undefined || valueItem.value === null) {
     return true;
   }
-  const pvsToCheck = PropertyValueSet.set(
-    propertyName,
-    valueItem.value,
-    propertyValueSet
-  );
+  const pvsToCheck = PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
   if (!valueItem.validationFilter) {
     return true;
   }
-  return PropertyFilter.isValid(
-    pvsToCheck,
-    valueItem.validationFilter,
-    comparer
-  );
+  return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter, comparer);
 }

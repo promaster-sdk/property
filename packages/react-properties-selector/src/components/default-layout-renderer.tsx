@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  PropertySelectorRenderInfo,
-  TranslateGroupName,
-  OnToggleGroupClosed,
-  ReactComponent
-} from "./types";
+import { PropertySelectorRenderInfo, TranslateGroupName, OnToggleGroupClosed, ReactComponent } from "./types";
 import { GroupComponentProps } from "./default-group-component";
 import { GroupItemComponentProps } from "./default-group-item-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
@@ -29,17 +24,15 @@ export function DefaultLayoutRenderer({
   GroupComponent,
   GroupItemComponent,
   PropertySelectorComponent,
-  PropertyLabelComponent
+  PropertyLabelComponent,
 }: LayoutRendererProps): React.ReactElement<LayoutRendererProps> {
   const groups = getDistinctGroupNames(selectors);
 
   return (
     <div>
-      {groups.map(groupName => {
+      {groups.map((groupName) => {
         const isClosedGroup = closedGroups.indexOf(groupName) !== -1;
-        const renderedSelectorsForGroup = selectors.filter(
-          selector => selector.groupName === (groupName || "")
-        );
+        const renderedSelectorsForGroup = selectors.filter((selector) => selector.groupName === (groupName || ""));
         return (
           <GroupComponent
             key={groupName}
@@ -48,7 +41,7 @@ export function DefaultLayoutRenderer({
             onToggleGroupClosed={onToggleGroupClosed}
             translateGroupName={translateGroupName}
           >
-            {renderedSelectorsForGroup.map(selector => (
+            {renderedSelectorsForGroup.map((selector) => (
               <GroupItemComponent
                 key={selector.propertyName}
                 selector={selector}
@@ -80,10 +73,5 @@ function getDistinctGroupNames(
 }
 
 function isNullOrWhiteSpace(str: string): boolean {
-  return (
-    str === null ||
-    str === undefined ||
-    str.length < 1 ||
-    str.replace(/\s/g, "").length < 1
-  );
+  return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
 }

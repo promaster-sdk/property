@@ -21,13 +21,9 @@ import { AmountPropertySelectorExample1Hooks } from "./amount-property-selector/
 //     <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>
 //   ));
 
-storiesOf("HOOKS: Amount Format Selector", module).add("example 1", () => (
-  <AmountFormatSelectorExample1Hooks />
-));
+storiesOf("HOOKS: Amount Format Selector", module).add("example 1", () => <AmountFormatSelectorExample1Hooks />);
 
-storiesOf("HOOKS: Amount Property Selector", module).add("example 1", () => (
-  <AmountPropertySelectorExample1Hooks />
-));
+storiesOf("HOOKS: Amount Property Selector", module).add("example 1", () => <AmountPropertySelectorExample1Hooks />);
 
 storiesOf("HOOKS: Combobox Property Selector", module).add("example 1", () => (
   <ComboboxPropertySelectorExample1Hooks />
@@ -37,6 +33,4 @@ storiesOf("HOOKS: Checkbox Property Selector", module).add("example 1", () => (
   <CheckboxPropertySelectorExample1Hooks />
 ));
 
-storiesOf("HOOKS: Textbox Property Selector", module).add("example 1", () => (
-  <TextboxPropertySelectorExample1Hooks />
-));
+storiesOf("HOOKS: Textbox Property Selector", module).add("example 1", () => <TextboxPropertySelectorExample1Hooks />);

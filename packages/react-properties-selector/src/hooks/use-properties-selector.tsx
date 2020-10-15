@@ -117,25 +117,25 @@ export type SelectorRenderInfoBase = {
 };
 
 export type SelectorRenderInfo =
-  | {
+  | ({
       readonly type: "ComboBox";
       readonly getUseComboboxParams: () => UseComboboxPropertySelectorOptions;
-    } & SelectorRenderInfoBase
-  | {
+    } & SelectorRenderInfoBase)
+  | ({
       readonly type: "RadioGroup";
-    } & SelectorRenderInfoBase
-  | {
+    } & SelectorRenderInfoBase)
+  | ({
       readonly type: "Checkbox";
       readonly getUseCheckboxParams: () => UseCheckboxPropertySelectorOptions;
-    } & SelectorRenderInfoBase
-  | {
+    } & SelectorRenderInfoBase)
+  | ({
       readonly type: "AmountField";
       readonly getUseAmountParams: () => UseAmountPropertySelectorOptions;
-    } & SelectorRenderInfoBase
-  | {
+    } & SelectorRenderInfoBase)
+  | ({
       readonly type: "TextBox";
       readonly getUseTextboxParams: () => UseTextboxPropertySelectorParams;
-    } & SelectorRenderInfoBase;
+    } & SelectorRenderInfoBase);
 
 export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
 
@@ -153,12 +153,7 @@ export function usePropertiesSelector(options: UsePropertiesSelectorOptions): Us
       (property: UsePropertiesSelectorProperty) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
     )
-    .map((p) =>
-      createSelector(
-        p,
-        requiredOptions
-      )
-    );
+    .map((p) => createSelector(p, requiredOptions));
 
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 

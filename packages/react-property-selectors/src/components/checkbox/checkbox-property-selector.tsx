@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  PropertyFilter,
-  PropertyValue,
-  PropertyValueSet
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
 export interface CheckboxPropertyValueItem {
@@ -29,19 +25,14 @@ export interface CheckboxPropertySelectorProps {
 export type CheckboxProps = {
   readonly locked: boolean;
   readonly checked: boolean;
-} & React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
+} & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export interface CreateCheckboxPropertySelectorParams {
   readonly CheckboxContainer?: React.ComponentType<CheckboxProps>;
   readonly Checkbox?: React.ComponentType<CheckboxProps>;
 }
 
-export type CheckboxPropertySelector = React.StatelessComponent<
-  CheckboxPropertySelectorProps
->;
+export type CheckboxPropertySelector = React.StatelessComponent<CheckboxPropertySelectorProps>;
 
 const defaultCheckboxContainer = (props: CheckboxProps): JSX.Element => (
   <div
@@ -50,7 +41,7 @@ const defaultCheckboxContainer = (props: CheckboxProps): JSX.Element => (
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      cursor: "pointer"
+      cursor: "pointer",
 
       // img {
       //   max-width: 100px;
@@ -69,7 +60,7 @@ const defaultCheckbox = (props: CheckboxProps): JSX.Element => (
       backgroundColor: "#ccc",
       width: "22px",
       height: "22px",
-      background: props.checked ? "red" : "green"
+      background: props.checked ? "red" : "green",
 
       // &:after {
       //   display: ${(p: CheckboxProps) => (p.checked ? "initial" : "none")};
@@ -89,7 +80,7 @@ const defaultCheckbox = (props: CheckboxProps): JSX.Element => (
 
 export function createCheckboxPropertySelector({
   CheckboxContainer = defaultCheckboxContainer,
-  Checkbox = defaultCheckbox
+  Checkbox = defaultCheckbox,
 }: CreateCheckboxPropertySelectorParams): CheckboxPropertySelector {
   return function CheckboxPropertySelector({
     propertyName,
@@ -98,10 +89,8 @@ export function createCheckboxPropertySelector({
     showCodes,
     onValueChange,
     locked,
-    comparer
-  }: CheckboxPropertySelectorProps): React.ReactElement<
-    CheckboxPropertySelectorProps
-  > {
+    comparer,
+  }: CheckboxPropertySelectorProps): React.ReactElement<CheckboxPropertySelectorProps> {
     const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
 
     if (!valueItems || valueItems.length !== 2) {
@@ -116,11 +105,7 @@ export function createCheckboxPropertySelector({
     const checked = PropertyValue.equals(trueValue.value, value, comparer);
     const nextValue = checked ? falseValue.value : trueValue.value;
     return (
-      <CheckboxContainer
-        locked={locked}
-        checked={checked}
-        onClick={() => onValueChange(nextValue)}
-      >
+      <CheckboxContainer locked={locked} checked={checked} onClick={() => onValueChange(nextValue)}>
         {trueValue.image && <img src={trueValue.image} />}
         <div>{_getItemLabel(trueValue, showCodes)}</div>
         <Checkbox locked={locked} checked={checked} />
@@ -129,16 +114,10 @@ export function createCheckboxPropertySelector({
   };
 }
 
-function _getItemLabel(
-  valueItem: CheckboxPropertyValueItem,
-  showCodes: boolean
-): string {
+function _getItemLabel(valueItem: CheckboxPropertyValueItem, showCodes: boolean): string {
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
   }
 
-  return (
-    valueItem.text +
-    (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "")
-  );
+  return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "");
 }

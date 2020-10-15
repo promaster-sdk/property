@@ -11,8 +11,7 @@ import { exampleProductProperties } from "./example-product-properties";
 import { createPropertiesSelectorExample2Layout } from "./example-2-layout";
 import { units, unitsFormat } from "./units-map";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -22,9 +21,7 @@ interface State {
   };
 }
 
-const filterPrettyPrint = (
-  propertyFilter: PropertyFilter.PropertyFilter
-): string =>
+const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
@@ -38,12 +35,9 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString(
-        "a=10:Meter;b=1;",
-        unitLookup
-      ),
+      propertyValueSet: PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup),
       closedGroups: [],
-      propertyFormats: {}
+      propertyFormats: {},
     };
   }
 
@@ -74,38 +68,33 @@ export class PropertiesSelectorExample2 extends React.Component<{}, State> {
         this.setState(
           merge(this.state, {
             propertyFormats: merge(this.state.propertyFormats, {
-              [propertyName]: { unit, decimalCount }
-            })
+              [propertyName]: { unit, decimalCount },
+            }),
           })
         ),
       onPropertyFormatCleared: (propertyName: string) =>
         this.setState(
           merge(this.state, {
-            propertyFormats: R.dissoc(propertyName, this.state.propertyFormats)
+            propertyFormats: R.dissoc(propertyName, this.state.propertyFormats),
           })
         ),
       autoSelectSingleValidValue: true,
-      translatePropertyName: (propertyName: string) =>
-        `${propertyName}_Translation`,
-      translatePropertyValue: (
-        propertyName: string,
-        value: number | undefined
-      ) => `${propertyName}_${value}_Translation`,
+      translatePropertyName: (propertyName: string) => `${propertyName}_Translation`,
+      translatePropertyValue: (propertyName: string, value: number | undefined) =>
+        `${propertyName}_${value}_Translation`,
       translateValueMustBeNumericMessage: () => "value_must_be_numeric",
       translateValueIsRequiredMessage: () => "value_is_required",
       translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: () => "translateGroupName",
       closedGroups: [],
       onToggleGroupClosed: () => "",
-      LayoutRenderer: createPropertiesSelectorExample2Layout()
+      LayoutRenderer: createPropertiesSelectorExample2Layout(),
     };
 
     return (
       <div>
         <span>{PropertyValueSet.toString(this.state.propertyValueSet)}</span>
-        <div style={{ margin: 20 }}>
-          This example shows how the whole layout can be overridden
-        </div>
+        <div style={{ margin: 20 }}>This example shows how the whole layout can be overridden</div>
         <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
       </div>
     );

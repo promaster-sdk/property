@@ -2,16 +2,11 @@ import React, { useState } from "react";
 import { Unit, BaseUnits } from "uom";
 import { createAmountPropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import {
-  PropertyFilter,
-  PropertyValueSet,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../../utils";
 import { units, unitsFormat } from "../../units-map";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (units as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -20,9 +15,7 @@ interface State {
   readonly selectedDecimalCount: number;
 }
 
-const filterPrettyPrint = (
-  propertyFilter: PropertyFilter.PropertyFilter
-): string =>
+const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
@@ -32,10 +25,7 @@ const filterPrettyPrint = (
     unitLookup
   );
 
-const validationFilter = PropertyFilter.fromString(
-  "a<100:Meter",
-  unitLookup
-) as PropertyFilter.PropertyFilter;
+const validationFilter = PropertyFilter.fromString("a<100:Meter", unitLookup) as PropertyFilter.PropertyFilter;
 
 const AmountPropertySelector = createAmountPropertySelector({});
 
@@ -43,15 +33,13 @@ export function AmountPropertySelectorExample1(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
     propertyValueSet: PropertyValueSet.fromString("a=10:Meter", unitLookup),
     selectedUnit: BaseUnits.Meter,
-    selectedDecimalCount: 2
+    selectedDecimalCount: 2,
   });
 
   return (
     <div>
       <div>AmountPropertySelector:</div>
-      <div>
-        PropertyValueSet: {PropertyValueSet.toString(state.propertyValueSet)}
-      </div>
+      <div>PropertyValueSet: {PropertyValueSet.toString(state.propertyValueSet)}</div>
       <div>
         <AmountPropertySelector
           fieldName="a"
@@ -59,14 +47,10 @@ export function AmountPropertySelectorExample1(): React.ReactElement<{}> {
           propertyValueSet={state.propertyValueSet}
           inputUnit={state.selectedUnit}
           inputDecimalCount={state.selectedDecimalCount}
-          onValueChange={pv =>
+          onValueChange={(pv) =>
             setState(
               merge(state, {
-                propertyValueSet: PropertyValueSet.set(
-                  "a",
-                  pv as PropertyValue.PropertyValue,
-                  state.propertyValueSet
-                )
+                propertyValueSet: PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state.propertyValueSet),
               })
             )
           }
@@ -82,7 +66,7 @@ export function AmountPropertySelectorExample1(): React.ReactElement<{}> {
             setState(
               merge(state, {
                 selectedUnit: BaseUnits.Meter,
-                selectedDecimalCount: 2
+                selectedDecimalCount: 2,
               })
             )
           }

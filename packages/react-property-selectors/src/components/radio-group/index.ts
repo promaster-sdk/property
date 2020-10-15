@@ -1,7 +1,7 @@
 export {
   RadioGroupPropertySelector,
   RadioGroupPropertySelectorProps,
-  createRadioGroupPropertySelector
+  createRadioGroupPropertySelector,
 } from "./radio-group-property-selector";
 
 export { RadioGroup, RadioGroupProps } from "./radio-group";

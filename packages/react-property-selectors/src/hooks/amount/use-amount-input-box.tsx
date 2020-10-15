@@ -295,9 +295,9 @@ function filterFloat(value: string): number {
 function debounce(func: Function, wait: number): any {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timeout: any;
-  return function(): void {
+  return function (): void {
     const args = arguments; //eslint-disable-line
-    const later = function(): void {
+    const later = function (): void {
       timeout = null;
       func.apply({}, args);
     };

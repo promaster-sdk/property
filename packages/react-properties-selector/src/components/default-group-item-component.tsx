@@ -12,7 +12,7 @@ export interface GroupItemComponentProps {
 export function DefaultGroupItemComponent({
   selector,
   PropertyLabelComponent,
-  PropertySelectorComponent
+  PropertySelectorComponent,
 }: GroupItemComponentProps): React.ReactElement<GroupItemComponentProps> {
   return (
     <tr key={selector.propertyName}>

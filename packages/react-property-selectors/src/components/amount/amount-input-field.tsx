@@ -3,10 +3,7 @@ import React from "react";
 export type AmountInputFieldProps = {
   readonly isReadonly: boolean;
   readonly effectiveErrorMessage: string;
-} & React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->;
+} & React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 
 export const AmountInputField: React.ComponentType<AmountInputFieldProps> = ({
   isReadonly: _,

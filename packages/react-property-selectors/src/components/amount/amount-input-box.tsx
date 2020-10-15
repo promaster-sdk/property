@@ -51,37 +51,29 @@ export interface CreateAmountInputBoxParams {
 //   return [];
 // }
 
-function inputInvalidLocked({
-  isReadonly,
-  effectiveErrorMessage
-}: AmountInputFieldProps): {} {
+function inputInvalidLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): {} {
   if (isReadonly && effectiveErrorMessage) {
     return {
       background: "lightgray",
       color: "red",
-      border: "none"
+      border: "none",
     };
   }
   return {};
 }
 
-function inputLocked({
-  isReadonly,
-  effectiveErrorMessage
-}: AmountInputFieldProps): {} {
+function inputLocked({ isReadonly, effectiveErrorMessage }: AmountInputFieldProps): {} {
   if (isReadonly && !effectiveErrorMessage) {
     return {
       background: "lightgray",
       color: "darkgray",
-      border: "none"
+      border: "none",
     };
   }
   return {};
 }
 
-export const defaultAmountInputField = (
-  props: AmountInputFieldProps
-): JSX.Element => (
+export const defaultAmountInputField = (props: AmountInputFieldProps): JSX.Element => (
   <AmountInputField
     {...props}
     style={{
@@ -94,27 +86,20 @@ export const defaultAmountInputField = (
       padding: "1px 30px 0px 10px",
 
       ...inputInvalidLocked(props),
-      ...inputLocked(props)
+      ...inputLocked(props),
     }}
   />
 );
 
 export function createAmountInputBox({
-  AmountInputField = defaultAmountInputField
+  AmountInputField = defaultAmountInputField,
 }: CreateAmountInputBoxParams): AmountInputBox {
   // eslint-disable-next-line functional/no-class
-  return class AmountInputBox extends React.Component<
-    AmountInputBoxProps,
-    State
-  > {
+  return class AmountInputBox extends React.Component<AmountInputBoxProps, State> {
     constructor(props: AmountInputBoxProps) {
       super(props);
       // What the optimal debounce is may vary between users. 350ms seems like a nice value...
-      this._debouncedOnValueChange = debounce(
-        this,
-        this._debouncedOnValueChange,
-        this.props.debounceTime
-      );
+      this._debouncedOnValueChange = debounce(this, this._debouncedOnValueChange, this.props.debounceTime);
     }
 
     componentWillMount(): void {
@@ -133,11 +118,7 @@ export function createAmountInputBox({
       if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
         console.error("Missing inputDecimalCount");
       }
-      const formattedValue = formatWithUnitAndDecimalCount(
-        value,
-        inputUnit,
-        inputDecimalCount
-      );
+      const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
       const newState = calculateNewState(
         value,
         formattedValue,
@@ -159,7 +140,7 @@ export function createAmountInputBox({
           readOnly={readOnly}
           onBlur={onBlur}
           onFocus={onFocus}
-          onChange={e => this._onChange(e, onValueChange)}
+          onChange={(e) => this._onChange(e, onValueChange)}
           title={effectiveErrorMessage}
           effectiveErrorMessage={effectiveErrorMessage}
           isReadonly={readOnly}
@@ -180,10 +161,7 @@ export function createAmountInputBox({
       }
     }
 
-    _onChange(
-      e: React.FormEvent<HTMLInputElement>,
-      onValueChange: (newAmount: Amount.Amount<unknown>) => void
-    ): void {
+    _onChange(e: React.FormEvent<HTMLInputElement>, onValueChange: (newAmount: Amount.Amount<unknown>) => void): void {
       const newStringValue = e.currentTarget.value.replace(",", ".");
       const { inputUnit, inputDecimalCount } = this.props;
 
@@ -194,11 +172,7 @@ export function createAmountInputBox({
       }
 
       // Update the internal state and if the change resulted in a valid value then emit a change with that value
-      const newAmount = unformatWithUnitAndDecimalCount(
-        newStringValue,
-        inputUnit,
-        inputDecimalCount
-      );
+      const newAmount = unformatWithUnitAndDecimalCount(newStringValue, inputUnit, inputDecimalCount);
       const newState = calculateNewState(
         newAmount,
         newStringValue,
@@ -222,23 +196,18 @@ function calculateNewState(
   notNumericMessage: string,
   errorMessage: string
 ): State {
-  const internalErrorMessage = getInternalErrorMessage(
-    newAmount,
-    newStringValue,
-    isRequiredMessage,
-    notNumericMessage
-  );
+  const internalErrorMessage = getInternalErrorMessage(newAmount, newStringValue, isRequiredMessage, notNumericMessage);
   if (internalErrorMessage) {
     return {
       isValid: false,
       textValue: newStringValue,
-      effectiveErrorMessage: internalErrorMessage
+      effectiveErrorMessage: internalErrorMessage,
     };
   } else {
     return {
       isValid: true,
       textValue: newStringValue,
-      effectiveErrorMessage: errorMessage
+      effectiveErrorMessage: errorMessage,
     };
   }
 }
@@ -304,12 +273,9 @@ function unformatWithUnitAndDecimalCount<T>(
   }
   // Keep number of decimals from the entered text except if they are more than the formats decimal count
   const textDecimalCount = getDecimalCountFromString(text);
-  const finalDecimalCount =
-    textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
+  const finalDecimalCount = textDecimalCount > inputDecimalCount ? inputDecimalCount : textDecimalCount;
   const finalFloatValue =
-    textDecimalCount > inputDecimalCount
-      ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount))
-      : parsedFloatValue;
+    textDecimalCount > inputDecimalCount ? parseFloat(parsedFloatValue.toFixed(inputDecimalCount)) : parsedFloatValue;
   return Amount.create(finalFloatValue, unit, finalDecimalCount);
 }
 
@@ -337,9 +303,9 @@ function filterFloat(value: string): number {
 function debounce(_this: any, func: Function, wait: number): any {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timeout: any;
-  return function(): void {
+  return function (): void {
     const args = arguments; //eslint-disable-line
-    const later = function(): void {
+    const later = function (): void {
       timeout = null;
       func.apply(_this, args);
     };

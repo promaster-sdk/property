@@ -1,10 +1,6 @@
 import React from "react";
 import { Unit } from "uom";
-import {
-  PropertyValueSet,
-  PropertyValue,
-  PropertyFilter
-} from "@promaster-sdk/property";
+import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import { PropertySelectorProps } from "./default-property-selector-component";
 import { PropertyLabelComponentProps } from "./default-property-label-component";
 
@@ -12,32 +8,19 @@ export type AmountFormat = {
   readonly unit: Unit.Unit<unknown>;
   readonly decimalCount: number;
 };
-export type PropertySelectionOnChange = (
-  properties: PropertyValueSet.PropertyValueSet,
-  propertyNames: string
-) => void;
+export type PropertySelectionOnChange = (properties: PropertyValueSet.PropertyValueSet, propertyNames: string) => void;
 
 export type OnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
 ) => void;
 
-export type OnPropertyFormatChanged = (
-  propertyName: string,
-  unit: Unit.Unit<unknown>,
-  decimalCount: number
-) => void;
+export type OnPropertyFormatChanged = (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
 export type OnPropertyFormatCleared = (propertyName: string) => void;
-export type OnPropertyFormatSelectorToggled = (
-  propertyName: string,
-  active: boolean
-) => void;
+export type OnPropertyFormatSelectorToggled = (propertyName: string, active: boolean) => void;
 
 export type TranslatePropertyName = (propertyName: string) => string;
-export type TranslatePropertyValue = (
-  propertyName: string,
-  value: number | undefined
-) => string;
+export type TranslatePropertyValue = (propertyName: string, value: number | undefined) => string;
 export type TranslateNotNumericMessage = () => string;
 export type TranslateValueIsRequiredMessage = () => string;
 
@@ -45,9 +28,7 @@ export type TranslatePropertyLabelHover = (propertyName: string) => string;
 export type TranslateGroupName = (groupName: string) => string;
 export type OnToggleGroupClosed = (groupName: string) => void;
 
-export type ReactComponent<T> =
-  | React.ComponentClass<T>
-  | React.StatelessComponent<T>;
+export type ReactComponent<T> = React.ComponentClass<T> | React.StatelessComponent<T>;
 
 // Defines information to render one selector
 export interface PropertySelectorRenderInfo {
@@ -73,12 +54,7 @@ export interface PropertySelectorRenderInfo {
   readonly labelComponentProps: PropertyLabelComponentProps;
 }
 
-export type PropertySelectorType =
-  | "ComboBox"
-  | "RadioGroup"
-  | "Checkbox"
-  | "AmountField"
-  | "TextBox";
+export type PropertySelectorType = "ComboBox" | "RadioGroup" | "Checkbox" | "AmountField" | "TextBox";
 
 /**
  * This interface has keys with the same names as returned by promaster-api, plus selector_type for choosing appearance of the selector

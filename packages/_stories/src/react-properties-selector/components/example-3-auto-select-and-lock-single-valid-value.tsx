@@ -5,16 +5,11 @@ import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { Unit, BaseUnits } from "uom";
-import {
-  PropertyFilter,
-  PropertyValueSet,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "./utils";
 import { units, unitsFormat } from "./units-map";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -24,9 +19,7 @@ interface State {
   };
 }
 
-const filterPrettyPrint = (
-  propertyFilter: PropertyFilter.PropertyFilter
-): string =>
+const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): string =>
   PropertyFiltering.filterPrettyPrintIndented(
     PropertyFiltering.buildEnglishMessages(unitsFormat),
     2,
@@ -36,16 +29,13 @@ const filterPrettyPrint = (
     unitLookup
   );
 
-export class PropertiesSelectorExample3AutoSelectAndLockSingleValidValue extends React.Component<
-  {},
-  State
-> {
+export class PropertiesSelectorExample3AutoSelectAndLockSingleValidValue extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
       propertyValueSet: PropertyValueSet.fromString("a=20;b=200;", unitLookup),
       closedGroups: [],
-      propertyFormats: {}
+      propertyFormats: {},
     };
   }
 
@@ -56,10 +46,7 @@ export class PropertiesSelectorExample3AutoSelectAndLockSingleValidValue extends
       unitsFormat,
       unitLookup,
       selectedProperties: this.state.propertyValueSet,
-      onChange: (
-        properties: PropertyValueSet.PropertyValueSet,
-        _changedProps: ReadonlyArray<string>
-      ) => {
+      onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProps: ReadonlyArray<string>) => {
         this.setState(merge(this.state, { propertyValueSet: properties }));
       },
       productProperties: productProperties,
@@ -78,30 +65,27 @@ export class PropertiesSelectorExample3AutoSelectAndLockSingleValidValue extends
         this.setState(
           merge(this.state, {
             propertyFormats: merge(this.state.propertyFormats, {
-              [propertyName]: { unit, decimalCount }
-            })
+              [propertyName]: { unit, decimalCount },
+            }),
           })
         ),
       onPropertyFormatCleared: (propertyName: string) =>
         this.setState(
           merge(this.state, {
-            propertyFormats: R.dissoc(propertyName, this.state.propertyFormats)
+            propertyFormats: R.dissoc(propertyName, this.state.propertyFormats),
           })
         ),
       autoSelectSingleValidValue: true,
-      translatePropertyName: (propertyName: string) =>
-        `${propertyName}_Translation`,
-      translatePropertyValue: (
-        propertyName: string,
-        value: number | undefined
-      ) => `${propertyName}_${value}_Translation`,
+      translatePropertyName: (propertyName: string) => `${propertyName}_Translation`,
+      translatePropertyValue: (propertyName: string, value: number | undefined) =>
+        `${propertyName}_${value}_Translation`,
       translateValueMustBeNumericMessage: () => "value_must_be_numeric",
       translateValueIsRequiredMessage: () => "value_is_required",
       translatePropertyLabelHover: () => "translatePropertyLabelHover",
       translateGroupName: () => "translateGroupName",
       closedGroups: [],
       onToggleGroupClosed: () => "",
-      inputDebounceTime: 600
+      inputDebounceTime: 600,
     };
 
     return (
@@ -126,14 +110,14 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 10,
           value: PropertyValue.fromInteger(10),
-          property_filter: PropertyFilter.Empty
+          property_filter: PropertyFilter.Empty,
         },
         {
           sort_no: 20,
           value: PropertyValue.fromInteger(20),
-          property_filter: PropertyFilter.fromStringOrEmpty("", unitLookup)
-        }
-      ]
+          property_filter: PropertyFilter.fromStringOrEmpty("", unitLookup),
+        },
+      ],
     },
     {
       sort_no: 1,
@@ -146,14 +130,14 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 100,
           value: PropertyValue.fromInteger(100),
-          property_filter: PropertyFilter.Empty
+          property_filter: PropertyFilter.Empty,
         },
         {
           sort_no: 200,
           value: PropertyValue.fromInteger(200),
-          property_filter: PropertyFilter.fromStringOrEmpty("a!=20", unitLookup)
-        }
-      ]
-    }
+          property_filter: PropertyFilter.fromStringOrEmpty("a!=20", unitLookup),
+        },
+      ],
+    },
   ];
 }

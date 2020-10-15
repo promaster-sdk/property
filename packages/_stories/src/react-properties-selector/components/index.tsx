@@ -12,9 +12,5 @@ storiesOf("COMP: Properties Selector", module)
   .add("example 3, Auto select and lock with single valid value", () => (
     <PropertiesSelectorExample3AutoSelectAndLockSingleValidValue />
   ))
-  .add("example 4, Lock with single valid value", () => (
-    <PropertiesSelectorExample4LockSingleValidValue />
-  ))
-  .add("with empty property value set", () => (
-    <PropertiesSelectorExampleEmptyPvs />
-  ));
+  .add("example 4, Lock with single valid value", () => <PropertiesSelectorExample4LockSingleValidValue />)
+  .add("with empty property value set", () => <PropertiesSelectorExampleEmptyPvs />);

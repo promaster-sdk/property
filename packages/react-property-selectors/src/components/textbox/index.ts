@@ -1,5 +1,5 @@
 export {
   TextboxPropertySelector,
   TextboxPropertySelectorProps,
-  createTextboxPropertySelector
+  createTextboxPropertySelector,
 } from "./textbox-property-selector";

@@ -2,26 +2,18 @@ import { BaseUnits, Amount, Unit } from "uom";
 import * as PropertyValueSet from "../property-value-set";
 import * as PropertyValue from "../property-value";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 describe("PropertyValueSet", () => {
   describe("getValue", () => {
     it("should get text value", () => {
-      const pvs = PropertyValueSet.fromString(
-        'message="MyMessage"',
-        unitLookup
-      );
-      expect(PropertyValueSet.getValue("message", pvs)).toEqual(
-        PropertyValue.fromText("MyMessage")
-      );
+      const pvs = PropertyValueSet.fromString('message="MyMessage"', unitLookup);
+      expect(PropertyValueSet.getValue("message", pvs)).toEqual(PropertyValue.fromText("MyMessage"));
     });
 
     it("should get integer value", () => {
       const pvs = PropertyValueSet.fromString("message=12", unitLookup);
-      expect(PropertyValueSet.getValue("message", pvs)).toEqual(
-        PropertyValue.fromInteger(12)
-      );
+      expect(PropertyValueSet.getValue("message", pvs)).toEqual(PropertyValue.fromInteger(12));
     });
 
     it("should get amount value", () => {
@@ -41,19 +33,13 @@ describe("PropertyValueSet", () => {
   describe("parsing", () => {
     it("should parse a=1", () => {
       const pvs = PropertyValueSet.fromString("a=1", unitLookup);
-      expect(PropertyValueSet.get("a", pvs)).toEqual(
-        PropertyValue.fromInteger(1)
-      );
+      expect(PropertyValueSet.get("a", pvs)).toEqual(PropertyValue.fromInteger(1));
     });
 
     it("should parse a=1;b=2;", () => {
       const pvs = PropertyValueSet.fromString("a=1;b=2;", unitLookup);
-      expect(PropertyValueSet.get("a", pvs)).toEqual(
-        PropertyValue.fromInteger(1)
-      );
-      expect(PropertyValueSet.get("b", pvs)).toEqual(
-        PropertyValue.fromInteger(2)
-      );
+      expect(PropertyValueSet.get("a", pvs)).toEqual(PropertyValue.fromInteger(1));
+      expect(PropertyValueSet.get("b", pvs)).toEqual(PropertyValue.fromInteger(2));
     });
   });
 
@@ -61,15 +47,9 @@ describe("PropertyValueSet", () => {
     it("should set the specified property", () => {
       const pvs = PropertyValueSet.fromString("a=1;b=2;c=3", unitLookup);
       const pvs2 = PropertyValueSet.set("b", PropertyValue.fromInteger(5), pvs);
-      expect(PropertyValueSet.get("a", pvs2)).toEqual(
-        PropertyValue.fromInteger(1)
-      );
-      expect(PropertyValueSet.get("b", pvs2)).toEqual(
-        PropertyValue.fromInteger(5)
-      );
-      expect(PropertyValueSet.get("c", pvs2)).toEqual(
-        PropertyValue.fromInteger(3)
-      );
+      expect(PropertyValueSet.get("a", pvs2)).toEqual(PropertyValue.fromInteger(1));
+      expect(PropertyValueSet.get("b", pvs2)).toEqual(PropertyValue.fromInteger(5));
+      expect(PropertyValueSet.get("c", pvs2)).toEqual(PropertyValue.fromInteger(3));
     });
   });
 
@@ -77,26 +57,16 @@ describe("PropertyValueSet", () => {
     it("should set the specified property", () => {
       const pvs = PropertyValueSet.fromString("a=1;b=2;c=3", unitLookup);
       const pvs2 = PropertyValueSet.setInteger("b", 5, pvs);
-      expect(PropertyValueSet.get("a", pvs2)).toEqual(
-        PropertyValue.fromInteger(1)
-      );
-      expect(PropertyValueSet.get("b", pvs2)).toEqual(
-        PropertyValue.fromInteger(5)
-      );
-      expect(PropertyValueSet.get("c", pvs2)).toEqual(
-        PropertyValue.fromInteger(3)
-      );
+      expect(PropertyValueSet.get("a", pvs2)).toEqual(PropertyValue.fromInteger(1));
+      expect(PropertyValueSet.get("b", pvs2)).toEqual(PropertyValue.fromInteger(5));
+      expect(PropertyValueSet.get("c", pvs2)).toEqual(PropertyValue.fromInteger(3));
     });
   });
 
   describe("setAmount", () => {
     it("should set the specified property", () => {
       const pvs = PropertyValueSet.fromString("a=1;b=2;c=3", unitLookup);
-      const pvs2 = PropertyValueSet.setAmount(
-        "b",
-        Amount.create(12, BaseUnits.Meter),
-        pvs
-      );
+      const pvs2 = PropertyValueSet.setAmount("b", Amount.create(12, BaseUnits.Meter), pvs);
       expect(PropertyValueSet.getInteger("a", pvs2)).toBe(1);
       const a1 = PropertyValueSet.getAmount("b", pvs2);
       expect(a1).not.toBe(undefined);
@@ -138,7 +108,7 @@ describe("PropertyValueSet", () => {
         a: PropertyValue.fromInteger(1),
         b: PropertyValue.fromInteger(2),
         c: null,
-        d: undefined
+        d: undefined,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any;
       const str1 = PropertyValueSet.toString(pvs1);
@@ -170,20 +140,14 @@ describe("PropertyValueSet", () => {
     it("it should remove unwanted properties", () => {
       const pvs1 = PropertyValueSet.fromString("a=1;b=2;c=3", unitLookup);
       const propertyNamesToKeep: Array<string> = ["a", "c"];
-      const resultingPvs = PropertyValueSet.keepProperties(
-        propertyNamesToKeep,
-        pvs1
-      );
+      const resultingPvs = PropertyValueSet.keepProperties(propertyNamesToKeep, pvs1);
       const resultingPvsString = PropertyValueSet.toString(resultingPvs);
       expect("a=1;c=3").toBe(resultingPvsString);
     });
     it("it should not add any properties", () => {
       const pvs1 = PropertyValueSet.fromString("a=1;c=3", unitLookup);
       const propertyNamesToKeep: Array<string> = ["a", "b", "c"];
-      const resultingPvs = PropertyValueSet.keepProperties(
-        propertyNamesToKeep,
-        pvs1
-      );
+      const resultingPvs = PropertyValueSet.keepProperties(propertyNamesToKeep, pvs1);
       const resultingPvsString = PropertyValueSet.toString(resultingPvs);
       expect("a=1;c=3").toBe(resultingPvsString);
     });
@@ -192,22 +156,14 @@ describe("PropertyValueSet", () => {
   describe("filter", () => {
     it("it should filter based on key", () => {
       const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3", unitLookup);
-      const resultingPvs = PropertyValueSet.filter(
-        kvp => !kvp.key.startsWith("pp_"),
-        pvs1
-      );
+      const resultingPvs = PropertyValueSet.filter((kvp) => !kvp.key.startsWith("pp_"), pvs1);
       const pvs2 = PropertyValueSet.fromString("b=2", unitLookup);
       expect(PropertyValueSet.equals(resultingPvs, pvs2)).toBe(true);
     });
     it("it should filter based on value", () => {
-      const pvs1 = PropertyValueSet.fromString(
-        'a=10:Meter;b="test";c=13:Meter;d=4',
-        unitLookup
-      );
+      const pvs1 = PropertyValueSet.fromString('a=10:Meter;b="test";c=13:Meter;d=4', unitLookup);
       const resultingPvs = PropertyValueSet.filter(
-        kvp =>
-          kvp.value.type === "amount" &&
-          Amount.lessThan(kvp.value.value, Amount.create(12, BaseUnits.Meter)),
+        (kvp) => kvp.value.type === "amount" && Amount.lessThan(kvp.value.value, Amount.create(12, BaseUnits.Meter)),
         pvs1
       );
       const pvs2 = PropertyValueSet.fromString("a=10:Meter", unitLookup);
@@ -219,27 +175,20 @@ describe("PropertyValueSet", () => {
     it("it should map based on key", () => {
       const pvs1 = PropertyValueSet.fromString("pp_a=1;b=2;pp_c=3", unitLookup);
       const resultingPvs = PropertyValueSet.map(
-        kvp =>
-          kvp.key.startsWith("pp_") ? { ...kvp, key: kvp.key.substr(3) } : kvp,
+        (kvp) => (kvp.key.startsWith("pp_") ? { ...kvp, key: kvp.key.substr(3) } : kvp),
         pvs1
       );
       const pvs2 = PropertyValueSet.fromString("a=1;b=2;c=3", unitLookup);
       expect(PropertyValueSet.equals(resultingPvs, pvs2)).toBe(true);
     });
     it("it should map based on value", () => {
-      const pvs1 = PropertyValueSet.fromString(
-        "a=10:Kelvin;b=20:Meter;c=30:Kelvin;d=4",
-        unitLookup
-      );
+      const pvs1 = PropertyValueSet.fromString("a=10:Kelvin;b=20:Meter;c=30:Kelvin;d=4", unitLookup);
       const resultingPvs = PropertyValueSet.map(
-        kvp => ({
+        (kvp) => ({
           ...kvp,
           value: PropertyValue.fromInteger(
-            kvp.value.type === "amount" &&
-              kvp.value.value.unit.quantity === "Temperature"
-              ? 1
-              : 0
-          )
+            kvp.value.type === "amount" && kvp.value.value.unit.quantity === "Temperature" ? 1 : 0
+          ),
         }),
         pvs1
       );

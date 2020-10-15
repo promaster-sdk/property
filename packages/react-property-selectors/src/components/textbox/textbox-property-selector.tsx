@@ -14,23 +14,15 @@ export interface State {
   readonly textValue: string;
 }
 
-export type TextboxPropertySelector = React.ComponentClass<
-  TextboxPropertySelectorProps
->;
+export type TextboxPropertySelector = React.ComponentClass<TextboxPropertySelectorProps>;
 export interface CreateTextboxPropertySelectorProps {
   readonly StyledInputTextBox?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      HTMLInputElement
-    >
+    React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
   >;
 }
 
 export const defaultStyledInputTextBox = (
-  props: React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >
+  props: React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 ): JSX.Element => (
   <input
     {...props}
@@ -41,19 +33,16 @@ export const defaultStyledInputTextBox = (
       borderRadius: "3px",
       font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
       outline: "rgb(131, 131, 131) none 0px",
-      padding: "1px 30px 0px 10px"
+      padding: "1px 30px 0px 10px",
     }}
   />
 );
 
 export function createTextboxPropertySelector({
-  StyledInputTextBox = defaultStyledInputTextBox
+  StyledInputTextBox = defaultStyledInputTextBox,
 }: CreateTextboxPropertySelectorProps): TextboxPropertySelector {
   // eslint-disable-next-line functional/no-class
-  return class TextboxPropertySelector extends React.Component<
-    TextboxPropertySelectorProps,
-    State
-  > {
+  return class TextboxPropertySelector extends React.Component<TextboxPropertySelectorProps, State> {
     constructor(props: TextboxPropertySelectorProps) {
       super(props);
       // What the optimal debounce is may vary between users. 350ms seems like a nice value...
@@ -87,7 +76,7 @@ export function createTextboxPropertySelector({
           type="text"
           value={textValue}
           readOnly={readOnly}
-          onChange={e => this._onChange(e, onValueChange)}
+          onChange={(e) => this._onChange(e, onValueChange)}
         />
       );
     }
@@ -106,10 +95,7 @@ export function createTextboxPropertySelector({
     ): void {
       const newStringValue = (e.target as HTMLInputElement).value;
       this.setState({ textValue: newStringValue });
-      this._debouncedOnValueChange(
-        PropertyValue.create("text", newStringValue),
-        onValueChange
-      );
+      this._debouncedOnValueChange(PropertyValue.create("text", newStringValue), onValueChange);
     }
   };
 }
@@ -124,10 +110,10 @@ function debounce(func: Function, wait: number, immediate?: boolean): any {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timeout: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function(this: any): void {
+  return function (this: any): void {
     const context = this; //eslint-disable-line
     const args = arguments; //eslint-disable-line
-    const later = function(): void {
+    const later = function (): void {
       timeout = null;
       if (!immediate) {
         func.apply(context, args);

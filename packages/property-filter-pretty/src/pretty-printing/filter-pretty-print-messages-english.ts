@@ -1,28 +1,15 @@
-import {
-  PropertyFilterAst as Ast,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyFilterAst as Ast, PropertyValue } from "@promaster-sdk/property";
 import { Format, UnitFormat } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { FilterPrettyPrintMessages } from "./filter-pretty-print-messages";
 
-export function buildEnglishMessages(
-  unitsFormat: UnitFormat.UnitFormatMap
-): FilterPrettyPrintMessages {
+export function buildEnglishMessages(unitsFormat: UnitFormat.UnitFormatMap): FilterPrettyPrintMessages {
   return {
-    comparisionOperationMessage(
-      op: Ast.ComparisonOperationType,
-      left: string,
-      right: string
-    ): string {
+    comparisionOperationMessage(op: Ast.ComparisonOperationType, left: string, right: string): string {
       return `${left} ${_comparisonOperationTypeToString(op)} ${right}`;
     },
 
-    equalsOperationMessage(
-      op: Ast.EqualsOperationType,
-      left: string,
-      right: string
-    ): string {
+    equalsOperationMessage(op: Ast.EqualsOperationType, left: string, right: string): string {
       return `${left} ${_equalsOperationTypeToString(op)} ${right}`;
     },
 
@@ -52,10 +39,7 @@ export function buildEnglishMessages(
     ): string {
       switch (propertyValue.type) {
         case "amount": {
-          const unitFormat = Format.getUnitFormat(
-            propertyValue.value.unit,
-            unitsFormat
-          );
+          const unitFormat = Format.getUnitFormat(propertyValue.value.unit, unitsFormat);
           if (unitFormat) {
             return propertyValue.value.value + " " + unitFormat.label;
           } else {
@@ -76,13 +60,11 @@ export function buildEnglishMessages(
 
     nullMessage(): string {
       return "null";
-    }
+    },
   };
 }
 
-function _comparisonOperationTypeToString(
-  type: Ast.ComparisonOperationType
-): string {
+function _comparisonOperationTypeToString(type: Ast.ComparisonOperationType): string {
   switch (type) {
     case "lessOrEqual":
       return "must be less than or equal to";

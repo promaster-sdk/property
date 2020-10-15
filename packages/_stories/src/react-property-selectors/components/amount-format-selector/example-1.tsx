@@ -3,7 +3,7 @@ import {
   AmountFormatWrapper,
   AmountFormatWrapperProps,
   createAmountFormatSelector,
-  createAmountInputBox
+  createAmountInputBox,
 } from "@promaster-sdk/react-property-selectors";
 import { Unit, Amount, BaseUnits } from "uom";
 import styled from "styled-components";
@@ -21,20 +21,14 @@ interface State {
 
 // Usage with standard css
 const ClearButton = (
-  props: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
+  props: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 ): JSX.Element => (
   <button {...props} className="my-own">
     Clear
   </button>
 );
 const AmountFormatWrapper2 = (props: AmountFormatWrapperProps): JSX.Element => (
-  <AmountFormatWrapper
-    className={props.active ? "active" : "inactive"}
-    {...props}
-  />
+  <AmountFormatWrapper className={props.active ? "active" : "inactive"} {...props} />
 );
 
 // Usage with styled components
@@ -46,7 +40,7 @@ const precisionSelector = styled.select`
 const AmountFormatSelector = createAmountFormatSelector({
   PrecisionSelector: precisionSelector,
   ClearButton: ClearButton,
-  AmountFormatWrapper: AmountFormatWrapper2
+  AmountFormatWrapper: AmountFormatWrapper2,
 });
 
 const AmountInputBox = createAmountInputBox({});
@@ -55,7 +49,7 @@ export function AmountFormatSelectorExample1(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
     amount: Amount.create(10.0, BaseUnits.Meter),
     selectedUnit: BaseUnits.Meter,
-    selectedDecimalCount: 2
+    selectedDecimalCount: 2,
   });
   return (
     <div>
@@ -66,7 +60,7 @@ export function AmountFormatSelectorExample1(): React.ReactElement<{}> {
           value={state.amount}
           inputUnit={state.selectedUnit}
           inputDecimalCount={state.selectedDecimalCount}
-          onValueChange={amount => {
+          onValueChange={(amount) => {
             //console.log("changed");
             setState(merge(state, { amount }));
           }}
@@ -88,7 +82,7 @@ export function AmountFormatSelectorExample1(): React.ReactElement<{}> {
             setState(
               merge(state, {
                 selectedUnit: BaseUnits.Meter,
-                selectedDecimalCount: 2
+                selectedDecimalCount: 2,
               })
             )
           }

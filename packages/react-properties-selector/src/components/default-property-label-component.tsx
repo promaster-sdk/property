@@ -14,18 +14,11 @@ export function DefaultPropertyLabelComponent({
   selectorIsHidden,
   selectorLabel,
   translatePropertyLabelHover,
-  propertyName
-}: PropertyLabelComponentProps): React.ReactElement<
-  PropertyLabelComponentProps
-> {
+  propertyName,
+}: PropertyLabelComponentProps): React.ReactElement<PropertyLabelComponentProps> {
   return (
-    <label
-      className={!selectorIsValid ? "invalid" : undefined}
-      title={translatePropertyLabelHover(propertyName)}
-    >
-      <span className={selectorIsHidden ? "hidden-property" : ""}>
-        {selectorLabel}
-      </span>
+    <label className={!selectorIsValid ? "invalid" : undefined} title={translatePropertyLabelHover(propertyName)}>
+      <span className={selectorIsHidden ? "hidden-property" : ""}>{selectorLabel}</span>
     </label>
   );
 }

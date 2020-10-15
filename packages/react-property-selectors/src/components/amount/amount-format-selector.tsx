@@ -4,10 +4,7 @@
  */
 import React from "react";
 import { Unit, Serialize, Format, UnitFormat } from "uom";
-import {
-  AmountFormatWrapper,
-  AmountFormatWrapperProps
-} from "./amount-format-wrapper";
+import { AmountFormatWrapper, AmountFormatWrapperProps } from "./amount-format-wrapper";
 
 export interface AmountFormatSelectorProps {
   readonly key?: string;
@@ -28,67 +25,38 @@ export interface State {
   readonly active: boolean;
 }
 
-export type OnFormatChanged = (
-  unit: Unit.Unit<unknown>,
-  decimalCount: number
-) => void;
+export type OnFormatChanged = (unit: Unit.Unit<unknown>, decimalCount: number) => void;
 export type OnFormatCleared = () => void;
 export type OnFormatSelectorToggled = (active: boolean) => void;
 
-export type AmountFormatSelector = React.ComponentClass<
-  AmountFormatSelectorProps
->;
+export type AmountFormatSelector = React.ComponentClass<AmountFormatSelectorProps>;
 export interface CreateAmountFormatSelectorParams {
   readonly ClearButton?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.ButtonHTMLAttributes<HTMLButtonElement>,
-      HTMLButtonElement
-    >
+    React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
   >;
   readonly CancelButton?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.ButtonHTMLAttributes<HTMLButtonElement>,
-      HTMLButtonElement
-    >
+    React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
   >;
   readonly PrecisionSelector?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.SelectHTMLAttributes<HTMLSelectElement>,
-      HTMLSelectElement
-    >
+    React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
   >;
   readonly UnitSelector?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.SelectHTMLAttributes<HTMLSelectElement>,
-      HTMLSelectElement
-    >
+    React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
   >;
   readonly AmountFormatWrapper?: React.ComponentType<AmountFormatWrapperProps>;
 }
 
 const defaultClearButton = (
-  props: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
+  props: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 ): JSX.Element => <button {...props} />;
 const defaultCancelButton = (
-  props: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
+  props: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 ): JSX.Element => <button {...props} />;
 const defaultPrecisionSelector = (
-  props: React.DetailedHTMLProps<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  >
+  props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 ): JSX.Element => <select {...props} />;
 const defaultUnitSelector = (
-  props: React.DetailedHTMLProps<
-    React.SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  >
+  props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>
 ): JSX.Element => <select {...props} />;
 const defaultFormatWrapper = AmountFormatWrapper;
 
@@ -97,58 +65,38 @@ export function createAmountFormatSelector({
   CancelButton = defaultCancelButton,
   PrecisionSelector = defaultPrecisionSelector,
   UnitSelector = defaultUnitSelector,
-  AmountFormatWrapper = defaultFormatWrapper
+  AmountFormatWrapper = defaultFormatWrapper,
 }: CreateAmountFormatSelectorParams): AmountFormatSelector {
   // eslint-disable-next-line functional/no-class
-  return class AmountFormatSelector extends React.Component<
-    AmountFormatSelectorProps,
-    State
-  > {
+  return class AmountFormatSelector extends React.Component<AmountFormatSelectorProps, State> {
     constructor(props: AmountFormatSelectorProps) {
       super(props);
       this.state = { active: false };
     }
 
     componentDidUpdate(_: AmountFormatSelectorProps, prevState: State): void {
-      if (
-        this.props.onFormatSelectorActiveChanged &&
-        prevState.active !== this.state.active
-      ) {
+      if (this.props.onFormatSelectorActiveChanged && prevState.active !== this.state.active) {
         this.props.onFormatSelectorActiveChanged(this.state.active);
       }
     }
 
     render(): React.ReactElement<AmountFormatSelectorProps> {
-      const {
-        selectedUnit,
-        selectedDecimalCount,
-        onFormatChanged,
-        onFormatCleared,
-        unitsFormat,
-        units
-      } = this.props;
+      const { selectedUnit, selectedDecimalCount, onFormatChanged, onFormatCleared, unitsFormat, units } = this.props;
 
       // If there is no handler for onFormatChanged then the user should not be able to change the format
       if (!this.state.active || !onFormatChanged) {
         const format = Format.getUnitFormat(selectedUnit, unitsFormat);
 
         return (
-          <AmountFormatWrapper
-            active={this.state.active}
-            onClick={() => this.setState({ active: true })}
-          >
+          <AmountFormatWrapper active={this.state.active} onClick={() => this.setState({ active: true })}>
             {format ? format.label : ""}
           </AmountFormatWrapper>
         );
       }
 
       // Get a list of all units within the quantity
-      const quantityUnits = Format.getUnitsForQuantity(
-        selectedUnit.quantity as string,
-        unitsFormat,
-        units
-      );
-      const unitNames = quantityUnits.map(u => Serialize.unitToString(u));
+      const quantityUnits = Format.getUnitsForQuantity(selectedUnit.quantity as string, unitsFormat, units);
+      const unitNames = quantityUnits.map((u) => Serialize.unitToString(u));
       const selectedUnitName = Serialize.unitToString(selectedUnit);
 
       const decimalCounts = [0, 1, 2, 3, 4, 5];
@@ -163,12 +111,7 @@ export function createAmountFormatSelector({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onChange={(e: any) => {
               this.setState({ active: false });
-              _onUnitChange(
-                e,
-                quantityUnits,
-                selectedDecimalCount,
-                onFormatChanged
-              );
+              _onUnitChange(e, quantityUnits, selectedDecimalCount, onFormatChanged);
             }}
           >
             {quantityUnits.map((u, index) => {
@@ -189,7 +132,7 @@ export function createAmountFormatSelector({
               _onDecimalCountChange(e, selectedUnit, onFormatChanged);
             }}
           >
-            {decimalCounts.map(dc => (
+            {decimalCounts.map((dc) => (
               <option key={dc.toString()} value={dc.toString()}>
                 {dc}
               </option>
@@ -205,9 +148,7 @@ export function createAmountFormatSelector({
               {"\u00A0"}
             </ClearButton>
           )}
-          <CancelButton onClick={() => this.setState({ active: false })}>
-            {"\u00A0"}
-          </CancelButton>
+          <CancelButton onClick={() => this.setState({ active: false })}>{"\u00A0"}</CancelButton>
         </AmountFormatWrapper>
       );
     }

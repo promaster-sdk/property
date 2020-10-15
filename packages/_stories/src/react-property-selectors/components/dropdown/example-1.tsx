@@ -8,19 +8,18 @@ export function DropdownExample1(): React.ReactElement<{}> {
     {
       value: "a",
       label: "Adam asd asd as das das das das das das dasd asd asd as dasd a",
-      imageUrl:
-        "http://vignette4.wikia.nocookie.net/mrmen/images/5/52/Small.gif/revision/latest?cb=20100731114437"
+      imageUrl: "http://vignette4.wikia.nocookie.net/mrmen/images/5/52/Small.gif/revision/latest?cb=20100731114437",
     },
     {
       value: "b",
       label: "Bertil",
-      imageUrl: "http://image.flaticon.com/teams/new/1-freepik.jpg"
+      imageUrl: "http://image.flaticon.com/teams/new/1-freepik.jpg",
     },
     {
       value: "c",
       label: "Ceasar",
-      tooltip: "Boop"
-    }
+      tooltip: "Boop",
+    },
   ];
 
   return (

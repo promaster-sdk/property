@@ -1,13 +1,7 @@
 /* eslint-disable functional/no-this-expression */
 import React from "react";
-import {
-  ComboBoxImageOptionElementRow,
-  ComboBoxImageOptionElementRowProps
-} from "./combo-box-image-element-row";
-import {
-  ComboBoxImageElement,
-  ComboBoxImageElementProps
-} from "./combo-box-image-button-element";
+import { ComboBoxImageOptionElementRow, ComboBoxImageOptionElementRowProps } from "./combo-box-image-element-row";
+import { ComboBoxImageElement, ComboBoxImageElementProps } from "./combo-box-image-button-element";
 
 export interface ImageDropdownSelectorProps {
   readonly value: string;
@@ -29,48 +23,30 @@ export interface State {
   readonly isOpen: boolean;
 }
 
-export type ImageDropdownSelector = React.ComponentClass<
-  ImageDropdownSelectorProps
->;
+export type ImageDropdownSelector = React.ComponentClass<ImageDropdownSelectorProps>;
 
 export interface CreateImageDropdownSelectorProps {
   readonly OptionImage?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.ImgHTMLAttributes<HTMLImageElement>,
-      HTMLImageElement
-    >
+    React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>
   >;
-  readonly OptionImageElementRow?: React.ComponentType<
-    ComboBoxImageOptionElementRowProps
-  >;
+  readonly OptionImageElementRow?: React.ComponentType<ComboBoxImageOptionElementRowProps>;
   readonly DropdownOptionsElement?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.HtmlHTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >
+    React.DetailedHTMLProps<React.HtmlHTMLAttributes<HTMLDivElement>, HTMLDivElement>
   >;
   readonly DropdownSelectElement?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.HtmlHTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    >
+    React.DetailedHTMLProps<React.HtmlHTMLAttributes<HTMLDivElement>, HTMLDivElement>
   >;
-  readonly ComboBoxImageButtonElement?: React.ComponentType<
-    ComboBoxImageElementProps
-  >;
+  readonly ComboBoxImageButtonElement?: React.ComponentType<ComboBoxImageElementProps>;
 }
 
 export const defaultOptionImageElement = (
-  props: React.DetailedHTMLProps<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    HTMLImageElement
-  >
+  props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>
 ): JSX.Element => (
   <img
     {...props}
     style={{
       maxWidth: "2em",
-      maxHeight: "2em"
+      maxHeight: "2em",
     }}
   />
 );
@@ -96,9 +72,7 @@ export const defaultOptionImageElement = (
 //   ${props => (props.isItemValid === false ? "color: red;" : "")};
 // `;
 
-export const defaultOptionImageElementRow = (
-  props: ComboBoxImageOptionElementRowProps
-): JSX.Element => (
+export const defaultOptionImageElementRow = (props: ComboBoxImageOptionElementRowProps): JSX.Element => (
   <ComboBoxImageOptionElementRow
     {...props}
     style={{
@@ -109,7 +83,7 @@ export const defaultOptionImageElementRow = (
       font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
       outline: "rgb(131, 131, 131) none 0px",
       padding: "0.2em 0.5em",
-      cursor: "default"
+      cursor: "default",
 
       // &:hover {
       //   background-color: blue;
@@ -120,10 +94,7 @@ export const defaultOptionImageElementRow = (
 );
 
 export const defaultDropdownOptionsElement = (
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  >
+  props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ): JSX.Element => (
   <div
     {...props}
@@ -135,7 +106,7 @@ export const defaultDropdownOptionsElement = (
       listStyle: "none",
       margin: 0,
       padding: 0,
-      zIndex: 100
+      zIndex: 100,
     }}
   />
 );
@@ -149,15 +120,12 @@ export const defaultDropdownOptionsElement = (
 // `;
 
 export const defaultDropdownSelectElement = (
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  >
+  props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ): JSX.Element => (
   <div
     {...props}
     style={{
-      userSelect: "none"
+      userSelect: "none",
       // img {
       //   vertical-align: middle;
       // }
@@ -166,10 +134,7 @@ export const defaultDropdownSelectElement = (
 );
 
 export const DefaultBackgroundElement = (
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  >
+  props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 ): JSX.Element => (
   <div
     {...props}
@@ -178,14 +143,12 @@ export const DefaultBackgroundElement = (
       top: 0,
       bottom: 0,
       left: 0,
-      right: 0
+      right: 0,
     }}
   />
 );
 
-export const defaultComboBoxImageButtonElement = (
-  props: ComboBoxImageElementProps
-): JSX.Element => (
+export const defaultComboBoxImageButtonElement = (props: ComboBoxImageElementProps): JSX.Element => (
   <ComboBoxImageElement
     {...props}
     style={{
@@ -211,7 +174,7 @@ export const defaultComboBoxImageButtonElement = (
       //   max-height: 1em;
       // }
 
-      ...buttonElementStyles(props)
+      ...buttonElementStyles(props),
     }}
   />
 );
@@ -221,39 +184,29 @@ export function createImageDropdownSelector({
   OptionImageElementRow = defaultOptionImageElementRow,
   DropdownOptionsElement = defaultDropdownOptionsElement,
   DropdownSelectElement = defaultDropdownSelectElement,
-  ComboBoxImageButtonElement = defaultComboBoxImageButtonElement
+  ComboBoxImageButtonElement = defaultComboBoxImageButtonElement,
 }: CreateImageDropdownSelectorProps): ImageDropdownSelector {
   // eslint-disable-next-line functional/no-class
   return class extends React.Component<ImageDropdownSelectorProps, State> {
     constructor(props: ImageDropdownSelectorProps) {
       super(props);
       this.state = {
-        isOpen: false
+        isOpen: false,
       };
     }
 
     render(): JSX.Element {
-      const {
-        value,
-        onChange,
-        options,
-        isSelectedItemValid,
-        locked
-      }: ImageDropdownSelectorProps = this.props;
+      const { value, onChange, options, isSelectedItemValid, locked }: ImageDropdownSelectorProps = this.props;
 
-      const selected = options.find(o => o.value === value);
+      const selected = options.find((o) => o.value === value);
 
       const background = this.state.isOpen ? (
-        <DefaultBackgroundElement
-          onClick={() => this.setState({ isOpen: false })}
-        />
-      ) : (
-        undefined
-      );
+        <DefaultBackgroundElement onClick={() => this.setState({ isOpen: false })} />
+      ) : undefined;
 
       const optionsList = this.state.isOpen ? (
         <DropdownOptionsElement>
-          {options.map(o => {
+          {options.map((o) => {
             return (
               <OptionImageElementRow
                 key={o.value}
@@ -269,9 +222,7 @@ export function createImageDropdownSelector({
             );
           })}
         </DropdownOptionsElement>
-      ) : (
-        undefined
-      );
+      ) : undefined;
 
       return (
         <DropdownSelectElement>
@@ -296,11 +247,7 @@ export function createImageDropdownSelector({
         return <span />;
       }
 
-      const image = item.imageUrl ? (
-        <OptionImage src={item.imageUrl} />
-      ) : (
-        <span />
-      );
+      const image = item.imageUrl ? <OptionImage src={item.imageUrl} /> : <span />;
 
       return (
         <span>
@@ -317,7 +264,7 @@ function buttonElementStyles(props: ComboBoxImageElementProps): {} {
     return {
       background: "lightgray",
       color: "red",
-      border: "none"
+      border: "none",
     };
   } else if (props.isSelectedItemValid === false) {
     return { color: "red" };
@@ -325,7 +272,7 @@ function buttonElementStyles(props: ComboBoxImageElementProps): {} {
     return {
       background: "lightgray",
       color: "darkgray",
-      border: "none"
+      border: "none",
     };
   }
 

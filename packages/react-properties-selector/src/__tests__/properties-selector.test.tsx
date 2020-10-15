@@ -1,19 +1,14 @@
 import React from "react";
 import { UnitFormat, BaseUnits, Unit } from "uom";
 import * as renderer from "react-test-renderer";
-import {
-  PropertyFilter,
-  PropertyValue,
-  PropertyValueSet
-} from "@promaster-sdk/property";
+import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertiesSelector from "../index";
 
 const unitsFormat: UnitFormat.UnitFormatMap = {
-  Meter: UnitFormat.createUnitFormat("m", 2)
+  Meter: UnitFormat.createUnitFormat("m", 2),
 };
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 test("Simple PropertiesSelector", () => {
   const productProperties = exampleProductProperties();
@@ -22,12 +17,10 @@ test("Simple PropertiesSelector", () => {
     selectedProperties: PropertyValueSet.Empty,
     units: BaseUnits,
     unitsFormat,
-    unitLookup
+    unitLookup,
   };
 
-  const component = renderer.create(
-    <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
-  );
+  const component = renderer.create(<PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />);
   const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 
@@ -51,11 +44,9 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
       name: "a",
       group: "",
       quantity: "Length",
-      validation_filter:
-        PropertyFilter.fromString("a>100:Meter", unitLookup) ||
-        PropertyFilter.Empty,
+      validation_filter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
       visibility_filter: PropertyFilter.Empty,
-      value: []
+      value: [],
     },
     {
       sort_no: 2,
@@ -68,14 +59,14 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 10,
           value: PropertyValue.fromInteger(1),
-          property_filter: PropertyFilter.Empty
+          property_filter: PropertyFilter.Empty,
         },
         {
           sort_no: 20,
           value: PropertyValue.fromInteger(2),
-          property_filter: PropertyFilter.Empty
-        }
-      ]
+          property_filter: PropertyFilter.Empty,
+        },
+      ],
     },
     {
       sort_no: 3,
@@ -88,20 +79,19 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 10,
           value: PropertyValue.fromInteger(1),
-          property_filter:
-            PropertyFilter.fromString("b=1", unitLookup) || PropertyFilter.Empty
+          property_filter: PropertyFilter.fromString("b=1", unitLookup) || PropertyFilter.Empty,
         },
         {
           sort_no: 20,
           value: PropertyValue.fromInteger(2),
-          property_filter: PropertyFilter.Empty
+          property_filter: PropertyFilter.Empty,
         },
         {
           sort_no: 30,
           value: PropertyValue.fromInteger(3),
-          property_filter: PropertyFilter.Empty
-        }
-      ]
+          property_filter: PropertyFilter.Empty,
+        },
+      ],
     },
     {
       sort_no: 4,
@@ -115,20 +105,19 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 10,
           value: PropertyValue.fromInteger(1),
-          property_filter:
-            PropertyFilter.fromString("c=1", unitLookup) || PropertyFilter.Empty
+          property_filter: PropertyFilter.fromString("c=1", unitLookup) || PropertyFilter.Empty,
         },
         {
           sort_no: 20,
           value: PropertyValue.fromInteger(2),
-          property_filter: PropertyFilter.Empty
+          property_filter: PropertyFilter.Empty,
         },
         {
           sort_no: 30,
           value: PropertyValue.fromInteger(3),
-          property_filter: PropertyFilter.Empty
-        }
-      ]
+          property_filter: PropertyFilter.Empty,
+        },
+      ],
     },
     {
       sort_no: 5,
@@ -142,16 +131,15 @@ export function exampleProductProperties(): Array<PropertiesSelector.Property> {
         {
           sort_no: 0,
           value: PropertyValue.fromInteger(0),
-          property_filter: PropertyFilter.Empty
+          property_filter: PropertyFilter.Empty,
         },
         {
           sort_no: 1,
           value: PropertyValue.fromInteger(1),
           property_filter: PropertyFilter.Empty,
-          image:
-            "https://s7d1.scene7.com/is/image/BedBathandBeyond/13136517105892p?$478$"
-        }
-      ]
-    }
+          image: "https://s7d1.scene7.com/is/image/BedBathandBeyond/13136517105892p?$478$",
+        },
+      ],
+    },
   ];
 }

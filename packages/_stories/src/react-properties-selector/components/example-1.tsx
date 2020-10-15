@@ -8,8 +8,7 @@ import { action } from "@storybook/addon-actions";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -19,10 +18,7 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      propertyValueSet: PropertyValueSet.fromString(
-        "a=10:Meter;b=1;",
-        unitLookup
-      )
+      propertyValueSet: PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup),
     };
   }
 
@@ -34,22 +30,16 @@ export class PropertiesSelectorExample1 extends React.Component<{}, State> {
       unitLookup,
       productProperties: productProperties,
       selectedProperties: this.state.propertyValueSet,
-      onChange: (
-        properties: PropertyValueSet.PropertyValueSet,
-        _changedProperties: ReadonlyArray<string>
-      ) => {
+      onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
         this.setState({ ...this.state, propertyValueSet: properties });
         // console.log("updated: ", changedProperties);
       },
-      onPropertyFormatSelectorToggled: action("toggle property format selector")
+      onPropertyFormatSelectorToggled: action("toggle property format selector"),
     };
 
     return (
       <div>
-        <p>
-          This example shows minimal configuration, using as much defaults as
-          possible
-        </p>
+        <p>This example shows minimal configuration, using as much defaults as possible</p>
         <PropertiesSelector.PropertiesSelector {...propertiesSelectorProps} />
       </div>
     );

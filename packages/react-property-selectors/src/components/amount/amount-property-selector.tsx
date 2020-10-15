@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  PropertyValueSet,
-  PropertyFilter,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { PropertyValueSet, PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { Amount, Unit, UnitFormat } from "uom";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -11,7 +7,7 @@ import {
   createAmountFormatSelector,
   OnFormatChanged,
   OnFormatCleared,
-  OnFormatSelectorToggled
+  OnFormatSelectorToggled,
 } from "./amount-format-selector";
 import { AmountInputBox, createAmountInputBox } from "./amount-input-box";
 
@@ -28,9 +24,7 @@ export interface AmountPropertySelectorProps {
   readonly onFormatChanged: OnFormatChanged;
   readonly onFormatCleared: OnFormatCleared;
   readonly onFormatSelectorToggled?: OnFormatSelectorToggled;
-  readonly onValueChange: (
-    newValue: PropertyValue.PropertyValue | undefined
-  ) => void;
+  readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
   readonly fieldName: string;
   readonly unitsFormat: {
@@ -42,25 +36,17 @@ export interface AmountPropertySelectorProps {
   readonly comparer?: PropertyValue.Comparer;
 }
 
-export type AmountPropertySelector = React.ComponentClass<
-  AmountPropertySelectorProps
->;
+export type AmountPropertySelector = React.ComponentClass<AmountPropertySelectorProps>;
 export interface CreateAmountPropertySelectorProps {
   readonly AmountPropertySelectorWrapper?: React.ComponentType<
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLSpanElement>,
-      HTMLSpanElement
-    >
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>
   >;
   readonly AmountFormatSelector?: AmountFormatSelector;
   readonly AmountInputBox?: AmountInputBox;
 }
 
 const defaultAmountPropertySelectorWrapper = (
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLSpanElement>,
-    HTMLSpanElement
-  >
+  props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLSpanElement>, HTMLSpanElement>
 ): JSX.Element => <span {...props} />;
 
 const defaultAmountFormatSelector = createAmountFormatSelector({});
@@ -69,13 +55,10 @@ const defaultAmountInputBox = createAmountInputBox({});
 export function createAmountPropertySelector({
   AmountPropertySelectorWrapper = defaultAmountPropertySelectorWrapper,
   AmountFormatSelector = defaultAmountFormatSelector,
-  AmountInputBox = defaultAmountInputBox
+  AmountInputBox = defaultAmountInputBox,
 }: CreateAmountPropertySelectorProps): AmountPropertySelector {
   // eslint-disable-next-line functional/no-class
-  return class AmountPropertySelector extends React.Component<
-    AmountPropertySelectorProps,
-    {}
-  > {
+  return class AmountPropertySelector extends React.Component<AmountPropertySelectorProps, {}> {
     render(): React.ReactElement<AmountPropertySelectorProps> {
       const {
         onValueChange,
@@ -94,16 +77,11 @@ export function createAmountPropertySelector({
         debounceTime = 350,
         unitsFormat,
         units,
-        comparer = PropertyValue.defaultComparer
+        comparer = PropertyValue.defaultComparer,
         // eslint-disable-next-line functional/no-this-expression
       } = this.props;
 
-      const value:
-        | Amount.Amount<unknown>
-        | undefined = PropertyValueSet.getAmount(
-        propertyName,
-        propertyValueSet
-      );
+      const value: Amount.Amount<unknown> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
 
       return (
         <AmountPropertySelectorWrapper>
@@ -113,20 +91,10 @@ export function createAmountPropertySelector({
             inputDecimalCount={inputDecimalCount}
             notNumericMessage={notNumericMessage}
             isRequiredMessage={isRequiredMessage}
-            errorMessage={_getValidationMessage(
-              propertyValueSet,
-              value,
-              validationFilter,
-              filterPrettyPrint,
-              comparer
-            )}
+            errorMessage={_getValidationMessage(propertyValueSet, value, validationFilter, filterPrettyPrint, comparer)}
             readOnly={readOnly}
-            onValueChange={newAmount =>
-              onValueChange(
-                newAmount !== undefined
-                  ? PropertyValue.create("amount", newAmount)
-                  : undefined
-              )
+            onValueChange={(newAmount) =>
+              onValueChange(newAmount !== undefined ? PropertyValue.create("amount", newAmount) : undefined)
             }
             debounceTime={debounceTime}
           />

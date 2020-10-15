@@ -1,38 +1,28 @@
 /* eslint-disable functional/no-this-expression */
 import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
-import {
-  createCheckboxPropertySelector,
-  CheckboxPropertyValueItem
-} from "@promaster-sdk/react-property-selectors";
-import {
-  PropertyFilter,
-  PropertyValueSet,
-  PropertyValue
-} from "@promaster-sdk/property";
+import { createCheckboxPropertySelector, CheckboxPropertyValueItem } from "@promaster-sdk/react-property-selectors";
+import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 
-const unitLookup: Unit.UnitLookup = unitString =>
-  (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
 export function CheckboxPropertySelectorExample1(): JSX.Element {
-  const [myState, setMyState] = useState(
-    PropertyValueSet.fromString("a=1", unitLookup)
-  );
+  const [myState, setMyState] = useState(PropertyValueSet.fromString("a=1", unitLookup));
   const valueItems1: ReadonlyArray<CheckboxPropertyValueItem> = [
     {
       value: PropertyValue.create("integer", 0),
       sortNo: 1,
       text: "unchecked",
-      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter
+      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter,
     },
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 2,
       text: "checked",
-      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter
-    }
+      validationFilter: PropertyFilter.Empty as PropertyFilter.PropertyFilter,
+    },
   ];
 
   return (
@@ -46,15 +36,7 @@ export function CheckboxPropertySelectorExample1(): JSX.Element {
           propertyValueSet={myState}
           locked={false}
           showCodes={true}
-          onValueChange={pv =>
-            setMyState(
-              PropertyValueSet.set(
-                "a",
-                pv as PropertyValue.PropertyValue,
-                myState
-              )
-            )
-          }
+          onValueChange={(pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState))}
           filterPrettyPrint={() => ""}
           readOnly={false}
         />
