@@ -163,23 +163,22 @@ function getDefaultFormat(
   property: UsePropertiesSelectorProperty,
   selectedValue: PropertyValue.PropertyValue
 ): UsePropertiesSelectorAmountFormat {
-  let defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
-  switch (getPropertyType(property.quantity)) {
+  const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
+  const propertyType = getPropertyType(property.quantity);
+  switch (propertyType) {
+    case "text":
     case "integer":
-      break;
+      return defaultFormat;
     case "amount":
-      defaultFormat =
-        selectedValue && selectedValue.type === "amount"
-          ? {
-              unit: selectedValue.value.unit,
-              decimalCount: selectedValue.value.decimalCount,
-            }
-          : defaultFormat;
-      break;
+      return selectedValue && selectedValue.type === "amount"
+        ? {
+            unit: selectedValue.value.unit,
+            decimalCount: selectedValue.value.decimalCount,
+          }
+        : defaultFormat;
     default:
-    // isValid = true;
+      return exhaustiveCheck(propertyType, true);
   }
-  return defaultFormat;
 }
 
 function getIsValid(
