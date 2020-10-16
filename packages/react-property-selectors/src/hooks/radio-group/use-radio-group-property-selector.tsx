@@ -1,9 +1,11 @@
 import { PropertyValue, PropertyValueSet, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
+import { getSelectableOptions } from "../option";
 
 export type UseRadioGroupPropertySelectorOptions = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
+  readonly sortValidFirst: boolean;
   readonly valueItems: ReadonlyArray<HookRadioGroupPropertyValueItem>;
   readonly showCodes: boolean;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
@@ -37,40 +39,47 @@ export type RadioGroupItemInfo = {
   readonly isItemValid: boolean;
 };
 
-export function useRadioGroupPropertySelector({
-  propertyName,
-  propertyValueSet,
-  valueItems,
-  showCodes,
-  onValueChange,
-  filterPrettyPrint,
-  readOnly,
-  locked,
-  comparer,
-}: UseRadioGroupPropertySelectorOptions): UseRadioGroupPropertySelector {
-  const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
+export function useRadioGroupPropertySelector(
+  hookOptions: UseRadioGroupPropertySelectorOptions
+): UseRadioGroupPropertySelector {
+  const {
+    // propertyName,
+    // propertyValueSet,
+    // valueItems,
+    // showCodes,
+    onValueChange,
+    // filterPrettyPrint,
+    // readOnly,
+    locked,
+    // comparer,
+  } = hookOptions;
 
-  const safeComparer = comparer || PropertyValue.defaultComparer;
+  // const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
 
-  if (!valueItems) {
-    valueItems = [];
-  }
+  // const safeComparer = comparer || PropertyValue.defaultComparer;
+
+  // if (!valueItems) {
+  //   valueItems = [];
+  // }
+  const [selectedOption, selectableOptions] = getSelectableOptions(hookOptions);
 
   // Convert value items to options
-  const items: Array<RadioGroupItemInfo> = valueItems
-    .map((valueItem) => {
-      const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem, safeComparer);
+  const items: Array<RadioGroupItemInfo> = selectableOptions
+    .map((o) => {
+      // const isItemValid = _isValueItemValid(propertyName, propertyValueSet, o, safeComparer);
       return {
         getItemProps: () => ({
-          key: valueItem.sortNo.toString(),
-          onClick: () => !readOnly && valueItem.value && onValueChange(valueItem.value),
+          key: o.sortNo.toString(),
+          // onClick: () => !readOnly && o.value && onValueChange(o.value),
+          onClick: () => _doOnChange(o.value, onValueChange),
         }),
-        sortNo: valueItem.sortNo,
-        selected: valueItem.value ? PropertyValue.equals(value, valueItem.value, safeComparer) : false,
-        label: _getItemLabel(valueItem, showCodes),
-        imageUrl: valueItem.image,
-        toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint),
-        isItemValid: isItemValid,
+        sortNo: o.sortNo,
+        // selected: o.value ? PropertyValue.equals(value, o.value, safeComparer) : false,
+        selected: o === selectedOption,
+        label: o.label,
+        imageUrl: o.image,
+        toolTip: selectedOption.toolTip,
+        isItemValid: o.isItemValid,
       };
     })
     .sort((a, b) => a.sortNo - b.sortNo);
@@ -80,37 +89,6 @@ export function useRadioGroupPropertySelector({
     getGroupProps: () => ({}),
     items,
   };
-}
-
-function _getItemLabel(valueItem: HookRadioGroupPropertyValueItem, showCodes: boolean): string {
-  if (valueItem.value === undefined || valueItem.value === null) {
-    return "";
-  }
-
-  return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "");
-}
-
-function _getItemInvalidMessage(
-  valueItem: HookRadioGroupPropertyValueItem,
-  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint
-): string {
-  return filterPrettyPrint(valueItem.validationFilter);
-}
-
-function _isValueItemValid(
-  propertyName: string,
-  propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItem: HookRadioGroupPropertyValueItem,
-  comparer: PropertyValue.Comparer
-): boolean {
-  if (valueItem.value === undefined || valueItem.value === null) {
-    return true;
-  }
-  const pvsToCheck = PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
-  if (!valueItem.validationFilter) {
-    return true;
-  }
-  return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter, comparer);
 }
 
 export function getDefaultRadioItemStyle(item: RadioGroupItemInfo): {} {
@@ -124,4 +102,15 @@ export function getDefaultRadioItemStyle(item: RadioGroupItemInfo): {} {
     // ${(p: RadioGroupItemProps) =>
     //   p.isItemValid ? "&:hover { background: #39f; color: white;" : ""}
   };
+}
+
+function _doOnChange(
+  newValue: string,
+  onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void
+): void {
+  if (newValue === undefined || newValue === null) {
+    onValueChange(undefined);
+  } else {
+    onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
+  }
 }

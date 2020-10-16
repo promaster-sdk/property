@@ -58,6 +58,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
   const selA = useRadioGroupPropertySelector({
     propertyName: "a",
     valueItems: valueItems1,
+    sortValidFirst: false,
     propertyValueSet: state,
     locked: false,
     showCodes: true,
@@ -69,6 +70,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
   const selB = useRadioGroupPropertySelector({
     propertyName: "b",
     valueItems: valueItems2,
+    sortValidFirst: false,
     propertyValueSet: state,
     locked: false,
     showCodes: true,

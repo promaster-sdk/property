@@ -62,6 +62,8 @@ export type UsePropertiesSelectorOptions = {
 
   // Comparer
   readonly comparer?: PropertyValue.Comparer;
+
+  readonly sortValidFirst?: boolean;
 };
 
 export type UsePropertiesSelectorProperty = {
@@ -211,6 +213,7 @@ function createSelector(
     onPropertyFormatCleared,
     lockSingleValidValue,
     readOnlyProperties,
+    sortValidFirst,
   } = params;
 
   const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
@@ -281,14 +284,15 @@ function createSelector(
         ...myBase,
         type: "RadioGroup",
         getUseRadioGroupOptions: () => ({
-          propertyName: propertyName,
+          propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
-          showCodes: showCodes,
-          filterPrettyPrint: filterPrettyPrint,
-          onValueChange: onValueChange,
-          readOnly: readOnly,
-          locked: locked,
+          sortValidFirst,
+          showCodes,
+          filterPrettyPrint,
+          onValueChange,
+          readOnly,
+          locked,
         }),
       };
     case "Checkbox":
@@ -311,7 +315,7 @@ function createSelector(
         ...myBase,
         type: "ComboBox",
         getUseComboboxOptions: () => ({
-          sortValidFirst: true,
+          sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
@@ -327,7 +331,7 @@ function createSelector(
         ...myBase,
         type: "ImageComboBox",
         getUseImageComboboxOptions: () => ({
-          sortValidFirst: true,
+          sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
@@ -577,6 +581,7 @@ function optionsWithDefaults(params: UsePropertiesSelectorOptions): Required<Use
 
     unitLookup,
     comparer = PropertyValue.defaultComparer,
+    sortValidFirst = false,
   } = params;
 
   return {
@@ -601,5 +606,6 @@ function optionsWithDefaults(params: UsePropertiesSelectorOptions): Required<Use
     units,
     unitLookup,
     comparer,
+    sortValidFirst,
   };
 }
