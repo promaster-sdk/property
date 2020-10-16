@@ -10,15 +10,6 @@ export type Option = {
   readonly toolTip: string;
 };
 
-export type GetSelectedOptionParams = {
-  readonly propertyName: string;
-  readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly valueItems: ReadonlyArray<ValueItem>;
-  readonly showCodes: boolean;
-  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
-  readonly comparer?: PropertyValue.Comparer;
-};
-
 export type ValueItem = {
   readonly value: PropertyValue.PropertyValue | undefined | null;
   readonly sortNo: number;
@@ -52,8 +43,7 @@ function makeOption(
     isItemValid: isItemValid,
     image: valueItem.image,
     sortNo: valueItem.sortNo,
-    toolTip: isItemValid ? "" : _getItemInvalidMessage(valueItem, filterPrettyPrint),
-    // getOptionProps: () => ({}),
+    toolTip: isItemValid ? "" : filterPrettyPrint(valueItem.validationFilter),
   };
 }
 
@@ -66,13 +56,9 @@ export function getSelectableOptions({
   filterPrettyPrint,
   comparer,
 }: GetOptionsParams): [Option, ReadonlyArray<Option>] {
-  if (!valueItems) {
-    valueItems = [];
-  }
-
   // Convert value items to options
   const safeComparer = comparer || PropertyValue.defaultComparer;
-  const options: Array<Option> = valueItems
+  let options: Array<Option> = valueItems
     .map((valueItem) => {
       return makeOption(valueItem, propertyName, propertyValueSet, safeComparer, showCodes, filterPrettyPrint);
     })
@@ -94,19 +80,6 @@ export function getSelectableOptions({
       }
       return 0;
     });
-  return getSelectedOption(
-    { propertyName, propertyValueSet, valueItems, showCodes, filterPrettyPrint, comparer },
-    options
-  );
-}
-
-function getSelectedOption(
-  { propertyName, propertyValueSet, valueItems, showCodes, filterPrettyPrint, comparer }: GetSelectedOptionParams,
-  options: ReadonlyArray<Option>
-): [Option, ReadonlyArray<Option>] {
-  if (!valueItems) {
-    valueItems = [];
-  }
 
   // Get selected option
   const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
@@ -115,7 +88,6 @@ function getSelectedOption(
   );
   let selectedValueItem: ValueItem;
   if (!selectedValueItemOrUndefined) {
-    console.log("NISSSSEEE!!");
     selectedValueItem = {
       value: undefined,
       sortNo: -1,
@@ -124,7 +96,6 @@ function getSelectedOption(
     };
     // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
     // valueItems.unshift(selectedValueItem);
-    // valueItems = [selectedValueItem, ...valueItems] as ReadonlyArray<ValueItem>;
     const safeComparer = comparer || PropertyValue.defaultComparer;
     options = [
       makeOption(selectedValueItem, propertyName, propertyValueSet, safeComparer, showCodes, filterPrettyPrint),
@@ -135,8 +106,7 @@ function getSelectedOption(
   }
   const selectedOption = options.find((option) => option.value === _getItemValue(selectedValueItem));
   if (!selectedOption) {
-    console.log("OLLLE!!", selectedValueItem);
-    throw new Error("Could not find..");
+    throw new Error("Could not find selected item.");
   }
   return [selectedOption, options];
 }
@@ -150,15 +120,7 @@ function _getItemLabel(valueItem: ValueItem, showCodes: boolean): string {
 }
 
 function _getItemValue(valueItem: ValueItem): string {
-  if (valueItem.value === undefined || valueItem.value === null) {
-    return "";
-  }
-
-  return PropertyValue.toString(valueItem.value);
-}
-
-function _getItemInvalidMessage(valueItem: ValueItem, filterPrettyPrint: PropertyFiltering.FilterPrettyPrint): string {
-  return filterPrettyPrint(valueItem.validationFilter);
+  return valueItem.value === undefined || valueItem.value === null ? "" : PropertyValue.toString(valueItem.value);
 }
 
 function _isValueItemValid(
