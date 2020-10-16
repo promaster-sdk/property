@@ -9,18 +9,14 @@ import {
   getDefaultCheckboxStyle,
   getDefaultListItemStyle,
   getDefaultMenuStyle,
-  getDefaultOptionStyle,
   getDefaultOptionStyle2,
-  getDefaultRadioItemStyle,
-  getDefaultSelectStyle,
   getDefaultSelectStyle2,
+  getDefaultRadioItemStyle,
   getDefaultToggleButtonStyle,
   useAmountPropertySelector,
   UseAmountPropertySelectorOptions,
   useCheckboxPropertySelector,
   UseCheckboxPropertySelectorOptions,
-  useComboboxPropertySelector,
-  UseComboboxPropertySelectorOptions,
   useDiscretePropertySelector,
   useImageComboboxPropertySelector,
   UseImageComboboxPropertySelectorOptions,
@@ -28,6 +24,10 @@ import {
   UseRadioGroupPropertySelectorOptions,
   useTextboxPropertySelector,
   UseTextboxPropertySelectorOptions,
+  UseComboboxPropertySelectorOptions,
+  useComboboxPropertySelector,
+  getDefaultSelectStyle,
+  getDefaultOptionStyle,
 } from "@promaster-sdk/react-property-selectors";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import { exampleProductProperties } from "./example-product-properties";
@@ -128,17 +128,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   );
 }
 
-function MyDiscreteSelector(props: DiscretePropertySelectorOptions): JSX.Element {
-  const sel = useDiscretePropertySelector(props);
-  return (
-    <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
-      {sel.items.map((o) => (
-        <option {...o.getOptionProps()} style={getDefaultOptionStyle2(o)} />
-      ))}
-    </select>
-  );
-}
-
 function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.Element {
   const sel = useAmountPropertySelector(props);
   return (
@@ -192,6 +181,26 @@ function MyComboboxSelector(props: UseComboboxPropertySelectorOptions): JSX.Elem
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
       {sel.options.map((o) => (
         <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
+      ))}
+    </select>
+  );
+}
+
+function MyDiscreteSelector(props: DiscretePropertySelectorOptions): JSX.Element {
+  // const sel = useComboboxPropertySelector(props);
+  // return (
+  //   <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
+  //     {sel.options.map((o) => (
+  //       <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
+  //     ))}
+  //   </select>
+  // );
+
+  const sel = useDiscretePropertySelector(props);
+  return (
+    <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
+      {sel.items.map((o) => (
+        <option {...o.getOptionProps()} style={getDefaultOptionStyle2(o)} />
       ))}
     </select>
   );

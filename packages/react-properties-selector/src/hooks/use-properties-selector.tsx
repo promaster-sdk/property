@@ -4,6 +4,7 @@ import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import {
+  DiscretePropertySelectorOptions,
   UseAmountPropertySelectorOptions,
   UseCheckboxPropertySelectorOptions,
   UseComboboxPropertySelectorOptions,
@@ -126,6 +127,10 @@ type SelectorRenderInfoInternal = SelectorRenderInfo & {
 };
 
 export type SelectorRenderInfo =
+  | ({
+      readonly type: "Discrete";
+      readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions;
+    } & SelectorRenderInfoBase)
   | ({
       readonly type: "ComboBox";
       readonly getUseComboboxOptions: () => UseComboboxPropertySelectorOptions;
@@ -369,6 +374,21 @@ function createSelector(
         }),
       };
     }
+    case "Discrete":
+      return {
+        ...myBase,
+        type: "Discrete",
+        getUseDiscreteOptions: () => ({
+          sortValidFirst,
+          propertyName,
+          propertyValueSet: selectedProperties,
+          valueItems,
+          showCodes: showCodes,
+          filterPrettyPrint,
+          onValueChange,
+          disabled: readOnly || locked,
+        }),
+      };
     default:
       return exhaustiveCheck(selectorType, true);
   }
@@ -420,15 +440,16 @@ function getSelectorType(property: UsePropertiesSelectorProperty): UseProperties
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
-    if (property.selectorType === "RadioGroup") {
-      return "RadioGroup";
-    } else if (property.selectorType === "Checkbox") {
-      return "Checkbox";
-    } else if (property.valueItems.some((i) => i.image !== undefined)) {
-      return "ImageComboBox";
-    } else {
-      return "ComboBox";
-    }
+    return "Discrete";
+    // if (property.selectorType === "RadioGroup") {
+    //   return "RadioGroup";
+    // } else if (property.selectorType === "Checkbox") {
+    //   return "Checkbox";
+    // } else if (property.valueItems.some((i) => i.image !== undefined)) {
+    //   return "ImageComboBox";
+    // } else {
+    //   return "ComboBox";
+    // }
   } else {
     return "AmountField";
   }
