@@ -107,7 +107,7 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
 
 export type SelectorRenderInfoBase = {
   readonly sortNo: number;
-  readonly groupName: string;
+  // readonly groupName: string;
   readonly propertyName: string;
 
   // This flag tells if the selector currently holds a valid selection
@@ -116,6 +116,14 @@ export type SelectorRenderInfoBase = {
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   // This flag tells if is was supposed to be hidden
   readonly isHidden: boolean;
+};
+
+type SelectorRenderInfoBaseInternal = SelectorRenderInfoBase & {
+  readonly groupName: string;
+};
+
+type SelectorRenderInfoInternal = SelectorRenderInfo & {
+  readonly groupName: string;
 };
 
 export type SelectorRenderInfo =
@@ -155,7 +163,7 @@ export function usePropertiesSelector(options: UsePropertiesSelectorOptions): Us
     .slice()
     .sort((a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0));
 
-  const allSelectors: ReadonlyArray<SelectorRenderInfo> = sortedArray
+  const allSelectors: ReadonlyArray<SelectorRenderInfoInternal> = sortedArray
     .filter(
       (property: UsePropertiesSelectorProperty) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
@@ -186,7 +194,7 @@ export function usePropertiesSelector(options: UsePropertiesSelectorOptions): Us
 function createSelector(
   property: UsePropertiesSelectorProperty,
   params: Required<UsePropertiesSelectorOptions>
-): SelectorRenderInfo {
+): SelectorRenderInfoInternal {
   const {
     selectedProperties,
     propertyFormats,
@@ -227,7 +235,7 @@ function createSelector(
   // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
   // const labelHover = translatePropertyLabelHover(property.name);
 
-  const myBase: SelectorRenderInfoBase = {
+  const myBase: SelectorRenderInfoBaseInternal = {
     sortNo: property.sort_no,
     propertyName: property.name,
     groupName: property.group,
@@ -278,18 +286,6 @@ function createSelector(
         getUseRadioGroupOptions: () => ({
           propertyName: propertyName,
           propertyValueSet: selectedProperties,
-          // valueItems:
-          //   valueItems &&
-          //   valueItems.map((vi) => ({
-          //     value: vi.value,
-          //     text: translatePropertyValue(
-          //       propertyName,
-          //       (vi.value ? PropertyValue.getInteger(vi.value) : undefined) as number
-          //     ),
-          //     sortNo: vi.sort_no,
-          //     validationFilter: vi.property_filter,
-          //     image: vi.image,
-          //   })),
           valueItems,
           showCodes: includeCodes,
           filterPrettyPrint: filterPrettyPrint,
@@ -298,28 +294,6 @@ function createSelector(
           locked: locked,
         }),
       };
-    // <RadioGroupPropertySelector
-    //   propertyName={propertyName}
-    //   propertyValueSet={selectedProperties}
-    //   valueItems={
-    //     valueItems &&
-    //     valueItems.map(vi => ({
-    //       value: vi.value,
-    //       text: translatePropertyValue(propertyName, (vi.value
-    //         ? PropertyValue.getInteger(vi.value)
-    //         : undefined) as number),
-    //       sortNo: vi.sort_no,
-    //       validationFilter: vi.property_filter,
-    //       image: vi.image
-    //     }))
-    //   }
-    //   showCodes={includeCodes}
-    //   filterPrettyPrint={filterPrettyPrint}
-    //   onValueChange={onValueChange}
-    //   readOnly={readOnly}
-    //   locked={locked}
-    // />
-
     case "Checkbox":
       return {
         ...myBase,
@@ -546,7 +520,9 @@ function getSingleValidValueOrUndefined(
   return undefined;
 }
 
-function getDistinctGroupNames(productPropertiesArray: ReadonlyArray<SelectorRenderInfo>): ReadonlyArray<string> {
+function getDistinctGroupNames(
+  productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal>
+): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const property of productPropertiesArray) {
     // let groupName = property.groupName;
