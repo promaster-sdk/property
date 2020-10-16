@@ -10,14 +10,6 @@ export type Option = {
   readonly toolTip: string;
 };
 
-export type ValueItem = {
-  readonly value: PropertyValue.PropertyValue | undefined | null;
-  readonly sortNo: number;
-  readonly text: string;
-  readonly image?: string;
-  readonly validationFilter: PropertyFilter.PropertyFilter;
-};
-
 export type GetOptionsParams = {
   readonly sortValidFirst: boolean;
   readonly propertyName: string;
@@ -28,24 +20,13 @@ export type GetOptionsParams = {
   readonly comparer?: PropertyValue.Comparer;
 };
 
-function makeOption(
-  valueItem: ValueItem,
-  propertyName: string,
-  propertyValueSet: PropertyValueSet.PropertyValueSet,
-  safeComparer: PropertyValue.Comparer,
-  showCodes: boolean,
-  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint
-): Option {
-  const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem, safeComparer);
-  return {
-    value: _getItemValue(valueItem),
-    label: _getItemLabel(valueItem, showCodes),
-    isItemValid: isItemValid,
-    image: valueItem.image,
-    sortNo: valueItem.sortNo,
-    toolTip: isItemValid ? "" : filterPrettyPrint(valueItem.validationFilter),
-  };
-}
+export type ValueItem = {
+  readonly value: PropertyValue.PropertyValue | undefined | null;
+  readonly sortNo: number;
+  readonly text: string;
+  readonly image?: string;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+};
 
 export function getSelectableOptions({
   sortValidFirst,
@@ -109,6 +90,25 @@ export function getSelectableOptions({
     throw new Error("Could not find selected item.");
   }
   return [selectedOption, options];
+}
+
+function makeOption(
+  valueItem: ValueItem,
+  propertyName: string,
+  propertyValueSet: PropertyValueSet.PropertyValueSet,
+  safeComparer: PropertyValue.Comparer,
+  showCodes: boolean,
+  filterPrettyPrint: PropertyFiltering.FilterPrettyPrint
+): Option {
+  const isItemValid = _isValueItemValid(propertyName, propertyValueSet, valueItem, safeComparer);
+  return {
+    value: _getItemValue(valueItem),
+    label: _getItemLabel(valueItem, showCodes),
+    isItemValid: isItemValid,
+    image: valueItem.image,
+    sortNo: valueItem.sortNo,
+    toolTip: isItemValid ? "" : filterPrettyPrint(valueItem.validationFilter),
+  };
 }
 
 function _getItemLabel(valueItem: ValueItem, showCodes: boolean): string {
