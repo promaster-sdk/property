@@ -69,14 +69,13 @@ export function getSelectableOptions({
   );
   let selectedValueItem: GetOptionsParamsValueItem;
   if (!selectedValueItemOrUndefined) {
+    // Add item for selected value, even tough it does not really exist, but we need to show it in the combobox
     selectedValueItem = {
       value: undefined,
       sortNo: -1,
       text: value === undefined || value === null ? "" : value.toString(),
       validationFilter: PropertyFilter.Empty,
     };
-    // Add value items for selected value, even tough it does not really exist, but we need to show it in the combobox
-    // valueItems.unshift(selectedValueItem);
     const safeComparer = comparer || PropertyValue.defaultComparer;
     options = [
       makeOption(selectedValueItem, propertyName, propertyValueSet, safeComparer, showCodes, filterPrettyPrint),
@@ -115,7 +114,6 @@ function _getItemLabel(valueItem: GetOptionsParamsValueItem, showCodes: boolean)
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
   }
-
   return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "");
 }
 
