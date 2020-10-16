@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { getSelectableOptions } from "./option";
+import { getSelectableOptions } from "../option";
 
 export type UseImageComboboxPropertySelector = {
   readonly label: string;
