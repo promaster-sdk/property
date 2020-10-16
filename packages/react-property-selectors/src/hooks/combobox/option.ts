@@ -52,14 +52,7 @@ export function getSelectableOptions({
           return 1;
         }
       }
-
-      if (a.sortNo < b.sortNo) {
-        return -1;
-      }
-      if (a.sortNo > b.sortNo) {
-        return 1;
-      }
-      return 0;
+      return a.sortNo - b.sortNo;
     });
 
   // Get selected option
