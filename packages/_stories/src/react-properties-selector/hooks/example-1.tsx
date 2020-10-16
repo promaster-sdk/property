@@ -130,7 +130,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 
 function MyDiscreteSelector(props: DiscretePropertySelectorOptions): JSX.Element {
   const sel = useDiscretePropertySelector(props);
-  console.log("sel.getSelectProps()", sel.getSelectProps());
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
       {sel.items.map((o) => (
