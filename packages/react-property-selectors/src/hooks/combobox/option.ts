@@ -14,13 +14,13 @@ export type GetOptionsParams = {
   readonly sortValidFirst: boolean;
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly valueItems: ReadonlyArray<ValueItem>;
+  readonly valueItems: ReadonlyArray<GetOptionsParamsValueItem>;
   readonly showCodes: boolean;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
   readonly comparer?: PropertyValue.Comparer;
 };
 
-export type ValueItem = {
+export type GetOptionsParamsValueItem = {
   readonly value: PropertyValue.PropertyValue | undefined | null;
   readonly sortNo: number;
   readonly text: string;
@@ -67,7 +67,7 @@ export function getSelectableOptions({
   const selectedValueItemOrUndefined = valueItems.find(
     (item) => (item.value && PropertyValue.getInteger(item.value)) === value
   );
-  let selectedValueItem: ValueItem;
+  let selectedValueItem: GetOptionsParamsValueItem;
   if (!selectedValueItemOrUndefined) {
     selectedValueItem = {
       value: undefined,
@@ -93,7 +93,7 @@ export function getSelectableOptions({
 }
 
 function makeOption(
-  valueItem: ValueItem,
+  valueItem: GetOptionsParamsValueItem,
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
   safeComparer: PropertyValue.Comparer,
@@ -111,7 +111,7 @@ function makeOption(
   };
 }
 
-function _getItemLabel(valueItem: ValueItem, showCodes: boolean): string {
+function _getItemLabel(valueItem: GetOptionsParamsValueItem, showCodes: boolean): string {
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
   }
@@ -119,14 +119,14 @@ function _getItemLabel(valueItem: ValueItem, showCodes: boolean): string {
   return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "");
 }
 
-function _getItemValue(valueItem: ValueItem): string {
+function _getItemValue(valueItem: GetOptionsParamsValueItem): string {
   return valueItem.value === undefined || valueItem.value === null ? "" : PropertyValue.toString(valueItem.value);
 }
 
 function _isValueItemValid(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItem: ValueItem,
+  valueItem: GetOptionsParamsValueItem,
   comparer: PropertyValue.Comparer
 ): boolean {
   if (valueItem.value === undefined || valueItem.value === null) {
