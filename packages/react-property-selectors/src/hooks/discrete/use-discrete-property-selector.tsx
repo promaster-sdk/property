@@ -44,9 +44,17 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
     comparer = PropertyValue.defaultComparer,
     filterPrettyPrint,
     showCodes,
+    valueItems,
+    sortValidFirst,
   } = hookOptions;
 
-  const [selectedItem, selectableItems] = getSelectableItems(hookOptions, comparer);
+  const [selectedItem, selectableItems] = getSelectableItems(
+    propertyName,
+    propertyValueSet,
+    valueItems,
+    sortValidFirst,
+    comparer
+  );
 
   const getItemToolTip = (item: DiscreteItem): string => {
     const isItemValid = isValueItemValid(propertyName, propertyValueSet, item, comparer);
@@ -64,7 +72,7 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
     getSelectProps: () => ({
       disabled,
       value: getItemValue(selectedItem),
-      // title: selectedItem.toolTip,
+      title: getItemToolTip(selectedItem),
       onChange: (event) => {
         const newValue = event.currentTarget.value;
         if (newValue === undefined || newValue === null) {
@@ -83,39 +91,15 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
         title: getItemToolTip(item),
       };
     },
-    // items: selectableItems.map((o) => ({
-    //   label: o.label,
-    //   isItemValid: o.isItemValid,
-    //   getOptionProps: () => ({
-    //     key: o.value,
-    //     value: o.value,
-    //     label: o.label,
-    //     image: o.image,
-    //     title: o.toolTip,
-    //   }),
-    // })),
     items: selectableItems,
   };
 }
 
-// export type Option = {
-//   readonly sortNo: number;
-//   readonly value: string;
-//   readonly label: string;
-//   // readonly isItemValid: boolean;
-//   readonly image: string | undefined;
-//   readonly toolTip: string;
-// };
-
-export type GetOptionsParams = {
-  readonly sortValidFirst: boolean;
-  readonly propertyName: string;
-  readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly valueItems: ReadonlyArray<DiscreteItem>;
-};
-
 export function getSelectableItems(
-  { sortValidFirst, propertyName, propertyValueSet, valueItems }: GetOptionsParams,
+  propertyName: string,
+  propertyValueSet: PropertyValueSet.PropertyValueSet,
+  valueItems: ReadonlyArray<DiscreteItem>,
+  sortValidFirst: boolean,
   comparer: PropertyValue.Comparer
 ): [DiscreteItem, Array<DiscreteItem>] {
   // Convert value items to options
@@ -154,25 +138,6 @@ export function getSelectableItems(
   return [selectedValueItem, sortedItems];
 }
 
-// function makeOption(
-//   valueItem: GetOptionsParamsValueItem,
-//   propertyName: string,
-//   propertyValueSet: PropertyValueSet.PropertyValueSet,
-//   safeComparer: PropertyValue.Comparer,
-//   showCodes: boolean,
-//   filterPrettyPrint: PropertyFiltering.FilterPrettyPrint
-// ): Option {
-//   const isItemValid = isValueItemValid(propertyName, propertyValueSet, valueItem, safeComparer);
-//   return {
-//     value: _getItemValue(valueItem),
-//     label: _getItemLabel(valueItem, showCodes),
-//     isItemValid: isItemValid,
-//     image: valueItem.image,
-//     sortNo: valueItem.sortNo,
-//     toolTip: isItemValid ? "" : filterPrettyPrint(valueItem.validationFilter),
-//   };
-// }
-
 function getItemLabel(valueItem: DiscreteItem, showCodes: boolean): string {
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
@@ -181,7 +146,6 @@ function getItemLabel(valueItem: DiscreteItem, showCodes: boolean): string {
 }
 
 function getItemValue(item: DiscreteItem): string {
-  // console.log("getting value for item", item);
   return item.value === undefined || item.value === null ? "" : PropertyValue.toString(item.value);
 }
 
