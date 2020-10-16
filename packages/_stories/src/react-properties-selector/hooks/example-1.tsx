@@ -32,7 +32,8 @@ import { units, unitsFormat } from "./units-map";
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
 export function PropertiesSelectorExample1(): React.ReactElement<{}> {
-  const [state, setState] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
+  const [pvs, setPvs] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
+  const [showCodes, setShowCodes] = useState(true);
 
   const productProperties = exampleProductProperties();
 
@@ -41,17 +42,28 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
     unitsFormat,
     unitLookup,
     productProperties: productProperties,
-    selectedProperties: state,
+    selectedProperties: pvs,
     onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
-      setState(properties);
+      setPvs(properties);
       // console.log("updated: ", changedProperties);
     },
+    showCodes,
   });
 
   return (
     <div>
       <p>This example shows minimal configuration, using as much defaults as possible</p>
-      <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
+      <div>
+        <input
+          type="checkbox"
+          id="showCodes"
+          name="vehicle1"
+          checked={showCodes}
+          onClick={() => setShowCodes(!showCodes)}
+        />
+        <label htmlFor="showCodes">Show Codes</label>
+      </div>
+      <div>PropertyValueSet: {PropertyValueSet.toString(pvs)}</div>
       <div>
         <div>
           {sel.groups.map((group) => (
@@ -59,7 +71,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
               {group.name && (
                 <div>
                   <button {...group.getGroupToggleButtonProps()}>&nbsp;&gt;&gt;&nbsp;</button>
-                  {group.name}
+                  {translateGroupName(group.name)}
                 </div>
               )}
               <table>
@@ -68,8 +80,13 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                     group.selectors.map((selector) => (
                       <tr key={selector.propertyName}>
                         <td>
-                          <label className={!selector.isValid ? "invalid" : undefined} title={selector.propertyName}>
-                            <span className={selector.isHidden ? "hidden-property" : ""}>{selector.propertyName}</span>
+                          <label
+                            className={!selector.isValid ? "invalid" : undefined}
+                            title={translatePropertyName(selector.propertyName)}
+                          >
+                            <span className={selector.isHidden ? "hidden-property" : ""}>
+                              {selector.getPropertyLabel(translatePropertyName(selector.propertyName))}
+                            </span>
                           </label>
                         </td>
                         <td>
@@ -204,3 +221,14 @@ function MyRadioGroupSelector(props: UseRadioGroupPropertySelectorOptions): JSX.
     </div>
   );
 }
+
+function translateGroupName(groupName: string): string {
+  return "group_" + groupName;
+}
+
+function translatePropertyName(propertyName: string): string {
+  return "property_" + propertyName;
+}
+
+// const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
+// const labelHover = translatePropertyLabelHover(property.name);

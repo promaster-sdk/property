@@ -21,7 +21,7 @@ export type UsePropertiesSelectorOptions = {
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
 
   // Includes the raw property name and value in paranthesis
-  readonly includeCodes?: boolean;
+  readonly showCodes?: boolean;
   // Will render properties that according to their rule should be hidden
   readonly includeHiddenProperties?: boolean;
   // Will automatically select values for properties that have only one valid value
@@ -106,16 +106,13 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
 ) => void;
 
 export type SelectorRenderInfoBase = {
-  readonly sortNo: number;
-  // readonly groupName: string;
   readonly propertyName: string;
-
-  // This flag tells if the selector currently holds a valid selection
   readonly isValid: boolean;
-
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   // This flag tells if is was supposed to be hidden
   readonly isHidden: boolean;
+  // Used to add code if includeCodes is true
+  readonly getPropertyLabel: (propertyText: string) => string;
 };
 
 type SelectorRenderInfoBaseInternal = SelectorRenderInfoBase & {
@@ -201,7 +198,7 @@ function createSelector(
     comparer,
     productProperties,
     autoSelectSingleValidValue,
-    includeCodes,
+    showCodes,
     inputDebounceTime,
     valueMustBeNumericMessage,
     valueIsRequiredMessage,
@@ -236,11 +233,11 @@ function createSelector(
   // const labelHover = translatePropertyLabelHover(property.name);
 
   const myBase: SelectorRenderInfoBaseInternal = {
-    sortNo: property.sortNo,
     propertyName: property.name,
     groupName: property.group,
     isValid,
     isHidden,
+    getPropertyLabel: (propertyText) => propertyText + (showCodes ? " (" + property.name + ")" : ""),
   };
 
   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
@@ -287,7 +284,7 @@ function createSelector(
           propertyName: propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
-          showCodes: includeCodes,
+          showCodes: showCodes,
           filterPrettyPrint: filterPrettyPrint,
           onValueChange: onValueChange,
           readOnly: readOnly,
@@ -302,7 +299,7 @@ function createSelector(
           propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
-          showCodes: includeCodes,
+          showCodes: showCodes,
           filterPrettyPrint,
           onValueChange,
           readOnly: readOnly,
@@ -318,7 +315,7 @@ function createSelector(
           propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
-          showCodes: includeCodes,
+          showCodes: showCodes,
           filterPrettyPrint,
           onValueChange,
           readOnly,
@@ -334,7 +331,7 @@ function createSelector(
           propertyName,
           propertyValueSet: selectedProperties,
           valueItems,
-          showCodes: includeCodes,
+          showCodes: showCodes,
           filterPrettyPrint,
           onValueChange,
           readOnly,
@@ -556,7 +553,7 @@ function optionsWithDefaults(params: UsePropertiesSelectorOptions): Required<Use
         params.unitLookup
       ),
 
-    includeCodes = false,
+    showCodes = false,
     includeHiddenProperties = false,
     autoSelectSingleValidValue = true,
     lockSingleValidValue = false,
@@ -586,7 +583,7 @@ function optionsWithDefaults(params: UsePropertiesSelectorOptions): Required<Use
     productProperties,
     selectedProperties,
     filterPrettyPrint,
-    includeCodes,
+    showCodes,
     includeHiddenProperties,
     autoSelectSingleValidValue,
     lockSingleValidValue,
