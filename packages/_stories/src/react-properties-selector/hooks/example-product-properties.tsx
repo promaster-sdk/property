@@ -7,22 +7,22 @@ const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[
 export function exampleProductProperties(): Array<PropertiesSelector.UsePropertiesSelectorProperty> {
   return [
     {
-      sort_no: 1,
+      sortNo: 1,
       name: "a",
       group: "",
       quantity: "Length",
-      validation_filter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
-      visibility_filter: PropertyFilter.Empty,
-      value: [],
+      validationFilter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
+      visibilityFilter: PropertyFilter.Empty,
+      valueItems: [],
     },
     {
-      sort_no: 2,
+      sortNo: 2,
       name: "b",
       group: "Group1",
       quantity: "Discrete",
-      validation_filter: PropertyFilter.Empty,
-      visibility_filter: PropertyFilter.Empty,
-      value: [
+      validationFilter: PropertyFilter.Empty,
+      visibilityFilter: PropertyFilter.Empty,
+      valueItems: [
         {
           sortNo: 10,
           value: PropertyValue.fromInteger(1),
@@ -39,13 +39,13 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
       ],
     },
     {
-      sort_no: 3,
+      sortNo: 3,
       name: "c",
       group: "Group1",
       quantity: "Discrete",
-      validation_filter: PropertyFilter.Empty,
-      visibility_filter: PropertyFilter.Empty,
-      value: [
+      validationFilter: PropertyFilter.Empty,
+      visibilityFilter: PropertyFilter.Empty,
+      valueItems: [
         {
           sortNo: 10,
           value: PropertyValue.fromInteger(1),
@@ -67,14 +67,14 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
       ],
     },
     {
-      sort_no: 4,
-      selector_type: "RadioGroup",
+      sortNo: 4,
+      selectorType: "RadioGroup",
       name: "d",
       group: "Group1",
       quantity: "Discrete",
-      validation_filter: PropertyFilter.Empty,
-      visibility_filter: PropertyFilter.Empty,
-      value: [
+      validationFilter: PropertyFilter.Empty,
+      visibilityFilter: PropertyFilter.Empty,
+      valueItems: [
         {
           sortNo: 10,
           value: PropertyValue.fromInteger(1),
@@ -96,14 +96,14 @@ export function exampleProductProperties(): Array<PropertiesSelector.UseProperti
       ],
     },
     {
-      sort_no: 5,
-      selector_type: "Checkbox",
+      sortNo: 5,
+      selectorType: "Checkbox",
       name: "e",
       group: "Group1",
       quantity: "Discrete",
-      validation_filter: PropertyFilter.Empty,
-      visibility_filter: PropertyFilter.Empty,
-      value: [
+      validationFilter: PropertyFilter.Empty,
+      visibilityFilter: PropertyFilter.Empty,
+      valueItems: [
         {
           sortNo: 0,
           value: PropertyValue.fromInteger(0),

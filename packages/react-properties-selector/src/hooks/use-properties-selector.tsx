@@ -65,15 +65,15 @@ export type UsePropertiesSelectorOptions = {
 };
 
 export type UsePropertiesSelectorProperty = {
-  readonly selector_type?: UsePropertiesSelectorPropertySelectorType;
-  readonly field_name?: string;
-  readonly sort_no: number;
+  readonly selectorType?: UsePropertiesSelectorPropertySelectorType;
+  readonly fieldName?: string;
+  readonly sortNo: number;
   readonly name: string;
   readonly group: string;
   readonly quantity: string;
-  readonly validation_filter: PropertyFilter.PropertyFilter;
-  readonly visibility_filter: PropertyFilter.PropertyFilter;
-  readonly value: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly visibilityFilter: PropertyFilter.PropertyFilter;
+  readonly valueItems: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
 };
 
 export type UsePropertiesSelectorPropertyValueItem = {
@@ -161,12 +161,12 @@ export function usePropertiesSelector(options: UsePropertiesSelectorOptions): Us
 
   const sortedArray = productProperties
     .slice()
-    .sort((a, b) => (a.sort_no < b.sort_no ? -1 : a.sort_no > b.sort_no ? 1 : 0));
+    .sort((a, b) => (a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0));
 
   const allSelectors: ReadonlyArray<SelectorRenderInfoInternal> = sortedArray
     .filter(
       (property: UsePropertiesSelectorProperty) =>
-        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer)
+        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter, comparer)
     )
     .map((p) => createSelector(p, requiredOptions));
 
@@ -218,8 +218,8 @@ function createSelector(
 
   const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
   const selectedValueItem =
-    property.value &&
-    property.value.find(
+    property.valueItems &&
+    property.valueItems.find(
       (value: UsePropertiesSelectorPropertyValueItem) =>
         (value.value === undefined && selectedValue === undefined) ||
         (value.value && PropertyValue.equals(selectedValue, value.value, comparer))
@@ -231,12 +231,12 @@ function createSelector(
   // TODO: Better handling of format to use when the format is missing in the map
   const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
-  const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibility_filter, comparer);
+  const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter, comparer);
   // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
   // const labelHover = translatePropertyLabelHover(property.name);
 
   const myBase: SelectorRenderInfoBaseInternal = {
-    sortNo: property.sort_no,
+    sortNo: property.sortNo,
     propertyName: property.name,
     groupName: property.group,
     isValid,
@@ -245,10 +245,10 @@ function createSelector(
 
   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
   const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
-  const fieldName = property.field_name || property.name;
+  const fieldName = property.fieldName || property.name;
   const propertyName = property.name;
-  const validationFilter = property.validation_filter;
-  const valueItems = property.value;
+  const validationFilter = property.validationFilter;
+  const valueItems = property.valueItems;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
       ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
@@ -408,7 +408,7 @@ function getIsValid(
         : false;
     case "amount":
       return (
-        property.validation_filter && PropertyFilter.isValid(selectedProperties, property.validation_filter, comparer)
+        property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter, comparer)
       );
     default:
       return true;
@@ -419,11 +419,11 @@ function getSelectorType(property: UsePropertiesSelectorProperty): UseProperties
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
-    if (property.selector_type === "RadioGroup") {
+    if (property.selectorType === "RadioGroup") {
       return "RadioGroup";
-    } else if (property.selector_type === "Checkbox") {
+    } else if (property.selectorType === "Checkbox") {
       return "Checkbox";
-    } else if (property.value.some((i) => i.image !== undefined)) {
+    } else if (property.valueItems.some((i) => i.image !== undefined)) {
       return "ImageComboBox";
     } else {
       return "ComboBox";
@@ -506,7 +506,7 @@ function getSingleValidValueOrUndefined(
 ): UsePropertiesSelectorPropertyValueItem | undefined {
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: Array<UsePropertiesSelectorPropertyValueItem> = [];
-    for (const productValueItem of productProperty.value) {
+    for (const productValueItem of productProperty.valueItems) {
       const isValid = PropertyFilter.isValid(properties, productValueItem.validationFilter, comparer);
 
       if (isValid) {
