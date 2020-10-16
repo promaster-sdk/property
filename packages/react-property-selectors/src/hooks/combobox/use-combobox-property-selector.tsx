@@ -1,7 +1,7 @@
 import React from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { getSelectableOptions, getSelectedOption } from "./option";
+import { getSelectableOptions } from "./option";
 
 export type UseComboboxPropertySelector = {
   readonly isSelectedItemValid: boolean;
@@ -42,8 +42,7 @@ export function useComboboxPropertySelector(
 ): UseComboboxPropertySelector {
   const { onValueChange, readOnly, locked } = hookOptions;
 
-  const originallySelectableOptions = getSelectableOptions(hookOptions);
-  const [selectedOption, selectableOptions] = getSelectedOption(hookOptions, originallySelectableOptions);
+  const [selectedOption, selectableOptions] = getSelectableOptions(hookOptions);
 
   return {
     isSelectedItemValid: selectedOption.isItemValid,

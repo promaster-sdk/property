@@ -65,7 +65,7 @@ export function getSelectableOptions({
   showCodes,
   filterPrettyPrint,
   comparer,
-}: GetOptionsParams): ReadonlyArray<Option> {
+}: GetOptionsParams): [Option, ReadonlyArray<Option>] {
   if (!valueItems) {
     valueItems = [];
   }
@@ -94,10 +94,13 @@ export function getSelectableOptions({
       }
       return 0;
     });
-  return options;
+  return getSelectedOption(
+    { propertyName, propertyValueSet, valueItems, showCodes, filterPrettyPrint, comparer },
+    options
+  );
 }
 
-export function getSelectedOption(
+function getSelectedOption(
   { propertyName, propertyValueSet, valueItems, showCodes, filterPrettyPrint, comparer }: GetSelectedOptionParams,
   options: ReadonlyArray<Option>
 ): [Option, ReadonlyArray<Option>] {

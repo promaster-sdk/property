@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { getSelectableOptions, getSelectedOption } from "./option";
+import { getSelectableOptions } from "./option";
 
 export type UseImageComboboxPropertySelector = {
   readonly label: string;
@@ -48,8 +48,7 @@ export function useImageComboboxPropertySelector(
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const originallySelectableOptions = getSelectableOptions(hookOptions);
-  const [selectedOption, selectableOptions] = getSelectedOption(hookOptions, originallySelectableOptions);
+  const [selectedOption, selectableOptions] = getSelectableOptions(hookOptions);
 
   return {
     label: selectedOption.label,
