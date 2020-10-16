@@ -9,6 +9,7 @@ import {
   getDefaultCheckboxContainerStyle,
   getDefaultCheckboxStyle,
   getDefaultListItemStyle,
+  getDefaultListItemStyle2,
   getDefaultMenuStyle,
   getDefaultOptionStyle,
   getDefaultOptionStyle2,
@@ -16,6 +17,7 @@ import {
   getDefaultSelectStyle,
   getDefaultSelectStyle2,
   getDefaultToggleButtonStyle,
+  getDefaultToggleButtonStyle2,
   useAmountPropertySelector,
   UseAmountPropertySelectorOptions,
   useCheckboxPropertySelector,
@@ -133,6 +135,7 @@ function MyDiscreteSelector(props: DiscretePropertySelectorOptions): JSX.Element
   const sel = useDiscretePropertySelector(props);
   if (sel.hasOptionImage) {
     //
+    return <MyDiscreteImageComboboxSelector {...sel} />;
   }
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
@@ -147,10 +150,10 @@ function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Ele
   // const sel = useImageComboboxPropertySelector(props);
   return (
     <div style={{ userSelect: "none" }}>
-      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle(sel)}>
+      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle2(sel)}>
         <span>
           {sel.imageUrl && <img src={sel.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-          {" " + sel.label + " "}
+          {" " + sel.getItemLabel(sel.selectedItem) + " "}
         </span>
         <i className="fa fa-caret-down" />
       </button>
@@ -158,10 +161,10 @@ function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Ele
       {sel.isOpen && (
         <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
           {sel.items.map((o) => (
-            <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
+            <li {...sel.getListItemProps(o)} style={getDefaultListItemStyle2(sel, o)}>
               <span>
-                {o.imageUrl && <img src={o.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-                {" " + o.label + " "}
+                {o.image && <img src={o.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+                {" " + sel.getItemLabel(o) + " "}
               </span>
             </li>
           ))}

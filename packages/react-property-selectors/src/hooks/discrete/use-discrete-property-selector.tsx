@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
@@ -26,12 +26,16 @@ export type DiscretePropertySelector = {
   readonly selectedItem: DiscreteItem;
   readonly disabled: boolean;
   readonly hasOptionImage: boolean;
+  readonly isOpen: boolean;
+  readonly imageUrl?: string;
   readonly items: ReadonlyArray<DiscreteItem>;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly getListItemProps: (item: DiscreteItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getItemLabel: (item: DiscreteItem) => string;
   readonly getItemToolTip: (item: DiscreteItem) => string;
   readonly getItemValue: (item: DiscreteItem) => string;
   readonly getOptionProps: (item: DiscreteItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
+  readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly isItemValid: (item: DiscreteItem) => boolean;
 };
 
@@ -56,6 +60,8 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
     comparer
   );
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const getItemToolTip = (item: DiscreteItem): string => {
     const isItemValid = isValueItemValid(propertyName, propertyValueSet, item, comparer);
     return isItemValid ? "" : filterPrettyPrint(item.validationFilter);
@@ -68,19 +74,41 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
     getItemLabel: (item) => getItemLabel(item, showCodes),
     getItemValue: (item) => getItemValue(item),
     getItemToolTip,
+    isOpen,
     isItemValid: (item) => isValueItemValid(propertyName, propertyValueSet, item, comparer),
+    getToggleButtonProps: () => ({
+      disabled,
+      title: getItemToolTip(selectedItem),
+      onClick: () => setIsOpen(!isOpen),
+    }),
+    getListItemProps: (item) => ({
+      key: getItemValue(item),
+      value: getItemValue(item),
+      label: getItemLabel(item, showCodes),
+      image: item.image,
+      title: getItemToolTip(item),
+      onClick: () => {
+        _doOnChange(getItemValue(item), onValueChange);
+        setIsOpen(false);
+      },
+    }),
+
     getSelectProps: () => ({
       disabled,
       value: getItemValue(selectedItem),
       title: getItemToolTip(selectedItem),
       onChange: (event) => {
-        const newValue = event.currentTarget.value;
-        if (newValue === undefined || newValue === null) {
-          onValueChange(undefined);
-        } else {
-          onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
-        }
+        _doOnChange(event.currentTarget.value, onValueChange);
+        setIsOpen(false);
       },
+      // onChange: (event) => {
+      //   const newValue = event.currentTarget.value;
+      //   if (newValue === undefined || newValue === null) {
+      //     onValueChange(undefined);
+      //   } else {
+      //     onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
+      //   }
+      // },
     }),
     getOptionProps: (item) => {
       return {
@@ -206,4 +234,89 @@ export function getDefaultSelectStyle2(o: DiscretePropertySelector): {} {
     };
   }
   return { ...always };
+}
+
+export function getDefaultToggleButtonStyle2(selector: DiscretePropertySelector): {} {
+  return {
+    width: "162px",
+    alignItems: "center",
+    background: "white",
+    color: "black",
+    height: "30px",
+    whiteSpace: "nowrap",
+    border: "1px solid #b4b4b4",
+    borderRadius: "3px",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px",
+    padding: "1px 5px 0px 14px",
+    textAlign: "right",
+
+    ...buttonElementStyles2({
+      isSelectedItemValid: selector.isItemValid(selector.selectedItem),
+      locked: selector.disabled,
+    }),
+  };
+}
+
+export function getDefaultMenuStyle2(): {} {
+  return {
+    position: "absolute",
+    display: "block",
+    background: "white",
+    border: "1px solid #bbb",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    zIndex: 100,
+  };
+}
+
+export function getDefaultListItemStyle2(sel: DiscretePropertySelector, o: DiscreteItem): {} {
+  return {
+    color: sel.isItemValid(o) === false ? "color: red" : "rgb(131, 131, 131)",
+    minHeight: "18px",
+    alignSelf: "center",
+    border: "0px none rgb(131, 131, 131)",
+    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
+    outline: "rgb(131, 131, 131) none 0px",
+    padding: "0.2em 0.5em",
+    cursor: "default",
+  };
+}
+
+function buttonElementStyles2({
+  isSelectedItemValid,
+  locked,
+}: {
+  readonly isSelectedItemValid?: boolean;
+  readonly locked: boolean;
+}): {} {
+  if (isSelectedItemValid === false && locked) {
+    return {
+      background: "lightgray",
+      color: "red",
+      border: "none",
+    };
+  } else if (isSelectedItemValid === false) {
+    return { color: "red" };
+  } else if (locked) {
+    return {
+      background: "lightgray",
+      color: "darkgray",
+      border: "none",
+    };
+  }
+
+  return {};
+}
+
+function _doOnChange(
+  newValue: string,
+  onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void
+): void {
+  if (newValue === undefined || newValue === null) {
+    onValueChange(undefined);
+  } else {
+    onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
+  }
 }
