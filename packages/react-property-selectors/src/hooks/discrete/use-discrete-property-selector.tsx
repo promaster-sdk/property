@@ -50,15 +50,14 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
       disabled,
       value: selectedOption.value,
       title: selectedOption.toolTip,
-      onChange: (event) => _doOnChange(event.currentTarget.value, onValueChange),
-      // onChange: () => {
-      //   const newValue = selectedOption!.value;
-      //   if (newValue === undefined || newValue === null) {
-      //     onValueChange(undefined);
-      //   } else {
-      //     onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
-      //   }
-      // },
+      onChange: (event) => {
+        const newValue = event.currentTarget.value;
+        if (newValue === undefined || newValue === null) {
+          onValueChange(undefined);
+        } else {
+          onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
+        }
+      },
     }),
     items: selectableOptions.map((o) => ({
       label: o.label,
@@ -72,17 +71,6 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
       }),
     })),
   };
-}
-
-function _doOnChange(
-  newValue: string,
-  onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void
-): void {
-  if (newValue === undefined || newValue === null) {
-    onValueChange(undefined);
-  } else {
-    onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
-  }
 }
 
 export function getDefaultOptionStyle2(o: DiscretePropertySelectorItem): {} {
