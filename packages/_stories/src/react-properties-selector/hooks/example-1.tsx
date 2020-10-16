@@ -3,6 +3,7 @@ import { BaseUnits, Unit } from "uom";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
 import {
+  DiscretePropertySelector,
   DiscretePropertySelectorOptions,
   getDefaultAmountInputBoxStyle,
   getDefaultCheckboxContainerStyle,
@@ -130,12 +131,43 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 
 function MyDiscreteSelector(props: DiscretePropertySelectorOptions): JSX.Element {
   const sel = useDiscretePropertySelector(props);
+  if (sel.hasOptionImage) {
+    //
+  }
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
       {sel.items.map((o) => (
         <option {...sel.getOptionProps(o)} style={getDefaultOptionStyle2(sel, o)} />
       ))}
     </select>
+  );
+}
+
+function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
+  // const sel = useImageComboboxPropertySelector(props);
+  return (
+    <div style={{ userSelect: "none" }}>
+      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle(sel)}>
+        <span>
+          {sel.imageUrl && <img src={sel.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+          {" " + sel.label + " "}
+        </span>
+        <i className="fa fa-caret-down" />
+      </button>
+      {/* optionsList */}
+      {sel.isOpen && (
+        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
+          {sel.items.map((o) => (
+            <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
+              <span>
+                {o.imageUrl && <img src={o.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+                {" " + o.label + " "}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
