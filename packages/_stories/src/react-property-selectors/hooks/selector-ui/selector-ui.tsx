@@ -17,6 +17,7 @@ import {
   useTextboxPropertySelector,
   UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
+import { MyItem } from "./example-product-properties";
 
 export type SelectorTypes = { readonly [propertyName: string]: string };
 
@@ -25,7 +26,7 @@ export function MyDiscreteSelector({
   options,
 }: {
   readonly selctorTypes: SelectorTypes;
-  readonly options: DiscretePropertySelectorOptions;
+  readonly options: DiscretePropertySelectorOptions<MyItem>;
 }): JSX.Element {
   const sel = useDiscretePropertySelector(options);
   switch (selctorTypes[options.propertyName]) {
@@ -34,14 +35,14 @@ export function MyDiscreteSelector({
     case "Checkbox":
       return <MyDiscreteCheckboxSelector {...sel} />;
     default:
-      if (sel.hasOptionImage) {
+      if (sel.items.some((o) => o.image !== undefined)) {
         return <MyDiscreteImageComboboxSelector {...sel} />;
       }
       return <MyDiscreteComboboxSelector {...sel} />;
   }
 }
 
-export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector): JSX.Element {
+export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
     <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle2()}>
       {sel.selectedItem.image && <img src={sel.selectedItem.image} />}
@@ -51,7 +52,7 @@ export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector): JSX.E
   );
 }
 
-export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector): JSX.Element {
+export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
     <div>
       {sel.items
@@ -80,7 +81,7 @@ export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.E
   );
 }
 
-export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
+export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
     <div style={{ userSelect: "none" }}>
       <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle2(sel)}>

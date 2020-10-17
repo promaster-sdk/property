@@ -22,7 +22,8 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
   const [myState, setMyState] = useState(PropertyValueSet.fromString("a=1;b=2", unitLookup));
 
-  const valueItems1: ReadonlyArray<DiscreteItem> = [
+  type MyItem = DiscreteItem & { image?: string };
+  const valueItems1: ReadonlyArray<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,
@@ -37,7 +38,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     },
   ];
 
-  const valueItems2: Array<DiscreteItem> = [
+  const valueItems2: Array<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,

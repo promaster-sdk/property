@@ -1,4 +1,4 @@
-import { UsePropertiesSelectorProperty } from "@promaster-sdk/react-property-selectors";
+import { DiscreteItem, UsePropertiesSelectorProperty } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { BaseUnits, Unit } from "uom";
 
@@ -6,9 +6,11 @@ const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[
 
 export type SelectorTypes = { readonly [propertyName: string]: string };
 
+export type MyItem = DiscreteItem & { readonly image?: string };
+
 export function exampleProductProperties(): {
   selectorTypes: SelectorTypes;
-  properties: ReadonlyArray<UsePropertiesSelectorProperty>;
+  properties: ReadonlyArray<UsePropertiesSelectorProperty<MyItem>>;
 } {
   return {
     selectorTypes: {

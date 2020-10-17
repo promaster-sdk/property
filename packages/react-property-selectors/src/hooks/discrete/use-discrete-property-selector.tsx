@@ -22,14 +22,14 @@ export type DiscreteItem = {
   readonly value: PropertyValue.PropertyValue | undefined | null;
   readonly sortNo: number;
   readonly text: string;
-  readonly image?: string;
+  // readonly image?: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
 export type DiscretePropertySelector<TItem extends DiscreteItem = DiscreteItem> = {
   readonly selectedItem: TItem;
   readonly disabled: boolean;
-  readonly hasOptionImage: boolean;
+  // readonly hasOptionImage: boolean;
   readonly isOpen: boolean;
   readonly items: ReadonlyArray<TItem>;
   readonly isTrueItem: boolean;
@@ -47,7 +47,7 @@ export type DiscretePropertySelector<TItem extends DiscreteItem = DiscreteItem> 
 
 export function useDiscretePropertySelector<TItem extends DiscreteItem = DiscreteItem>(
   hookOptionsLoose: DiscretePropertySelectorOptions<TItem>
-): DiscretePropertySelector {
+): DiscretePropertySelector<TItem> {
   const hookOptions: Required<DiscretePropertySelectorOptions<TItem>> = fillOptionsWithDefualts(hookOptionsLoose);
 
   const {
@@ -82,7 +82,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem = Discret
   return {
     selectedItem,
     disabled,
-    hasOptionImage: selectableItems.some((o) => o.image !== undefined),
+    // hasOptionImage: selectableItems.some((o) => o.image !== undefined),
     getItemLabel: (item) => getItemLabel(item, showCodes),
     getItemValue: (item) => getItemValue(item),
     getItemToolTip: (item) => getItemToolTip(hookOptions, item),
@@ -98,7 +98,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem = Discret
       key: getItemValue(item),
       value: getItemValue(item),
       label: getItemLabel(item, showCodes),
-      image: item.image,
+      // image: item.image,
       title: getItemToolTip(hookOptions, item),
       onClick: () => {
         _doOnChange(getItemValue(item), onValueChange);
@@ -119,7 +119,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem = Discret
         key: getItemValue(item),
         value: getItemValue(item),
         label: getItemLabel(item, showCodes),
-        image: item.image,
+        // image: item.image,
         title: getItemToolTip(hookOptions, item),
       };
     },

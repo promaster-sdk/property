@@ -61,7 +61,7 @@ export type UsePropertiesSelectorOptions = {
   readonly sortValidFirst?: boolean;
 };
 
-export type UsePropertiesSelectorProperty = {
+export type UsePropertiesSelectorProperty<TItem extends DiscreteItem = DiscreteItem> = {
   readonly fieldName?: string;
   readonly sortNo: number;
   readonly name: string;
@@ -69,7 +69,7 @@ export type UsePropertiesSelectorProperty = {
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
-  readonly valueItems: ReadonlyArray<DiscreteItem>;
+  readonly valueItems: ReadonlyArray<TItem>;
 };
 
 export type UsePropertiesSelectorAmountFormat = {
@@ -347,7 +347,9 @@ function getIsValid(
   }
 }
 
-function getSelectorType(property: UsePropertiesSelectorProperty): UsePropertiesSelectorPropertySelectorType {
+function getSelectorType(
+  property: UsePropertiesSelectorProperty<DiscreteItem>
+): UsePropertiesSelectorPropertySelectorType {
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
@@ -370,7 +372,7 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
 
 function shouldBeLocked(
   selectedValueItem: DiscreteItem | undefined,
-  productProperty: UsePropertiesSelectorProperty,
+  productProperty: UsePropertiesSelectorProperty<DiscreteItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
 ): boolean {
@@ -385,9 +387,9 @@ function shouldBeLocked(
   return false;
 }
 
-function handleChange(
+function handleChange<TItem extends DiscreteItem>(
   externalOnChange: UsePropertiesSelectorOnPropertiesChanged,
-  productProperties: ReadonlyArray<UsePropertiesSelectorProperty>,
+  productProperties: ReadonlyArray<UsePropertiesSelectorProperty<TItem>>,
   autoSelectSingleValidValue: boolean,
   comparer: PropertyValue.Comparer
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
@@ -423,8 +425,8 @@ function handleChange(
   };
 }
 
-function getSingleValidValueOrUndefined(
-  productProperty: UsePropertiesSelectorProperty,
+function getSingleValidValueOrUndefined<TItem extends DiscreteItem>(
+  productProperty: UsePropertiesSelectorProperty<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
 ): DiscreteItem | undefined {

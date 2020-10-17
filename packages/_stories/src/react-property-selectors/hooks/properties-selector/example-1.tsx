@@ -3,7 +3,7 @@ import { BaseUnits, Unit } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyValueSet } from "@promaster-sdk/property";
 import { usePropertiesSelector } from "@promaster-sdk/react-property-selectors";
-import { exampleProductProperties } from "./example-product-properties";
+import { exampleProductProperties } from "../selector-ui/example-product-properties";
 import { units, unitsFormat } from "./units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 
