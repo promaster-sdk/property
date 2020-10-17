@@ -33,7 +33,7 @@ import {
   UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
-import { exampleProductProperties } from "./example-product-properties";
+import { exampleProductProperties, SelectorTypes } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
@@ -42,13 +42,13 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   const [pvs, setPvs] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
   const [showCodes, setShowCodes] = useState(true);
 
-  const productProperties = exampleProductProperties();
+  const propInfo = exampleProductProperties();
 
   const sel = PropertiesSelector.usePropertiesSelector({
     units,
     unitsFormat,
     unitLookup,
-    productProperties: productProperties,
+    productProperties: propInfo.properties,
     selectedProperties: pvs,
     onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
       setPvs(properties);
@@ -109,7 +109,12 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                               case "ComboBox":
                                 return <MyComboboxSelector {...selector.getUseComboboxOptions()} />;
                               case "Discrete":
-                                return <MyDiscreteSelector {...selector.getUseDiscreteOptions()} />;
+                                return (
+                                  <MyDiscreteSelector
+                                    selctorTypes={propInfo.selectorTypes}
+                                    options={selector.getUseDiscreteOptions()}
+                                  />
+                                );
                               case "ImageComboBox":
                                 return <MyImageComboboxSelector {...selector.getUseImageComboboxOptions()} />;
                               case "AmountField":
@@ -131,12 +136,28 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   );
 }
 
-function MyDiscreteSelector(props: DiscretePropertySelectorOptions): JSX.Element {
-  const sel = useDiscretePropertySelector(props);
-  if (sel.hasOptionImage) {
-    //
-    return <MyDiscreteImageComboboxSelector {...sel} />;
+function MyDiscreteSelector({
+  selctorTypes,
+  options,
+}: {
+  readonly selctorTypes: SelectorTypes;
+  readonly options: DiscretePropertySelectorOptions;
+}): JSX.Element {
+  const sel = useDiscretePropertySelector(options);
+  switch (selctorTypes[options.propertyName]) {
+    case "RadioGroup":
+      return <div>RadioGroup</div>;
+    case "Checkbox":
+      return <div>Checkbox</div>;
+    default:
+      if (sel.hasOptionImage) {
+        return <MyDiscreteImageComboboxSelector {...sel} />;
+      }
+      return <MyDiscreteComboboxSelector {...sel} />;
   }
+}
+
+function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
       {sel.items.map((o) => (
@@ -147,12 +168,11 @@ function MyDiscreteSelector(props: DiscretePropertySelectorOptions): JSX.Element
 }
 
 function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
-  // const sel = useImageComboboxPropertySelector(props);
   return (
     <div style={{ userSelect: "none" }}>
       <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle2(sel)}>
         <span>
-          {sel.imageUrl && <img src={sel.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+          {sel.selectedItem.image && <img src={sel.selectedItem.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
           {" " + sel.getItemLabel(sel.selectedItem) + " "}
         </span>
         <i className="fa fa-caret-down" />

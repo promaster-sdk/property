@@ -27,7 +27,7 @@ export type DiscretePropertySelector = {
   readonly disabled: boolean;
   readonly hasOptionImage: boolean;
   readonly isOpen: boolean;
-  readonly imageUrl?: string;
+  // readonly imageUrl?: string;
   readonly items: ReadonlyArray<DiscreteItem>;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly getListItemProps: (item: DiscreteItem) => React.LiHTMLAttributes<HTMLLIElement>;
