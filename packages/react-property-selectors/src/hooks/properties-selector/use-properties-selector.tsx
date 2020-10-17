@@ -62,7 +62,6 @@ export type UsePropertiesSelectorOptions = {
 };
 
 export type UsePropertiesSelectorProperty = {
-  readonly selectorType?: UsePropertiesSelectorPropertySelectorType;
   readonly fieldName?: string;
   readonly sortNo: number;
   readonly name: string;
