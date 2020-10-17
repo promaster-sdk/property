@@ -15,6 +15,9 @@ export type UsePropertiesSelectorOptions<TItem extends DiscreteItem> = {
   // Used to print error messages
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
 
+  // Get an item that corresponds to a property value of undefined
+  readonly getUndefinedValueItem: () => TItem;
+
   // Includes the raw property name and value in paranthesis
   readonly showCodes?: boolean;
   // Will render properties that according to their rule should be hidden
@@ -77,14 +80,14 @@ export type UsePropertiesSelectorAmountFormat = {
   readonly decimalCount: number;
 };
 
-export type UsePropertiesSelector = {
-  readonly groups: ReadonlyArray<UsePropertiesSelectorGroup>;
+export type UsePropertiesSelector<TItem extends DiscreteItem> = {
+  readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TItem>>;
 };
 
-export type UsePropertiesSelectorGroup = {
+export type UsePropertiesSelectorGroup<TItem extends DiscreteItem> = {
   readonly name: string;
   readonly isClosed: boolean;
-  readonly selectors: ReadonlyArray<SelectorRenderInfo>;
+  readonly selectors: ReadonlyArray<SelectorRenderInfo<TItem>>;
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
@@ -107,14 +110,14 @@ type SelectorRenderInfoBaseInternal = SelectorRenderInfoBase & {
   readonly groupName: string;
 };
 
-type SelectorRenderInfoInternal = SelectorRenderInfo & {
+type SelectorRenderInfoInternal<TItem extends DiscreteItem> = SelectorRenderInfo<TItem> & {
   readonly groupName: string;
 };
 
-export type SelectorRenderInfo =
+export type SelectorRenderInfo<TItem extends DiscreteItem> =
   | ({
       readonly type: "Discrete";
-      readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions;
+      readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TItem>;
     } & SelectorRenderInfoBase)
   | ({
       readonly type: "AmountField";
@@ -125,11 +128,11 @@ export type SelectorRenderInfo =
       readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
     } & SelectorRenderInfoBase);
 
-export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
+export type UsePropertiesSelectorPropertySelectorType<TItem extends DiscreteItem> = SelectorRenderInfo<TItem>["type"];
 
 export function usePropertiesSelector<TItem extends DiscreteItem>(
   options: UsePropertiesSelectorOptions<TItem>
-): UsePropertiesSelector {
+): UsePropertiesSelector<TItem> {
   const requiredOptions = optionsWithDefaults(options);
 
   const { productProperties, selectedProperties, includeHiddenProperties, comparer } = requiredOptions;
@@ -138,7 +141,7 @@ export function usePropertiesSelector<TItem extends DiscreteItem>(
     .slice()
     .sort((a, b) => (a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0));
 
-  const allSelectors: ReadonlyArray<SelectorRenderInfoInternal> = sortedArray
+  const allSelectors: ReadonlyArray<SelectorRenderInfoInternal<TItem>> = sortedArray
     .filter(
       (property) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter, comparer)
@@ -169,7 +172,7 @@ export function usePropertiesSelector<TItem extends DiscreteItem>(
 function createSelector<TItem extends DiscreteItem>(
   property: UsePropertiesSelectorProperty<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem>>
-): SelectorRenderInfoInternal {
+): SelectorRenderInfoInternal<TItem> {
   const {
     selectedProperties,
     propertyFormats,
@@ -190,6 +193,7 @@ function createSelector<TItem extends DiscreteItem>(
     lockSingleValidValue,
     readOnlyProperties,
     sortValidFirst,
+    getUndefinedValueItem,
   } = params;
 
   const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
@@ -286,12 +290,7 @@ function createSelector<TItem extends DiscreteItem>(
         ...myBase,
         type: "Discrete",
         getUseDiscreteOptions: () => ({
-          getUndefinedValueItem: () => ({
-            value: undefined,
-            sortNo: -1,
-            text: "",
-            validationFilter: PropertyFilter.Empty,
-          }),
+          getUndefinedValueItem,
           sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
@@ -349,9 +348,9 @@ function getIsValid<TItem extends DiscreteItem>(
   }
 }
 
-function getSelectorType(
-  property: UsePropertiesSelectorProperty<DiscreteItem>
-): UsePropertiesSelectorPropertySelectorType {
+function getSelectorType<TItem extends DiscreteItem>(
+  property: UsePropertiesSelectorProperty<TItem>
+): UsePropertiesSelectorPropertySelectorType<TItem> {
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
@@ -448,8 +447,8 @@ function getSingleValidValueOrUndefined<TItem extends DiscreteItem>(
   return undefined;
 }
 
-function getDistinctGroupNames(
-  productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal>
+function getDistinctGroupNames<TItem extends DiscreteItem>(
+  productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal<TItem>>
 ): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const property of productPropertiesArray) {
@@ -511,6 +510,7 @@ function optionsWithDefaults<TItem extends DiscreteItem>(
     unitLookup,
     comparer = PropertyValue.defaultComparer,
     sortValidFirst = false,
+    getUndefinedValueItem,
   } = params;
 
   return {
@@ -536,5 +536,6 @@ function optionsWithDefaults<TItem extends DiscreteItem>(
     unitLookup,
     comparer,
     sortValidFirst,
+    getUndefinedValueItem,
   };
 }

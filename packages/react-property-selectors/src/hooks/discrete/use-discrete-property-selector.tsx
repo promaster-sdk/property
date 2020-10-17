@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
-export type DiscretePropertySelectorOptions<TItem extends DiscreteItem = DiscreteItem> = {
+export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly valueItems: ReadonlyArray<TItem>;
@@ -180,7 +180,10 @@ function getSelectableItems<TItem extends DiscreteItem>(
   return [selectedValueItem, sortedItems];
 }
 
-function getItemToolTip(options: Required<DiscretePropertySelectorOptions>, item: DiscreteItem): string {
+function getItemToolTip<TItem extends DiscreteItem>(
+  options: Required<DiscretePropertySelectorOptions<TItem>>,
+  item: TItem
+): string {
   const isItemValid = isValueItemValid(options.propertyName, options.propertyValueSet, item, options.comparer);
   return isItemValid ? "" : options.filterPrettyPrint(item.validationFilter);
 }
