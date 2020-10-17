@@ -74,7 +74,6 @@ export function useDiscretePropertySelector(
   const falseItem = valueItems[falseItemIndex];
   const trueItem = valueItems[trueItemIndex];
   const isTrueItem = selectedItem === trueItem;
-  const nextValue = isTrueItem ? falseItem.value!! : trueItem.value!!;
 
   return {
     selectedItem,
@@ -125,7 +124,7 @@ export function useDiscretePropertySelector(
       onClick: () => _doOnChange(getItemValue(item), onValueChange),
     }),
     getCheckboxDivProps: () => ({
-      onClick: () => onValueChange(nextValue),
+      onClick: () => onValueChange(isTrueItem ? falseItem.value!! : trueItem.value!!),
     }),
 
     items: selectableItems,
