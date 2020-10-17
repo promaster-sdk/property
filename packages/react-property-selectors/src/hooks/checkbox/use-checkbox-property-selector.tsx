@@ -25,51 +25,32 @@ export interface UseCheckboxPropertyValueItem {
 export type UseCheckboxPropertySelector = {
   readonly label: string;
   readonly image?: string;
-  readonly locked: boolean;
   readonly checked: boolean;
   readonly getContainerDivProps: () => React.HTMLAttributes<HTMLDivElement>;
   readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
-};
-
-const errorSelector = {
-  label: "ERROR: Not a boolean property",
-  getContainerDivProps: () => ({}),
-  getCheckboxDivProps: () => ({}),
-  locked: false,
-  checked: false,
 };
 
 export function useCheckboxPropertySelector({
   propertyName,
   propertyValueSet,
   valueItems,
-  locked,
   onValueChange,
   showCodes,
   comparer,
 }: UseCheckboxPropertySelectorOptions): UseCheckboxPropertySelector {
   const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
 
-  if (!valueItems || valueItems.length !== 2) {
-    return errorSelector;
-  }
   const falseValue = valueItems[0];
   const trueValue = valueItems[1];
-  if (!falseValue.value || !trueValue.value) {
-    return errorSelector;
-  }
 
-  const checked = PropertyValue.equals(trueValue.value, value, comparer);
-  const nextValue = checked ? falseValue.value : trueValue.value;
+  const checked = (trueValue.value && PropertyValue.equals(trueValue.value, value, comparer)) || false;
+  const nextValue = checked ? falseValue.value!! : trueValue.value!!;
 
   return {
     label: _getItemLabel(trueValue, showCodes),
     image: trueValue.image,
-    locked,
     checked,
     getContainerDivProps: () => ({
-      locked: locked,
-      checked: checked,
       onClick: () => onValueChange(nextValue),
     }),
     getCheckboxDivProps: () => ({}),
