@@ -61,7 +61,7 @@ export type UsePropertiesSelectorOptions<TItem extends DiscreteItem> = {
   readonly sortValidFirst?: boolean;
 };
 
-export type UsePropertiesSelectorProperty<TItem extends DiscreteItem = DiscreteItem> = {
+export type UsePropertiesSelectorProperty<TItem extends DiscreteItem> = {
   readonly fieldName?: string;
   readonly sortNo: number;
   readonly name: string;
@@ -140,7 +140,7 @@ export function usePropertiesSelector<TItem extends DiscreteItem>(
 
   const allSelectors: ReadonlyArray<SelectorRenderInfoInternal> = sortedArray
     .filter(
-      (property: UsePropertiesSelectorProperty) =>
+      (property) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter, comparer)
     )
     .map((p) => createSelector(p, requiredOptions));
@@ -167,7 +167,7 @@ export function usePropertiesSelector<TItem extends DiscreteItem>(
 }
 
 function createSelector<TItem extends DiscreteItem>(
-  property: UsePropertiesSelectorProperty,
+  property: UsePropertiesSelectorProperty<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem>>
 ): SelectorRenderInfoInternal {
   const {
@@ -307,8 +307,8 @@ function createSelector<TItem extends DiscreteItem>(
   }
 }
 
-function getDefaultFormat(
-  property: UsePropertiesSelectorProperty,
+function getDefaultFormat<TItem extends DiscreteItem>(
+  property: UsePropertiesSelectorProperty<TItem>,
   selectedValue: PropertyValue.PropertyValue
 ): UsePropertiesSelectorAmountFormat {
   const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
@@ -329,8 +329,8 @@ function getDefaultFormat(
   }
 }
 
-function getIsValid(
-  property: UsePropertiesSelectorProperty,
+function getIsValid<TItem extends DiscreteItem>(
+  property: UsePropertiesSelectorProperty<TItem>,
   selectedValueItem: DiscreteItem | undefined,
   selectedProperties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
