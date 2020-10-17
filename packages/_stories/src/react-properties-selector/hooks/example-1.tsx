@@ -248,10 +248,10 @@ function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.Element 
 function MyCheckboxSelector(props: UseCheckboxPropertySelectorOptions): JSX.Element {
   const sel = useCheckboxPropertySelector(props);
   return (
-    <div {...sel.getContainerDivProps()} style={getDefaultCheckboxContainerStyle()}>
+    <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle()}>
       {sel.image && <img src={sel.image} />}
       <div>{sel.label}</div>
-      <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxStyle(sel)} />
+      <div style={getDefaultCheckboxStyle(sel)} />
     </div>
   );
 }

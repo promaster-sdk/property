@@ -46,10 +46,10 @@ export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
       <div>CheckboxPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(myState)}</div>
       <div>
-        <div {...selA.getContainerDivProps()} style={getDefaultCheckboxContainerStyle()}>
+        <div {...selA.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle()}>
           {selA.image && <img src={selA.image} />}
           <div>{selA.label}</div>
-          <div {...selA.getCheckboxDivProps()} style={getDefaultCheckboxStyle(selA)} />
+          <div style={getDefaultCheckboxStyle(selA)} />
         </div>
       </div>
     </div>

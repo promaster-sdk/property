@@ -26,7 +26,7 @@ export type UseCheckboxPropertySelector = {
   readonly label: string;
   readonly image?: string;
   readonly checked: boolean;
-  readonly getContainerDivProps: () => React.HTMLAttributes<HTMLDivElement>;
+  // readonly getContainerDivProps: () => React.HTMLAttributes<HTMLDivElement>;
   readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
 };
 
@@ -50,10 +50,10 @@ export function useCheckboxPropertySelector({
     label: _getItemLabel(trueValue, showCodes),
     image: trueValue.image,
     checked,
-    getContainerDivProps: () => ({
+    getCheckboxDivProps: () => ({
       onClick: () => onValueChange(nextValue),
     }),
-    getCheckboxDivProps: () => ({}),
+    // getCheckboxDivProps: () => ({}),
   };
 }
 
