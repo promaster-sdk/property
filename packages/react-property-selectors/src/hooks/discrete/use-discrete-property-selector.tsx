@@ -38,14 +38,17 @@ export type DiscretePropertySelector = {
   readonly isItemValid: (item: DiscreteItem) => boolean;
 };
 
-export function useDiscretePropertySelector(hookOptions: DiscretePropertySelectorOptions): DiscretePropertySelector {
+export function useDiscretePropertySelector(
+  hookOptionsLoose: DiscretePropertySelectorOptions
+): DiscretePropertySelector {
+  const hookOptions: Required<DiscretePropertySelectorOptions> = fillOptionsWithDefualts(hookOptionsLoose);
+
   const {
     propertyValueSet,
     propertyName,
     onValueChange,
     disabled,
-    comparer = PropertyValue.defaultComparer,
-    filterPrettyPrint,
+    comparer,
     showCodes,
     valueItems,
     sortValidFirst,
@@ -61,23 +64,18 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const getItemToolTip = (item: DiscreteItem): string => {
-    const isItemValid = isValueItemValid(propertyName, propertyValueSet, item, comparer);
-    return isItemValid ? "" : filterPrettyPrint(item.validationFilter);
-  };
-
   return {
     selectedItem,
     disabled,
     hasOptionImage: selectableItems.some((o) => o.image !== undefined),
     getItemLabel: (item) => getItemLabel(item, showCodes),
     getItemValue: (item) => getItemValue(item),
-    getItemToolTip,
+    getItemToolTip: (item) => getItemToolTip(hookOptions, item),
     isOpen,
     isItemValid: (item) => isValueItemValid(propertyName, propertyValueSet, item, comparer),
     getToggleButtonProps: () => ({
       disabled,
-      title: getItemToolTip(selectedItem),
+      title: getItemToolTip(hookOptions, selectedItem),
       onClick: () => setIsOpen(!isOpen),
     }),
     getListItemProps: (item) => ({
@@ -85,29 +83,20 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
       value: getItemValue(item),
       label: getItemLabel(item, showCodes),
       image: item.image,
-      title: getItemToolTip(item),
+      title: getItemToolTip(hookOptions, item),
       onClick: () => {
         _doOnChange(getItemValue(item), onValueChange);
         setIsOpen(false);
       },
     }),
-
     getSelectProps: () => ({
       disabled,
       value: getItemValue(selectedItem),
-      title: getItemToolTip(selectedItem),
+      title: getItemToolTip(hookOptions, selectedItem),
       onChange: (event) => {
         _doOnChange(event.currentTarget.value, onValueChange);
         setIsOpen(false);
       },
-      // onChange: (event) => {
-      //   const newValue = event.currentTarget.value;
-      //   if (newValue === undefined || newValue === null) {
-      //     onValueChange(undefined);
-      //   } else {
-      //     onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
-      //   }
-      // },
     }),
     getOptionProps: (item) => {
       return {
@@ -115,14 +104,14 @@ export function useDiscretePropertySelector(hookOptions: DiscretePropertySelecto
         value: getItemValue(item),
         label: getItemLabel(item, showCodes),
         image: item.image,
-        title: getItemToolTip(item),
+        title: getItemToolTip(hookOptions, item),
       };
     },
     items: selectableItems,
   };
 }
 
-export function getSelectableItems(
+function getSelectableItems(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
   valueItems: ReadonlyArray<DiscreteItem>,
@@ -165,6 +154,11 @@ export function getSelectableItems(
   return [selectedValueItem, sortedItems];
 }
 
+function getItemToolTip(options: Required<DiscretePropertySelectorOptions>, item: DiscreteItem): string {
+  const isItemValid = isValueItemValid(options.propertyName, options.propertyValueSet, item, options.comparer);
+  return isItemValid ? "" : options.filterPrettyPrint(item.validationFilter);
+}
+
 function getItemLabel(valueItem: DiscreteItem, showCodes: boolean): string {
   if (valueItem.value === undefined || valueItem.value === null) {
     return "";
@@ -192,123 +186,6 @@ function isValueItemValid(
   return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter, comparer);
 }
 
-export function getDefaultOptionStyle2(sel: DiscretePropertySelector, o: DiscreteItem): {} {
-  return {
-    color: sel.isItemValid(o) ? "rgb(131, 131, 131)" : "red",
-    minHeight: "18px",
-    alignSelf: "center",
-    border: "0px none rgb(131, 131, 131)",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px",
-  };
-}
-
-export function getDefaultSelectStyle2(o: DiscretePropertySelector): {} {
-  const always = {
-    color: "black",
-    height: "30px",
-    border: "1px solid #b4b4b4",
-    borderRadius: "3px",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px",
-    padding: "1px 30px 0px 10px",
-  };
-
-  const isSelectedItemValid = o.isItemValid(o.selectedItem);
-  if (!isSelectedItemValid && o.disabled) {
-    return {
-      ...always,
-      background: "lightgray",
-      color: "red",
-      border: "none",
-    };
-  } else if (!isSelectedItemValid) {
-    return { ...always, color: "red" };
-  } else if (o.disabled) {
-    return {
-      ...always,
-      background: "lightgray",
-      color: "darkgray",
-      border: "none",
-    };
-  }
-  return { ...always };
-}
-
-export function getDefaultToggleButtonStyle2(selector: DiscretePropertySelector): {} {
-  return {
-    width: "162px",
-    alignItems: "center",
-    background: "white",
-    color: "black",
-    height: "30px",
-    whiteSpace: "nowrap",
-    border: "1px solid #b4b4b4",
-    borderRadius: "3px",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px",
-    padding: "1px 5px 0px 14px",
-    textAlign: "right",
-
-    ...buttonElementStyles2({
-      isSelectedItemValid: selector.isItemValid(selector.selectedItem),
-      locked: selector.disabled,
-    }),
-  };
-}
-
-export function getDefaultMenuStyle2(): {} {
-  return {
-    position: "absolute",
-    display: "block",
-    background: "white",
-    border: "1px solid #bbb",
-    listStyle: "none",
-    margin: 0,
-    padding: 0,
-    zIndex: 100,
-  };
-}
-
-export function getDefaultListItemStyle2(sel: DiscretePropertySelector, o: DiscreteItem): {} {
-  return {
-    color: sel.isItemValid(o) === false ? "color: red" : "rgb(131, 131, 131)",
-    minHeight: "18px",
-    alignSelf: "center",
-    border: "0px none rgb(131, 131, 131)",
-    font: "normal normal 300 normal 15px / 30px Helvetica, Arial, sans-serif",
-    outline: "rgb(131, 131, 131) none 0px",
-    padding: "0.2em 0.5em",
-    cursor: "default",
-  };
-}
-
-function buttonElementStyles2({
-  isSelectedItemValid,
-  locked,
-}: {
-  readonly isSelectedItemValid?: boolean;
-  readonly locked: boolean;
-}): {} {
-  if (isSelectedItemValid === false && locked) {
-    return {
-      background: "lightgray",
-      color: "red",
-      border: "none",
-    };
-  } else if (isSelectedItemValid === false) {
-    return { color: "red" };
-  } else if (locked) {
-    return {
-      background: "lightgray",
-      color: "darkgray",
-      border: "none",
-    };
-  }
-
-  return {};
-}
-
 function _doOnChange(
   newValue: string,
   onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void
@@ -318,4 +195,8 @@ function _doOnChange(
   } else {
     onValueChange(PropertyValue.create("integer", parseInt(newValue, 10)));
   }
+}
+
+function fillOptionsWithDefualts(options: DiscretePropertySelectorOptions): Required<DiscretePropertySelectorOptions> {
+  return { ...options, comparer: options.comparer || PropertyValue.defaultComparer };
 }
