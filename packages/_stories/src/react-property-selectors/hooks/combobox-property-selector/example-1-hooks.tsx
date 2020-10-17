@@ -5,7 +5,7 @@ import { DiscreteItem, useDiscretePropertySelector } from "@promaster-sdk/react-
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { unitsFormat, units } from "../../units-map";
-import { MyDiscreteComboboxSelector, MyDiscreteImageComboboxSelector } from "../../../hooks-selector-ui/selector-ui";
+import { MyDiscreteComboboxSelector, MyDiscreteImageComboboxSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
 import { CheckboxPropertyValueItem, useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
-import { MyDiscreteCheckboxSelector } from "../../../hooks-selector-ui/selector-ui";
+import { MyDiscreteCheckboxSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 

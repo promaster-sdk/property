@@ -5,7 +5,7 @@ import { PropertyValueSet } from "@promaster-sdk/property";
 import { usePropertiesSelector } from "@promaster-sdk/react-property-selectors";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
-import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../../hooks-selector-ui/selector-ui";
+import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 

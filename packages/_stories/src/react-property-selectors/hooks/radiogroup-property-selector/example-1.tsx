@@ -4,7 +4,7 @@ import { RadioGroupPropertyValueItem, useDiscretePropertySelector } from "@proma
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { unitsFormat, units } from "../../units-map";
-import { MyDiscreteRadioGroupSelector } from "../../../hooks-selector-ui/selector-ui";
+import { MyDiscreteRadioGroupSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
 
