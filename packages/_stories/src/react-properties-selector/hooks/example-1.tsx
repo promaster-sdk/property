@@ -6,32 +6,32 @@ import {
   DiscretePropertySelector,
   DiscretePropertySelectorOptions,
   getDefaultAmountInputBoxStyle,
-  getDefaultCheckboxContainerStyle,
+  // getDefaultCheckboxContainerStyle,
+  // getDefaultCheckboxStyle,
+  // getDefaultListItemStyle,
+  // getDefaultOptionStyle,
+  // getDefaultRadioItemStyle,
+  // getDefaultSelectStyle,
+  // getDefaultToggleButtonStyle,
   getDefaultCheckboxContainerStyle2,
-  getDefaultCheckboxStyle,
   getDefaultCheckboxStyle2,
-  getDefaultListItemStyle,
   getDefaultListItemStyle2,
   getDefaultMenuStyle,
-  getDefaultOptionStyle,
   getDefaultOptionStyle2,
-  getDefaultRadioItemStyle,
   getDefaultRadioItemStyle2,
-  getDefaultSelectStyle,
   getDefaultSelectStyle2,
-  getDefaultToggleButtonStyle,
   getDefaultToggleButtonStyle2,
   useAmountPropertySelector,
   UseAmountPropertySelectorOptions,
-  useCheckboxPropertySelector,
-  UseCheckboxPropertySelectorOptions,
-  useComboboxPropertySelector,
-  UseComboboxPropertySelectorOptions,
+  // useCheckboxPropertySelector,
+  // UseCheckboxPropertySelectorOptions,
+  // useComboboxPropertySelector,
+  // UseComboboxPropertySelectorOptions,
   useDiscretePropertySelector,
-  useImageComboboxPropertySelector,
-  UseImageComboboxPropertySelectorOptions,
-  useRadioGroupPropertySelector,
-  UseRadioGroupPropertySelectorOptions,
+  // useImageComboboxPropertySelector,
+  // UseImageComboboxPropertySelectorOptions,
+  // useRadioGroupPropertySelector,
+  // UseRadioGroupPropertySelectorOptions,
   useTextboxPropertySelector,
   UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
@@ -105,12 +105,14 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                             switch (selector.type) {
                               case "TextBox":
                                 return <MyTextboxSelector {...selector.getUseTextboxOptions()} />;
-                              case "RadioGroup":
-                                return <MyRadioGroupSelector {...selector.getUseRadioGroupOptions()} />;
-                              case "Checkbox":
-                                return <MyCheckboxSelector {...selector.getUseCheckboxOptions()} />;
-                              case "ComboBox":
-                                return <MyComboboxSelector {...selector.getUseComboboxOptions()} />;
+                              // case "RadioGroup":
+                              //   return <MyRadioGroupSelector {...selector.getUseRadioGroupOptions()} />;
+                              // case "Checkbox":
+                              //   return <MyCheckboxSelector {...selector.getUseCheckboxOptions()} />;
+                              // case "ComboBox":
+                              //   return <MyComboboxSelector {...selector.getUseComboboxOptions()} />;
+                              // case "ImageComboBox":
+                              //   return <MyImageComboboxSelector {...selector.getUseImageComboboxOptions()} />;
                               case "Discrete":
                                 return (
                                   <MyDiscreteSelector
@@ -118,8 +120,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                                     options={selector.getUseDiscreteOptions()}
                                   />
                                 );
-                              case "ImageComboBox":
-                                return <MyImageComboboxSelector {...selector.getUseImageComboboxOptions()} />;
                               case "AmountField":
                                 return <MyAmountSelector {...selector.getUseAmountOptions()} />;
                               default:
@@ -257,74 +257,74 @@ function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.Element 
   );
 }
 
-function MyCheckboxSelector(props: UseCheckboxPropertySelectorOptions): JSX.Element {
-  const sel = useCheckboxPropertySelector(props);
-  return (
-    <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle()}>
-      {sel.image && <img src={sel.image} />}
-      <div>{sel.label}</div>
-      <div style={getDefaultCheckboxStyle(sel)} />
-    </div>
-  );
-}
-
 function MyTextboxSelector(props: UseTextboxPropertySelectorOptions): JSX.Element {
   const sel = useTextboxPropertySelector(props);
   return <input {...sel.getInputProps()} />;
 }
 
-function MyComboboxSelector(props: UseComboboxPropertySelectorOptions): JSX.Element {
-  const sel = useComboboxPropertySelector(props);
-  return (
-    <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
-      {sel.options.map((o) => (
-        <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
-      ))}
-    </select>
-  );
-}
+// function MyCheckboxSelector(props: UseCheckboxPropertySelectorOptions): JSX.Element {
+//   const sel = useCheckboxPropertySelector(props);
+//   return (
+//     <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle()}>
+//       {sel.image && <img src={sel.image} />}
+//       <div>{sel.label}</div>
+//       <div style={getDefaultCheckboxStyle(sel)} />
+//     </div>
+//   );
+// }
 
-function MyImageComboboxSelector(props: UseImageComboboxPropertySelectorOptions): JSX.Element {
-  const sel = useImageComboboxPropertySelector(props);
-  return (
-    <div style={{ userSelect: "none" }}>
-      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle(sel)}>
-        <span>
-          {sel.imageUrl && <img src={sel.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-          {" " + sel.label + " "}
-        </span>
-        <i className="fa fa-caret-down" />
-      </button>
-      {/* optionsList */}
-      {sel.isOpen && (
-        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
-          {sel.items.map((o) => (
-            <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
-              <span>
-                {o.imageUrl && <img src={o.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-                {" " + o.label + " "}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
+// function MyComboboxSelector(props: UseComboboxPropertySelectorOptions): JSX.Element {
+//   const sel = useComboboxPropertySelector(props);
+//   return (
+//     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
+//       {sel.options.map((o) => (
+//         <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
+//       ))}
+//     </select>
+//   );
+// }
 
-function MyRadioGroupSelector(props: UseRadioGroupPropertySelectorOptions): JSX.Element {
-  const sel = useRadioGroupPropertySelector(props);
-  return (
-    <div {...sel.getGroupProps()}>
-      {sel.items.map((item) => (
-        <div {...item.getItemProps()} title={item.toolTip} style={getDefaultRadioItemStyle(item)}>
-          {item.imageUrl ? <img src={item.imageUrl} /> : undefined}
-          {item.label}
-        </div>
-      ))}
-    </div>
-  );
-}
+// function MyImageComboboxSelector(props: UseImageComboboxPropertySelectorOptions): JSX.Element {
+//   const sel = useImageComboboxPropertySelector(props);
+//   return (
+//     <div style={{ userSelect: "none" }}>
+//       <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle(sel)}>
+//         <span>
+//           {sel.imageUrl && <img src={sel.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+//           {" " + sel.label + " "}
+//         </span>
+//         <i className="fa fa-caret-down" />
+//       </button>
+//       {/* optionsList */}
+//       {sel.isOpen && (
+//         <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
+//           {sel.items.map((o) => (
+//             <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
+//               <span>
+//                 {o.imageUrl && <img src={o.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+//                 {" " + o.label + " "}
+//               </span>
+//             </li>
+//           ))}
+//         </ul>
+//       )}
+//     </div>
+//   );
+// }
+
+// function MyRadioGroupSelector(props: UseRadioGroupPropertySelectorOptions): JSX.Element {
+//   const sel = useRadioGroupPropertySelector(props);
+//   return (
+//     <div {...sel.getGroupProps()}>
+//       {sel.items.map((item) => (
+//         <div {...item.getItemProps()} title={item.toolTip} style={getDefaultRadioItemStyle(item)}>
+//           {item.imageUrl ? <img src={item.imageUrl} /> : undefined}
+//           {item.label}
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
 
 function translateGroupName(groupName: string): string {
   return "group_" + groupName;

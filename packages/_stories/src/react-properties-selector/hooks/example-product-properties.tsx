@@ -78,7 +78,7 @@ export function exampleProductProperties(): {
       },
       {
         sortNo: 4,
-        selectorType: "RadioGroup",
+        // selectorType: "RadioGroup",
         name: "d",
         group: "Group1",
         quantity: "Discrete",
@@ -107,7 +107,7 @@ export function exampleProductProperties(): {
       },
       {
         sortNo: 5,
-        selectorType: "Checkbox",
+        // selectorType: "Checkbox",
         name: "e",
         group: "Group1",
         quantity: "Discrete",

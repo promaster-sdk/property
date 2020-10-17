@@ -6,10 +6,10 @@ import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-ch
 import {
   DiscretePropertySelectorOptions,
   UseAmountPropertySelectorOptions,
-  UseCheckboxPropertySelectorOptions,
-  UseComboboxPropertySelectorOptions,
-  UseImageComboboxPropertySelectorOptions,
-  UseRadioGroupPropertySelectorOptions,
+  // UseCheckboxPropertySelectorOptions,
+  // UseComboboxPropertySelectorOptions,
+  // UseImageComboboxPropertySelectorOptions,
+  // UseRadioGroupPropertySelectorOptions,
   UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
 
@@ -131,22 +131,22 @@ export type SelectorRenderInfo =
       readonly type: "Discrete";
       readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions;
     } & SelectorRenderInfoBase)
-  | ({
-      readonly type: "ComboBox";
-      readonly getUseComboboxOptions: () => UseComboboxPropertySelectorOptions;
-    } & SelectorRenderInfoBase)
-  | ({
-      readonly type: "ImageComboBox";
-      readonly getUseImageComboboxOptions: () => UseImageComboboxPropertySelectorOptions;
-    } & SelectorRenderInfoBase)
-  | ({
-      readonly type: "RadioGroup";
-      readonly getUseRadioGroupOptions: () => UseRadioGroupPropertySelectorOptions;
-    } & SelectorRenderInfoBase)
-  | ({
-      readonly type: "Checkbox";
-      readonly getUseCheckboxOptions: () => UseCheckboxPropertySelectorOptions;
-    } & SelectorRenderInfoBase)
+  // | ({
+  //     readonly type: "ComboBox";
+  //     readonly getUseComboboxOptions: () => UseComboboxPropertySelectorOptions;
+  //   } & SelectorRenderInfoBase)
+  // | ({
+  //     readonly type: "ImageComboBox";
+  //     readonly getUseImageComboboxOptions: () => UseImageComboboxPropertySelectorOptions;
+  //   } & SelectorRenderInfoBase)
+  // | ({
+  //     readonly type: "RadioGroup";
+  //     readonly getUseRadioGroupOptions: () => UseRadioGroupPropertySelectorOptions;
+  //   } & SelectorRenderInfoBase)
+  // | ({
+  //     readonly type: "Checkbox";
+  //     readonly getUseCheckboxOptions: () => UseCheckboxPropertySelectorOptions;
+  //   } & SelectorRenderInfoBase)
   | ({
       readonly type: "AmountField";
       readonly getUseAmountOptions: () => UseAmountPropertySelectorOptions;
@@ -284,69 +284,69 @@ function createSelector(
       };
     }
 
-    case "RadioGroup":
-      return {
-        ...myBase,
-        type: "RadioGroup",
-        getUseRadioGroupOptions: () => ({
-          propertyName,
-          propertyValueSet: selectedProperties,
-          valueItems,
-          sortValidFirst,
-          showCodes,
-          filterPrettyPrint,
-          onValueChange,
-          readOnly,
-          locked,
-        }),
-      };
-    case "Checkbox":
-      return {
-        ...myBase,
-        type: "Checkbox",
-        getUseCheckboxOptions: () => ({
-          propertyName,
-          propertyValueSet: selectedProperties,
-          valueItems,
-          showCodes: showCodes,
-          filterPrettyPrint,
-          onValueChange,
-          readOnly: readOnly,
-          locked,
-        }),
-      };
-    case "ComboBox":
-      return {
-        ...myBase,
-        type: "ComboBox",
-        getUseComboboxOptions: () => ({
-          sortValidFirst,
-          propertyName,
-          propertyValueSet: selectedProperties,
-          valueItems,
-          showCodes: showCodes,
-          filterPrettyPrint,
-          onValueChange,
-          readOnly,
-          locked,
-        }),
-      };
-    case "ImageComboBox":
-      return {
-        ...myBase,
-        type: "ImageComboBox",
-        getUseImageComboboxOptions: () => ({
-          sortValidFirst,
-          propertyName,
-          propertyValueSet: selectedProperties,
-          valueItems,
-          showCodes: showCodes,
-          filterPrettyPrint,
-          onValueChange,
-          readOnly,
-          locked,
-        }),
-      };
+    // case "RadioGroup":
+    //   return {
+    //     ...myBase,
+    //     type: "RadioGroup",
+    //     getUseRadioGroupOptions: () => ({
+    //       propertyName,
+    //       propertyValueSet: selectedProperties,
+    //       valueItems,
+    //       sortValidFirst,
+    //       showCodes,
+    //       filterPrettyPrint,
+    //       onValueChange,
+    //       readOnly,
+    //       locked,
+    //     }),
+    //   };
+    // case "Checkbox":
+    //   return {
+    //     ...myBase,
+    //     type: "Checkbox",
+    //     getUseCheckboxOptions: () => ({
+    //       propertyName,
+    //       propertyValueSet: selectedProperties,
+    //       valueItems,
+    //       showCodes: showCodes,
+    //       filterPrettyPrint,
+    //       onValueChange,
+    //       readOnly: readOnly,
+    //       locked,
+    //     }),
+    //   };
+    // case "ComboBox":
+    //   return {
+    //     ...myBase,
+    //     type: "ComboBox",
+    //     getUseComboboxOptions: () => ({
+    //       sortValidFirst,
+    //       propertyName,
+    //       propertyValueSet: selectedProperties,
+    //       valueItems,
+    //       showCodes: showCodes,
+    //       filterPrettyPrint,
+    //       onValueChange,
+    //       readOnly,
+    //       locked,
+    //     }),
+    //   };
+    // case "ImageComboBox":
+    //   return {
+    //     ...myBase,
+    //     type: "ImageComboBox",
+    //     getUseImageComboboxOptions: () => ({
+    //       sortValidFirst,
+    //       propertyName,
+    //       propertyValueSet: selectedProperties,
+    //       valueItems,
+    //       showCodes: showCodes,
+    //       filterPrettyPrint,
+    //       onValueChange,
+    //       readOnly,
+    //       locked,
+    //     }),
+    //   };
     case "AmountField": {
       return {
         ...myBase,
