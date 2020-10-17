@@ -3,16 +3,16 @@ import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
 export type DiscretePropertySelectorOptions = {
-  readonly sortValidFirst: boolean;
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly valueItems: ReadonlyArray<DiscreteItem>;
+  readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
+  readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
+  readonly sortValidFirst?: boolean;
   readonly trueItemIndex?: number;
   readonly falseItemIndex?: number;
-  readonly showCodes: boolean;
-  readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
-  readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
-  readonly disabled: boolean;
+  readonly showCodes?: boolean;
+  readonly disabled?: boolean;
   readonly comparer?: PropertyValue.Comparer;
 };
 
@@ -220,6 +220,10 @@ function _doOnChange(
 function fillOptionsWithDefualts(options: DiscretePropertySelectorOptions): Required<DiscretePropertySelectorOptions> {
   return {
     ...options,
+    sortValidFirst: options.sortValidFirst || false,
+    showCodes: options.showCodes || false,
+    disabled: options.disabled || false,
+    filterPrettyPrint: options.filterPrettyPrint || ((f) => PropertyFilter.toString(f)),
     comparer: options.comparer || PropertyValue.defaultComparer,
     falseItemIndex: options.falseItemIndex || 0,
     trueItemIndex: options.trueItemIndex || 1,
