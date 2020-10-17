@@ -51,7 +51,7 @@ export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector): JSX.E
   );
 }
 
-function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector): JSX.Element {
+export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector): JSX.Element {
   return (
     <div>
       {sel.items
@@ -70,7 +70,7 @@ function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector): JSX.Elemen
   );
 }
 
-function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
+export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
       {sel.items.map((o) => (
@@ -80,7 +80,7 @@ function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.Element 
   );
 }
 
-function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
+export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
   return (
     <div style={{ userSelect: "none" }}>
       <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle2(sel)}>
