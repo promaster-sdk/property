@@ -45,7 +45,7 @@ export type DiscretePropertySelector<TItem extends DiscreteItem> = {
   readonly isItemValid: (item: TItem) => boolean;
 };
 
-export function useDiscretePropertySelector<TItem extends DiscreteItem = DiscreteItem>(
+export function useDiscretePropertySelector<TItem extends DiscreteItem>(
   hookOptionsLoose: DiscretePropertySelectorOptions<TItem>
 ): DiscretePropertySelector<TItem> {
   const hookOptions: Required<DiscretePropertySelectorOptions<TItem>> = fillOptionsWithDefualts(hookOptionsLoose);
