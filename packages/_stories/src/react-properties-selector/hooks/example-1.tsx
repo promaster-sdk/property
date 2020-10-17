@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
-import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
+import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyValueSet } from "@promaster-sdk/property";
-import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
+import { usePropertiesSelector } from "@promaster-sdk/react-property-selectors";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../../hooks-selector-ui/selector-ui";
@@ -15,7 +15,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 
   const propInfo = exampleProductProperties();
 
-  const sel = PropertiesSelector.usePropertiesSelector({
+  const sel = usePropertiesSelector({
     units,
     unitsFormat,
     unitLookup,

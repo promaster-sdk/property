@@ -3,12 +3,9 @@ import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
-import {
-  DiscreteItem,
-  DiscretePropertySelectorOptions,
-  UseAmountPropertySelectorOptions,
-  UseTextboxPropertySelectorOptions,
-} from "@promaster-sdk/react-property-selectors";
+import { DiscreteItem, DiscretePropertySelectorOptions } from "../discrete";
+import { UseAmountPropertySelectorOptions } from "../amount";
+import { UseTextboxPropertySelectorOptions } from "../textbox";
 
 export type UsePropertiesSelectorOptions = {
   // Required inputs

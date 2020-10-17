@@ -1,4 +1,4 @@
-import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
+import { UsePropertiesSelectorProperty } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { BaseUnits, Unit } from "uom";
 
@@ -8,7 +8,7 @@ export type SelectorTypes = { readonly [propertyName: string]: string };
 
 export function exampleProductProperties(): {
   selectorTypes: SelectorTypes;
-  properties: ReadonlyArray<PropertiesSelector.UsePropertiesSelectorProperty>;
+  properties: ReadonlyArray<UsePropertiesSelectorProperty>;
 } {
   return {
     selectorTypes: {
