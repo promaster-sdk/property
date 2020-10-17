@@ -42,39 +42,19 @@ export type RadioGroupItemInfo = {
 export function useRadioGroupPropertySelector(
   hookOptions: UseRadioGroupPropertySelectorOptions
 ): UseRadioGroupPropertySelector {
-  const {
-    // propertyName,
-    // propertyValueSet,
-    // valueItems,
-    // showCodes,
-    onValueChange,
-    // filterPrettyPrint,
-    // readOnly,
-    locked,
-    // comparer,
-  } = hookOptions;
+  const { onValueChange, locked } = hookOptions;
 
-  // const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
-
-  // const safeComparer = comparer || PropertyValue.defaultComparer;
-
-  // if (!valueItems) {
-  //   valueItems = [];
-  // }
   const [selectedOption, selectableOptions] = getSelectableOptions(hookOptions);
 
   // Convert value items to options
   const items: Array<RadioGroupItemInfo> = selectableOptions
     .map((o) => {
-      // const isItemValid = _isValueItemValid(propertyName, propertyValueSet, o, safeComparer);
       return {
         getItemProps: () => ({
           key: o.sortNo.toString(),
-          // onClick: () => !readOnly && o.value && onValueChange(o.value),
           onClick: () => _doOnChange(o.value, onValueChange),
         }),
         sortNo: o.sortNo,
-        // selected: o.value ? PropertyValue.equals(value, o.value, safeComparer) : false,
         selected: o === selectedOption,
         label: o.label,
         imageUrl: o.image,
