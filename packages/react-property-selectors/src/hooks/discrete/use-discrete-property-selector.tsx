@@ -135,7 +135,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
   };
 }
 
-function getSelectableItems<TItem extends DiscreteItem = DiscreteItem>(
+function getSelectableItems<TItem extends DiscreteItem>(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
   valueItems: ReadonlyArray<TItem>,
