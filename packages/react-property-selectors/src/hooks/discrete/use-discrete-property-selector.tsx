@@ -7,6 +7,8 @@ export type DiscretePropertySelectorOptions = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly valueItems: ReadonlyArray<DiscreteItem>;
+  readonly trueItemIndex?: number;
+  readonly falseItemIndex?: number;
   readonly showCodes: boolean;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
@@ -28,6 +30,7 @@ export type DiscretePropertySelector = {
   readonly hasOptionImage: boolean;
   readonly isOpen: boolean;
   readonly items: ReadonlyArray<DiscreteItem>;
+  readonly isTrueItem: boolean;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly getListItemProps: (item: DiscreteItem) => React.LiHTMLAttributes<HTMLLIElement>;
@@ -36,6 +39,7 @@ export type DiscretePropertySelector = {
   readonly getItemValue: (item: DiscreteItem) => string;
   readonly getOptionProps: (item: DiscreteItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
   readonly getRadioItemProps: (item: DiscreteItem) => React.HTMLAttributes<HTMLDivElement>;
+  readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
   readonly isItemValid: (item: DiscreteItem) => boolean;
 };
 
@@ -53,6 +57,8 @@ export function useDiscretePropertySelector(
     showCodes,
     valueItems,
     sortValidFirst,
+    falseItemIndex,
+    trueItemIndex,
   } = hookOptions;
 
   const [selectedItem, selectableItems] = getSelectableItems(
@@ -65,6 +71,11 @@ export function useDiscretePropertySelector(
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const falseItem = valueItems[falseItemIndex];
+  const trueItem = valueItems[trueItemIndex];
+  const isTrueItem = selectedItem === trueItem;
+  const nextValue = isTrueItem ? falseItem.value!! : trueItem.value!!;
+
   return {
     selectedItem,
     disabled,
@@ -73,6 +84,7 @@ export function useDiscretePropertySelector(
     getItemValue: (item) => getItemValue(item),
     getItemToolTip: (item) => getItemToolTip(hookOptions, item),
     isOpen,
+    isTrueItem,
     isItemValid: (item) => isValueItemValid(propertyName, propertyValueSet, item, comparer),
     getToggleButtonProps: () => ({
       disabled,
@@ -112,6 +124,10 @@ export function useDiscretePropertySelector(
       key: getItemValue(item),
       onClick: () => _doOnChange(getItemValue(item), onValueChange),
     }),
+    getCheckboxDivProps: () => ({
+      onClick: () => onValueChange(nextValue),
+    }),
+
     items: selectableItems,
   };
 }
@@ -203,5 +219,10 @@ function _doOnChange(
 }
 
 function fillOptionsWithDefualts(options: DiscretePropertySelectorOptions): Required<DiscretePropertySelectorOptions> {
-  return { ...options, comparer: options.comparer || PropertyValue.defaultComparer };
+  return {
+    ...options,
+    comparer: options.comparer || PropertyValue.defaultComparer,
+    falseItemIndex: options.falseItemIndex || 0,
+    trueItemIndex: options.trueItemIndex || 1,
+  };
 }

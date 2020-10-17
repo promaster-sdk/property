@@ -130,3 +130,23 @@ function buttonElementStyles2({
 
   return {};
 }
+
+export function getDefaultCheckboxStyle2(selector: DiscretePropertySelector): {} {
+  return {
+    marginTop: "6px",
+    position: "relative",
+    backgroundColor: "#ccc",
+    width: "22px",
+    height: "22px",
+    background: selector.isTrueItem ? "red" : "green",
+  };
+}
+
+export function getDefaultCheckboxContainerStyle2(): {} {
+  return {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    cursor: "pointer",
+  };
+}

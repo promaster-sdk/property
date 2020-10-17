@@ -7,7 +7,9 @@ import {
   DiscretePropertySelectorOptions,
   getDefaultAmountInputBoxStyle,
   getDefaultCheckboxContainerStyle,
+  getDefaultCheckboxContainerStyle2,
   getDefaultCheckboxStyle,
+  getDefaultCheckboxStyle2,
   getDefaultListItemStyle,
   getDefaultListItemStyle2,
   getDefaultMenuStyle,
@@ -149,13 +151,23 @@ function MyDiscreteSelector({
     case "RadioGroup":
       return <MyDiscreteRadioGroupSelector {...sel} />;
     case "Checkbox":
-      return <div>Checkbox</div>;
+      return <MyDiscreteCheckboxSelector {...sel} />;
     default:
       if (sel.hasOptionImage) {
         return <MyDiscreteImageComboboxSelector {...sel} />;
       }
       return <MyDiscreteComboboxSelector {...sel} />;
   }
+}
+
+function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector): JSX.Element {
+  return (
+    <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle2()}>
+      {sel.selectedItem.image && <img src={sel.selectedItem.image} />}
+      <div>{sel.getItemLabel(sel.selectedItem)}</div>
+      <div style={getDefaultCheckboxStyle2(sel)} />
+    </div>
+  );
 }
 
 function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector): JSX.Element {
