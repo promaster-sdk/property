@@ -6,7 +6,7 @@ import {
   getDefaultCheckboxContainerStyle2,
   getDefaultCheckboxStyle2,
   getDefaultListItemStyle2,
-  getDefaultMenuStyle,
+  getDefaultMenuStyle2,
   getDefaultOptionStyle2,
   getDefaultRadioItemStyle2,
   getDefaultSelectStyle2,
@@ -92,7 +92,7 @@ export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): 
       </button>
       {/* optionsList */}
       {sel.isOpen && (
-        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
+        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle2()}>
           {sel.items.map((o) => (
             <li {...sel.getListItemProps(o)} style={getDefaultListItemStyle2(sel, o)}>
               <span>
