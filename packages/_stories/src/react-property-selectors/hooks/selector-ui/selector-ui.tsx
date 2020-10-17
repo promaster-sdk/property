@@ -71,7 +71,7 @@ export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyIte
   );
 }
 
-export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
+export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
       {sel.items.map((o) => (

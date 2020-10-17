@@ -26,7 +26,7 @@ export type DiscreteItem = {
   readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
-export type DiscretePropertySelector<TItem extends DiscreteItem = DiscreteItem> = {
+export type DiscretePropertySelector<TItem extends DiscreteItem> = {
   readonly selectedItem: TItem;
   readonly disabled: boolean;
   // readonly hasOptionImage: boolean;

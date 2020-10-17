@@ -1,6 +1,6 @@
 import { DiscreteItem, DiscretePropertySelector } from "./use-discrete-property-selector";
 
-export function getDefaultOptionStyle2(sel: DiscretePropertySelector, o: DiscreteItem): {} {
+export function getDefaultOptionStyle2<TItem extends DiscreteItem>(sel: DiscretePropertySelector<TItem>, o: TItem): {} {
   return {
     color: sel.isItemValid(o) ? "rgb(131, 131, 131)" : "red",
     minHeight: "18px",
@@ -11,7 +11,7 @@ export function getDefaultOptionStyle2(sel: DiscretePropertySelector, o: Discret
   };
 }
 
-export function getDefaultSelectStyle2(o: DiscretePropertySelector): {} {
+export function getDefaultSelectStyle2<TItem extends DiscreteItem>(o: DiscretePropertySelector<TItem>): {} {
   const always = {
     color: "black",
     height: "30px",
@@ -43,7 +43,9 @@ export function getDefaultSelectStyle2(o: DiscretePropertySelector): {} {
   return { ...always };
 }
 
-export function getDefaultToggleButtonStyle2(selector: DiscretePropertySelector): {} {
+export function getDefaultToggleButtonStyle2<TItem extends DiscreteItem>(
+  selector: DiscretePropertySelector<TItem>
+): {} {
   return {
     width: "162px",
     alignItems: "center",
@@ -78,7 +80,10 @@ export function getDefaultMenuStyle2(): {} {
   };
 }
 
-export function getDefaultListItemStyle2(sel: DiscretePropertySelector, item: DiscreteItem): {} {
+export function getDefaultListItemStyle2<TItem extends DiscreteItem>(
+  sel: DiscretePropertySelector<TItem>,
+  item: TItem
+): {} {
   return {
     color: sel.isItemValid(item) === false ? "color: red" : "rgb(131, 131, 131)",
     minHeight: "18px",
@@ -91,7 +96,10 @@ export function getDefaultListItemStyle2(sel: DiscretePropertySelector, item: Di
   };
 }
 
-export function getDefaultRadioItemStyle2(sel: DiscretePropertySelector, item: DiscreteItem): {} {
+export function getDefaultRadioItemStyle2<TItem extends DiscreteItem>(
+  sel: DiscretePropertySelector<TItem>,
+  item: TItem
+): {} {
   const isItemValid = sel.isItemValid(item);
   return {
     cursor: isItemValid ? "pointer" : "not-allowed",
@@ -131,7 +139,7 @@ function buttonElementStyles2({
   return {};
 }
 
-export function getDefaultCheckboxStyle2(selector: DiscretePropertySelector): {} {
+export function getDefaultCheckboxStyle2<TItem extends DiscreteItem>(selector: DiscretePropertySelector<TItem>): {} {
   return {
     marginTop: "6px",
     position: "relative",

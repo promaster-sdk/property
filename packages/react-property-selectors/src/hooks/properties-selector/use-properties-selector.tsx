@@ -7,9 +7,9 @@ import { DiscreteItem, DiscretePropertySelectorOptions } from "../discrete";
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
-export type UsePropertiesSelectorOptions = {
+export type UsePropertiesSelectorOptions<TItem extends DiscreteItem> = {
   // Required inputs
-  readonly productProperties: ReadonlyArray<UsePropertiesSelectorProperty>;
+  readonly productProperties: ReadonlyArray<UsePropertiesSelectorProperty<TItem>>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
 
   // Used to print error messages
@@ -127,7 +127,9 @@ export type SelectorRenderInfo =
 
 export type UsePropertiesSelectorPropertySelectorType = SelectorRenderInfo["type"];
 
-export function usePropertiesSelector(options: UsePropertiesSelectorOptions): UsePropertiesSelector {
+export function usePropertiesSelector<TItem extends DiscreteItem>(
+  options: UsePropertiesSelectorOptions<TItem>
+): UsePropertiesSelector {
   const requiredOptions = optionsWithDefaults(options);
 
   const { productProperties, selectedProperties, includeHiddenProperties, comparer } = requiredOptions;
@@ -164,9 +166,9 @@ export function usePropertiesSelector(options: UsePropertiesSelectorOptions): Us
   };
 }
 
-function createSelector(
+function createSelector<TItem extends DiscreteItem>(
   property: UsePropertiesSelectorProperty,
-  params: Required<UsePropertiesSelectorOptions>
+  params: Required<UsePropertiesSelectorOptions<TItem>>
 ): SelectorRenderInfoInternal {
   const {
     selectedProperties,
@@ -466,7 +468,9 @@ function isNullOrWhiteSpace(str: string): boolean {
   return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
 }
 
-function optionsWithDefaults(params: UsePropertiesSelectorOptions): Required<UsePropertiesSelectorOptions> {
+function optionsWithDefaults<TItem extends DiscreteItem>(
+  params: UsePropertiesSelectorOptions<TItem>
+): Required<UsePropertiesSelectorOptions<TItem>> {
   // Do destructoring and set defaults
   const {
     productProperties,
