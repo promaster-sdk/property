@@ -29,12 +29,13 @@ export type DiscretePropertySelector = {
   readonly isOpen: boolean;
   readonly items: ReadonlyArray<DiscreteItem>;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly getListItemProps: (item: DiscreteItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getItemLabel: (item: DiscreteItem) => string;
   readonly getItemToolTip: (item: DiscreteItem) => string;
   readonly getItemValue: (item: DiscreteItem) => string;
   readonly getOptionProps: (item: DiscreteItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
-  readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
+  readonly getRadioItemProps: (item: DiscreteItem) => React.HTMLAttributes<HTMLDivElement>;
   readonly isItemValid: (item: DiscreteItem) => boolean;
 };
 
@@ -107,6 +108,10 @@ export function useDiscretePropertySelector(
         title: getItemToolTip(hookOptions, item),
       };
     },
+    getRadioItemProps: (item) => ({
+      key: getItemValue(item),
+      onClick: () => _doOnChange(getItemValue(item), onValueChange),
+    }),
     items: selectableItems,
   };
 }

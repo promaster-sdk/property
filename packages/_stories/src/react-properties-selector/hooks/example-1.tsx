@@ -14,6 +14,7 @@ import {
   getDefaultOptionStyle,
   getDefaultOptionStyle2,
   getDefaultRadioItemStyle,
+  getDefaultRadioItemStyle2,
   getDefaultSelectStyle,
   getDefaultSelectStyle2,
   getDefaultToggleButtonStyle,
@@ -146,7 +147,7 @@ function MyDiscreteSelector({
   const sel = useDiscretePropertySelector(options);
   switch (selctorTypes[options.propertyName]) {
     case "RadioGroup":
-      return <div>RadioGroup</div>;
+      return <MyDiscreteRadioGroupSelector {...sel} />;
     case "Checkbox":
       return <div>Checkbox</div>;
     default:
@@ -155,6 +156,25 @@ function MyDiscreteSelector({
       }
       return <MyDiscreteComboboxSelector {...sel} />;
   }
+}
+
+function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector): JSX.Element {
+  return (
+    <div>
+      {sel.items
+        .filter((i) => !!i.value)
+        .map((item) => (
+          <div
+            {...sel.getRadioItemProps(item)}
+            title={sel.getItemToolTip(item)}
+            style={getDefaultRadioItemStyle2(sel, item)}
+          >
+            {item.image ? <img src={item.image} /> : undefined}
+            {sel.getItemLabel(item)}
+          </div>
+        ))}
+    </div>
+  );
 }
 
 function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
