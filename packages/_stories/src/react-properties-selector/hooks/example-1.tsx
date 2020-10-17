@@ -2,27 +2,10 @@ import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
-import {
-  DiscretePropertySelector,
-  DiscretePropertySelectorOptions,
-  getDefaultAmountInputBoxStyle,
-  getDefaultCheckboxContainerStyle2,
-  getDefaultCheckboxStyle2,
-  getDefaultListItemStyle2,
-  getDefaultMenuStyle,
-  getDefaultOptionStyle2,
-  getDefaultRadioItemStyle2,
-  getDefaultSelectStyle2,
-  getDefaultToggleButtonStyle2,
-  useAmountPropertySelector,
-  UseAmountPropertySelectorOptions,
-  useDiscretePropertySelector,
-  useTextboxPropertySelector,
-  UseTextboxPropertySelectorOptions,
-} from "@promaster-sdk/react-property-selectors";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
-import { exampleProductProperties, SelectorTypes } from "./example-product-properties";
+import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
+import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../../hooks-selector-ui/selector-ui";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
@@ -113,129 +96,6 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
       </div>
     </div>
   );
-}
-
-function MyDiscreteSelector({
-  selctorTypes,
-  options,
-}: {
-  readonly selctorTypes: SelectorTypes;
-  readonly options: DiscretePropertySelectorOptions;
-}): JSX.Element {
-  const sel = useDiscretePropertySelector(options);
-  switch (selctorTypes[options.propertyName]) {
-    case "RadioGroup":
-      return <MyDiscreteRadioGroupSelector {...sel} />;
-    case "Checkbox":
-      return <MyDiscreteCheckboxSelector {...sel} />;
-    default:
-      if (sel.hasOptionImage) {
-        return <MyDiscreteImageComboboxSelector {...sel} />;
-      }
-      return <MyDiscreteComboboxSelector {...sel} />;
-  }
-}
-
-function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector): JSX.Element {
-  return (
-    <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle2()}>
-      {sel.selectedItem.image && <img src={sel.selectedItem.image} />}
-      <div>{sel.getItemLabel(sel.selectedItem)}</div>
-      <div style={getDefaultCheckboxStyle2(sel)} />
-    </div>
-  );
-}
-
-function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector): JSX.Element {
-  return (
-    <div>
-      {sel.items
-        .filter((i) => !!i.value)
-        .map((item) => (
-          <div
-            {...sel.getRadioItemProps(item)}
-            title={sel.getItemToolTip(item)}
-            style={getDefaultRadioItemStyle2(sel, item)}
-          >
-            {item.image ? <img src={item.image} /> : undefined}
-            {sel.getItemLabel(item)}
-          </div>
-        ))}
-    </div>
-  );
-}
-
-function MyDiscreteComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
-  return (
-    <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
-      {sel.items.map((o) => (
-        <option {...sel.getOptionProps(o)} style={getDefaultOptionStyle2(sel, o)} />
-      ))}
-    </select>
-  );
-}
-
-function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector): JSX.Element {
-  return (
-    <div style={{ userSelect: "none" }}>
-      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle2(sel)}>
-        <span>
-          {sel.selectedItem.image && <img src={sel.selectedItem.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-          {" " + sel.getItemLabel(sel.selectedItem) + " "}
-        </span>
-        <i className="fa fa-caret-down" />
-      </button>
-      {/* optionsList */}
-      {sel.isOpen && (
-        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
-          {sel.items.map((o) => (
-            <li {...sel.getListItemProps(o)} style={getDefaultListItemStyle2(sel, o)}>
-              <span>
-                {o.image && <img src={o.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-                {" " + sel.getItemLabel(o) + " "}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.Element {
-  const sel = useAmountPropertySelector(props);
-  return (
-    <span {...sel.getWrapperProps()}>
-      <input {...sel.amountInputBox.getInputProps()} style={getDefaultAmountInputBoxStyle(sel.amountInputBox)} />
-      <span {...sel.amountFormatSelector.getWrapperProps()}>
-        {sel.amountFormatSelector.active ? (
-          <>
-            <select {...sel.amountFormatSelector.getUnitSelectorProps()}>
-              {sel.amountFormatSelector.unitSelectorOptions.map((o) => (
-                <option {...o.getOptionProps()}> {o.label} </option>
-              ))}
-            </select>
-            <select {...sel.amountFormatSelector.getPrecisionSelectorProps()}>
-              {sel.amountFormatSelector.precisionSelectorOptions.map((o) => (
-                <option {...o.getOptionProps()}>{o.label}</option>
-              ))}
-            </select>
-            {sel.amountFormatSelector.showClearButton && (
-              <button {...sel.amountFormatSelector.getClearButtonProps()}>Cancel</button>
-            )}
-            <button {...sel.amountFormatSelector.getCancelButtonProps()}>Clear</button>
-          </>
-        ) : (
-          sel.amountFormatSelector.label
-        )}
-      </span>
-    </span>
-  );
-}
-
-function MyTextboxSelector(props: UseTextboxPropertySelectorOptions): JSX.Element {
-  const sel = useTextboxPropertySelector(props);
-  return <input {...sel.getInputProps()} />;
 }
 
 function translateGroupName(groupName: string): string {
