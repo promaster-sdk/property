@@ -24,11 +24,18 @@ export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
     },
   ];
 
+  const undefinedValueItem = {
+    value: undefined,
+    sortNo: -1,
+    text: "",
+    validationFilter: PropertyFilter.Empty,
+  };
   const selA = useDiscretePropertySelector({
     propertyName: "a",
     valueItems: valueItems1,
     propertyValueSet: myState,
     onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
+    getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
   });
 

@@ -53,11 +53,19 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     },
   ];
 
+  const undefinedValueItem = {
+    value: undefined,
+    sortNo: -1,
+    text: "",
+    validationFilter: PropertyFilter.Empty,
+  };
+
   const selA = useDiscretePropertySelector({
     propertyName: "a",
     valueItems: valueItems1,
     propertyValueSet: myState,
     onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
+    getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
     sortValidFirst: true,
     filterPrettyPrint: filterPrettyPrint,
@@ -70,6 +78,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     showCodes: true,
     sortValidFirst: true,
     onValueChange: (pv) => setMyState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, myState)),
+    getUndefinedValueItem: () => undefinedValueItem,
     filterPrettyPrint: filterPrettyPrint,
   });
 

@@ -51,11 +51,19 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
     },
   ];
 
+  const undefinedValueItem = {
+    value: undefined,
+    sortNo: -1,
+    text: "",
+    validationFilter: PropertyFilter.Empty,
+  };
+
   const selA = useDiscretePropertySelector({
     propertyName: "a",
     valueItems: valueItems1,
     propertyValueSet: state,
     onValueChange: (pv) => setState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state)),
+    getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
     filterPrettyPrint: filterPrettyPrint,
   });
@@ -65,6 +73,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
     valueItems: valueItems2,
     propertyValueSet: state,
     onValueChange: (pv) => setState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, state)),
+    getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
     filterPrettyPrint: filterPrettyPrint,
   });

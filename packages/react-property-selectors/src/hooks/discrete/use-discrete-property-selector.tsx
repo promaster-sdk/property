@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
-export type DiscretePropertySelectorOptions = {
+export type DiscretePropertySelectorOptions<TItem extends DiscreteItem = DiscreteItem> = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly valueItems: ReadonlyArray<DiscreteItem>;
+  readonly valueItems: ReadonlyArray<TItem>;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
+  // Get an item that corresponds to a property value of undefined
+  readonly getUndefinedValueItem: () => TItem;
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
   readonly sortValidFirst?: boolean;
   readonly trueItemIndex?: number;
@@ -24,29 +26,29 @@ export type DiscreteItem = {
   readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
-export type DiscretePropertySelector = {
-  readonly selectedItem: DiscreteItem;
+export type DiscretePropertySelector<TItem extends DiscreteItem = DiscreteItem> = {
+  readonly selectedItem: TItem;
   readonly disabled: boolean;
   readonly hasOptionImage: boolean;
   readonly isOpen: boolean;
-  readonly items: ReadonlyArray<DiscreteItem>;
+  readonly items: ReadonlyArray<TItem>;
   readonly isTrueItem: boolean;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
-  readonly getListItemProps: (item: DiscreteItem) => React.LiHTMLAttributes<HTMLLIElement>;
-  readonly getItemLabel: (item: DiscreteItem) => string;
-  readonly getItemToolTip: (item: DiscreteItem) => string;
-  readonly getItemValue: (item: DiscreteItem) => string;
-  readonly getOptionProps: (item: DiscreteItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
-  readonly getRadioItemProps: (item: DiscreteItem) => React.HTMLAttributes<HTMLDivElement>;
+  readonly getListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
+  readonly getItemLabel: (item: TItem) => string;
+  readonly getItemToolTip: (item: TItem) => string;
+  readonly getItemValue: (item: TItem) => string;
+  readonly getOptionProps: (item: TItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
+  readonly getRadioItemProps: (item: TItem) => React.HTMLAttributes<HTMLDivElement>;
   readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
-  readonly isItemValid: (item: DiscreteItem) => boolean;
+  readonly isItemValid: (item: TItem) => boolean;
 };
 
-export function useDiscretePropertySelector(
-  hookOptionsLoose: DiscretePropertySelectorOptions
+export function useDiscretePropertySelector<TItem extends DiscreteItem = DiscreteItem>(
+  hookOptionsLoose: DiscretePropertySelectorOptions<TItem>
 ): DiscretePropertySelector {
-  const hookOptions: Required<DiscretePropertySelectorOptions> = fillOptionsWithDefualts(hookOptionsLoose);
+  const hookOptions: Required<DiscretePropertySelectorOptions<TItem>> = fillOptionsWithDefualts(hookOptionsLoose);
 
   const {
     propertyValueSet,
@@ -59,12 +61,14 @@ export function useDiscretePropertySelector(
     sortValidFirst,
     falseItemIndex,
     trueItemIndex,
+    getUndefinedValueItem,
   } = hookOptions;
 
-  const [selectedItem, selectableItems] = getSelectableItems(
+  const [selectedItem, selectableItems] = getSelectableItems<TItem>(
     propertyName,
     propertyValueSet,
     valueItems,
+    getUndefinedValueItem,
     sortValidFirst,
     comparer
   );
@@ -131,13 +135,14 @@ export function useDiscretePropertySelector(
   };
 }
 
-function getSelectableItems(
+function getSelectableItems<TItem extends DiscreteItem = DiscreteItem>(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItems: ReadonlyArray<DiscreteItem>,
+  valueItems: ReadonlyArray<TItem>,
+  getUndefinedValueItem: () => TItem,
   sortValidFirst: boolean,
   comparer: PropertyValue.Comparer
-): [DiscreteItem, Array<DiscreteItem>] {
+): [TItem, Array<TItem>] {
   // Convert value items to options
   let sortedItems = [...valueItems].sort((a, b) => {
     if (sortValidFirst) {
@@ -158,15 +163,16 @@ function getSelectableItems(
   const selectedValueItemOrUndefined = valueItems.find(
     (item) => (item.value && PropertyValue.getInteger(item.value)) === value
   );
-  let selectedValueItem: DiscreteItem;
+  let selectedValueItem: TItem;
   if (!selectedValueItemOrUndefined) {
     // Add item for selected value, even tough it does not really exist, but we need to show it in the combobox
-    selectedValueItem = {
-      value: undefined,
-      sortNo: -1,
-      text: value === undefined || value === null ? "" : value.toString(),
-      validationFilter: PropertyFilter.Empty,
-    };
+    // selectedValueItem = {
+    //   value: undefined,
+    //   sortNo: -1,
+    //   text: value === undefined || value === null ? "" : value.toString(),
+    //   validationFilter: PropertyFilter.Empty,
+    // };
+    selectedValueItem = getUndefinedValueItem();
     sortedItems = [selectedValueItem, ...sortedItems];
   } else {
     selectedValueItem = selectedValueItemOrUndefined;
@@ -217,7 +223,9 @@ function _doOnChange(
   }
 }
 
-function fillOptionsWithDefualts(options: DiscretePropertySelectorOptions): Required<DiscretePropertySelectorOptions> {
+function fillOptionsWithDefualts<TItem extends DiscreteItem>(
+  options: DiscretePropertySelectorOptions<TItem>
+): Required<DiscretePropertySelectorOptions<TItem>> {
   return {
     ...options,
     sortValidFirst: options.sortValidFirst || false,

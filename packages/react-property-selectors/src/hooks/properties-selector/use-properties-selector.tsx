@@ -284,6 +284,12 @@ function createSelector(
         ...myBase,
         type: "Discrete",
         getUseDiscreteOptions: () => ({
+          getUndefinedValueItem: () => ({
+            value: undefined,
+            sortNo: -1,
+            text: "",
+            validationFilter: PropertyFilter.Empty,
+          }),
           sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
