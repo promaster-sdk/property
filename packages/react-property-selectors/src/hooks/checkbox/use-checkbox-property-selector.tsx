@@ -6,6 +6,8 @@ export type UseCheckboxPropertySelectorOptions = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly valueItems: ReadonlyArray<UseCheckboxPropertyValueItem>;
+  readonly trueItemIndex?: number;
+  readonly falseItemIndex?: number;
   readonly showCodes: boolean;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue) => void;
@@ -25,8 +27,7 @@ export interface UseCheckboxPropertyValueItem {
 export type UseCheckboxPropertySelector = {
   readonly label: string;
   readonly image?: string;
-  readonly checked: boolean;
-  // readonly getContainerDivProps: () => React.HTMLAttributes<HTMLDivElement>;
+  readonly isTrueItem: boolean;
   readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
 };
 
@@ -37,23 +38,26 @@ export function useCheckboxPropertySelector({
   onValueChange,
   showCodes,
   comparer,
+  falseItemIndex,
+  trueItemIndex,
 }: UseCheckboxPropertySelectorOptions): UseCheckboxPropertySelector {
   const value = PropertyValueSet.getValue(propertyName, propertyValueSet);
 
-  const falseValue = valueItems[0];
-  const trueValue = valueItems[1];
+  const safeFalseItemIndex = falseItemIndex || 0;
+  const safeTrueItemIndex = trueItemIndex || 1;
+  const falseValue = valueItems[safeFalseItemIndex];
+  const trueValue = valueItems[safeTrueItemIndex];
 
-  const checked = (trueValue.value && PropertyValue.equals(trueValue.value, value, comparer)) || false;
-  const nextValue = checked ? falseValue.value!! : trueValue.value!!;
+  const isTrueItem = (trueValue.value && PropertyValue.equals(trueValue.value, value, comparer)) || false;
+  const nextValue = isTrueItem ? falseValue.value!! : trueValue.value!!;
 
   return {
     label: _getItemLabel(trueValue, showCodes),
     image: trueValue.image,
-    checked,
+    isTrueItem,
     getCheckboxDivProps: () => ({
       onClick: () => onValueChange(nextValue),
     }),
-    // getCheckboxDivProps: () => ({}),
   };
 }
 
@@ -72,7 +76,7 @@ export function getDefaultCheckboxStyle(selector: UseCheckboxPropertySelector): 
     backgroundColor: "#ccc",
     width: "22px",
     height: "22px",
-    background: selector.checked ? "red" : "green",
+    background: selector.isTrueItem ? "red" : "green",
   };
 }
 
