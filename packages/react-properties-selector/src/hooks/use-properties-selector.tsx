@@ -4,12 +4,9 @@ import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import {
+  DiscreteItem,
   DiscretePropertySelectorOptions,
   UseAmountPropertySelectorOptions,
-  // UseCheckboxPropertySelectorOptions,
-  // UseComboboxPropertySelectorOptions,
-  // UseImageComboboxPropertySelectorOptions,
-  // UseRadioGroupPropertySelectorOptions,
   UseTextboxPropertySelectorOptions,
 } from "@promaster-sdk/react-property-selectors";
 
@@ -76,15 +73,7 @@ export type UsePropertiesSelectorProperty = {
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
-  readonly valueItems: ReadonlyArray<UsePropertiesSelectorPropertyValueItem>;
-};
-
-export type UsePropertiesSelectorPropertyValueItem = {
-  readonly sortNo: number;
-  readonly value: PropertyValue.PropertyValue;
-  readonly validationFilter: PropertyFilter.PropertyFilter;
-  readonly text: string;
-  readonly image?: string;
+  readonly valueItems: ReadonlyArray<DiscreteItem>;
 };
 
 export type UsePropertiesSelectorAmountFormat = {
@@ -131,22 +120,6 @@ export type SelectorRenderInfo =
       readonly type: "Discrete";
       readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions;
     } & SelectorRenderInfoBase)
-  // | ({
-  //     readonly type: "ComboBox";
-  //     readonly getUseComboboxOptions: () => UseComboboxPropertySelectorOptions;
-  //   } & SelectorRenderInfoBase)
-  // | ({
-  //     readonly type: "ImageComboBox";
-  //     readonly getUseImageComboboxOptions: () => UseImageComboboxPropertySelectorOptions;
-  //   } & SelectorRenderInfoBase)
-  // | ({
-  //     readonly type: "RadioGroup";
-  //     readonly getUseRadioGroupOptions: () => UseRadioGroupPropertySelectorOptions;
-  //   } & SelectorRenderInfoBase)
-  // | ({
-  //     readonly type: "Checkbox";
-  //     readonly getUseCheckboxOptions: () => UseCheckboxPropertySelectorOptions;
-  //   } & SelectorRenderInfoBase)
   | ({
       readonly type: "AmountField";
       readonly getUseAmountOptions: () => UseAmountPropertySelectorOptions;
@@ -225,7 +198,7 @@ function createSelector(
   const selectedValueItem =
     property.valueItems &&
     property.valueItems.find(
-      (value: UsePropertiesSelectorPropertyValueItem) =>
+      (value) =>
         (value.value === undefined && selectedValue === undefined) ||
         (value.value && PropertyValue.equals(selectedValue, value.value, comparer))
     );
@@ -283,70 +256,6 @@ function createSelector(
         }),
       };
     }
-
-    // case "RadioGroup":
-    //   return {
-    //     ...myBase,
-    //     type: "RadioGroup",
-    //     getUseRadioGroupOptions: () => ({
-    //       propertyName,
-    //       propertyValueSet: selectedProperties,
-    //       valueItems,
-    //       sortValidFirst,
-    //       showCodes,
-    //       filterPrettyPrint,
-    //       onValueChange,
-    //       readOnly,
-    //       locked,
-    //     }),
-    //   };
-    // case "Checkbox":
-    //   return {
-    //     ...myBase,
-    //     type: "Checkbox",
-    //     getUseCheckboxOptions: () => ({
-    //       propertyName,
-    //       propertyValueSet: selectedProperties,
-    //       valueItems,
-    //       showCodes: showCodes,
-    //       filterPrettyPrint,
-    //       onValueChange,
-    //       readOnly: readOnly,
-    //       locked,
-    //     }),
-    //   };
-    // case "ComboBox":
-    //   return {
-    //     ...myBase,
-    //     type: "ComboBox",
-    //     getUseComboboxOptions: () => ({
-    //       sortValidFirst,
-    //       propertyName,
-    //       propertyValueSet: selectedProperties,
-    //       valueItems,
-    //       showCodes: showCodes,
-    //       filterPrettyPrint,
-    //       onValueChange,
-    //       readOnly,
-    //       locked,
-    //     }),
-    //   };
-    // case "ImageComboBox":
-    //   return {
-    //     ...myBase,
-    //     type: "ImageComboBox",
-    //     getUseImageComboboxOptions: () => ({
-    //       sortValidFirst,
-    //       propertyName,
-    //       propertyValueSet: selectedProperties,
-    //       valueItems,
-    //       showCodes: showCodes,
-    //       filterPrettyPrint,
-    //       onValueChange,
-    //       readOnly,
-    //       locked,
-    //     }),
-    //   };
     case "AmountField": {
       return {
         ...myBase,
@@ -418,7 +327,7 @@ function getDefaultFormat(
 
 function getIsValid(
   property: UsePropertiesSelectorProperty,
-  selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined,
+  selectedValueItem: DiscreteItem | undefined,
   selectedProperties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
 ): boolean {
@@ -441,15 +350,6 @@ function getSelectorType(property: UsePropertiesSelectorProperty): UseProperties
     return "TextBox";
   } else if (property.quantity === "Discrete") {
     return "Discrete";
-    // if (property.selectorType === "RadioGroup") {
-    //   return "RadioGroup";
-    // } else if (property.selectorType === "Checkbox") {
-    //   return "Checkbox";
-    // } else if (property.valueItems.some((i) => i.image !== undefined)) {
-    //   return "ImageComboBox";
-    // } else {
-    //   return "ComboBox";
-    // }
   } else {
     return "AmountField";
   }
@@ -467,7 +367,7 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
 }
 
 function shouldBeLocked(
-  selectedValueItem: UsePropertiesSelectorPropertyValueItem | undefined,
+  selectedValueItem: DiscreteItem | undefined,
   productProperty: UsePropertiesSelectorProperty,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
@@ -504,7 +404,7 @@ function handleChange(
           continue;
         }
         const propertyValueItem = getSingleValidValueOrUndefined(productProperty, properties, comparer);
-        if (propertyValueItem) {
+        if (propertyValueItem && propertyValueItem.value) {
           properties = PropertyValueSet.set(productProperty.name, propertyValueItem.value, properties);
           changedProps.add(productProperty.name);
         }
@@ -525,9 +425,9 @@ function getSingleValidValueOrUndefined(
   productProperty: UsePropertiesSelectorProperty,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
-): UsePropertiesSelectorPropertyValueItem | undefined {
+): DiscreteItem | undefined {
   if (productProperty.quantity === "Discrete") {
-    const validPropertyValueItems: Array<UsePropertiesSelectorPropertyValueItem> = [];
+    const validPropertyValueItems: Array<DiscreteItem> = [];
     for (const productValueItem of productProperty.valueItems) {
       const isValid = PropertyFilter.isValid(properties, productValueItem.validationFilter, comparer);
 
