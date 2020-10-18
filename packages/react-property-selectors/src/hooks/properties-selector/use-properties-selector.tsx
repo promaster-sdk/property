@@ -88,11 +88,13 @@ export type UsePropertiesSelectorAmountFormat = {
 
 export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem>;
-  readonly getSelectorInfoBase: (property: TProperty) => SelectorRenderInfoBase;
+  // readonly getSelectorInfoBase: (property: TProperty) => SelectorRenderInfoBase;
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
+  // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   readonly isPropertyHidden: (property: TProperty) => boolean;
+  readonly isPropertyValid: (property: TProperty) => boolean;
 };
 
 export type UsePropertiesSelectorGroup<TProperty> = {
@@ -107,12 +109,9 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
   propertyNames: ReadonlyArray<string>
 ) => void;
 
-export type SelectorRenderInfoBase = {
-  readonly isValid: boolean;
-  // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
-  // This flag tells if is was supposed to be hidden
-  // readonly isHidden: boolean;
-};
+// export type SelectorRenderInfoBase = {
+//   // readonly isValid: boolean;
+// };
 
 export type SelectorRenderInfo<TItem> =
   | {
@@ -143,21 +142,20 @@ export function usePropertiesSelector<TItem, TProperty>(
     propertyComparer,
     getPropertyInfo,
     showCodes,
+    getItemFilter,
+    getItemValue,
   } = requiredOptions;
 
   const sortedArray = properties.slice().sort(propertyComparer);
 
-  const allSelectors1: ReadonlyArray<[
-    TProperty,
-    readonly [SelectorRenderInfoBase, SelectorRenderInfo<TItem>]
-  ]> = sortedArray
+  const allSelectors1: ReadonlyArray<[TProperty, SelectorRenderInfo<TItem>]> = sortedArray
     .map((p) => [p, getPropertyInfo(p)] as readonly [TProperty, PropertyInfo<TItem>])
     .filter(
       ([_, pi]) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
-    .map(([p, pi]) => [p, [createSelectorBase(pi, requiredOptions), createSelector(pi, requiredOptions)]]);
-  const allSelectors: Map<TProperty, readonly [SelectorRenderInfoBase, SelectorRenderInfo<TItem>]> = new Map();
+    .map(([p, pi]) => [p, createSelector(pi, requiredOptions)]);
+  const allSelectors: Map<TProperty, SelectorRenderInfo<TItem>> = new Map();
   for (const s of allSelectors1) {
     allSelectors.set(s[0], s[1]);
   }
@@ -165,8 +163,8 @@ export function usePropertiesSelector<TItem, TProperty>(
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
-    getSelectorInfo: (property) => allSelectors.get(property)![1],
-    getSelectorInfoBase: (property) => allSelectors.get(property)![0],
+    getSelectorInfo: (property) => allSelectors.get(property)!,
+    // getSelectorInfoBase: (property) => allSelectors.get(property)![0],
     getPropertyLabel: (property, propertyText) =>
       propertyText + (showCodes ? " (" + getPropertyInfo(property).name + ")" : ""),
     isPropertyHidden: (property) => {
@@ -176,6 +174,12 @@ export function usePropertiesSelector<TItem, TProperty>(
         valueComparer
       );
       return isHidden;
+    },
+    isPropertyValid: (property) => {
+      const pi = getPropertyInfo(property);
+      const selectedItemValue = PropertyValueSet.getValue(pi.name, selectedProperties);
+      const selectedItem = getSelectedItem(selectedItemValue, pi, getItemValue, valueComparer);
+      return getIsValid(pi, selectedItem, selectedProperties, valueComparer, getItemFilter);
     },
     groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
@@ -227,15 +231,17 @@ function createSelector<TItem, TProperty>(
   } = params;
 
   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
-  const selectedItem =
-    propertyInfo.items &&
-    propertyInfo.items.find((item) => {
-      const itemValue = getItemValue(item);
-      return (
-        (itemValue === undefined && selectedItemValue === undefined) ||
-        (itemValue && PropertyValue.equals(selectedItemValue, itemValue, valueComparer))
-      );
-    });
+  // const selectedItem =
+  //   propertyInfo.items &&
+  //   propertyInfo.items.find((item) => {
+  //     const itemValue = getItemValue(item);
+  //     return (
+  //       (itemValue === undefined && selectedItemValue === undefined) ||
+  //       (itemValue && PropertyValue.equals(selectedItemValue, itemValue, valueComparer))
+  //     );
+  //   });
+
+  const selectedItem = getSelectedItem(selectedItemValue, propertyInfo, getItemValue, valueComparer);
 
   // TODO: Better handling of format to use when the format is missing in the map
   const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
@@ -332,13 +338,38 @@ function createSelector<TItem, TProperty>(
   }
 }
 
-function createSelectorBase<TItem, TProperty>(
-  propertyInfo: PropertyInfo<TItem>,
-  params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
-): SelectorRenderInfoBase {
-  const { selectedProperties, valueComparer, getItemValue, getItemFilter } = params;
+// function createSelectorBase<TItem, TProperty>(
+//   propertyInfo: PropertyInfo<TItem>,
+//   params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
+// ): SelectorRenderInfoBase {
+//   const { selectedProperties, valueComparer, getItemValue, getItemFilter } = params;
 
-  const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
+//   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
+//   const selectedItem = getSelectedItem(selectedItemValue, propertyInfo, getItemValue, valueComparer);
+//   // const selectedItem =
+//   //   propertyInfo.items &&
+//   //   propertyInfo.items.find((item) => {
+//   //     const itemValue = getItemValue(item);
+//   //     return (
+//   //       (itemValue === undefined && selectedItemValue === undefined) ||
+//   //       (itemValue && PropertyValue.equals(selectedItemValue, itemValue, valueComparer))
+//   //     );
+//   //   });
+
+//   const isValid = getIsValid(propertyInfo, selectedItem, selectedProperties, valueComparer, getItemFilter);
+
+//   const myBase: SelectorRenderInfoBase = {
+//     isValid,
+//   };
+//   return myBase;
+// }
+
+function getSelectedItem<TItem>(
+  selectedItemValue: PropertyValue.PropertyValue,
+  propertyInfo: PropertyInfo<TItem>,
+  getItemValue: GetItemValue<TItem>,
+  valueComparer: PropertyValue.Comparer
+): TItem | undefined {
   const selectedItem =
     propertyInfo.items &&
     propertyInfo.items.find((item) => {
@@ -348,15 +379,7 @@ function createSelectorBase<TItem, TProperty>(
         (itemValue && PropertyValue.equals(selectedItemValue, itemValue, valueComparer))
       );
     });
-
-  const isValid = getIsValid(propertyInfo, selectedItem, selectedProperties, valueComparer, getItemFilter);
-  // const isHidden = !PropertyFilter.isValid(selectedProperties, propertyInfo.visibilityFilter, valueComparer);
-
-  const myBase: SelectorRenderInfoBase = {
-    isValid,
-    // isHidden,
-  };
-  return myBase;
+  return selectedItem;
 }
 
 function getDefaultFormat<TItem>(
