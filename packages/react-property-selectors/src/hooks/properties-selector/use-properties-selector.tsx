@@ -63,7 +63,7 @@ export type UsePropertiesSelectorOptions<TItem> = {
   // Comparer
   readonly valueComparer?: PropertyValue.Comparer;
   readonly itemComparer?: ItemComparer<TItem>;
-  // readonly propertyComparer: (a, b) => number;
+  readonly propertyComparer?: (a: PropertyInfo<TItem>, b: PropertyInfo<TItem>) => number;
 
   readonly sortValidFirst?: boolean;
 };
@@ -491,45 +491,46 @@ function isNullOrWhiteSpace(str: string): boolean {
 }
 
 function optionsWithDefaults<TItem>(
-  params: UsePropertiesSelectorOptions<TItem>
+  options: UsePropertiesSelectorOptions<TItem>
 ): Required<UsePropertiesSelectorOptions<TItem>> {
   return {
-    ...params,
+    ...options,
     filterPrettyPrint:
-      params.filterPrettyPrint ||
+      options.filterPrettyPrint ||
       ((propertyFilter: PropertyFilter.PropertyFilter) =>
         PropertyFiltering.filterPrettyPrintIndented(
-          PropertyFiltering.buildEnglishMessages(params.unitsFormat),
+          PropertyFiltering.buildEnglishMessages(options.unitsFormat),
           2,
           " ",
           propertyFilter,
-          params.unitsFormat,
-          params.unitLookup
+          options.unitsFormat,
+          options.unitLookup
         )),
 
-    showCodes: params.showCodes || false,
-    includeHiddenProperties: params.includeHiddenProperties || false,
-    autoSelectSingleValidValue: params.autoSelectSingleValidValue || true,
-    lockSingleValidValue: params.lockSingleValidValue || false,
+    showCodes: options.showCodes || false,
+    includeHiddenProperties: options.includeHiddenProperties || false,
+    autoSelectSingleValidValue: options.autoSelectSingleValidValue || true,
+    lockSingleValidValue: options.lockSingleValidValue || false,
     onChange:
-      params.onChange || ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
+      options.onChange || ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
     onPropertyFormatChanged:
-      params.onPropertyFormatChanged || ((_a: string, _b: Unit.Unit<unknown>, _c: number) => ({})),
-    onPropertyFormatCleared: params.onPropertyFormatCleared || ((_a: string) => ({})),
+      options.onPropertyFormatChanged || ((_a: string, _b: Unit.Unit<unknown>, _c: number) => ({})),
+    onPropertyFormatCleared: options.onPropertyFormatCleared || ((_a: string) => ({})),
 
-    valueMustBeNumericMessage: params.valueMustBeNumericMessage || "value_must_be_numeric",
-    valueIsRequiredMessage: params.valueIsRequiredMessage || "value_is_required",
+    valueMustBeNumericMessage: options.valueMustBeNumericMessage || "value_must_be_numeric",
+    valueIsRequiredMessage: options.valueIsRequiredMessage || "value_is_required",
 
-    readOnlyProperties: params.readOnlyProperties || [],
-    optionalProperties: params.optionalProperties || [],
-    propertyFormats: params.propertyFormats || {},
+    readOnlyProperties: options.readOnlyProperties || [],
+    optionalProperties: options.optionalProperties || [],
+    propertyFormats: options.propertyFormats || {},
 
-    inputDebounceTime: params.inputDebounceTime || 350,
+    inputDebounceTime: options.inputDebounceTime || 350,
 
-    initiallyClosedGroups: params.initiallyClosedGroups || [],
+    initiallyClosedGroups: options.initiallyClosedGroups || [],
 
-    valueComparer: params.valueComparer || PropertyValue.defaultComparer,
-    sortValidFirst: params.sortValidFirst || false,
-    itemComparer: params.itemComparer || (() => 0),
+    valueComparer: options.valueComparer || PropertyValue.defaultComparer,
+    sortValidFirst: options.sortValidFirst || false,
+    itemComparer: options.itemComparer || (() => 0),
+    propertyComparer: options.propertyComparer || (() => 0),
   };
 }
