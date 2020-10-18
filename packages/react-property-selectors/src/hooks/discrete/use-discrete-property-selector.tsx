@@ -87,7 +87,13 @@ export function useDiscretePropertySelector<TItem>(
   return {
     selectedItem,
     disabled,
-    getItemLabel: (text, item) => getItemLabel(text, getItemValue(item), showCodes),
+    getItemLabel: (text, item) =>
+      getItemLabel(
+        text,
+        getItemValue(item),
+        isValueItemValid(propertyName, propertyValueSet, getItemFilter(item), getItemValue(item), valueComparer),
+        showCodes
+      ),
     getItemValue: (item) => getItemValueAsString(getItemValue(item)),
     getItemToolTip: (item) => getItemToolTip(hookOptions, getItemFilter(item), getItemValue(item)),
     isOpen,
@@ -210,11 +216,11 @@ function getItemToolTip<TItem>(
   return isItemValid ? "" : options.filterPrettyPrint(itemFilter);
 }
 
-function getItemLabel(itemText: string, itemValue: ItemValue, showCodes: boolean): string {
+function getItemLabel(itemText: string, itemValue: ItemValue, isItemValid: boolean, showCodes: boolean): string {
   if (itemValue === undefined || itemValue === null) {
     return "";
   }
-  return itemText + (showCodes ? ` (${PropertyValue.toString(itemValue)}) ` : "");
+  return (isItemValid ? "" : "✘ ") + itemText + (showCodes ? ` (${PropertyValue.toString(itemValue)}) ` : "");
 }
 
 function getItemValueAsString(itemValue: ItemValue): string {

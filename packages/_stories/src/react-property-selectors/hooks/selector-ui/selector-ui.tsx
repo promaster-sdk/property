@@ -75,7 +75,9 @@ export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
       {sel.items.map((item) => (
-        <option {...sel.getOptionProps(item)} style={getDefaultOptionStyle(sel, item)} label={item.text} />
+        <option {...sel.getOptionProps(item)} style={getDefaultOptionStyle(sel, item)}>
+          {sel.getItemLabel(item.text, item)}
+        </option>
       ))}
     </select>
   );
