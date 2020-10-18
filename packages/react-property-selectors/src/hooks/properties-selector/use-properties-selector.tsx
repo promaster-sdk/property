@@ -7,9 +7,9 @@ import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemCompa
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
-export type UsePropertiesSelectorOptions<TItem, TPropertyInfo = PropertyInfo<TItem>> = {
+export type UsePropertiesSelectorOptions<TItem, TProperty = PropertyInfo<TItem>> = {
   // Required inputs
-  readonly propertyInfos: ReadonlyArray<TPropertyInfo>;
+  readonly properties: ReadonlyArray<TProperty>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
 
   // Used to print error messages
@@ -139,15 +139,9 @@ export function usePropertiesSelector<TItem>(
 ): UsePropertiesSelector<TItem> {
   const requiredOptions = optionsWithDefaults(options);
 
-  const {
-    propertyInfos,
-    selectedProperties,
-    includeHiddenProperties,
-    valueComparer,
-    propertyComparer,
-  } = requiredOptions;
+  const { properties, selectedProperties, includeHiddenProperties, valueComparer, propertyComparer } = requiredOptions;
 
-  const sortedArray = propertyInfos
+  const sortedArray = properties
     .slice()
     // .sort((a, b) => (a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0));
     .sort(propertyComparer);
@@ -188,7 +182,7 @@ function createSelector<TItem>(
     selectedProperties,
     propertyFormats,
     valueComparer,
-    propertyInfos,
+    properties,
     autoSelectSingleValidValue,
     showCodes,
     inputDebounceTime,
@@ -242,7 +236,7 @@ function createSelector<TItem>(
   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
   const propertyOnChange = handleChange(
     onChange,
-    propertyInfos,
+    properties,
     autoSelectSingleValidValue,
     valueComparer,
     getItemValue,
