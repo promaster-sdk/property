@@ -33,7 +33,7 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly lockSingleValidValue?: boolean;
 
   // Events
-  readonly onChange?: UsePropertiesSelectorOnPropertiesChanged;
+  readonly onChange?: OnPropertiesChanged;
   readonly onPropertyFormatChanged?: (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
   readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
@@ -103,7 +103,7 @@ export type PropertiesSelectorGroup<TProperty> = {
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
-export type UsePropertiesSelectorOnPropertiesChanged = (
+export type OnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
 ) => void;
@@ -423,7 +423,7 @@ function shouldBeLocked<TItem>(
 }
 
 function handleChange<TItem, TPropety>(
-  externalOnChange: UsePropertiesSelectorOnPropertiesChanged,
+  externalOnChange: OnPropertiesChanged,
   productProperties: ReadonlyArray<TPropety>,
   autoSelectSingleValidValue: boolean,
   comparer: PropertyValue.Comparer,
