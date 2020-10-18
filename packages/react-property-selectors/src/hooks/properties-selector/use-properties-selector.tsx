@@ -88,6 +88,7 @@ export type UsePropertiesSelectorAmountFormat = {
 
 export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem>;
+  readonly getSelectorInfoBase: (property: TProperty) => SelectorRenderInfoBase;
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
 };
 
@@ -114,18 +115,18 @@ export type SelectorRenderInfoBase = {
 };
 
 export type SelectorRenderInfo<TItem> =
-  | ({
+  | {
       readonly type: "Discrete";
       readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TItem>;
-    } & SelectorRenderInfoBase)
-  | ({
+    }
+  | {
       readonly type: "AmountField";
       readonly getUseAmountOptions: () => UseAmountPropertySelectorOptions;
-    } & SelectorRenderInfoBase)
-  | ({
+    }
+  | {
       readonly type: "TextBox";
       readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
-    } & SelectorRenderInfoBase);
+    };
 
 export type UsePropertiesSelectorPropertySelectorType<TItem> = SelectorRenderInfo<TItem>["type"];
 
@@ -145,14 +146,14 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   const sortedArray = properties.slice().sort(propertyComparer);
 
-  const allSelectors1: ReadonlyArray<[TProperty, SelectorRenderInfo<TItem>]> = sortedArray
+  const allSelectors1: ReadonlyArray<[TProperty, SelectorRenderInfo<TItem> & SelectorRenderInfoBase]> = sortedArray
     .map((p) => [p, getPropertyInfo(p)] as readonly [TProperty, PropertyInfo<TItem>])
     .filter(
       ([_, pi]) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
     .map(([p, pi]) => [p, createSelector(pi, requiredOptions)]);
-  const allSelectors: Map<TProperty, SelectorRenderInfo<TItem>> = new Map();
+  const allSelectors: Map<TProperty, SelectorRenderInfo<TItem> & SelectorRenderInfoBase> = new Map();
   for (const s of allSelectors1) {
     allSelectors.set(s[0], s[1]);
   }
@@ -161,6 +162,7 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   return {
     getSelectorInfo: (property) => allSelectors.get(property)!,
+    getSelectorInfoBase: (property) => allSelectors.get(property)!,
     groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
       const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (name || ""));
@@ -182,7 +184,7 @@ export function usePropertiesSelector<TItem, TProperty>(
 function createSelector<TItem, TProperty>(
   propertyInfo: PropertyInfo<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
-): SelectorRenderInfo<TItem> {
+): SelectorRenderInfoBase & SelectorRenderInfo<TItem> {
   const {
     selectedProperties,
     propertyFormats,

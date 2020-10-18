@@ -65,15 +65,16 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                   {!group.isClosed &&
                     group.properties.map((property) => {
                       const selector = sel.getSelectorInfo(property);
+                      const selectorBase = sel.getSelectorInfoBase(property);
                       return (
-                        <tr key={selector.propertyName}>
+                        <tr key={selectorBase.propertyName}>
                           <td>
                             <label
-                              className={!selector.isValid ? "invalid" : undefined}
-                              title={translatePropertyName(selector.propertyName)}
+                              className={!selectorBase.isValid ? "invalid" : undefined}
+                              title={translatePropertyName(selectorBase.propertyName)}
                             >
-                              <span className={selector.isHidden ? "hidden-property" : ""}>
-                                {selector.getPropertyLabel(translatePropertyName(selector.propertyName))}
+                              <span className={selectorBase.isHidden ? "hidden-property" : ""}>
+                                {selectorBase.getPropertyLabel(translatePropertyName(selectorBase.propertyName))}
                               </span>
                             </label>
                           </td>
