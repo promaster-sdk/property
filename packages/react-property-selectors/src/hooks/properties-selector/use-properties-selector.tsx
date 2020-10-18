@@ -147,10 +147,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     p,
     createSelector(getPropertyInfo(p), requiredOptions),
   ]);
-  const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map();
-  for (const s of allSelectors1) {
-    selectorHookMap.set(s[0], s[1]);
-  }
+  const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map(allSelectors1);
 
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
