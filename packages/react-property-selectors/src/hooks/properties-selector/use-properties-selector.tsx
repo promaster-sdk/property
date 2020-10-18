@@ -111,15 +111,14 @@ export type SelectorRenderInfoBase = {
   readonly isHidden: boolean;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (propertyText: string) => string;
-  // readonly property: TProperty;
 };
 
 type SelectorRenderInfoBaseInternal = SelectorRenderInfoBase & {
-  readonly groupName: string;
+  // readonly groupName: string;
 };
 
 type SelectorRenderInfoInternal<TItem> = SelectorRenderInfo<TItem> & {
-  readonly groupName: string;
+  // readonly groupName: string;
 };
 
 export type SelectorRenderInfo<TItem> =
@@ -170,12 +169,9 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   return {
     getSelectorInfo: (property) => allSelectors.get(property)!,
-    groups: getDistinctGroupNames(Array.from(allSelectors.values())).map((name) => {
-      // const selectorsArray = Array.from(allSelectors.values());
+    groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
-      // const selectors = selectorsArray.filter((selector) => selector.groupName === (name || ""));
       const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (name || ""));
-      // const groupProperties = selectors.map((s) => allSelectors[s]);
       return {
         name,
         isClosed,
@@ -185,7 +181,6 @@ export function usePropertiesSelector<TItem, TProperty>(
               closedGroups.indexOf(name) >= 0 ? closedGroups.filter((g) => g !== name) : [...closedGroups, name]
             ),
         }),
-        // selectors,
         properties: groupProperties,
       };
     }),
@@ -247,7 +242,7 @@ function createSelector<TItem, TProperty>(
 
   const myBase: SelectorRenderInfoBaseInternal = {
     propertyName: propertyInfo.name,
-    groupName: propertyInfo.group,
+    // groupName: propertyInfo.group,
     isValid,
     isHidden,
     getPropertyLabel: (propertyText) => propertyText + (showCodes ? " (" + propertyInfo.name + ")" : ""),
@@ -497,17 +492,20 @@ function getSingleValidItemOrUndefined<TItem>(
   return undefined;
 }
 
-function getDistinctGroupNames<TItem>(
-  productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal<TItem>>
+function getDistinctGroupNames<TItem, TProperty>(
+  properties: ReadonlyArray<TProperty>,
+  // productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal<TItem>>
+  getPropertyInfo: GetPropertyInfo<TItem, TProperty>
 ): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
-  for (const property of productPropertiesArray) {
+  for (const property2 of properties) {
+    const pi = getPropertyInfo(property2);
     // let groupName = property.groupName;
-    if (isNullOrWhiteSpace(property.groupName)) {
+    if (isNullOrWhiteSpace(pi.group)) {
       // groupName = "";
     }
-    if (groupNames.indexOf(property.groupName) === -1) {
-      groupNames.push(property.groupName);
+    if (groupNames.indexOf(pi.group) === -1) {
+      groupNames.push(pi.group);
     }
   }
   return groupNames;
