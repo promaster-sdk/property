@@ -8,6 +8,14 @@ import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
 export type GetPropertyInfo<TItem, TProperty> = (property: TProperty) => PropertyInfo<TItem>;
+export type OnPropertiesChanged = (
+  properties: PropertyValueSet.PropertyValueSet,
+  propertyNames: ReadonlyArray<string>
+) => void;
+export type UsePropertiesSelectorAmountFormat = {
+  readonly unit: Unit.Unit<unknown>;
+  readonly decimalCount: number;
+};
 
 export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   // Required inputs
@@ -81,11 +89,6 @@ export type PropertyInfo<TItem> = {
   readonly items: ReadonlyArray<TItem>;
 };
 
-export type UsePropertiesSelectorAmountFormat = {
-  readonly unit: Unit.Unit<unknown>;
-  readonly decimalCount: number;
-};
-
 export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getPropertySelectorHook: (property: TProperty) => PropertySelectorHookInfo<TItem>;
   readonly groups: ReadonlyArray<PropertiesSelectorGroup<TProperty>>;
@@ -102,11 +105,6 @@ export type PropertiesSelectorGroup<TProperty> = {
   readonly properties: ReadonlyArray<TProperty>;
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
-
-export type OnPropertiesChanged = (
-  properties: PropertyValueSet.PropertyValueSet,
-  propertyNames: ReadonlyArray<string>
-) => void;
 
 export type PropertySelectorHookInfo<TItem> =
   | {
