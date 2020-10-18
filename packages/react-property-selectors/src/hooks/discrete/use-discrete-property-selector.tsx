@@ -27,9 +27,8 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
 };
 
 export type DiscreteItem = {
-  // readonly value: PropertyValue.PropertyValue | undefined | null;
   readonly text: string;
-  readonly validationFilter: PropertyFilter.PropertyFilter;
+  // readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
 export type DiscretePropertySelector<TItem extends DiscreteItem> = {

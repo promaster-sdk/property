@@ -10,6 +10,7 @@ export type MyItem = DiscreteItem & {
   readonly sortNo: number;
   readonly image?: string;
   readonly value: PropertyValue.PropertyValue | undefined | null;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
 export function exampleProductProperties(): {
