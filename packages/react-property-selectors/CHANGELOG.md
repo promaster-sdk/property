@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@7.0.0...master)
 
+## Changed
+
+- Added generic DiscretePropertySelector hooks and removed specific hooks for Checkbox, Combobox, ImageCombo, RadioGroup.
+- Move hook for usePropertiesSelector from package react-properties-selector to package react-property-selectores. Now all hooks are in the same package and the react-properties-selector package is deprecated.
+
 ## [v7.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@6.0.0...@promaster-sdk%2Freact-property-selectors@7.0.0) - 2020-10-15
 
 ### Added

@@ -16,7 +16,7 @@ export type UseAmountInputBoxOptions = {
   readonly notNumericMessage: string;
   readonly isRequiredMessage: string;
   readonly errorMessage: string;
-  readonly readonly: boolean;
+  readonly readOnly: boolean;
   readonly onValueChange: (newAmount: Amount.Amount<unknown>) => void;
   readonly onFocus?: () => void;
   readonly onBlur?: () => void;
@@ -24,7 +24,7 @@ export type UseAmountInputBoxOptions = {
 };
 
 export type UseAmountInputBox = {
-  readonly readonly: boolean;
+  readonly readOnly: boolean;
   readonly effectiveErrorMessage: string;
   readonly getInputProps: () => React.InputHTMLAttributes<HTMLInputElement>;
 };
@@ -36,7 +36,7 @@ type State = {
 };
 
 export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountInputBox {
-  const { readonly, onBlur, onFocus, onValueChange, debounceTime } = options;
+  const { readOnly, onBlur, onFocus, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
 
   // Re-init state if specific params change
@@ -67,13 +67,13 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
 
   const { effectiveErrorMessage, textValue } = state;
   return {
-    readonly,
+    readOnly,
     effectiveErrorMessage,
     getInputProps: () => ({
       type: "text",
       value: textValue,
       title: effectiveErrorMessage,
-      readonly,
+      readOnly,
       onBlur: onBlur,
       onFocus: onFocus,
       onChange: (e) => _onChange(debouncedOnValueChange, setState, options, e),
@@ -83,7 +83,7 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
 
 export function getDefaultAmountInputBoxStyle(selector: UseAmountInputBox): {} {
   return {
-    color: !selector.readonly && selector.effectiveErrorMessage ? "red" : "black",
+    color: !selector.readOnly && selector.effectiveErrorMessage ? "red" : "black",
     height: "30px",
     border: "1px solid #b4b4b4",
     borderRadius: "3px",
@@ -96,8 +96,8 @@ export function getDefaultAmountInputBoxStyle(selector: UseAmountInputBox): {} {
   };
 }
 
-function inputInvalidLocked({ readonly, effectiveErrorMessage }: UseAmountInputBox): {} {
-  if (readonly && effectiveErrorMessage) {
+function inputInvalidLocked({ readOnly, effectiveErrorMessage }: UseAmountInputBox): {} {
+  if (readOnly && effectiveErrorMessage) {
     return {
       background: "lightgray",
       color: "red",
@@ -107,8 +107,8 @@ function inputInvalidLocked({ readonly, effectiveErrorMessage }: UseAmountInputB
   return {};
 }
 
-function inputLocked({ readonly, effectiveErrorMessage }: UseAmountInputBox): {} {
-  if (readonly && !effectiveErrorMessage) {
+function inputLocked({ readOnly, effectiveErrorMessage }: UseAmountInputBox): {} {
+  if (readOnly && !effectiveErrorMessage) {
     return {
       background: "lightgray",
       color: "darkgray",

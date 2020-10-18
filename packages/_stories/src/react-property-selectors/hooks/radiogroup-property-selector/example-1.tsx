@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { Unit } from "uom";
-import {
-  getDefaultRadioItemStyle,
-  RadioGroupPropertyValueItem,
-  UseRadioGroupPropertySelector,
-  useRadioGroupPropertySelector,
-} from "@promaster-sdk/react-property-selectors";
+import { RadioGroupPropertyValueItem, useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { unitsFormat, units } from "../../units-map";
+import { MyDiscreteRadioGroupSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
 
@@ -55,26 +51,35 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
     },
   ];
 
-  const selA = useRadioGroupPropertySelector({
+  const undefinedValueItem = {
+    value: undefined,
+    sortNo: -1,
+    text: "",
+    validationFilter: PropertyFilter.Empty,
+  };
+
+  const selA = useDiscretePropertySelector({
     propertyName: "a",
-    valueItems: valueItems1,
+    items: valueItems1,
     propertyValueSet: state,
-    locked: false,
-    showCodes: true,
     onValueChange: (pv) => setState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state)),
+    getUndefinedValueItem: () => undefinedValueItem,
+    showCodes: true,
     filterPrettyPrint: filterPrettyPrint,
-    readOnly: false,
+    getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
-  const selB = useRadioGroupPropertySelector({
+  const selB = useDiscretePropertySelector({
     propertyName: "b",
-    valueItems: valueItems2,
+    items: valueItems2,
     propertyValueSet: state,
-    locked: false,
-    showCodes: true,
     onValueChange: (pv) => setState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, state)),
+    getUndefinedValueItem: () => undefinedValueItem,
+    showCodes: true,
     filterPrettyPrint: filterPrettyPrint,
-    readOnly: false,
+    getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
   console.log(selB);
@@ -84,22 +89,9 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
       <div>ComboboxPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(state)}</div>
       <div>
-        <MyRadioGroupSelector {...selA} />
-        <MyRadioGroupSelector {...selB} />
+        <MyDiscreteRadioGroupSelector {...selA} />
+        <MyDiscreteRadioGroupSelector {...selB} />
       </div>
-    </div>
-  );
-}
-
-function MyRadioGroupSelector(sel: UseRadioGroupPropertySelector): JSX.Element {
-  return (
-    <div {...sel.getGroupProps()}>
-      {sel.items.map((item) => (
-        <div {...item.getItemProps()} title={item.toolTip} style={getDefaultRadioItemStyle(item)}>
-          {item.imageUrl ? <img src={item.imageUrl} /> : undefined}
-          {item.label}
-        </div>
-      ))}
     </div>
   );
 }
