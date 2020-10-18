@@ -31,7 +31,7 @@ export function exampleProductProperties(): {
         quantity: "Length",
         validationFilter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
-        valueItems: [],
+        items: [],
       },
       {
         sortNo: 2,
@@ -40,7 +40,7 @@ export function exampleProductProperties(): {
         quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
-        valueItems: [
+        items: [
           {
             sortNo: 10,
             value: PropertyValue.fromInteger(1),
@@ -63,7 +63,7 @@ export function exampleProductProperties(): {
         quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
-        valueItems: [
+        items: [
           {
             sortNo: 10,
             value: PropertyValue.fromInteger(1),
@@ -92,7 +92,7 @@ export function exampleProductProperties(): {
         quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
-        valueItems: [
+        items: [
           {
             sortNo: 10,
             value: PropertyValue.fromInteger(1),
@@ -121,7 +121,7 @@ export function exampleProductProperties(): {
         quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
-        valueItems: [
+        items: [
           {
             sortNo: 0,
             value: PropertyValue.fromInteger(0),

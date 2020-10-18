@@ -74,7 +74,7 @@ export type UsePropertiesSelectorProperty<TItem> = {
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
-  readonly valueItems: ReadonlyArray<TItem>;
+  readonly items: ReadonlyArray<TItem>;
 };
 
 export type UsePropertiesSelectorAmountFormat = {
@@ -202,8 +202,8 @@ function createSelector<TItem>(
 
   const selectedItemValue = PropertyValueSet.getValue(property.name, selectedProperties);
   const selectedItem =
-    property.valueItems &&
-    property.valueItems.find((item) => {
+    property.items &&
+    property.items.find((item) => {
       const itemValue = getItemValue(item);
       return (
         (itemValue === undefined && selectedItemValue === undefined) ||
@@ -241,7 +241,7 @@ function createSelector<TItem>(
   const fieldName = property.fieldName || property.name;
   const propertyName = property.name;
   const validationFilter = property.validationFilter;
-  const valueItems = property.valueItems;
+  const valueItems = property.items;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
       ? shouldBeLocked(selectedItem, property, selectedProperties, comparer, getItemFilter)
@@ -454,7 +454,7 @@ function getSingleValidItemOrUndefined<TItem>(
 ): TItem | undefined {
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: Array<TItem> = [];
-    for (const productValueItem of productProperty.valueItems) {
+    for (const productValueItem of productProperty.items) {
       const isValid = PropertyFilter.isValid(properties, getItemFilter(productValueItem), comparer);
 
       if (isValid) {
