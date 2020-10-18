@@ -88,7 +88,6 @@ export type UsePropertiesSelectorAmountFormat = {
 
 export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem>;
-  // readonly getSelectorInfoBase: (property: TProperty) => SelectorRenderInfoBase;
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
@@ -108,10 +107,6 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
 ) => void;
-
-// export type SelectorRenderInfoBase = {
-//   // readonly isValid: boolean;
-// };
 
 export type SelectorRenderInfo<TItem> =
   | {
@@ -164,7 +159,6 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   return {
     getSelectorInfo: (property) => allSelectors.get(property)!,
-    // getSelectorInfoBase: (property) => allSelectors.get(property)![0],
     getPropertyLabel: (property, propertyText) =>
       propertyText + (showCodes ? " (" + getPropertyInfo(property).name + ")" : ""),
     isPropertyHidden: (property) => {
@@ -231,16 +225,6 @@ function createSelector<TItem, TProperty>(
   } = params;
 
   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
-  // const selectedItem =
-  //   propertyInfo.items &&
-  //   propertyInfo.items.find((item) => {
-  //     const itemValue = getItemValue(item);
-  //     return (
-  //       (itemValue === undefined && selectedItemValue === undefined) ||
-  //       (itemValue && PropertyValue.equals(selectedItemValue, itemValue, valueComparer))
-  //     );
-  //   });
-
   const selectedItem = getSelectedItem(selectedItemValue, propertyInfo, getItemValue, valueComparer);
 
   // TODO: Better handling of format to use when the format is missing in the map
@@ -337,32 +321,6 @@ function createSelector<TItem, TProperty>(
       return exhaustiveCheck(selectorType, true);
   }
 }
-
-// function createSelectorBase<TItem, TProperty>(
-//   propertyInfo: PropertyInfo<TItem>,
-//   params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
-// ): SelectorRenderInfoBase {
-//   const { selectedProperties, valueComparer, getItemValue, getItemFilter } = params;
-
-//   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
-//   const selectedItem = getSelectedItem(selectedItemValue, propertyInfo, getItemValue, valueComparer);
-//   // const selectedItem =
-//   //   propertyInfo.items &&
-//   //   propertyInfo.items.find((item) => {
-//   //     const itemValue = getItemValue(item);
-//   //     return (
-//   //       (itemValue === undefined && selectedItemValue === undefined) ||
-//   //       (itemValue && PropertyValue.equals(selectedItemValue, itemValue, valueComparer))
-//   //     );
-//   //   });
-
-//   const isValid = getIsValid(propertyInfo, selectedItem, selectedProperties, valueComparer, getItemFilter);
-
-//   const myBase: SelectorRenderInfoBase = {
-//     isValid,
-//   };
-//   return myBase;
-// }
 
 function getSelectedItem<TItem>(
   selectedItemValue: PropertyValue.PropertyValue,
