@@ -9,6 +9,7 @@ import { CheckboxPropertySelectorExample1Hooks } from "./checkbox-property-selec
 import { AmountFormatSelectorExample1Hooks } from "./amount-format-selector/example-1-hooks";
 import { AmountPropertySelectorExample1Hooks } from "./amount-property-selector/example-1-hooks";
 import { RadioGroupPropertySelectorExample1 } from "./radiogroup-property-selector/example-1";
+import { PropertiesSelectorExample1 } from "./properties-selector/example-1";
 
 // storiesOf("Welcome", module).add("to Storybook", () => (
 //   <Welcome showApp={linkTo("Button")} />
@@ -21,6 +22,8 @@ import { RadioGroupPropertySelectorExample1 } from "./radiogroup-property-select
 //   .add("with some emoji", () => (
 //     <Button onClick={action("clicked")}>😀 😎 👍 💯</Button>
 //   ));
+
+storiesOf("HOOKS: Properties Selector", module).add("example 1", () => <PropertiesSelectorExample1 />);
 
 storiesOf("HOOKS: Amount Format Selector", module).add("example 1", () => <AmountFormatSelectorExample1Hooks />);
 

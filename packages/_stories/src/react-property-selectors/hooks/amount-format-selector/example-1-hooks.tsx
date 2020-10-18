@@ -33,7 +33,7 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     inputUnit: state.selectedUnit,
     inputDecimalCount: state.selectedDecimalCount,
     onValueChange,
-    readonly: false,
+    readOnly: false,
     errorMessage: "",
     isRequiredMessage: "Is required",
     notNumericMessage: "Not numeric",

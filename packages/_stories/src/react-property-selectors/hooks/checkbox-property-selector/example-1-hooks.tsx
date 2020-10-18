@@ -1,13 +1,8 @@
-/* eslint-disable functional/no-this-expression */
 import React, { useState } from "react";
 import { BaseUnits, Unit } from "uom";
-import {
-  CheckboxPropertyValueItem,
-  getDefaultCheckboxContainerStyle,
-  getDefaultCheckboxStyle,
-  useCheckboxPropertySelector,
-} from "@promaster-sdk/react-property-selectors";
+import { CheckboxPropertyValueItem, useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
+import { MyDiscreteCheckboxSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
 
@@ -29,16 +24,21 @@ export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
     },
   ];
 
-  const selA = useCheckboxPropertySelector({
+  const undefinedValueItem = {
+    value: undefined,
+    sortNo: -1,
+    text: "",
+    validationFilter: PropertyFilter.Empty,
+  };
+  const selA = useDiscretePropertySelector({
     propertyName: "a",
-    valueItems: valueItems1,
+    items: valueItems1,
     propertyValueSet: myState,
-    locked: false,
-    showCodes: true,
     onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
-
-    filterPrettyPrint: () => "",
-    readOnly: false,
+    getUndefinedValueItem: () => undefinedValueItem,
+    showCodes: true,
+    getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
   return (
@@ -46,11 +46,7 @@ export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
       <div>CheckboxPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(myState)}</div>
       <div>
-        <div {...selA.getContainerDivProps()} style={getDefaultCheckboxContainerStyle()}>
-          {selA.image && <img src={selA.image} />}
-          <div>{selA.label}</div>
-          <div {...selA.getCheckboxDivProps()} style={getDefaultCheckboxStyle(selA)} />
-        </div>
+        <MyDiscreteCheckboxSelector {...selA} />
       </div>
     </div>
   );
