@@ -35,6 +35,31 @@ The [storybooks stories](https://github.com/promaster-sdk/property/tree/master/p
 
 ## Available hooks
 
+### usePropertiesSelector
+
+```ts
+const sel = usePropertiesSelector<MyItem, MyPropertyInfo>({
+  units,
+  unitsFormat,
+  unitLookup,
+  properties: propInfo.properties,
+  selectedProperties: pvs,
+  onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
+    setPvs(properties);
+  },
+  getUndefinedValueItem: () => ({
+    value: undefined,
+    sortNo: -1,
+    text: "",
+    validationFilter: PropertyFilter.Empty,
+  }),
+  showCodes,
+  getItemValue: (item) => item.value,
+  getItemFilter: (item) => item.validationFilter,
+  getPropertyInfo: (p) => p,
+});
+```
+
 ### useAmountInputBox
 
 ```ts
