@@ -7,7 +7,7 @@ import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemCompa
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
-export type GetPropertyInfo<TItem, TProperty> = (property: TProperty) => PropertyInfo<TItem>;
+export type GetPropertyInfo<TProperty> = (property: TProperty) => PropertyInfo;
 export type GetPropertyItems<TItem, TProperty> = (property: TProperty) => ReadonlyArray<TItem>;
 export type OnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
@@ -21,7 +21,7 @@ export type UsePropertiesSelectorAmountFormat = {
 export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   // Required inputs
   readonly properties: ReadonlyArray<TProperty>;
-  readonly getPropertyInfo: GetPropertyInfo<TItem, TProperty>;
+  readonly getPropertyInfo: GetPropertyInfo<TProperty>;
   readonly getPropertyItems: GetPropertyItems<TItem, TProperty>;
 
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
@@ -82,14 +82,13 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly sortValidFirst?: boolean;
 };
 
-export type PropertyInfo<_TItem> = {
+export type PropertyInfo = {
   readonly fieldName?: string;
   readonly name: string;
   readonly group: string;
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
-  // readonly items: ReadonlyArray<TItem>;
 };
 
 export type UsePropertiesSelector<TItem, TProperty> = {
@@ -341,8 +340,8 @@ function getSelectedItem<TItem, TProperty>(
   return selectedItem;
 }
 
-function getDefaultFormat<TItem>(
-  property: PropertyInfo<TItem>,
+function getDefaultFormat(
+  property: PropertyInfo,
   selectedValue: PropertyValue.PropertyValue
 ): UsePropertiesSelectorAmountFormat {
   const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
@@ -364,7 +363,7 @@ function getDefaultFormat<TItem>(
 }
 
 function getIsValid<TItem>(
-  property: PropertyInfo<TItem>,
+  property: PropertyInfo,
   selectedValueItem: TItem | undefined,
   selectedProperties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
@@ -384,10 +383,10 @@ function getIsValid<TItem>(
   }
 }
 
-function getSelectorType<TItem>(property: PropertyInfo<TItem>): PropertySelectorHookInfo<TItem>["type"] {
-  if (property.quantity === "Text") {
+function getSelectorType<TItem>(propertyInfo: PropertyInfo): PropertySelectorHookInfo<TItem>["type"] {
+  if (propertyInfo.quantity === "Text") {
     return "TextBox";
-  } else if (property.quantity === "Discrete") {
+  } else if (propertyInfo.quantity === "Discrete") {
     return "Discrete";
   } else {
     return "AmountField";
@@ -408,7 +407,7 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
 function shouldBeLocked<TItem>(
   selectedValueItem: TItem | undefined,
   propertyItems: ReadonlyArray<TItem>,
-  propertyInfo: PropertyInfo<TItem>,
+  propertyInfo: PropertyInfo,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
@@ -437,7 +436,7 @@ function handleChange<TItem, TPropety>(
   comparer: PropertyValue.Comparer,
   getItemValue: GetItemValue<TItem>,
   getItemFilter: GetItemFilter<TItem>,
-  getPropertyInfo: GetPropertyInfo<TItem, TPropety>,
+  getPropertyInfo: GetPropertyInfo<TPropety>,
   getPropertyItems: GetPropertyItems<TItem, TPropety>
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
   return (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => {
@@ -483,7 +482,7 @@ function handleChange<TItem, TPropety>(
 
 function getSingleValidItemOrUndefined<TItem>(
   propertyItems: ReadonlyArray<TItem>,
-  propertyInfo: PropertyInfo<TItem>,
+  propertyInfo: PropertyInfo,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
@@ -504,7 +503,7 @@ function getSingleValidItemOrUndefined<TItem>(
   return undefined;
 }
 
-function getDistinctGroupNames<TItem>(pis: ReadonlyArray<PropertyInfo<TItem>>): ReadonlyArray<string> {
+function getDistinctGroupNames(pis: ReadonlyArray<PropertyInfo>): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const pi of pis) {
     // let groupName = property.groupName;
