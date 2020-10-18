@@ -137,7 +137,14 @@ export function usePropertiesSelector<TItem, TProperty>(
     getItemValue,
   } = requiredOptions;
 
-  const properties = propertiesUnsorted.slice().sort(propertyComparer);
+  // Get sorted properties and only include the ones that should be visible
+  const properties = propertiesUnsorted
+    .slice()
+    .sort(propertyComparer)
+    .filter((property) => {
+      const pi = getPropertyInfo(property);
+      return includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer);
+    });
 
   const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map(
     properties.map((p) => [p, createSelectorHookInfo(getPropertyInfo(p), requiredOptions)])
@@ -165,14 +172,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     },
     groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
-      const groupProperties = properties
-        .filter((property) => {
-          const pi = getPropertyInfo(property);
-          return (
-            includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
-          );
-        })
-        .filter((property) => getPropertyInfo(property).group === (name || ""));
+      const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (name || ""));
       return {
         name,
         isClosed,
