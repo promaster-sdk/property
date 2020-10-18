@@ -150,15 +150,15 @@ export function usePropertiesSelector<TItem, TProperty>(
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
     .map(([p, pi]) => [p, createSelector(pi, requiredOptions)]);
-  const allSelectors: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map();
+  const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map();
   for (const s of allSelectors1) {
-    allSelectors.set(s[0], s[1]);
+    selectorHookMap.set(s[0], s[1]);
   }
 
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
-    getPropertySelectorHook: (property) => allSelectors.get(property)!,
+    getPropertySelectorHook: (property) => selectorHookMap.get(property)!,
     getPropertyLabel: (property, propertyText) =>
       propertyText + (showCodes ? " (" + getPropertyInfo(property).name + ")" : ""),
     isPropertyHidden: (property) => {
