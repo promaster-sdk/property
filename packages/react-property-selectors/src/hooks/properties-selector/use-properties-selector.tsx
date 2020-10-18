@@ -92,6 +92,7 @@ export type UsePropertiesSelector<TItem, TProperty> = {
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
+  readonly isPropertyHidden: (property: TProperty) => boolean;
 };
 
 export type UsePropertiesSelectorGroup<TProperty> = {
@@ -107,11 +108,10 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
 ) => void;
 
 export type SelectorRenderInfoBase = {
-  // readonly propertyName: string;
   readonly isValid: boolean;
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   // This flag tells if is was supposed to be hidden
-  readonly isHidden: boolean;
+  // readonly isHidden: boolean;
 };
 
 export type SelectorRenderInfo<TItem> =
@@ -169,6 +169,14 @@ export function usePropertiesSelector<TItem, TProperty>(
     getSelectorInfoBase: (property) => allSelectors.get(property)![0],
     getPropertyLabel: (property, propertyText) =>
       propertyText + (showCodes ? " (" + getPropertyInfo(property).name + ")" : ""),
+    isPropertyHidden: (property) => {
+      const isHidden = !PropertyFilter.isValid(
+        selectedProperties,
+        getPropertyInfo(property).visibilityFilter,
+        valueComparer
+      );
+      return isHidden;
+    },
     groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
       const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (name || ""));
@@ -342,11 +350,11 @@ function createSelectorBase<TItem, TProperty>(
     });
 
   const isValid = getIsValid(propertyInfo, selectedItem, selectedProperties, valueComparer, getItemFilter);
-  const isHidden = !PropertyFilter.isValid(selectedProperties, propertyInfo.visibilityFilter, valueComparer);
+  // const isHidden = !PropertyFilter.isValid(selectedProperties, propertyInfo.visibilityFilter, valueComparer);
 
   const myBase: SelectorRenderInfoBase = {
     isValid,
-    isHidden,
+    // isHidden,
   };
   return myBase;
 }

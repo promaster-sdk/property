@@ -73,7 +73,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                               className={!selectorBase.isValid ? "invalid" : undefined}
                               title={translatePropertyName(property.name)}
                             >
-                              <span className={selectorBase.isHidden ? "hidden-property" : ""}>
+                              <span className={sel.isPropertyHidden(property) ? "hidden-property" : ""}>
                                 {sel.getPropertyLabel(property, translatePropertyName(property.name))}
                               </span>
                             </label>
