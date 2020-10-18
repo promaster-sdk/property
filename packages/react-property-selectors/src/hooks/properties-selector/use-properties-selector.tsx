@@ -61,7 +61,7 @@ export type UsePropertiesSelectorOptions<TItem> = {
   readonly unitLookup: Unit.UnitLookup;
 
   // Comparer
-  readonly comparer?: PropertyValue.Comparer;
+  readonly valueComparer?: PropertyValue.Comparer;
 
   readonly sortValidFirst?: boolean;
 };
@@ -137,7 +137,7 @@ export function usePropertiesSelector<TItem>(
 ): UsePropertiesSelector<TItem> {
   const requiredOptions = optionsWithDefaults(options);
 
-  const { productProperties, selectedProperties, includeHiddenProperties, comparer } = requiredOptions;
+  const { productProperties, selectedProperties, includeHiddenProperties, valueComparer } = requiredOptions;
 
   const sortedArray = productProperties
     .slice()
@@ -146,7 +146,7 @@ export function usePropertiesSelector<TItem>(
   const allSelectors: ReadonlyArray<SelectorRenderInfoInternal<TItem>> = sortedArray
     .filter(
       (property) =>
-        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter, comparer)
+        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter, valueComparer)
     )
     .map((p) => createSelector(p, requiredOptions));
 
@@ -178,7 +178,7 @@ function createSelector<TItem>(
   const {
     selectedProperties,
     propertyFormats,
-    comparer,
+    valueComparer,
     productProperties,
     autoSelectSingleValidValue,
     showCodes,
@@ -207,17 +207,17 @@ function createSelector<TItem>(
       const itemValue = getItemValue(item);
       return (
         (itemValue === undefined && selectedItemValue === undefined) ||
-        (itemValue && PropertyValue.equals(selectedItemValue, itemValue, comparer))
+        (itemValue && PropertyValue.equals(selectedItemValue, itemValue, valueComparer))
       );
     });
 
   const defaultFormat = getDefaultFormat(property, selectedItemValue);
-  const isValid = getIsValid(property, selectedItem, selectedProperties, comparer, getItemFilter);
+  const isValid = getIsValid(property, selectedItem, selectedProperties, valueComparer, getItemFilter);
 
   // TODO: Better handling of format to use when the format is missing in the map
   const propertyFormat = propertyFormats[property.name] || defaultFormat;
 
-  const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter, comparer);
+  const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter, valueComparer);
   // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
   // const labelHover = translatePropertyLabelHover(property.name);
 
@@ -234,7 +234,7 @@ function createSelector<TItem>(
     onChange,
     productProperties,
     autoSelectSingleValidValue,
-    comparer,
+    valueComparer,
     getItemValue,
     getItemFilter
   );
@@ -244,7 +244,7 @@ function createSelector<TItem>(
   const valueItems = property.items;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
-      ? shouldBeLocked(selectedItem, property, selectedProperties, comparer, getItemFilter)
+      ? shouldBeLocked(selectedItem, property, selectedProperties, valueComparer, getItemFilter)
       : false;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
@@ -529,7 +529,7 @@ function optionsWithDefaults<TItem>(
     initiallyClosedGroups = [],
 
     unitLookup,
-    comparer = PropertyValue.defaultComparer,
+    valueComparer = PropertyValue.defaultComparer,
     sortValidFirst = false,
     getUndefinedValueItem,
     getItemValue,
@@ -557,7 +557,7 @@ function optionsWithDefaults<TItem>(
     unitsFormat,
     units,
     unitLookup,
-    comparer,
+    valueComparer,
     sortValidFirst,
     getUndefinedValueItem,
     getItemValue,
