@@ -113,14 +113,6 @@ export type SelectorRenderInfoBase = {
   readonly getPropertyLabel: (propertyText: string) => string;
 };
 
-type SelectorRenderInfoBaseInternal = SelectorRenderInfoBase & {
-  // readonly groupName: string;
-};
-
-type SelectorRenderInfoInternal<TItem> = SelectorRenderInfo<TItem> & {
-  // readonly groupName: string;
-};
-
 export type SelectorRenderInfo<TItem> =
   | ({
       readonly type: "Discrete";
@@ -153,14 +145,14 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   const sortedArray = properties.slice().sort(propertyComparer);
 
-  const allSelectors1: ReadonlyArray<[TProperty, SelectorRenderInfoInternal<TItem>]> = sortedArray
+  const allSelectors1: ReadonlyArray<[TProperty, SelectorRenderInfo<TItem>]> = sortedArray
     .map((p) => [p, getPropertyInfo(p)] as readonly [TProperty, PropertyInfo<TItem>])
     .filter(
       ([_, pi]) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
     .map(([p, pi]) => [p, createSelector(pi, requiredOptions)]);
-  const allSelectors: Map<TProperty, SelectorRenderInfoInternal<TItem>> = new Map();
+  const allSelectors: Map<TProperty, SelectorRenderInfo<TItem>> = new Map();
   for (const s of allSelectors1) {
     allSelectors.set(s[0], s[1]);
   }
@@ -188,10 +180,9 @@ export function usePropertiesSelector<TItem, TProperty>(
 }
 
 function createSelector<TItem, TProperty>(
-  // property: TProperty,
   propertyInfo: PropertyInfo<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
-): SelectorRenderInfoInternal<TItem> {
+): SelectorRenderInfo<TItem> {
   const {
     selectedProperties,
     propertyFormats,
@@ -240,7 +231,7 @@ function createSelector<TItem, TProperty>(
   // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
   // const labelHover = translatePropertyLabelHover(property.name);
 
-  const myBase: SelectorRenderInfoBaseInternal = {
+  const myBase: SelectorRenderInfoBase = {
     propertyName: propertyInfo.name,
     // groupName: propertyInfo.group,
     isValid,
