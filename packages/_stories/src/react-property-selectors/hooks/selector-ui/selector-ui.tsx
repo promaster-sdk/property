@@ -22,14 +22,14 @@ import { MyItem } from "./example-product-properties";
 export type SelectorTypes = { readonly [propertyName: string]: string };
 
 export function MyDiscreteSelector({
-  selctorTypes,
+  selectorType,
   options,
 }: {
-  readonly selctorTypes: SelectorTypes;
+  readonly selectorType: string | undefined;
   readonly options: DiscretePropertySelectorOptions<MyItem>;
 }): JSX.Element {
   const sel = useDiscretePropertySelector(options);
-  switch (selctorTypes[options.propertyName]) {
+  switch (selectorType) {
     case "RadioGroup":
       return <MyDiscreteRadioGroupSelector {...sel} />;
     case "Checkbox":

@@ -86,14 +86,14 @@ export type UsePropertiesSelectorAmountFormat = {
   readonly decimalCount: number;
 };
 
-export type UsePropertiesSelector<TItem> = {
-  readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TItem>>;
+export type UsePropertiesSelector<TItem, TProperty> = {
+  readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TItem, TProperty>>;
 };
 
-export type UsePropertiesSelectorGroup<TItem> = {
+export type UsePropertiesSelectorGroup<TItem, TProperty> = {
   readonly name: string;
   readonly isClosed: boolean;
-  readonly selectors: ReadonlyArray<SelectorRenderInfo<TItem>>;
+  readonly selectors: ReadonlyArray<SelectorRenderInfo<TItem, TProperty>>;
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
@@ -102,7 +102,7 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
   propertyNames: ReadonlyArray<string>
 ) => void;
 
-export type SelectorRenderInfoBase = {
+export type SelectorRenderInfoBase<TProperty> = {
   readonly propertyName: string;
   readonly isValid: boolean;
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
@@ -110,35 +110,36 @@ export type SelectorRenderInfoBase = {
   readonly isHidden: boolean;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (propertyText: string) => string;
+  readonly property: TProperty;
 };
 
-type SelectorRenderInfoBaseInternal = SelectorRenderInfoBase & {
+type SelectorRenderInfoBaseInternal<TProperty> = SelectorRenderInfoBase<TProperty> & {
   readonly groupName: string;
 };
 
-type SelectorRenderInfoInternal<TItem> = SelectorRenderInfo<TItem> & {
+type SelectorRenderInfoInternal<TItem, TProperty> = SelectorRenderInfo<TItem, TProperty> & {
   readonly groupName: string;
 };
 
-export type SelectorRenderInfo<TItem> =
+export type SelectorRenderInfo<TItem, TProperty> =
   | ({
       readonly type: "Discrete";
       readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TItem>;
-    } & SelectorRenderInfoBase)
+    } & SelectorRenderInfoBase<TProperty>)
   | ({
       readonly type: "AmountField";
       readonly getUseAmountOptions: () => UseAmountPropertySelectorOptions;
-    } & SelectorRenderInfoBase)
+    } & SelectorRenderInfoBase<TProperty>)
   | ({
       readonly type: "TextBox";
       readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
-    } & SelectorRenderInfoBase);
+    } & SelectorRenderInfoBase<TProperty>);
 
-export type UsePropertiesSelectorPropertySelectorType<TItem> = SelectorRenderInfo<TItem>["type"];
+export type UsePropertiesSelectorPropertySelectorType<TItem, TProperty> = SelectorRenderInfo<TItem, TProperty>["type"];
 
-export function usePropertiesSelector<TItem, TPropety>(
-  options: UsePropertiesSelectorOptions<TItem, TPropety>
-): UsePropertiesSelector<TItem> {
+export function usePropertiesSelector<TItem, TProperty>(
+  options: UsePropertiesSelectorOptions<TItem, TProperty>
+): UsePropertiesSelector<TItem, TProperty> {
   const requiredOptions = optionsWithDefaults(options);
 
   const {
@@ -150,17 +151,15 @@ export function usePropertiesSelector<TItem, TPropety>(
     getPropertyInfo,
   } = requiredOptions;
 
-  const sortedArray = properties
-    .slice()
-    // .sort((a, b) => (a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0));
-    .sort(propertyComparer);
+  const sortedArray = properties.slice().sort(propertyComparer);
 
-  const allSelectors: ReadonlyArray<SelectorRenderInfoInternal<TItem>> = sortedArray
-    .map(getPropertyInfo)
+  const allSelectors: ReadonlyArray<SelectorRenderInfoInternal<TItem, TProperty>> = sortedArray
+    .map((p) => [p, getPropertyInfo(p)] as readonly [TProperty, PropertyInfo<TItem>])
     .filter(
-      (pi) => includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
+      ([_, pi]) =>
+        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
-    .map((p) => createSelector(p, requiredOptions));
+    .map(([p, pi]) => createSelector(p, pi, requiredOptions));
 
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
@@ -183,10 +182,11 @@ export function usePropertiesSelector<TItem, TPropety>(
   };
 }
 
-function createSelector<TItem, TPropety>(
-  property: PropertyInfo<TItem>,
-  params: Required<UsePropertiesSelectorOptions<TItem, TPropety>>
-): SelectorRenderInfoInternal<TItem> {
+function createSelector<TItem, TProperty>(
+  property: TProperty,
+  propertyInfo: PropertyInfo<TItem>,
+  params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
+): SelectorRenderInfoInternal<TItem, TProperty> {
   const {
     selectedProperties,
     propertyFormats,
@@ -214,10 +214,10 @@ function createSelector<TItem, TPropety>(
     getPropertyInfo,
   } = params;
 
-  const selectedItemValue = PropertyValueSet.getValue(property.name, selectedProperties);
+  const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
   const selectedItem =
-    property.items &&
-    property.items.find((item) => {
+    propertyInfo.items &&
+    propertyInfo.items.find((item) => {
       const itemValue = getItemValue(item);
       return (
         (itemValue === undefined && selectedItemValue === undefined) ||
@@ -225,25 +225,26 @@ function createSelector<TItem, TPropety>(
       );
     });
 
-  const defaultFormat = getDefaultFormat(property, selectedItemValue);
-  const isValid = getIsValid(property, selectedItem, selectedProperties, valueComparer, getItemFilter);
+  const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
+  const isValid = getIsValid(propertyInfo, selectedItem, selectedProperties, valueComparer, getItemFilter);
 
   // TODO: Better handling of format to use when the format is missing in the map
-  const propertyFormat = propertyFormats[property.name] || defaultFormat;
+  const propertyFormat = propertyFormats[propertyInfo.name] || defaultFormat;
 
-  const isHidden = !PropertyFilter.isValid(selectedProperties, property.visibilityFilter, valueComparer);
+  const isHidden = !PropertyFilter.isValid(selectedProperties, propertyInfo.visibilityFilter, valueComparer);
   // const label = translatePropertyName(property.name) + (includeCodes ? " (" + property.name + ")" : "");
   // const labelHover = translatePropertyLabelHover(property.name);
 
-  const myBase: SelectorRenderInfoBaseInternal = {
-    propertyName: property.name,
-    groupName: property.group,
+  const myBase: SelectorRenderInfoBaseInternal<TProperty> = {
+    propertyName: propertyInfo.name,
+    groupName: propertyInfo.group,
     isValid,
     isHidden,
-    getPropertyLabel: (propertyText) => propertyText + (showCodes ? " (" + property.name + ")" : ""),
+    getPropertyLabel: (propertyText) => propertyText + (showCodes ? " (" + propertyInfo.name + ")" : ""),
+    property,
   };
 
-  const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
+  const readOnly = readOnlyProperties.indexOf(propertyInfo.name) !== -1;
   const propertyOnChange = handleChange(
     onChange,
     properties,
@@ -253,13 +254,13 @@ function createSelector<TItem, TPropety>(
     getItemFilter,
     getPropertyInfo
   );
-  const fieldName = property.fieldName || property.name;
-  const propertyName = property.name;
-  const validationFilter = property.validationFilter;
-  const valueItems = property.items;
+  const fieldName = propertyInfo.fieldName || propertyInfo.name;
+  const propertyName = propertyInfo.name;
+  const validationFilter = propertyInfo.validationFilter;
+  const valueItems = propertyInfo.items;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
-      ? shouldBeLocked(selectedItem, property, selectedProperties, valueComparer, getItemFilter)
+      ? shouldBeLocked(selectedItem, propertyInfo, selectedProperties, valueComparer, getItemFilter)
       : false;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
@@ -271,7 +272,7 @@ function createSelector<TItem, TPropety>(
     );
   }
 
-  const selectorType = getSelectorType(property);
+  const selectorType = getSelectorType(propertyInfo);
   switch (selectorType) {
     case "TextBox": {
       return {
@@ -380,7 +381,9 @@ function getIsValid<TItem>(
   }
 }
 
-function getSelectorType<TItem>(property: PropertyInfo<TItem>): UsePropertiesSelectorPropertySelectorType<TItem> {
+function getSelectorType<TItem, TProperty>(
+  property: PropertyInfo<TItem>
+): UsePropertiesSelectorPropertySelectorType<TItem, TProperty> {
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
@@ -486,8 +489,8 @@ function getSingleValidItemOrUndefined<TItem>(
   return undefined;
 }
 
-function getDistinctGroupNames<TItem>(
-  productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal<TItem>>
+function getDistinctGroupNames<TItem, TProperty>(
+  productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal<TItem, TProperty>>
 ): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const property of productPropertiesArray) {

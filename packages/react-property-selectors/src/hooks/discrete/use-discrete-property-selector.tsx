@@ -26,10 +26,6 @@ export type DiscretePropertySelectorOptions<TItem> = {
   readonly itemComparer?: ItemComparer<TItem>;
 };
 
-// export type DiscreteItem = {
-//   // readonly text: string;
-// };
-
 export type DiscretePropertySelector<TItem> = {
   readonly selectedItem: TItem;
   readonly disabled: boolean;

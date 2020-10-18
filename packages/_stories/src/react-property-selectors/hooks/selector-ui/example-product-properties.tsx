@@ -1,4 +1,3 @@
-import { PropertyInfo } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { BaseUnits, Unit } from "uom";
 
@@ -14,19 +13,27 @@ export type MyItem = {
   readonly text: string;
 };
 
-export type MyPropertyInfo = PropertyInfo<MyItem> & {
+export type MyPropertyInfo = {
+  readonly selectorType?: "Checkbox" | "RadioGroup";
   readonly sortNo: number;
+  readonly fieldName?: string;
+  readonly name: string;
+  readonly group: string;
+  readonly quantity: string;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly visibilityFilter: PropertyFilter.PropertyFilter;
+  readonly items: ReadonlyArray<MyItem>;
 };
 
 export function exampleProductProperties(): {
-  selectorTypes: SelectorTypes;
+  // selectorTypes: SelectorTypes;
   properties: ReadonlyArray<MyPropertyInfo>;
 } {
   return {
-    selectorTypes: {
-      d: "RadioGroup",
-      e: "Checkbox",
-    },
+    // selectorTypes: {
+    //   d: "RadioGroup",
+    //   e: "Checkbox",
+    // },
     properties: [
       {
         sortNo: 1,
@@ -90,7 +97,7 @@ export function exampleProductProperties(): {
       },
       {
         sortNo: 4,
-        // selectorType: "RadioGroup",
+        selectorType: "RadioGroup",
         name: "d",
         group: "Group1",
         quantity: "Discrete",
@@ -119,7 +126,7 @@ export function exampleProductProperties(): {
       },
       {
         sortNo: 5,
-        // selectorType: "Checkbox",
+        selectorType: "Checkbox",
         name: "e",
         group: "Group1",
         quantity: "Discrete",
