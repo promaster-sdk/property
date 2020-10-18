@@ -63,40 +63,43 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
               <table>
                 <tbody>
                   {!group.isClosed &&
-                    group.selectors.map((selector) => (
-                      <tr key={selector.propertyName}>
-                        <td>
-                          <label
-                            className={!selector.isValid ? "invalid" : undefined}
-                            title={translatePropertyName(selector.propertyName)}
-                          >
-                            <span className={selector.isHidden ? "hidden-property" : ""}>
-                              {selector.getPropertyLabel(translatePropertyName(selector.propertyName))}
-                            </span>
-                          </label>
-                        </td>
-                        <td>
-                          {(() => {
-                            // Need to put property selectors in separate components because their hooks cannt be declared in a loop
-                            switch (selector.type) {
-                              case "TextBox":
-                                return <MyTextboxSelector {...selector.getUseTextboxOptions()} />;
-                              case "Discrete":
-                                return (
-                                  <MyDiscreteSelector
-                                    selectorType={selector.property.selectorType}
-                                    options={selector.getUseDiscreteOptions()}
-                                  />
-                                );
-                              case "AmountField":
-                                return <MyAmountSelector {...selector.getUseAmountOptions()} />;
-                              default:
-                                return exhaustiveCheck(selector, true);
-                            }
-                          })()}
-                        </td>
-                      </tr>
-                    ))}
+                    group.properties.map((property) => {
+                      const selector = sel.getSelectorInfo(property);
+                      return (
+                        <tr key={selector.propertyName}>
+                          <td>
+                            <label
+                              className={!selector.isValid ? "invalid" : undefined}
+                              title={translatePropertyName(selector.propertyName)}
+                            >
+                              <span className={selector.isHidden ? "hidden-property" : ""}>
+                                {selector.getPropertyLabel(translatePropertyName(selector.propertyName))}
+                              </span>
+                            </label>
+                          </td>
+                          <td>
+                            {(() => {
+                              // Need to put property selectors in separate components because their hooks cannt be declared in a loop
+                              switch (selector.type) {
+                                case "TextBox":
+                                  return <MyTextboxSelector {...selector.getUseTextboxOptions()} />;
+                                case "Discrete":
+                                  return (
+                                    <MyDiscreteSelector
+                                      selectorType={selector.property.selectorType}
+                                      options={selector.getUseDiscreteOptions()}
+                                    />
+                                  );
+                                case "AmountField":
+                                  return <MyAmountSelector {...selector.getUseAmountOptions()} />;
+                                default:
+                                  return exhaustiveCheck(selector, true);
+                              }
+                            })()}
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>

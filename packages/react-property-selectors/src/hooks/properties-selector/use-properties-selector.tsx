@@ -87,6 +87,7 @@ export type UsePropertiesSelectorAmountFormat = {
 };
 
 export type UsePropertiesSelector<TItem, TProperty> = {
+  readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem, TProperty>;
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TItem, TProperty>>;
 };
 
@@ -95,7 +96,6 @@ export type UsePropertiesSelectorGroup<TItem, TProperty> = {
   readonly isClosed: boolean;
   readonly selectors: ReadonlyArray<SelectorRenderInfo<TItem, TProperty>>;
   readonly properties: ReadonlyArray<TProperty>;
-  readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem, TProperty>;
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
@@ -170,10 +170,12 @@ export function usePropertiesSelector<TItem, TProperty>(
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
+    getSelectorInfo: (property) => allSelectors.get(property)!,
     groups: getDistinctGroupNames(Array.from(allSelectors.values())).map((name) => {
       const selectorsArray = Array.from(allSelectors.values());
       const isClosed = closedGroups.indexOf(name) !== -1;
       const selectors = selectorsArray.filter((selector) => selector.groupName === (name || ""));
+      const groupProperties = selectors.map((s) => s.property);
       return {
         name,
         isClosed,
@@ -184,8 +186,7 @@ export function usePropertiesSelector<TItem, TProperty>(
             ),
         }),
         selectors,
-        properties,
-        getSelectorInfo: (property) => allSelectors.get(property)!,
+        properties: groupProperties,
       };
     }),
   };
