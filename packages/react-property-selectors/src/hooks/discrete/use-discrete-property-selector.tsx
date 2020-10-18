@@ -7,7 +7,7 @@ export type GetItemValue<TItem> = (item: TItem) => ItemValue;
 export type GetItemFilter<TItem> = (item: TItem) => PropertyFilter.PropertyFilter;
 export type ItemValue = PropertyValue.PropertyValue | undefined | null;
 
-export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
+export type DiscretePropertySelectorOptions<TItem> = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
   readonly valueItems: ReadonlyArray<TItem>;
@@ -26,11 +26,11 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly itemComparer?: ItemComparer<TItem>;
 };
 
-export type DiscreteItem = {
-  // readonly text: string;
-};
+// export type DiscreteItem = {
+//   // readonly text: string;
+// };
 
-export type DiscretePropertySelector<TItem extends DiscreteItem> = {
+export type DiscretePropertySelector<TItem> = {
   readonly selectedItem: TItem;
   readonly disabled: boolean;
   readonly isOpen: boolean;
@@ -48,7 +48,7 @@ export type DiscretePropertySelector<TItem extends DiscreteItem> = {
   readonly isItemValid: (item: TItem) => boolean;
 };
 
-export function useDiscretePropertySelector<TItem extends DiscreteItem>(
+export function useDiscretePropertySelector<TItem>(
   hookOptionsLoose: DiscretePropertySelectorOptions<TItem>
 ): DiscretePropertySelector<TItem> {
   const hookOptions: Required<DiscretePropertySelectorOptions<TItem>> = fillOptionsWithDefualts(hookOptionsLoose);
@@ -155,7 +155,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
   };
 }
 
-function getSelectableItems<TItem extends DiscreteItem>(
+function getSelectableItems<TItem>(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
   items: ReadonlyArray<TItem>,
@@ -191,12 +191,6 @@ function getSelectableItems<TItem extends DiscreteItem>(
   let selectedValueItem: TItem;
   if (!selectedValueItemOrUndefined) {
     // Add item for selected value, even tough it does not really exist, but we need to show it in the combobox
-    // selectedValueItem = {
-    //   value: undefined,
-    //   sortNo: -1,
-    //   text: value === undefined || value === null ? "" : value.toString(),
-    //   validationFilter: PropertyFilter.Empty,
-    // };
     selectedValueItem = getUndefinedValueItem();
     sortedItems = [selectedValueItem, ...sortedItems];
   } else {
@@ -205,7 +199,7 @@ function getSelectableItems<TItem extends DiscreteItem>(
   return [selectedValueItem, sortedItems];
 }
 
-function getItemToolTip<TItem extends DiscreteItem>(
+function getItemToolTip<TItem>(
   options: Required<DiscretePropertySelectorOptions<TItem>>,
   itemFilter: PropertyFilter.PropertyFilter,
   itemValue: ItemValue
@@ -259,7 +253,7 @@ function _doOnChange(
   }
 }
 
-function fillOptionsWithDefualts<TItem extends DiscreteItem>(
+function fillOptionsWithDefualts<TItem>(
   options: DiscretePropertySelectorOptions<TItem>
 ): Required<DiscretePropertySelectorOptions<TItem>> {
   return {

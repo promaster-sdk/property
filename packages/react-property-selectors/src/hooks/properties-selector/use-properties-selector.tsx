@@ -3,11 +3,11 @@ import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
-import { DiscreteItem, DiscretePropertySelectorOptions, GetItemFilter, GetItemValue } from "../discrete";
+import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue } from "../discrete";
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
-export type UsePropertiesSelectorOptions<TItem extends DiscreteItem> = {
+export type UsePropertiesSelectorOptions<TItem> = {
   // Required inputs
   readonly productProperties: ReadonlyArray<UsePropertiesSelectorProperty<TItem>>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
@@ -66,7 +66,7 @@ export type UsePropertiesSelectorOptions<TItem extends DiscreteItem> = {
   readonly sortValidFirst?: boolean;
 };
 
-export type UsePropertiesSelectorProperty<TItem extends DiscreteItem> = {
+export type UsePropertiesSelectorProperty<TItem> = {
   readonly fieldName?: string;
   readonly sortNo: number;
   readonly name: string;
@@ -82,11 +82,11 @@ export type UsePropertiesSelectorAmountFormat = {
   readonly decimalCount: number;
 };
 
-export type UsePropertiesSelector<TItem extends DiscreteItem> = {
+export type UsePropertiesSelector<TItem> = {
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TItem>>;
 };
 
-export type UsePropertiesSelectorGroup<TItem extends DiscreteItem> = {
+export type UsePropertiesSelectorGroup<TItem> = {
   readonly name: string;
   readonly isClosed: boolean;
   readonly selectors: ReadonlyArray<SelectorRenderInfo<TItem>>;
@@ -112,11 +112,11 @@ type SelectorRenderInfoBaseInternal = SelectorRenderInfoBase & {
   readonly groupName: string;
 };
 
-type SelectorRenderInfoInternal<TItem extends DiscreteItem> = SelectorRenderInfo<TItem> & {
+type SelectorRenderInfoInternal<TItem> = SelectorRenderInfo<TItem> & {
   readonly groupName: string;
 };
 
-export type SelectorRenderInfo<TItem extends DiscreteItem> =
+export type SelectorRenderInfo<TItem> =
   | ({
       readonly type: "Discrete";
       readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TItem>;
@@ -130,9 +130,9 @@ export type SelectorRenderInfo<TItem extends DiscreteItem> =
       readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
     } & SelectorRenderInfoBase);
 
-export type UsePropertiesSelectorPropertySelectorType<TItem extends DiscreteItem> = SelectorRenderInfo<TItem>["type"];
+export type UsePropertiesSelectorPropertySelectorType<TItem> = SelectorRenderInfo<TItem>["type"];
 
-export function usePropertiesSelector<TItem extends DiscreteItem>(
+export function usePropertiesSelector<TItem>(
   options: UsePropertiesSelectorOptions<TItem>
 ): UsePropertiesSelector<TItem> {
   const requiredOptions = optionsWithDefaults(options);
@@ -171,7 +171,7 @@ export function usePropertiesSelector<TItem extends DiscreteItem>(
   };
 }
 
-function createSelector<TItem extends DiscreteItem>(
+function createSelector<TItem>(
   property: UsePropertiesSelectorProperty<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem>>
 ): SelectorRenderInfoInternal<TItem> {
@@ -321,7 +321,7 @@ function createSelector<TItem extends DiscreteItem>(
   }
 }
 
-function getDefaultFormat<TItem extends DiscreteItem>(
+function getDefaultFormat<TItem>(
   property: UsePropertiesSelectorProperty<TItem>,
   selectedValue: PropertyValue.PropertyValue
 ): UsePropertiesSelectorAmountFormat {
@@ -343,7 +343,7 @@ function getDefaultFormat<TItem extends DiscreteItem>(
   }
 }
 
-function getIsValid<TItem extends DiscreteItem>(
+function getIsValid<TItem>(
   property: UsePropertiesSelectorProperty<TItem>,
   selectedValueItem: TItem | undefined,
   selectedProperties: PropertyValueSet.PropertyValueSet,
@@ -364,7 +364,7 @@ function getIsValid<TItem extends DiscreteItem>(
   }
 }
 
-function getSelectorType<TItem extends DiscreteItem>(
+function getSelectorType<TItem>(
   property: UsePropertiesSelectorProperty<TItem>
 ): UsePropertiesSelectorPropertySelectorType<TItem> {
   if (property.quantity === "Text") {
@@ -387,7 +387,7 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
   }
 }
 
-function shouldBeLocked<TItem extends DiscreteItem>(
+function shouldBeLocked<TItem>(
   selectedValueItem: TItem | undefined,
   productProperty: UsePropertiesSelectorProperty<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
@@ -405,7 +405,7 @@ function shouldBeLocked<TItem extends DiscreteItem>(
   return false;
 }
 
-function handleChange<TItem extends DiscreteItem>(
+function handleChange<TItem>(
   externalOnChange: UsePropertiesSelectorOnPropertiesChanged,
   productProperties: ReadonlyArray<UsePropertiesSelectorProperty<TItem>>,
   autoSelectSingleValidValue: boolean,
@@ -446,7 +446,7 @@ function handleChange<TItem extends DiscreteItem>(
   };
 }
 
-function getSingleValidItemOrUndefined<TItem extends DiscreteItem>(
+function getSingleValidItemOrUndefined<TItem>(
   productProperty: UsePropertiesSelectorProperty<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
@@ -468,7 +468,7 @@ function getSingleValidItemOrUndefined<TItem extends DiscreteItem>(
   return undefined;
 }
 
-function getDistinctGroupNames<TItem extends DiscreteItem>(
+function getDistinctGroupNames<TItem>(
   productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal<TItem>>
 ): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
@@ -488,7 +488,7 @@ function isNullOrWhiteSpace(str: string): boolean {
   return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
 }
 
-function optionsWithDefaults<TItem extends DiscreteItem>(
+function optionsWithDefaults<TItem>(
   params: UsePropertiesSelectorOptions<TItem>
 ): Required<UsePropertiesSelectorOptions<TItem>> {
   // Do destructoring and set defaults
