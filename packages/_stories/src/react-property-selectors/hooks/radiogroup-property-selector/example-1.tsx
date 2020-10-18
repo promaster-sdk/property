@@ -60,7 +60,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
 
   const selA = useDiscretePropertySelector({
     propertyName: "a",
-    valueItems: valueItems1,
+    items: valueItems1,
     propertyValueSet: state,
     onValueChange: (pv) => setState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state)),
     getUndefinedValueItem: () => undefinedValueItem,
@@ -72,7 +72,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
 
   const selB = useDiscretePropertySelector({
     propertyName: "b",
-    valueItems: valueItems2,
+    items: valueItems2,
     propertyValueSet: state,
     onValueChange: (pv) => setState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, state)),
     getUndefinedValueItem: () => undefinedValueItem,

@@ -63,7 +63,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
 
   const selA = useDiscretePropertySelector({
     propertyName: "a",
-    valueItems: valueItems1,
+    items: valueItems1,
     propertyValueSet: myState,
     onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
     getUndefinedValueItem: () => undefinedValueItem,
@@ -76,7 +76,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
 
   const selB = useDiscretePropertySelector({
     propertyName: "b",
-    valueItems: valueItems2,
+    items: valueItems2,
     propertyValueSet: myState,
     showCodes: true,
     sortValidFirst: true,

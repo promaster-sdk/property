@@ -10,7 +10,7 @@ export type ItemValue = PropertyValue.PropertyValue | undefined | null;
 export type DiscretePropertySelectorOptions<TItem> = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly valueItems: ReadonlyArray<TItem>;
+  readonly items: ReadonlyArray<TItem>;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   // Get an item that corresponds to a property value of undefined
   readonly getUndefinedValueItem: () => TItem;
@@ -56,7 +56,7 @@ export function useDiscretePropertySelector<TItem>(
     disabled,
     valueComparer,
     showCodes,
-    valueItems,
+    items,
     sortValidFirst,
     falseItemIndex,
     trueItemIndex,
@@ -69,7 +69,7 @@ export function useDiscretePropertySelector<TItem>(
   const [selectedItem, selectableItems] = getSelectableItems<TItem>(
     propertyName,
     propertyValueSet,
-    valueItems,
+    items,
     getUndefinedValueItem,
     sortValidFirst,
     valueComparer,
@@ -80,8 +80,8 @@ export function useDiscretePropertySelector<TItem>(
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const falseItem = valueItems[falseItemIndex];
-  const trueItem = valueItems[trueItemIndex];
+  const falseItem = items[falseItemIndex];
+  const trueItem = items[trueItemIndex];
   const isTrueItem = selectedItem === trueItem;
 
   return {

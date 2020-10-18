@@ -228,7 +228,7 @@ function createSelectorHookInfo<TItem, TProperty>(
     getPropertyInfo
   );
   const propertyName = propertyInfo.name;
-  const valueItems = propertyInfo.items;
+  // const valueItems = propertyInfo.items;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
       ? shouldBeLocked(selectedItem, propertyInfo, selectedProperties, valueComparer, getItemFilter)
@@ -293,7 +293,7 @@ function createSelectorHookInfo<TItem, TProperty>(
           sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
-          valueItems,
+          items: propertyInfo.items,
           showCodes: showCodes,
           filterPrettyPrint,
           onValueChange,

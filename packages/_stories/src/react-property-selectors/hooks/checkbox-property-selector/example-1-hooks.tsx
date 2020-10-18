@@ -32,7 +32,7 @@ export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
   };
   const selA = useDiscretePropertySelector({
     propertyName: "a",
-    valueItems: valueItems1,
+    items: valueItems1,
     propertyValueSet: myState,
     onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
     getUndefinedValueItem: () => undefinedValueItem,
