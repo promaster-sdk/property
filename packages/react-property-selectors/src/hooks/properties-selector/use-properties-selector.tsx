@@ -94,6 +94,8 @@ export type UsePropertiesSelectorGroup<TItem, TProperty> = {
   readonly name: string;
   readonly isClosed: boolean;
   readonly selectors: ReadonlyArray<SelectorRenderInfo<TItem, TProperty>>;
+  readonly properties: ReadonlyArray<TProperty>;
+  readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem, TProperty>;
   readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
@@ -153,20 +155,25 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   const sortedArray = properties.slice().sort(propertyComparer);
 
-  const allSelectors: ReadonlyArray<SelectorRenderInfoInternal<TItem, TProperty>> = sortedArray
+  const allSelectors1: ReadonlyArray<[TProperty, SelectorRenderInfoInternal<TItem, TProperty>]> = sortedArray
     .map((p) => [p, getPropertyInfo(p)] as readonly [TProperty, PropertyInfo<TItem>])
     .filter(
       ([_, pi]) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
-    .map(([p, pi]) => createSelector(p, pi, requiredOptions));
+    .map(([p, pi]) => [p, createSelector(p, pi, requiredOptions)]);
+  const allSelectors: Map<TProperty, SelectorRenderInfoInternal<TItem, TProperty>> = new Map();
+  for (const s of allSelectors1) {
+    allSelectors.set(s[0], s[1]);
+  }
 
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
-    groups: getDistinctGroupNames(allSelectors).map((name) => {
+    groups: getDistinctGroupNames(Array.from(allSelectors.values())).map((name) => {
+      const selectorsArray = Array.from(allSelectors.values());
       const isClosed = closedGroups.indexOf(name) !== -1;
-      const selectors = allSelectors.filter((selector) => selector.groupName === (name || ""));
+      const selectors = selectorsArray.filter((selector) => selector.groupName === (name || ""));
       return {
         name,
         isClosed,
@@ -177,6 +184,8 @@ export function usePropertiesSelector<TItem, TProperty>(
             ),
         }),
         selectors,
+        properties,
+        getSelectorInfo: (property) => allSelectors.get(property)!,
       };
     }),
   };
