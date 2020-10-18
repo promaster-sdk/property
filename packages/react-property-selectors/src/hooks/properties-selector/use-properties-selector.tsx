@@ -70,7 +70,7 @@ export type UsePropertiesSelectorOptions<TItem> = {
 
 export type PropertyInfo<TItem> = {
   readonly fieldName?: string;
-  readonly sortNo: number;
+  // readonly sortNo: number;
   readonly name: string;
   readonly group: string;
   readonly quantity: string;
@@ -139,11 +139,18 @@ export function usePropertiesSelector<TItem>(
 ): UsePropertiesSelector<TItem> {
   const requiredOptions = optionsWithDefaults(options);
 
-  const { productProperties, selectedProperties, includeHiddenProperties, valueComparer } = requiredOptions;
+  const {
+    productProperties,
+    selectedProperties,
+    includeHiddenProperties,
+    valueComparer,
+    propertyComparer,
+  } = requiredOptions;
 
   const sortedArray = productProperties
     .slice()
-    .sort((a, b) => (a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0));
+    // .sort((a, b) => (a.sortNo < b.sortNo ? -1 : a.sortNo > b.sortNo ? 1 : 0));
+    .sort(propertyComparer);
 
   const allSelectors: ReadonlyArray<SelectorRenderInfoInternal<TItem>> = sortedArray
     .filter(

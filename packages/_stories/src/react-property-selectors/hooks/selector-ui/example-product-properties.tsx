@@ -14,9 +14,13 @@ export type MyItem = {
   readonly text: string;
 };
 
+export type MyPropertyInfo = PropertyInfo<MyItem> & {
+  readonly sortNo: number;
+};
+
 export function exampleProductProperties(): {
   selectorTypes: SelectorTypes;
-  properties: ReadonlyArray<PropertyInfo<MyItem>>;
+  properties: ReadonlyArray<MyPropertyInfo>;
 } {
   return {
     selectorTypes: {
