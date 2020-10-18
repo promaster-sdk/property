@@ -99,12 +99,13 @@ export type UsePropertiesSelector<TItem, TProperty> = {
   readonly isPropertyValid: (property: TProperty) => boolean;
   readonly getGroupToggleButtonProps: (group: string) => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly isGroupClosed: (group: string) => boolean;
+  readonly getGroupProperties: (group: string) => ReadonlyArray<TProperty>;
 };
 
-export type PropertiesSelectorGroup<TProperty> = {
+export type PropertiesSelectorGroup<_TProperty> = {
   readonly name: string;
   // readonly isClosed: boolean;
-  readonly properties: ReadonlyArray<TProperty>;
+  // readonly properties: ReadonlyArray<TProperty>;
 };
 
 export type PropertySelectorHookInfo<TItem> =
@@ -178,11 +179,11 @@ export function usePropertiesSelector<TItem, TProperty>(
       return getIsValid(pi, selectedItem, selectedProperties, valueComparer, getItemFilter);
     },
     isGroupClosed: (group: string) => closedGroups.indexOf(group) !== -1,
+    getGroupProperties: (group: string) =>
+      properties.filter((property) => getPropertyInfo(property).group === (group || "")),
     groups: getDistinctGroupNames(properties, getPropertyInfo).map((groupName) => {
-      const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (groupName || ""));
       return {
         name: groupName,
-        properties: groupProperties,
       };
     }),
   };
