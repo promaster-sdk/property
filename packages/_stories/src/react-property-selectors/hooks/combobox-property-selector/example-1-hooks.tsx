@@ -1,11 +1,12 @@
 /* eslint-disable functional/no-this-expression */
 import React, { useState } from "react";
 import { Unit } from "uom";
-import { DiscreteItem, useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
+import { useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { unitsFormat, units } from "../../units-map";
 import { MyDiscreteComboboxSelector, MyDiscreteImageComboboxSelector } from "../selector-ui/selector-ui";
+import { MyItem } from "../selector-ui/example-product-properties";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
 
@@ -22,7 +23,6 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
   const [myState, setMyState] = useState(PropertyValueSet.fromString("a=1;b=2", unitLookup));
 
-  type MyItem = DiscreteItem & { image?: string };
   const valueItems1: ReadonlyArray<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
@@ -38,7 +38,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     },
   ];
 
-  const valueItems2: Array<MyItem> = [
+  const valueItems2: ReadonlyArray<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
+export type ItemComparer = <TItem>(a: TItem, b: TItem) => number;
+
 export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
@@ -15,14 +17,13 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly falseItemIndex?: number;
   readonly showCodes?: boolean;
   readonly disabled?: boolean;
-  readonly comparer?: PropertyValue.Comparer;
+  readonly valueComparer?: PropertyValue.Comparer;
+  readonly itemComparer?: ItemComparer;
 };
 
 export type DiscreteItem = {
   readonly value: PropertyValue.PropertyValue | undefined | null;
-  readonly sortNo: number;
   readonly text: string;
-  // readonly image?: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
 };
 
@@ -55,13 +56,14 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
     propertyName,
     onValueChange,
     disabled,
-    comparer,
+    valueComparer,
     showCodes,
     valueItems,
     sortValidFirst,
     falseItemIndex,
     trueItemIndex,
     getUndefinedValueItem,
+    itemComparer,
   } = hookOptions;
 
   const [selectedItem, selectableItems] = getSelectableItems<TItem>(
@@ -70,7 +72,8 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
     valueItems,
     getUndefinedValueItem,
     sortValidFirst,
-    comparer
+    valueComparer,
+    itemComparer
   );
 
   const [isOpen, setIsOpen] = useState(false);
@@ -88,7 +91,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
     getItemToolTip: (item) => getItemToolTip(hookOptions, item),
     isOpen,
     isTrueItem,
-    isItemValid: (item) => isValueItemValid(propertyName, propertyValueSet, item, comparer),
+    isItemValid: (item) => isValueItemValid(propertyName, propertyValueSet, item, valueComparer),
     getToggleButtonProps: () => ({
       disabled,
       title: getItemToolTip(hookOptions, selectedItem),
@@ -141,13 +144,14 @@ function getSelectableItems<TItem extends DiscreteItem>(
   valueItems: ReadonlyArray<TItem>,
   getUndefinedValueItem: () => TItem,
   sortValidFirst: boolean,
-  comparer: PropertyValue.Comparer
+  valueComparer: PropertyValue.Comparer,
+  itemComparer: ItemComparer
 ): [TItem, Array<TItem>] {
   // Convert value items to options
   let sortedItems = [...valueItems].sort((a, b) => {
     if (sortValidFirst) {
-      const aValid = isValueItemValid(propertyName, propertyValueSet, a, comparer);
-      const bValid = isValueItemValid(propertyName, propertyValueSet, b, comparer);
+      const aValid = isValueItemValid(propertyName, propertyValueSet, a, valueComparer);
+      const bValid = isValueItemValid(propertyName, propertyValueSet, b, valueComparer);
       if (aValid && !bValid) {
         return -1;
       }
@@ -156,7 +160,8 @@ function getSelectableItems<TItem extends DiscreteItem>(
       }
     }
 
-    return a.sortNo - b.sortNo;
+    // return a.sortNo - b.sortNo;
+    return itemComparer(a, b);
   });
   // Get selected item
   const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
@@ -184,7 +189,7 @@ function getItemToolTip<TItem extends DiscreteItem>(
   options: Required<DiscretePropertySelectorOptions<TItem>>,
   item: TItem
 ): string {
-  const isItemValid = isValueItemValid(options.propertyName, options.propertyValueSet, item, options.comparer);
+  const isItemValid = isValueItemValid(options.propertyName, options.propertyValueSet, item, options.valueComparer);
   return isItemValid ? "" : options.filterPrettyPrint(item.validationFilter);
 }
 
@@ -235,8 +240,9 @@ function fillOptionsWithDefualts<TItem extends DiscreteItem>(
     showCodes: options.showCodes || false,
     disabled: options.disabled || false,
     filterPrettyPrint: options.filterPrettyPrint || ((f) => PropertyFilter.toString(f)),
-    comparer: options.comparer || PropertyValue.defaultComparer,
+    valueComparer: options.valueComparer || PropertyValue.defaultComparer,
     falseItemIndex: options.falseItemIndex || 0,
     trueItemIndex: options.trueItemIndex || 1,
+    itemComparer: () => 0,
   };
 }
