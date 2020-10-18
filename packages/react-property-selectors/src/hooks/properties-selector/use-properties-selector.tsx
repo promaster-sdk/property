@@ -64,7 +64,7 @@ export type UsePropertiesSelectorOptions<TItem, TProperty = PropertyInfo<TItem>>
   // Comparer
   readonly valueComparer?: PropertyValue.Comparer;
   readonly itemComparer?: ItemComparer<TItem>;
-  readonly propertyComparer?: (a: PropertyInfo<TItem>, b: PropertyInfo<TItem>) => number;
+  readonly propertyComparer?: (a: TProperty, b: TProperty) => number;
 
   readonly sortValidFirst?: boolean;
 };
