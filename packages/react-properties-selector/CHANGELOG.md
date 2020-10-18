@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@7.0.0...master)
 
+## Changed
+
+- Move hook for usePropertiesSelector from package react-properties-selector to package react-property-selectores. Now all hooks are in the same package and the react-properties-selector package is deprecated.
+
 ## [v7.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-properties-selector@6.0.0...@promaster-sdk%2Freact-properties-selector@7.0.0) - 2020-10-15
 
 ### Added

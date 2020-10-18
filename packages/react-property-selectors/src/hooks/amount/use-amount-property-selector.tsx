@@ -19,7 +19,7 @@ export type UseAmountPropertySelectorOptions = {
   readonly notNumericMessage: string;
   readonly isRequiredMessage: string;
   readonly filterPrettyPrint: PropertyFiltering.FilterPrettyPrint;
-  readonly readonly: boolean;
+  readonly readOnly: boolean;
   readonly onFormatChanged: UseAmountFormatSelectorOnFormatChanged;
   readonly onFormatCleared: UseAmountFormatSelectorOnFormatCleared;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
@@ -53,7 +53,7 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     filterPrettyPrint,
     inputUnit,
     inputDecimalCount,
-    readonly,
+    readOnly,
     debounceTime = 350,
     unitsFormat,
     units,
@@ -75,7 +75,7 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     inputDecimalCount,
     notNumericMessage,
     isRequiredMessage,
-    readonly,
+    readOnly,
     debounceTime,
     errorMessage,
     onValueChange: onValueChangeCallback,

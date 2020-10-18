@@ -1,19 +1,12 @@
 /* eslint-disable functional/no-this-expression */
 import React, { useState } from "react";
 import { Unit } from "uom";
-import {
-  ComboBoxPropertyValueItem,
-  useComboboxPropertySelector,
-  useImageComboboxPropertySelector,
-  getDefaultSelectStyle,
-  getDefaultOptionStyle,
-  getDefaultMenuStyle,
-  getDefaultListItemStyle,
-  getDefaultToggleButtonStyle,
-} from "@promaster-sdk/react-property-selectors";
+import { useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { unitsFormat, units } from "../../units-map";
+import { MyDiscreteComboboxSelector, MyDiscreteImageComboboxSelector } from "../selector-ui/selector-ui";
+import { MyItem } from "../selector-ui/example-product-properties";
 
 const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
 
@@ -30,7 +23,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
   const [myState, setMyState] = useState(PropertyValueSet.fromString("a=1;b=2", unitLookup));
 
-  const valueItems1: Array<ComboBoxPropertyValueItem> = [
+  const valueItems1: ReadonlyArray<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,
@@ -45,7 +38,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     },
   ];
 
-  const valueItems2: Array<ComboBoxPropertyValueItem> = [
+  const valueItems2: ReadonlyArray<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,
@@ -61,31 +54,37 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     },
   ];
 
-  const selA = useComboboxPropertySelector({
+  const undefinedValueItem = {
+    value: undefined,
+    sortNo: -1,
+    text: "",
+    validationFilter: PropertyFilter.Empty,
+  };
+
+  const selA = useDiscretePropertySelector({
     propertyName: "a",
-    valueItems: valueItems1,
+    items: valueItems1,
     propertyValueSet: myState,
-    locked: false,
+    onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
+    getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
     sortValidFirst: true,
-
-    onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
-
     filterPrettyPrint: filterPrettyPrint,
-    readOnly: false,
+    getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
-  const selB = useImageComboboxPropertySelector({
+  const selB = useDiscretePropertySelector({
     propertyName: "b",
-    valueItems: valueItems2,
+    items: valueItems2,
     propertyValueSet: myState,
-    locked: false,
     showCodes: true,
     sortValidFirst: true,
     onValueChange: (pv) => setMyState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, myState)),
-
+    getUndefinedValueItem: () => undefinedValueItem,
     filterPrettyPrint: filterPrettyPrint,
-    readOnly: false,
+    getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
   return (
@@ -93,36 +92,8 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
       <div>ComboboxPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(myState)}</div>
       <div>
-        {/* Selector A */}
-        <select {...selA.getSelectProps()} style={{ ...getDefaultSelectStyle(selA) }}>
-          {selA.options.map((o) => (
-            <option {...o.getOptionProps()} style={getDefaultOptionStyle(o)} />
-          ))}
-        </select>
-
-        {/* Selector B Image */}
-        <div style={{ userSelect: "none" }}>
-          <button {...selB.getToggleButtonProps()} style={getDefaultToggleButtonStyle(selB)}>
-            <span>
-              {selB.imageUrl && <img src={selB.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-              {" " + selB.label + " "}
-            </span>
-            <i className="fa fa-caret-down" />
-          </button>
-          {/* optionsList */}
-          {selB.isOpen && (
-            <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
-              {selB.items.map((o) => (
-                <li {...o.getItemProps()} style={getDefaultListItemStyle(o)}>
-                  <span>
-                    {o.imageUrl && <img src={o.imageUrl} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-                    {" " + o.label + " "}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+        <MyDiscreteComboboxSelector {...selA} />
+        <MyDiscreteImageComboboxSelector {...selB} />
       </div>
     </div>
   );
