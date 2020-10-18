@@ -87,7 +87,7 @@ export type UsePropertiesSelectorAmountFormat = {
 };
 
 export type UsePropertiesSelector<TItem, TProperty> = {
-  readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem>;
+  readonly getSelectorInfo: (property: TProperty) => PropertySelectorHookInfo<TItem>;
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
@@ -108,7 +108,7 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
   propertyNames: ReadonlyArray<string>
 ) => void;
 
-export type SelectorRenderInfo<TItem> =
+export type PropertySelectorHookInfo<TItem> =
   | {
       readonly type: "Discrete";
       readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TItem>;
@@ -122,7 +122,7 @@ export type SelectorRenderInfo<TItem> =
       readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
     };
 
-export type UsePropertiesSelectorPropertySelectorType<TItem> = SelectorRenderInfo<TItem>["type"];
+export type PropertySelectorHookType<TItem> = PropertySelectorHookInfo<TItem>["type"];
 
 export function usePropertiesSelector<TItem, TProperty>(
   options: UsePropertiesSelectorOptions<TItem, TProperty>
@@ -143,14 +143,14 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   const sortedArray = properties.slice().sort(propertyComparer);
 
-  const allSelectors1: ReadonlyArray<[TProperty, SelectorRenderInfo<TItem>]> = sortedArray
+  const allSelectors1: ReadonlyArray<[TProperty, PropertySelectorHookInfo<TItem>]> = sortedArray
     .map((p) => [p, getPropertyInfo(p)] as readonly [TProperty, PropertyInfo<TItem>])
     .filter(
       ([_, pi]) =>
         includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
     .map(([p, pi]) => [p, createSelector(pi, requiredOptions)]);
-  const allSelectors: Map<TProperty, SelectorRenderInfo<TItem>> = new Map();
+  const allSelectors: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map();
   for (const s of allSelectors1) {
     allSelectors.set(s[0], s[1]);
   }
@@ -196,7 +196,7 @@ export function usePropertiesSelector<TItem, TProperty>(
 function createSelector<TItem, TProperty>(
   propertyInfo: PropertyInfo<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
-): SelectorRenderInfo<TItem> {
+): PropertySelectorHookInfo<TItem> {
   const {
     selectedProperties,
     propertyFormats,
@@ -383,7 +383,7 @@ function getIsValid<TItem>(
   }
 }
 
-function getSelectorType<TItem>(property: PropertyInfo<TItem>): UsePropertiesSelectorPropertySelectorType<TItem> {
+function getSelectorType<TItem>(property: PropertyInfo<TItem>): PropertySelectorHookType<TItem> {
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
