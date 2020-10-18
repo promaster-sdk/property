@@ -46,7 +46,7 @@ export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector<MyItem>
   return (
     <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle2()}>
       {sel.selectedItem.image && <img src={sel.selectedItem.image} />}
-      <div>{sel.getItemLabel(sel.selectedItem)}</div>
+      <div>{sel.getItemLabel(sel.selectedItem.text, sel.selectedItem)}</div>
       <div style={getDefaultCheckboxStyle2(sel)} />
     </div>
   );
@@ -64,7 +64,7 @@ export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyIte
             style={getDefaultRadioItemStyle2(sel, item)}
           >
             {item.image ? <img src={item.image} /> : undefined}
-            {sel.getItemLabel(item)}
+            {sel.getItemLabel(item.text, item)}
           </div>
         ))}
     </div>
@@ -74,8 +74,8 @@ export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyIte
 export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
-      {sel.items.map((o) => (
-        <option {...sel.getOptionProps(o)} style={getDefaultOptionStyle2(sel, o)} />
+      {sel.items.map((item) => (
+        <option {...sel.getOptionProps(item)} style={getDefaultOptionStyle2(sel, item)} label={item.text} />
       ))}
     </select>
   );
@@ -87,18 +87,18 @@ export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<My
       <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle2(sel)}>
         <span>
           {sel.selectedItem.image && <img src={sel.selectedItem.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-          {" " + sel.getItemLabel(sel.selectedItem) + " "}
+          {" " + sel.getItemLabel(sel.selectedItem.text, sel.selectedItem) + " "}
         </span>
         <i className="fa fa-caret-down" />
       </button>
       {/* optionsList */}
       {sel.isOpen && (
         <ul id="DropdownOptionsElement" style={getDefaultMenuStyle2()}>
-          {sel.items.map((o) => (
-            <li {...sel.getListItemProps(o)} style={getDefaultListItemStyle2(sel, o)}>
+          {sel.items.map((item) => (
+            <li {...sel.getListItemProps(item)} style={getDefaultListItemStyle2(sel, item)}>
               <span>
-                {o.image && <img src={o.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
-                {" " + sel.getItemLabel(o) + " "}
+                {item.image && <img src={item.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
+                {" " + sel.getItemLabel(item.text, item) + " "}
               </span>
             </li>
           ))}

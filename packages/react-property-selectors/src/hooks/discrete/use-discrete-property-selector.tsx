@@ -27,21 +27,19 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
 };
 
 export type DiscreteItem = {
-  readonly text: string;
-  // readonly validationFilter: PropertyFilter.PropertyFilter;
+  // readonly text: string;
 };
 
 export type DiscretePropertySelector<TItem extends DiscreteItem> = {
   readonly selectedItem: TItem;
   readonly disabled: boolean;
-  // readonly hasOptionImage: boolean;
   readonly isOpen: boolean;
   readonly items: ReadonlyArray<TItem>;
   readonly isTrueItem: boolean;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly getListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
-  readonly getItemLabel: (item: TItem) => string;
+  readonly getItemLabel: (text: string, item: TItem) => string;
   readonly getItemToolTip: (item: TItem) => string;
   readonly getItemValue: (item: TItem) => string;
   readonly getOptionProps: (item: TItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
@@ -93,7 +91,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
   return {
     selectedItem,
     disabled,
-    getItemLabel: (item) => getItemLabel(item, getItemValue(item), showCodes),
+    getItemLabel: (text, item) => getItemLabel(text, getItemValue(item), showCodes),
     getItemValue: (item) => getItemValueAsString(getItemValue(item)),
     getItemToolTip: (item) => getItemToolTip(hookOptions, getItemFilter(item), getItemValue(item)),
     isOpen,
@@ -111,7 +109,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
       return {
         key: getItemValueAsString(itemValue),
         value: getItemValueAsString(itemValue),
-        label: getItemLabel(item, itemValue, showCodes),
+        // label: getItemLabel(item, itemValue, showCodes),
         title: getItemToolTip(hookOptions, itemFilter, itemValue),
         onClick: () => {
           _doOnChange(getItemValueAsString(itemValue), onValueChange);
@@ -138,7 +136,7 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
       return {
         key: getItemValueAsString(itemValue),
         value: getItemValueAsString(itemValue),
-        label: getItemLabel(item, itemValue, showCodes),
+        // label: getItemLabel(item, itemValue, showCodes),
         title: getItemToolTip(hookOptions, itemFilter, itemValue),
       };
     },
@@ -222,11 +220,11 @@ function getItemToolTip<TItem extends DiscreteItem>(
   return isItemValid ? "" : options.filterPrettyPrint(itemFilter);
 }
 
-function getItemLabel(item: DiscreteItem, itemValue: ItemValue, showCodes: boolean): string {
+function getItemLabel(itemText: string, itemValue: ItemValue, showCodes: boolean): string {
   if (itemValue === undefined || itemValue === null) {
     return "";
   }
-  return item.text + (showCodes ? ` (${PropertyValue.toString(itemValue)}) ` : "");
+  return itemText + (showCodes ? ` (${PropertyValue.toString(itemValue)}) ` : "");
 }
 
 function getItemValueAsString(itemValue: ItemValue): string {

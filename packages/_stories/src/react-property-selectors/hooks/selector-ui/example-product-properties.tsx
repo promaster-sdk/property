@@ -11,6 +11,7 @@ export type MyItem = DiscreteItem & {
   readonly image?: string;
   readonly value: PropertyValue.PropertyValue | undefined | null;
   readonly validationFilter: PropertyFilter.PropertyFilter;
+  readonly text: string;
 };
 
 export function exampleProductProperties(): {
