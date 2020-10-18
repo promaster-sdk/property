@@ -86,7 +86,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                                 case "Discrete":
                                   return (
                                     <MyDiscreteSelector
-                                      selectorType={selector.property.selectorType}
+                                      selectorType={property.selectorType}
                                       options={selector.getUseDiscreteOptions()}
                                     />
                                   );
