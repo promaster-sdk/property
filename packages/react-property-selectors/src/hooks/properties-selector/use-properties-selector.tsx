@@ -90,6 +90,8 @@ export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getSelectorInfo: (property: TProperty) => SelectorRenderInfo<TItem>;
   readonly getSelectorInfoBase: (property: TProperty) => SelectorRenderInfoBase;
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
+  // Used to add code if includeCodes is true
+  readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
 };
 
 export type UsePropertiesSelectorGroup<TProperty> = {
@@ -110,8 +112,6 @@ export type SelectorRenderInfoBase = {
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   // This flag tells if is was supposed to be hidden
   readonly isHidden: boolean;
-  // Used to add code if includeCodes is true
-  readonly getPropertyLabel: (propertyText: string) => string;
 };
 
 export type SelectorRenderInfo<TItem> =
@@ -142,6 +142,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     valueComparer,
     propertyComparer,
     getPropertyInfo,
+    showCodes,
   } = requiredOptions;
 
   const sortedArray = properties.slice().sort(propertyComparer);
@@ -166,6 +167,8 @@ export function usePropertiesSelector<TItem, TProperty>(
   return {
     getSelectorInfo: (property) => allSelectors.get(property)![1],
     getSelectorInfoBase: (property) => allSelectors.get(property)![0],
+    getPropertyLabel: (property, propertyText) =>
+      propertyText + (showCodes ? " (" + getPropertyInfo(property).name + ")" : ""),
     groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
       const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (name || ""));
@@ -325,7 +328,7 @@ function createSelectorBase<TItem, TProperty>(
   propertyInfo: PropertyInfo<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
 ): SelectorRenderInfoBase {
-  const { selectedProperties, valueComparer, showCodes, getItemValue, getItemFilter } = params;
+  const { selectedProperties, valueComparer, getItemValue, getItemFilter } = params;
 
   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
   const selectedItem =
@@ -345,7 +348,7 @@ function createSelectorBase<TItem, TProperty>(
     propertyName: propertyInfo.name,
     isValid,
     isHidden,
-    getPropertyLabel: (propertyText) => propertyText + (showCodes ? " (" + propertyInfo.name + ")" : ""),
+    // getPropertyLabel: (propertyText) => propertyText + (showCodes ? " (" + propertyInfo.name + ")" : ""),
   };
   return myBase;
 }

@@ -71,10 +71,10 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                           <td>
                             <label
                               className={!selectorBase.isValid ? "invalid" : undefined}
-                              title={translatePropertyName(selectorBase.propertyName)}
+                              title={translatePropertyName(property.name)}
                             >
                               <span className={selectorBase.isHidden ? "hidden-property" : ""}>
-                                {selectorBase.getPropertyLabel(translatePropertyName(selectorBase.propertyName))}
+                                {sel.getPropertyLabel(property, translatePropertyName(property.name))}
                               </span>
                             </label>
                           </td>
