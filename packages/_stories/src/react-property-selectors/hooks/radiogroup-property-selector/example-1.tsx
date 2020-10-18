@@ -66,6 +66,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
     getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
     filterPrettyPrint: filterPrettyPrint,
+    getItemValue: (item) => item.value,
   });
 
   const selB = useDiscretePropertySelector({
@@ -76,6 +77,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
     getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
     filterPrettyPrint: filterPrettyPrint,
+    getItemValue: (item) => item.value,
   });
 
   console.log(selB);

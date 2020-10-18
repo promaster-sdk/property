@@ -3,7 +3,7 @@ import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
-import { DiscreteItem, DiscretePropertySelectorOptions } from "../discrete";
+import { DiscreteItem, DiscretePropertySelectorOptions, GetItemValue } from "../discrete";
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
@@ -17,6 +17,7 @@ export type UsePropertiesSelectorOptions<TItem extends DiscreteItem> = {
 
   // Get an item that corresponds to a property value of undefined
   readonly getUndefinedValueItem: () => TItem;
+  readonly getItemValue: GetItemValue<TItem>;
 
   // Includes the raw property name and value in paranthesis
   readonly showCodes?: boolean;
@@ -194,6 +195,7 @@ function createSelector<TItem extends DiscreteItem>(
     readOnlyProperties,
     sortValidFirst,
     getUndefinedValueItem,
+    getItemValue,
   } = params;
 
   const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
@@ -291,6 +293,7 @@ function createSelector<TItem extends DiscreteItem>(
         type: "Discrete",
         getUseDiscreteOptions: () => ({
           getUndefinedValueItem,
+          getItemValue,
           sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
@@ -511,6 +514,7 @@ function optionsWithDefaults<TItem extends DiscreteItem>(
     comparer = PropertyValue.defaultComparer,
     sortValidFirst = false,
     getUndefinedValueItem,
+    getItemValue,
   } = params;
 
   return {
@@ -537,5 +541,6 @@ function optionsWithDefaults<TItem extends DiscreteItem>(
     comparer,
     sortValidFirst,
     getUndefinedValueItem,
+    getItemValue,
   };
 }

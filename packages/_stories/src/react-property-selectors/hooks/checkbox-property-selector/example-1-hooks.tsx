@@ -37,6 +37,7 @@ export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
     onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
     getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
+    getItemValue: (item) => item.value,
   });
 
   return (

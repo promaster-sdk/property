@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
-export type ItemComparer = <TItem>(a: TItem, b: TItem) => number;
+export type ItemComparer<TItem> = (a: TItem, b: TItem) => number;
+export type GetItemValue<TItem> = (item: TItem) => PropertyValue.PropertyValue | undefined | null;
 
 export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly propertyName: string;
@@ -11,6 +12,7 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   // Get an item that corresponds to a property value of undefined
   readonly getUndefinedValueItem: () => TItem;
+  readonly getItemValue: GetItemValue<TItem>;
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
   readonly sortValidFirst?: boolean;
   readonly trueItemIndex?: number;
@@ -18,7 +20,7 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly showCodes?: boolean;
   readonly disabled?: boolean;
   readonly valueComparer?: PropertyValue.Comparer;
-  readonly itemComparer?: ItemComparer;
+  readonly itemComparer?: ItemComparer<TItem>;
 };
 
 export type DiscreteItem = {
@@ -145,7 +147,7 @@ function getSelectableItems<TItem extends DiscreteItem>(
   getUndefinedValueItem: () => TItem,
   sortValidFirst: boolean,
   valueComparer: PropertyValue.Comparer,
-  itemComparer: ItemComparer
+  itemComparer: ItemComparer<TItem>
 ): [TItem, Array<TItem>] {
   // Convert value items to options
   let sortedItems = [...valueItems].sort((a, b) => {
