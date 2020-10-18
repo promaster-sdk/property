@@ -278,7 +278,7 @@ function createSelector<TItem extends DiscreteItem>(
             optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : valueIsRequiredMessage,
           validationFilter,
           filterPrettyPrint,
-          readonly: readOnly,
+          readOnly: readOnly,
           debounceTime: inputDebounceTime,
           unitsFormat,
           units,

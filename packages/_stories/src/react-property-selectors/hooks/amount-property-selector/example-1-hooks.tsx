@@ -65,7 +65,7 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
     onValueChange,
     filterPrettyPrint: filterPrettyPrint,
     validationFilter: validationFilter,
-    readonly: false,
+    readOnly: false,
     isRequiredMessage: "Is required",
     notNumericMessage: "Not numeric",
     onFormatChanged,
