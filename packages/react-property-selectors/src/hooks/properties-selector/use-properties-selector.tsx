@@ -145,7 +145,7 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   const allSelectors1: ReadonlyArray<[TProperty, PropertySelectorHookInfo<TItem>]> = properties.map((p) => [
     p,
-    createSelector(getPropertyInfo(p), requiredOptions),
+    createSelectorHookInfo(getPropertyInfo(p), requiredOptions),
   ]);
   const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map(allSelectors1);
 
@@ -194,9 +194,9 @@ export function usePropertiesSelector<TItem, TProperty>(
   };
 }
 
-function createSelector<TItem, TProperty>(
+function createSelectorHookInfo<TItem, TProperty>(
   propertyInfo: PropertyInfo<TItem>,
-  params: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
+  options: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
 ): PropertySelectorHookInfo<TItem> {
   const {
     selectedProperties,
@@ -223,7 +223,7 @@ function createSelector<TItem, TProperty>(
     getItemFilter,
     itemComparer,
     getPropertyInfo,
-  } = params;
+  } = options;
 
   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
   const selectedItem = getSelectedItem(selectedItemValue, propertyInfo, getItemValue, valueComparer);
