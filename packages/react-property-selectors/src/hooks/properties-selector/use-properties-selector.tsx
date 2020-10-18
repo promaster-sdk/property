@@ -3,7 +3,7 @@ import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
-import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue } from "../discrete";
+import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemComparer } from "../discrete";
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
@@ -62,6 +62,7 @@ export type UsePropertiesSelectorOptions<TItem> = {
 
   // Comparer
   readonly valueComparer?: PropertyValue.Comparer;
+  readonly itemComparer?: ItemComparer<TItem>;
 
   readonly sortValidFirst?: boolean;
 };
@@ -198,6 +199,7 @@ function createSelector<TItem>(
     getUndefinedValueItem,
     getItemValue,
     getItemFilter,
+    itemComparer,
   } = params;
 
   const selectedItemValue = PropertyValueSet.getValue(property.name, selectedProperties);
@@ -314,6 +316,7 @@ function createSelector<TItem>(
           filterPrettyPrint,
           onValueChange,
           disabled: readOnly || locked,
+          itemComparer,
         }),
       };
     default:
@@ -491,76 +494,43 @@ function isNullOrWhiteSpace(str: string): boolean {
 function optionsWithDefaults<TItem>(
   params: UsePropertiesSelectorOptions<TItem>
 ): Required<UsePropertiesSelectorOptions<TItem>> {
-  // Do destructoring and set defaults
-  const {
-    productProperties,
-    selectedProperties,
-    filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter) =>
-      PropertyFiltering.filterPrettyPrintIndented(
-        // PropertyFiltering.FilterPrettyPrintMessagesEnglish,
-        PropertyFiltering.buildEnglishMessages(params.unitsFormat),
-        2,
-        " ",
-        propertyFilter,
-        params.unitsFormat,
-        params.unitLookup
-      ),
-
-    showCodes = false,
-    includeHiddenProperties = false,
-    autoSelectSingleValidValue = true,
-    lockSingleValidValue = false,
-    onChange = (_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({}),
-    onPropertyFormatChanged = (_a: string, _b: Unit.Unit<unknown>, _c: number) => ({}),
-    onPropertyFormatCleared = (_a: string) => ({}),
-
-    valueMustBeNumericMessage = "value_must_be_numeric",
-    valueIsRequiredMessage = "value_is_required",
-
-    readOnlyProperties = [],
-    optionalProperties = [],
-    propertyFormats = {},
-
-    inputDebounceTime = 350,
-
-    unitsFormat,
-    units,
-
-    initiallyClosedGroups = [],
-
-    unitLookup,
-    valueComparer = PropertyValue.defaultComparer,
-    sortValidFirst = false,
-    getUndefinedValueItem,
-    getItemValue,
-    getItemFilter,
-  } = params;
-
   return {
-    productProperties,
-    selectedProperties,
-    filterPrettyPrint,
-    showCodes,
-    includeHiddenProperties,
-    autoSelectSingleValidValue,
-    lockSingleValidValue,
-    onChange,
-    onPropertyFormatChanged,
-    onPropertyFormatCleared,
-    valueMustBeNumericMessage,
-    valueIsRequiredMessage,
-    readOnlyProperties,
-    optionalProperties,
-    propertyFormats,
-    inputDebounceTime,
-    initiallyClosedGroups,
-    unitsFormat,
-    units,
-    unitLookup,
-    valueComparer,
-    sortValidFirst,
-    getUndefinedValueItem,
-    getItemValue,
-    getItemFilter,
+    ...params,
+    filterPrettyPrint:
+      params.filterPrettyPrint ||
+      ((propertyFilter: PropertyFilter.PropertyFilter) =>
+        PropertyFiltering.filterPrettyPrintIndented(
+          PropertyFiltering.buildEnglishMessages(params.unitsFormat),
+          2,
+          " ",
+          propertyFilter,
+          params.unitsFormat,
+          params.unitLookup
+        )),
+
+    showCodes: params.showCodes || false,
+    includeHiddenProperties: params.includeHiddenProperties || false,
+    autoSelectSingleValidValue: params.autoSelectSingleValidValue || true,
+    lockSingleValidValue: params.lockSingleValidValue || false,
+    onChange:
+      params.onChange || ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
+    onPropertyFormatChanged:
+      params.onPropertyFormatChanged || ((_a: string, _b: Unit.Unit<unknown>, _c: number) => ({})),
+    onPropertyFormatCleared: params.onPropertyFormatCleared || ((_a: string) => ({})),
+
+    valueMustBeNumericMessage: params.valueMustBeNumericMessage || "value_must_be_numeric",
+    valueIsRequiredMessage: params.valueIsRequiredMessage || "value_is_required",
+
+    readOnlyProperties: params.readOnlyProperties || [],
+    optionalProperties: params.optionalProperties || [],
+    propertyFormats: params.propertyFormats || {},
+
+    inputDebounceTime: params.inputDebounceTime || 350,
+
+    initiallyClosedGroups: params.initiallyClosedGroups || [],
+
+    valueComparer: params.valueComparer || PropertyValue.defaultComparer,
+    sortValidFirst: params.sortValidFirst || false,
+    itemComparer: params.itemComparer || (() => 0),
   };
 }
