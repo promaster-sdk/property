@@ -62,7 +62,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
               )}
               <table>
                 <tbody>
-                  {!group.isClosed &&
+                  {!sel.isGroupClosed(group.name) &&
                     group.properties.map((property) => {
                       const selector = sel.getPropertySelectorHook(property);
                       // const selectorBase = sel.getSelectorInfoBase(property);
