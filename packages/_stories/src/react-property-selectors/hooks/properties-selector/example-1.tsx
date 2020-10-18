@@ -56,7 +56,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
             <div key={group.name}>
               {group.name && (
                 <div>
-                  <button {...group.getGroupToggleButtonProps()}>&nbsp;&gt;&gt;&nbsp;</button>
+                  <button {...sel.getGroupToggleButtonProps(group.name)}>&nbsp;&gt;&gt;&nbsp;</button>
                   {translateGroupName(group.name)}
                 </div>
               )}

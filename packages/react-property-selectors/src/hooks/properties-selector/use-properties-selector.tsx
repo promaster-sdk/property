@@ -97,13 +97,13 @@ export type UsePropertiesSelector<TItem, TProperty> = {
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   readonly isPropertyHidden: (property: TProperty) => boolean;
   readonly isPropertyValid: (property: TProperty) => boolean;
+  readonly getGroupToggleButtonProps: (group: string) => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
 export type PropertiesSelectorGroup<TProperty> = {
   readonly name: string;
   readonly isClosed: boolean;
   readonly properties: ReadonlyArray<TProperty>;
-  readonly getGroupToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
 };
 
 export type PropertySelectorHookInfo<TItem> =
@@ -154,6 +154,12 @@ export function usePropertiesSelector<TItem, TProperty>(
 
   return {
     getPropertySelectorHook: (property) => selectorHookMap.get(property)!,
+    getGroupToggleButtonProps: (group: string) => ({
+      onClick: () =>
+        setClosedGroups(
+          closedGroups.indexOf(group) >= 0 ? closedGroups.filter((g) => g !== group) : [...closedGroups, group]
+        ),
+    }),
     getPropertyLabel: (property, propertyText) =>
       propertyText + (showCodes ? " (" + getPropertyInfo(property).name + ")" : ""),
     isPropertyHidden: (property) => {
@@ -170,18 +176,12 @@ export function usePropertiesSelector<TItem, TProperty>(
       const selectedItem = getSelectedItem(selectedItemValue, pi, getItemValue, valueComparer);
       return getIsValid(pi, selectedItem, selectedProperties, valueComparer, getItemFilter);
     },
-    groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
-      const isClosed = closedGroups.indexOf(name) !== -1;
-      const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (name || ""));
+    groups: getDistinctGroupNames(properties, getPropertyInfo).map((groupName) => {
+      const isClosed = closedGroups.indexOf(groupName) !== -1;
+      const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (groupName || ""));
       return {
-        name,
+        name: groupName,
         isClosed,
-        getGroupToggleButtonProps: () => ({
-          onClick: () =>
-            setClosedGroups(
-              closedGroups.indexOf(name) >= 0 ? closedGroups.filter((g) => g !== name) : [...closedGroups, name]
-            ),
-        }),
         properties: groupProperties,
       };
     }),
