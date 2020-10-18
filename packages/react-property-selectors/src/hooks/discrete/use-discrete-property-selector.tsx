@@ -3,7 +3,9 @@ import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 
 export type ItemComparer<TItem> = (a: TItem, b: TItem) => number;
-export type GetItemValue<TItem> = (item: TItem) => PropertyValue.PropertyValue | undefined | null;
+export type GetItemValue<TItem> = (item: TItem) => ItemValue;
+export type GetItemFilter<TItem> = (item: TItem) => PropertyFilter.PropertyFilter;
+export type ItemValue = PropertyValue.PropertyValue | undefined | null;
 
 export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   readonly propertyName: string;
@@ -13,6 +15,7 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
   // Get an item that corresponds to a property value of undefined
   readonly getUndefinedValueItem: () => TItem;
   readonly getItemValue: GetItemValue<TItem>;
+  readonly getItemFilter: GetItemFilter<TItem>;
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
   readonly sortValidFirst?: boolean;
   readonly trueItemIndex?: number;
@@ -24,7 +27,7 @@ export type DiscretePropertySelectorOptions<TItem extends DiscreteItem> = {
 };
 
 export type DiscreteItem = {
-  readonly value: PropertyValue.PropertyValue | undefined | null;
+  // readonly value: PropertyValue.PropertyValue | undefined | null;
   readonly text: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
 };
@@ -66,6 +69,8 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
     trueItemIndex,
     getUndefinedValueItem,
     itemComparer,
+    getItemValue,
+    getItemFilter,
   } = hookOptions;
 
   const [selectedItem, selectableItems] = getSelectableItems<TItem>(
@@ -75,7 +80,9 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
     getUndefinedValueItem,
     sortValidFirst,
     valueComparer,
-    itemComparer
+    itemComparer,
+    getItemValue,
+    getItemFilter
   );
 
   const [isOpen, setIsOpen] = useState(false);
@@ -87,53 +94,64 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
   return {
     selectedItem,
     disabled,
-    // hasOptionImage: selectableItems.some((o) => o.image !== undefined),
-    getItemLabel: (item) => getItemLabel(item, showCodes),
-    getItemValue: (item) => getItemValue(item),
-    getItemToolTip: (item) => getItemToolTip(hookOptions, item),
+    getItemLabel: (item) => getItemLabel(item, getItemValue(item), showCodes),
+    getItemValue: (item) => getItemValueAsString(getItemValue(item)),
+    getItemToolTip: (item) => getItemToolTip(hookOptions, getItemFilter(item), getItemValue(item)),
     isOpen,
     isTrueItem,
-    isItemValid: (item) => isValueItemValid(propertyName, propertyValueSet, item, valueComparer),
+    isItemValid: (item) =>
+      isValueItemValid(propertyName, propertyValueSet, getItemFilter(item), getItemValue(item), valueComparer),
     getToggleButtonProps: () => ({
       disabled,
-      title: getItemToolTip(hookOptions, selectedItem),
+      title: getItemToolTip(hookOptions, getItemFilter(selectedItem), getItemValue(selectedItem)),
       onClick: () => setIsOpen(!isOpen),
     }),
-    getListItemProps: (item) => ({
-      key: getItemValue(item),
-      value: getItemValue(item),
-      label: getItemLabel(item, showCodes),
-      // image: item.image,
-      title: getItemToolTip(hookOptions, item),
-      onClick: () => {
-        _doOnChange(getItemValue(item), onValueChange);
-        setIsOpen(false);
-      },
-    }),
-    getSelectProps: () => ({
-      disabled,
-      value: getItemValue(selectedItem),
-      title: getItemToolTip(hookOptions, selectedItem),
-      onChange: (event) => {
-        _doOnChange(event.currentTarget.value, onValueChange);
-        setIsOpen(false);
-      },
-    }),
-    getOptionProps: (item) => {
+    getListItemProps: (item) => {
+      const itemValue = getItemValue(item);
+      const itemFilter = getItemFilter(item);
       return {
-        key: getItemValue(item),
-        value: getItemValue(item),
-        label: getItemLabel(item, showCodes),
-        // image: item.image,
-        title: getItemToolTip(hookOptions, item),
+        key: getItemValueAsString(itemValue),
+        value: getItemValueAsString(itemValue),
+        label: getItemLabel(item, itemValue, showCodes),
+        title: getItemToolTip(hookOptions, itemFilter, itemValue),
+        onClick: () => {
+          _doOnChange(getItemValueAsString(itemValue), onValueChange);
+          setIsOpen(false);
+        },
       };
     },
-    getRadioItemProps: (item) => ({
-      key: getItemValue(item),
-      onClick: () => _doOnChange(getItemValue(item), onValueChange),
-    }),
+    getSelectProps: () => {
+      const itemValue = getItemValue(selectedItem);
+      const itemFilter = getItemFilter(selectedItem);
+      return {
+        disabled,
+        value: getItemValueAsString(itemValue),
+        title: getItemToolTip(hookOptions, itemFilter, itemValue),
+        onChange: (event) => {
+          _doOnChange(event.currentTarget.value, onValueChange);
+          setIsOpen(false);
+        },
+      };
+    },
+    getOptionProps: (item) => {
+      const itemValue = getItemValue(item);
+      const itemFilter = getItemFilter(item);
+      return {
+        key: getItemValueAsString(itemValue),
+        value: getItemValueAsString(itemValue),
+        label: getItemLabel(item, itemValue, showCodes),
+        title: getItemToolTip(hookOptions, itemFilter, itemValue),
+      };
+    },
+    getRadioItemProps: (item) => {
+      const itemValue = getItemValue(item);
+      return {
+        key: getItemValueAsString(itemValue),
+        onClick: () => _doOnChange(getItemValueAsString(itemValue), onValueChange),
+      };
+    },
     getCheckboxDivProps: () => ({
-      onClick: () => onValueChange(isTrueItem ? falseItem.value!! : trueItem.value!!),
+      onClick: () => onValueChange(isTrueItem ? getItemValue(falseItem)!! : getItemValue(trueItem)!!),
     }),
 
     items: selectableItems,
@@ -143,17 +161,19 @@ export function useDiscretePropertySelector<TItem extends DiscreteItem>(
 function getSelectableItems<TItem extends DiscreteItem>(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItems: ReadonlyArray<TItem>,
+  items: ReadonlyArray<TItem>,
   getUndefinedValueItem: () => TItem,
   sortValidFirst: boolean,
   valueComparer: PropertyValue.Comparer,
-  itemComparer: ItemComparer<TItem>
+  itemComparer: ItemComparer<TItem>,
+  getItemValue: GetItemValue<TItem>,
+  getItemFilter: GetItemFilter<TItem>
 ): [TItem, Array<TItem>] {
   // Convert value items to options
-  let sortedItems = [...valueItems].sort((a, b) => {
+  let sortedItems = [...items].sort((a, b) => {
     if (sortValidFirst) {
-      const aValid = isValueItemValid(propertyName, propertyValueSet, a, valueComparer);
-      const bValid = isValueItemValid(propertyName, propertyValueSet, b, valueComparer);
+      const aValid = isValueItemValid(propertyName, propertyValueSet, getItemFilter(a), getItemValue(a), valueComparer);
+      const bValid = isValueItemValid(propertyName, propertyValueSet, getItemFilter(b), getItemValue(b), valueComparer);
       if (aValid && !bValid) {
         return -1;
       }
@@ -167,9 +187,10 @@ function getSelectableItems<TItem extends DiscreteItem>(
   });
   // Get selected item
   const value = PropertyValueSet.getInteger(propertyName, propertyValueSet);
-  const selectedValueItemOrUndefined = valueItems.find(
-    (item) => (item.value && PropertyValue.getInteger(item.value)) === value
-  );
+  const selectedValueItemOrUndefined = items.find((item) => {
+    const itemValue = getItemValue(item);
+    return (itemValue && PropertyValue.getInteger(itemValue)) === value;
+  });
   let selectedValueItem: TItem;
   if (!selectedValueItemOrUndefined) {
     // Add item for selected value, even tough it does not really exist, but we need to show it in the combobox
@@ -189,37 +210,45 @@ function getSelectableItems<TItem extends DiscreteItem>(
 
 function getItemToolTip<TItem extends DiscreteItem>(
   options: Required<DiscretePropertySelectorOptions<TItem>>,
-  item: TItem
+  itemFilter: PropertyFilter.PropertyFilter,
+  itemValue: ItemValue
 ): string {
-  const isItemValid = isValueItemValid(options.propertyName, options.propertyValueSet, item, options.valueComparer);
-  return isItemValid ? "" : options.filterPrettyPrint(item.validationFilter);
+  const isItemValid = isValueItemValid(
+    options.propertyName,
+    options.propertyValueSet,
+    itemFilter,
+    itemValue,
+    options.valueComparer
+  );
+  return isItemValid ? "" : options.filterPrettyPrint(itemFilter);
 }
 
-function getItemLabel(valueItem: DiscreteItem, showCodes: boolean): string {
-  if (valueItem.value === undefined || valueItem.value === null) {
+function getItemLabel(item: DiscreteItem, itemValue: ItemValue, showCodes: boolean): string {
+  if (itemValue === undefined || itemValue === null) {
     return "";
   }
-  return valueItem.text + (showCodes ? ` (${PropertyValue.toString(valueItem.value)}) ` : "");
+  return item.text + (showCodes ? ` (${PropertyValue.toString(itemValue)}) ` : "");
 }
 
-function getItemValue(item: DiscreteItem): string {
-  return item.value === undefined || item.value === null ? "" : PropertyValue.toString(item.value);
+function getItemValueAsString(itemValue: ItemValue): string {
+  return itemValue === undefined || itemValue === null ? "" : PropertyValue.toString(itemValue);
 }
 
 function isValueItemValid(
   propertyName: string,
   propertyValueSet: PropertyValueSet.PropertyValueSet,
-  valueItem: DiscreteItem,
+  itemFilter: PropertyFilter.PropertyFilter,
+  itemValue: ItemValue,
   comparer: PropertyValue.Comparer
 ): boolean {
-  if (valueItem.value === undefined || valueItem.value === null) {
+  if (itemValue === undefined || itemValue === null) {
     return true;
   }
-  const pvsToCheck = PropertyValueSet.set(propertyName, valueItem.value, propertyValueSet);
-  if (!valueItem.validationFilter) {
+  const pvsToCheck = PropertyValueSet.set(propertyName, itemValue, propertyValueSet);
+  if (!itemFilter) {
     return true;
   }
-  return PropertyFilter.isValid(pvsToCheck, valueItem.validationFilter, comparer);
+  return PropertyFilter.isValid(pvsToCheck, itemFilter, comparer);
 }
 
 function _doOnChange(

@@ -6,7 +6,11 @@ const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[
 
 export type SelectorTypes = { readonly [propertyName: string]: string };
 
-export type MyItem = DiscreteItem & { readonly sortNo: number; readonly image?: string };
+export type MyItem = DiscreteItem & {
+  readonly sortNo: number;
+  readonly image?: string;
+  readonly value: PropertyValue.PropertyValue | undefined | null;
+};
 
 export function exampleProductProperties(): {
   selectorTypes: SelectorTypes;

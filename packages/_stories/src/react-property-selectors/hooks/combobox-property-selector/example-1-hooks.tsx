@@ -71,6 +71,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     sortValidFirst: true,
     filterPrettyPrint: filterPrettyPrint,
     getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
   const selB = useDiscretePropertySelector({
@@ -83,6 +84,7 @@ export function ComboboxPropertySelectorExample1Hooks(): JSX.Element {
     getUndefinedValueItem: () => undefinedValueItem,
     filterPrettyPrint: filterPrettyPrint,
     getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
   return (

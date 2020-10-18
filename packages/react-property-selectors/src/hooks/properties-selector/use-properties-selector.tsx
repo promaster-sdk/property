@@ -3,7 +3,7 @@ import { Unit, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
-import { DiscreteItem, DiscretePropertySelectorOptions, GetItemValue } from "../discrete";
+import { DiscreteItem, DiscretePropertySelectorOptions, GetItemFilter, GetItemValue } from "../discrete";
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
@@ -18,6 +18,7 @@ export type UsePropertiesSelectorOptions<TItem extends DiscreteItem> = {
   // Get an item that corresponds to a property value of undefined
   readonly getUndefinedValueItem: () => TItem;
   readonly getItemValue: GetItemValue<TItem>;
+  readonly getItemFilter: GetItemFilter<TItem>;
 
   // Includes the raw property name and value in paranthesis
   readonly showCodes?: boolean;
@@ -196,19 +197,22 @@ function createSelector<TItem extends DiscreteItem>(
     sortValidFirst,
     getUndefinedValueItem,
     getItemValue,
+    getItemFilter,
   } = params;
 
-  const selectedValue = PropertyValueSet.getValue(property.name, selectedProperties);
-  const selectedValueItem =
+  const selectedItemValue = PropertyValueSet.getValue(property.name, selectedProperties);
+  const selectedItem =
     property.valueItems &&
-    property.valueItems.find(
-      (value) =>
-        (value.value === undefined && selectedValue === undefined) ||
-        (value.value && PropertyValue.equals(selectedValue, value.value, comparer))
-    );
+    property.valueItems.find((item) => {
+      const itemValue = getItemValue(item);
+      return (
+        (itemValue === undefined && selectedItemValue === undefined) ||
+        (itemValue && PropertyValue.equals(selectedItemValue, itemValue, comparer))
+      );
+    });
 
-  const defaultFormat = getDefaultFormat(property, selectedValue);
-  const isValid = getIsValid(property, selectedValueItem, selectedProperties, comparer);
+  const defaultFormat = getDefaultFormat(property, selectedItemValue);
+  const isValid = getIsValid(property, selectedItem, selectedProperties, comparer);
 
   // TODO: Better handling of format to use when the format is missing in the map
   const propertyFormat = propertyFormats[property.name] || defaultFormat;
@@ -226,14 +230,20 @@ function createSelector<TItem extends DiscreteItem>(
   };
 
   const readOnly = readOnlyProperties.indexOf(property.name) !== -1;
-  const propertyOnChange = handleChange(onChange, productProperties, autoSelectSingleValidValue, comparer);
+  const propertyOnChange = handleChange(
+    onChange,
+    productProperties,
+    autoSelectSingleValidValue,
+    comparer,
+    getItemValue
+  );
   const fieldName = property.fieldName || property.name;
   const propertyName = property.name;
   const validationFilter = property.validationFilter;
   const valueItems = property.valueItems;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
-      ? shouldBeLocked(selectedValueItem, property, selectedProperties, comparer)
+      ? shouldBeLocked(selectedItem, property, selectedProperties, comparer)
       : false;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
@@ -294,6 +304,7 @@ function createSelector<TItem extends DiscreteItem>(
         getUseDiscreteOptions: () => ({
           getUndefinedValueItem,
           getItemValue,
+          getItemFilter,
           sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
@@ -380,7 +391,7 @@ function shouldBeLocked(
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
 ): boolean {
-  const singleValidValue = getSingleValidValueOrUndefined(productProperty, properties, comparer);
+  const singleValidValue = getSingleValidItemOrUndefined(productProperty, properties, comparer);
 
   // getSingleValidValueOrUndefined only works on onChange.
   // Prevent locking when the sent in selectedValue isn't the singleValidValue
@@ -395,7 +406,8 @@ function handleChange<TItem extends DiscreteItem>(
   externalOnChange: UsePropertiesSelectorOnPropertiesChanged,
   productProperties: ReadonlyArray<UsePropertiesSelectorProperty<TItem>>,
   autoSelectSingleValidValue: boolean,
-  comparer: PropertyValue.Comparer
+  comparer: PropertyValue.Comparer,
+  getItemValue: GetItemValue<TItem>
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
   return (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => {
     if (!autoSelectSingleValidValue) {
@@ -411,9 +423,10 @@ function handleChange<TItem extends DiscreteItem>(
         if (productProperty.name === propertyName) {
           continue;
         }
-        const propertyValueItem = getSingleValidValueOrUndefined(productProperty, properties, comparer);
-        if (propertyValueItem && propertyValueItem.value) {
-          properties = PropertyValueSet.set(productProperty.name, propertyValueItem.value, properties);
+        const singleItem = getSingleValidItemOrUndefined(productProperty, properties, comparer);
+        const singleItemValue = singleItem && getItemValue(singleItem);
+        if (singleItem && singleItemValue) {
+          properties = PropertyValueSet.set(productProperty.name, singleItemValue, properties);
           changedProps.add(productProperty.name);
         }
       }
@@ -429,13 +442,13 @@ function handleChange<TItem extends DiscreteItem>(
   };
 }
 
-function getSingleValidValueOrUndefined<TItem extends DiscreteItem>(
+function getSingleValidItemOrUndefined<TItem extends DiscreteItem>(
   productProperty: UsePropertiesSelectorProperty<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer
-): DiscreteItem | undefined {
+): TItem | undefined {
   if (productProperty.quantity === "Discrete") {
-    const validPropertyValueItems: Array<DiscreteItem> = [];
+    const validPropertyValueItems: Array<TItem> = [];
     for (const productValueItem of productProperty.valueItems) {
       const isValid = PropertyFilter.isValid(properties, productValueItem.validationFilter, comparer);
 
@@ -515,6 +528,7 @@ function optionsWithDefaults<TItem extends DiscreteItem>(
     sortValidFirst = false,
     getUndefinedValueItem,
     getItemValue,
+    getItemFilter,
   } = params;
 
   return {
@@ -542,5 +556,6 @@ function optionsWithDefaults<TItem extends DiscreteItem>(
     sortValidFirst,
     getUndefinedValueItem,
     getItemValue,
+    getItemFilter,
   };
 }

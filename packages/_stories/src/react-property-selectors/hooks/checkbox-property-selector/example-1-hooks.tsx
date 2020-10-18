@@ -38,6 +38,7 @@ export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
     getUndefinedValueItem: () => undefinedValueItem,
     showCodes: true,
     getItemValue: (item) => item.value,
+    getItemFilter: (item) => item.validationFilter,
   });
 
   return (
