@@ -53,19 +53,18 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
       <div>
         <div>
           {sel.groups.map((group) => (
-            <div key={group.name}>
-              {group.name && (
+            <div key={group}>
+              {group !== "" && (
                 <div>
-                  <button {...sel.getGroupToggleButtonProps(group.name)}>&nbsp;&gt;&gt;&nbsp;</button>
-                  {translateGroupName(group.name)}
+                  <button {...sel.getGroupToggleButtonProps(group)}>&nbsp;&gt;&gt;&nbsp;</button>
+                  {translateGroupName(group)}
                 </div>
               )}
               <table>
                 <tbody>
-                  {!sel.isGroupClosed(group.name) &&
-                    sel.getGroupProperties(group.name).map((property) => {
+                  {!sel.isGroupClosed(group) &&
+                    sel.getGroupProperties(group).map((property) => {
                       const selector = sel.getPropertySelectorHook(property);
-                      // const selectorBase = sel.getSelectorInfoBase(property);
                       return (
                         <tr key={property.name}>
                           <td>

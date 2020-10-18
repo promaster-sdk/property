@@ -91,7 +91,7 @@ export type PropertyInfo<TItem> = {
 
 export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getPropertySelectorHook: (property: TProperty) => PropertySelectorHookInfo<TItem>;
-  readonly groups: ReadonlyArray<PropertiesSelectorGroup<TProperty>>;
+  readonly groups: ReadonlyArray<string>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
@@ -100,12 +100,6 @@ export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getGroupToggleButtonProps: (group: string) => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly isGroupClosed: (group: string) => boolean;
   readonly getGroupProperties: (group: string) => ReadonlyArray<TProperty>;
-};
-
-export type PropertiesSelectorGroup<_TProperty> = {
-  readonly name: string;
-  // readonly isClosed: boolean;
-  // readonly properties: ReadonlyArray<TProperty>;
 };
 
 export type PropertySelectorHookInfo<TItem> =
@@ -181,11 +175,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     isGroupClosed: (group: string) => closedGroups.indexOf(group) !== -1,
     getGroupProperties: (group: string) =>
       properties.filter((property) => getPropertyInfo(property).group === (group || "")),
-    groups: getDistinctGroupNames(properties, getPropertyInfo).map((groupName) => {
-      return {
-        name: groupName,
-      };
-    }),
+    groups: getDistinctGroupNames(properties, getPropertyInfo),
   };
 }
 
