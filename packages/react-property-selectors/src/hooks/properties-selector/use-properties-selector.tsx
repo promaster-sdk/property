@@ -87,7 +87,7 @@ export type UsePropertiesSelectorAmountFormat = {
 };
 
 export type UsePropertiesSelector<TItem, TProperty> = {
-  readonly getSelectorInfo: (property: TProperty) => PropertySelectorHookInfo<TItem>;
+  readonly getPropertySelectorHook: (property: TProperty) => PropertySelectorHookInfo<TItem>;
   readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
@@ -158,7 +158,7 @@ export function usePropertiesSelector<TItem, TProperty>(
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
-    getSelectorInfo: (property) => allSelectors.get(property)!,
+    getPropertySelectorHook: (property) => allSelectors.get(property)!,
     getPropertyLabel: (property, propertyText) =>
       propertyText + (showCodes ? " (" + getPropertyInfo(property).name + ")" : ""),
     isPropertyHidden: (property) => {
