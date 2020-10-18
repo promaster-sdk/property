@@ -10,6 +10,7 @@ import { UseTextboxPropertySelectorOptions } from "../textbox";
 export type UsePropertiesSelectorOptions<TItem, TProperty = PropertyInfo<TItem>> = {
   // Required inputs
   readonly properties: ReadonlyArray<TProperty>;
+  readonly getPropertyInfo: (property: TProperty) => PropertyInfo<TItem>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
 
   // Used to print error messages

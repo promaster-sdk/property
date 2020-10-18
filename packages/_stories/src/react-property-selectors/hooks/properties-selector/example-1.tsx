@@ -33,6 +33,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
     showCodes,
     getItemValue: (item) => item.value,
     getItemFilter: (item) => item.validationFilter,
+    getPropertyInfo: (p) => p,
   });
 
   return (
