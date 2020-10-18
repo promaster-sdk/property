@@ -11,7 +11,7 @@ User interface for selecting a valid property value set
 
 :warning: **This package is deprecated in favor of the hooks in the @promaster-sdk/react-property-selectors package**.
 
-> Starting with v8 the hooks based versions of the selectors were moved to the @promaster-sdk/react-property-selectors package. This package now only has component based versions which are all deprecated.
+> **NOTE:** Starting with v8 the hooks based versions of the selectors were moved to the @promaster-sdk/react-property-selectors package. This package now only has component based versions which are all deprecated.
 
 A common task in product selection tools is to have an UI that allows the user to make a valid `PropertyValueSet` selection for a product given it's `PropertyFilter` constraints. This package contains a react components for showing this UI and handling invalid selections.
 
