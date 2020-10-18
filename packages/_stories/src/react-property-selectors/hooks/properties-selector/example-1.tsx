@@ -3,7 +3,7 @@ import { BaseUnits, Unit } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { usePropertiesSelector } from "@promaster-sdk/react-property-selectors";
-import { exampleProductProperties } from "../selector-ui/example-product-properties";
+import { exampleProductProperties, MyItem, MyPropertyInfo } from "../selector-ui/example-product-properties";
 import { units, unitsFormat } from "./units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 
@@ -15,7 +15,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
 
   const propInfo = exampleProductProperties();
 
-  const sel = usePropertiesSelector({
+  const sel = usePropertiesSelector<MyItem, MyPropertyInfo>({
     units,
     unitsFormat,
     unitLookup,

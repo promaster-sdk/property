@@ -7,10 +7,12 @@ import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemCompa
 import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
-export type UsePropertiesSelectorOptions<TItem, TProperty = PropertyInfo<TItem>> = {
+export type GetPropertyInfo<TItem, TProperty> = (property: TProperty) => PropertyInfo<TItem>;
+
+export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   // Required inputs
   readonly properties: ReadonlyArray<TProperty>;
-  readonly getPropertyInfo: (property: TProperty) => PropertyInfo<TItem>;
+  readonly getPropertyInfo: GetPropertyInfo<TItem, TProperty>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
 
   // Used to print error messages
@@ -71,7 +73,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty = PropertyInfo<TItem>>
 
 export type PropertyInfo<TItem> = {
   readonly fieldName?: string;
-  // readonly sortNo: number;
   readonly name: string;
   readonly group: string;
   readonly quantity: string;
@@ -135,12 +136,19 @@ export type SelectorRenderInfo<TItem> =
 
 export type UsePropertiesSelectorPropertySelectorType<TItem> = SelectorRenderInfo<TItem>["type"];
 
-export function usePropertiesSelector<TItem>(
-  options: UsePropertiesSelectorOptions<TItem>
+export function usePropertiesSelector<TItem, TPropety>(
+  options: UsePropertiesSelectorOptions<TItem, TPropety>
 ): UsePropertiesSelector<TItem> {
   const requiredOptions = optionsWithDefaults(options);
 
-  const { properties, selectedProperties, includeHiddenProperties, valueComparer, propertyComparer } = requiredOptions;
+  const {
+    properties,
+    selectedProperties,
+    includeHiddenProperties,
+    valueComparer,
+    propertyComparer,
+    getPropertyInfo,
+  } = requiredOptions;
 
   const sortedArray = properties
     .slice()
@@ -148,9 +156,9 @@ export function usePropertiesSelector<TItem>(
     .sort(propertyComparer);
 
   const allSelectors: ReadonlyArray<SelectorRenderInfoInternal<TItem>> = sortedArray
+    .map(getPropertyInfo)
     .filter(
-      (property) =>
-        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, property.visibilityFilter, valueComparer)
+      (pi) => includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
     )
     .map((p) => createSelector(p, requiredOptions));
 
@@ -175,9 +183,9 @@ export function usePropertiesSelector<TItem>(
   };
 }
 
-function createSelector<TItem>(
+function createSelector<TItem, TPropety>(
   property: PropertyInfo<TItem>,
-  params: Required<UsePropertiesSelectorOptions<TItem>>
+  params: Required<UsePropertiesSelectorOptions<TItem, TPropety>>
 ): SelectorRenderInfoInternal<TItem> {
   const {
     selectedProperties,
@@ -203,6 +211,7 @@ function createSelector<TItem>(
     getItemValue,
     getItemFilter,
     itemComparer,
+    getPropertyInfo,
   } = params;
 
   const selectedItemValue = PropertyValueSet.getValue(property.name, selectedProperties);
@@ -241,7 +250,8 @@ function createSelector<TItem>(
     autoSelectSingleValidValue,
     valueComparer,
     getItemValue,
-    getItemFilter
+    getItemFilter,
+    getPropertyInfo
   );
   const fieldName = property.fieldName || property.name;
   const propertyName = property.name;
@@ -409,13 +419,14 @@ function shouldBeLocked<TItem>(
   return false;
 }
 
-function handleChange<TItem>(
+function handleChange<TItem, TPropety>(
   externalOnChange: UsePropertiesSelectorOnPropertiesChanged,
-  productProperties: ReadonlyArray<PropertyInfo<TItem>>,
+  productProperties: ReadonlyArray<TPropety>,
   autoSelectSingleValidValue: boolean,
   comparer: PropertyValue.Comparer,
   getItemValue: GetItemValue<TItem>,
-  getItemFilter: GetItemFilter<TItem>
+  getItemFilter: GetItemFilter<TItem>,
+  getPropertyInfo: GetPropertyInfo<TItem, TPropety>
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
   return (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => {
     if (!autoSelectSingleValidValue) {
@@ -427,7 +438,8 @@ function handleChange<TItem>(
     const changedProps = new Set([propertyName]);
 
     for (let i = 0; i < 4; i++) {
-      for (const productProperty of productProperties) {
+      for (const theProperty of productProperties) {
+        const productProperty = getPropertyInfo(theProperty);
         if (productProperty.name === propertyName) {
           continue;
         }
@@ -455,7 +467,9 @@ function getSingleValidItemOrUndefined<TItem>(
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
+  // getPropertyInfo: GetPropertyInfo<TItem, TProperty>
 ): TItem | undefined {
+  // const productProperty = getPropertyInfo(theProperty);
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: Array<TItem> = [];
     for (const productValueItem of productProperty.items) {
@@ -492,9 +506,9 @@ function isNullOrWhiteSpace(str: string): boolean {
   return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
 }
 
-function optionsWithDefaults<TItem>(
-  options: UsePropertiesSelectorOptions<TItem>
-): Required<UsePropertiesSelectorOptions<TItem>> {
+function optionsWithDefaults<TItem, TPropety>(
+  options: UsePropertiesSelectorOptions<TItem, TPropety>
+): Required<UsePropertiesSelectorOptions<TItem, TPropety>> {
   return {
     ...options,
     filterPrettyPrint:
