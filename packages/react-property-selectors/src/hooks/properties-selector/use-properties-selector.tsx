@@ -227,9 +227,7 @@ function createSelectorHookInfo<TItem, TProperty>(
     getItemFilter,
     getPropertyInfo
   );
-  const fieldName = propertyInfo.fieldName || propertyInfo.name;
   const propertyName = propertyInfo.name;
-  const validationFilter = propertyInfo.validationFilter;
   const valueItems = propertyInfo.items;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
@@ -272,11 +270,11 @@ function createSelectorHookInfo<TItem, TProperty>(
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
-          fieldName: fieldName,
+          fieldName: propertyInfo.fieldName || propertyInfo.name,
           // If it is optional then use blank required message
           isRequiredMessage:
             optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : valueIsRequiredMessage,
-          validationFilter,
+          validationFilter: propertyInfo.validationFilter,
           filterPrettyPrint,
           readOnly: readOnly,
           debounceTime: inputDebounceTime,
