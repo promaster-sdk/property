@@ -88,7 +88,7 @@ export type UsePropertiesSelectorAmountFormat = {
 
 export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getPropertySelectorHook: (property: TProperty) => PropertySelectorHookInfo<TItem>;
-  readonly groups: ReadonlyArray<UsePropertiesSelectorGroup<TProperty>>;
+  readonly groups: ReadonlyArray<PropertiesSelectorGroup<TProperty>>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
@@ -96,7 +96,7 @@ export type UsePropertiesSelector<TItem, TProperty> = {
   readonly isPropertyValid: (property: TProperty) => boolean;
 };
 
-export type UsePropertiesSelectorGroup<TProperty> = {
+export type PropertiesSelectorGroup<TProperty> = {
   readonly name: string;
   readonly isClosed: boolean;
   readonly properties: ReadonlyArray<TProperty>;
