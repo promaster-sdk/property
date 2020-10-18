@@ -120,8 +120,6 @@ export type PropertySelectorHookInfo<TItem> =
       readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
     };
 
-export type PropertySelectorHookType<TItem> = PropertySelectorHookInfo<TItem>["type"];
-
 export function usePropertiesSelector<TItem, TProperty>(
   options: UsePropertiesSelectorOptions<TItem, TProperty>
 ): UsePropertiesSelector<TItem, TProperty> {
@@ -380,7 +378,7 @@ function getIsValid<TItem>(
   }
 }
 
-function getSelectorType<TItem>(property: PropertyInfo<TItem>): PropertySelectorHookType<TItem> {
+function getSelectorType<TItem>(property: PropertyInfo<TItem>): PropertySelectorHookInfo<TItem>["type"] {
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
