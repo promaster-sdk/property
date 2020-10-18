@@ -1,6 +1,6 @@
 import { DiscretePropertySelector } from "./use-discrete-property-selector";
 
-export function getDefaultOptionStyle2<TItem>(sel: DiscretePropertySelector<TItem>, item: TItem): {} {
+export function getDefaultOptionStyle<TItem>(sel: DiscretePropertySelector<TItem>, item: TItem): {} {
   return {
     color: sel.isItemValid(item) ? "rgb(131, 131, 131)" : "red",
     minHeight: "18px",
@@ -11,7 +11,7 @@ export function getDefaultOptionStyle2<TItem>(sel: DiscretePropertySelector<TIte
   };
 }
 
-export function getDefaultSelectStyle2<TItem>(sel: DiscretePropertySelector<TItem>): {} {
+export function getDefaultSelectStyle<TItem>(sel: DiscretePropertySelector<TItem>): {} {
   const always = {
     color: "black",
     height: "30px",
@@ -43,7 +43,7 @@ export function getDefaultSelectStyle2<TItem>(sel: DiscretePropertySelector<TIte
   return { ...always };
 }
 
-export function getDefaultToggleButtonStyle2<TItem>(selector: DiscretePropertySelector<TItem>): {} {
+export function getDefaultToggleButtonStyle<TItem>(selector: DiscretePropertySelector<TItem>): {} {
   return {
     width: "162px",
     alignItems: "center",
@@ -58,14 +58,14 @@ export function getDefaultToggleButtonStyle2<TItem>(selector: DiscretePropertySe
     padding: "1px 5px 0px 14px",
     textAlign: "right",
 
-    ...buttonElementStyles2({
+    ...buttonElementStyles({
       isSelectedItemValid: selector.isItemValid(selector.selectedItem),
       locked: selector.disabled,
     }),
   };
 }
 
-export function getDefaultMenuStyle2(): {} {
+export function getDefaultMenuStyle(): {} {
   return {
     position: "absolute",
     display: "block",
@@ -78,7 +78,7 @@ export function getDefaultMenuStyle2(): {} {
   };
 }
 
-export function getDefaultListItemStyle2<TItem>(sel: DiscretePropertySelector<TItem>, item: TItem): {} {
+export function getDefaultListItemStyle<TItem>(sel: DiscretePropertySelector<TItem>, item: TItem): {} {
   return {
     color: sel.isItemValid(item) === false ? "color: red" : "rgb(131, 131, 131)",
     minHeight: "18px",
@@ -91,7 +91,7 @@ export function getDefaultListItemStyle2<TItem>(sel: DiscretePropertySelector<TI
   };
 }
 
-export function getDefaultRadioItemStyle2<TItem>(sel: DiscretePropertySelector<TItem>, item: TItem): {} {
+export function getDefaultRadioItemStyle<TItem>(sel: DiscretePropertySelector<TItem>, item: TItem): {} {
   const isItemValid = sel.isItemValid(item);
   return {
     cursor: isItemValid ? "pointer" : "not-allowed",
@@ -105,7 +105,7 @@ export function getDefaultRadioItemStyle2<TItem>(sel: DiscretePropertySelector<T
   };
 }
 
-function buttonElementStyles2({
+function buttonElementStyles({
   isSelectedItemValid,
   locked,
 }: {
@@ -131,7 +131,7 @@ function buttonElementStyles2({
   return {};
 }
 
-export function getDefaultCheckboxStyle2<TItem>(selector: DiscretePropertySelector<TItem>): {} {
+export function getDefaultCheckboxStyle<TItem>(selector: DiscretePropertySelector<TItem>): {} {
   return {
     marginTop: "6px",
     position: "relative",
@@ -142,7 +142,7 @@ export function getDefaultCheckboxStyle2<TItem>(selector: DiscretePropertySelect
   };
 }
 
-export function getDefaultCheckboxContainerStyle2(): {} {
+export function getDefaultCheckboxContainerStyle(): {} {
   return {
     display: "flex",
     flexDirection: "column",

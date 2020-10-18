@@ -3,14 +3,14 @@ import {
   DiscretePropertySelector,
   DiscretePropertySelectorOptions,
   getDefaultAmountInputBoxStyle,
-  getDefaultCheckboxContainerStyle2,
-  getDefaultCheckboxStyle2,
-  getDefaultListItemStyle2,
-  getDefaultMenuStyle2,
-  getDefaultOptionStyle2,
-  getDefaultRadioItemStyle2,
-  getDefaultSelectStyle2,
-  getDefaultToggleButtonStyle2,
+  getDefaultCheckboxContainerStyle,
+  getDefaultCheckboxStyle,
+  getDefaultListItemStyle,
+  getDefaultMenuStyle,
+  getDefaultOptionStyle,
+  getDefaultRadioItemStyle,
+  getDefaultSelectStyle,
+  getDefaultToggleButtonStyle,
   useAmountPropertySelector,
   UseAmountPropertySelectorOptions,
   useDiscretePropertySelector,
@@ -44,10 +44,10 @@ export function MyDiscreteSelector({
 
 export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
-    <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle2()}>
+    <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle()}>
       {sel.selectedItem.image && <img src={sel.selectedItem.image} />}
       <div>{sel.getItemLabel(sel.selectedItem.text, sel.selectedItem)}</div>
-      <div style={getDefaultCheckboxStyle2(sel)} />
+      <div style={getDefaultCheckboxStyle(sel)} />
     </div>
   );
 }
@@ -61,7 +61,7 @@ export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyIte
           <div
             {...sel.getRadioItemProps(item)}
             title={sel.getItemToolTip(item)}
-            style={getDefaultRadioItemStyle2(sel, item)}
+            style={getDefaultRadioItemStyle(sel, item)}
           >
             {item.image ? <img src={item.image} /> : undefined}
             {sel.getItemLabel(item.text, item)}
@@ -73,9 +73,9 @@ export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyIte
 
 export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
-    <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle2(sel) }}>
+    <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
       {sel.items.map((item) => (
-        <option {...sel.getOptionProps(item)} style={getDefaultOptionStyle2(sel, item)} label={item.text} />
+        <option {...sel.getOptionProps(item)} style={getDefaultOptionStyle(sel, item)} label={item.text} />
       ))}
     </select>
   );
@@ -84,7 +84,7 @@ export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>
 export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
   return (
     <div style={{ userSelect: "none" }}>
-      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle2(sel)}>
+      <button {...sel.getToggleButtonProps()} style={getDefaultToggleButtonStyle(sel)}>
         <span>
           {sel.selectedItem.image && <img src={sel.selectedItem.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
           {" " + sel.getItemLabel(sel.selectedItem.text, sel.selectedItem) + " "}
@@ -93,9 +93,9 @@ export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<My
       </button>
       {/* optionsList */}
       {sel.isOpen && (
-        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle2()}>
+        <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
           {sel.items.map((item) => (
-            <li {...sel.getListItemProps(item)} style={getDefaultListItemStyle2(sel, item)}>
+            <li {...sel.getListItemProps(item)} style={getDefaultListItemStyle(sel, item)}>
               <span>
                 {item.image && <img src={item.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
                 {" " + sel.getItemLabel(item.text, item) + " "}
