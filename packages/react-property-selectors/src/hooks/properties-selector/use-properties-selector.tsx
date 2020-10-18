@@ -8,6 +8,7 @@ import { UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
 export type GetPropertyInfo<TItem, TProperty> = (property: TProperty) => PropertyInfo<TItem>;
+export type GetPropertyItems<TItem, TProperty> = (property: TProperty) => ReadonlyArray<TItem>;
 export type OnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
@@ -21,6 +22,8 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   // Required inputs
   readonly properties: ReadonlyArray<TProperty>;
   readonly getPropertyInfo: GetPropertyInfo<TItem, TProperty>;
+  readonly getPropertyItems: GetPropertyItems<TItem, TProperty>;
+
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
 
   // Used to print error messages
@@ -79,14 +82,14 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly sortValidFirst?: boolean;
 };
 
-export type PropertyInfo<TItem> = {
+export type PropertyInfo<_TItem> = {
   readonly fieldName?: string;
   readonly name: string;
   readonly group: string;
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
-  readonly items: ReadonlyArray<TItem>;
+  // readonly items: ReadonlyArray<TItem>;
 };
 
 export type UsePropertiesSelector<TItem, TProperty> = {
@@ -131,6 +134,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     showCodes,
     getItemFilter,
     getItemValue,
+    getPropertyItems,
   } = requiredOptions;
 
   // Get sorted properties and only include the ones that should be visible
@@ -143,7 +147,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     });
 
   const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map(
-    properties.map((p) => [p, createSelectorHookInfo(getPropertyInfo(p), requiredOptions)])
+    properties.map((p) => [p, createSelectorHookInfo(p, requiredOptions)])
   );
 
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
@@ -169,7 +173,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     isPropertyValid: (property) => {
       const pi = getPropertyInfo(property);
       const selectedItemValue = PropertyValueSet.getValue(pi.name, selectedProperties);
-      const selectedItem = getSelectedItem(selectedItemValue, pi, getItemValue, valueComparer);
+      const selectedItem = getSelectedItem(selectedItemValue, property, getItemValue, getPropertyItems, valueComparer);
       return getIsValid(pi, selectedItem, selectedProperties, valueComparer, getItemFilter);
     },
     isGroupClosed: (group: string) => closedGroups.indexOf(group) !== -1,
@@ -180,7 +184,7 @@ export function usePropertiesSelector<TItem, TProperty>(
 }
 
 function createSelectorHookInfo<TItem, TProperty>(
-  propertyInfo: PropertyInfo<TItem>,
+  property: TProperty,
   options: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
 ): PropertySelectorHookInfo<TItem> {
   const {
@@ -208,10 +212,13 @@ function createSelectorHookInfo<TItem, TProperty>(
     getItemFilter,
     itemComparer,
     getPropertyInfo,
+    getPropertyItems,
   } = options;
 
+  const propertyInfo = getPropertyInfo(property);
+
   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
-  const selectedItem = getSelectedItem(selectedItemValue, propertyInfo, getItemValue, valueComparer);
+  const selectedItem = getSelectedItem(selectedItemValue, property, getItemValue, getPropertyItems, valueComparer);
 
   // TODO: Better handling of format to use when the format is missing in the map
   const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
@@ -225,13 +232,21 @@ function createSelectorHookInfo<TItem, TProperty>(
     valueComparer,
     getItemValue,
     getItemFilter,
-    getPropertyInfo
+    getPropertyInfo,
+    getPropertyItems
   );
   const propertyName = propertyInfo.name;
   // const valueItems = propertyInfo.items;
   const locked =
     autoSelectSingleValidValue || lockSingleValidValue
-      ? shouldBeLocked(selectedItem, propertyInfo, selectedProperties, valueComparer, getItemFilter)
+      ? shouldBeLocked(
+          selectedItem,
+          getPropertyItems(property),
+          propertyInfo,
+          selectedProperties,
+          valueComparer,
+          getItemFilter
+        )
       : false;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
@@ -293,7 +308,7 @@ function createSelectorHookInfo<TItem, TProperty>(
           sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
-          items: propertyInfo.items,
+          items: getPropertyItems(property),
           showCodes: showCodes,
           filterPrettyPrint,
           onValueChange,
@@ -306,15 +321,17 @@ function createSelectorHookInfo<TItem, TProperty>(
   }
 }
 
-function getSelectedItem<TItem>(
+function getSelectedItem<TItem, TProperty>(
   selectedItemValue: PropertyValue.PropertyValue,
-  propertyInfo: PropertyInfo<TItem>,
+  property: TProperty,
   getItemValue: GetItemValue<TItem>,
+  getPropertyItems: GetPropertyItems<TItem, TProperty>,
   valueComparer: PropertyValue.Comparer
 ): TItem | undefined {
+  const items = getPropertyItems(property);
   const selectedItem =
-    propertyInfo.items &&
-    propertyInfo.items.find((item) => {
+    items &&
+    items.find((item) => {
       const itemValue = getItemValue(item);
       return (
         (itemValue === undefined && selectedItemValue === undefined) ||
@@ -390,12 +407,19 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
 
 function shouldBeLocked<TItem>(
   selectedValueItem: TItem | undefined,
-  productProperty: PropertyInfo<TItem>,
+  propertyItems: ReadonlyArray<TItem>,
+  propertyInfo: PropertyInfo<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
 ): boolean {
-  const singleValidValue = getSingleValidItemOrUndefined(productProperty, properties, comparer, getItemFilter);
+  const singleValidValue = getSingleValidItemOrUndefined(
+    propertyItems,
+    propertyInfo,
+    properties,
+    comparer,
+    getItemFilter
+  );
 
   // getSingleValidValueOrUndefined only works on onChange.
   // Prevent locking when the sent in selectedValue isn't the singleValidValue
@@ -413,7 +437,8 @@ function handleChange<TItem, TPropety>(
   comparer: PropertyValue.Comparer,
   getItemValue: GetItemValue<TItem>,
   getItemFilter: GetItemFilter<TItem>,
-  getPropertyInfo: GetPropertyInfo<TItem, TPropety>
+  getPropertyInfo: GetPropertyInfo<TItem, TPropety>,
+  getPropertyItems: GetPropertyItems<TItem, TPropety>
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
   return (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => {
     if (!autoSelectSingleValidValue) {
@@ -425,16 +450,23 @@ function handleChange<TItem, TPropety>(
     const changedProps = new Set([propertyName]);
 
     for (let i = 0; i < 4; i++) {
-      for (const theProperty of productProperties) {
-        const productProperty = getPropertyInfo(theProperty);
-        if (productProperty.name === propertyName) {
+      for (const property of productProperties) {
+        const propertyInfo = getPropertyInfo(property);
+        if (propertyInfo.name === propertyName) {
           continue;
         }
-        const singleItem = getSingleValidItemOrUndefined(productProperty, properties, comparer, getItemFilter);
+        const propertyItems = getPropertyItems(property);
+        const singleItem = getSingleValidItemOrUndefined(
+          propertyItems,
+          propertyInfo,
+          properties,
+          comparer,
+          getItemFilter
+        );
         const singleItemValue = singleItem && getItemValue(singleItem);
         if (singleItem && singleItemValue) {
-          properties = PropertyValueSet.set(productProperty.name, singleItemValue, properties);
-          changedProps.add(productProperty.name);
+          properties = PropertyValueSet.set(propertyInfo.name, singleItemValue, properties);
+          changedProps.add(propertyInfo.name);
         }
       }
 
@@ -450,14 +482,15 @@ function handleChange<TItem, TPropety>(
 }
 
 function getSingleValidItemOrUndefined<TItem>(
-  productProperty: PropertyInfo<TItem>,
+  propertyItems: ReadonlyArray<TItem>,
+  propertyInfo: PropertyInfo<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
 ): TItem | undefined {
-  if (productProperty.quantity === "Discrete") {
+  if (propertyInfo.quantity === "Discrete") {
     const validPropertyValueItems: Array<TItem> = [];
-    for (const productValueItem of productProperty.items) {
+    for (const productValueItem of propertyItems) {
       const isValid = PropertyFilter.isValid(properties, getItemFilter(productValueItem), comparer);
 
       if (isValid) {
