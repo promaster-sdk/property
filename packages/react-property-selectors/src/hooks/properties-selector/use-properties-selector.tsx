@@ -107,7 +107,7 @@ export type UsePropertiesSelectorOnPropertiesChanged = (
 ) => void;
 
 export type SelectorRenderInfoBase = {
-  readonly propertyName: string;
+  // readonly propertyName: string;
   readonly isValid: boolean;
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   // This flag tells if is was supposed to be hidden
@@ -345,10 +345,8 @@ function createSelectorBase<TItem, TProperty>(
   const isHidden = !PropertyFilter.isValid(selectedProperties, propertyInfo.visibilityFilter, valueComparer);
 
   const myBase: SelectorRenderInfoBase = {
-    propertyName: propertyInfo.name,
     isValid,
     isHidden,
-    // getPropertyLabel: (propertyText) => propertyText + (showCodes ? " (" + propertyInfo.name + ")" : ""),
   };
   return myBase;
 }

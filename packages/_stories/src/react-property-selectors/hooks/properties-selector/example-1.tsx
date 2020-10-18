@@ -67,7 +67,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
                       const selector = sel.getSelectorInfo(property);
                       const selectorBase = sel.getSelectorInfoBase(property);
                       return (
-                        <tr key={selectorBase.propertyName}>
+                        <tr key={property.name}>
                           <td>
                             <label
                               className={!selectorBase.isValid ? "invalid" : undefined}
