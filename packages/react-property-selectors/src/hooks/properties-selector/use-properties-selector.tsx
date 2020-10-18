@@ -175,7 +175,7 @@ export function usePropertiesSelector<TItem, TProperty>(
     isGroupClosed: (group: string) => closedGroups.indexOf(group) !== -1,
     getGroupProperties: (group: string) =>
       properties.filter((property) => getPropertyInfo(property).group === (group || "")),
-    groups: getDistinctGroupNames(properties, getPropertyInfo),
+    groups: getDistinctGroupNames(properties.map(getPropertyInfo)),
   };
 }
 
@@ -456,9 +456,7 @@ function getSingleValidItemOrUndefined<TItem>(
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
-  // getPropertyInfo: GetPropertyInfo<TItem, TProperty>
 ): TItem | undefined {
-  // const productProperty = getPropertyInfo(theProperty);
   if (productProperty.quantity === "Discrete") {
     const validPropertyValueItems: Array<TItem> = [];
     for (const productValueItem of productProperty.items) {
@@ -475,14 +473,9 @@ function getSingleValidItemOrUndefined<TItem>(
   return undefined;
 }
 
-function getDistinctGroupNames<TItem, TProperty>(
-  properties: ReadonlyArray<TProperty>,
-  // productPropertiesArray: ReadonlyArray<SelectorRenderInfoInternal<TItem>>
-  getPropertyInfo: GetPropertyInfo<TItem, TProperty>
-): ReadonlyArray<string> {
+function getDistinctGroupNames<TItem>(pis: ReadonlyArray<PropertyInfo<TItem>>): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
-  for (const property2 of properties) {
-    const pi = getPropertyInfo(property2);
+  for (const pi of pis) {
     // let groupName = property.groupName;
     if (isNullOrWhiteSpace(pi.group)) {
       // groupName = "";
