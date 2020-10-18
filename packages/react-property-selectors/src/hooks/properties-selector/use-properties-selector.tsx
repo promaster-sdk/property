@@ -130,7 +130,7 @@ export function usePropertiesSelector<TItem, TProperty>(
   const requiredOptions = optionsWithDefaults(options);
 
   const {
-    properties,
+    properties: propertiesUnsorted,
     selectedProperties,
     includeHiddenProperties,
     valueComparer,
@@ -141,15 +141,12 @@ export function usePropertiesSelector<TItem, TProperty>(
     getItemValue,
   } = requiredOptions;
 
-  const sortedArray = properties.slice().sort(propertyComparer);
+  const properties = propertiesUnsorted.slice().sort(propertyComparer);
 
-  const allSelectors1: ReadonlyArray<[TProperty, PropertySelectorHookInfo<TItem>]> = sortedArray
-    .map((p) => [p, getPropertyInfo(p)] as readonly [TProperty, PropertyInfo<TItem>])
-    .filter(
-      ([_, pi]) =>
-        includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
-    )
-    .map(([p, pi]) => [p, createSelector(pi, requiredOptions)]);
+  const allSelectors1: ReadonlyArray<[TProperty, PropertySelectorHookInfo<TItem>]> = properties.map((p) => [
+    p,
+    createSelector(getPropertyInfo(p), requiredOptions),
+  ]);
   const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map();
   for (const s of allSelectors1) {
     selectorHookMap.set(s[0], s[1]);
@@ -177,7 +174,14 @@ export function usePropertiesSelector<TItem, TProperty>(
     },
     groups: getDistinctGroupNames(properties, getPropertyInfo).map((name) => {
       const isClosed = closedGroups.indexOf(name) !== -1;
-      const groupProperties = properties.filter((property) => getPropertyInfo(property).group === (name || ""));
+      const groupProperties = properties
+        .filter((property) => {
+          const pi = getPropertyInfo(property);
+          return (
+            includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer)
+          );
+        })
+        .filter((property) => getPropertyInfo(property).group === (name || ""));
       return {
         name,
         isClosed,
