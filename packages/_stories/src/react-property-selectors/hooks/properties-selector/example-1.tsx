@@ -19,7 +19,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
     units,
     unitsFormat,
     unitLookup,
-    productProperties: propInfo.properties,
+    propertyInfos: propInfo.properties,
     selectedProperties: pvs,
     onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
       setPvs(properties);
