@@ -5,7 +5,7 @@
 [![types][types-image]][types-url]
 [![MIT license][license-image]][license-url]
 
-Hooks for building UI for selection of a single property value.
+Hooks for building UI for selection of property values.
 
 ## Introduction
 
