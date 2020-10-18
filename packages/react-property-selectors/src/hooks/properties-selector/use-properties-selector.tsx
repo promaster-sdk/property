@@ -9,7 +9,7 @@ import { UseTextboxPropertySelectorOptions } from "../textbox";
 
 export type UsePropertiesSelectorOptions<TItem> = {
   // Required inputs
-  readonly productProperties: ReadonlyArray<UsePropertiesSelectorProperty<TItem>>;
+  readonly productProperties: ReadonlyArray<PropertyInfo<TItem>>;
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
 
   // Used to print error messages
@@ -63,11 +63,12 @@ export type UsePropertiesSelectorOptions<TItem> = {
   // Comparer
   readonly valueComparer?: PropertyValue.Comparer;
   readonly itemComparer?: ItemComparer<TItem>;
+  // readonly propertyComparer: (a, b) => number;
 
   readonly sortValidFirst?: boolean;
 };
 
-export type UsePropertiesSelectorProperty<TItem> = {
+export type PropertyInfo<TItem> = {
   readonly fieldName?: string;
   readonly sortNo: number;
   readonly name: string;
@@ -173,7 +174,7 @@ export function usePropertiesSelector<TItem>(
 }
 
 function createSelector<TItem>(
-  property: UsePropertiesSelectorProperty<TItem>,
+  property: PropertyInfo<TItem>,
   params: Required<UsePropertiesSelectorOptions<TItem>>
 ): SelectorRenderInfoInternal<TItem> {
   const {
@@ -325,7 +326,7 @@ function createSelector<TItem>(
 }
 
 function getDefaultFormat<TItem>(
-  property: UsePropertiesSelectorProperty<TItem>,
+  property: PropertyInfo<TItem>,
   selectedValue: PropertyValue.PropertyValue
 ): UsePropertiesSelectorAmountFormat {
   const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
@@ -347,7 +348,7 @@ function getDefaultFormat<TItem>(
 }
 
 function getIsValid<TItem>(
-  property: UsePropertiesSelectorProperty<TItem>,
+  property: PropertyInfo<TItem>,
   selectedValueItem: TItem | undefined,
   selectedProperties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
@@ -367,9 +368,7 @@ function getIsValid<TItem>(
   }
 }
 
-function getSelectorType<TItem>(
-  property: UsePropertiesSelectorProperty<TItem>
-): UsePropertiesSelectorPropertySelectorType<TItem> {
+function getSelectorType<TItem>(property: PropertyInfo<TItem>): UsePropertiesSelectorPropertySelectorType<TItem> {
   if (property.quantity === "Text") {
     return "TextBox";
   } else if (property.quantity === "Discrete") {
@@ -392,7 +391,7 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
 
 function shouldBeLocked<TItem>(
   selectedValueItem: TItem | undefined,
-  productProperty: UsePropertiesSelectorProperty<TItem>,
+  productProperty: PropertyInfo<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
@@ -410,7 +409,7 @@ function shouldBeLocked<TItem>(
 
 function handleChange<TItem>(
   externalOnChange: UsePropertiesSelectorOnPropertiesChanged,
-  productProperties: ReadonlyArray<UsePropertiesSelectorProperty<TItem>>,
+  productProperties: ReadonlyArray<PropertyInfo<TItem>>,
   autoSelectSingleValidValue: boolean,
   comparer: PropertyValue.Comparer,
   getItemValue: GetItemValue<TItem>,
@@ -450,7 +449,7 @@ function handleChange<TItem>(
 }
 
 function getSingleValidItemOrUndefined<TItem>(
-  productProperty: UsePropertiesSelectorProperty<TItem>,
+  productProperty: PropertyInfo<TItem>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TItem>
