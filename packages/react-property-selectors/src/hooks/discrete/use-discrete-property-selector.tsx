@@ -26,13 +26,21 @@ export type DiscretePropertySelectorOptions<TItem> = {
   readonly itemComparer?: ItemComparer<TItem>;
 };
 
+export type SelectProps = {
+  readonly onChange?: React.ChangeEventHandler<{ readonly name?: string; readonly value: string }>;
+  readonly title: string;
+  readonly disabled: boolean;
+  readonly value: string;
+};
+
 export type DiscretePropertySelector<TItem> = {
   readonly selectedItem: TItem;
   readonly disabled: boolean;
   readonly isOpen: boolean;
   readonly items: ReadonlyArray<TItem>;
   readonly isTrueItem: boolean;
-  readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly getSelectProps: () => SelectProps; //React.SelectHTMLAttributes<HTMLSelectElement>;
+
   readonly getDropdownToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
   readonly getDropdownListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getItemLabel: (text: string, item: TItem) => string;
