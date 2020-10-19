@@ -27,7 +27,7 @@ export type DiscretePropertySelectorOptions<TItem> = {
 };
 
 export type SelectProps = {
-  readonly onChange: React.ChangeEventHandler<{ readonly name?: string; readonly value: string }>;
+  readonly onChange: React.ChangeEventHandler<{ readonly value: string }>;
   readonly title: string;
   readonly disabled: boolean;
   readonly value: string;
