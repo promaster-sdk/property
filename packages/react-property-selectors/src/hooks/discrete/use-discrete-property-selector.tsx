@@ -33,23 +33,29 @@ export type SelectProps = {
   readonly value: string;
 };
 
+export type SelectOptionProps = {
+  readonly title: string;
+  // eslint-disable-next-line functional/prefer-readonly-type
+  readonly value: string | Array<string> | number;
+};
+
 export type DiscretePropertySelector<TItem> = {
   readonly selectedItem: TItem;
   readonly disabled: boolean;
   readonly isOpen: boolean;
   readonly items: ReadonlyArray<TItem>;
   readonly isTrueItem: boolean;
-  readonly getSelectProps: () => SelectProps; //React.SelectHTMLAttributes<HTMLSelectElement>;
-
-  readonly getDropdownToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
-  readonly getDropdownListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getItemLabel: (text: string, item: TItem) => string;
   readonly getItemToolTip: (item: TItem) => string;
   readonly getItemValue: (item: TItem) => string;
-  readonly getSelectOptionProps: (item: TItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
+  readonly isItemValid: (item: TItem) => boolean;
+  // Tag-specific props
+  readonly getSelectProps: () => SelectProps; //React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly getSelectOptionProps: (item: TItem) => SelectOptionProps; // React.OptionHTMLAttributes<HTMLOptionElement>;
+  readonly getDropdownToggleButtonProps: () => React.ButtonHTMLAttributes<HTMLButtonElement>;
+  readonly getDropdownListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getRadioItemProps: (item: TItem) => React.HTMLAttributes<HTMLDivElement>;
   readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
-  readonly isItemValid: (item: TItem) => boolean;
 };
 
 export function useDiscretePropertySelector<TItem>(
