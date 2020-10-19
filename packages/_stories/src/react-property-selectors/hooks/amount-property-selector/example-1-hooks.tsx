@@ -83,15 +83,15 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
           {/* AmountInput */}
           <input {...selA.amountInputBox.getInputProps()} style={getDefaultAmountInputBoxStyle(selA.amountInputBox)} />
           {/* AmountFormat */}
-          <span {...selA.amountFormatSelector.getWrapperProps()}>
-            {selA.amountFormatSelector.active ? (
+          <span {...selA.amountFormatSelector.getLabelProps()}>
+            {selA.amountFormatSelector.isOpen ? (
               <>
-                <select {...selA.amountFormatSelector.getUnitSelectorProps()}>
+                <select {...selA.amountFormatSelector.getUnitSelectProps()}>
                   {selA.amountFormatSelector.unitSelectorOptions.map((o) => (
                     <option {...o.getOptionProps()}> {o.label} </option>
                   ))}
                 </select>
-                <select {...selA.amountFormatSelector.getPrecisionSelectorProps()}>
+                <select {...selA.amountFormatSelector.getPrecisionSelectProps()}>
                   {selA.amountFormatSelector.precisionSelectorOptions.map((o) => (
                     <option {...o.getOptionProps()}>{o.label}</option>
                   ))}

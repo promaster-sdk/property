@@ -23,12 +23,12 @@ export type UseAmountFormatSelectorOptions = {
 };
 
 export type UseAmountFormatSelector = {
-  readonly active: boolean;
   readonly label: string;
-  readonly getWrapperProps: () => React.HTMLAttributes<HTMLSpanElement>;
-  readonly getUnitSelectorProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly isOpen: boolean;
+  readonly getLabelProps: () => React.HTMLAttributes<HTMLSpanElement>;
+  readonly getUnitSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly unitSelectorOptions: ReadonlyArray<UnitSelectorOption>;
-  readonly getPrecisionSelectorProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly getPrecisionSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly precisionSelectorOptions: ReadonlyArray<PrecisionSelectorOption>;
   readonly showClearButton: boolean;
   readonly getClearButtonProps: () => React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -45,28 +45,24 @@ export type UnitSelectorOption = {
   readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
 };
 
-type State = {
-  readonly active: boolean;
-};
-
 export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions): UseAmountFormatSelector {
   const { selectedUnit, selectedDecimalCount, onFormatChanged, onFormatCleared, unitsFormat, units } = options;
 
-  const [state, setState] = useState<State>({ active: false });
+  const [isOpen, setIsOpen] = useState(false);
 
   // If there is no handler for onFormatChanged then the user should not be able to change the format
-  if (!state.active || !onFormatChanged) {
+  if (!isOpen || !onFormatChanged) {
     const format = Format.getUnitFormat(selectedUnit, unitsFormat);
 
     return {
-      active: state.active,
+      isOpen,
       label: format ? format.label : "",
-      getWrapperProps: () => ({
-        onClick: () => setState({ active: true }),
+      getLabelProps: () => ({
+        onClick: () => setIsOpen(true),
       }),
-      getUnitSelectorProps: () => ({}),
+      getUnitSelectProps: () => ({}),
       unitSelectorOptions: [],
-      getPrecisionSelectorProps: () => ({}),
+      getPrecisionSelectProps: () => ({}),
       precisionSelectorOptions: [],
       showClearButton: false,
       getClearButtonProps: () => ({}),
@@ -85,13 +81,13 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
   }
 
   return {
-    active: state.active,
+    isOpen,
     label: selectedUnitName,
-    getWrapperProps: () => ({}),
-    getUnitSelectorProps: () => ({
+    getLabelProps: () => ({}),
+    getUnitSelectProps: () => ({
       value: selectedUnitName,
       onChange: (e) => {
-        setState({ active: false });
+        setIsOpen(false);
         _onUnitChange(e, quantityUnits, selectedDecimalCount, onFormatChanged);
       },
     }),
@@ -105,10 +101,10 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
         }),
       };
     }),
-    getPrecisionSelectorProps: () => ({
+    getPrecisionSelectProps: () => ({
       value: selectedDecimalCount.toString(),
       onChange: (e) => {
-        setState({ active: false });
+        setIsOpen(false);
         _onDecimalCountChange(e, selectedUnit, onFormatChanged);
       },
     }),
@@ -122,14 +118,14 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
     showClearButton: !!onFormatCleared,
     getClearButtonProps: () => ({
       onClick: () => {
-        setState({ active: false });
+        setIsOpen(false);
         if (onFormatCleared) {
           onFormatCleared();
         }
       },
     }),
     getCancelButtonProps: () => ({
-      onClick: () => setState({ active: false }),
+      onClick: () => setIsOpen(false),
     }),
   };
 }

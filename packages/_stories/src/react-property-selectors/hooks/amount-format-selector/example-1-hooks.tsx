@@ -64,15 +64,15 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
         {/* AmountInput */}
         <input {...selA.getInputProps()} style={getDefaultAmountInputBoxStyle(selA)} />
         {/* AmountFormat */}
-        <span {...fmtSel.getWrapperProps()}>
-          {fmtSel.active ? (
+        <span {...fmtSel.getLabelProps()}>
+          {fmtSel.isOpen ? (
             <>
-              <select {...fmtSel.getUnitSelectorProps()}>
+              <select {...fmtSel.getUnitSelectProps()}>
                 {fmtSel.unitSelectorOptions.map((o) => (
                   <option {...o.getOptionProps()}> {o.label} </option>
                 ))}
               </select>
-              <select {...fmtSel.getPrecisionSelectorProps()}>
+              <select {...fmtSel.getPrecisionSelectProps()}>
                 {fmtSel.precisionSelectorOptions.map((o) => (
                   <option {...o.getOptionProps()}>{o.label}</option>
                 ))}

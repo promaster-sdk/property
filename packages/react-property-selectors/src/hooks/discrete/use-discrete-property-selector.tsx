@@ -26,14 +26,14 @@ export type DiscretePropertySelectorOptions<TItem> = {
   readonly itemComparer?: ItemComparer<TItem>;
 };
 
-export type SelectProps = {
+export type DiscretePropertySelectorSelectProps = {
   readonly onChange: React.ChangeEventHandler<{ readonly value: string }>;
   readonly title: string;
   readonly disabled: boolean;
   readonly value: string;
 };
 
-export type SelectOptionProps = {
+export type DiscretePropertySelectorSelectOptionProps = {
   readonly title: string;
   // eslint-disable-next-line functional/prefer-readonly-type
   readonly value: string | Array<string> | number;
@@ -50,8 +50,8 @@ export type DiscretePropertySelector<TItem> = {
   readonly getItemValue: (item: TItem) => string;
   readonly isItemValid: (item: TItem) => boolean;
   // Tag-specific props
-  readonly getSelectProps: () => SelectProps; //React.SelectHTMLAttributes<HTMLSelectElement>;
-  readonly getSelectOptionProps: (item: TItem) => SelectOptionProps; // React.OptionHTMLAttributes<HTMLOptionElement>;
+  readonly getSelectProps: () => DiscretePropertySelectorSelectProps; //React.SelectHTMLAttributes<HTMLSelectElement>;
+  readonly getSelectOptionProps: (item: TItem) => DiscretePropertySelectorSelectOptionProps; // React.OptionHTMLAttributes<HTMLOptionElement>;
   readonly getDropdownToggleButtonProps: () => React.ButtonHTMLAttributes<HTMLButtonElement>;
   readonly getDropdownListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getRadioItemProps: (item: TItem) => React.HTMLAttributes<HTMLDivElement>;

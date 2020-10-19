@@ -116,15 +116,15 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
   return (
     <span {...sel.getWrapperProps()}>
       <input {...sel.amountInputBox.getInputProps()} style={getDefaultAmountInputBoxStyle(sel.amountInputBox)} />
-      <span {...sel.amountFormatSelector.getWrapperProps()}>
-        {sel.amountFormatSelector.active ? (
+      <span {...sel.amountFormatSelector.getLabelProps()}>
+        {sel.amountFormatSelector.isOpen ? (
           <>
-            <select {...sel.amountFormatSelector.getUnitSelectorProps()}>
+            <select {...sel.amountFormatSelector.getUnitSelectProps()}>
               {sel.amountFormatSelector.unitSelectorOptions.map((o) => (
                 <option {...o.getOptionProps()}> {o.label} </option>
               ))}
             </select>
-            <select {...sel.amountFormatSelector.getPrecisionSelectorProps()}>
+            <select {...sel.amountFormatSelector.getPrecisionSelectProps()}>
               {sel.amountFormatSelector.precisionSelectorOptions.map((o) => (
                 <option {...o.getOptionProps()}>{o.label}</option>
               ))}
