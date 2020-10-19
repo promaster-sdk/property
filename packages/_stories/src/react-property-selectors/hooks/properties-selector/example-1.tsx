@@ -46,7 +46,7 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
           id="showCodes"
           name="vehicle1"
           checked={showCodes}
-          onClick={() => setShowCodes(!showCodes)}
+          onChange={() => setShowCodes(!showCodes)}
         />
         <label htmlFor="showCodes">Show Codes</label>
       </div>

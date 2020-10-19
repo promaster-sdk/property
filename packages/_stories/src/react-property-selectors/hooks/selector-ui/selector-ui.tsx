@@ -59,6 +59,7 @@ export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyIte
         .filter((i) => !!i.value)
         .map((item) => (
           <div
+            key={item.sortNo}
             {...sel.getRadioItemProps(item)}
             title={sel.getItemToolTip(item)}
             style={getDefaultRadioItemStyle(sel, item)}
@@ -75,7 +76,7 @@ export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
       {sel.items.map((item) => (
-        <option {...sel.getSelectOptionProps(item)} style={getDefaultOptionStyle(sel, item)}>
+        <option key={item.sortNo} {...sel.getSelectOptionProps(item)} style={getDefaultOptionStyle(sel, item)}>
           {sel.getItemLabel(item.text, item)}
         </option>
       ))}
@@ -97,7 +98,7 @@ export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<My
       {sel.isOpen && (
         <ul id="DropdownOptionsElement" style={getDefaultMenuStyle()}>
           {sel.items.map((item) => (
-            <li {...sel.getDropdownListItemProps(item)} style={getDefaultListItemStyle(sel, item)}>
+            <li key={item.sortNo} {...sel.getDropdownListItemProps(item)} style={getDefaultListItemStyle(sel, item)}>
               <span>
                 {item.image && <img src={item.image} style={{ maxWidth: "2em", maxHeight: "2em" }} />}
                 {" " + sel.getItemLabel(item.text, item) + " "}
