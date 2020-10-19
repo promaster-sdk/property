@@ -5,7 +5,6 @@ import {
   useAmountInputBox,
 } from "@promaster-sdk/react-property-selectors";
 import { Unit, Amount, BaseUnits } from "uom";
-import { merge } from "../../utils";
 import { units, unitsFormat } from "../../units-map";
 
 type State = {
@@ -23,7 +22,7 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
 
   const onValueChange = useCallback(
     (amount) => {
-      setState(merge(state, { amount }));
+      setState({ ...state, amount });
     },
     [state, setState]
   );
@@ -44,14 +43,13 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     selectedUnit: state.selectedUnit,
     selectedDecimalCount: state.selectedDecimalCount,
     onFormatChanged: (selectedUnit: Unit.Unit<unknown>, selectedDecimalCount: number) =>
-      setState(merge(state, { selectedUnit, selectedDecimalCount })),
+      setState({ ...state, selectedUnit, selectedDecimalCount }),
     onFormatCleared: () =>
-      setState(
-        merge(state, {
-          selectedUnit: BaseUnits.Meter,
-          selectedDecimalCount: 2,
-        })
-      ),
+      setState({
+        ...state,
+        selectedUnit: BaseUnits.Meter,
+        selectedDecimalCount: 2,
+      }),
     unitsFormat: unitsFormat,
     units: units,
   });
