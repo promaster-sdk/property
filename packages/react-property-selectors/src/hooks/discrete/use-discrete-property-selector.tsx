@@ -109,7 +109,6 @@ export function useDiscretePropertySelector<TItem>(
       const itemValue = getItemValue(item);
       const itemFilter = getItemFilter(item);
       return {
-        value: getItemValueAsString(itemValue),
         title: getItemToolTip(hookOptions, itemFilter, itemValue),
         onClick: () => {
           _doOnChange(getItemValueAsString(itemValue), onValueChange);
