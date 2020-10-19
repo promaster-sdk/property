@@ -126,7 +126,6 @@ export function useDiscretePropertySelector<TItem>(
         title: getItemToolTip(hookOptions, itemFilter, itemValue),
         onChange: (event) => {
           _doOnChange(event.currentTarget.value, onValueChange);
-          setIsOpen(false);
         },
       };
     },
