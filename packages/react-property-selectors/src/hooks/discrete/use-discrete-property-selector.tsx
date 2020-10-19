@@ -33,12 +33,12 @@ export type DiscretePropertySelector<TItem> = {
   readonly items: ReadonlyArray<TItem>;
   readonly isTrueItem: boolean;
   readonly getSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
-  readonly getToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
-  readonly getListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
+  readonly getDropdownToggleButtonProps: () => React.SelectHTMLAttributes<HTMLButtonElement>;
+  readonly getDropdownListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getItemLabel: (text: string, item: TItem) => string;
   readonly getItemToolTip: (item: TItem) => string;
   readonly getItemValue: (item: TItem) => string;
-  readonly getOptionProps: (item: TItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
+  readonly getSelectOptionProps: (item: TItem) => React.SelectHTMLAttributes<HTMLOptionElement>;
   readonly getRadioItemProps: (item: TItem) => React.HTMLAttributes<HTMLDivElement>;
   readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
   readonly isItemValid: (item: TItem) => boolean;
@@ -100,18 +100,16 @@ export function useDiscretePropertySelector<TItem>(
     isTrueItem,
     isItemValid: (item) =>
       isValueItemValid(propertyName, propertyValueSet, getItemFilter(item), getItemValue(item), valueComparer),
-    getToggleButtonProps: () => ({
+    getDropdownToggleButtonProps: () => ({
       disabled,
       title: getItemToolTip(hookOptions, getItemFilter(selectedItem), getItemValue(selectedItem)),
       onClick: () => setIsOpen(!isOpen),
     }),
-    getListItemProps: (item) => {
+    getDropdownListItemProps: (item) => {
       const itemValue = getItemValue(item);
       const itemFilter = getItemFilter(item);
       return {
-        key: getItemValueAsString(itemValue),
         value: getItemValueAsString(itemValue),
-        // label: getItemLabel(item, itemValue, showCodes),
         title: getItemToolTip(hookOptions, itemFilter, itemValue),
         onClick: () => {
           _doOnChange(getItemValueAsString(itemValue), onValueChange);
@@ -132,20 +130,17 @@ export function useDiscretePropertySelector<TItem>(
         },
       };
     },
-    getOptionProps: (item) => {
+    getSelectOptionProps: (item) => {
       const itemValue = getItemValue(item);
       const itemFilter = getItemFilter(item);
       return {
-        key: getItemValueAsString(itemValue),
         value: getItemValueAsString(itemValue),
-        // label: getItemLabel(item, itemValue, showCodes),
         title: getItemToolTip(hookOptions, itemFilter, itemValue),
       };
     },
     getRadioItemProps: (item) => {
       const itemValue = getItemValue(item);
       return {
-        key: getItemValueAsString(itemValue),
         onClick: () => _doOnChange(getItemValueAsString(itemValue), onValueChange),
       };
     },
