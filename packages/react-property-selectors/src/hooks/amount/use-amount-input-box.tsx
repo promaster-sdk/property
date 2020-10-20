@@ -17,15 +17,28 @@ export type UseAmountInputBoxOptions = {
   readonly errorMessage: string;
   readonly readOnly: boolean;
   readonly onValueChange: (newAmount: Amount.Amount<unknown>) => void;
-  readonly onFocus?: () => void;
-  readonly onBlur?: () => void;
   readonly debounceTime: number;
+};
+
+export type InputProps = {
+  readonly value: string;
+  readonly title: string;
+  readonly readOnly: boolean;
+  readonly onFocus?: React.FocusEventHandler<{}>;
+  readonly onBlur?: React.FocusEventHandler<{}>;
+  readonly onChange: React.ChangeEventHandler<{ readonly value: string }>;
+};
+
+export type GetInputPropsOptions = {
+  readonly onFocus?: React.FocusEventHandler<{}>;
+  readonly onBlur?: React.FocusEventHandler<{}>;
 };
 
 export type UseAmountInputBox = {
   readonly readOnly: boolean;
   readonly effectiveErrorMessage: string;
-  readonly getInputProps: () => React.InputHTMLAttributes<HTMLInputElement>;
+  // readonly getInputProps: () => React.InputHTMLAttributes<HTMLInputElement>;
+  readonly getInputProps: (options?: GetInputPropsOptions) => InputProps;
 };
 
 type State = {
@@ -35,7 +48,7 @@ type State = {
 };
 
 export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountInputBox {
-  const { readOnly, onBlur, onFocus, onValueChange, debounceTime } = options;
+  const { readOnly, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
 
   // Re-init state if specific params change
@@ -68,13 +81,12 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
   return {
     readOnly,
     effectiveErrorMessage,
-    getInputProps: () => ({
-      type: "text",
+    getInputProps: ({ onFocus, onBlur }: GetInputPropsOptions = {}) => ({
       value: textValue,
       title: effectiveErrorMessage,
       readOnly,
-      onBlur: onBlur,
-      onFocus: onFocus,
+      onBlur,
+      onFocus,
       onChange: (e) => _onChange(debouncedOnValueChange, setState, options, e),
     }),
   };
@@ -109,16 +121,12 @@ function initStateFromParams({
 }
 
 function _onChange(
-  debouncedOnValueChange: (
-    newAmount: Amount.Amount<unknown> | undefined
-  ) => // onValueChange: (newAmount: Amount.Amount<unknown> | undefined) => void
-  void,
+  debouncedOnValueChange: (newAmount: Amount.Amount<unknown> | undefined) => void,
   setState: React.Dispatch<React.SetStateAction<State>>,
   params: UseAmountInputBoxOptions,
-  e: React.FormEvent<HTMLInputElement>
-  // onValueChange: (newAmount: Amount.Amount<unknown>) => void
+  e: React.ChangeEvent<{ readonly value: string }>
 ): void {
-  const newStringValue = e.currentTarget.value.replace(",", ".");
+  const newStringValue = e.target.value.replace(",", ".");
   const { inputUnit, inputDecimalCount } = params;
 
   // If the change would add more decimals than allowed then ignore the change

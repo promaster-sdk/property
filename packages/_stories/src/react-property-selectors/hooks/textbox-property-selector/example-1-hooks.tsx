@@ -28,7 +28,7 @@ export function TextboxPropertySelectorExample1Hooks(): React.ReactElement<{}> {
       <div>ComboboxPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(myState)}</div>
       <div>
-        <input {...getInputProps()} />
+        <input type="text" {...getInputProps()} />
       </div>
     </div>
   );

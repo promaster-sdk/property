@@ -115,7 +115,11 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
   const sel = useAmountPropertySelector(props);
   return (
     <span {...sel.getWrapperProps()}>
-      <input {...sel.amountInputBox.getInputProps()} style={getDefaultAmountInputBoxStyle(sel.amountInputBox)} />
+      <input
+        type="text"
+        {...sel.amountInputBox.getInputProps()}
+        style={getDefaultAmountInputBoxStyle(sel.amountInputBox)}
+      />
       <span {...sel.amountFormatSelector.getLabelProps()}>
         {sel.amountFormatSelector.isOpen ? (
           <>
