@@ -1,10 +1,10 @@
 /* eslint-disable functional/no-this-expression */
 import React, { useState } from "react";
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import { createCheckboxPropertySelector, CheckboxPropertyValueItem } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 

@@ -1,7 +1,7 @@
-import { Amount, BaseUnits, Unit } from "uom";
+import { Amount, BaseUnits, UnitMap } from "uom";
 import * as PropertyValue from "../property-value";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 describe("PropertyValue", () => {
   it("should_parse_amount_with_decimal_dot", () => {

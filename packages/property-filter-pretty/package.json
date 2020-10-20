@@ -23,6 +23,6 @@
   "dependencies": {
     "@promaster-sdk/property": "^5.0.1",
     "ts-exhaustive-check": "^1.0.0",
-    "uom": "^5.0.0"
+    "uom": "^6.0.0"
   }
 }

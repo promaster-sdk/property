@@ -3,7 +3,7 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import React from "react";
-import { Unit, Serialize, Format, UnitFormat } from "uom";
+import { Unit, Serialize, UnitFormat, UnitMap } from "uom";
 import { AmountFormatWrapper, AmountFormatWrapperProps } from "./amount-format-wrapper";
 
 export interface AmountFormatSelectorProps {
@@ -85,7 +85,7 @@ export function createAmountFormatSelector({
 
       // If there is no handler for onFormatChanged then the user should not be able to change the format
       if (!this.state.active || !onFormatChanged) {
-        const format = Format.getUnitFormat(selectedUnit, unitsFormat);
+        const format = UnitFormat.getUnitFormat(selectedUnit, unitsFormat);
 
         return (
           <AmountFormatWrapper active={this.state.active} onClick={() => this.setState({ active: true })}>
@@ -95,7 +95,7 @@ export function createAmountFormatSelector({
       }
 
       // Get a list of all units within the quantity
-      const quantityUnits = Format.getUnitsForQuantity(selectedUnit.quantity as string, unitsFormat, units);
+      const quantityUnits = UnitMap.getUnitsForQuantity(selectedUnit.quantity as string, units);
       const unitNames = quantityUnits.map((u) => Serialize.unitToString(u));
       const selectedUnitName = Serialize.unitToString(selectedUnit);
 
@@ -115,7 +115,7 @@ export function createAmountFormatSelector({
             }}
           >
             {quantityUnits.map((u, index) => {
-              const format = Format.getUnitFormat(u, unitsFormat);
+              const format = UnitFormat.getUnitFormat(u, unitsFormat);
               return (
                 <option key={unitNames[index]} value={unitNames[index]}>
                   {" "}
@@ -167,7 +167,7 @@ function _onDecimalCountChange(
 
 function _onUnitChange(
   e: React.FormEvent<HTMLSelectElement>,
-  units: Array<Unit.Unit<unknown>>,
+  units: ReadonlyArray<Unit.Unit<unknown>>,
   selectedDecimalCount: number,
   onFormatChanged: OnFormatChanged
 ): void {

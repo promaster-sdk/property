@@ -1,4 +1,4 @@
-import { Amount, Unit, Serialize } from "uom";
+import { Amount, Unit, UnitMap, Serialize } from "uom";
 import { compareNumbers, compareIgnoreCase } from "./utils/compare-utils";
 
 // Types
@@ -47,7 +47,7 @@ export function create(type: PropertyType, value: Amount.Amount<unknown> | strin
   throw new Error(`Unknown 'type' ${type}.`);
 }
 
-export function fromString(encodedValue: string, unitLookup: Unit.UnitLookup): PropertyValue | undefined {
+export function fromString(encodedValue: string, unitLookup: UnitMap.UnitLookup): PropertyValue | undefined {
   const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue, unitLookup);
   if (result === null) {
     console.warn(`PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`);
@@ -224,7 +224,7 @@ function _compare(left: PropertyValue, right: PropertyValue): number {
 /// Amount-values must be in format Value:Unit without quotation marks.
 function _fromSerializedStringOrUndefinedIfInvalidString(
   encodedValue: string,
-  unitLookup: Unit.UnitLookup
+  unitLookup: UnitMap.UnitLookup
 ): PropertyValue | undefined {
   if (encodedValue === "") {
     return fromText("");

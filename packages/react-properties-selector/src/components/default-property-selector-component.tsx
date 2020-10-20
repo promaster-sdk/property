@@ -1,5 +1,5 @@
 import React from "react";
-import { Unit, UnitFormat } from "uom";
+import { Unit, UnitFormat, UnitMap } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
@@ -50,7 +50,7 @@ export interface PropertySelectorProps {
   // readonly units: {
   //   readonly [key: string]: Unit.Unit;
   // };
-  readonly units: Unit.UnitMap;
+  readonly units: UnitMap.UnitMap;
 }
 
 export interface CreatePropertySelectorProps {

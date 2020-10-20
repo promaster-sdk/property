@@ -1,5 +1,5 @@
 /* eslint-disable functional/no-method-signature */
-import { Unit } from "uom";
+import { UnitMap } from "uom";
 import * as Ast from "./types";
 import * as Parser from "./pegjs/generated-parser";
 
@@ -39,7 +39,7 @@ type ParserOptions = {
   readonly callbacks: ParserCallbacks;
 };
 
-function buildOptions(unitLookup: Unit.UnitLookup): ParserOptions {
+function buildOptions(unitLookup: UnitMap.UnitLookup): ParserOptions {
   const parserCallbacks: ParserCallbacks = {
     createValueExpr: (unParsed: string) => Ast.newValueExpr(unParsed, unitLookup),
     createNullExpr: Ast.newNullExpr,
@@ -63,7 +63,7 @@ function buildOptions(unitLookup: Unit.UnitLookup): ParserOptions {
 
 export function parse(
   text: string,
-  unitLookup: Unit.UnitLookup,
+  unitLookup: UnitMap.UnitLookup,
   throwOnInvalidSyntax: boolean = false
 ): Ast.BooleanExpr | undefined {
   try {

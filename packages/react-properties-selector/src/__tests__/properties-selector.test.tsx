@@ -1,5 +1,5 @@
 import React from "react";
-import { UnitFormat, BaseUnits, Unit } from "uom";
+import { UnitFormat, BaseUnits, UnitMap } from "uom";
 import * as renderer from "react-test-renderer";
 import { PropertyFilter, PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 import * as PropertiesSelector from "../index";
@@ -8,7 +8,7 @@ const unitsFormat: UnitFormat.UnitFormatMap = {
   Meter: UnitFormat.createUnitFormat("m", 2),
 };
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 test("Simple PropertiesSelector", () => {
   const productProperties = exampleProductProperties();

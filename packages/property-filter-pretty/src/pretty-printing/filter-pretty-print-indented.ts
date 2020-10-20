@@ -1,4 +1,4 @@
-import { Format, Serialize, UnitFormat, Unit } from "uom";
+import { Serialize, UnitFormat, UnitMap } from "uom";
 import { PropertyFilter, PropertyFilterAst as Ast, PropertyValue } from "@promaster-sdk/property";
 import { exhaustiveCheck } from "ts-exhaustive-check/lib-cjs";
 import { inferTypeMap } from "../type-inference/filter-type-inferrer";
@@ -14,7 +14,7 @@ export function filterPrettyPrintIndented(
   //   readonly [key: string]: UnitFormat.UnitFormat;
   // } = UnitsFormat
   unitsFormat: UnitFormat.UnitFormatMap,
-  unitLookup: Unit.UnitLookup
+  unitLookup: UnitMap.UnitLookup
 ): string {
   const e = f.ast;
   if (e === null) {
@@ -35,7 +35,7 @@ function visit(
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   },
-  unitLookup: Unit.UnitLookup
+  unitLookup: UnitMap.UnitLookup
 ): string {
   const innerVisit = (indent: number, expr: Ast.Expr): string =>
     visit(expr, indent, indentionString, messages, typeMap, unitsFormat, unitLookup);
@@ -115,7 +115,7 @@ function visit(
         if (split.length === 2) {
           const unit = Serialize.stringToUnit(split[1], unitLookup);
           if (unit) {
-            const unitFormat = Format.getUnitFormat(unit, unitsFormat);
+            const unitFormat = UnitFormat.getUnitFormat(unit, unitsFormat);
             if (unitFormat) {
               return split[0] + " " + unitFormat.label;
             } else {

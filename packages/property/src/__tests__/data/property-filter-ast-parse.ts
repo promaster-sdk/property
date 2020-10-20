@@ -1,4 +1,4 @@
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, Unit, UnitMap } from "uom";
 import * as PropertyFilterAst from "../../property-filter-ast";
 
 const {
@@ -10,12 +10,12 @@ const {
   newAddExpr,
 } = PropertyFilterAst;
 
-const customUnitMap: Unit.UnitMap = {
+const customUnitMap: UnitMap.UnitMap = {
   ...BaseUnits,
   MyCustomUnit: Unit.createBase<"Foo">("MyCustomUnit", "Foo", "FooSymbol"),
 };
 
-export const unitLookup: Unit.UnitLookup = (unitString) => customUnitMap[unitString];
+export const unitLookup: UnitMap.UnitLookup = (unitString) => customUnitMap[unitString];
 
 export const tests = [
   {

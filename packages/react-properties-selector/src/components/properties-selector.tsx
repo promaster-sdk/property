@@ -1,5 +1,5 @@
 import React from "react";
-import { Unit, UnitFormat } from "uom";
+import { Unit, UnitFormat, UnitMap } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
@@ -80,8 +80,8 @@ export interface PropertiesSelectorProps {
   // readonly units?: {
   //   readonly [key: string]: Unit.Unit;
   // };
-  readonly units: Unit.UnitMap;
-  readonly unitLookup: Unit.UnitLookup;
+  readonly units: UnitMap.UnitMap;
+  readonly unitLookup: UnitMap.UnitLookup;
 
   // Override layout
   readonly LayoutRenderer?: (props: LayoutRendererProps) => JSX.Element;
@@ -226,7 +226,7 @@ function createPropertySelectorRenderInfos(
   // units: {
   //   readonly [key: string]: Unit.Unit;
   // },
-  units: Unit.UnitMap,
+  units: UnitMap.UnitMap,
   comparer: PropertyValue.Comparer
 ): ReadonlyArray<PropertySelectorRenderInfo> {
   // Default true if not specified otherwise

@@ -1,14 +1,14 @@
 /* eslint-disable functional/no-this-expression */
 /* eslint-disable functional/no-class */
 import React from "react";
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyValueSet } from "@promaster-sdk/property";
 import { action } from "@storybook/addon-actions";
 import { exampleProductProperties } from "./example-product-properties";
 import { units, unitsFormat } from "./units-map";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;

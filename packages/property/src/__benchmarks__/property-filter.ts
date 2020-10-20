@@ -1,10 +1,10 @@
 import * as Benchmark from "benchmark";
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import { PropertyFilter, PropertyFilterAst, PropertyValueSet, PropertyValue } from "../index";
 
 const suite = new Benchmark.Suite();
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 const pf = PropertyFilter.fromString(
   "ccc=20&a=1,2,3~10&d=-50&(ccc=20|a=1,2)&d=5|z=50",

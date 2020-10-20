@@ -1,4 +1,4 @@
-import { Unit } from "uom";
+import { UnitMap } from "uom";
 import * as PropertyValueSet from "./property-value-set";
 import * as PropertyValue from "./property-value";
 import * as Ast from "./property-filter-ast/index";
@@ -21,7 +21,7 @@ function create(text: string, ast: Ast.BooleanExpr): PropertyFilter {
   return { text, ast, _evaluate: Ast.compileAst(ast) };
 }
 
-export function fromString(filter: string, unitLookup: Unit.UnitLookup): PropertyFilter | undefined {
+export function fromString(filter: string, unitLookup: UnitMap.UnitLookup): PropertyFilter | undefined {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
@@ -42,7 +42,7 @@ export function fromString(filter: string, unitLookup: Unit.UnitLookup): Propert
   return _cache[filter];
 }
 
-export function fromStringOrEmpty(filterString: string, unitLookup: Unit.UnitLookup): PropertyFilter {
+export function fromStringOrEmpty(filterString: string, unitLookup: UnitMap.UnitLookup): PropertyFilter {
   const filter = fromString(filterString, unitLookup);
   if (filter === undefined) {
     return Empty;
@@ -52,7 +52,7 @@ export function fromStringOrEmpty(filterString: string, unitLookup: Unit.UnitLoo
 
 export function isSyntaxValid(
   filter: string,
-  unitLookup: Unit.UnitLookup,
+  unitLookup: UnitMap.UnitLookup,
   propertyNames: Array<string> | undefined = undefined
 ): boolean {
   if (filter === null || filter === undefined) {

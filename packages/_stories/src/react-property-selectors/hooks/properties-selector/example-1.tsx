@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { usePropertiesSelector } from "@promaster-sdk/react-property-selectors";
 import { exampleProductProperties, MyItem, MyPropertyInfo } from "../selector-ui/example-product-properties";
-import { units, unitsFormat } from "./units-map";
+import { units, unitsFormat } from "../../units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   const [pvs, setPvs] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));

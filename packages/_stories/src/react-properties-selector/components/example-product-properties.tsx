@@ -1,8 +1,8 @@
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import { PropertyFilter, PropertyValue } from "@promaster-sdk/property";
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 export function exampleProductProperties(): Array<PropertiesSelector.Property> {
   return [

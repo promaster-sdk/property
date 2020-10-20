@@ -4,14 +4,14 @@ import React from "react";
 import * as R from "ramda";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import { Unit, BaseUnits } from "uom";
+import { Unit, BaseUnits, UnitMap } from "uom";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { merge } from "./utils";
 import { exampleProductProperties } from "./example-product-properties";
 import { createPropertiesSelectorExample2Layout } from "./example-2-layout";
 import { units, unitsFormat } from "./units-map";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;

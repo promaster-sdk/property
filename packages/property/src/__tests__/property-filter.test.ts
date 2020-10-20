@@ -1,10 +1,10 @@
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import * as PropertyFilter from "../property-filter";
 import * as PropertyValueSet from "../property-value-set";
 import * as IsValidData from "./data/property-filter-isvalid";
 import * as IsSyntaxValidData from "./data/property-filter-is-syntax-valid";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 describe("PropertyFilter", () => {
   describe("isSyntaxValid", () => {

@@ -1,4 +1,4 @@
-import { Amount, Unit } from "uom";
+import { Amount, UnitMap } from "uom";
 // eslint-disable-next-line import/no-duplicates
 import * as PropertyValue from "./property-value";
 // eslint-disable-next-line import/no-duplicates
@@ -25,7 +25,7 @@ interface MutablePropertyValueSet {
 
 // Functions
 
-export function fromString(encodedValueSet: string, unitLookup: Unit.UnitLookup): PropertyValueSet {
+export function fromString(encodedValueSet: string, unitLookup: UnitMap.UnitLookup): PropertyValueSet {
   const err = (): PropertyValueSet => {
     throw new Error(`${encodedValueSet} is not a valid PropertyValueSet`);
   };
@@ -35,7 +35,7 @@ export function fromString(encodedValueSet: string, unitLookup: Unit.UnitLookup)
 export function fromStringOrError(
   onError: (encodedValueSet: string) => PropertyValueSet,
   encodedValueSet: string,
-  unitLookup: Unit.UnitLookup
+  unitLookup: UnitMap.UnitLookup
 ): PropertyValueSet {
   if (!encodedValueSet || encodedValueSet.length === 0) {
     return {};
@@ -248,7 +248,7 @@ export function equals(
 /// Values that represents strings must be enclosed in double quote (") and if they contains double quote characters they must be encoded as %22.
 function _stringToEntriesOrUndefinedIfInvalidString(
   encodedValueSet: string,
-  unitLookup: Unit.UnitLookup
+  unitLookup: UnitMap.UnitLookup
 ): PropertyValueSet | undefined {
   const entries: MutablePropertyValueSet = {};
   // Add extra semicolon on the end to close last name/value pair

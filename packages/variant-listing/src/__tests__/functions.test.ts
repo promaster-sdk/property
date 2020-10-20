@@ -1,11 +1,11 @@
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import * as fs from "fs";
 import * as Path from "path";
 import * as R from "ramda";
 import { PropertyFilter } from "@promaster-sdk/property";
 import { buildAllPropertyValueSetsExtended } from "../functions";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 describe("buildAllPropertyValueSets", () => {
   it(`should work with CFC`, () => {

@@ -1,8 +1,8 @@
-import { BaseUnits, Amount, Unit } from "uom";
+import { BaseUnits, Amount, UnitMap } from "uom";
 import * as PropertyValueSet from "../property-value-set";
 import * as PropertyValue from "../property-value";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 describe("PropertyValueSet", () => {
   describe("getValue", () => {

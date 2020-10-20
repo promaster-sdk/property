@@ -1,6 +1,6 @@
 /* eslint-disable functional/no-this-expression */
 import React, { useState } from "react";
-import { Unit } from "uom";
+import { UnitMap } from "uom";
 import { useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
@@ -8,7 +8,7 @@ import { unitsFormat, units } from "../../units-map";
 import { MyDiscreteComboboxSelector, MyDiscreteImageComboboxSelector } from "../selector-ui/selector-ui";
 import { MyItem } from "../selector-ui/example-product-properties";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (units as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (units as UnitMap.UnitMap)[unitString];
 
 const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): string =>
   PropertyFiltering.filterPrettyPrintIndented(

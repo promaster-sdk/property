@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import { useTextboxPropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 // const TextboxPropertySelector = createTextboxPropertySelector({});
 

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { BaseUnits, Unit } from "uom";
+import { BaseUnits, UnitMap } from "uom";
 import { CheckboxPropertyValueItem, useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { MyDiscreteCheckboxSelector } from "../selector-ui/selector-ui";
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 export function CheckboxPropertySelectorExample1Hooks(): JSX.Element {
   const [myState, setMyState] = useState(PropertyValueSet.fromString("a=1", unitLookup));

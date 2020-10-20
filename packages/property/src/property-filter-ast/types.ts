@@ -1,4 +1,4 @@
-import { Unit } from "uom";
+import { UnitMap } from "uom";
 import * as PropertyValue from "../property-value";
 
 // All expression
@@ -94,7 +94,7 @@ export interface ValueExpr {
   readonly parsed: PropertyValue.PropertyValue;
 }
 
-export function newValueExpr(unParsed: string, unitLookup: Unit.UnitLookup): ValueExpr {
+export function newValueExpr(unParsed: string, unitLookup: UnitMap.UnitLookup): ValueExpr {
   const parsed = PropertyValue.fromString(unParsed, unitLookup);
   if (parsed === undefined) {
     throw new Error(`Invalid property value ${unParsed}`);

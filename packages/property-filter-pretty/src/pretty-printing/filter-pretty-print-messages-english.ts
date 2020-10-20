@@ -1,5 +1,5 @@
 import { PropertyFilterAst as Ast, PropertyValue } from "@promaster-sdk/property";
-import { Format, UnitFormat } from "uom";
+import { UnitFormat } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { FilterPrettyPrintMessages } from "./filter-pretty-print-messages";
 
@@ -39,7 +39,7 @@ export function buildEnglishMessages(unitsFormat: UnitFormat.UnitFormatMap): Fil
     ): string {
       switch (propertyValue.type) {
         case "amount": {
-          const unitFormat = Format.getUnitFormat(propertyValue.value.unit, unitsFormat);
+          const unitFormat = UnitFormat.getUnitFormat(propertyValue.value.unit, unitsFormat);
           if (unitFormat) {
             return propertyValue.value.value + " " + unitFormat.label;
           } else {

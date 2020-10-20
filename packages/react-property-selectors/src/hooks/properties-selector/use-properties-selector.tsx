@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Unit, UnitFormat } from "uom";
+import { Unit, UnitMap, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
@@ -71,8 +71,8 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };
-  readonly units: Unit.UnitMap;
-  readonly unitLookup: Unit.UnitLookup;
+  readonly units: UnitMap.UnitMap;
+  readonly unitLookup: UnitMap.UnitLookup;
 
   // Comparer
   readonly valueComparer?: PropertyValue.Comparer;

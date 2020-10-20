@@ -3,7 +3,7 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import React, { useState } from "react";
-import { Unit, Serialize, Format, UnitFormat } from "uom";
+import { Unit, Serialize, UnitFormat, UnitMap } from "uom";
 
 export type UseAmountFormatSelectorOnFormatChanged = (unit: Unit.Unit<unknown>, decimalCount: number) => void;
 export type UseAmountFormatSelectorOnFormatCleared = () => void;
@@ -52,7 +52,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
 
   // If there is no handler for onFormatChanged then the user should not be able to change the format
   if (!isOpen || !onFormatChanged) {
-    const format = Format.getUnitFormat(selectedUnit, unitsFormat);
+    const format = UnitFormat.getUnitFormat(selectedUnit, unitsFormat);
 
     return {
       isOpen,
@@ -71,7 +71,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
   }
 
   // Get a list of all units within the quantity
-  const quantityUnits = Format.getUnitsForQuantity(selectedUnit.quantity as string, unitsFormat, units);
+  const quantityUnits = UnitMap.getUnitsForQuantity(selectedUnit.quantity as string, units);
   const unitNames = quantityUnits.map((u) => Serialize.unitToString(u));
   const selectedUnitName = Serialize.unitToString(selectedUnit);
 
@@ -92,7 +92,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
       },
     }),
     unitSelectorOptions: quantityUnits.map((u, index) => {
-      const format = Format.getUnitFormat(u, unitsFormat);
+      const format = UnitFormat.getUnitFormat(u, unitsFormat);
       return {
         label: format ? format.label : "",
         getOptionProps: () => ({
@@ -142,7 +142,7 @@ function _onDecimalCountChange(
 
 function _onUnitChange(
   e: React.FormEvent<HTMLSelectElement>,
-  units: Array<Unit.Unit<unknown>>,
+  units: ReadonlyArray<Unit.Unit<unknown>>,
   selectedDecimalCount: number,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged
 ): void {

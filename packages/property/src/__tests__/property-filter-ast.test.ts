@@ -1,4 +1,4 @@
-import { Unit } from "uom";
+import { UnitMap } from "uom";
 import * as Ast from "../property-filter-ast";
 import * as PropertyValueSet from "../property-value-set";
 import * as PropertyValue from "../property-value";
@@ -48,7 +48,7 @@ describe("PropertyFilterAst", () => {
   // });
 });
 
-function fromStringOrException(filter: string, unitLookup: Unit.UnitLookup): Ast.BooleanExpr {
+function fromStringOrException(filter: string, unitLookup: UnitMap.UnitLookup): Ast.BooleanExpr {
   const f = Ast.parse(filter, unitLookup);
   if (f === undefined) {
     throw new Error(`Could not parse property filter "${filter}".`);

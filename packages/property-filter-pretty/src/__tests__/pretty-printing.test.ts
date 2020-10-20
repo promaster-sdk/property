@@ -1,4 +1,4 @@
-import { UnitFormat, BaseUnits, Unit } from "uom";
+import { UnitFormat, BaseUnits, UnitMap } from "uom";
 import { PropertyFilter } from "@promaster-sdk/property";
 import * as PrettyPrinting from "../index";
 
@@ -6,7 +6,7 @@ const unitsFormat = {
   Meter: UnitFormat.createUnitFormat("m", 2),
 };
 
-const unitLookup: Unit.UnitLookup = (unitString) => (BaseUnits as Unit.UnitMap)[unitString];
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 describe("filterPrettyPrintSimple", () => {
   it("should print a must be 1", () => {
