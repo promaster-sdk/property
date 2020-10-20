@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { PropertyValueSet, PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { Amount, Unit, UnitFormat } from "uom";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
@@ -35,7 +35,6 @@ export type UseAmountPropertySelectorOptions = {
 };
 
 export type UseAmountPropertySelector = {
-  readonly getWrapperProps: () => React.HTMLAttributes<HTMLSpanElement>;
   readonly amountInputBox: UseAmountInputBox;
   readonly amountFormatSelector: UseAmountFormatSelector;
 };
@@ -89,7 +88,7 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     units,
   });
 
-  return { getWrapperProps: () => ({}), amountInputBox, amountFormatSelector };
+  return { amountInputBox, amountFormatSelector };
 }
 
 function getValidationMessage(

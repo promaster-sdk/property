@@ -114,7 +114,7 @@ export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<My
 export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.Element {
   const sel = useAmountPropertySelector(props);
   return (
-    <span {...sel.getWrapperProps()}>
+    <span>
       <input
         type="text"
         {...sel.amountInputBox.getInputProps()}
@@ -124,13 +124,13 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
         {sel.amountFormatSelector.isOpen ? (
           <>
             <select {...sel.amountFormatSelector.getUnitSelectProps()}>
-              {sel.amountFormatSelector.unitItems.map((o) => (
-                <option {...o.getOptionProps()}> {o.label} </option>
+              {sel.amountFormatSelector.unitItems.map((item, index) => (
+                <option {...sel.amountFormatSelector.getUnitItemProps(index)}> {item.label} </option>
               ))}
             </select>
             <select {...sel.amountFormatSelector.getPrecisionSelectProps()}>
-              {sel.amountFormatSelector.precisionItems.map((o) => (
-                <option {...o.getOptionProps()}>{o.label}</option>
+              {sel.amountFormatSelector.precisionItems.map((item, index) => (
+                <option {...sel.amountFormatSelector.getPrecisionItemProps(index)}>{item.label}</option>
               ))}
             </select>
             {sel.amountFormatSelector.showClearButton && (

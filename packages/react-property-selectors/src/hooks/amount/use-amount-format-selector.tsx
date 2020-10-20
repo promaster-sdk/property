@@ -40,6 +40,8 @@ export type UseAmountFormatSelector = {
   readonly unitItems: ReadonlyArray<UnitItem>;
   readonly precisionItems: ReadonlyArray<PrecisionItem>;
   // PropGetters
+  readonly getUnitItemProps: (index: number) => React.OptionHTMLAttributes<HTMLOptionElement>;
+  readonly getPrecisionItemProps: (index: number) => React.OptionHTMLAttributes<HTMLOptionElement>;
   readonly getLabelProps: () => LabelProps;
   readonly getUnitSelectProps: () => UnitSelectProps;
   readonly getPrecisionSelectProps: () => PrecisionSelectProps;
@@ -47,14 +49,20 @@ export type UseAmountFormatSelector = {
   readonly getCancelButtonProps: () => CancelButtonProps;
 };
 
+// export type DiscretePropertySelectorSelectOptionProps = {
+//   readonly title: string;
+//   // eslint-disable-next-line functional/prefer-readonly-type
+//   readonly value: string | Array<string> | number;
+// };
+
 export type PrecisionItem = {
   readonly label: string;
-  readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
+  // readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
 };
 
 export type UnitItem = {
   readonly label: string;
-  readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
+  // readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
 };
 
 export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions): UseAmountFormatSelector {
@@ -68,14 +76,16 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
     return {
       isOpen,
       label: format ? format.label : "",
+      showClearButton: false,
+      getUnitItemProps: () => ({}),
+      getPrecisionItemProps: () => ({}),
+      unitItems: [],
+      precisionItems: [],
       getLabelProps: () => ({
         onClick: () => setIsOpen(true),
       }),
       getUnitSelectProps: () => ({ onChange: () => ({}), value: "" }),
       getPrecisionSelectProps: () => ({ onChange: () => ({}), value: "" }),
-      unitItems: [],
-      precisionItems: [],
-      showClearButton: false,
       getClearButtonProps: () => ({ onClick: () => ({}) }),
       getCancelButtonProps: () => ({ onClick: () => ({}) }),
     };
@@ -90,9 +100,45 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
     decimalCounts.push(selectedDecimalCount);
   }
 
+  const unitItems = quantityUnits.map((u) => {
+    const format = UnitFormat.getUnitFormat(u, unitsFormat);
+    // const unitName = Serialize.unitToString(u);
+    return {
+      label: format ? format.label : "",
+      // getOptionProps: () => ({
+      //   key: unitName,
+      //   value: unitName,
+      // }),
+    };
+  });
+  const precisionItems = decimalCounts.map((dc) => ({
+    label: dc.toString(),
+    // getOptionProps: () => ({
+    //   key: dc.toString(),
+    //   value: dc.toString(),
+    // }),
+  }));
+
   return {
     isOpen,
     label: selectedUnitName,
+    showClearButton: !!onFormatCleared,
+    unitItems,
+    precisionItems,
+    getUnitItemProps: (index) => {
+      const unitName = Serialize.unitToString(quantityUnits[index]);
+      return {
+        key: unitName,
+        value: unitName,
+      };
+    },
+    getPrecisionItemProps: (index) => {
+      const dc = decimalCounts[index];
+      return {
+        key: dc.toString(),
+        value: dc.toString(),
+      };
+    },
     getLabelProps: () => ({ onClick: () => ({}) }),
     getUnitSelectProps: () => ({
       value: selectedUnitName,
@@ -101,17 +147,6 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
         _onUnitChange(e, quantityUnits, selectedDecimalCount, onFormatChanged);
       },
     }),
-    unitItems: quantityUnits.map((u) => {
-      const format = UnitFormat.getUnitFormat(u, unitsFormat);
-      const unitName = Serialize.unitToString(u);
-      return {
-        label: format ? format.label : "",
-        getOptionProps: () => ({
-          key: unitName,
-          value: unitName,
-        }),
-      };
-    }),
     getPrecisionSelectProps: () => ({
       value: selectedDecimalCount.toString(),
       onChange: (e) => {
@@ -119,14 +154,6 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
         _onDecimalCountChange(e, selectedUnit, onFormatChanged);
       },
     }),
-    precisionItems: decimalCounts.map((dc) => ({
-      label: dc.toString(),
-      getOptionProps: () => ({
-        key: dc.toString(),
-        value: dc.toString(),
-      }),
-    })),
-    showClearButton: !!onFormatCleared,
     getClearButtonProps: () => ({
       onClick: () => {
         setIsOpen(false);

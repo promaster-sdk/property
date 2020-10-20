@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { Unit, BaseUnits, UnitMap } from "uom";
-import { getDefaultAmountInputBoxStyle, useAmountPropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { units, unitsFormat } from "../../units-map";
+import { MyAmountSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (units as UnitMap.UnitMap)[unitString];
 
@@ -56,7 +56,7 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
     [state, setState]
   );
 
-  const selA = useAmountPropertySelector({
+  const selOptions = {
     fieldName: "a",
     propertyName: "a",
     propertyValueSet: state.propertyValueSet,
@@ -72,45 +72,13 @@ export function AmountPropertySelectorExample1Hooks(): React.ReactElement<{}> {
     onFormatCleared,
     unitsFormat: unitsFormat,
     units: units,
-  });
+  };
 
   return (
     <div>
       <div>AmountPropertySelector:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(state.propertyValueSet)}</div>
-      <div>
-        <span {...selA.getWrapperProps()}>
-          {/* AmountInput */}
-          <input
-            type="text"
-            {...selA.amountInputBox.getInputProps()}
-            style={getDefaultAmountInputBoxStyle(selA.amountInputBox)}
-          />
-          {/* AmountFormat */}
-          <span {...selA.amountFormatSelector.getLabelProps()}>
-            {selA.amountFormatSelector.isOpen ? (
-              <>
-                <select {...selA.amountFormatSelector.getUnitSelectProps()}>
-                  {selA.amountFormatSelector.unitItems.map((o) => (
-                    <option {...o.getOptionProps()}> {o.label} </option>
-                  ))}
-                </select>
-                <select {...selA.amountFormatSelector.getPrecisionSelectProps()}>
-                  {selA.amountFormatSelector.precisionItems.map((o) => (
-                    <option {...o.getOptionProps()}>{o.label}</option>
-                  ))}
-                </select>
-                {selA.amountFormatSelector.showClearButton && (
-                  <button {...selA.amountFormatSelector.getClearButtonProps()}>Cancel</button>
-                )}
-                <button {...selA.amountFormatSelector.getCancelButtonProps()}>Clear</button>
-              </>
-            ) : (
-              selA.amountFormatSelector.label
-            )}
-          </span>
-        </span>
-      </div>
+      <MyAmountSelector {...selOptions} />
     </div>
   );
 }

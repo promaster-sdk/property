@@ -67,13 +67,13 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
           {fmtSel.isOpen ? (
             <>
               <select {...fmtSel.getUnitSelectProps()}>
-                {fmtSel.unitItems.map((o) => (
-                  <option {...o.getOptionProps()}> {o.label} </option>
+                {fmtSel.unitItems.map((item, index) => (
+                  <option {...fmtSel.getUnitItemProps(index)}> {item.label} </option>
                 ))}
               </select>
               <select {...fmtSel.getPrecisionSelectProps()}>
-                {fmtSel.precisionItems.map((o) => (
-                  <option {...o.getOptionProps()}>{o.label}</option>
+                {fmtSel.precisionItems.map((item, index) => (
+                  <option {...fmtSel.getPrecisionItemProps(index)}>{item.label}</option>
                 ))}
               </select>
               {fmtSel.showClearButton && <button {...fmtSel.getClearButtonProps()}>Cancel</button>}
