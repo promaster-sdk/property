@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { PropertyValueSet, PropertyFilter, PropertyValue } from "@promaster-sdk/property";
-import { Amount, Unit, UnitFormat } from "uom";
+import { Amount, Unit, UnitFormat, UnitMap } from "uom";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
   UseAmountFormatSelector,
@@ -25,12 +25,8 @@ export type UseAmountPropertySelectorOptions = {
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
   readonly fieldName: string;
-  readonly unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  };
-  readonly units: {
-    readonly [key: string]: Unit.Unit<unknown>;
-  };
+  readonly unitsFormat: UnitFormat.UnitFormatMap;
+  readonly units: UnitMap.UnitMap;
   readonly comparer?: PropertyValue.Comparer;
 };
 
