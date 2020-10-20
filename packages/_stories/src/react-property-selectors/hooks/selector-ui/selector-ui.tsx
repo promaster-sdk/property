@@ -120,17 +120,21 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
         {...sel.amountInputBox.getInputProps()}
         style={getDefaultAmountInputBoxStyle(sel.amountInputBox)}
       />
-      <span {...sel.amountFormatSelector.getLabelProps()}>
+      <span>
         {sel.amountFormatSelector.isOpen ? (
           <>
             <select {...sel.amountFormatSelector.getUnitSelectProps()}>
               {sel.amountFormatSelector.unitItems.map((item, index) => (
-                <option {...sel.amountFormatSelector.getUnitItemProps(index)}> {item.label} </option>
+                <option key={index} {...sel.amountFormatSelector.getUnitItemProps(index)}>
+                  {item.label}
+                </option>
               ))}
             </select>
             <select {...sel.amountFormatSelector.getPrecisionSelectProps()}>
               {sel.amountFormatSelector.precisionItems.map((item, index) => (
-                <option {...sel.amountFormatSelector.getPrecisionItemProps(index)}>{item.label}</option>
+                <option key={index} {...sel.amountFormatSelector.getPrecisionItemProps(index)}>
+                  {item.label}
+                </option>
               ))}
             </select>
             {sel.amountFormatSelector.showClearButton && (
@@ -139,7 +143,7 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
             <button {...sel.amountFormatSelector.getCancelButtonProps()}>Clear</button>
           </>
         ) : (
-          sel.amountFormatSelector.label
+          <label {...sel.amountFormatSelector.getLabelProps()}>{sel.amountFormatSelector.label}</label>
         )}
       </span>
     </span>
