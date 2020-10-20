@@ -29,7 +29,6 @@ export function useTextboxPropertySelector({
   const [myState, setMyState] = useState(value || "");
   return {
     getInputProps: () => ({
-      type: "text",
       value: myState,
       readOnly: readOnly,
       onChange: (e) => {

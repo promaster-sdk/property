@@ -148,5 +148,5 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
 
 export function MyTextboxSelector(props: UseTextboxPropertySelectorOptions): JSX.Element {
   const sel = useTextboxPropertySelector(props);
-  return <input {...sel.getInputProps()} />;
+  return <input type="text" {...sel.getInputProps()} />;
 }
