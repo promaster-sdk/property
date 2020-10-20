@@ -68,7 +68,6 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
 
   // Get a list of all units within the quantity
   const quantityUnits = UnitMap.getUnitsForQuantity(selectedUnit.quantity as string, units);
-  const unitNames = quantityUnits.map((u) => Serialize.unitToString(u));
   const selectedUnitName = Serialize.unitToString(selectedUnit);
 
   const decimalCounts = [0, 1, 2, 3, 4, 5];
@@ -87,13 +86,14 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
         _onUnitChange(e, quantityUnits, selectedDecimalCount, onFormatChanged);
       },
     }),
-    unitSelectorOptions: quantityUnits.map((u, index) => {
+    unitSelectorOptions: quantityUnits.map((u) => {
       const format = UnitFormat.getUnitFormat(u, unitsFormat);
+      const unitName = Serialize.unitToString(u);
       return {
         label: format ? format.label : "",
         getOptionProps: () => ({
-          key: unitNames[index],
-          value: unitNames[index],
+          key: unitName,
+          value: unitName,
         }),
       };
     }),
