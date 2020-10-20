@@ -80,7 +80,7 @@ export function getDefaultMenuStyle(): {} {
 
 export function getDefaultListItemStyle<TItem>(sel: DiscretePropertySelector<TItem>, item: TItem): {} {
   return {
-    color: sel.isItemValid(item) === false ? "color: red" : "rgb(131, 131, 131)",
+    color: !sel.isItemValid(item) ? "color: red" : "rgb(131, 131, 131)",
     minHeight: "18px",
     alignSelf: "center",
     border: "0px none rgb(131, 131, 131)",

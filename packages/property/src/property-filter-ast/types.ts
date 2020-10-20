@@ -12,7 +12,7 @@ export interface OrExpr {
   readonly children: ReadonlyArray<BooleanExpr>;
 }
 
-export function newOrExpr(children: Array<BooleanExpr>): OrExpr {
+export function newOrExpr(children: ReadonlyArray<BooleanExpr>): OrExpr {
   return { type: "OrExpr", children };
 }
 
@@ -21,7 +21,7 @@ export interface AndExpr {
   readonly children: ReadonlyArray<BooleanExpr>;
 }
 
-export function newAndExpr(children: Array<BooleanExpr>): AndExpr {
+export function newAndExpr(children: ReadonlyArray<BooleanExpr>): AndExpr {
   return { type: "AndExpr", children };
 }
 
@@ -45,7 +45,7 @@ export type EqualsOperationType = "equals" | "notEquals";
 export function newEqualsExpr(
   leftValue: PropertyValueExpr,
   operationType: EqualsOperationType,
-  rightValueRanges: Array<ValueRangeExpr>
+  rightValueRanges: ReadonlyArray<ValueRangeExpr>
 ): EqualsExpr {
   return { type: "EqualsExpr", leftValue, operationType, rightValueRanges };
 }

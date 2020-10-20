@@ -174,7 +174,7 @@ function getSelectableItems<TItem>(
   itemComparer: ItemComparer<TItem>,
   getItemValue: GetItemValue<TItem>,
   getItemFilter: GetItemFilter<TItem>
-): [TItem, Array<TItem>] {
+): readonly [TItem, ReadonlyArray<TItem>] {
   // Convert value items to options
   let sortedItems = [...items].sort((a, b) => {
     if (sortValidFirst) {

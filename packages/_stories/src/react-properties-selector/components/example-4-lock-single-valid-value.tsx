@@ -98,7 +98,7 @@ export class PropertiesSelectorExample4LockSingleValidValue extends React.Compon
   }
 }
 
-export function exampleProductProperties(): Array<PropertiesSelector.Property> {
+export function exampleProductProperties(): ReadonlyArray<PropertiesSelector.Property> {
   return [
     {
       sort_no: 1,

@@ -37,7 +37,7 @@ test("Simple PropertiesSelector", () => {
   // expect(tree).toMatchSnapshot();
 });
 
-export function exampleProductProperties(): Array<PropertiesSelector.Property> {
+export function exampleProductProperties(): ReadonlyArray<PropertiesSelector.Property> {
   return [
     {
       sort_no: 1,

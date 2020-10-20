@@ -75,7 +75,7 @@ export function hasProperty(propertyName: string, pvs: PropertyValueSet): boolea
   return pvs.hasOwnProperty(propertyName);
 }
 
-export function getPropertyNames(pvs: PropertyValueSet): Array<string> {
+export function getPropertyNames(pvs: PropertyValueSet): ReadonlyArray<string> {
   return Object.keys(pvs);
 }
 
@@ -120,7 +120,7 @@ export function setText(propertyName: string, textValue: string, pvs: PropertyVa
  * @param propertyNames Array of propertyNames to keep
  * @param pvs PropertyValueSet to strip unwanted properties from
  */
-export function keepProperties(propertyNames: Array<string>, pvs: PropertyValueSet): PropertyValueSet {
+export function keepProperties(propertyNames: ReadonlyArray<string>, pvs: PropertyValueSet): PropertyValueSet {
   const newSet: MutablePropertyValueSet = {};
   for (const name of propertyNames) {
     if (pvs[name]) {
@@ -131,7 +131,7 @@ export function keepProperties(propertyNames: Array<string>, pvs: PropertyValueS
   return newSet;
 }
 
-export function removeProperties(propertyNames: Array<string>, pvs: PropertyValueSet): PropertyValueSet {
+export function removeProperties(propertyNames: ReadonlyArray<string>, pvs: PropertyValueSet): PropertyValueSet {
   const newSet: MutablePropertyValueSet = {};
   for (const name of Object.keys(pvs)) {
     if (propertyNames.indexOf(name) === -1) {
@@ -215,7 +215,7 @@ export function toString(pvs: PropertyValueSet): string {
     .join(";");
 }
 
-export function toStringInSpecifiedOrder(order: Array<string>, pvs: PropertyValueSet): string {
+export function toStringInSpecifiedOrder(order: ReadonlyArray<string>, pvs: PropertyValueSet): string {
   return order.map((p) => `${p}=${PropertyValue.toString(pvs[p])}`).join(";");
 }
 

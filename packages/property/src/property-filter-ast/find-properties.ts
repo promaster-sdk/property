@@ -1,6 +1,7 @@
 import * as Ast from "./types";
 import { exhaustiveCheck } from "../utils/exhaustive-check";
 
+// eslint-disable-next-line functional/prefer-readonly-type
 export function findProperties(e: Ast.BooleanExpr, properties: Array<string>): void {
   switch (e.type) {
     case "AndExpr":
@@ -32,6 +33,7 @@ export function findProperties(e: Ast.BooleanExpr, properties: Array<string>): v
   }
 }
 
+// eslint-disable-next-line functional/prefer-readonly-type
 function _findPropertiesInPropertyValueExpr(e: Ast.PropertyValueExpr, properties: Array<string>): void {
   switch (e.type) {
     case "IdentifierExpr": {

@@ -4,16 +4,16 @@ import { ExtendedVariants, ProductProperty, VariantUrlList } from "./types";
 
 export function buildAllPropertyValueSets(
   explicitPropertyValueSet: PropertyValueSet.PropertyValueSet,
-  variableProperties: Array<ProductProperty>,
-  allProperties: Array<ProductProperty>
+  variableProperties: ReadonlyArray<ProductProperty>,
+  allProperties: ReadonlyArray<ProductProperty>
 ): ReadonlyArray<VariantUrlList> {
   return buildAllPropertyValueSetsExtended(explicitPropertyValueSet, variableProperties, allProperties, 100).variants;
 }
 
 export function buildAllPropertyValueSetsExtended(
   explicitPropertyValueSet: PropertyValueSet.PropertyValueSet,
-  variableProperties: Array<ProductProperty>,
-  allProperties: Array<ProductProperty>,
+  variableProperties: ReadonlyArray<ProductProperty>,
+  allProperties: ReadonlyArray<ProductProperty>,
   limit: number,
   comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): ExtendedVariants {

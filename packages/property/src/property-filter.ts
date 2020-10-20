@@ -53,7 +53,7 @@ export function fromStringOrEmpty(filterString: string, unitLookup: UnitMap.Unit
 export function isSyntaxValid(
   filter: string,
   unitLookup: UnitMap.UnitLookup,
-  propertyNames: Array<string> | undefined = undefined
+  propertyNames: ReadonlyArray<string> | undefined = undefined
 ): boolean {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
@@ -105,7 +105,7 @@ export function isValidMatchMissing(
   return Ast.evaluateAst(filter.ast, properties, true, comparer);
 }
 
-export function getReferencedProperties(filter: PropertyFilter): Array<string> {
+export function getReferencedProperties(filter: PropertyFilter): ReadonlyArray<string> {
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }

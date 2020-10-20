@@ -2,13 +2,14 @@ import { PropertyFilterAst as Ast, PropertyFilter } from "@promaster-sdk/propert
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { ExprType, ExprTypeEnum } from "./expr-type";
 
-export function inferTypeMap(filter: PropertyFilter.PropertyFilter): Map<Ast.Expr, ExprType> {
+export function inferTypeMap(filter: PropertyFilter.PropertyFilter): ReadonlyMap<Ast.Expr, ExprType> {
   const typeMap = new Map<Ast.Expr, ExprType>();
   const lastPropertyType = new ExprType(ExprTypeEnum.Unknown);
   _visit(filter.ast, lastPropertyType, typeMap);
   return typeMap;
 }
 
+// eslint-disable-next-line functional/prefer-readonly-type
 function _visit(e: Ast.Expr, lastPropertyType: ExprType, typeMap: Map<Ast.Expr, ExprType>): ExprType {
   if (e.type === "AndExpr") {
     for (const child of e.children) {

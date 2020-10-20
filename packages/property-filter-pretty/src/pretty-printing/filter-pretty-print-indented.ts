@@ -31,7 +31,7 @@ function visit(
   indentationDepth: number,
   indentionString: string,
   messages: FilterPrettyPrintMessages,
-  typeMap: Map<Ast.Expr, ExprType>,
+  typeMap: ReadonlyMap<Ast.Expr, ExprType>,
   unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   },
@@ -164,7 +164,7 @@ function visit(
 
 // Returns a reversed copy
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function _reversed(array: Array<any>): Array<any> {
+function _reversed(array: ReadonlyArray<any>): ReadonlyArray<any> {
   return array.slice().reverse();
 }
 

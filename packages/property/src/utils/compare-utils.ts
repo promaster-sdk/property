@@ -35,7 +35,7 @@ export function compareIgnoreCase(a: string, b: string): number {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-export function arraysEqual<T>(array1: Array<T>, array2: Array<T>): boolean {
+export function arraysEqual<T>(array1: ReadonlyArray<T>, array2: ReadonlyArray<T>): boolean {
   // if the other array is a falsy value, return
   if (!array2) {
     return false;

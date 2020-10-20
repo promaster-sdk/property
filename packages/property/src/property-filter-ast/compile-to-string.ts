@@ -68,7 +68,7 @@ function makeJSExprForBooleanExpr(e: Ast.BooleanExpr): string {
           case "greaterOrEqual":
             return left + " >= " + right;
           default:
-            return exhaustiveCheck(e.operationType, true);
+            return exhaustiveCheck(e, true);
         }
       }
       case "EmptyExpr": {
@@ -108,7 +108,7 @@ function makeJsExprForPropertyValueExpr(e: Ast.PropertyValueExpr): string {
         case "subtract":
           return left + " - " + right;
         default:
-          return exhaustiveCheck(e.operationType, true);
+          return exhaustiveCheck(e, true);
       }
     }
     case "MulExpr": {
@@ -120,7 +120,7 @@ function makeJsExprForPropertyValueExpr(e: Ast.PropertyValueExpr): string {
         case "divide":
           return left + " / " + right;
         default:
-          return exhaustiveCheck(e.operationType, true);
+          return exhaustiveCheck(e, true);
       }
     }
     case "UnaryExpr": {

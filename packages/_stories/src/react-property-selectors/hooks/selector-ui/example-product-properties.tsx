@@ -27,7 +27,7 @@ export type MyPropertyInfo = {
 
 export function exampleProductProperties(): {
   // selectorTypes: SelectorTypes;
-  properties: ReadonlyArray<MyPropertyInfo>;
+  readonly properties: ReadonlyArray<MyPropertyInfo>;
 } {
   return {
     // selectorTypes: {

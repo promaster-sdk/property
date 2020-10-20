@@ -235,7 +235,7 @@ function fromStringOrException(encodedValue: string): PropertyValue.PropertyValu
 function getAmountOrException<T>(value: PropertyValue.PropertyValue): Amount.Amount<T> {
   const f = PropertyValue.getAmount<T>(value);
   if (f === undefined) {
-    throw new Error(`Could not get amount from property value "${value}".`);
+    throw new Error(`Could not get amount from property value "${PropertyValue.toString(value)}".`);
   }
   return f;
 }

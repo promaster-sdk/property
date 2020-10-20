@@ -4,7 +4,7 @@ import { BaseUnits, UnitMap } from "uom";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
-export function exampleProductProperties(): Array<PropertiesSelector.Property> {
+export function exampleProductProperties(): ReadonlyArray<PropertiesSelector.Property> {
   return [
     {
       sort_no: 1,
