@@ -14,12 +14,8 @@ export type UseAmountFormatSelectorOptions = {
   readonly selectedDecimalCount: number;
   readonly onFormatChanged?: UseAmountFormatSelectorOnFormatChanged;
   readonly onFormatCleared?: UseAmountFormatSelectorOnFormatCleared;
-  readonly unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  };
-  readonly units: {
-    readonly [key: string]: Unit.Unit<unknown>;
-  };
+  readonly unitsFormat: UnitFormat.UnitFormatMap;
+  readonly units: UnitMap.UnitMap;
 };
 
 export type UseAmountFormatSelector = {
