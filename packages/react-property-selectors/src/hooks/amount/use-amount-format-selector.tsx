@@ -9,7 +9,6 @@ export type UseAmountFormatSelectorOnFormatChanged = (unit: Unit.Unit<unknown>, 
 export type UseAmountFormatSelectorOnFormatCleared = () => void;
 
 export type UseAmountFormatSelectorOptions = {
-  readonly key?: string;
   readonly selectedUnit: Unit.Unit<unknown>;
   readonly selectedDecimalCount: number;
   readonly onFormatChanged?: UseAmountFormatSelectorOnFormatChanged;
@@ -40,8 +39,8 @@ export type UseAmountFormatSelector = {
   readonly unitItems: ReadonlyArray<UnitItem>;
   readonly precisionItems: ReadonlyArray<PrecisionItem>;
   // PropGetters
-  readonly getUnitItemProps: (index: number) => React.OptionHTMLAttributes<HTMLOptionElement>;
-  readonly getPrecisionItemProps: (index: number) => React.OptionHTMLAttributes<HTMLOptionElement>;
+  readonly getUnitItemProps: (index: number) => UnitItemProps;
+  readonly getPrecisionItemProps: (index: number) => PrecisionItemProps;
   readonly getLabelProps: () => LabelProps;
   readonly getUnitSelectProps: () => UnitSelectProps;
   readonly getPrecisionSelectProps: () => PrecisionSelectProps;
@@ -49,20 +48,22 @@ export type UseAmountFormatSelector = {
   readonly getCancelButtonProps: () => CancelButtonProps;
 };
 
-// export type DiscretePropertySelectorSelectOptionProps = {
-//   readonly title: string;
-//   // eslint-disable-next-line functional/prefer-readonly-type
-//   readonly value: string | Array<string> | number;
-// };
+export type UnitItemProps = {
+  // eslint-disable-next-line functional/prefer-readonly-type
+  readonly value: string | Array<string> | number;
+};
+
+export type PrecisionItemProps = {
+  // eslint-disable-next-line functional/prefer-readonly-type
+  readonly value: string | Array<string> | number;
+};
 
 export type PrecisionItem = {
   readonly label: string;
-  // readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
 };
 
 export type UnitItem = {
   readonly label: string;
-  // readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
 };
 
 export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions): UseAmountFormatSelector {
@@ -77,8 +78,8 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
       isOpen,
       label: format ? format.label : "",
       showClearButton: false,
-      getUnitItemProps: () => ({}),
-      getPrecisionItemProps: () => ({}),
+      getUnitItemProps: () => ({ value: "" }),
+      getPrecisionItemProps: () => ({ value: "" }),
       unitItems: [],
       precisionItems: [],
       getLabelProps: () => ({
@@ -102,21 +103,12 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
 
   const unitItems = quantityUnits.map((u) => {
     const format = UnitFormat.getUnitFormat(u, unitsFormat);
-    // const unitName = Serialize.unitToString(u);
     return {
       label: format ? format.label : "",
-      // getOptionProps: () => ({
-      //   key: unitName,
-      //   value: unitName,
-      // }),
     };
   });
   const precisionItems = decimalCounts.map((dc) => ({
     label: dc.toString(),
-    // getOptionProps: () => ({
-    //   key: dc.toString(),
-    //   value: dc.toString(),
-    // }),
   }));
 
   return {
@@ -128,14 +120,12 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
     getUnitItemProps: (index) => {
       const unitName = Serialize.unitToString(quantityUnits[index]);
       return {
-        key: unitName,
         value: unitName,
       };
     },
     getPrecisionItemProps: (index) => {
       const dc = decimalCounts[index];
       return {
-        key: dc.toString(),
         value: dc.toString(),
       };
     },
