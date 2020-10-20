@@ -20,7 +20,7 @@ export type UseAmountInputBoxOptions = {
   readonly debounceTime: number;
 };
 
-export type InputProps = {
+export type AmountInputBoxInputProps = {
   readonly value: string;
   readonly title: string;
   readonly readOnly: boolean;
@@ -38,7 +38,7 @@ export type UseAmountInputBox = {
   readonly readOnly: boolean;
   readonly effectiveErrorMessage: string;
   // readonly getInputProps: () => React.InputHTMLAttributes<HTMLInputElement>;
-  readonly getInputProps: (options?: GetInputPropsOptions) => InputProps;
+  readonly getInputProps: (options?: GetInputPropsOptions) => AmountInputBoxInputProps;
 };
 
 type State = {

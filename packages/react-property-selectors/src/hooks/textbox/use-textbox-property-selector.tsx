@@ -9,8 +9,14 @@ export interface UseTextboxPropertySelectorOptions {
   readonly debounceTime: number;
 }
 
+export type TextboxPropertySelectorInputProps = {
+  readonly value: string;
+  readonly readOnly: boolean;
+  readonly onChange: React.ChangeEventHandler<{ readonly value: string }>;
+};
+
 export type UseTextboxPropertySelector = {
-  readonly getInputProps: () => React.SelectHTMLAttributes<HTMLInputElement>;
+  readonly getInputProps: () => TextboxPropertySelectorInputProps;
 };
 
 export function useTextboxPropertySelector({
@@ -32,7 +38,7 @@ export function useTextboxPropertySelector({
       value: myState,
       readOnly: readOnly,
       onChange: (e) => {
-        const newStringValue = (e.target as HTMLInputElement).value;
+        const newStringValue = e.target.value;
         setMyState(newStringValue);
         debouncedOnValueChange(PropertyValue.create("text", newStringValue));
       },
