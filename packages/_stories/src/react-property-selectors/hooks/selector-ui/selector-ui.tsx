@@ -120,12 +120,12 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
         {sel.amountFormatSelector.isOpen ? (
           <>
             <select {...sel.amountFormatSelector.getUnitSelectProps()}>
-              {sel.amountFormatSelector.unitSelectorOptions.map((o) => (
+              {sel.amountFormatSelector.unitItems.map((o) => (
                 <option {...o.getOptionProps()}> {o.label} </option>
               ))}
             </select>
             <select {...sel.amountFormatSelector.getPrecisionSelectProps()}>
-              {sel.amountFormatSelector.precisionSelectorOptions.map((o) => (
+              {sel.amountFormatSelector.precisionItems.map((o) => (
                 <option {...o.getOptionProps()}>{o.label}</option>
               ))}
             </select>

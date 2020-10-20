@@ -67,12 +67,12 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
           {fmtSel.isOpen ? (
             <>
               <select {...fmtSel.getUnitSelectProps()}>
-                {fmtSel.unitSelectorOptions.map((o) => (
+                {fmtSel.unitItems.map((o) => (
                   <option {...o.getOptionProps()}> {o.label} </option>
                 ))}
               </select>
               <select {...fmtSel.getPrecisionSelectProps()}>
-                {fmtSel.precisionSelectorOptions.map((o) => (
+                {fmtSel.precisionItems.map((o) => (
                   <option {...o.getOptionProps()}>{o.label}</option>
                 ))}
               </select>

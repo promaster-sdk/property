@@ -18,25 +18,41 @@ export type UseAmountFormatSelectorOptions = {
   readonly units: UnitMap.UnitMap;
 };
 
+export type UnitSelectProps = {
+  readonly onChange: React.ChangeEventHandler<{ readonly selectedIndex: number; readonly value: string }>;
+  readonly value: string;
+};
+
+export type PrecisionSelectProps = {
+  readonly onChange: React.ChangeEventHandler<{ readonly selectedIndex: number; readonly value: string }>;
+  readonly value: string;
+};
+
+export type LabelProps = { readonly onClick: React.ChangeEventHandler<{}> };
+export type ClearButtonProps = { readonly onClick: React.ChangeEventHandler<{}> };
+export type CancelButtonProps = { readonly onClick: React.ChangeEventHandler<{}> };
+
 export type UseAmountFormatSelector = {
   readonly label: string;
   readonly isOpen: boolean;
-  readonly getLabelProps: () => React.HTMLAttributes<HTMLSpanElement>;
-  readonly getUnitSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
-  readonly unitSelectorOptions: ReadonlyArray<UnitSelectorOption>;
-  readonly getPrecisionSelectProps: () => React.SelectHTMLAttributes<HTMLSelectElement>;
-  readonly precisionSelectorOptions: ReadonlyArray<PrecisionSelectorOption>;
   readonly showClearButton: boolean;
-  readonly getClearButtonProps: () => React.ButtonHTMLAttributes<HTMLButtonElement>;
-  readonly getCancelButtonProps: () => React.ButtonHTMLAttributes<HTMLButtonElement>;
+  // Items
+  readonly unitItems: ReadonlyArray<UnitItem>;
+  readonly precisionItems: ReadonlyArray<PrecisionItem>;
+  // PropGetters
+  readonly getLabelProps: () => LabelProps;
+  readonly getUnitSelectProps: () => UnitSelectProps;
+  readonly getPrecisionSelectProps: () => PrecisionSelectProps;
+  readonly getClearButtonProps: () => ClearButtonProps;
+  readonly getCancelButtonProps: () => CancelButtonProps;
 };
 
-export type PrecisionSelectorOption = {
+export type PrecisionItem = {
   readonly label: string;
   readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
 };
 
-export type UnitSelectorOption = {
+export type UnitItem = {
   readonly label: string;
   readonly getOptionProps: () => React.OptionHTMLAttributes<HTMLOptionElement>;
 };
@@ -49,20 +65,19 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
   // If there is no handler for onFormatChanged then the user should not be able to change the format
   if (!isOpen || !onFormatChanged) {
     const format = UnitFormat.getUnitFormat(selectedUnit, unitsFormat);
-
     return {
       isOpen,
       label: format ? format.label : "",
       getLabelProps: () => ({
         onClick: () => setIsOpen(true),
       }),
-      getUnitSelectProps: () => ({}),
-      unitSelectorOptions: [],
-      getPrecisionSelectProps: () => ({}),
-      precisionSelectorOptions: [],
+      getUnitSelectProps: () => ({ onChange: () => ({}), value: "" }),
+      getPrecisionSelectProps: () => ({ onChange: () => ({}), value: "" }),
+      unitItems: [],
+      precisionItems: [],
       showClearButton: false,
-      getClearButtonProps: () => ({}),
-      getCancelButtonProps: () => ({}),
+      getClearButtonProps: () => ({ onClick: () => ({}) }),
+      getCancelButtonProps: () => ({ onClick: () => ({}) }),
     };
   }
 
@@ -78,7 +93,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
   return {
     isOpen,
     label: selectedUnitName,
-    getLabelProps: () => ({}),
+    getLabelProps: () => ({ onClick: () => ({}) }),
     getUnitSelectProps: () => ({
       value: selectedUnitName,
       onChange: (e) => {
@@ -86,7 +101,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
         _onUnitChange(e, quantityUnits, selectedDecimalCount, onFormatChanged);
       },
     }),
-    unitSelectorOptions: quantityUnits.map((u) => {
+    unitItems: quantityUnits.map((u) => {
       const format = UnitFormat.getUnitFormat(u, unitsFormat);
       const unitName = Serialize.unitToString(u);
       return {
@@ -104,7 +119,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
         _onDecimalCountChange(e, selectedUnit, onFormatChanged);
       },
     }),
-    precisionSelectorOptions: decimalCounts.map((dc) => ({
+    precisionItems: decimalCounts.map((dc) => ({
       label: dc.toString(),
       getOptionProps: () => ({
         key: dc.toString(),
@@ -127,7 +142,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
 }
 
 function _onDecimalCountChange(
-  e: React.FormEvent<HTMLSelectElement>,
+  e: React.ChangeEvent<{ readonly value: string; readonly selectedIndex: number }>,
   selectedUnit: Unit.Unit<unknown>,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged
 ): void {
@@ -137,12 +152,12 @@ function _onDecimalCountChange(
 }
 
 function _onUnitChange(
-  e: React.FormEvent<HTMLSelectElement>,
+  e: React.ChangeEvent<{ readonly value: string; readonly selectedIndex: number }>,
   units: ReadonlyArray<Unit.Unit<unknown>>,
   selectedDecimalCount: number,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged
 ): void {
-  const selectedIndex = e.currentTarget.selectedIndex;
+  const selectedIndex = e.target.selectedIndex;
   const selectedUnit = units[selectedIndex];
   onFormatChanged(selectedUnit, selectedDecimalCount);
 }
