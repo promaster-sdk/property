@@ -39,7 +39,7 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     debounceTime: 350,
   });
 
-  const hookOptions = {
+  const fmtSel = useAmountFormatSelector({
     selectedUnit: state.selectedUnit,
     selectedDecimalCount: state.selectedDecimalCount,
     onFormatChanged: (selectedUnit: Unit.Unit<unknown>, selectedDecimalCount: number) =>
@@ -52,8 +52,7 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
       }),
     unitsFormat: unitsFormat,
     units: units,
-  };
-  const fmtSel = useAmountFormatSelector(hookOptions);
+  });
 
   return (
     <div>

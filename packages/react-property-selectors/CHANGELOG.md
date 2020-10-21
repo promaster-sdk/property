@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@7.0.0...master)
 
+## [v8.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@7.0.0...8.0.0)
+
 ## Changed
 
 - Added generic DiscretePropertySelector hooks and removed specific hooks for Checkbox, Combobox, ImageCombo, RadioGroup.

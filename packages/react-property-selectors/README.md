@@ -83,14 +83,13 @@ const sel = useAmountFormatSelector({
   selectedUnit: state.selectedUnit,
   selectedDecimalCount: state.selectedDecimalCount,
   onFormatChanged: (selectedUnit: Unit.Unit<unknown>, selectedDecimalCount: number) =>
-    setState(merge(state, { selectedUnit, selectedDecimalCount })),
+    setState({ ...state, selectedUnit, selectedDecimalCount }),
   onFormatCleared: () =>
-    setState(
-      merge(state, {
-        selectedUnit: BaseUnits.Meter,
-        selectedDecimalCount: 2,
-      })
-    ),
+    setState({
+      ...state,
+      selectedUnit: BaseUnits.Meter,
+      selectedDecimalCount: 2,
+    }),
   unitsFormat: unitsFormat,
   units: units,
 });
@@ -118,69 +117,20 @@ const sel = useAmountPropertySelector({
 });
 ```
 
-### useCheckboxPropertySelector
+### useDiscretePropertySelector
 
 ```ts
-const sel = useCheckboxPropertySelector({
+const sel = useDiscretePropertySelector({
   propertyName: "a",
-  valueItems: valueItems1,
+  items: valueItems1,
   propertyValueSet: myState,
-  locked: false,
-  showCodes: true,
   onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
-
-  filterPrettyPrint: () => "",
-  readOnly: false,
-});
-```
-
-### useComboboxPropertySelector
-
-```ts
-const sel = useComboboxPropertySelector({
-  propertyName: "a",
-  valueItems: valueItems1,
-  propertyValueSet: myState,
-  locked: false,
+  getUndefinedValueItem: () => undefinedValueItem,
   showCodes: true,
   sortValidFirst: true,
-
-  onValueChange: (pv) => setMyState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, myState)),
-
   filterPrettyPrint: filterPrettyPrint,
-  readOnly: false,
-});
-```
-
-### useImageComboboxPropertySelector
-
-```ts
-const sel = useImageComboboxPropertySelector({
-  propertyName: "b",
-  valueItems: valueItems2,
-  propertyValueSet: myState,
-  locked: false,
-  showCodes: true,
-  sortValidFirst: true,
-  onValueChange: (pv) => setMyState(PropertyValueSet.set("b", pv as PropertyValue.PropertyValue, myState)),
-
-  filterPrettyPrint: filterPrettyPrint,
-  readOnly: false,
-});
-```
-
-### useRadiogroupPropertySelector
-
-```ts
-const sel = useRadioGroupPropertySelector({
-  propertyName: "a",
-  valueItems: valueItems1,
-  propertyValueSet: state,
-  locked: false,
-  showCodes: true,
-  onValueChange: (pv) => setState(PropertyValueSet.set("a", pv as PropertyValue.PropertyValue, state)),
-  filterPrettyPrint: filterPrettyPrint,
-  readOnly: false,
+  getItemValue: (item) => item.value,
+  getItemFilter: (item) => item.validationFilter,
 });
 ```
 
