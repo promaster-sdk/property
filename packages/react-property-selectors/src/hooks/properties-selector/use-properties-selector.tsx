@@ -17,6 +17,7 @@ export type UsePropertiesSelectorAmountFormat = {
   readonly unit: Unit.Unit<unknown>;
   readonly decimalCount: number;
 };
+export type PropertyFormats = { readonly [key: string]: UsePropertiesSelectorAmountFormat };
 
 export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   // Required inputs
@@ -57,9 +58,7 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   // Specifies property names of properties that should be optional (only for amounts for now)
   readonly optionalProperties?: ReadonlyArray<string>;
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly propertyFormats?: {
-    readonly [key: string]: UsePropertiesSelectorAmountFormat;
-  };
+  readonly propertyFormats?: PropertyFormats;
 
   // Debounce value for inputs in ms. Defaults to 350.
   readonly inputDebounceTime?: number;

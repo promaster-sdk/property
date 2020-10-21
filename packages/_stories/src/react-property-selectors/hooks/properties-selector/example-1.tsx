@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BaseUnits, UnitMap } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
-import { usePropertiesSelector } from "@promaster-sdk/react-property-selectors";
+import { PropertyFormats, usePropertiesSelector } from "@promaster-sdk/react-property-selectors";
 import { exampleProductProperties, MyItem, MyPropertyInfo } from "../selector-ui/example-product-properties";
 import { units, unitsFormat } from "../../units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
@@ -12,6 +12,7 @@ const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.Uni
 export function PropertiesSelectorExample1(): React.ReactElement<{}> {
   const [pvs, setPvs] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
   const [showCodes, setShowCodes] = useState(true);
+  const [propertyFormats, setPropertyFormats] = useState<PropertyFormats>({});
 
   const propInfo = exampleProductProperties();
 
@@ -19,6 +20,9 @@ export function PropertiesSelectorExample1(): React.ReactElement<{}> {
     units,
     unitsFormat,
     unitLookup,
+    propertyFormats,
+    onPropertyFormatChanged: (propertyName, unit, decimalCount) =>
+      setPropertyFormats({ ...propertyFormats, [propertyName]: { unit, decimalCount } }),
     properties: propInfo.properties,
     selectedProperties: pvs,
     onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
