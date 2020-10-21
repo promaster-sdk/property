@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/react-properties-selector",
   "author": "Divid Promaster AB",
   "license": "MIT",
-  "version": "8.0.7",
+  "version": "8.0.8",
   "main": "lib/index.js",
   "types": "lib/index",
   "description": "User interface for selecting a valid property value set",
@@ -23,7 +23,7 @@
   "dependencies": {
     "@promaster-sdk/property": "^5.0.2",
     "@promaster-sdk/property-filter-pretty": "^5.0.2",
-    "@promaster-sdk/react-property-selectors": "^8.0.0",
+    "@promaster-sdk/react-property-selectors": "^8.1.0-alpha.0",
     "ramda": "^0.25.0",
     "react": "^16.8.4",
     "uom": "^6.0.0"
