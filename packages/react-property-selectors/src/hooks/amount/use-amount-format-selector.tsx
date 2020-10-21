@@ -18,12 +18,12 @@ export type UseAmountFormatSelectorOptions = {
 };
 
 export type UnitSelectProps = {
-  readonly onChange: React.ChangeEventHandler<{ readonly selectedIndex: number; readonly value: string }>;
+  readonly onChange: React.ChangeEventHandler<{ readonly value: string }>;
   readonly value: string;
 };
 
 export type PrecisionSelectProps = {
-  readonly onChange: React.ChangeEventHandler<{ readonly selectedIndex: number; readonly value: string }>;
+  readonly onChange: React.ChangeEventHandler<{ readonly value: string }>;
   readonly value: string;
 };
 
@@ -96,18 +96,18 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
   const quantityUnits = UnitMap.getUnitsForQuantity(selectedUnit.quantity as string, units);
   const selectedUnitName = Serialize.unitToString(selectedUnit);
 
-  const decimalCounts = [0, 1, 2, 3, 4, 5];
-  if (decimalCounts.indexOf(selectedDecimalCount) === -1) {
-    decimalCounts.push(selectedDecimalCount);
-  }
-
+  const unitItemValues = quantityUnits.map((u) => Serialize.unitToString(u));
   const unitItems = quantityUnits.map((u) => {
     const format = UnitFormat.getUnitFormat(u, unitsFormat);
     return {
       label: format ? format.label : "",
     };
   });
-  const precisionItems = decimalCounts.map((dc) => ({
+  const precisionItemValues = [0, 1, 2, 3, 4, 5];
+  if (precisionItemValues.indexOf(selectedDecimalCount) === -1) {
+    precisionItemValues.push(selectedDecimalCount);
+  }
+  const precisionItems = precisionItemValues.map((dc) => ({
     label: dc.toString(),
   }));
 
@@ -118,13 +118,12 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
     unitItems,
     precisionItems,
     getUnitItemProps: (index) => {
-      const unitName = Serialize.unitToString(quantityUnits[index]);
       return {
-        value: unitName,
+        value: unitItemValues[index],
       };
     },
     getPrecisionItemProps: (index) => {
-      const dc = decimalCounts[index];
+      const dc = precisionItemValues[index];
       return {
         value: dc.toString(),
       };
@@ -134,7 +133,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
       value: selectedUnitName,
       onChange: (e) => {
         setIsOpen(false);
-        _onUnitChange(e, quantityUnits, selectedDecimalCount, onFormatChanged);
+        _onUnitChange(e, quantityUnits, unitItemValues, selectedDecimalCount, onFormatChanged);
       },
     }),
     getPrecisionSelectProps: () => ({
@@ -159,22 +158,21 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
 }
 
 function _onDecimalCountChange(
-  e: React.ChangeEvent<{ readonly value: string; readonly selectedIndex: number }>,
+  e: React.ChangeEvent<{ readonly value: string }>,
   selectedUnit: Unit.Unit<unknown>,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged
 ): void {
-  const selectedIndex = e.currentTarget.selectedIndex;
-  const selectedDecimalCount = selectedIndex;
-  onFormatChanged(selectedUnit, selectedDecimalCount);
+  onFormatChanged(selectedUnit, Number.parseInt(e.target.value, 10));
 }
 
 function _onUnitChange(
-  e: React.ChangeEvent<{ readonly value: string; readonly selectedIndex: number }>,
+  e: React.ChangeEvent<{ readonly value: string }>,
   units: ReadonlyArray<Unit.Unit<unknown>>,
+  unitItemValues: ReadonlyArray<string>,
   selectedDecimalCount: number,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged
 ): void {
-  const selectedIndex = e.target.selectedIndex;
+  const selectedIndex = unitItemValues.indexOf(e.target.value);
   const selectedUnit = units[selectedIndex];
   onFormatChanged(selectedUnit, selectedDecimalCount);
 }
