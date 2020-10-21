@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- AmountFormatSelector better compability with <Select> in material-ui by not relying on `select.selectedIndex`.
+- `useAmountFormatSelector()` better compability with <Select> in material-ui by not relying on `select.selectedIndex`.
 
 ## [v8.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@7.0.0...8.0.0)
 
