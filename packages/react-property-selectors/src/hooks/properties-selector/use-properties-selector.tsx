@@ -91,6 +91,8 @@ export type PropertyInfo = {
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
 };
 
+export type GroupToggleButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
+
 export type UsePropertiesSelector<TItem, TProperty> = {
   readonly getPropertySelectorHook: (property: TProperty) => PropertySelectorHookInfo<TItem>;
   readonly groups: ReadonlyArray<string>;
@@ -99,7 +101,7 @@ export type UsePropertiesSelector<TItem, TProperty> = {
   // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
   readonly isPropertyHidden: (property: TProperty) => boolean;
   readonly isPropertyValid: (property: TProperty) => boolean;
-  readonly getGroupToggleButtonProps: (group: string) => React.SelectHTMLAttributes<HTMLButtonElement>;
+  readonly getGroupToggleButtonProps: (group: string) => GroupToggleButtonProps;
   readonly isGroupClosed: (group: string) => boolean;
   readonly getGroupProperties: (group: string) => ReadonlyArray<TProperty>;
 };

@@ -27,9 +27,9 @@ export type PrecisionSelectProps = {
   readonly value: string;
 };
 
-export type LabelProps = { readonly onClick: React.ChangeEventHandler<{}> };
-export type ClearButtonProps = { readonly onClick: React.ChangeEventHandler<{}> };
-export type CancelButtonProps = { readonly onClick: React.ChangeEventHandler<{}> };
+export type LabelProps = { readonly onClick: React.MouseEventHandler<{}> };
+export type ClearButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
+export type CancelButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
 
 export type UseAmountFormatSelector = {
   readonly label: string;
