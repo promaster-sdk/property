@@ -23,7 +23,6 @@
   "dependencies": {
     "@promaster-sdk/property": "^5.0.2",
     "@promaster-sdk/property-filter-pretty": "^5.0.2",
-    "@promaster-sdk/react-property-selectors": "^8.1.0",
     "ramda": "^0.25.0",
     "react": "^16.8.4",
     "uom": "^6.0.0"
