@@ -15,10 +15,11 @@ import {
   TranslateValueIsRequiredMessage,
   PropertyValueItem,
 } from "./types";
+import { CheckboxPropertySelector, createCheckboxPropertySelector } from "../checkbox";
 
 const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector({});
 const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector({});
-const CheckboxPropertySelectorDefault = PropertySelectors.createCheckboxPropertySelector({});
+const CheckboxPropertySelectorDefault = createCheckboxPropertySelector({});
 const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector({});
 const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector({});
 
@@ -58,7 +59,7 @@ export interface CreatePropertySelectorProps {
   readonly ComboboxPropertySelector?: PropertySelectors.ComboboxPropertySelector;
   readonly TextboxPropertySelector?: PropertySelectors.TextboxPropertySelector;
   readonly RadioGroupPropertySelector?: PropertySelectors.RadioGroupPropertySelector;
-  readonly CheckboxPropertySelector?: PropertySelectors.CheckboxPropertySelector;
+  readonly CheckboxPropertySelector?: CheckboxPropertySelector;
 }
 
 export type PropertySelector = React.StatelessComponent<PropertySelectorProps>;

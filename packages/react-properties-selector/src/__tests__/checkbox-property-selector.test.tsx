@@ -1,7 +1,7 @@
 import React from "react";
 import * as renderer from "react-test-renderer";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
-import { createCheckboxPropertySelector, CheckboxPropertyValueItem } from "../../index";
+import { createCheckboxPropertySelector, CheckboxPropertyValueItem } from "../checkbox";
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 

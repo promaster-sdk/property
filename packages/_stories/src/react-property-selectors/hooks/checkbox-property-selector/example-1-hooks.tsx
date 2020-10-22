@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { BaseUnits, UnitMap } from "uom";
-import { CheckboxPropertyValueItem, useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
+import { useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { MyDiscreteCheckboxSelector } from "../selector-ui/selector-ui";
+
+export interface CheckboxPropertyValueItem {
+  readonly value: PropertyValue.PropertyValue | undefined | null;
+  readonly sortNo: number;
+  readonly text: string;
+  readonly image?: string;
+  readonly validationFilter: PropertyFilter.PropertyFilter;
+}
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
