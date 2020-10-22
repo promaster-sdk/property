@@ -5,7 +5,7 @@ import {
   useAmountInputBox,
 } from "@promaster-sdk/react-property-selectors";
 import { Unit, Amount, BaseUnits } from "uom";
-import { units, unitsFormat } from "../../units-map";
+import { units, unitsFormat } from "../units-map";
 
 type State = {
   readonly selectedUnit: Unit.Unit<unknown>;

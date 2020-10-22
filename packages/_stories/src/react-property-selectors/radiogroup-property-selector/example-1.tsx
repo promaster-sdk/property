@@ -3,7 +3,7 @@ import { UnitMap } from "uom";
 import { useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
-import { unitsFormat, units } from "../../units-map";
+import { unitsFormat, units } from "../units-map";
 import { MyDiscreteRadioGroupSelector } from "../selector-ui/selector-ui";
 import { MyItem } from "../selector-ui/example-product-properties";
 
