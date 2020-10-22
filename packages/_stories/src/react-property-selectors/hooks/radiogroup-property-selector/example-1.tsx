@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { UnitMap } from "uom";
-import { RadioGroupPropertyValueItem, useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
+import { useDiscretePropertySelector } from "@promaster-sdk/react-property-selectors";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { unitsFormat, units } from "../../units-map";
 import { MyDiscreteRadioGroupSelector } from "../selector-ui/selector-ui";
+import { MyItem } from "../selector-ui/example-product-properties";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (units as UnitMap.UnitMap)[unitString];
 
@@ -20,7 +21,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 
 export function RadioGroupPropertySelectorExample1(): JSX.Element {
   const [state, setState] = useState(PropertyValueSet.fromString("a=1;b=2", unitLookup));
-  const valueItems1: Array<RadioGroupPropertyValueItem> = [
+  const valueItems1: ReadonlyArray<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,
@@ -35,7 +36,7 @@ export function RadioGroupPropertySelectorExample1(): JSX.Element {
     },
   ];
 
-  const valueItems2: Array<RadioGroupPropertyValueItem> = [
+  const valueItems2: ReadonlyArray<MyItem> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,
