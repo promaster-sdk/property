@@ -1,19 +1,18 @@
 import React from "react";
-import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
 import * as PropertiesSelector from "@promaster-sdk/react-properties-selector";
 import styled from "styled-components";
 import { Expander } from "./expander";
 import { propertiesSelectorLayoutStyles as styles } from "./example-2-layout-styles";
 
 const PropertySelector: PropertiesSelector.PropertySelector = PropertiesSelector.createPropertySelector({
-  AmountPropertySelector: PropertySelectors.createAmountPropertySelector({
+  AmountPropertySelector: PropertiesSelector.createAmountPropertySelector({
     AmountPropertySelectorWrapper: styled.span`
       background: green;
       padding: 20px;
     `,
-    AmountInputBox: PropertySelectors.createAmountInputBox({}),
-    AmountFormatSelector: PropertySelectors.createAmountFormatSelector({
-      AmountFormatWrapper: styled(PropertySelectors.AmountFormatWrapper)`
+    AmountInputBox: PropertiesSelector.createAmountInputBox({}),
+    AmountFormatSelector: PropertiesSelector.createAmountFormatSelector({
+      AmountFormatWrapper: styled(PropertiesSelector.AmountFormatWrapper)`
         background-color: ${(props) => (props.active ? "red" : "white")};
         padding: 5px;
       `,

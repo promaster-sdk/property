@@ -1,4 +1,3 @@
-export * from "./components/amount/index";
 // Hooks
 export * from "./hooks/amount/index";
 export * from "./hooks/textbox";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Unit, BaseUnits, UnitMap } from "uom";
-import { createAmountPropertySelector } from "@promaster-sdk/react-property-selectors";
+import { createAmountPropertySelector } from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../../utils";

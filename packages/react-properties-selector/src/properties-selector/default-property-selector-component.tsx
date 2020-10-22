@@ -2,7 +2,6 @@ import React from "react";
 import { Unit, UnitFormat, UnitMap } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
-import * as PropertySelectors from "@promaster-sdk/react-property-selectors";
 import {
   PropertySelectorType,
   PropertySelectionOnChange,
@@ -19,8 +18,9 @@ import { CheckboxPropertySelector, createCheckboxPropertySelector } from "../che
 import { createTextboxPropertySelector, TextboxPropertySelector } from "../textbox";
 import { createRadioGroupPropertySelector, RadioGroupPropertySelector } from "../radio-group";
 import { ComboboxPropertySelector, createComboboxPropertySelector } from "../combo-box";
+import { AmountPropertySelector, createAmountPropertySelector } from "../amount";
 
-const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector({});
+const AmountPropertySelectorDefault = createAmountPropertySelector({});
 const ComboboxPropertySelectorDefault = createComboboxPropertySelector({});
 const CheckboxPropertySelectorDefault = createCheckboxPropertySelector({});
 const TextboxPropertySelectorDefault = createTextboxPropertySelector({});
@@ -58,7 +58,7 @@ export interface PropertySelectorProps {
 }
 
 export interface CreatePropertySelectorProps {
-  readonly AmountPropertySelector?: PropertySelectors.AmountPropertySelector;
+  readonly AmountPropertySelector?: AmountPropertySelector;
   readonly ComboboxPropertySelector?: ComboboxPropertySelector;
   readonly TextboxPropertySelector?: TextboxPropertySelector;
   readonly RadioGroupPropertySelector?: RadioGroupPropertySelector;

@@ -4,7 +4,7 @@ import {
   AmountFormatWrapperProps,
   createAmountFormatSelector,
   createAmountInputBox,
-} from "@promaster-sdk/react-property-selectors";
+} from "@promaster-sdk/react-properties-selector";
 import { Unit, Amount, BaseUnits } from "uom";
 import styled from "styled-components";
 import { action } from "@storybook/addon-actions";
