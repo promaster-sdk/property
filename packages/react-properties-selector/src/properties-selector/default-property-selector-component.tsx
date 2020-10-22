@@ -16,11 +16,12 @@ import {
   PropertyValueItem,
 } from "./types";
 import { CheckboxPropertySelector, createCheckboxPropertySelector } from "../checkbox";
+import { createTextboxPropertySelector, TextboxPropertySelector } from "../textbox";
 
 const AmountPropertySelectorDefault = PropertySelectors.createAmountPropertySelector({});
 const ComboboxPropertySelectorDefault = PropertySelectors.createComboboxPropertySelector({});
 const CheckboxPropertySelectorDefault = createCheckboxPropertySelector({});
-const TextboxPropertySelectorDefault = PropertySelectors.createTextboxPropertySelector({});
+const TextboxPropertySelectorDefault = createTextboxPropertySelector({});
 const RadioGroupPropertySelectorDefault = PropertySelectors.createRadioGroupPropertySelector({});
 
 export interface PropertySelectorProps {
@@ -57,7 +58,7 @@ export interface PropertySelectorProps {
 export interface CreatePropertySelectorProps {
   readonly AmountPropertySelector?: PropertySelectors.AmountPropertySelector;
   readonly ComboboxPropertySelector?: PropertySelectors.ComboboxPropertySelector;
-  readonly TextboxPropertySelector?: PropertySelectors.TextboxPropertySelector;
+  readonly TextboxPropertySelector?: TextboxPropertySelector;
   readonly RadioGroupPropertySelector?: PropertySelectors.RadioGroupPropertySelector;
   readonly CheckboxPropertySelector?: CheckboxPropertySelector;
 }
