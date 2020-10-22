@@ -7,9 +7,9 @@
 
 Hooks for building UI for selection of property values
 
-> **NOTE:** Starting with v9 the component based versions of the selectors was moved to the `@promaster-sdk/react-properties-selector` package. Legacy applications must now reference those selectors from this package instead.
+> :warning: **NOTE:** Starting with v9 the component based versions of the selectors was moved to the `@promaster-sdk/react-properties-selector` package. Legacy applications must now reference those selectors from this package instead.
 
-> **NOTE**: Starting with v7 the old component based versions of the selectors are deprecated and the documentation was removed from this readme.
+> :warning: **NOTE**: Starting with v7 the old component based versions of the selectors are deprecated and the documentation was removed from this readme.
 
 ## Introduction
 

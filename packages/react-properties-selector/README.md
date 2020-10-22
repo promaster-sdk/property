@@ -9,9 +9,9 @@ User interface for selecting a valid property value set
 
 :warning: **This package is deprecated in favor of the hooks in the @promaster-sdk/react-property-selectors package**.
 
-> **NOTE:** Starting with v9 the component based versions in the `@promaster-sdk/react-property-selectors` package was moved to this package. Legacy applications must now reference those selectors from this package instead.
+> :warning: **NOTE:** Starting with v9 the component based versions in the `@promaster-sdk/react-property-selectors` package was moved to this package. Legacy applications must now reference those selectors from this package instead.
 
-> **NOTE:** Starting with v8 the hooks based versions of the selectors were moved to the `@promaster-sdk/react-property-selectors` package. This package now only has component based versions which are all deprecated.
+> :warning: **NOTE:** Starting with v8 the hooks based versions of the selectors were moved to the `@promaster-sdk/react-property-selectors` package. This package now only has component based versions which are all deprecated.
 
 ## Introduction
 
