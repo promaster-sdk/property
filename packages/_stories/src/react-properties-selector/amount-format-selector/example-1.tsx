@@ -8,8 +8,8 @@ import {
 import { Unit, Amount, BaseUnits } from "uom";
 import styled from "styled-components";
 import { action } from "@storybook/addon-actions";
-import { merge } from "../../utils";
-import { units, unitsFormat } from "../../units-map";
+import { merge } from "../utils";
+import { units, unitsFormat } from "../units-map";
 
 interface State {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

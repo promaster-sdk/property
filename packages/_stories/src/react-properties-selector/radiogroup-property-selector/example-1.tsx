@@ -7,8 +7,8 @@ import {
 } from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
-import { merge } from "../../utils";
-import { unitsFormat, units } from "../../units-map";
+import { merge } from "../utils";
+import { unitsFormat, units } from "../units-map";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (units as UnitMap.UnitMap)[unitString];
 
