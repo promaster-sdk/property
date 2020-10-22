@@ -1,7 +1,7 @@
 /* eslint-disable functional/no-this-expression */
 import React from "react";
 import { UnitMap } from "uom";
-import { createComboboxPropertySelector, ComboBoxPropertyValueItem } from "@promaster-sdk/react-property-selectors";
+import { createComboboxPropertySelector, ComboBoxPropertyValueItem } from "@promaster-sdk/react-properties-selector";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { merge } from "../../utils";

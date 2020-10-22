@@ -1,5 +1,5 @@
 import React from "react";
-import { createImageDropdownSelector } from "@promaster-sdk/react-property-selectors";
+import { createImageDropdownSelector } from "@promaster-sdk/react-properties-selector";
 
 const ImageDropDownSelector = createImageDropdownSelector({});
 
