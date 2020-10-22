@@ -11,7 +11,9 @@ User interface for selecting a valid property value set
 
 :warning: **This package is deprecated in favor of the hooks in the @promaster-sdk/react-property-selectors package**.
 
-> **NOTE:** Starting with v8 the hooks based versions of the selectors were moved to the @promaster-sdk/react-property-selectors package. This package now only has component based versions which are all deprecated.
+> **NOTE:** Starting with v9 the component based versions in the `@promaster-sdk/react-property-selectors` package was moved to this package. Legacy applications must now reference those selectors from this package instead.
+
+> **NOTE:** Starting with v8 the hooks based versions of the selectors were moved to the `@promaster-sdk/react-property-selectors` package. This package now only has component based versions which are all deprecated.
 
 A common task in product selection tools is to have an UI that allows the user to make a valid `PropertyValueSet` selection for a product given it's `PropertyFilter` constraints. This package contains a react components for showing this UI and handling invalid selections.
 
@@ -23,8 +25,104 @@ The library is compiled to ES5 and no polyfills are required.
 
 ## Usage
 
-```js
-TODO!
+## Usage
+
+### ComboboxPropertySelector
+
+```ts
+<ComboboxPropertySelector
+  propertyName="..."
+  valueItems={...}
+  propertyValueSet={...}
+  locked={false}
+  showCodes={true}
+  sortValidFirst={true}
+  onValueChange={pv => console.log("onValueChange")}
+  filterPrettyPrint={filterPrettyPrint}
+  readOnly={false}
+/>
+```
+
+### TextboxPropertySelector
+
+```ts
+<TextboxPropertySelector
+  propertyName="..."
+  propertyValueSet={...}
+  onValueChange={pv => console.log("onValueChange")}
+  readOnly={false}
+  debounceTime={600}
+/>
+```
+
+### CheckboxPropertySelector
+
+```ts
+<CheckboxPropertySelector
+  propertyName="..."
+  valueItems={...}
+  propertyValueSet={...}
+  locked={false}
+  showCodes={true}
+  onValueChange={pv => console.log("onValueChange")}
+  filterPrettyPrint={() => ""}
+  readOnly={false}
+/>
+```
+
+### AmountPropertySelector
+
+```ts
+<AmountPropertySelector
+  fieldName="..."
+  propertyName="..."
+  propertyValueSet={...}
+  inputUnit={...}
+  inputDecimalCount={...}
+  onValueChange={pv => console.log("onValueChange)}
+  filterPrettyPrint={...}
+  validationFilter={...}
+  readOnly={false}
+  isRequiredMessage="Is required"
+  notNumericMessage="Not numeric"
+  onFormatChanged={(selectedUnit, selectedDecimalCount) => console.log("onFormatChanged")}
+  onFormatCleared={() => console.log("onFormatCleared")}
+  unitsFormat={UnitsFormat}
+  units={Units}
+/>
+```
+
+### AmountInputBox
+
+```ts
+<AmountInputBox
+  value={...}
+  inputUnit={...}
+  inputDecimalCount={...}
+  onValueChange={amount => console.log("changed")}
+  readOnly={false}
+  errorMessage=""
+  isRequiredMessage="Is required"
+  notNumericMessage="Not numeric"
+  debounceTime={350}
+/>
+```
+
+### AmountFormatSelector
+
+```ts
+<AmountFormatSelector
+  selectedUnit={...}
+  selectedDecimalCount={...}
+  onFormatChanged={(
+    selectedUnit: Unit.Unit<any>,
+    selectedDecimalCount: number
+  ) => console.log(selectedUnit, selectedDecimalCount))}
+  onFormatCleared={() => console.log("onFormatCleared")}
+  onFormatSelectorActiveChanged={console.log("Toggle format selector")}
+  unitsFormat={...}
+  units={...}
+/>
 ```
 
 ## How to run

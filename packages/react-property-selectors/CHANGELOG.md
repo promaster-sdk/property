@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@8.1.0...master)
+## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.0.0...master)
+
+## [v9.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@8.1.0...9.0.0)
+
+## Changed
+
+- Moved all legacy component based selectors to the `@promaster-sdk/react-properties-selector` package. Legacy applications must now reference those selectors from that package instead.
 
 ## [v8.1.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@8.0.0...8.1.0)
 
