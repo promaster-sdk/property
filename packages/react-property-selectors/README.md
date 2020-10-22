@@ -7,15 +7,15 @@
 
 Hooks for building UI for selection of property values
 
+> **NOTE:** Starting with v9 the component based versions of the selectors was moved to the `@promaster-sdk/react-properties-selector` package. Legacy applications must now reference those selectors from this package instead.
+
+> **NOTE**: Starting with v7 the old component based versions of the selectors are deprecated and the documentation was removed from this readme.
+
 ## Introduction
 
 A common task in product selection tools is to have an UI that allows the user to make a valid property value selection. This package contains a react components for showing different UI for selection of a single property, such as a dropdown, textbox etc.
 
 This package uses [hooks](https://reactjs.org/docs/hooks-reference.html) and [prop-getters](https://kentcdodds.com/blog/how-to-give-rendering-control-to-users-with-prop-getters/) to create headless UI components. Similar to [downshift](https://github.com/downshift-js/downshift) and [react-table](https://github.com/tannerlinsley/react-table).
-
-> **NOTE:** Starting with v9 the component based versions of the selectors was moved to the `@promaster-sdk/react-properties-selector` package. Legacy applications must now reference those selectors from this package instead.
-
-> **NOTE**: Starting with v7 the old component based versions of the selectors are deprecated and the documentation was removed from this readme.
 
 ## Installation
 
