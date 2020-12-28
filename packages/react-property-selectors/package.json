@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/react-property-selectors",
   "author": "Divid Promaster AB",
   "license": "MIT",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "main": "lib/index.js",
   "types": "lib/index",
   "description": "Hooks for building UI for selection of property values",
@@ -29,7 +29,7 @@
     "react": ">=16.8.0"
   },
   "devDependencies": {
-    "react": "^16.8.4",
-    "@types/react": "^16.8.8"
+    "@types/react": "^16.8.8",
+    "react": "^16.8.4"
   }
 }
