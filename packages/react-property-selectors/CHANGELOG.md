@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.0.0...master)
+## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.1.0...master)
+
+## [v9.1.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.0.0...9.1.0)
+
+## Added
+
+- React as peer dependency.
 
 ## [v9.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@8.1.0...9.0.0)
 

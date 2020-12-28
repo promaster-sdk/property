@@ -23,10 +23,13 @@
   "dependencies": {
     "@promaster-sdk/property": "^5.0.2",
     "@promaster-sdk/property-filter-pretty": "^5.0.2",
-    "react": "^16.8.4",
     "uom": "^6.0.0"
   },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
   "devDependencies": {
+    "react": "^16.8.4",
     "@types/react": "^16.8.8"
   }
 }
