@@ -6,19 +6,25 @@ interface State {
   readonly value: Amount.Amount<unknown>;
 }
 
-export function AmountInputBoxTestComponent(): React.ReactElement<{}> {
+export function AmountInputBoxTestComponent({
+  onValueChange,
+}: {
+  readonly onValueChange: (a: Amount.Amount<unknown>) => void;
+}): React.ReactElement<{}> {
   const value: Amount.Amount<unknown> | undefined = Amount.create(10, Unit.One);
 
   const [state, setState] = useState<State>({
     value,
   });
 
-  const onValueChange = useCallback(
-    (v) =>
+  const onValueChangeInternal = useCallback(
+    (v) => {
       setState({
         ...state,
         value: v,
-      }),
+      });
+      onValueChange(v);
+    },
     [state, setState]
   );
 
@@ -29,9 +35,9 @@ export function AmountInputBoxTestComponent(): React.ReactElement<{}> {
     notNumericMessage: "notNumericMessage",
     isRequiredMessage: "isRequiredMessage",
     readOnly: false,
-    debounceTime: 1000,
+    debounceTime: 100,
     errorMessage: "",
-    onValueChange,
+    onValueChange: onValueChangeInternal,
   });
 
   return (
