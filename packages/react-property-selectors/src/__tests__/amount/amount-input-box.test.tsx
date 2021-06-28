@@ -1,20 +1,34 @@
 import React from "react";
 import { Amount, Unit } from "uom";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AmountInputBoxTestComponent } from "./amount-input-box-component";
 
 describe("Test <AmountInputBoxTestComponent />", () => {
-  it("should call change value after typing", async () => {
+  it("should call onValueChange after typing a valid value", async () => {
     const onValueChange = jest.fn();
-    // jest.spyOn(hooks, "useProducts").mockImplementation(mockHook);
-    render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    act(() => {
+      render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    });
     const input = screen.getByTestId("input");
-    userEvent.type(input, "1");
+    act(() => {
+      userEvent.type(input, "1");
+    });
     expect(input).toHaveValue("101");
     const a = Amount.create(101, Unit.One);
     expect(onValueChange).not.toHaveBeenCalled(); // It won't be called immediately
     await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 }); // But will get called within 100ms
-    jest.clearAllMocks();
+  });
+  it("should not call onValueChange after typing a invalid value", async () => {
+    const onValueChange = jest.fn();
+    act(() => {
+      render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    });
+    const input = screen.getByTestId("input");
+    act(() => {
+      userEvent.type(input, "A");
+    });
+    expect(input).toHaveValue("10A");
+    await waitFor(() => expect(onValueChange).not.toHaveBeenCalled(), { timeout: 100 });
   });
 });
