@@ -10,13 +10,7 @@ type State = {
   readonly amount: Amount.Amount<unknown>;
 };
 
-// eslint-disable-next-line import/no-default-export
-export default {
-  component: AmountFormatSelectorExample1Hooks,
-  title: "HOOKS/Amount Format Selector/example 1",
-} as Meta;
-
-export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
+export function Example1(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
     amount: Amount.create(10.0, BaseUnits.Meter),
     selectedUnit: BaseUnits.Meter,
@@ -89,3 +83,9 @@ export function AmountFormatSelectorExample1Hooks(): React.ReactElement<{}> {
     </div>
   );
 }
+
+// eslint-disable-next-line import/no-default-export
+export default {
+  component: Example1,
+  title: "HOOKS/Amount Format Selector",
+} as Meta;
