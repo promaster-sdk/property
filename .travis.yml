@@ -6,8 +6,8 @@ cache:
 notifications:
   email: false
 node_js:
+  - "14"
   - "12"
-  - "10"
 script:
   - yarn verify
 after_success:

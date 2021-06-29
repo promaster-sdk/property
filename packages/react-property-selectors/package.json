@@ -26,10 +26,10 @@
     "uom": "^6.0.0"
   },
   "peerDependencies": {
-    "react": ">=16.8.0"
+    "react": ">=16.14.0"
   },
   "devDependencies": {
     "@types/react": "^16.8.8",
-    "react": "^16.8.4"
+    "react": "^16.14.0"
   }
 }
