@@ -1,6 +1,6 @@
 # @promaster-sdk/property
 
-[![travis build][travis-image]][travis-url]
+[![build][build-image]][build-url]
 [![Coverage Status][codecov-image]][codecov-url]
 [![code style: prettier][prettier-image]][prettier-url]
 [![types][types-image]][types-url]
@@ -37,8 +37,8 @@ yarn publish-npm
 
 It will build the packages and call `lerna publish` which will figure out which packages has changed, ask for new versions of them, and then publish them.
 
-[travis-image]: https://travis-ci.com/promaster-sdk/property.svg?branch=master&style=flat
-[travis-url]: https://travis-ci.com/promaster-sdk/property
+[build-image]: https://github.com/promaster-sdk/property/workflows/Build/badge.svg
+[build-url]: https://github.com/promaster-sdk/property/actions?query=workflow%3ABuild+branch%3Amaster
 [codecov-image]: https://codecov.io/gh/promaster-sdk/property/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/promaster-sdk/property
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
