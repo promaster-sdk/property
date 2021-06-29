@@ -11,21 +11,17 @@
     "@promaster-sdk/property-filter-pretty": "^5.0.2",
     "@promaster-sdk/react-properties-selector": "^9.0.0",
     "@promaster-sdk/react-property-selectors": "^9.1.0",
-    "@storybook/addon-actions": "^5.0.1",
-    "@storybook/addon-links": "^5.0.1",
     "csjs": "1.0.6",
     "insert-css": "^2.0.0",
     "ramda": "^0.25.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "styled-components": "^5.2.0",
+    "styled-components": "^5.3.0",
+    "react-is": "^16.8.0",
     "uom": "^6.0.0"
   },
   "devDependencies": {
     "@types/insert-css": "^2.0.0",
-    "@types/storybook__addon-actions": "^3.4.2",
-    "@types/storybook__addon-links": "^3.3.4",
-    "@types/storybook__react": "^4.0.1",
-    "@types/styled-components": "^5.1.4"
+    "@types/styled-components": "^5.1.10"
   }
 }
