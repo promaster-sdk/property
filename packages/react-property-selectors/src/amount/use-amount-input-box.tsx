@@ -65,12 +65,12 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
   ]);
 
   const debouncedOnValueChange = useCallback(
-    debounce((newAmount: Amount.Amount<unknown> | undefined) => {
+    debounce((newAmount: Amount.Amount<unknown>) => {
       // An event can have been received when the input was valid, then the input has gone invalid
       // but we still received the delayed event from when the input was valid. Therefore
       // we need an extra check here to make sure that the current input is valid before we
       // dispatch the value change.
-      if (state.isValid && newAmount) {
+      if (state.isValid) {
         onValueChange(newAmount);
       }
     }, debounceTime),
@@ -145,7 +145,10 @@ function _onChange(
     params.errorMessage
   );
   setState(newState);
-  debouncedOnValueChange(newAmount);
+  // We need to check isValid from the new state because state is not immidiately mutated
+  if (newState.isValid) {
+    debouncedOnValueChange(newAmount);
+  }
 }
 
 function calculateNewState(
