@@ -1,6 +1,6 @@
 import React from "react";
 import { Amount, Unit } from "uom";
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AmountInputBoxTestComponent } from "./amount-input-box-component";
 
@@ -13,7 +13,7 @@ describe("Test <AmountInputBoxTestComponent />", () => {
     expect(input).toHaveValue("101");
     const a = Amount.create(101, Unit.One);
     expect(onValueChange).not.toHaveBeenCalled(); // It won't be called immediately
-    await act(() => waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 })); // But will get called within 100ms
+    await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 }); // But will get called within 100ms
   });
 
   it("should not call onValueChange after typing a invalid value", async () => {
@@ -31,9 +31,8 @@ describe("Test <AmountInputBoxTestComponent />", () => {
     const input = screen.getByTestId("input");
     userEvent.type(input, "A{backspace}1");
     expect(input).toHaveValue("101");
-    // await waitFor(() => expect(onValueChange).not.toHaveBeenCalled(), { timeout: 100 });
     const a = Amount.create(101, Unit.One);
     expect(onValueChange).not.toHaveBeenCalled(); // It won't be called immediately
-    await act(() => waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 }));
+    await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 });
   });
 });
