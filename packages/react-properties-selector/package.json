@@ -24,7 +24,7 @@
     "@promaster-sdk/property": "^5.0.2",
     "@promaster-sdk/property-filter-pretty": "^5.0.2",
     "ramda": "^0.25.0",
-    "react": "^16.8.4",
+    "react": "^16.14.0",
     "uom": "^6.0.0"
   },
   "devDependencies": {
