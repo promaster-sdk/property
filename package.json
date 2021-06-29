@@ -66,7 +66,6 @@
     "verify": "yarn lint && yarn build && yarn test-coverage-all",
     "generate-parser": "pegjs packages/property/src/property-filter-ast/pegjs/parser.pegjs packages/property/src/property-filter-ast/pegjs/generated-parser.js",
     "build:parser": "mkdirp packages/property/lib/property-filter-ast/pegjs/ && cp packages/property/src/property-filter-ast/pegjs/generated-parser.* packages/property/lib/property-filter-ast/pegjs/",
-    "storybook2": "yarn build && run-p -l start storybook:start",
     "storybook": "yarn build && yarn storybook:start",
     "storybook:start": "start-storybook -p 6006 --ci",
     "build-storybook": "build-storybook",
