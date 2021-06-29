@@ -6,7 +6,6 @@
     { "path": "property-filter-pretty" },
     { "path": "react-properties-selector" },
     { "path": "react-property-selectors" },
-    { "path": "variant-listing" },
-    { "path": "_stories" }
+    { "path": "variant-listing" }
   ]
 }
