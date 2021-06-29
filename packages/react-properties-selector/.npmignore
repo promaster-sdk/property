@@ -1,4 +1,5 @@
 **/__mocks__/**
 **/__tests__/**
+**/__stories__/**
 tsconfig.json
 tsconfig.tsbuildinfo
