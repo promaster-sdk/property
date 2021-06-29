@@ -1,5 +1,6 @@
 import React from "react";
 
-export function Button(props: unknown): JSX.Element {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function Button(props: any): JSX.Element {
   return <button {...props}>hej</button>;
 }
