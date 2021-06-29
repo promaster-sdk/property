@@ -17,7 +17,7 @@
     "@types/jest": "^26.0.23",
     "@types/node": "^12.11.1",
     "@types/pegjs": "0.0.28",
-    "@types/react-dom": "^17.0.8",
+    "@types/react-dom": "^16.9.9",
     "@types/react-test-renderer": "^16.8.1",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
@@ -51,6 +51,9 @@
     "uglify-js": "^3.4.9",
     "webpack": "^4.29.6"
   },
+  "resolutions": {
+    "@types/react": "16.14.8"
+  },
   "scripts": {
     "start": "tsc -b -w packages",
     "publish-npm": "yarn pre-publish && lerna publish",
@@ -66,8 +69,7 @@
     "verify": "yarn lint && yarn build && yarn test-coverage-all",
     "generate-parser": "pegjs packages/property/src/property-filter-ast/pegjs/parser.pegjs packages/property/src/property-filter-ast/pegjs/generated-parser.js",
     "build:parser": "mkdirp packages/property/lib/property-filter-ast/pegjs/ && cp packages/property/src/property-filter-ast/pegjs/generated-parser.* packages/property/lib/property-filter-ast/pegjs/",
-    "storybook": "yarn build && yarn storybook:start",
-    "storybook:start": "start-storybook -p 6006 --ci",
+    "storybook": "start-storybook -p 6006 --ci",
     "build-storybook": "build-storybook",
     "benchmark": "yarn build && run-s benchmark:*",
     "benchmark:property": "node packages/property/lib/__benchmarks__/property-filter.js",
