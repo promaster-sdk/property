@@ -27,7 +27,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 const ComboboxPropertySelector = createComboboxPropertySelector({});
 
 // eslint-disable-next-line functional/no-class
-export class ComboboxPropertySelectorExample1 extends React.Component<{}, State> {
+class ComboboxPropertySelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -120,8 +120,10 @@ export class ComboboxPropertySelectorExample1 extends React.Component<{}, State>
   }
 }
 
+export const Example1 = (): JSX.Element => <ComboboxPropertySelectorExample1 />;
+
 // eslint-disable-next-line import/no-default-export
 export default {
-  component: ComboboxPropertySelectorExample1,
+  component: Example1,
   title: "COMP/Combobox Property Selector",
 } as Meta;

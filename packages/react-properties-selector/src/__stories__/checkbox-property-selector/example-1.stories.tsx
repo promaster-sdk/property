@@ -9,7 +9,7 @@ const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.Uni
 
 const CheckboxPropertySelector = createCheckboxPropertySelector({});
 
-export function CheckboxPropertySelectorExample1(): JSX.Element {
+export function Example1(): JSX.Element {
   const [myState, setMyState] = useState(PropertyValueSet.fromString("a=1", unitLookup));
   const valueItems1: ReadonlyArray<CheckboxPropertyValueItem> = [
     {
@@ -48,6 +48,6 @@ export function CheckboxPropertySelectorExample1(): JSX.Element {
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  component: CheckboxPropertySelectorExample1,
+  component: Example1,
   title: "COMP/Checkbox Property Selector",
 } as Meta;

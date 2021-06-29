@@ -30,7 +30,7 @@ const validationFilter = PropertyFilter.fromString("a<100:Meter", unitLookup) as
 
 const AmountPropertySelector = createAmountPropertySelector({});
 
-export function AmountPropertySelectorExample1(): React.ReactElement<{}> {
+export function Example1(): React.ReactElement<{}> {
   const [state, setState] = useState<State>({
     propertyValueSet: PropertyValueSet.fromString("a=10:Meter", unitLookup),
     selectedUnit: BaseUnits.Meter,
@@ -81,6 +81,6 @@ export function AmountPropertySelectorExample1(): React.ReactElement<{}> {
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  component: AmountPropertySelectorExample1,
+  component: Example1,
   title: "COMP/Amount Property Selector",
 } as Meta;

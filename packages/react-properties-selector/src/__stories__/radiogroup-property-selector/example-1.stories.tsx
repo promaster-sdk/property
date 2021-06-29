@@ -27,7 +27,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 const RadioGroupPropertySelector = createRadioGroupPropertySelector({});
 
 // eslint-disable-next-line functional/no-class
-export class RadioGroupPropertySelectorExample1 extends React.Component<{}, State> {
+class RadioGroupPropertySelectorExample1 extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -118,8 +118,10 @@ export class RadioGroupPropertySelectorExample1 extends React.Component<{}, Stat
   }
 }
 
+export const Example1 = (): JSX.Element => <RadioGroupPropertySelectorExample1 />;
+
 // eslint-disable-next-line import/no-default-export
 export default {
-  component: RadioGroupPropertySelectorExample1,
+  component: Example1,
   title: "COMP/Radiogroup Property Selector",
 } as Meta;

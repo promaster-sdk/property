@@ -8,7 +8,7 @@ const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.Uni
 
 const TextboxPropertySelector = createTextboxPropertySelector({});
 
-export function TextboxPropertySelectorExample1(): React.ReactElement<{}> {
+export function Example1(): React.ReactElement<{}> {
   const [myState, setMyState] = useState(PropertyValueSet.fromString('a="This is the value";b=3', unitLookup));
   return (
     <div>
@@ -29,6 +29,6 @@ export function TextboxPropertySelectorExample1(): React.ReactElement<{}> {
 
 // eslint-disable-next-line import/no-default-export
 export default {
-  component: TextboxPropertySelectorExample1,
+  component: Example1,
   title: "COMP/Textbox Property Selector",
 } as Meta;
