@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Build
 
 on:
   push:
@@ -16,8 +16,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Build and test test using node ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - run: yarn install --frozen-lockfile
       - run: yarn verify
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        # with:
+        # verbose: true
