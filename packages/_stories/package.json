@@ -16,8 +16,8 @@
     "csjs": "1.0.6",
     "insert-css": "^2.0.0",
     "ramda": "^0.25.0",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "styled-components": "^5.2.0",
     "uom": "^6.0.0"
   },
