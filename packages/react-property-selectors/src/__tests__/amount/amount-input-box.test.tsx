@@ -2,7 +2,7 @@ import React from "react";
 import { Amount, Unit } from "uom";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AmountInputBoxTestComponent } from "./amount-input-box-component";
+import { AmountInputBoxTestComponent } from "./amount-input-box-test-component";
 
 describe("Test <AmountInputBoxTestComponent />", () => {
   it("should call onValueChange after typing a valid value", async () => {
