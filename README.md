@@ -27,6 +27,10 @@ For development of the react components, use `yarn storybook` to start storybook
 
 For the other packages, use `yarn test:packagename` to test them, or run `yarn test` to test all packages.
 
+## How to contribute
+
+Start with an issue to dicsuss. If discussions leads to code changed then create a PR. Make sure you prefix either one commit your PR title with a [conventional commit prefix](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) so that the version bump and chnagelong can be automatically generated from the PR's squashed commit. In case you have a single commit in the PR it seems it has to have the prefix in the commit message as the PR title will not be used.
+
 ## How to publish
 
 The packages are published under the @promaster-sdk orgnization on npmjs.org. To publish run this command:
