@@ -29,7 +29,7 @@ For the other packages, use `yarn test:packagename` to test them, or run `yarn t
 
 ## How to contribute
 
-Start with an issue to dicsuss. If discussions leads to code changed then create a PR. Make sure you prefix your PR title with a [conventional commit prefix](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) so that the version bump and chnagelong can be automatically generated from the PR's squashed commit.
+Start with an issue to dicsuss. If discussions leads to code changed then create a PR. Make sure you prefix either one commit your PR title with a [conventional commit prefix](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) so that the version bump and chnagelong can be automatically generated from the PR's squashed commit. In case you have a single commit in the PR it seems it has to have the prefix in the commit message as the PR title will not be used.
 
 ## How to publish
 
