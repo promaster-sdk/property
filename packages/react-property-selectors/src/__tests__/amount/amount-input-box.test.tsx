@@ -41,9 +41,8 @@ describe("Test <AmountInputBoxTestComponent />", () => {
     render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
     const input = screen.getByTestId("input");
     userEvent.clear(input);
-    userEvent.type(input, "10.");
-    await new Promise((r) => setTimeout(r, 2000));
-    userEvent.type(input, "2");
+    userEvent.type(input, "10");
+    await userEvent.type(input, ".2", { delay: 2000 });
     expect(input).toHaveValue("10.2");
     expect(onValueChange).not.toHaveBeenCalled(); // It won't be called immediately
     const a = Amount.create(10.2, Unit.One);
