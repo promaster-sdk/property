@@ -59,13 +59,7 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly optionalProperties?: ReadonlyArray<string>;
 
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly propertyFormats?: PropertyFormats;
-
-  // Debounce value for inputs in ms. Defaults to 350.
-  readonly inputDebounceTime?: number;
-
-  // Group handling
-  readonly initiallyClosedGroups?: ReadonlyArray<string>;
+  readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
 
   // Use customUnits
   readonly unitsFormat: {
@@ -73,6 +67,12 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   };
   readonly units: UnitMap.UnitMap;
   readonly unitLookup: UnitMap.UnitLookup;
+
+  // Debounce value for inputs in ms. Defaults to 350.
+  readonly inputDebounceTime?: number;
+
+  // Group handling
+  readonly initiallyClosedGroups?: ReadonlyArray<string>;
 
   // Comparer
   readonly valueComparer?: PropertyValue.Comparer;
@@ -189,7 +189,7 @@ function createSelectorHookInfo<TItem, TProperty>(
 ): PropertySelectorHookInfo<TItem> {
   const {
     selectedProperties,
-    propertyFormats,
+    getPropertyFormat,
     valueComparer,
     properties,
     autoSelectSingleValidValue,
@@ -222,7 +222,7 @@ function createSelectorHookInfo<TItem, TProperty>(
 
   // TODO: Better handling of format to use when the format is missing in the map
   const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
-  const propertyFormat = propertyFormats[propertyInfo.name] || defaultFormat;
+  const propertyFormat = getPropertyFormat(propertyInfo.name) || defaultFormat;
 
   const readOnly = readOnlyProperties.indexOf(propertyInfo.name) !== -1;
   const propertyOnChange = handleChange(
@@ -553,7 +553,7 @@ function optionsWithDefaults<TItem, TPropety>(
 
     readOnlyProperties: options.readOnlyProperties || [],
     optionalProperties: options.optionalProperties || [],
-    propertyFormats: options.propertyFormats || {},
+    getPropertyFormat: options.getPropertyFormat || (() => undefined),
 
     inputDebounceTime: options.inputDebounceTime || 350,
 
