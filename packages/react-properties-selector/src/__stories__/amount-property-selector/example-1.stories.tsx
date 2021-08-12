@@ -43,7 +43,6 @@ export function Example1(): React.ReactElement<{}> {
       <div>PropertyValueSet: {PropertyValueSet.toString(state.propertyValueSet)}</div>
       <div>
         <AmountPropertySelector
-          fieldName="a"
           propertyName="a"
           propertyValueSet={state.propertyValueSet}
           inputUnit={state.selectedUnit}

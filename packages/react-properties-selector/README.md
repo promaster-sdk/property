@@ -74,7 +74,6 @@ The library is compiled to ES5 and no polyfills are required.
 
 ```ts
 <AmountPropertySelector
-  fieldName="..."
   propertyName="..."
   propertyValueSet={...}
   inputUnit={...}

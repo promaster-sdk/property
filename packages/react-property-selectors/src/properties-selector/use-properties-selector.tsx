@@ -57,6 +57,7 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly readOnlyProperties?: ReadonlyArray<string>;
   // Specifies property names of properties that should be optional (only for amounts for now)
   readonly optionalProperties?: ReadonlyArray<string>;
+
   // Specifies input format per property name for entering amount properties (measure unit and decimal count)
   readonly propertyFormats?: PropertyFormats;
 
@@ -82,7 +83,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
 };
 
 export type PropertyInfo = {
-  readonly fieldName?: string;
   readonly name: string;
   readonly group: string;
   readonly quantity: string;
@@ -285,7 +285,6 @@ function createSelectorHookInfo<TItem, TProperty>(
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
-          fieldName: propertyInfo.fieldName || propertyInfo.name,
           // If it is optional then use blank required message
           isRequiredMessage:
             optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : valueIsRequiredMessage,

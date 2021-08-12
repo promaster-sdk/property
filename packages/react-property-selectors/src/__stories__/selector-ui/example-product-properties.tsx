@@ -16,7 +16,6 @@ export type MyItem = {
 export type MyPropertyInfo = {
   readonly selectorType?: "Checkbox" | "RadioGroup";
   readonly sortNo: number;
-  readonly fieldName?: string;
   readonly name: string;
   readonly group: string;
   readonly quantity: string;

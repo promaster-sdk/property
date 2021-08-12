@@ -101,7 +101,6 @@ const sel = useAmountFormatSelector({
 
 ```ts
 const sel = useAmountPropertySelector({
-  fieldName: "a",
   propertyName: "a",
   propertyValueSet: state.propertyValueSet,
   inputUnit: state.selectedUnit,

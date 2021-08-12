@@ -28,7 +28,6 @@ const RadioGroupPropertySelectorDefault = createRadioGroupPropertySelector({});
 
 export interface PropertySelectorProps {
   readonly selectorType: PropertySelectorType;
-  readonly fieldName: string;
   readonly propertyName: string;
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
@@ -76,7 +75,6 @@ export function createPropertySelector({
 }: CreatePropertySelectorProps): PropertySelector {
   return function PropertySelector({
     selectorType,
-    fieldName,
     propertyName,
     quantity,
     validationFilter,
@@ -213,7 +211,6 @@ export function createPropertySelector({
             onFormatSelectorToggled={(active: boolean) => onPropertyFormatSelectorToggled(propertyName, active)}
             onValueChange={onValueChange}
             notNumericMessage={translateValueMustBeNumericMessage()}
-            fieldName={fieldName}
             // If it is optional then use blank required message
             isRequiredMessage={
               optionalProperties && optionalProperties.indexOf(propertyName) !== -1
