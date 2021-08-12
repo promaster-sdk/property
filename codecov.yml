@@ -25,9 +25,6 @@ flags:
   property_filter_pretty:
     paths:
       - packages/property-filter-pretty/src
-  react_properties_selector:
-    paths:
-      - packages/react-properties-selector/src
   react_property_selectors:
     paths:
       - packages/react-property-selectors/src
