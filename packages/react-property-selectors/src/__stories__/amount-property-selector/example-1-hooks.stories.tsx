@@ -58,7 +58,6 @@ export function Example1(): React.ReactElement<{}> {
   );
 
   const selOptions = {
-    fieldName: "a",
     propertyName: "a",
     propertyValueSet: state.propertyValueSet,
     inputUnit: state.selectedUnit,

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.1.0...master)
 
+## Changed
+
+- Removed `fieldName` prop, see PR [#39](https://github.com/promaster-sdk/property/pull/39).
+
 ## [v9.1.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.0.0...9.1.0)
 
 ## Added

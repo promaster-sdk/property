@@ -26,7 +26,6 @@ export interface AmountPropertySelectorProps {
   readonly onFormatSelectorToggled?: OnFormatSelectorToggled;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
-  readonly fieldName: string;
   readonly unitsFormat: {
     readonly [key: string]: UnitFormat.UnitFormat;
   };

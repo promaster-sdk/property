@@ -24,7 +24,6 @@ export type UseAmountPropertySelectorOptions = {
   readonly onFormatCleared: UseAmountFormatSelectorOnFormatCleared;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
-  readonly fieldName: string;
   readonly unitsFormat: UnitFormat.UnitFormatMap;
   readonly units: UnitMap.UnitMap;
   readonly comparer?: PropertyValue.Comparer;
