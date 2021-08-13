@@ -3,7 +3,7 @@ import { Meta } from "@storybook/react";
 import { BaseUnits, UnitMap } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
-import { PropertyFormats, usePropertiesSelector } from "../../properties-selector";
+import { PropertyFormats, usePropertiesSelector, UsePropertiesSelectorOptions } from "../../properties-selector";
 import { exampleProductProperties, MyItem, MyPropertyInfo } from "../selector-ui/example-product-properties";
 // import { units, unitsFormat } from "../units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
@@ -17,7 +17,7 @@ export function Example1(): React.ReactElement<{}> {
 
   const propInfo = exampleProductProperties();
 
-  const sel = usePropertiesSelector<MyItem, MyPropertyInfo>({
+  const selOptions: UsePropertiesSelectorOptions<MyItem, MyPropertyInfo> = {
     // units,
     // unitsFormat,
     // unitLookup,
@@ -40,7 +40,34 @@ export function Example1(): React.ReactElement<{}> {
     getItemFilter: (item) => item.validationFilter,
     getPropertyInfo: (p) => p,
     getPropertyItems: (p) => p.items,
-  });
+  };
+
+  // const sel = usePropertiesSelector<MyItem, MyPropertyInfo>({
+  //   // units,
+  //   // unitsFormat,
+  //   // unitLookup,
+  //   // getPropertyFormat: (propertyName) => propertyFormats[propertyName],
+  //   onPropertyFormatChanged: (propertyName, unit, decimalCount) =>
+  //     setPropertyFormats({ ...propertyFormats, [propertyName]: { unit, decimalCount } }),
+  //   properties: propInfo.properties,
+  //   selectedProperties: pvs,
+  //   onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
+  //     setPvs(properties);
+  //   },
+  //   getUndefinedValueItem: () => ({
+  //     value: undefined,
+  //     sortNo: -1,
+  //     text: "",
+  //     validationFilter: PropertyFilter.Empty,
+  //   }),
+  //   showCodes,
+  //   getItemValue: (item) => item.value,
+  //   getItemFilter: (item) => item.validationFilter,
+  //   getPropertyInfo: (p) => p,
+  //   getPropertyItems: (p) => p.items,
+  // });
+
+  const sel = usePropertiesSelector<MyItem, MyPropertyInfo>(selOptions);
 
   return (
     <div>
@@ -97,6 +124,7 @@ export function Example1(): React.ReactElement<{}> {
                                     />
                                   );
                                 case "AmountField":
+                                  console.log("AMOUNT SELECTOR");
                                   return <MyAmountSelector {...selector.getUseAmountOptions()} />;
                                 default:
                                   return exhaustiveCheck(selector, true);

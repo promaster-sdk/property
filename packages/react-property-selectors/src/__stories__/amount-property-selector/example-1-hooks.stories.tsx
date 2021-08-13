@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from "react";
 import { Meta } from "@storybook/react";
-import { Unit, BaseUnits, UnitMap } from "uom";
+import { UnitMap } from "uom";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/property";
 import { units, unitsFormat } from "../units-map";
 import { MyAmountSelector } from "../selector-ui/selector-ui";
-import { UseAmountPropertySelectorOptions } from "../..";
+import { SelectableUnit, UseAmountPropertySelectorOptions } from "../..";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (units as UnitMap.UnitMap)[unitString];
 
 interface State {
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly selectedUnit: Unit.Unit<unknown>;
-  readonly selectedDecimalCount: number;
+  readonly selectedUnitIndex: number;
+  readonly selectedDecimalCountIndex: number;
 }
 
 const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): string =>
@@ -28,10 +28,16 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 const validationFilter = PropertyFilter.fromString("a<100:Meter", unitLookup)!;
 
 export function Example1(): React.ReactElement<{}> {
+  const selectableUnits: ReadonlyArray<SelectableUnit> = [
+    { unit: units.Meter, label: "m", selectableDecimalCounts: [1, 2, 3] },
+    { unit: units.CentiMeter, label: "cm", selectableDecimalCounts: [1, 2, 3] },
+    { unit: units.Millimeter, label: "mm", selectableDecimalCounts: [1, 2, 3] },
+  ];
+
   const [state, setState] = useState<State>({
     propertyValueSet: PropertyValueSet.fromString("a=10:Meter", unitLookup),
-    selectedUnit: BaseUnits.Meter,
-    selectedDecimalCount: 2,
+    selectedUnitIndex: 0,
+    selectedDecimalCountIndex: 0,
   });
 
   const onValueChange = useCallback(
@@ -44,7 +50,12 @@ export function Example1(): React.ReactElement<{}> {
   );
 
   const onFormatChanged = useCallback(
-    (selectedUnit, selectedDecimalCount) => setState({ ...state, selectedUnit, selectedDecimalCount }),
+    (selectedUnit, selectedDecimalCount) =>
+      setState({
+        ...state,
+        selectedUnitIndex: selectableUnits.indexOf(selectedUnit),
+        selectedDecimalCountIndex: selectedUnit.selectableDecimalCounts.indexOf(selectedDecimalCount),
+      }),
     [state, setState]
   );
 
@@ -52,8 +63,8 @@ export function Example1(): React.ReactElement<{}> {
     () =>
       setState({
         ...state,
-        selectedUnit: BaseUnits.Meter,
-        selectedDecimalCount: 2,
+        selectedUnitIndex: 0,
+        selectedDecimalCountIndex: 0,
       }),
     [state, setState]
   );
@@ -67,20 +78,20 @@ export function Example1(): React.ReactElement<{}> {
     readOnly: false,
     isRequiredMessage: "Is required",
     notNumericMessage: "Not numeric",
-    onFormatChanged,
-    onFormatCleared,
+    onFormatChanged: onFormatChanged,
+    onFormatCleared: onFormatCleared,
     // inputUnit: state.selectedUnit,
     // inputDecimalCount: state.selectedDecimalCount,
     // unitsFormat: unitsFormat,
     // units: units,
-    getSelectableUnits: () => [],
-    selectedUnitIndex: 0,
-    selectedDecimalCountIndex: 0,
+    getSelectableUnits: () => selectableUnits,
+    selectedUnitIndex: state.selectedUnitIndex,
+    selectedDecimalCountIndex: state.selectedDecimalCountIndex,
   };
 
   return (
     <div>
-      <div>AmountPropertySelector:</div>
+      <div>AmountPropertySelector X:</div>
       <div>PropertyValueSet: {PropertyValueSet.toString(state.propertyValueSet)}</div>
       <MyAmountSelector {...selOptions} />
     </div>

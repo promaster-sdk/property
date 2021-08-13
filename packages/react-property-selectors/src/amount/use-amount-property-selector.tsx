@@ -70,7 +70,7 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
 
   const selectableUnits = getSelectableUnits();
   const selectedUnit = selectableUnits[selectedUnitIndex];
-
+  console.log("CHECK 1.1");
   const amountInputBox = useAmountInputBox({
     value,
     inputUnit: selectedUnit.unit,
@@ -82,6 +82,7 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     errorMessage,
     onValueChange: onValueChangeCallback,
   });
+  console.log("CHECK 1.2");
   const amountFormatSelector = useAmountFormatSelector({
     // selectedUnit: inputUnit,
     // selectedDecimalCount: inputDecimalCount,

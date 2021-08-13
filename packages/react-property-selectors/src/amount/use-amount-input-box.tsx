@@ -48,6 +48,7 @@ type State = {
 };
 
 export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountInputBox {
+  console.log("CHECK 1.1.1");
   const { readOnly, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
 
