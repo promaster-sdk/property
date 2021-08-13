@@ -79,11 +79,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
    */
   readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
 
-  // // Specifies property names of properties that should be read-only
-  // readonly readOnlyProperties?: ReadonlyArray<string>;
-  // // Specifies property names of properties that should be optional (only for amounts for now)
-  // readonly optionalProperties?: ReadonlyArray<string>;
-
   // Used to print error messages
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
   // Translations
@@ -262,7 +257,6 @@ function createSelectorHookInfo<TItem, TProperty>(
   const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
   const propertyFormat = getPropertyFormat(propertyInfo.name) || defaultFormat;
 
-  // const readOnly = readOnlyProperties.indexOf(propertyInfo.name) !== -1;
   const readOnly = !!propertyInfo.isReadonly;
   const propertyOnChange = handleChange(
     onChange,
