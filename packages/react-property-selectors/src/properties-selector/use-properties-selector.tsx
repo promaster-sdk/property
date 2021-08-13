@@ -20,20 +20,65 @@ export type UsePropertiesSelectorAmountFormat = {
 export type PropertyFormats = { readonly [key: string]: UsePropertiesSelectorAmountFormat };
 
 export type UsePropertiesSelectorOptions<TItem, TProperty> = {
-  // Required inputs
+  /**
+   * An array of objects representing the properties that should be selectable. The type of the objects can be
+   * anything the application wants, so the application also needs to provide several functions
+   * to extract information from these objects that the selector needs.
+   */
   readonly properties: ReadonlyArray<TProperty>;
+
+  /**
+   * From a property object, extract information needed by the selector.
+   */
   readonly getPropertyInfo: GetPropertyInfo<TProperty>;
+
+  /**
+   * From a property object, extract items (applies to discrete properties only).
+   */
   readonly getPropertyItems: GetPropertyItems<TItem, TProperty>;
 
+  /**
+   * From an item object, extract the property value.
+   */
+  readonly getItemValue: GetItemValue<TItem>;
+
+  /**
+   * From an item, get the property filter. The items can be any object the application wants, so therefore the
+   * application must provide this function to extract the property value from the item.
+   */
+  readonly getItemFilter: GetItemFilter<TItem>;
+
+  /**
+   * Get an item that corresponds to a property value of undefined. This item will be shown
+   * in eg. a dropdown when the value of the property is undefiend.
+   */
+  readonly getUndefinedValueItem: () => TItem;
+
+  /**
+   * The currently selected properties in the selector.
+   */
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
+
+  /**
+   * Will be called when selected properties changes.
+   */
+  readonly onChange?: OnPropertiesChanged;
+
+  /**
+   * Will be called when the user selects a different format (unit, decimals) for an amount property.
+   */
+  readonly onPropertyFormatChanged?: (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
+
+  /**
+   * Will be called when the user wants to reset the format of a property to the default.
+   */
+  readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
   // Used to print error messages
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
-
-  // Get an item that corresponds to a property value of undefined
-  readonly getUndefinedValueItem: () => TItem;
-  readonly getItemValue: GetItemValue<TItem>;
-  readonly getItemFilter: GetItemFilter<TItem>;
+  // Translations
+  readonly valueMustBeNumericMessage?: string;
+  readonly valueIsRequiredMessage?: string;
 
   // Includes the raw property name and value in paranthesis
   readonly showCodes?: boolean;
@@ -43,15 +88,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly autoSelectSingleValidValue?: boolean;
   // Locks fields with single valid value
   readonly lockSingleValidValue?: boolean;
-
-  // Events
-  readonly onChange?: OnPropertiesChanged;
-  readonly onPropertyFormatChanged?: (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
-  readonly onPropertyFormatCleared?: (propertyName: string) => void;
-
-  // Translations
-  readonly valueMustBeNumericMessage?: string;
-  readonly valueIsRequiredMessage?: string;
 
   // Specifies property names of properties that should be read-only
   readonly readOnlyProperties?: ReadonlyArray<string>;
