@@ -20,7 +20,7 @@ export function Example1(): React.ReactElement<{}> {
   const sel = usePropertiesSelector<MyItem, MyPropertyInfo>({
     // units,
     // unitsFormat,
-    unitLookup,
+    // unitLookup,
     // getPropertyFormat: (propertyName) => propertyFormats[propertyName],
     onPropertyFormatChanged: (propertyName, unit, decimalCount) =>
       setPropertyFormats({ ...propertyFormats, [propertyName]: { unit, decimalCount } }),

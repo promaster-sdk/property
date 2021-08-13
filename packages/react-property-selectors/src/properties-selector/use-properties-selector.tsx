@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Unit, UnitMap } from "uom";
+import { Unit } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
@@ -65,7 +65,8 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
    */
   readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
-  readonly unitLookup: UnitMap.UnitLookup;
+  // Debounce value for inputs in ms. Defaults to 350.
+  readonly inputDebounceTime?: number;
 
   // Used to print error messages
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
@@ -83,9 +84,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly lockSingleValidValue?: boolean;
   // Sort valid values first
   readonly sortValidFirst?: boolean;
-
-  // Debounce value for inputs in ms. Defaults to 350.
-  readonly inputDebounceTime?: number;
 
   // Group handling
   readonly initiallyClosedGroups?: ReadonlyArray<string>;
