@@ -65,27 +65,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
    */
   readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
-  // /**
-  //  * A callback used by the selector to ask the application which formats (unit, decimals) are available for an amount property
-  //  */
-  // readonly getSelectableUnitsForProperty: (propertyName: string) => ReadonlyArray<SelectableUnit>;
-  // /**
-  //  * A callback used by the selector to ask the application which unit is currently selected for an amount property.
-  //  */
-  // readonly getSelectedUnitIndexForProperty: (propertyName: string) => number;
-  // /**
-  //  * A callback used by the selector to ask the application which decimal count is currently selected for an amount property.
-  //  */
-  // readonly getSelectedDecimalCountIndexForProperty: (propertyName: string) => number;
-
-  // readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
-
-  // Use customUnits
-  // readonly unitsFormat: {
-  //   readonly [unitName: string]: UnitFormat.UnitFormat;
-  // };
-  // readonly units: UnitMap.UnitMap;
-
   readonly unitLookup: UnitMap.UnitLookup;
 
   // Used to print error messages
