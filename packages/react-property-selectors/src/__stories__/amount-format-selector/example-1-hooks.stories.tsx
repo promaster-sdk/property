@@ -58,12 +58,13 @@ export function Example1(): React.ReactElement<{}> {
         selectedUnitIndex: selectableUnits.indexOf(selectedUnit),
         selectedDecimalCountIndex: selectedUnit.selectableDecimalCounts.indexOf(selectedDecimalCount),
       }),
-    onFormatCleared: () =>
+    onFormatCleared: () => {
       setState({
         ...state,
         selectedUnitIndex: 0,
         selectedDecimalCountIndex: 0,
-      }),
+      });
+    },
   });
 
   return (
@@ -87,8 +88,8 @@ export function Example1(): React.ReactElement<{}> {
                   <option {...fmtSel.getDecimalCountItemProps(index)}>{item.label}</option>
                 ))}
               </select>
-              {fmtSel.showClearButton && <button {...fmtSel.getClearButtonProps()}>Cancel</button>}
-              <button {...fmtSel.getCancelButtonProps()}>Clear</button>
+              {fmtSel.showClearButton && <button {...fmtSel.getCancelButtonProps()}>Cancel</button>}
+              <button {...fmtSel.getClearButtonProps()}>Clear</button>
             </>
           ) : (
             fmtSel.label
