@@ -5,7 +5,7 @@ import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { PropertyFormats, usePropertiesSelector } from "../../properties-selector";
 import { exampleProductProperties, MyItem, MyPropertyInfo } from "../selector-ui/example-product-properties";
-import { units, unitsFormat } from "../units-map";
+// import { units, unitsFormat } from "../units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
@@ -18,10 +18,10 @@ export function Example1(): React.ReactElement<{}> {
   const propInfo = exampleProductProperties();
 
   const sel = usePropertiesSelector<MyItem, MyPropertyInfo>({
-    units,
-    unitsFormat,
+    // units,
+    // unitsFormat,
     unitLookup,
-    getPropertyFormat: (propertyName) => propertyFormats[propertyName],
+    // getPropertyFormat: (propertyName) => propertyFormats[propertyName],
     onPropertyFormatChanged: (propertyName, unit, decimalCount) =>
       setPropertyFormats({ ...propertyFormats, [propertyName]: { unit, decimalCount } }),
     properties: propInfo.properties,

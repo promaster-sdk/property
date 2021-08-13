@@ -130,9 +130,9 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
                 </option>
               ))}
             </select>
-            <select {...sel.amountFormatSelector.getPrecisionSelectProps()}>
-              {sel.amountFormatSelector.precisionItems.map((item, index) => (
-                <option key={index} {...sel.amountFormatSelector.getPrecisionItemProps(index)}>
+            <select {...sel.amountFormatSelector.getDecimalCountSelectProps()}>
+              {sel.amountFormatSelector.decimalCountItems.map((item, index) => (
+                <option key={index} {...sel.amountFormatSelector.getDecimalCountItemProps(index)}>
                   {item.label}
                 </option>
               ))}

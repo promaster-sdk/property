@@ -3,18 +3,23 @@
  UI to select a unit and a number of decimals independently of each other
  */
 import React, { useState } from "react";
-import { Unit, Serialize, UnitFormat, UnitMap } from "uom";
+import { Unit, Serialize } from "uom";
 
-export type UseAmountFormatSelectorOnFormatChanged = (unit: Unit.Unit<unknown>, decimalCount: number) => void;
+export type UseAmountFormatSelectorOnFormatChanged = (unit: SelectableUnit, decimalCount: number) => void;
 export type UseAmountFormatSelectorOnFormatCleared = () => void;
+export type SelectableUnit = {
+  readonly label: string;
+  readonly unit: Unit.Unit<unknown>;
+  readonly selectableDecimalCounts: ReadonlyArray<number>;
+};
+export type GetSelectableUnits = () => ReadonlyArray<SelectableUnit>;
 
 export type UseAmountFormatSelectorOptions = {
-  readonly selectedUnit: Unit.Unit<unknown>;
-  readonly selectedDecimalCount: number;
   readonly onFormatChanged?: UseAmountFormatSelectorOnFormatChanged;
   readonly onFormatCleared?: UseAmountFormatSelectorOnFormatCleared;
-  readonly unitsFormat: UnitFormat.UnitFormatMap;
-  readonly units: UnitMap.UnitMap;
+  readonly getSelectableUnits: GetSelectableUnits;
+  readonly selectedUnitIndex: number;
+  readonly selectedDecimalCountIndex: number;
 };
 
 export type UnitSelectProps = {
@@ -22,7 +27,7 @@ export type UnitSelectProps = {
   readonly value: string;
 };
 
-export type PrecisionSelectProps = {
+export type DecimalCountSelectProps = {
   readonly onChange: React.ChangeEventHandler<{ readonly value: string }>;
   readonly value: string;
 };
@@ -31,19 +36,19 @@ export type LabelProps = { readonly onClick: React.MouseEventHandler<{}> };
 export type ClearButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
 export type CancelButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
 
-export type UseAmountFormatSelector = {
+export type UseAmountFormatSelectorHook = {
   readonly label: string;
   readonly isOpen: boolean;
   readonly showClearButton: boolean;
   // Items
   readonly unitItems: ReadonlyArray<UnitItem>;
-  readonly precisionItems: ReadonlyArray<PrecisionItem>;
+  readonly decimalCountItems: ReadonlyArray<DecimalCountsItem>;
   // PropGetters
   readonly getUnitItemProps: (index: number) => UnitItemProps;
-  readonly getPrecisionItemProps: (index: number) => PrecisionItemProps;
+  readonly getDecimalCountItemProps: (index: number) => DecimalCountsItemProps;
   readonly getLabelProps: () => LabelProps;
   readonly getUnitSelectProps: () => UnitSelectProps;
-  readonly getPrecisionSelectProps: () => PrecisionSelectProps;
+  readonly getDecimalCountSelectProps: () => DecimalCountSelectProps;
   readonly getClearButtonProps: () => ClearButtonProps;
   readonly getCancelButtonProps: () => CancelButtonProps;
 };
@@ -53,12 +58,12 @@ export type UnitItemProps = {
   readonly value: string | Array<string> | number;
 };
 
-export type PrecisionItemProps = {
+export type DecimalCountsItemProps = {
   // eslint-disable-next-line functional/prefer-readonly-type
   readonly value: string | Array<string> | number;
 };
 
-export type PrecisionItem = {
+export type DecimalCountsItem = {
   readonly label: string;
 };
 
@@ -66,78 +71,79 @@ export type UnitItem = {
   readonly label: string;
 };
 
-export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions): UseAmountFormatSelector {
-  const { selectedUnit, selectedDecimalCount, onFormatChanged, onFormatCleared, unitsFormat, units } = options;
+export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions): UseAmountFormatSelectorHook {
+  const {
+    selectedUnitIndex,
+    selectedDecimalCountIndex,
+    onFormatChanged,
+    onFormatCleared,
+    getSelectableUnits,
+  } = options;
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const selectableUnits = getSelectableUnits();
+  const selectedUnit = selectableUnits[selectedUnitIndex];
+  const selectedDecimalCounts = selectedUnit.selectableDecimalCounts[selectedDecimalCountIndex];
+
   // If there is no handler for onFormatChanged then the user should not be able to change the format
   if (!isOpen || !onFormatChanged) {
-    const format = UnitFormat.getUnitFormat(selectedUnit, unitsFormat);
+    // const format = UnitFormat.getUnitFormat(selectedUnit, selectedSelectableUnit?.unit ?? selectableUnits[0].unit);
     return {
       isOpen,
-      label: format ? format.label : "",
+      label: selectedUnit?.label ?? "",
       showClearButton: false,
       getUnitItemProps: () => ({ value: "" }),
-      getPrecisionItemProps: () => ({ value: "" }),
+      getDecimalCountItemProps: () => ({ value: "" }),
       unitItems: [],
-      precisionItems: [],
+      decimalCountItems: [],
       getLabelProps: () => ({
         onClick: () => setIsOpen(true),
       }),
       getUnitSelectProps: () => ({ onChange: () => ({}), value: "" }),
-      getPrecisionSelectProps: () => ({ onChange: () => ({}), value: "" }),
+      getDecimalCountSelectProps: () => ({ onChange: () => ({}), value: "" }),
       getClearButtonProps: () => ({ onClick: () => ({}) }),
       getCancelButtonProps: () => ({ onClick: () => ({}) }),
     };
   }
 
-  // Get a list of all units within the quantity
-  const quantityUnits = UnitMap.getUnitsForQuantity(selectedUnit.quantity as string, units);
-  const selectedUnitName = Serialize.unitToString(selectedUnit);
-
-  const unitItemValues = quantityUnits.map((u) => Serialize.unitToString(u));
-  const unitItems = quantityUnits.map((u) => {
-    const format = UnitFormat.getUnitFormat(u, unitsFormat);
-    return {
-      label: format ? format.label : "",
-    };
+  // Build units list
+  const unitItemValues = selectableUnits.map((su) => Serialize.unitToString(su.unit));
+  const unitItems = selectableUnits.map((su) => {
+    return { label: su.label };
   });
-  const precisionItemValues = [0, 1, 2, 3, 4, 5];
-  if (precisionItemValues.indexOf(selectedDecimalCount) === -1) {
-    precisionItemValues.push(selectedDecimalCount);
-  }
-  const precisionItems = precisionItemValues.map((dc) => ({
-    label: dc.toString(),
-  }));
+
+  // Build decimal places list
+  const decimalCountsItemValues = selectedUnit.selectableDecimalCounts;
+  const decimalCountItems = decimalCountsItemValues.map((p) => ({ label: p.toString() }));
 
   return {
     isOpen,
-    label: selectedUnitName,
+    label: selectedUnit.label,
     showClearButton: !!onFormatCleared,
     unitItems,
-    precisionItems,
+    decimalCountItems,
     getUnitItemProps: (index) => {
       return {
         value: unitItemValues[index],
       };
     },
-    getPrecisionItemProps: (index) => {
-      const dc = precisionItemValues[index];
+    getDecimalCountItemProps: (index) => {
+      const dc = decimalCountsItemValues[index];
       return {
         value: dc.toString(),
       };
     },
     getLabelProps: () => ({ onClick: () => ({}) }),
     getUnitSelectProps: () => ({
-      value: selectedUnitName,
+      value: Serialize.unitToString(selectedUnit.unit),
       onChange: (e) => {
         setIsOpen(false);
-        _onUnitChange(e, quantityUnits, unitItemValues, selectedDecimalCount, onFormatChanged);
+        _onUnitChange(e, selectableUnits, unitItemValues, selectedDecimalCounts, onFormatChanged);
       },
     }),
-    getPrecisionSelectProps: () => ({
-      value: selectedDecimalCount.toString(),
+    getDecimalCountSelectProps: () => ({
+      value: selectedDecimalCounts.toString(),
       onChange: (e) => {
         setIsOpen(false);
         _onDecimalCountChange(e, selectedUnit, onFormatChanged);
@@ -159,7 +165,7 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
 
 function _onDecimalCountChange(
   e: React.ChangeEvent<{ readonly value: string }>,
-  selectedUnit: Unit.Unit<unknown>,
+  selectedUnit: SelectableUnit,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged
 ): void {
   onFormatChanged(selectedUnit, Number.parseInt(e.target.value, 10));
@@ -167,7 +173,7 @@ function _onDecimalCountChange(
 
 function _onUnitChange(
   e: React.ChangeEvent<{ readonly value: string }>,
-  units: ReadonlyArray<Unit.Unit<unknown>>,
+  units: ReadonlyArray<SelectableUnit>,
   unitItemValues: ReadonlyArray<string>,
   selectedDecimalCount: number,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged

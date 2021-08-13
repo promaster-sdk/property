@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Unit, UnitMap, UnitFormat } from "uom";
+import { Unit, UnitMap } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemComparer } from "../discrete";
-import { UseAmountPropertySelectorOptions } from "../amount";
+import { SelectableUnit, UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
 export type GetPropertyInfo<TProperty> = (property: TProperty) => PropertyInfo;
@@ -26,58 +26,67 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
    * to extract information from these objects that the selector needs.
    */
   readonly properties: ReadonlyArray<TProperty>;
-
   /**
    * From a property object, extract information needed by the selector.
    */
   readonly getPropertyInfo: GetPropertyInfo<TProperty>;
-
   /**
    * From a property object, extract items (applies to discrete properties only).
    */
   readonly getPropertyItems: GetPropertyItems<TItem, TProperty>;
-
   /**
    * From an item object, extract the property value.
    */
   readonly getItemValue: GetItemValue<TItem>;
-
   /**
    * From an item, get the property filter. The items can be any object the application wants, so therefore the
    * application must provide this function to extract the property value from the item.
    */
   readonly getItemFilter: GetItemFilter<TItem>;
-
   /**
    * Get an item that corresponds to a property value of undefined. This item will be shown
    * in eg. a dropdown when the value of the property is undefiend.
    */
   readonly getUndefinedValueItem: () => TItem;
-
   /**
    * The currently selected properties in the selector.
    */
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
-
   /**
    * Will be called when selected properties changes.
    */
   readonly onChange?: OnPropertiesChanged;
-
   /**
    * Will be called when the user selects a different format (unit, decimals) for an amount property.
    */
   readonly onPropertyFormatChanged?: (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
-
   /**
    * Will be called when the user wants to reset the format of a property to the default.
    */
   readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
-  /**
-   * A callback used by the selector to ask the application which format (unit, decimals) to use for an amount property.
-   */
-  readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
+  // /**
+  //  * A callback used by the selector to ask the application which formats (unit, decimals) are available for an amount property
+  //  */
+  // readonly getSelectableUnitsForProperty: (propertyName: string) => ReadonlyArray<SelectableUnit>;
+  // /**
+  //  * A callback used by the selector to ask the application which unit is currently selected for an amount property.
+  //  */
+  // readonly getSelectedUnitIndexForProperty: (propertyName: string) => number;
+  // /**
+  //  * A callback used by the selector to ask the application which decimal count is currently selected for an amount property.
+  //  */
+  // readonly getSelectedDecimalCountIndexForProperty: (propertyName: string) => number;
+
+  // readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
+
+  // Use customUnits
+  // readonly unitsFormat: {
+  //   readonly [unitName: string]: UnitFormat.UnitFormat;
+  // };
+  // readonly units: UnitMap.UnitMap;
+
+  readonly unitLookup: UnitMap.UnitLookup;
 
   // Used to print error messages
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
@@ -95,13 +104,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly lockSingleValidValue?: boolean;
   // Sort valid values first
   readonly sortValidFirst?: boolean;
-
-  // Use customUnits
-  readonly unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  };
-  readonly units: UnitMap.UnitMap;
-  readonly unitLookup: UnitMap.UnitLookup;
 
   // Debounce value for inputs in ms. Defaults to 350.
   readonly inputDebounceTime?: number;
@@ -123,6 +125,9 @@ export type PropertyInfo = {
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
   readonly isReadonly?: boolean;
   readonly isOptional?: boolean;
+  readonly selectableUnits?: ReadonlyArray<SelectableUnit>;
+  readonly selectedUnitIndex?: number;
+  readonly selectedDecimalCountIndex?: number;
 };
 
 export type GroupToggleButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
@@ -224,7 +229,6 @@ function createSelectorHookInfo<TItem, TProperty>(
 ): PropertySelectorHookInfo<TItem> {
   const {
     selectedProperties,
-    getPropertyFormat,
     valueComparer,
     properties,
     autoSelectSingleValidValue,
@@ -234,10 +238,13 @@ function createSelectorHookInfo<TItem, TProperty>(
     valueIsRequiredMessage,
     onChange,
     filterPrettyPrint,
-    units,
-    unitsFormat,
+    // units,
+    // unitsFormat,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
+    // getSelectedUnitIndexForProperty,
+    // getSelectedDecimalCountIndexForProperty,
+    // getSelectableUnitsForProperty,
     lockSingleValidValue,
     sortValidFirst,
     getUndefinedValueItem,
@@ -253,9 +260,9 @@ function createSelectorHookInfo<TItem, TProperty>(
   const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
   const selectedItem = getSelectedItem(selectedItemValue, property, getItemValue, getPropertyItems, valueComparer);
 
-  // TODO: Better handling of format to use when the format is missing in the map
-  const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
-  const propertyFormat = getPropertyFormat(propertyInfo.name) || defaultFormat;
+  // // TODO: Better handling of format to use when the format is missing in the map
+  // const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
+  // const propertyFormat = getPropertyFormat(propertyInfo.name) || defaultFormat;
 
   const readOnly = !!propertyInfo.isReadonly;
   const propertyOnChange = handleChange(
@@ -311,10 +318,8 @@ function createSelectorHookInfo<TItem, TProperty>(
         getUseAmountOptions: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
-          inputUnit: propertyFormat.unit,
-          inputDecimalCount: propertyFormat.decimalCount,
-          onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
-            onPropertyFormatChanged(propertyName, unit, decimalCount),
+          onFormatChanged: (unit: SelectableUnit, decimalCount: number) =>
+            onPropertyFormatChanged(propertyName, unit.unit, decimalCount),
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
@@ -324,8 +329,14 @@ function createSelectorHookInfo<TItem, TProperty>(
           filterPrettyPrint,
           readOnly: readOnly,
           debounceTime: inputDebounceTime,
-          unitsFormat,
-          units,
+          // unitsFormat,
+          // units,
+          getSelectableUnits: () => propertyInfo.selectableUnits ?? [],
+          //
+          // inputUnit: propertyFormat.unit,
+          // inputDecimalCount: propertyFormat.decimalCount,
+          selectedUnitIndex: propertyInfo.selectedUnitIndex ?? 0,
+          selectedDecimalCountIndex: propertyInfo.selectedDecimalCountIndex ?? 0,
         }),
       };
     }
@@ -372,27 +383,27 @@ function getSelectedItem<TItem, TProperty>(
   return selectedItem;
 }
 
-function getDefaultFormat(
-  property: PropertyInfo,
-  selectedValue: PropertyValue.PropertyValue
-): UsePropertiesSelectorAmountFormat {
-  const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
-  const propertyType = getPropertyType(property.quantity);
-  switch (propertyType) {
-    case "text":
-    case "integer":
-      return defaultFormat;
-    case "amount":
-      return selectedValue && selectedValue.type === "amount"
-        ? {
-            unit: selectedValue.value.unit,
-            decimalCount: selectedValue.value.decimalCount,
-          }
-        : defaultFormat;
-    default:
-      return exhaustiveCheck(propertyType, true);
-  }
-}
+// function getDefaultFormat(
+//   property: PropertyInfo,
+//   selectedValue: PropertyValue.PropertyValue
+// ): UsePropertiesSelectorAmountFormat {
+//   const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
+//   const propertyType = getPropertyType(property.quantity);
+//   switch (propertyType) {
+//     case "text":
+//     case "integer":
+//       return defaultFormat;
+//     case "amount":
+//       return selectedValue && selectedValue.type === "amount"
+//         ? {
+//             unit: selectedValue.value.unit,
+//             decimalCount: selectedValue.value.decimalCount,
+//           }
+//         : defaultFormat;
+//     default:
+//       return exhaustiveCheck(propertyType, true);
+//   }
+// }
 
 function getIsValid<TItem>(
   property: PropertyInfo,
@@ -559,16 +570,18 @@ function optionsWithDefaults<TItem, TPropety>(
   return {
     ...options,
     filterPrettyPrint:
-      options.filterPrettyPrint ||
-      ((propertyFilter: PropertyFilter.PropertyFilter) =>
-        PropertyFiltering.filterPrettyPrintIndented(
-          PropertyFiltering.buildEnglishMessages(options.unitsFormat),
-          2,
-          " ",
-          propertyFilter,
-          options.unitsFormat,
-          options.unitLookup
-        )),
+      // options.filterPrettyPrint ||
+      // ((propertyFilter: PropertyFilter.PropertyFilter) =>
+      //   PropertyFiltering.filterPrettyPrintIndented(
+      //     PropertyFiltering.buildEnglishMessages(options.unitsFormat),
+      //     2,
+      //     " ",
+      //     propertyFilter,
+      //     options.unitsFormat,
+      //     options.unitLookup
+      //   )),
+      options.filterPrettyPrint ??
+      ((propertyFilter: PropertyFilter.PropertyFilter) => PropertyFilter.toString(propertyFilter)),
 
     showCodes: options.showCodes || false,
     includeHiddenProperties: options.includeHiddenProperties || false,
@@ -583,7 +596,7 @@ function optionsWithDefaults<TItem, TPropety>(
     valueMustBeNumericMessage: options.valueMustBeNumericMessage || "value_must_be_numeric",
     valueIsRequiredMessage: options.valueIsRequiredMessage || "value_is_required",
 
-    getPropertyFormat: options.getPropertyFormat || (() => undefined),
+    // getPropertyFormat: options.getPropertyFormat || (() => undefined),
 
     inputDebounceTime: options.inputDebounceTime || 350,
 
