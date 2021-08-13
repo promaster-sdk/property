@@ -74,6 +74,16 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
    */
   readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
+  /**
+   * A callback used by the selector to ask the application which format (unit, decimals) to use for an amount property.
+   */
+  readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
+
+  // // Specifies property names of properties that should be read-only
+  // readonly readOnlyProperties?: ReadonlyArray<string>;
+  // // Specifies property names of properties that should be optional (only for amounts for now)
+  // readonly optionalProperties?: ReadonlyArray<string>;
+
   // Used to print error messages
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
   // Translations
@@ -88,14 +98,8 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly autoSelectSingleValidValue?: boolean;
   // Locks fields with single valid value
   readonly lockSingleValidValue?: boolean;
-
-  // Specifies property names of properties that should be read-only
-  readonly readOnlyProperties?: ReadonlyArray<string>;
-  // Specifies property names of properties that should be optional (only for amounts for now)
-  readonly optionalProperties?: ReadonlyArray<string>;
-
-  // Specifies input format per property name for entering amount properties (measure unit and decimal count)
-  readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
+  // Sort valid values first
+  readonly sortValidFirst?: boolean;
 
   // Use customUnits
   readonly unitsFormat: {
@@ -114,8 +118,6 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   readonly valueComparer?: PropertyValue.Comparer;
   readonly itemComparer?: ItemComparer<TItem>;
   readonly propertyComparer?: (a: TProperty, b: TProperty) => number;
-
-  readonly sortValidFirst?: boolean;
 };
 
 export type PropertyInfo = {
@@ -124,6 +126,8 @@ export type PropertyInfo = {
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
+  readonly isReadonly?: boolean;
+  readonly isOptional?: boolean;
 };
 
 export type GroupToggleButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
@@ -234,14 +238,12 @@ function createSelectorHookInfo<TItem, TProperty>(
     valueMustBeNumericMessage,
     valueIsRequiredMessage,
     onChange,
-    optionalProperties,
     filterPrettyPrint,
     units,
     unitsFormat,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
     lockSingleValidValue,
-    readOnlyProperties,
     sortValidFirst,
     getUndefinedValueItem,
     getItemValue,
@@ -260,7 +262,8 @@ function createSelectorHookInfo<TItem, TProperty>(
   const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
   const propertyFormat = getPropertyFormat(propertyInfo.name) || defaultFormat;
 
-  const readOnly = readOnlyProperties.indexOf(propertyInfo.name) !== -1;
+  // const readOnly = readOnlyProperties.indexOf(propertyInfo.name) !== -1;
+  const readOnly = !!propertyInfo.isReadonly;
   const propertyOnChange = handleChange(
     onChange,
     properties,
@@ -322,8 +325,7 @@ function createSelectorHookInfo<TItem, TProperty>(
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
           // If it is optional then use blank required message
-          isRequiredMessage:
-            optionalProperties && optionalProperties.indexOf(propertyName) !== -1 ? "" : valueIsRequiredMessage,
+          isRequiredMessage: propertyInfo.isOptional ? "" : valueIsRequiredMessage,
           validationFilter: propertyInfo.validationFilter,
           filterPrettyPrint,
           readOnly: readOnly,
@@ -587,8 +589,6 @@ function optionsWithDefaults<TItem, TPropety>(
     valueMustBeNumericMessage: options.valueMustBeNumericMessage || "value_must_be_numeric",
     valueIsRequiredMessage: options.valueIsRequiredMessage || "value_is_required",
 
-    readOnlyProperties: options.readOnlyProperties || [],
-    optionalProperties: options.optionalProperties || [],
     getPropertyFormat: options.getPropertyFormat || (() => undefined),
 
     inputDebounceTime: options.inputDebounceTime || 350,
