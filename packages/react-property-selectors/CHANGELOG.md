@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Changed
 
+- Remove readonly and optional arrays of property names and instead include boolean properties on the PropertyInfo object for isReadonly and isOptional, see PR [#41](https://github.com/promaster-sdk/property/pull/41).
 - Change the API of the properties-selector so that instead of sending a dictionary of property formats, you send in a callback that will provide the format for a property, see PR [#40](https://github.com/promaster-sdk/property/pull/40).
 - Removed `fieldName` prop, see PR [#39](https://github.com/promaster-sdk/property/pull/39).
 
