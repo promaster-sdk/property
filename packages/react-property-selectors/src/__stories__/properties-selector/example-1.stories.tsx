@@ -3,12 +3,18 @@ import { Meta } from "@storybook/react";
 import { BaseUnits, UnitMap } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
-import { PropertyFormats, usePropertiesSelector, UsePropertiesSelectorOptions } from "../../properties-selector";
-import { exampleProductProperties, MyItem, MyPropertyInfo } from "../selector-ui/example-product-properties";
+import { usePropertiesSelector, UsePropertiesSelectorOptions } from "../../properties-selector";
+import { exampleProductProperties, MyPropertyValueDef, MyPropertyDef } from "../selector-ui/example-product-properties";
 // import { units, unitsFormat } from "../units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
+
+export type AmountFormat = {
+  readonly selectedUnitIndex: number;
+  readonly selectedDecimalCountIndex: number;
+};
+export type PropertyFormats = { readonly [key: string]: AmountFormat };
 
 export function Example1(): React.ReactElement<{}> {
   const [pvs, setPvs] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
@@ -17,7 +23,7 @@ export function Example1(): React.ReactElement<{}> {
 
   const propInfo = exampleProductProperties();
 
-  const selOptions: UsePropertiesSelectorOptions<MyItem, MyPropertyInfo> = {
+  const selOptions: UsePropertiesSelectorOptions<MyPropertyDef, MyPropertyValueDef> = {
     onPropertyFormatChanged: (propertyName, selectedUnitIndex, selectedDecimalCountIndex) => {
       setPropertyFormats({
         ...selectedPropertyFormats,
@@ -45,12 +51,21 @@ export function Example1(): React.ReactElement<{}> {
     getItemValue: (item) => item.value,
     getItemFilter: (item) => item.validationFilter,
     getPropertyInfo: (p) => {
-      return { ...p, ...selectedPropertyFormats[p.name] };
+      return {
+        name: p.name,
+        group: p.group,
+        quantity: p.quantity,
+        validationFilter: p.validationFilter,
+        visibilityFilter: p.visibilityFilter,
+        selectableUnits: p.selectableUnits,
+        selectedUnitIndex: selectedPropertyFormats[p.name]?.selectedUnitIndex ?? 0,
+        selectedDecimalCountIndex: selectedPropertyFormats[p.name]?.selectedDecimalCountIndex ?? 0,
+      };
     },
     getPropertyItems: (p) => p.items,
   };
 
-  const sel = usePropertiesSelector<MyItem, MyPropertyInfo>(selOptions);
+  const sel = usePropertiesSelector<MyPropertyDef, MyPropertyValueDef>(selOptions);
 
   return (
     <div>

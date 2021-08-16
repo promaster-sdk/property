@@ -17,7 +17,7 @@ import {
   useTextboxPropertySelector,
   UseTextboxPropertySelectorOptions,
 } from "../../index";
-import { MyItem } from "./example-product-properties";
+import { MyPropertyValueDef } from "./example-product-properties";
 
 export type SelectorTypes = { readonly [propertyName: string]: string };
 
@@ -26,7 +26,7 @@ export function MyDiscreteSelector({
   options,
 }: {
   readonly selectorType: string | undefined;
-  readonly options: DiscretePropertySelectorOptions<MyItem>;
+  readonly options: DiscretePropertySelectorOptions<MyPropertyValueDef>;
 }): JSX.Element {
   const sel = useDiscretePropertySelector(options);
   switch (selectorType) {
@@ -42,7 +42,7 @@ export function MyDiscreteSelector({
   }
 }
 
-export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
+export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector<MyPropertyValueDef>): JSX.Element {
   return (
     <div {...sel.getCheckboxDivProps()} style={getDefaultCheckboxContainerStyle()}>
       {sel.selectedItem.image && <img src={sel.selectedItem.image} />}
@@ -52,7 +52,7 @@ export function MyDiscreteCheckboxSelector(sel: DiscretePropertySelector<MyItem>
   );
 }
 
-export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
+export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyPropertyValueDef>): JSX.Element {
   return (
     <div>
       {sel.items
@@ -72,7 +72,7 @@ export function MyDiscreteRadioGroupSelector(sel: DiscretePropertySelector<MyIte
   );
 }
 
-export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
+export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyPropertyValueDef>): JSX.Element {
   return (
     <select {...sel.getSelectProps()} style={{ ...getDefaultSelectStyle(sel) }}>
       {sel.items.map((item) => (
@@ -84,7 +84,7 @@ export function MyDiscreteComboboxSelector(sel: DiscretePropertySelector<MyItem>
   );
 }
 
-export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<MyItem>): JSX.Element {
+export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<MyPropertyValueDef>): JSX.Element {
   return (
     <div style={{ userSelect: "none" }}>
       <button {...sel.getDropdownToggleButtonProps()} style={getDefaultToggleButtonStyle(sel)}>

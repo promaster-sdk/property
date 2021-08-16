@@ -7,7 +7,7 @@ import { PropertyFilter, PropertyValueSet, PropertyValue } from "@promaster-sdk/
 import { useDiscretePropertySelector } from "../../discrete";
 import { unitsFormat, units } from "../units-map";
 import { MyDiscreteComboboxSelector, MyDiscreteImageComboboxSelector } from "../selector-ui/selector-ui";
-import { MyItem } from "../selector-ui/example-product-properties";
+import { MyPropertyValueDef } from "../selector-ui/example-product-properties";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (units as UnitMap.UnitMap)[unitString];
 
@@ -24,7 +24,7 @@ const filterPrettyPrint = (propertyFilter: PropertyFilter.PropertyFilter): strin
 export function Example1(): JSX.Element {
   const [myState, setMyState] = useState(PropertyValueSet.fromString("a=1;b=2", unitLookup));
 
-  const valueItems1: ReadonlyArray<MyItem> = [
+  const valueItems1: ReadonlyArray<MyPropertyValueDef> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,
@@ -39,7 +39,7 @@ export function Example1(): JSX.Element {
     },
   ];
 
-  const valueItems2: ReadonlyArray<MyItem> = [
+  const valueItems2: ReadonlyArray<MyPropertyValueDef> = [
     {
       value: PropertyValue.create("integer", 1),
       sortNo: 1,

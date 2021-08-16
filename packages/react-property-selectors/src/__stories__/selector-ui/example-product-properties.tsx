@@ -7,7 +7,7 @@ const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.Uni
 
 export type SelectorTypes = { readonly [propertyName: string]: string };
 
-export type MyItem = {
+export type MyPropertyValueDef = {
   readonly sortNo: number;
   readonly image?: string;
   readonly value: PropertyValue.PropertyValue | undefined | null;
@@ -15,7 +15,7 @@ export type MyItem = {
   readonly text: string;
 };
 
-export type MyPropertyInfo = {
+export type MyPropertyDef = {
   readonly selectorType?: "Checkbox" | "RadioGroup";
   readonly sortNo: number;
   readonly name: string;
@@ -23,13 +23,13 @@ export type MyPropertyInfo = {
   readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
-  readonly items: ReadonlyArray<MyItem>;
+  readonly items: ReadonlyArray<MyPropertyValueDef>;
   readonly selectableUnits: ReadonlyArray<SelectableUnit>;
 };
 
 export function exampleProductProperties(): {
   // selectorTypes: SelectorTypes;
-  readonly properties: ReadonlyArray<MyPropertyInfo>;
+  readonly properties: ReadonlyArray<MyPropertyDef>;
 } {
   return {
     // selectorTypes: {
