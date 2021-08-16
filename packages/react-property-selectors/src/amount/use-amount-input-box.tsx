@@ -48,7 +48,6 @@ type State = {
 };
 
 export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountInputBox {
-  console.log("CHECK 1.1.1");
   const { readOnly, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
 
@@ -114,7 +113,7 @@ function initStateFromParams({
     console.error("Missing inputUnit");
   }
   if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
-    console.error("Missing inputDecimalCount");
+    console.error("Missing inputDecimalCount", inputDecimalCount);
   }
   const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
   const newState = calculateNewState(value, formattedValue, isRequiredMessage, notNumericMessage, errorMessage);

@@ -1,5 +1,7 @@
 import { PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { BaseUnits, UnitMap } from "uom";
+import { SelectableUnit } from "../..";
+import { units } from "../units-map";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
@@ -22,6 +24,7 @@ export type MyPropertyInfo = {
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
   readonly items: ReadonlyArray<MyItem>;
+  readonly selectableUnits: ReadonlyArray<SelectableUnit>;
 };
 
 export function exampleProductProperties(): {
@@ -42,6 +45,11 @@ export function exampleProductProperties(): {
         validationFilter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [],
+        selectableUnits: [
+          { unit: units.Meter, label: "m", selectableDecimalCounts: [1, 2] },
+          { unit: units.CentiMeter, label: "cm", selectableDecimalCounts: [2, 3] },
+          { unit: units.Millimeter, label: "mm", selectableDecimalCounts: [3, 4] },
+        ],
       },
       {
         sortNo: 2,
@@ -65,6 +73,7 @@ export function exampleProductProperties(): {
             text: "b_2",
           },
         ],
+        selectableUnits: [],
       },
       {
         sortNo: 3,
@@ -93,6 +102,7 @@ export function exampleProductProperties(): {
             text: "c_3",
           },
         ],
+        selectableUnits: [],
       },
       {
         sortNo: 4,
@@ -122,6 +132,7 @@ export function exampleProductProperties(): {
             text: "d_3",
           },
         ],
+        selectableUnits: [],
       },
       {
         sortNo: 5,
@@ -146,6 +157,7 @@ export function exampleProductProperties(): {
             image: "https://s7d1.scene7.com/is/image/BedBathandBeyond/13136517105892p?$478$",
           },
         ],
+        selectableUnits: [],
       },
     ],
   };

@@ -112,7 +112,6 @@ export function MyDiscreteImageComboboxSelector(sel: DiscretePropertySelector<My
 }
 
 export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.Element {
-  console.log("CHECK 1 props -> ", props);
   const sel = useAmountPropertySelector(props);
 
   return (

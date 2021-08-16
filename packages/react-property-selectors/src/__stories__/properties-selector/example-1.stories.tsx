@@ -13,17 +13,23 @@ const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.Uni
 export function Example1(): React.ReactElement<{}> {
   const [pvs, setPvs] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
   const [showCodes, setShowCodes] = useState(true);
-  const [propertyFormats, setPropertyFormats] = useState<PropertyFormats>({});
+  const [selectedPropertyFormats, setPropertyFormats] = useState<PropertyFormats>({});
 
   const propInfo = exampleProductProperties();
 
   const selOptions: UsePropertiesSelectorOptions<MyItem, MyPropertyInfo> = {
-    // units,
-    // unitsFormat,
-    // unitLookup,
-    // getPropertyFormat: (propertyName) => propertyFormats[propertyName],
-    onPropertyFormatChanged: (propertyName, unit, decimalCount) =>
-      setPropertyFormats({ ...propertyFormats, [propertyName]: { unit, decimalCount } }),
+    onPropertyFormatChanged: (propertyName, selectedUnitIndex, selectedDecimalCountIndex) => {
+      setPropertyFormats({
+        ...selectedPropertyFormats,
+        [propertyName]: { selectedUnitIndex, selectedDecimalCountIndex },
+      });
+    },
+    onPropertyFormatCleared: (propertyName) => {
+      setPropertyFormats({
+        ...selectedPropertyFormats,
+        [propertyName]: { selectedUnitIndex: 0, selectedDecimalCountIndex: 0 },
+      });
+    },
     properties: propInfo.properties,
     selectedProperties: pvs,
     onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
@@ -38,34 +44,11 @@ export function Example1(): React.ReactElement<{}> {
     showCodes,
     getItemValue: (item) => item.value,
     getItemFilter: (item) => item.validationFilter,
-    getPropertyInfo: (p) => p,
+    getPropertyInfo: (p) => {
+      return { ...p, ...selectedPropertyFormats[p.name] };
+    },
     getPropertyItems: (p) => p.items,
   };
-
-  // const sel = usePropertiesSelector<MyItem, MyPropertyInfo>({
-  //   // units,
-  //   // unitsFormat,
-  //   // unitLookup,
-  //   // getPropertyFormat: (propertyName) => propertyFormats[propertyName],
-  //   onPropertyFormatChanged: (propertyName, unit, decimalCount) =>
-  //     setPropertyFormats({ ...propertyFormats, [propertyName]: { unit, decimalCount } }),
-  //   properties: propInfo.properties,
-  //   selectedProperties: pvs,
-  //   onChange: (properties: PropertyValueSet.PropertyValueSet, _changedProperties: ReadonlyArray<string>) => {
-  //     setPvs(properties);
-  //   },
-  //   getUndefinedValueItem: () => ({
-  //     value: undefined,
-  //     sortNo: -1,
-  //     text: "",
-  //     validationFilter: PropertyFilter.Empty,
-  //   }),
-  //   showCodes,
-  //   getItemValue: (item) => item.value,
-  //   getItemFilter: (item) => item.validationFilter,
-  //   getPropertyInfo: (p) => p,
-  //   getPropertyItems: (p) => p.items,
-  // });
 
   const sel = usePropertiesSelector<MyItem, MyPropertyInfo>(selOptions);
 
@@ -124,7 +107,6 @@ export function Example1(): React.ReactElement<{}> {
                                     />
                                   );
                                 case "AmountField":
-                                  console.log("AMOUNT SELECTOR");
                                   return <MyAmountSelector {...selector.getUseAmountOptions()} />;
                                 default:
                                   return exhaustiveCheck(selector, true);

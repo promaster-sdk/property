@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Unit } from "uom";
+//import { Unit } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
@@ -13,9 +13,10 @@ export type OnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
 ) => void;
+
 export type UsePropertiesSelectorAmountFormat = {
-  readonly unit: Unit.Unit<unknown>;
-  readonly decimalCount: number;
+  readonly selectedUnitIndex: number;
+  readonly selectedDecimalCountIndex: number;
 };
 export type PropertyFormats = { readonly [key: string]: UsePropertiesSelectorAmountFormat };
 
@@ -59,7 +60,11 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   /**
    * Will be called when the user selects a different format (unit, decimals) for an amount property.
    */
-  readonly onPropertyFormatChanged?: (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
+  readonly onPropertyFormatChanged?: (
+    propertyName: string,
+    selectedUnitIndex: number,
+    selectedDecimalCountIndex: number
+  ) => void;
   /**
    * Will be called when the user wants to reset the format of a property to the default.
    */
@@ -215,13 +220,8 @@ function createSelectorHookInfo<TItem, TProperty>(
     valueIsRequiredMessage,
     onChange,
     filterPrettyPrint,
-    // units,
-    // unitsFormat,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
-    // getSelectedUnitIndexForProperty,
-    // getSelectedDecimalCountIndexForProperty,
-    // getSelectableUnitsForProperty,
     lockSingleValidValue,
     sortValidFirst,
     getUndefinedValueItem,
@@ -295,8 +295,17 @@ function createSelectorHookInfo<TItem, TProperty>(
         getUseAmountOptions: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
-          onFormatChanged: (unit: SelectableUnit, decimalCount: number) =>
-            onPropertyFormatChanged(propertyName, unit.unit, decimalCount),
+          onFormatChanged: (unit: SelectableUnit, decimalCount: number) => {
+            const indexOfDecimalCount = unit.selectableDecimalCounts.indexOf(decimalCount);
+            const newDecimalIndex =
+              indexOfDecimalCount > -1
+                ? indexOfDecimalCount
+                : decimalCount > unit.selectableDecimalCounts[unit.selectableDecimalCounts.length - 1]
+                ? unit.selectableDecimalCounts.length - 1
+                : 0;
+
+            onPropertyFormatChanged(propertyName, propertyInfo.selectableUnits?.indexOf(unit) ?? 0, newDecimalIndex);
+          },
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
@@ -306,12 +315,7 @@ function createSelectorHookInfo<TItem, TProperty>(
           filterPrettyPrint,
           readOnly: readOnly,
           debounceTime: inputDebounceTime,
-          // unitsFormat,
-          // units,
           getSelectableUnits: () => propertyInfo.selectableUnits ?? [],
-          //
-          // inputUnit: propertyFormat.unit,
-          // inputDecimalCount: propertyFormat.decimalCount,
           selectedUnitIndex: propertyInfo.selectedUnitIndex ?? 0,
           selectedDecimalCountIndex: propertyInfo.selectedDecimalCountIndex ?? 0,
         }),
@@ -566,8 +570,7 @@ function optionsWithDefaults<TItem, TPropety>(
     lockSingleValidValue: options.lockSingleValidValue || false,
     onChange:
       options.onChange || ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
-    onPropertyFormatChanged:
-      options.onPropertyFormatChanged || ((_a: string, _b: Unit.Unit<unknown>, _c: number) => ({})),
+    onPropertyFormatChanged: options.onPropertyFormatChanged || ((_a: string, _b: number, _c: number) => ({})),
     onPropertyFormatCleared: options.onPropertyFormatCleared || ((_a: string) => ({})),
 
     valueMustBeNumericMessage: options.valueMustBeNumericMessage || "value_must_be_numeric",
