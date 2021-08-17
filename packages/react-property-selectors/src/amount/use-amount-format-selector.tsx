@@ -5,21 +5,77 @@
 import React, { useState } from "react";
 import { Unit, Serialize } from "uom";
 
-export type UseAmountFormatSelectorOnFormatChanged = (unit: SelectableUnit, decimalCount: number) => void;
+export type UseAmountFormatSelectorOnFormatChanged = (format: SelectableFormat) => void;
 export type UseAmountFormatSelectorOnFormatCleared = () => void;
-export type SelectableUnit = {
-  readonly label: string;
+
+// export type SelectableUnit = {
+//   readonly label: string;
+//   readonly unit: Unit.Unit<unknown>;
+//   readonly selectableDecimalCounts: ReadonlyArray<number>;
+// };
+
+export type SelectableFormat = {
   readonly unit: Unit.Unit<unknown>;
-  readonly selectableDecimalCounts: ReadonlyArray<number>;
+  readonly decimalCount: number;
 };
-export type GetSelectableUnits = () => ReadonlyArray<SelectableUnit>;
+
+export type GetSelectableFormats = () => ZipList<SelectableFormat>;
 
 export type UseAmountFormatSelectorOptions = {
   readonly onFormatChanged?: UseAmountFormatSelectorOnFormatChanged;
   readonly onFormatCleared?: UseAmountFormatSelectorOnFormatCleared;
-  readonly getSelectableUnits: GetSelectableUnits;
-  readonly selectedUnitIndex: number;
-  readonly selectedDecimalCountIndex: number;
+  readonly getSelectableFormats: GetSelectableFormats;
+  readonly unitLabels: UnitLabels;
+};
+
+export type ZipList<T> = {
+  readonly head: ReadonlyArray<T>;
+  readonly current: T;
+  readonly tail: ReadonlyArray<T>;
+};
+
+export function zipListToArray<T>(z: ZipList<T>): ReadonlyArray<T> {
+  return [...z.head, z.current, ...z.tail];
+}
+
+export function arrayToZipList<T>(arr: ReadonlyArray<T>, current: T, compare: (a: T, b: T) => Boolean): ZipList<T> {
+  if (arr.length < 0) {
+    return {
+      head: [],
+      current: current,
+      tail: [],
+    };
+  }
+
+  const currentInArray = arr.find((f) => compare(f, current));
+  if (!currentInArray) {
+    return {
+      head: arr,
+      current: current,
+      tail: [],
+    };
+  }
+
+  const idx = arr.indexOf(currentInArray);
+
+  return {
+    head: arr.slice(0, idx),
+    current: currentInArray,
+    tail: arr.length < idx + 1 ? [] : arr.slice(idx + 1),
+  };
+}
+
+export function formatsArrayToZipList(
+  arr: ReadonlyArray<SelectableFormat>,
+  current: SelectableFormat
+): ZipList<SelectableFormat> {
+  return arrayToZipList<SelectableFormat>(arr, current, (a: SelectableFormat, b: SelectableFormat) => {
+    return a.unit === b.unit && a.decimalCount === b.decimalCount;
+  });
+}
+
+export type UnitLabels = {
+  readonly [unitName: string]: string;
 };
 
 export type UnitSelectProps = {
@@ -72,26 +128,23 @@ export type UnitItem = {
 };
 
 export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions): UseAmountFormatSelectorHook {
-  const {
-    selectedUnitIndex,
-    selectedDecimalCountIndex,
-    onFormatChanged,
-    onFormatCleared,
-    getSelectableUnits,
-  } = options;
+  const { onFormatChanged, onFormatCleared, getSelectableFormats, unitLabels } = options;
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectableUnits = getSelectableUnits();
-  const selectedUnit = selectableUnits[selectedUnitIndex];
-  const selectedDecimalCounts = selectedUnit.selectableDecimalCounts[selectedDecimalCountIndex];
+  const selectableFormatsZip = getSelectableFormats();
+  const selectableFormats = zipListToArray(selectableFormatsZip);
+  const selectableUnits = Array.from(new Set(selectableFormats.map((su) => su.unit)));
+
+  const selectedUnitLabel =
+    unitLabels[selectableFormatsZip.current.unit.name] ?? selectableFormatsZip.current.unit.name;
 
   // If there is no handler for onFormatChanged then the user should not be able to change the format
   if (!isOpen || !onFormatChanged) {
     // const format = UnitFormat.getUnitFormat(selectedUnit, selectedSelectableUnit?.unit ?? selectableUnits[0].unit);
     return {
       isOpen,
-      label: selectedUnit?.label ?? "",
+      label: selectedUnitLabel, //selectedUnit?.label ?? "",
       showClearButton: false,
       getUnitItemProps: () => ({ value: "" }),
       getDecimalCountItemProps: () => ({ value: "" }),
@@ -108,45 +161,45 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
   }
 
   // Build units list
-  const unitItemValues = selectableUnits.map((su) => Serialize.unitToString(su.unit));
-  const unitItems = selectableUnits.map((su) => {
-    return { label: su.label };
-  });
+  const unitItemValues = selectableUnits.map((u) => Serialize.unitToString(u));
+  const unitItems = selectableUnits.map((u) => unitItemValue(u, unitLabels));
 
   // Build decimal places list
-  const decimalCountsItemValues = selectedUnit.selectableDecimalCounts;
-  const decimalCountItems = decimalCountsItemValues.map((p) => ({ label: p.toString() }));
+  const decimalCountItemValues = selectableFormats
+    .filter((su) => su.unit === selectableFormatsZip.current.unit)
+    .map((su) => su.decimalCount);
+  const decimalCountItems = decimalCountItemValues.map(decimalCountItemValue);
 
   return {
     isOpen,
-    label: selectedUnit.label,
+    label: selectedUnitLabel,
     showClearButton: !!onFormatCleared,
-    unitItems,
-    decimalCountItems,
+    unitItems: unitItems,
+    decimalCountItems: decimalCountItems,
     getUnitItemProps: (index) => {
       return {
         value: unitItemValues[index],
       };
     },
     getDecimalCountItemProps: (index) => {
-      const dc = decimalCountsItemValues[index];
+      //    const dc = decimalCountItemValues[index];
       return {
-        value: dc.toString(),
+        value: decimalCountItemValues[index],
       };
     },
     getLabelProps: () => ({ onClick: () => ({}) }),
     getUnitSelectProps: () => ({
-      value: Serialize.unitToString(selectedUnit.unit),
+      value: Serialize.unitToString(selectableFormatsZip.current.unit),
       onChange: (e) => {
         setIsOpen(false);
-        _onUnitChange(e, selectableUnits, unitItemValues, selectedDecimalCounts, onFormatChanged);
+        onUnitFormatChange(e.target.value, selectableFormatsZip.current, selectableFormats, onFormatChanged);
       },
     }),
     getDecimalCountSelectProps: () => ({
-      value: selectedDecimalCounts.toString(),
+      value: selectableFormatsZip.current.decimalCount.toString(),
       onChange: (e) => {
         setIsOpen(false);
-        _onDecimalCountChange(e, selectedUnit, onFormatChanged);
+        onUnitDecimalCountChange(e.target.value, selectableFormatsZip.current, selectableFormats, onFormatChanged);
       },
     }),
     getClearButtonProps: () => ({
@@ -163,22 +216,48 @@ export function useAmountFormatSelector(options: UseAmountFormatSelectorOptions)
   };
 }
 
-function _onDecimalCountChange(
-  e: React.ChangeEvent<{ readonly value: string }>,
-  selectedUnit: SelectableUnit,
-  onFormatChanged: UseAmountFormatSelectorOnFormatChanged
-): void {
-  onFormatChanged(selectedUnit, Number.parseInt(e.target.value, 10));
+function unitItemValue(unit: Unit.Unit<unknown>, unitLabels: UnitLabels): { readonly label: string } {
+  return { label: unitLabels[unit.name] ?? unit.name };
 }
 
-function _onUnitChange(
-  e: React.ChangeEvent<{ readonly value: string }>,
-  units: ReadonlyArray<SelectableUnit>,
-  unitItemValues: ReadonlyArray<string>,
-  selectedDecimalCount: number,
+function decimalCountItemValue(decimal: number): { readonly label: string } {
+  return { label: decimal.toString() };
+}
+
+function onUnitFormatChange(
+  newUnitName: string,
+  current: SelectableFormat,
+  formats: ReadonlyArray<SelectableFormat>,
   onFormatChanged: UseAmountFormatSelectorOnFormatChanged
 ): void {
-  const selectedIndex = unitItemValues.indexOf(e.target.value);
-  const selectedUnit = units[selectedIndex];
-  onFormatChanged(selectedUnit, selectedDecimalCount);
+  const possibleUnitFormats = formats.filter((f) => f.unit.name === newUnitName);
+  const selectedFormat = possibleUnitFormats.find((f) => f.decimalCount === current.decimalCount);
+
+  if (selectedFormat) {
+    onFormatChanged(selectedFormat);
+  } else if (possibleUnitFormats.length > 0) {
+    console.log("Could not find proper format for decimal count");
+    onFormatChanged(possibleUnitFormats[0]);
+  } else {
+    console.log("Could not find format");
+  }
+}
+
+function onUnitDecimalCountChange(
+  newDecimal: string,
+  current: SelectableFormat,
+  formats: ReadonlyArray<SelectableFormat>,
+  onFormatChanged: UseAmountFormatSelectorOnFormatChanged
+): void {
+  const possibleUnitFormats = formats.filter((f) => f.unit.name === current.unit.name);
+  const selectedFormat = possibleUnitFormats.find((f) => f.decimalCount.toString() === newDecimal);
+
+  if (selectedFormat) {
+    onFormatChanged(selectedFormat);
+  } else if (possibleUnitFormats.length > 0) {
+    console.log("Could not find proper format for decimal count");
+    onFormatChanged(possibleUnitFormats[0]);
+  } else {
+    console.log("Could not find format");
+  }
 }

@@ -7,7 +7,8 @@ import {
   useAmountFormatSelector,
   UseAmountFormatSelectorOnFormatChanged,
   UseAmountFormatSelectorOnFormatCleared,
-  GetSelectableUnits,
+  GetSelectableFormats,
+  UnitLabels,
 } from "./use-amount-format-selector";
 import { UseAmountInputBox, useAmountInputBox } from "./use-amount-input-box";
 
@@ -24,15 +25,8 @@ export type UseAmountPropertySelectorOptions = {
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
   readonly comparer?: PropertyValue.Comparer;
-
-  // readonly inputUnit: Unit.Unit<unknown>;
-  // readonly inputDecimalCount: number;
-  // readonly unitsFormat: UnitFormat.UnitFormatMap;
-  // readonly units: UnitMap.UnitMap;
-
-  readonly getSelectableUnits: GetSelectableUnits;
-  readonly selectedUnitIndex: number;
-  readonly selectedDecimalCountIndex: number;
+  readonly getSelectableFormats: GetSelectableFormats;
+  readonly unitLabels: UnitLabels;
 };
 
 export type AmountPropertySelector = {
@@ -53,10 +47,9 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     filterPrettyPrint,
     readOnly,
     debounceTime = 350,
-    getSelectableUnits,
-    selectedUnitIndex,
-    selectedDecimalCountIndex,
+    getSelectableFormats,
     comparer = PropertyValue.defaultComparer,
+    unitLabels,
   } = options;
 
   const value: Amount.Amount<unknown> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
@@ -68,12 +61,12 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     [onValueChange]
   );
 
-  const selectableUnits = getSelectableUnits();
-  const selectedUnit = selectableUnits[selectedUnitIndex];
+  const selectedFormat = getSelectableFormats().current;
+
   const amountInputBox = useAmountInputBox({
     value,
-    inputUnit: selectedUnit.unit,
-    inputDecimalCount: selectedUnit.selectableDecimalCounts[selectedDecimalCountIndex],
+    inputUnit: selectedFormat.unit,
+    inputDecimalCount: selectedFormat.decimalCount, // selectedUnit.selectableDecimalCounts[selectedDecimalCountIndex],
     notNumericMessage,
     isRequiredMessage,
     readOnly,
@@ -81,14 +74,18 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     errorMessage,
     onValueChange: onValueChangeCallback,
   });
+
   const amountFormatSelector = useAmountFormatSelector({
-    // selectedUnit: inputUnit,
-    // selectedDecimalCount: inputDecimalCount,
-    selectedUnitIndex,
-    selectedDecimalCountIndex,
+    //selectedUnitIndex,
+    //selectedDecimalCountIndex,
+    //onFormatChanged,
+    //onFormatCleared,
+    //getSelectableUnits,
+
     onFormatChanged,
     onFormatCleared,
-    getSelectableUnits,
+    getSelectableFormats: getSelectableFormats,
+    unitLabels,
   });
 
   return { amountInputBox, amountFormatSelector };

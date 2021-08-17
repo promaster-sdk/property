@@ -1,10 +1,9 @@
 import { useState } from "react";
-//import { Unit } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemComparer } from "../discrete";
-import { SelectableUnit, UseAmountPropertySelectorOptions } from "../amount";
+import { formatsArrayToZipList, SelectableFormat, UnitLabels, UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
 export type GetPropertyInfo<TProperty> = (property: TProperty) => PropertyInfo;
@@ -54,11 +53,7 @@ export type UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef> = {
   /**
    * Will be called when the user selects a different format (unit, decimals) for an amount property.
    */
-  readonly onPropertyFormatChanged?: (
-    propertyName: string,
-    selectedUnitIndex: number,
-    selectedDecimalCountIndex: number
-  ) => void;
+  readonly onPropertyFormatChanged?: (propertyName: string, selectedFormat: SelectableFormat) => void;
   /**
    * Will be called when the user wants to reset the format of a property to the default.
    */
@@ -91,6 +86,8 @@ export type UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef> = {
   readonly valueComparer?: PropertyValue.Comparer;
   readonly itemComparer?: ItemComparer<TPropertyValueDef>;
   readonly propertyComparer?: (a: TPropertyDef, b: TPropertyDef) => number;
+
+  readonly unitLables: UnitLabels;
 };
 
 export type PropertyInfo = {
@@ -102,9 +99,8 @@ export type PropertyInfo = {
   readonly isReadonly?: boolean;
   readonly isOptional?: boolean;
   // only relevant for amount fields
-  readonly selectableUnits?: ReadonlyArray<SelectableUnit>;
-  readonly selectedUnitIndex?: number;
-  readonly selectedDecimalCountIndex?: number;
+  readonly selectableFormats?: ReadonlyArray<SelectableFormat>;
+  readonly selectedFormat: SelectableFormat;
 };
 
 export type GroupToggleButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
@@ -225,6 +221,7 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
     itemComparer,
     getPropertyInfo,
     getPropertyItems,
+    unitLables,
   } = options;
 
   const propertyInfo = getPropertyInfo(property);
@@ -290,16 +287,8 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
         getUseAmountOptions: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
-          onFormatChanged: (unit: SelectableUnit, decimalCount: number) => {
-            const indexOfDecimalCount = unit.selectableDecimalCounts.indexOf(decimalCount);
-            const newDecimalIndex =
-              indexOfDecimalCount > -1
-                ? indexOfDecimalCount
-                : decimalCount > unit.selectableDecimalCounts[unit.selectableDecimalCounts.length - 1]
-                ? unit.selectableDecimalCounts.length - 1
-                : 0;
-
-            onPropertyFormatChanged(propertyName, propertyInfo.selectableUnits?.indexOf(unit) ?? 0, newDecimalIndex);
+          onFormatChanged: (format: SelectableFormat) => {
+            onPropertyFormatChanged(propertyName, format);
           },
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
           onValueChange,
@@ -310,9 +299,15 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
           filterPrettyPrint,
           readOnly: readOnly,
           debounceTime: inputDebounceTime,
-          getSelectableUnits: () => propertyInfo.selectableUnits ?? [],
-          selectedUnitIndex: propertyInfo.selectedUnitIndex ?? 0,
-          selectedDecimalCountIndex: propertyInfo.selectedDecimalCountIndex ?? 0,
+          getSelectableFormats: () => {
+            console.log("propertyInfo.selectableFormats    ", propertyInfo.selectableFormats);
+            console.log("propertyInfo.selectedFormat    ", propertyInfo.selectedFormat);
+            return formatsArrayToZipList(propertyInfo.selectableFormats ?? [], propertyInfo.selectedFormat);
+          },
+
+          unitLabels: unitLables,
+          //  selectedUnitIndex: propertyInfo.selectedUnitIndex ?? 0,
+          // selectedDecimalCountIndex: propertyInfo.selectedDecimalCountIndex ?? 0,
         }),
       };
     }
@@ -533,7 +528,7 @@ function optionsWithDefaults<TPropertyDef, TPropertyValueDef>(
     lockSingleValidValue: options.lockSingleValidValue || false,
     onChange:
       options.onChange || ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
-    onPropertyFormatChanged: options.onPropertyFormatChanged || ((_a: string, _b: number, _c: number) => ({})),
+    onPropertyFormatChanged: options.onPropertyFormatChanged || ((_a: string, _b: SelectableFormat) => ({})),
     onPropertyFormatCleared: options.onPropertyFormatCleared || ((_a: string) => ({})),
 
     valueMustBeNumericMessage: options.valueMustBeNumericMessage || "value_must_be_numeric",

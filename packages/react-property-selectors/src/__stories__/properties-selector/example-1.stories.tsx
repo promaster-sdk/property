@@ -7,14 +7,16 @@ import { usePropertiesSelector, UsePropertiesSelectorOptions } from "../../prope
 import { exampleProductProperties, MyPropertyValueDef, MyPropertyDef } from "../selector-ui/example-product-properties";
 // import { units, unitsFormat } from "../units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
+import { SelectableFormat, UnitLabels } from "../../amount";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
-export type AmountFormat = {
-  readonly selectedUnitIndex: number;
-  readonly selectedDecimalCountIndex: number;
-};
-export type PropertyFormats = { readonly [key: string]: AmountFormat };
+//export type AmountFormat = {
+//  readonly selectedUnitIndex: number;
+//  readonly selectedDecimalCountIndex: number;
+//};
+
+export type PropertyFormats = { readonly [propertyName: string]: SelectableFormat };
 
 export function Example1(): React.ReactElement<{}> {
   const [pvs, setPvs] = useState(PropertyValueSet.fromString("a=10:Meter;b=1;", unitLookup));
@@ -23,18 +25,25 @@ export function Example1(): React.ReactElement<{}> {
 
   const propInfo = exampleProductProperties();
 
+  const unitLabels: UnitLabels = {
+    Meter: "m",
+    CentiMeter: "cm",
+    Millimeter: "mm",
+  };
+
   const selOptions: UsePropertiesSelectorOptions<MyPropertyDef, MyPropertyValueDef> = {
-    onPropertyFormatChanged: (propertyName, selectedUnitIndex, selectedDecimalCountIndex) => {
+    onPropertyFormatChanged: (propertyName, selectedFormat) => {
       setPropertyFormats({
         ...selectedPropertyFormats,
-        [propertyName]: { selectedUnitIndex, selectedDecimalCountIndex },
+        [propertyName]: selectedFormat,
       });
     },
     onPropertyFormatCleared: (propertyName) => {
-      setPropertyFormats({
-        ...selectedPropertyFormats,
-        [propertyName]: { selectedUnitIndex: 0, selectedDecimalCountIndex: 0 },
-      });
+      const firstFormat = propInfo.properties.find((pi) => pi.name === propertyName)?.selectableFormats[0];
+      console.log("FIRST FIRMAY : ", firstFormat);
+      if (firstFormat) {
+        setPropertyFormats({ ...selectedPropertyFormats, firstFormat });
+      }
     },
     properties: propInfo.properties,
     selectedProperties: pvs,
@@ -51,18 +60,21 @@ export function Example1(): React.ReactElement<{}> {
     getItemValue: (item) => item.value,
     getItemFilter: (item) => item.validationFilter,
     getPropertyInfo: (p) => {
+      //  console.log("DFGSDFG  S S SS S S S ", selectedPropertyFormats[p.name], selectedPropertyFormats);
+      const selectedFormat = selectedPropertyFormats[p.name];
+
       return {
         name: p.name,
         group: p.group,
         quantity: p.quantity,
         validationFilter: p.validationFilter,
         visibilityFilter: p.visibilityFilter,
-        selectableUnits: p.selectableUnits,
-        selectedUnitIndex: selectedPropertyFormats[p.name]?.selectedUnitIndex ?? 0,
-        selectedDecimalCountIndex: selectedPropertyFormats[p.name]?.selectedDecimalCountIndex ?? 0,
+        selectableFormats: p.selectableFormats,
+        selectedFormat: selectedFormat ?? p.selectableFormats[0],
       };
     },
     getPropertyItems: (p) => p.items,
+    unitLables: unitLabels,
   };
 
   const sel = usePropertiesSelector<MyPropertyDef, MyPropertyValueDef>(selOptions);

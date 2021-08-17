@@ -2,31 +2,42 @@ import { Meta } from "@storybook/react";
 import React, { useCallback, useState } from "react";
 import { Amount, BaseUnits } from "uom";
 import {
+  formatsArrayToZipList,
   getDefaultAmountInputBoxStyle,
-  SelectableUnit,
+  SelectableFormat,
+  UnitLabels,
   useAmountFormatSelector,
   useAmountInputBox,
 } from "../../amount";
 import { units } from "../units-map";
 
-type State = {
-  readonly selectedUnitIndex: number;
-  readonly selectedDecimalCountIndex: number;
+type StateX = {
+  readonly selectedFormat: SelectableFormat;
   readonly amount: Amount.Amount<unknown>;
 };
 
 export function Example1(): React.ReactElement<{}> {
-  const selectableUnits: ReadonlyArray<SelectableUnit> = [
-    { unit: units.Meter, label: "m", selectableDecimalCounts: [1, 2, 3] },
-    { unit: units.CentiMeter, label: "cm", selectableDecimalCounts: [1, 2, 3] },
-    { unit: units.Millimeter, label: "mm", selectableDecimalCounts: [1, 2, 3] },
+  const selectableFormats: ReadonlyArray<SelectableFormat> = [
+    { unit: units.Meter, decimalCount: 1 },
+    { unit: units.Meter, decimalCount: 2 },
+    { unit: units.Meter, decimalCount: 3 },
+    { unit: units.CentiMeter, decimalCount: 1 },
+    { unit: units.CentiMeter, decimalCount: 2 },
+    { unit: units.Millimeter, decimalCount: 1 },
   ];
 
-  const [state, setState] = useState<State>({
+  const unitLabels: UnitLabels = {
+    Meter: "m",
+    CentiMeter: "cm",
+    Millimeter: "mm",
+  };
+
+  const test: StateX = {
+    selectedFormat: { unit: units.Meter, decimalCount: 1 },
     amount: Amount.create(10.0, BaseUnits.Meter),
-    selectedUnitIndex: 0,
-    selectedDecimalCountIndex: 0,
-  });
+  };
+
+  const [state, setState] = useState<StateX>(test);
 
   const onValueChange = useCallback(
     (amount) => {
@@ -35,11 +46,13 @@ export function Example1(): React.ReactElement<{}> {
     [state, setState]
   );
 
+  console.log("test -> ", test);
+  console.log("state -> ", state);
+
   const selA = useAmountInputBox({
     value: state.amount,
-    inputUnit: selectableUnits[state.selectedUnitIndex].unit,
-    inputDecimalCount:
-      selectableUnits[state.selectedUnitIndex].selectableDecimalCounts[state.selectedDecimalCountIndex],
+    inputUnit: state.selectedFormat.unit,
+    inputDecimalCount: state.selectedFormat.decimalCount,
     onValueChange,
     readOnly: false,
     errorMessage: "",
@@ -49,22 +62,11 @@ export function Example1(): React.ReactElement<{}> {
   });
 
   const fmtSel = useAmountFormatSelector({
-    getSelectableUnits: () => selectableUnits,
-    selectedUnitIndex: state.selectedUnitIndex,
-    selectedDecimalCountIndex: state.selectedDecimalCountIndex,
-    onFormatChanged: (selectedUnit: SelectableUnit, selectedDecimalCount: number) =>
-      setState({
-        ...state,
-        selectedUnitIndex: selectableUnits.indexOf(selectedUnit),
-        selectedDecimalCountIndex: selectedUnit.selectableDecimalCounts.indexOf(selectedDecimalCount),
-      }),
-    onFormatCleared: () => {
-      setState({
-        ...state,
-        selectedUnitIndex: 0,
-        selectedDecimalCountIndex: 0,
-      });
-    },
+    getSelectableFormats: () => formatsArrayToZipList(selectableFormats, state.selectedFormat),
+    onFormatChanged: (format: SelectableFormat) => setState({ ...state, selectedFormat: format }),
+    onFormatCleared: () => setState({ ...state, selectedFormat: { unit: units.Meter, decimalCount: 1 } }),
+
+    unitLabels: unitLabels,
   });
 
   return (
