@@ -300,14 +300,9 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
           readOnly: readOnly,
           debounceTime: inputDebounceTime,
           getSelectableFormats: () => {
-            console.log("propertyInfo.selectableFormats    ", propertyInfo.selectableFormats);
-            console.log("propertyInfo.selectedFormat    ", propertyInfo.selectedFormat);
             return formatsArrayToZipList(propertyInfo.selectableFormats ?? [], propertyInfo.selectedFormat);
           },
-
           unitLabels: unitLables,
-          //  selectedUnitIndex: propertyInfo.selectedUnitIndex ?? 0,
-          // selectedDecimalCountIndex: propertyInfo.selectedDecimalCountIndex ?? 0,
         }),
       };
     }

@@ -91,7 +91,7 @@ export function Example1(): React.ReactElement<{}> {
               <button {...fmtSel.getClearButtonProps()}>Clear</button>
             </>
           ) : (
-            fmtSel.label
+            fmtSel.selectedUnitItem.label
           )}
         </span>
       </div>

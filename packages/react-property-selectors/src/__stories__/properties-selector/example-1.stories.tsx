@@ -5,16 +5,10 @@ import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
 import { usePropertiesSelector, UsePropertiesSelectorOptions } from "../../properties-selector";
 import { exampleProductProperties, MyPropertyValueDef, MyPropertyDef } from "../selector-ui/example-product-properties";
-// import { units, unitsFormat } from "../units-map";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 import { SelectableFormat, UnitLabels } from "../../amount";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
-
-//export type AmountFormat = {
-//  readonly selectedUnitIndex: number;
-//  readonly selectedDecimalCountIndex: number;
-//};
 
 export type PropertyFormats = { readonly [propertyName: string]: SelectableFormat };
 
@@ -41,7 +35,7 @@ export function Example1(): React.ReactElement<{}> {
     onPropertyFormatCleared: (propertyName) => {
       const firstFormat = propInfo.properties.find((pi) => pi.name === propertyName)?.selectableFormats[0];
       if (firstFormat) {
-        setPropertyFormats({ ...selectedPropertyFormats, firstFormat });
+        setPropertyFormats({ ...selectedPropertyFormats, [propertyName]: firstFormat });
       } else {
         // TODO
       }

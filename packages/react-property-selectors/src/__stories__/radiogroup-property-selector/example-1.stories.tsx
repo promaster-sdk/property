@@ -84,8 +84,6 @@ export function Example1(): JSX.Element {
     getItemFilter: (item) => item.validationFilter,
   });
 
-  console.log(selB);
-
   return (
     <div>
       <div>ComboboxPropertySelector:</div>

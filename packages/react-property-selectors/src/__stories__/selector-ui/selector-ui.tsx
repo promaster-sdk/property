@@ -144,7 +144,7 @@ export function MyAmountSelector(props: UseAmountPropertySelectorOptions): JSX.E
             <button {...sel.amountFormatSelector.getClearButtonProps()}>Clear</button>
           </>
         ) : (
-          <label {...sel.amountFormatSelector.getLabelProps()}>{sel.amountFormatSelector.label}</label>
+          <label {...sel.amountFormatSelector.getLabelProps()}>{sel.amountFormatSelector.selectedUnitItem.label}</label>
         )}
       </span>
     </span>
