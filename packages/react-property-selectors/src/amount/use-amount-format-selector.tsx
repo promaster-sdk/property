@@ -8,12 +8,6 @@ import { Unit, Serialize } from "uom";
 export type UseAmountFormatSelectorOnFormatChanged = (format: SelectableFormat) => void;
 export type UseAmountFormatSelectorOnFormatCleared = () => void;
 
-// export type SelectableUnit = {
-//   readonly label: string;
-//   readonly unit: Unit.Unit<unknown>;
-//   readonly selectableDecimalCounts: ReadonlyArray<number>;
-// };
-
 export type SelectableFormat = {
   readonly unit: Unit.Unit<unknown>;
   readonly decimalCount: number;
@@ -91,6 +85,9 @@ export type DecimalCountSelectProps = {
 export type LabelProps = { readonly onClick: React.MouseEventHandler<{}> };
 export type ClearButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
 export type CancelButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
+
+type MinMaxFormatValue = { readonly val: number; readonly format: SelectableFormat };
+type MinMaxFormats = { readonly min: MinMaxFormatValue; readonly max: MinMaxFormatValue };
 
 export type UseAmountFormatSelectorHook = {
   readonly label: string;
@@ -235,12 +232,34 @@ function onUnitFormatChange(
 
   if (selectedFormat) {
     onFormatChanged(selectedFormat);
-  } else if (possibleUnitFormats.length > 0) {
-    console.log("Could not find proper format for decimal count");
-    onFormatChanged(possibleUnitFormats[0]);
-  } else {
-    console.log("Could not find format");
+    return;
   }
+
+  if (possibleUnitFormats.length > 0) {
+    const bounds = possibleUnitFormats.reduce<MinMaxFormats>(
+      (p, c) =>
+        (p = {
+          max: p.max.val < c.decimalCount ? { val: c.decimalCount, format: c } : p.max,
+          min: p.min.val > c.decimalCount ? { val: c.decimalCount, format: c } : p.min,
+        }),
+      {
+        max: { val: possibleUnitFormats[0].decimalCount, format: possibleUnitFormats[0] },
+        min: { val: possibleUnitFormats[0].decimalCount, format: possibleUnitFormats[0] },
+      }
+    );
+
+    if (current.decimalCount > bounds.max.val && bounds.max.format) {
+      onFormatChanged(bounds.max.format);
+      return;
+    }
+
+    if (current.decimalCount < bounds.min.val && bounds.min.format) {
+      onFormatChanged(bounds.min.format);
+      //return;
+    }
+  }
+
+  // TODO : Could not find format
 }
 
 function onUnitDecimalCountChange(
@@ -255,9 +274,8 @@ function onUnitDecimalCountChange(
   if (selectedFormat) {
     onFormatChanged(selectedFormat);
   } else if (possibleUnitFormats.length > 0) {
-    console.log("Could not find proper format for decimal count");
     onFormatChanged(possibleUnitFormats[0]);
   } else {
-    console.log("Could not find format");
+    // TODO Could not find format"
   }
 }

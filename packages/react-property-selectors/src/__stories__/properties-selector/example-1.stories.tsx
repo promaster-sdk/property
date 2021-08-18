@@ -40,9 +40,10 @@ export function Example1(): React.ReactElement<{}> {
     },
     onPropertyFormatCleared: (propertyName) => {
       const firstFormat = propInfo.properties.find((pi) => pi.name === propertyName)?.selectableFormats[0];
-      console.log("FIRST FIRMAY : ", firstFormat);
       if (firstFormat) {
         setPropertyFormats({ ...selectedPropertyFormats, firstFormat });
+      } else {
+        // TODO
       }
     },
     properties: propInfo.properties,
@@ -60,9 +61,6 @@ export function Example1(): React.ReactElement<{}> {
     getItemValue: (item) => item.value,
     getItemFilter: (item) => item.validationFilter,
     getPropertyInfo: (p) => {
-      //  console.log("DFGSDFG  S S SS S S S ", selectedPropertyFormats[p.name], selectedPropertyFormats);
-      const selectedFormat = selectedPropertyFormats[p.name];
-
       return {
         name: p.name,
         group: p.group,
@@ -70,7 +68,7 @@ export function Example1(): React.ReactElement<{}> {
         validationFilter: p.validationFilter,
         visibilityFilter: p.visibilityFilter,
         selectableFormats: p.selectableFormats,
-        selectedFormat: selectedFormat ?? p.selectableFormats[0],
+        selectedFormat: selectedPropertyFormats[p.name] ?? p.selectableFormats[0],
       };
     },
     getPropertyItems: (p) => p.items,

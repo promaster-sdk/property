@@ -46,9 +46,6 @@ export function Example1(): React.ReactElement<{}> {
     [state, setState]
   );
 
-  console.log("test -> ", test);
-  console.log("state -> ", state);
-
   const selA = useAmountInputBox({
     value: state.amount,
     inputUnit: state.selectedFormat.unit,

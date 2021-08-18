@@ -29,12 +29,13 @@ const validationFilter = PropertyFilter.fromString("a<100:Meter", unitLookup)!;
 
 export function Example1(): React.ReactElement<{}> {
   const selectableFormats: ReadonlyArray<SelectableFormat> = [
+    { unit: units.Meter, decimalCount: 0 },
     { unit: units.Meter, decimalCount: 1 },
     { unit: units.Meter, decimalCount: 2 },
     { unit: units.Meter, decimalCount: 3 },
+    { unit: units.CentiMeter, decimalCount: 0 },
     { unit: units.CentiMeter, decimalCount: 1 },
-    { unit: units.CentiMeter, decimalCount: 2 },
-    { unit: units.Millimeter, decimalCount: 1 },
+    { unit: units.Millimeter, decimalCount: 0 },
   ];
 
   const unitLabels: UnitLabels = {

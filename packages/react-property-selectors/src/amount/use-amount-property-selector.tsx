@@ -66,7 +66,7 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
   const amountInputBox = useAmountInputBox({
     value,
     inputUnit: selectedFormat.unit,
-    inputDecimalCount: selectedFormat.decimalCount, // selectedUnit.selectableDecimalCounts[selectedDecimalCountIndex],
+    inputDecimalCount: selectedFormat.decimalCount,
     notNumericMessage,
     isRequiredMessage,
     readOnly,
@@ -76,12 +76,6 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
   });
 
   const amountFormatSelector = useAmountFormatSelector({
-    //selectedUnitIndex,
-    //selectedDecimalCountIndex,
-    //onFormatChanged,
-    //onFormatCleared,
-    //getSelectableUnits,
-
     onFormatChanged,
     onFormatCleared,
     getSelectableFormats: getSelectableFormats,
