@@ -91,7 +91,7 @@ export function Example1(): React.ReactElement<{}> {
             quantity: p.type,
             validationFilter: p.validationFilter,
             visibilityFilter: p.visibilityFilter,
-            values: [],
+            items: p.items,
           };
           return retVal;
         }
@@ -99,7 +99,6 @@ export function Example1(): React.ReactElement<{}> {
           return exhaustiveCheck(p, true);
       }
     },
-    getPropertyItems: (p) => p.items,
     unitLables: unitLabels,
   };
 
@@ -153,7 +152,6 @@ export function Example1(): React.ReactElement<{}> {
                                 case "TextBox":
                                   return <MyTextboxSelector {...selector.getUseTextboxOptions()} />;
                                 case "Discrete": {
-                                  const selectorT = selector;
                                   if (property.type === "Discrete") {
                                     return (
                                       <MyDiscreteSelector

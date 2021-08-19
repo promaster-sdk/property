@@ -21,7 +21,6 @@ export type MyPropertyDefBase = {
   readonly sortNo: number;
   readonly name: string;
   readonly group: string;
-  // readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
   readonly items: ReadonlyArray<MyPropertyValueDef>;
@@ -38,7 +37,6 @@ export type MyDiscretePropertyDef = MyPropertyDefBase & {
 };
 
 export function exampleProductProperties(): {
-  // selectorTypes: SelectorTypes;
   readonly properties: ReadonlyArray<MyPropertyDef>;
 } {
   return {
@@ -48,7 +46,6 @@ export function exampleProductProperties(): {
         sortNo: 1,
         name: "a",
         group: "",
-        //    quantity: "Length",
         validationFilter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [],
@@ -66,7 +63,6 @@ export function exampleProductProperties(): {
         sortNo: 2,
         name: "b",
         group: "Group1",
-        //      quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -90,7 +86,6 @@ export function exampleProductProperties(): {
         sortNo: 3,
         name: "c",
         group: "Group1",
-        //     quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -120,7 +115,6 @@ export function exampleProductProperties(): {
         selectorType: "RadioGroup",
         name: "d",
         group: "Group1",
-        //     quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -150,7 +144,6 @@ export function exampleProductProperties(): {
         selectorType: "Checkbox",
         name: "e",
         group: "Group1",
-        //       quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
