@@ -15,16 +15,26 @@ export type MyPropertyValueDef = {
   readonly text: string;
 };
 
-export type MyPropertyDef = {
-  readonly selectorType?: "Checkbox" | "RadioGroup";
+export type MyPropertyDef = MyAmountPropertyDef | MyDiscretePropertyDef;
+
+export type MyPropertyDefBase = {
   readonly sortNo: number;
   readonly name: string;
   readonly group: string;
-  readonly quantity: string;
+  // readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
   readonly items: ReadonlyArray<MyPropertyValueDef>;
+};
+
+export type MyAmountPropertyDef = MyPropertyDefBase & {
+  readonly type: "Amount";
   readonly selectableFormats: ReadonlyArray<SelectableFormat>;
+};
+
+export type MyDiscretePropertyDef = MyPropertyDefBase & {
+  readonly type: "Discrete";
+  readonly selectorType?: "Checkbox" | "RadioGroup";
 };
 
 export function exampleProductProperties(): {
@@ -32,16 +42,13 @@ export function exampleProductProperties(): {
   readonly properties: ReadonlyArray<MyPropertyDef>;
 } {
   return {
-    // selectorTypes: {
-    //   d: "RadioGroup",
-    //   e: "Checkbox",
-    // },
     properties: [
       {
+        type: "Amount",
         sortNo: 1,
         name: "a",
         group: "",
-        quantity: "Length",
+        //    quantity: "Length",
         validationFilter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [],
@@ -55,10 +62,11 @@ export function exampleProductProperties(): {
         ],
       },
       {
+        type: "Discrete",
         sortNo: 2,
         name: "b",
         group: "Group1",
-        quantity: "Discrete",
+        //      quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -76,13 +84,13 @@ export function exampleProductProperties(): {
             text: "b_2",
           },
         ],
-        selectableFormats: [],
       },
       {
+        type: "Discrete",
         sortNo: 3,
         name: "c",
         group: "Group1",
-        quantity: "Discrete",
+        //     quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -105,14 +113,14 @@ export function exampleProductProperties(): {
             text: "c_3",
           },
         ],
-        selectableFormats: [],
       },
       {
+        type: "Discrete",
         sortNo: 4,
         selectorType: "RadioGroup",
         name: "d",
         group: "Group1",
-        quantity: "Discrete",
+        //     quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -135,14 +143,14 @@ export function exampleProductProperties(): {
             text: "d_3",
           },
         ],
-        selectableFormats: [],
       },
       {
+        type: "Discrete",
         sortNo: 5,
         selectorType: "Checkbox",
         name: "e",
         group: "Group1",
-        quantity: "Discrete",
+        //       quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -160,7 +168,6 @@ export function exampleProductProperties(): {
             image: "https://s7d1.scene7.com/is/image/BedBathandBeyond/13136517105892p?$478$",
           },
         ],
-        selectableFormats: [],
       },
     ],
   };

@@ -6,8 +6,11 @@ import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemCompa
 import { formatsArrayToZipList, SelectableFormat, UnitLabels, UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
-export type GetPropertyInfo<TProperty> = (property: TProperty) => PropertyInfo;
-export type GetPropertyItems<TItem, TProperty> = (property: TProperty) => ReadonlyArray<TItem>;
+export type GetPropertyInfo<TPropertyDef, TPropertyValueDef> = (
+  property: TPropertyDef
+) => PropertyInfo<TPropertyValueDef>;
+
+export type GetPropertyItems<TPropertyValueDef, TProperty> = (property: TProperty) => ReadonlyArray<TPropertyValueDef>;
 export type OnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
@@ -23,7 +26,7 @@ export type UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef> = {
   /**
    * From a property object, extract information needed by the selector.
    */
-  readonly getPropertyInfo: GetPropertyInfo<TPropertyDef>;
+  readonly getPropertyInfo: GetPropertyInfo<TPropertyDef, TPropertyValueDef>;
   /**
    * From a property object, extract items (applies to discrete properties only).
    */
@@ -90,7 +93,7 @@ export type UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef> = {
   readonly unitLables: UnitLabels;
 };
 
-export type PropertyInfo = {
+export type BasePropertyInfo = {
   readonly name: string;
   readonly group: string;
   readonly quantity: string;
@@ -98,8 +101,35 @@ export type PropertyInfo = {
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
   readonly isReadonly?: boolean;
   readonly isOptional?: boolean;
-  // only relevant for amount fields
-  readonly selectableFormats?: ReadonlyArray<SelectableFormat>;
+};
+
+// export type PropertyInfo = {
+//   readonly name: string;
+//   readonly group: string;
+//   readonly quantity: string;
+//   readonly validationFilter: PropertyFilter.PropertyFilter;
+//   readonly visibilityFilter: PropertyFilter.PropertyFilter;
+//   readonly isReadonly?: boolean;
+//   readonly isOptional?: boolean;
+//   // only relevant for amount fields
+//   readonly selectableFormats?: ReadonlyArray<SelectableFormat>;
+//   readonly selectedFormat: SelectableFormat;
+// };
+export type PropertyInfo<TPropertyValueDef> =
+  | DiscretePropertyInfo<TPropertyValueDef>
+  | TextPropertyInfo
+  | AmountPropertyInfo;
+
+export type DiscretePropertyInfo<TPropertyValueDef> = BasePropertyInfo & {
+  readonly type: "Discrete";
+  readonly values: ReadonlyArray<TPropertyValueDef>;
+};
+
+export type TextPropertyInfo = BasePropertyInfo & { readonly type: "Text" };
+
+export type AmountPropertyInfo = BasePropertyInfo & {
+  readonly type: "Amount";
+  readonly selectableFormats: ReadonlyArray<SelectableFormat>;
   readonly selectedFormat: SelectableFormat;
 };
 
@@ -118,10 +148,10 @@ export type UsePropertiesSelectorHook<TPropertyDef, TPropertyValueDef> = {
   readonly getGroupProperties: (group: string) => ReadonlyArray<TPropertyDef>;
 };
 
-export type PropertySelectorHookInfo<TItem> =
+export type PropertySelectorHookInfo<TPropertyValueDef> =
   | {
       readonly type: "Discrete";
-      readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TItem>;
+      readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TPropertyValueDef>;
     }
   | {
       readonly type: "AmountField";
@@ -267,9 +297,9 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
     );
   }
 
-  const selectorType = getSelectorType(propertyInfo);
-  switch (selectorType) {
-    case "TextBox": {
+  //const selectorType = getSelectorType(propertyInfo);
+  switch (propertyInfo.type) {
+    case "Text": {
       return {
         type: "TextBox",
         getUseTextboxOptions: () => ({
@@ -281,7 +311,7 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
         }),
       };
     }
-    case "AmountField": {
+    case "Amount": {
       return {
         type: "AmountField",
         getUseAmountOptions: () => ({
@@ -306,7 +336,7 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
         }),
       };
     }
-    case "Discrete":
+    case "Discrete": {
       return {
         type: "Discrete",
         getUseDiscreteOptions: () => ({
@@ -324,8 +354,9 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
           itemComparer,
         }),
       };
+    }
     default:
-      return exhaustiveCheck(selectorType, true);
+      return exhaustiveCheck(propertyInfo, true);
   }
 }
 
@@ -349,12 +380,12 @@ function getSelectedItem<TItem, TProperty>(
   return selectedItem;
 }
 
-function getIsValid<TItem>(
-  property: PropertyInfo,
-  selectedValueItem: TItem | undefined,
+function getIsValid<TPropertyValueDef>(
+  property: PropertyInfo<TPropertyValueDef>,
+  selectedValueItem: TPropertyValueDef | undefined,
   selectedProperties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
-  getItemFilter: GetItemFilter<TItem>
+  getItemFilter: GetItemFilter<TPropertyValueDef>
 ): boolean {
   switch (getPropertyType(property.quantity)) {
     case "integer":
@@ -370,15 +401,17 @@ function getIsValid<TItem>(
   }
 }
 
-function getSelectorType<TItem>(propertyInfo: PropertyInfo): PropertySelectorHookInfo<TItem>["type"] {
-  if (propertyInfo.quantity === "Text") {
-    return "TextBox";
-  } else if (propertyInfo.quantity === "Discrete") {
-    return "Discrete";
-  } else {
-    return "AmountField";
-  }
-}
+// function getSelectorType<TPropertyValueDef>(
+//   propertyInfo: PropertyInfo<TPropertyValueDef>
+// ): PropertySelectorHookInfo<TPropertyValueDef>["type"] {
+//   if (propertyInfo.quantity === "Text") {
+//     return "TextBox";
+//   } else if (propertyInfo.quantity === "Discrete") {
+//     return "Discrete";
+//   } else {
+//     return "AmountField";
+//   }
+//}
 
 function getPropertyType(quantity: string): PropertyValue.PropertyType {
   switch (quantity) {
@@ -391,13 +424,13 @@ function getPropertyType(quantity: string): PropertyValue.PropertyType {
   }
 }
 
-function shouldBeLocked<TItem>(
-  selectedValueItem: TItem | undefined,
-  propertyItems: ReadonlyArray<TItem>,
-  propertyInfo: PropertyInfo,
+function shouldBeLocked<TPropertyValueDef>(
+  selectedValueItem: TPropertyValueDef | undefined,
+  propertyItems: ReadonlyArray<TPropertyValueDef>,
+  propertyInfo: PropertyInfo<TPropertyValueDef>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
-  getItemFilter: GetItemFilter<TItem>
+  getItemFilter: GetItemFilter<TPropertyValueDef>
 ): boolean {
   const singleValidValue = getSingleValidItemOrUndefined(
     propertyItems,
@@ -416,15 +449,15 @@ function shouldBeLocked<TItem>(
   return false;
 }
 
-function handleChange<TItem, TPropety>(
+function handleChange<TPropertyValueDef, TPropertyDef>(
   externalOnChange: OnPropertiesChanged,
-  productProperties: ReadonlyArray<TPropety>,
+  productProperties: ReadonlyArray<TPropertyDef>,
   autoSelectSingleValidValue: boolean,
   comparer: PropertyValue.Comparer,
-  getItemValue: GetItemValue<TItem>,
-  getItemFilter: GetItemFilter<TItem>,
-  getPropertyInfo: GetPropertyInfo<TPropety>,
-  getPropertyItems: GetPropertyItems<TItem, TPropety>
+  getItemValue: GetItemValue<TPropertyValueDef>,
+  getItemFilter: GetItemFilter<TPropertyValueDef>,
+  getPropertyInfo: GetPropertyInfo<TPropertyDef, TPropertyValueDef>,
+  getPropertyItems: GetPropertyItems<TPropertyValueDef, TPropertyDef>
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
   return (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => {
     if (!autoSelectSingleValidValue) {
@@ -467,15 +500,15 @@ function handleChange<TItem, TPropety>(
   };
 }
 
-function getSingleValidItemOrUndefined<TItem>(
-  propertyItems: ReadonlyArray<TItem>,
-  propertyInfo: PropertyInfo,
+function getSingleValidItemOrUndefined<TPropertyValueDef>(
+  propertyItems: ReadonlyArray<TPropertyValueDef>,
+  propertyInfo: PropertyInfo<TPropertyValueDef>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
-  getItemFilter: GetItemFilter<TItem>
-): TItem | undefined {
+  getItemFilter: GetItemFilter<TPropertyValueDef>
+): TPropertyValueDef | undefined {
   if (propertyInfo.quantity === "Discrete") {
-    const validPropertyValueItems: Array<TItem> = [];
+    const validPropertyValueItems: Array<TPropertyValueDef> = [];
     for (const productValueItem of propertyItems) {
       const isValid = PropertyFilter.isValid(properties, getItemFilter(productValueItem), comparer);
 
@@ -490,7 +523,9 @@ function getSingleValidItemOrUndefined<TItem>(
   return undefined;
 }
 
-function getDistinctGroupNames(pis: ReadonlyArray<PropertyInfo>): ReadonlyArray<string> {
+function getDistinctGroupNames<TPropertyValueDef>(
+  pis: ReadonlyArray<PropertyInfo<TPropertyValueDef>>
+): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const pi of pis) {
     // let groupName = property.groupName;

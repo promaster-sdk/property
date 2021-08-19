@@ -3,8 +3,18 @@ import { Meta } from "@storybook/react";
 import { BaseUnits, UnitMap } from "uom";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { PropertyFilter, PropertyValueSet } from "@promaster-sdk/property";
-import { usePropertiesSelector, UsePropertiesSelectorOptions } from "../../properties-selector";
-import { exampleProductProperties, MyPropertyValueDef, MyPropertyDef } from "../selector-ui/example-product-properties";
+import {
+  AmountPropertyInfo,
+  DiscretePropertyInfo,
+  usePropertiesSelector,
+  UsePropertiesSelectorOptions,
+} from "../../properties-selector";
+import {
+  exampleProductProperties,
+  MyPropertyValueDef,
+  MyPropertyDef,
+  MyAmountPropertyDef,
+} from "../selector-ui/example-product-properties";
 import { MyAmountSelector, MyDiscreteSelector, MyTextboxSelector } from "../selector-ui/selector-ui";
 import { SelectableFormat, UnitLabels } from "../../amount";
 
@@ -33,7 +43,9 @@ export function Example1(): React.ReactElement<{}> {
       });
     },
     onPropertyFormatCleared: (propertyName) => {
-      const firstFormat = propInfo.properties.find((pi) => pi.name === propertyName)?.selectableFormats[0];
+      const firstFormat = (propInfo.properties.filter((pi) => pi.type === "Amount") as ReadonlyArray<
+        MyAmountPropertyDef
+      >).find((pi) => pi.name === propertyName)?.selectableFormats[0];
       if (firstFormat) {
         setPropertyFormats({ ...selectedPropertyFormats, [propertyName]: firstFormat });
       } else {
@@ -55,21 +67,43 @@ export function Example1(): React.ReactElement<{}> {
     getItemValue: (item) => item.value,
     getItemFilter: (item) => item.validationFilter,
     getPropertyInfo: (p) => {
-      return {
-        name: p.name,
-        group: p.group,
-        quantity: p.quantity,
-        validationFilter: p.validationFilter,
-        visibilityFilter: p.visibilityFilter,
-        selectableFormats: p.selectableFormats,
-        selectedFormat: selectedPropertyFormats[p.name] ?? p.selectableFormats[0],
-      };
+      switch (p.type) {
+        case "Amount": {
+          const retVal: AmountPropertyInfo = {
+            type: p.type,
+            name: p.name,
+            group: p.group,
+            quantity: p.type,
+            validationFilter: p.validationFilter,
+            visibilityFilter: p.visibilityFilter,
+            selectableFormats: p.selectableFormats,
+            selectedFormat: selectedPropertyFormats[p.name] ?? p.selectableFormats[0],
+          };
+
+          return retVal;
+        }
+
+        case "Discrete": {
+          const retVal: DiscretePropertyInfo<MyPropertyValueDef> = {
+            type: p.type,
+            name: p.name,
+            group: p.group,
+            quantity: p.type,
+            validationFilter: p.validationFilter,
+            visibilityFilter: p.visibilityFilter,
+            values: [],
+          };
+          return retVal;
+        }
+        default:
+          return exhaustiveCheck(p, true);
+      }
     },
     getPropertyItems: (p) => p.items,
     unitLables: unitLabels,
   };
 
-  const sel = usePropertiesSelector<MyPropertyDef, MyPropertyValueDef>(selOptions);
+  const sel = usePropertiesSelector(selOptions);
 
   return (
     <div>
@@ -118,15 +152,22 @@ export function Example1(): React.ReactElement<{}> {
                               switch (selector.type) {
                                 case "TextBox":
                                   return <MyTextboxSelector {...selector.getUseTextboxOptions()} />;
-                                case "Discrete":
-                                  return (
-                                    <MyDiscreteSelector
-                                      selectorType={property.selectorType}
-                                      options={selector.getUseDiscreteOptions()}
-                                    />
-                                  );
-                                case "AmountField":
+                                case "Discrete": {
+                                  const selectorT = selector;
+                                  if (property.type === "Discrete") {
+                                    return (
+                                      <MyDiscreteSelector
+                                        selectorType={property.selectorType}
+                                        options={selector.getUseDiscreteOptions()}
+                                      />
+                                    );
+                                  } else {
+                                    return <div></div>;
+                                  }
+                                }
+                                case "AmountField": {
                                   return <MyAmountSelector {...selector.getUseAmountOptions()} />;
+                                }
                                 default:
                                   return exhaustiveCheck(selector, true);
                               }
