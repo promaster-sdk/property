@@ -91,7 +91,6 @@ export type UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef> = {
 export type BasePropertyInfo = {
   readonly name: string;
   readonly group: string;
-  readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
   readonly isReadonly?: boolean;
@@ -119,7 +118,7 @@ export type AmountPropertyInfo = BasePropertyInfo & {
 export type GroupToggleButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
 
 export type UsePropertiesSelectorHook<TPropertyDef, TPropertyValueDef> = {
-  readonly getPropertySelectorHook: (property: TPropertyDef) => PropertySelectorHookInfo<TPropertyValueDef>;
+  readonly getPropertySelectorHookInfo: (property: TPropertyDef) => PropertySelectorHookInfo<TPropertyValueDef>;
   readonly groups: ReadonlyArray<string>;
   // Used to add code if includeCodes is true
   readonly getPropertyLabel: (property: TPropertyDef, propertyText: string) => string;
@@ -178,7 +177,7 @@ export function usePropertiesSelector<TPropertyDef, TPropertyValueDef>(
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
-    getPropertySelectorHook: (property) => selectorHookMap.get(property)!,
+    getPropertySelectorHookInfo: (property) => selectorHookMap.get(property)!,
     getGroupToggleButtonProps: (group: string) => ({
       onClick: () =>
         setClosedGroups(
@@ -310,14 +309,7 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
 
       const locked =
         autoSelectSingleValidValue || lockSingleValidValue
-          ? shouldBeLocked(
-              selectedItem,
-              propertyInfo.items,
-              propertyInfo,
-              selectedProperties,
-              valueComparer,
-              getItemFilter
-            )
+          ? shouldBeLocked(selectedItem, propertyInfo.items, selectedProperties, valueComparer, getItemFilter)
           : false;
 
       return {
@@ -370,12 +362,12 @@ function getIsValid<TPropertyValueDef>(
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TPropertyValueDef>
 ): boolean {
-  switch (getPropertyType(property.quantity)) {
-    case "integer":
+  switch (property.type) {
+    case "Discrete":
       return selectedValueItem
         ? PropertyFilter.isValid(selectedProperties, getItemFilter(selectedValueItem), comparer)
         : false;
-    case "amount":
+    case "Amount":
       return (
         property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter, comparer)
       );
@@ -396,32 +388,25 @@ function getIsValid<TPropertyValueDef>(
 //   }
 //}
 
-function getPropertyType(quantity: string): PropertyValue.PropertyType {
-  switch (quantity) {
-    case "Text":
-      return "text";
-    case "Discrete":
-      return "integer";
-    default:
-      return "amount";
-  }
-}
+// function getPropertyType(quantity: string): PropertyValue.PropertyType {
+//   switch (quantity) {
+//     case "Text":
+//       return "text";
+//     case "Discrete":
+//       return "integer";
+//     default:
+//       return "amount";
+//   }
+// }
 
 function shouldBeLocked<TPropertyValueDef>(
   selectedValueItem: TPropertyValueDef | undefined,
   propertyItems: ReadonlyArray<TPropertyValueDef>,
-  propertyInfo: PropertyInfo<TPropertyValueDef>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TPropertyValueDef>
 ): boolean {
-  const singleValidValue = getSingleValidItemOrUndefined(
-    propertyItems,
-    propertyInfo,
-    properties,
-    comparer,
-    getItemFilter
-  );
+  const singleValidValue = getSingleValidItemOrUndefined(propertyItems, properties, comparer, getItemFilter);
 
   // getSingleValidValueOrUndefined only works on onChange.
   // Prevent locking when the sent in selectedValue isn't the singleValidValue
@@ -457,13 +442,7 @@ function handleChange<TPropertyValueDef, TPropertyDef>(
         if (propertyInfo.name === propertyName) {
           continue;
         }
-        const singleItem = getSingleValidItemOrUndefined(
-          propertyItems,
-          propertyInfo,
-          properties,
-          comparer,
-          getItemFilter
-        );
+        const singleItem = getSingleValidItemOrUndefined(propertyItems, properties, comparer, getItemFilter);
         const singleItemValue = singleItem && getItemValue(singleItem);
         if (singleItem && singleItemValue) {
           properties = PropertyValueSet.set(propertyInfo.name, singleItemValue, properties);
@@ -484,25 +463,20 @@ function handleChange<TPropertyValueDef, TPropertyDef>(
 
 function getSingleValidItemOrUndefined<TPropertyValueDef>(
   propertyItems: ReadonlyArray<TPropertyValueDef>,
-  propertyInfo: PropertyInfo<TPropertyValueDef>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
   getItemFilter: GetItemFilter<TPropertyValueDef>
 ): TPropertyValueDef | undefined {
-  if (propertyInfo.quantity === "Discrete") {
-    const validPropertyValueItems: Array<TPropertyValueDef> = [];
-    for (const productValueItem of propertyItems) {
-      const isValid = PropertyFilter.isValid(properties, getItemFilter(productValueItem), comparer);
+  const validPropertyValueItems: Array<TPropertyValueDef> = [];
+  for (const productValueItem of propertyItems) {
+    const isValid = PropertyFilter.isValid(properties, getItemFilter(productValueItem), comparer);
 
-      if (isValid) {
-        validPropertyValueItems.push(productValueItem);
-      }
+    if (isValid) {
+      validPropertyValueItems.push(productValueItem);
     }
-
-    return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : undefined;
   }
 
-  return undefined;
+  return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : undefined;
 }
 
 function getDistinctGroupNames<TPropertyValueDef>(

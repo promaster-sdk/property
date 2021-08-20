@@ -73,7 +73,6 @@ export function Example1(): React.ReactElement<{}> {
             type: p.type,
             name: p.name,
             group: p.group,
-            quantity: p.type,
             validationFilter: p.validationFilter,
             visibilityFilter: p.visibilityFilter,
             selectableFormats: p.selectableFormats,
@@ -88,7 +87,6 @@ export function Example1(): React.ReactElement<{}> {
             type: p.type,
             name: p.name,
             group: p.group,
-            quantity: p.type,
             validationFilter: p.validationFilter,
             visibilityFilter: p.visibilityFilter,
             items: p.items,
@@ -132,7 +130,7 @@ export function Example1(): React.ReactElement<{}> {
                 <tbody>
                   {!sel.isGroupClosed(group) &&
                     sel.getGroupProperties(group).map((property) => {
-                      const selector = sel.getPropertySelectorHook(property);
+                      const selectorInfo = sel.getPropertySelectorHookInfo(property);
                       return (
                         <tr key={property.name}>
                           <td>
@@ -148,26 +146,26 @@ export function Example1(): React.ReactElement<{}> {
                           <td>
                             {(() => {
                               // Need to put property selectors in separate components because their hooks cannt be declared in a loop
-                              switch (selector.type) {
+                              switch (selectorInfo.type) {
                                 case "TextBox":
-                                  return <MyTextboxSelector {...selector.getUseTextboxOptions()} />;
+                                  return <MyTextboxSelector {...selectorInfo.getUseTextboxOptions()} />;
                                 case "Discrete": {
                                   if (property.type === "Discrete") {
                                     return (
                                       <MyDiscreteSelector
                                         selectorType={property.selectorType}
-                                        options={selector.getUseDiscreteOptions()}
+                                        options={selectorInfo.getUseDiscreteOptions()}
                                       />
                                     );
                                   } else {
-                                    return <div></div>;
+                                    return <div>Invalid Proerty type</div>;
                                   }
                                 }
                                 case "AmountField": {
-                                  return <MyAmountSelector {...selector.getUseAmountOptions()} />;
+                                  return <MyAmountSelector {...selectorInfo.getUseAmountOptions()} />;
                                 }
                                 default:
-                                  return exhaustiveCheck(selector, true);
+                                  return exhaustiveCheck(selectorInfo, true);
                               }
                             })()}
                           </td>
