@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Remove readonly and optional arrays of property names and instead include boolean properties on the PropertyInfo object for isReadonly and isOptional, see PR [#41](https://github.com/promaster-sdk/property/pull/41).
 - Change the API of the properties-selector so that instead of sending a dictionary of property formats, you send in a callback that will provide the format for a property, see PR [#40](https://github.com/promaster-sdk/property/pull/40).
 - Removed `fieldName` prop, see PR [#39](https://github.com/promaster-sdk/property/pull/39).
+- Reworked amount selector, see PR [#42](https://github.com/promaster-sdk/property/pull/42).
 
 ## [v9.1.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.0.0...9.1.0)
 
