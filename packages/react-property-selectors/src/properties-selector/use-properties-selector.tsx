@@ -250,7 +250,6 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
     getItemValue,
     getItemFilter,
     getPropertyInfo,
-    //getPropertyItems
     propertyInfo.type === "Discrete" ? propertyInfo.items : []
   );
   const propertyName = propertyInfo.name;
@@ -264,7 +263,6 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
     );
   }
 
-  //const selectorType = getSelectorType(propertyInfo);
   switch (propertyInfo.type) {
     case "Text": {
       return {
@@ -338,11 +336,9 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
 function getSelectedItem<TPropertyValueDef>(
   items: ReadonlyArray<TPropertyValueDef> | undefined,
   selectedItemValue: PropertyValue.PropertyValue,
-  //property: TPropertyValue,
   getItemValue: GetItemValue<TPropertyValueDef>,
   valueComparer: PropertyValue.Comparer
 ): TPropertyValueDef | undefined {
-  // const items = getPropertyItems(property);
   const selectedItem =
     items &&
     items.find((item) => {
@@ -375,29 +371,6 @@ function getIsValid<TPropertyValueDef>(
       return true;
   }
 }
-
-// function getSelectorType<TPropertyValueDef>(
-//   propertyInfo: PropertyInfo<TPropertyValueDef>
-// ): PropertySelectorHookInfo<TPropertyValueDef>["type"] {
-//   if (propertyInfo.quantity === "Text") {
-//     return "TextBox";
-//   } else if (propertyInfo.quantity === "Discrete") {
-//     return "Discrete";
-//   } else {
-//     return "AmountField";
-//   }
-//}
-
-// function getPropertyType(quantity: string): PropertyValue.PropertyType {
-//   switch (quantity) {
-//     case "Text":
-//       return "text";
-//     case "Discrete":
-//       return "integer";
-//     default:
-//       return "amount";
-//   }
-// }
 
 function shouldBeLocked<TPropertyValueDef>(
   selectedValueItem: TPropertyValueDef | undefined,
