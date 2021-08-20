@@ -1,11 +1,13 @@
 import { PropertyFilter, PropertyValue } from "@promaster-sdk/property";
 import { BaseUnits, UnitMap } from "uom";
+import { SelectableFormat } from "../..";
+import { units } from "../units-map";
 
 const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 export type SelectorTypes = { readonly [propertyName: string]: string };
 
-export type MyItem = {
+export type MyPropertyValueDef = {
   readonly sortNo: number;
   readonly image?: string;
   readonly value: PropertyValue.PropertyValue | undefined | null;
@@ -13,41 +15,54 @@ export type MyItem = {
   readonly text: string;
 };
 
-export type MyPropertyInfo = {
-  readonly selectorType?: "Checkbox" | "RadioGroup";
+export type MyPropertyDef = MyAmountPropertyDef | MyDiscretePropertyDef;
+
+export type MyPropertyDefBase = {
   readonly sortNo: number;
   readonly name: string;
   readonly group: string;
-  readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
-  readonly items: ReadonlyArray<MyItem>;
+  readonly items: ReadonlyArray<MyPropertyValueDef>;
+};
+
+export type MyAmountPropertyDef = MyPropertyDefBase & {
+  readonly type: "Amount";
+  readonly selectableFormats: ReadonlyArray<SelectableFormat>;
+};
+
+export type MyDiscretePropertyDef = MyPropertyDefBase & {
+  readonly type: "Discrete";
+  readonly selectorType?: "Checkbox" | "RadioGroup";
 };
 
 export function exampleProductProperties(): {
-  // selectorTypes: SelectorTypes;
-  readonly properties: ReadonlyArray<MyPropertyInfo>;
+  readonly properties: ReadonlyArray<MyPropertyDef>;
 } {
   return {
-    // selectorTypes: {
-    //   d: "RadioGroup",
-    //   e: "Checkbox",
-    // },
     properties: [
       {
+        type: "Amount",
         sortNo: 1,
         name: "a",
         group: "",
-        quantity: "Length",
         validationFilter: PropertyFilter.fromString("a>100:Meter", unitLookup) || PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [],
+        selectableFormats: [
+          { unit: units.Meter, decimalCount: 1 },
+          { unit: units.Meter, decimalCount: 2 },
+          { unit: units.Meter, decimalCount: 3 },
+          { unit: units.CentiMeter, decimalCount: 1 },
+          { unit: units.CentiMeter, decimalCount: 2 },
+          { unit: units.Millimeter, decimalCount: 1 },
+        ],
       },
       {
+        type: "Discrete",
         sortNo: 2,
         name: "b",
         group: "Group1",
-        quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -67,10 +82,10 @@ export function exampleProductProperties(): {
         ],
       },
       {
+        type: "Discrete",
         sortNo: 3,
         name: "c",
         group: "Group1",
-        quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -95,11 +110,11 @@ export function exampleProductProperties(): {
         ],
       },
       {
+        type: "Discrete",
         sortNo: 4,
         selectorType: "RadioGroup",
         name: "d",
         group: "Group1",
-        quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [
@@ -124,11 +139,11 @@ export function exampleProductProperties(): {
         ],
       },
       {
+        type: "Discrete",
         sortNo: 5,
         selectorType: "Checkbox",
         name: "e",
         group: "Group1",
-        quantity: "Discrete",
         validationFilter: PropertyFilter.Empty,
         visibilityFilter: PropertyFilter.Empty,
         items: [

@@ -1,83 +1,64 @@
 import { useState } from "react";
-import { Unit, UnitMap, UnitFormat } from "uom";
 import { PropertyValueSet, PropertyValue, PropertyFilter } from "@promaster-sdk/property";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import { exhaustiveCheck } from "@promaster-sdk/property/lib/utils/exhaustive-check";
 import { DiscretePropertySelectorOptions, GetItemFilter, GetItemValue, ItemComparer } from "../discrete";
-import { UseAmountPropertySelectorOptions } from "../amount";
+import { formatsArrayToZipList, SelectableFormat, UnitLabels, UseAmountPropertySelectorOptions } from "../amount";
 import { UseTextboxPropertySelectorOptions } from "../textbox";
 
-export type GetPropertyInfo<TProperty> = (property: TProperty) => PropertyInfo;
-export type GetPropertyItems<TItem, TProperty> = (property: TProperty) => ReadonlyArray<TItem>;
+export type GetPropertyInfo<TPropertyDef, TPropertyValueDef> = (
+  property: TPropertyDef
+) => PropertyInfo<TPropertyValueDef>;
+
 export type OnPropertiesChanged = (
   properties: PropertyValueSet.PropertyValueSet,
   propertyNames: ReadonlyArray<string>
 ) => void;
-export type UsePropertiesSelectorAmountFormat = {
-  readonly unit: Unit.Unit<unknown>;
-  readonly decimalCount: number;
-};
-export type PropertyFormats = { readonly [key: string]: UsePropertiesSelectorAmountFormat };
 
-export type UsePropertiesSelectorOptions<TItem, TProperty> = {
+export type UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef> = {
   /**
    * An array of objects representing the properties that should be selectable. The type of the objects can be
    * anything the application wants, so the application also needs to provide several functions
    * to extract information from these objects that the selector needs.
    */
-  readonly properties: ReadonlyArray<TProperty>;
-
+  readonly properties: ReadonlyArray<TPropertyDef>;
   /**
    * From a property object, extract information needed by the selector.
    */
-  readonly getPropertyInfo: GetPropertyInfo<TProperty>;
-
-  /**
-   * From a property object, extract items (applies to discrete properties only).
-   */
-  readonly getPropertyItems: GetPropertyItems<TItem, TProperty>;
-
+  readonly getPropertyInfo: GetPropertyInfo<TPropertyDef, TPropertyValueDef>;
   /**
    * From an item object, extract the property value.
    */
-  readonly getItemValue: GetItemValue<TItem>;
-
+  readonly getItemValue: GetItemValue<TPropertyValueDef>;
   /**
    * From an item, get the property filter. The items can be any object the application wants, so therefore the
    * application must provide this function to extract the property value from the item.
    */
-  readonly getItemFilter: GetItemFilter<TItem>;
-
+  readonly getItemFilter: GetItemFilter<TPropertyValueDef>;
   /**
    * Get an item that corresponds to a property value of undefined. This item will be shown
    * in eg. a dropdown when the value of the property is undefiend.
    */
-  readonly getUndefinedValueItem: () => TItem;
-
+  readonly getUndefinedValueItem: () => TPropertyValueDef;
   /**
    * The currently selected properties in the selector.
    */
   readonly selectedProperties: PropertyValueSet.PropertyValueSet;
-
   /**
    * Will be called when selected properties changes.
    */
   readonly onChange?: OnPropertiesChanged;
-
   /**
    * Will be called when the user selects a different format (unit, decimals) for an amount property.
    */
-  readonly onPropertyFormatChanged?: (propertyName: string, unit: Unit.Unit<unknown>, decimalCount: number) => void;
-
+  readonly onPropertyFormatChanged?: (propertyName: string, selectedFormat: SelectableFormat) => void;
   /**
    * Will be called when the user wants to reset the format of a property to the default.
    */
   readonly onPropertyFormatCleared?: (propertyName: string) => void;
 
-  /**
-   * A callback used by the selector to ask the application which format (unit, decimals) to use for an amount property.
-   */
-  readonly getPropertyFormat?: (propertyName: string) => UsePropertiesSelectorAmountFormat | undefined;
+  // Debounce value for inputs in ms. Defaults to 350.
+  readonly inputDebounceTime?: number;
 
   // Used to print error messages
   readonly filterPrettyPrint?: PropertyFiltering.FilterPrettyPrint;
@@ -96,54 +77,63 @@ export type UsePropertiesSelectorOptions<TItem, TProperty> = {
   // Sort valid values first
   readonly sortValidFirst?: boolean;
 
-  // Use customUnits
-  readonly unitsFormat: {
-    readonly [key: string]: UnitFormat.UnitFormat;
-  };
-  readonly units: UnitMap.UnitMap;
-  readonly unitLookup: UnitMap.UnitLookup;
-
-  // Debounce value for inputs in ms. Defaults to 350.
-  readonly inputDebounceTime?: number;
-
   // Group handling
   readonly initiallyClosedGroups?: ReadonlyArray<string>;
 
   // Comparer
   readonly valueComparer?: PropertyValue.Comparer;
-  readonly itemComparer?: ItemComparer<TItem>;
-  readonly propertyComparer?: (a: TProperty, b: TProperty) => number;
+  readonly itemComparer?: ItemComparer<TPropertyValueDef>;
+  readonly propertyComparer?: (a: TPropertyDef, b: TPropertyDef) => number;
+
+  readonly unitLables: UnitLabels;
 };
 
-export type PropertyInfo = {
+export type BasePropertyInfo = {
   readonly name: string;
   readonly group: string;
-  readonly quantity: string;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly visibilityFilter: PropertyFilter.PropertyFilter;
   readonly isReadonly?: boolean;
   readonly isOptional?: boolean;
 };
 
-export type GroupToggleButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
+export type PropertyInfo<TPropertyValueDef> =
+  | DiscretePropertyInfo<TPropertyValueDef>
+  | TextPropertyInfo
+  | AmountPropertyInfo;
 
-export type UsePropertiesSelector<TItem, TProperty> = {
-  readonly getPropertySelectorHook: (property: TProperty) => PropertySelectorHookInfo<TItem>;
-  readonly groups: ReadonlyArray<string>;
-  // Used to add code if includeCodes is true
-  readonly getPropertyLabel: (property: TProperty, propertyText: string) => string;
-  // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
-  readonly isPropertyHidden: (property: TProperty) => boolean;
-  readonly isPropertyValid: (property: TProperty) => boolean;
-  readonly getGroupToggleButtonProps: (group: string) => GroupToggleButtonProps;
-  readonly isGroupClosed: (group: string) => boolean;
-  readonly getGroupProperties: (group: string) => ReadonlyArray<TProperty>;
+export type DiscretePropertyInfo<TPropertyValueDef> = BasePropertyInfo & {
+  readonly type: "Discrete";
+  readonly items: ReadonlyArray<TPropertyValueDef>;
 };
 
-export type PropertySelectorHookInfo<TItem> =
+export type TextPropertyInfo = BasePropertyInfo & { readonly type: "Text" };
+
+export type AmountPropertyInfo = BasePropertyInfo & {
+  readonly type: "Amount";
+  readonly selectableFormats: ReadonlyArray<SelectableFormat>;
+  readonly selectedFormat: SelectableFormat;
+};
+
+export type GroupToggleButtonProps = { readonly onClick: React.MouseEventHandler<{}> };
+
+export type UsePropertiesSelectorHook<TPropertyDef, TPropertyValueDef> = {
+  readonly getPropertySelectorHookInfo: (property: TPropertyDef) => PropertySelectorHookInfo<TPropertyValueDef>;
+  readonly groups: ReadonlyArray<string>;
+  // Used to add code if includeCodes is true
+  readonly getPropertyLabel: (property: TPropertyDef, propertyText: string) => string;
+  // If includeHiddenProperties was specified, the selector may have been rendered even if it is supposed to be hidden
+  readonly isPropertyHidden: (property: TPropertyDef) => boolean;
+  readonly isPropertyValid: (property: TPropertyDef) => boolean;
+  readonly getGroupToggleButtonProps: (group: string) => GroupToggleButtonProps;
+  readonly isGroupClosed: (group: string) => boolean;
+  readonly getGroupProperties: (group: string) => ReadonlyArray<TPropertyDef>;
+};
+
+export type PropertySelectorHookInfo<TPropertyValueDef> =
   | {
       readonly type: "Discrete";
-      readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TItem>;
+      readonly getUseDiscreteOptions: () => DiscretePropertySelectorOptions<TPropertyValueDef>;
     }
   | {
       readonly type: "AmountField";
@@ -154,9 +144,9 @@ export type PropertySelectorHookInfo<TItem> =
       readonly getUseTextboxOptions: () => UseTextboxPropertySelectorOptions;
     };
 
-export function usePropertiesSelector<TItem, TProperty>(
-  options: UsePropertiesSelectorOptions<TItem, TProperty>
-): UsePropertiesSelector<TItem, TProperty> {
+export function usePropertiesSelector<TPropertyDef, TPropertyValueDef>(
+  options: UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef>
+): UsePropertiesSelectorHook<TPropertyDef, TPropertyValueDef> {
   const requiredOptions = optionsWithDefaults(options);
 
   const {
@@ -169,7 +159,6 @@ export function usePropertiesSelector<TItem, TProperty>(
     showCodes,
     getItemFilter,
     getItemValue,
-    getPropertyItems,
   } = requiredOptions;
 
   // Get sorted properties and only include the ones that should be visible
@@ -181,14 +170,14 @@ export function usePropertiesSelector<TItem, TProperty>(
       return includeHiddenProperties || PropertyFilter.isValid(selectedProperties, pi.visibilityFilter, valueComparer);
     });
 
-  const selectorHookMap: Map<TProperty, PropertySelectorHookInfo<TItem>> = new Map(
+  const selectorHookMap: Map<TPropertyDef, PropertySelectorHookInfo<TPropertyValueDef>> = new Map(
     properties.map((p) => [p, createSelectorHookInfo(p, requiredOptions)])
   );
 
   const [closedGroups, setClosedGroups] = useState<ReadonlyArray<string>>(requiredOptions.initiallyClosedGroups);
 
   return {
-    getPropertySelectorHook: (property) => selectorHookMap.get(property)!,
+    getPropertySelectorHookInfo: (property) => selectorHookMap.get(property)!,
     getGroupToggleButtonProps: (group: string) => ({
       onClick: () =>
         setClosedGroups(
@@ -207,8 +196,9 @@ export function usePropertiesSelector<TItem, TProperty>(
     },
     isPropertyValid: (property) => {
       const pi = getPropertyInfo(property);
+      const propertyItems = pi.type === "Discrete" ? pi.items : undefined;
       const selectedItemValue = PropertyValueSet.getValue(pi.name, selectedProperties);
-      const selectedItem = getSelectedItem(selectedItemValue, property, getItemValue, getPropertyItems, valueComparer);
+      const selectedItem = getSelectedItem(propertyItems, selectedItemValue, getItemValue, valueComparer);
       return getIsValid(pi, selectedItem, selectedProperties, valueComparer, getItemFilter);
     },
     isGroupClosed: (group: string) => closedGroups.indexOf(group) !== -1,
@@ -218,13 +208,12 @@ export function usePropertiesSelector<TItem, TProperty>(
   };
 }
 
-function createSelectorHookInfo<TItem, TProperty>(
-  property: TProperty,
-  options: Required<UsePropertiesSelectorOptions<TItem, TProperty>>
-): PropertySelectorHookInfo<TItem> {
+function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
+  property: TPropertyDef,
+  options: Required<UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef>>
+): PropertySelectorHookInfo<TPropertyValueDef> {
   const {
     selectedProperties,
-    getPropertyFormat,
     valueComparer,
     properties,
     autoSelectSingleValidValue,
@@ -234,8 +223,6 @@ function createSelectorHookInfo<TItem, TProperty>(
     valueIsRequiredMessage,
     onChange,
     filterPrettyPrint,
-    units,
-    unitsFormat,
     onPropertyFormatChanged,
     onPropertyFormatCleared,
     lockSingleValidValue,
@@ -245,17 +232,14 @@ function createSelectorHookInfo<TItem, TProperty>(
     getItemFilter,
     itemComparer,
     getPropertyInfo,
-    getPropertyItems,
+    unitLables,
   } = options;
 
   const propertyInfo = getPropertyInfo(property);
 
-  const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
-  const selectedItem = getSelectedItem(selectedItemValue, property, getItemValue, getPropertyItems, valueComparer);
-
-  // TODO: Better handling of format to use when the format is missing in the map
-  const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
-  const propertyFormat = getPropertyFormat(propertyInfo.name) || defaultFormat;
+  // // TODO: Better handling of format to use when the format is missing in the map
+  // const defaultFormat = getDefaultFormat(propertyInfo, selectedItemValue);
+  // const propertyFormat = getPropertyFormat(propertyInfo.name) || defaultFormat;
 
   const readOnly = !!propertyInfo.isReadonly;
   const propertyOnChange = handleChange(
@@ -266,21 +250,9 @@ function createSelectorHookInfo<TItem, TProperty>(
     getItemValue,
     getItemFilter,
     getPropertyInfo,
-    getPropertyItems
+    propertyInfo.type === "Discrete" ? propertyInfo.items : []
   );
   const propertyName = propertyInfo.name;
-  // const valueItems = propertyInfo.items;
-  const locked =
-    autoSelectSingleValidValue || lockSingleValidValue
-      ? shouldBeLocked(
-          selectedItem,
-          getPropertyItems(property),
-          propertyInfo,
-          selectedProperties,
-          valueComparer,
-          getItemFilter
-        )
-      : false;
 
   function onValueChange(newValue: PropertyValue.PropertyValue): void {
     propertyOnChange(
@@ -291,9 +263,8 @@ function createSelectorHookInfo<TItem, TProperty>(
     );
   }
 
-  const selectorType = getSelectorType(propertyInfo);
-  switch (selectorType) {
-    case "TextBox": {
+  switch (propertyInfo.type) {
+    case "Text": {
       return {
         type: "TextBox",
         getUseTextboxOptions: () => ({
@@ -305,16 +276,15 @@ function createSelectorHookInfo<TItem, TProperty>(
         }),
       };
     }
-    case "AmountField": {
+    case "Amount": {
       return {
         type: "AmountField",
         getUseAmountOptions: () => ({
           propertyName,
           propertyValueSet: selectedProperties,
-          inputUnit: propertyFormat.unit,
-          inputDecimalCount: propertyFormat.decimalCount,
-          onFormatChanged: (unit: Unit.Unit<unknown>, decimalCount: number) =>
-            onPropertyFormatChanged(propertyName, unit, decimalCount),
+          onFormatChanged: (format: SelectableFormat) => {
+            onPropertyFormatChanged(propertyName, format);
+          },
           onFormatCleared: () => onPropertyFormatCleared(propertyName),
           onValueChange,
           notNumericMessage: valueMustBeNumericMessage,
@@ -324,12 +294,22 @@ function createSelectorHookInfo<TItem, TProperty>(
           filterPrettyPrint,
           readOnly: readOnly,
           debounceTime: inputDebounceTime,
-          unitsFormat,
-          units,
+          getSelectableFormats: () => {
+            return formatsArrayToZipList(propertyInfo.selectableFormats ?? [], propertyInfo.selectedFormat);
+          },
+          unitLabels: unitLables,
         }),
       };
     }
-    case "Discrete":
+    case "Discrete": {
+      const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
+      const selectedItem = getSelectedItem(propertyInfo.items, selectedItemValue, getItemValue, valueComparer);
+
+      const locked =
+        autoSelectSingleValidValue || lockSingleValidValue
+          ? shouldBeLocked(selectedItem, propertyInfo.items, selectedProperties, valueComparer, getItemFilter)
+          : false;
+
       return {
         type: "Discrete",
         getUseDiscreteOptions: () => ({
@@ -339,7 +319,7 @@ function createSelectorHookInfo<TItem, TProperty>(
           sortValidFirst,
           propertyName,
           propertyValueSet: selectedProperties,
-          items: getPropertyItems(property),
+          items: propertyInfo.items,
           showCodes: showCodes,
           filterPrettyPrint,
           onValueChange,
@@ -347,19 +327,18 @@ function createSelectorHookInfo<TItem, TProperty>(
           itemComparer,
         }),
       };
+    }
     default:
-      return exhaustiveCheck(selectorType, true);
+      return exhaustiveCheck(propertyInfo, true);
   }
 }
 
-function getSelectedItem<TItem, TProperty>(
+function getSelectedItem<TPropertyValueDef>(
+  items: ReadonlyArray<TPropertyValueDef> | undefined,
   selectedItemValue: PropertyValue.PropertyValue,
-  property: TProperty,
-  getItemValue: GetItemValue<TItem>,
-  getPropertyItems: GetPropertyItems<TItem, TProperty>,
+  getItemValue: GetItemValue<TPropertyValueDef>,
   valueComparer: PropertyValue.Comparer
-): TItem | undefined {
-  const items = getPropertyItems(property);
+): TPropertyValueDef | undefined {
   const selectedItem =
     items &&
     items.find((item) => {
@@ -372,41 +351,19 @@ function getSelectedItem<TItem, TProperty>(
   return selectedItem;
 }
 
-function getDefaultFormat(
-  property: PropertyInfo,
-  selectedValue: PropertyValue.PropertyValue
-): UsePropertiesSelectorAmountFormat {
-  const defaultFormat: UsePropertiesSelectorAmountFormat = { unit: Unit.One, decimalCount: 2 };
-  const propertyType = getPropertyType(property.quantity);
-  switch (propertyType) {
-    case "text":
-    case "integer":
-      return defaultFormat;
-    case "amount":
-      return selectedValue && selectedValue.type === "amount"
-        ? {
-            unit: selectedValue.value.unit,
-            decimalCount: selectedValue.value.decimalCount,
-          }
-        : defaultFormat;
-    default:
-      return exhaustiveCheck(propertyType, true);
-  }
-}
-
-function getIsValid<TItem>(
-  property: PropertyInfo,
-  selectedValueItem: TItem | undefined,
+function getIsValid<TPropertyValueDef>(
+  property: PropertyInfo<TPropertyValueDef>,
+  selectedValueItem: TPropertyValueDef | undefined,
   selectedProperties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
-  getItemFilter: GetItemFilter<TItem>
+  getItemFilter: GetItemFilter<TPropertyValueDef>
 ): boolean {
-  switch (getPropertyType(property.quantity)) {
-    case "integer":
+  switch (property.type) {
+    case "Discrete":
       return selectedValueItem
         ? PropertyFilter.isValid(selectedProperties, getItemFilter(selectedValueItem), comparer)
         : false;
-    case "amount":
+    case "Amount":
       return (
         property.validationFilter && PropertyFilter.isValid(selectedProperties, property.validationFilter, comparer)
       );
@@ -415,42 +372,14 @@ function getIsValid<TItem>(
   }
 }
 
-function getSelectorType<TItem>(propertyInfo: PropertyInfo): PropertySelectorHookInfo<TItem>["type"] {
-  if (propertyInfo.quantity === "Text") {
-    return "TextBox";
-  } else if (propertyInfo.quantity === "Discrete") {
-    return "Discrete";
-  } else {
-    return "AmountField";
-  }
-}
-
-function getPropertyType(quantity: string): PropertyValue.PropertyType {
-  switch (quantity) {
-    case "Text":
-      return "text";
-    case "Discrete":
-      return "integer";
-    default:
-      return "amount";
-  }
-}
-
-function shouldBeLocked<TItem>(
-  selectedValueItem: TItem | undefined,
-  propertyItems: ReadonlyArray<TItem>,
-  propertyInfo: PropertyInfo,
+function shouldBeLocked<TPropertyValueDef>(
+  selectedValueItem: TPropertyValueDef | undefined,
+  propertyItems: ReadonlyArray<TPropertyValueDef>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
-  getItemFilter: GetItemFilter<TItem>
+  getItemFilter: GetItemFilter<TPropertyValueDef>
 ): boolean {
-  const singleValidValue = getSingleValidItemOrUndefined(
-    propertyItems,
-    propertyInfo,
-    properties,
-    comparer,
-    getItemFilter
-  );
+  const singleValidValue = getSingleValidItemOrUndefined(propertyItems, properties, comparer, getItemFilter);
 
   // getSingleValidValueOrUndefined only works on onChange.
   // Prevent locking when the sent in selectedValue isn't the singleValidValue
@@ -461,15 +390,15 @@ function shouldBeLocked<TItem>(
   return false;
 }
 
-function handleChange<TItem, TPropety>(
+function handleChange<TPropertyValueDef, TPropertyDef>(
   externalOnChange: OnPropertiesChanged,
-  productProperties: ReadonlyArray<TPropety>,
+  productProperties: ReadonlyArray<TPropertyDef>,
   autoSelectSingleValidValue: boolean,
   comparer: PropertyValue.Comparer,
-  getItemValue: GetItemValue<TItem>,
-  getItemFilter: GetItemFilter<TItem>,
-  getPropertyInfo: GetPropertyInfo<TPropety>,
-  getPropertyItems: GetPropertyItems<TItem, TPropety>
+  getItemValue: GetItemValue<TPropertyValueDef>,
+  getItemFilter: GetItemFilter<TPropertyValueDef>,
+  getPropertyInfo: GetPropertyInfo<TPropertyDef, TPropertyValueDef>,
+  propertyItems: ReadonlyArray<TPropertyValueDef>
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
   return (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => {
     if (!autoSelectSingleValidValue) {
@@ -486,14 +415,7 @@ function handleChange<TItem, TPropety>(
         if (propertyInfo.name === propertyName) {
           continue;
         }
-        const propertyItems = getPropertyItems(property);
-        const singleItem = getSingleValidItemOrUndefined(
-          propertyItems,
-          propertyInfo,
-          properties,
-          comparer,
-          getItemFilter
-        );
+        const singleItem = getSingleValidItemOrUndefined(propertyItems, properties, comparer, getItemFilter);
         const singleItemValue = singleItem && getItemValue(singleItem);
         if (singleItem && singleItemValue) {
           properties = PropertyValueSet.set(propertyInfo.name, singleItemValue, properties);
@@ -512,30 +434,27 @@ function handleChange<TItem, TPropety>(
   };
 }
 
-function getSingleValidItemOrUndefined<TItem>(
-  propertyItems: ReadonlyArray<TItem>,
-  propertyInfo: PropertyInfo,
+function getSingleValidItemOrUndefined<TPropertyValueDef>(
+  propertyItems: ReadonlyArray<TPropertyValueDef>,
   properties: PropertyValueSet.PropertyValueSet,
   comparer: PropertyValue.Comparer,
-  getItemFilter: GetItemFilter<TItem>
-): TItem | undefined {
-  if (propertyInfo.quantity === "Discrete") {
-    const validPropertyValueItems: Array<TItem> = [];
-    for (const productValueItem of propertyItems) {
-      const isValid = PropertyFilter.isValid(properties, getItemFilter(productValueItem), comparer);
+  getItemFilter: GetItemFilter<TPropertyValueDef>
+): TPropertyValueDef | undefined {
+  const validPropertyValueItems: Array<TPropertyValueDef> = [];
+  for (const productValueItem of propertyItems) {
+    const isValid = PropertyFilter.isValid(properties, getItemFilter(productValueItem), comparer);
 
-      if (isValid) {
-        validPropertyValueItems.push(productValueItem);
-      }
+    if (isValid) {
+      validPropertyValueItems.push(productValueItem);
     }
-
-    return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : undefined;
   }
 
-  return undefined;
+  return validPropertyValueItems.length === 1 ? validPropertyValueItems[0] : undefined;
 }
 
-function getDistinctGroupNames(pis: ReadonlyArray<PropertyInfo>): ReadonlyArray<string> {
+function getDistinctGroupNames<TPropertyValueDef>(
+  pis: ReadonlyArray<PropertyInfo<TPropertyValueDef>>
+): ReadonlyArray<string> {
   const groupNames: Array<string> = [];
   for (const pi of pis) {
     // let groupName = property.groupName;
@@ -553,22 +472,14 @@ function isNullOrWhiteSpace(str: string): boolean {
   return str === null || str === undefined || str.length < 1 || str.replace(/\s/g, "").length < 1;
 }
 
-function optionsWithDefaults<TItem, TPropety>(
-  options: UsePropertiesSelectorOptions<TItem, TPropety>
-): Required<UsePropertiesSelectorOptions<TItem, TPropety>> {
+function optionsWithDefaults<TPropertyDef, TPropertyValueDef>(
+  options: UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef>
+): Required<UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef>> {
   return {
     ...options,
     filterPrettyPrint:
-      options.filterPrettyPrint ||
-      ((propertyFilter: PropertyFilter.PropertyFilter) =>
-        PropertyFiltering.filterPrettyPrintIndented(
-          PropertyFiltering.buildEnglishMessages(options.unitsFormat),
-          2,
-          " ",
-          propertyFilter,
-          options.unitsFormat,
-          options.unitLookup
-        )),
+      options.filterPrettyPrint ??
+      ((propertyFilter: PropertyFilter.PropertyFilter) => PropertyFilter.toString(propertyFilter)),
 
     showCodes: options.showCodes || false,
     includeHiddenProperties: options.includeHiddenProperties || false,
@@ -576,15 +487,11 @@ function optionsWithDefaults<TItem, TPropety>(
     lockSingleValidValue: options.lockSingleValidValue || false,
     onChange:
       options.onChange || ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
-    onPropertyFormatChanged:
-      options.onPropertyFormatChanged || ((_a: string, _b: Unit.Unit<unknown>, _c: number) => ({})),
+    onPropertyFormatChanged: options.onPropertyFormatChanged || ((_a: string, _b: SelectableFormat) => ({})),
     onPropertyFormatCleared: options.onPropertyFormatCleared || ((_a: string) => ({})),
 
     valueMustBeNumericMessage: options.valueMustBeNumericMessage || "value_must_be_numeric",
     valueIsRequiredMessage: options.valueIsRequiredMessage || "value_is_required",
-
-    getPropertyFormat: options.getPropertyFormat || (() => undefined),
-
     inputDebounceTime: options.inputDebounceTime || 350,
 
     initiallyClosedGroups: options.initiallyClosedGroups || [],

@@ -113,7 +113,7 @@ function initStateFromParams({
     console.error("Missing inputUnit");
   }
   if (!(inputDecimalCount !== null && inputDecimalCount !== undefined)) {
-    console.error("Missing inputDecimalCount");
+    console.error("Missing inputDecimalCount", inputDecimalCount);
   }
   const formattedValue = formatWithUnitAndDecimalCount(value, inputUnit, inputDecimalCount);
   const newState = calculateNewState(value, formattedValue, isRequiredMessage, notNumericMessage, errorMessage);

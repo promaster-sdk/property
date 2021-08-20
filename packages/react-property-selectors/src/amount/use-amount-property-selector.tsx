@@ -1,20 +1,20 @@
 import { useCallback } from "react";
 import { PropertyValueSet, PropertyFilter, PropertyValue } from "@promaster-sdk/property";
-import { Amount, Unit, UnitFormat, UnitMap } from "uom";
+import { Amount } from "uom";
 import * as PropertyFiltering from "@promaster-sdk/property-filter-pretty";
 import {
-  UseAmountFormatSelector,
+  UseAmountFormatSelectorHook,
   useAmountFormatSelector,
   UseAmountFormatSelectorOnFormatChanged,
   UseAmountFormatSelectorOnFormatCleared,
+  GetSelectableFormats,
+  UnitLabels,
 } from "./use-amount-format-selector";
 import { UseAmountInputBox, useAmountInputBox } from "./use-amount-input-box";
 
 export type UseAmountPropertySelectorOptions = {
   readonly propertyName: string;
   readonly propertyValueSet: PropertyValueSet.PropertyValueSet;
-  readonly inputUnit: Unit.Unit<unknown>;
-  readonly inputDecimalCount: number;
   readonly validationFilter: PropertyFilter.PropertyFilter;
   readonly notNumericMessage: string;
   readonly isRequiredMessage: string;
@@ -24,17 +24,17 @@ export type UseAmountPropertySelectorOptions = {
   readonly onFormatCleared: UseAmountFormatSelectorOnFormatCleared;
   readonly onValueChange: (newValue: PropertyValue.PropertyValue | undefined) => void;
   readonly debounceTime?: number;
-  readonly unitsFormat: UnitFormat.UnitFormatMap;
-  readonly units: UnitMap.UnitMap;
   readonly comparer?: PropertyValue.Comparer;
+  readonly getSelectableFormats: GetSelectableFormats;
+  readonly unitLabels: UnitLabels;
 };
 
-export type UseAmountPropertySelector = {
+export type AmountPropertySelector = {
   readonly amountInputBox: UseAmountInputBox;
-  readonly amountFormatSelector: UseAmountFormatSelector;
+  readonly amountFormatSelector: UseAmountFormatSelectorHook;
 };
 
-export function useAmountPropertySelector(options: UseAmountPropertySelectorOptions): UseAmountPropertySelector {
+export function useAmountPropertySelector(options: UseAmountPropertySelectorOptions): AmountPropertySelector {
   const {
     onValueChange,
     onFormatChanged,
@@ -45,13 +45,11 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     propertyValueSet,
     propertyName,
     filterPrettyPrint,
-    inputUnit,
-    inputDecimalCount,
     readOnly,
     debounceTime = 350,
-    unitsFormat,
-    units,
+    getSelectableFormats,
     comparer = PropertyValue.defaultComparer,
+    unitLabels,
   } = options;
 
   const value: Amount.Amount<unknown> | undefined = PropertyValueSet.getAmount(propertyName, propertyValueSet);
@@ -63,10 +61,12 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     [onValueChange]
   );
 
+  const selectedFormat = getSelectableFormats().current;
+
   const amountInputBox = useAmountInputBox({
     value,
-    inputUnit,
-    inputDecimalCount,
+    inputUnit: selectedFormat.unit,
+    inputDecimalCount: selectedFormat.decimalCount,
     notNumericMessage,
     isRequiredMessage,
     readOnly,
@@ -74,13 +74,12 @@ export function useAmountPropertySelector(options: UseAmountPropertySelectorOpti
     errorMessage,
     onValueChange: onValueChangeCallback,
   });
+
   const amountFormatSelector = useAmountFormatSelector({
-    selectedUnit: inputUnit,
-    selectedDecimalCount: inputDecimalCount,
     onFormatChanged,
     onFormatCleared,
-    unitsFormat,
-    units,
+    getSelectableFormats: getSelectableFormats,
+    unitLabels,
   });
 
   return { amountInputBox, amountFormatSelector };

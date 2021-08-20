@@ -1,21 +1,43 @@
 import { Meta } from "@storybook/react";
 import React, { useCallback, useState } from "react";
-import { Unit, Amount, BaseUnits } from "uom";
-import { getDefaultAmountInputBoxStyle, useAmountFormatSelector, useAmountInputBox } from "../../amount";
-import { units, unitsFormat } from "../units-map";
+import { Amount, BaseUnits } from "uom";
+import {
+  formatsArrayToZipList,
+  getDefaultAmountInputBoxStyle,
+  SelectableFormat,
+  UnitLabels,
+  useAmountFormatSelector,
+  useAmountInputBox,
+} from "../../amount";
+import { units } from "../units-map";
 
-type State = {
-  readonly selectedUnit: Unit.Unit<unknown>;
-  readonly selectedDecimalCount: number;
+type StateX = {
+  readonly selectedFormat: SelectableFormat;
   readonly amount: Amount.Amount<unknown>;
 };
 
 export function Example1(): React.ReactElement<{}> {
-  const [state, setState] = useState<State>({
+  const selectableFormats: ReadonlyArray<SelectableFormat> = [
+    { unit: units.Meter, decimalCount: 1 },
+    { unit: units.Meter, decimalCount: 2 },
+    { unit: units.Meter, decimalCount: 3 },
+    { unit: units.CentiMeter, decimalCount: 1 },
+    { unit: units.CentiMeter, decimalCount: 2 },
+    { unit: units.Millimeter, decimalCount: 1 },
+  ];
+
+  const unitLabels: UnitLabels = {
+    Meter: "m",
+    CentiMeter: "cm",
+    Millimeter: "mm",
+  };
+
+  const test: StateX = {
+    selectedFormat: { unit: units.Meter, decimalCount: 1 },
     amount: Amount.create(10.0, BaseUnits.Meter),
-    selectedUnit: BaseUnits.Meter,
-    selectedDecimalCount: 2,
-  });
+  };
+
+  const [state, setState] = useState<StateX>(test);
 
   const onValueChange = useCallback(
     (amount) => {
@@ -26,8 +48,8 @@ export function Example1(): React.ReactElement<{}> {
 
   const selA = useAmountInputBox({
     value: state.amount,
-    inputUnit: state.selectedUnit,
-    inputDecimalCount: state.selectedDecimalCount,
+    inputUnit: state.selectedFormat.unit,
+    inputDecimalCount: state.selectedFormat.decimalCount,
     onValueChange,
     readOnly: false,
     errorMessage: "",
@@ -37,18 +59,11 @@ export function Example1(): React.ReactElement<{}> {
   });
 
   const fmtSel = useAmountFormatSelector({
-    selectedUnit: state.selectedUnit,
-    selectedDecimalCount: state.selectedDecimalCount,
-    onFormatChanged: (selectedUnit: Unit.Unit<unknown>, selectedDecimalCount: number) =>
-      setState({ ...state, selectedUnit, selectedDecimalCount }),
-    onFormatCleared: () =>
-      setState({
-        ...state,
-        selectedUnit: BaseUnits.Meter,
-        selectedDecimalCount: 2,
-      }),
-    unitsFormat: unitsFormat,
-    units: units,
+    getSelectableFormats: () => formatsArrayToZipList(selectableFormats, state.selectedFormat),
+    onFormatChanged: (format: SelectableFormat) => setState({ ...state, selectedFormat: format }),
+    onFormatCleared: () => setState({ ...state, selectedFormat: { unit: units.Meter, decimalCount: 1 } }),
+
+    unitLabels: unitLabels,
   });
 
   return (
@@ -67,16 +82,16 @@ export function Example1(): React.ReactElement<{}> {
                   <option {...fmtSel.getUnitItemProps(index)}> {item.label} </option>
                 ))}
               </select>
-              <select {...fmtSel.getPrecisionSelectProps()}>
-                {fmtSel.precisionItems.map((item, index) => (
-                  <option {...fmtSel.getPrecisionItemProps(index)}>{item.label}</option>
+              <select {...fmtSel.getDecimalCountSelectProps()}>
+                {fmtSel.decimalCountItems.map((item, index) => (
+                  <option {...fmtSel.getDecimalCountItemProps(index)}>{item.label}</option>
                 ))}
               </select>
-              {fmtSel.showClearButton && <button {...fmtSel.getClearButtonProps()}>Cancel</button>}
-              <button {...fmtSel.getCancelButtonProps()}>Clear</button>
+              {fmtSel.showClearButton && <button {...fmtSel.getCancelButtonProps()}>Cancel</button>}
+              <button {...fmtSel.getClearButtonProps()}>Clear</button>
             </>
           ) : (
-            fmtSel.label
+            fmtSel.selectedUnitItem.label
           )}
         </span>
       </div>
