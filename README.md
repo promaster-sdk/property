@@ -1,5 +1,7 @@
 # @promaster-sdk/property
 
+The the code is provided as-is without support. It is possible to get support by separate agreement with [Divid Promaster AB](https://promaster.se).
+
 [![build][build-image]][build-url]
 [![Coverage Status][codecov-image]][codecov-url]
 [![code style: prettier][prettier-image]][prettier-url]
