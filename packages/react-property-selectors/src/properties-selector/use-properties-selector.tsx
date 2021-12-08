@@ -249,8 +249,7 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
     valueComparer,
     getItemValue,
     getItemFilter,
-    getPropertyInfo,
-    propertyInfo.type === "Discrete" ? propertyInfo.items : []
+    getPropertyInfo
   );
   const propertyName = propertyInfo.name;
 
@@ -305,10 +304,9 @@ function createSelectorHookInfo<TPropertyDef, TPropertyValueDef>(
       const selectedItemValue = PropertyValueSet.getValue(propertyInfo.name, selectedProperties);
       const selectedItem = getSelectedItem(propertyInfo.items, selectedItemValue, getItemValue, valueComparer);
 
-      const locked =
-        autoSelectSingleValidValue || lockSingleValidValue
-          ? shouldBeLocked(selectedItem, propertyInfo.items, selectedProperties, valueComparer, getItemFilter)
-          : false;
+      const locked = lockSingleValidValue
+        ? isSingleValidValue(selectedItem, propertyInfo.items, selectedProperties, valueComparer, getItemFilter)
+        : false;
 
       return {
         type: "Discrete",
@@ -372,7 +370,7 @@ function getIsValid<TPropertyValueDef>(
   }
 }
 
-function shouldBeLocked<TPropertyValueDef>(
+function isSingleValidValue<TPropertyValueDef>(
   selectedValueItem: TPropertyValueDef | undefined,
   propertyItems: ReadonlyArray<TPropertyValueDef>,
   properties: PropertyValueSet.PropertyValueSet,
@@ -397,8 +395,7 @@ function handleChange<TPropertyValueDef, TPropertyDef>(
   comparer: PropertyValue.Comparer,
   getItemValue: GetItemValue<TPropertyValueDef>,
   getItemFilter: GetItemFilter<TPropertyValueDef>,
-  getPropertyInfo: GetPropertyInfo<TPropertyDef, TPropertyValueDef>,
-  propertyItems: ReadonlyArray<TPropertyValueDef>
+  getPropertyInfo: GetPropertyInfo<TPropertyDef, TPropertyValueDef>
 ): (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => void {
   return (properties: PropertyValueSet.PropertyValueSet, propertyName: string) => {
     if (!autoSelectSingleValidValue) {
@@ -412,10 +409,10 @@ function handleChange<TPropertyValueDef, TPropertyDef>(
     for (let i = 0; i < 4; i++) {
       for (const property of productProperties) {
         const propertyInfo = getPropertyInfo(property);
-        if (propertyInfo.name === propertyName) {
+        if (propertyInfo.name === propertyName || propertyInfo.type !== "Discrete") {
           continue;
         }
-        const singleItem = getSingleValidItemOrUndefined(propertyItems, properties, comparer, getItemFilter);
+        const singleItem = getSingleValidItemOrUndefined(propertyInfo.items, properties, comparer, getItemFilter);
         const singleItemValue = singleItem && getItemValue(singleItem);
         if (singleItem && singleItemValue) {
           properties = PropertyValueSet.set(propertyInfo.name, singleItemValue, properties);
@@ -481,24 +478,24 @@ function optionsWithDefaults<TPropertyDef, TPropertyValueDef>(
       options.filterPrettyPrint ??
       ((propertyFilter: PropertyFilter.PropertyFilter) => PropertyFilter.toString(propertyFilter)),
 
-    showCodes: options.showCodes || false,
-    includeHiddenProperties: options.includeHiddenProperties || false,
-    autoSelectSingleValidValue: options.autoSelectSingleValidValue || true,
-    lockSingleValidValue: options.lockSingleValidValue || false,
+    showCodes: options.showCodes ?? false,
+    includeHiddenProperties: options.includeHiddenProperties ?? false,
+    autoSelectSingleValidValue: options.autoSelectSingleValidValue ?? true,
+    lockSingleValidValue: options.lockSingleValidValue ?? false,
     onChange:
-      options.onChange || ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
-    onPropertyFormatChanged: options.onPropertyFormatChanged || ((_a: string, _b: SelectableFormat) => ({})),
-    onPropertyFormatCleared: options.onPropertyFormatCleared || ((_a: string) => ({})),
+      options.onChange ?? ((_a: PropertyValueSet.PropertyValueSet, _propertyName: ReadonlyArray<string>) => ({})),
+    onPropertyFormatChanged: options.onPropertyFormatChanged ?? ((_a: string, _b: SelectableFormat) => ({})),
+    onPropertyFormatCleared: options.onPropertyFormatCleared ?? ((_a: string) => ({})),
 
-    valueMustBeNumericMessage: options.valueMustBeNumericMessage || "value_must_be_numeric",
-    valueIsRequiredMessage: options.valueIsRequiredMessage || "value_is_required",
-    inputDebounceTime: options.inputDebounceTime || 350,
+    valueMustBeNumericMessage: options.valueMustBeNumericMessage ?? "value_must_be_numeric",
+    valueIsRequiredMessage: options.valueIsRequiredMessage ?? "value_is_required",
+    inputDebounceTime: options.inputDebounceTime ?? 350,
 
-    initiallyClosedGroups: options.initiallyClosedGroups || [],
+    initiallyClosedGroups: options.initiallyClosedGroups ?? [],
 
-    valueComparer: options.valueComparer || PropertyValue.defaultComparer,
-    sortValidFirst: options.sortValidFirst || false,
-    itemComparer: options.itemComparer || (() => 0),
-    propertyComparer: options.propertyComparer || (() => 0),
+    valueComparer: options.valueComparer ?? PropertyValue.defaultComparer,
+    sortValidFirst: options.sortValidFirst ?? false,
+    itemComparer: options.itemComparer ?? (() => 0),
+    propertyComparer: options.propertyComparer ?? (() => 0),
   };
 }

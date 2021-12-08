@@ -267,13 +267,13 @@ function fillOptionsWithDefualts<TItem>(
 ): Required<DiscretePropertySelectorOptions<TItem>> {
   return {
     ...options,
-    sortValidFirst: options.sortValidFirst || false,
-    showCodes: options.showCodes || false,
-    disabled: options.disabled || false,
-    filterPrettyPrint: options.filterPrettyPrint || ((f) => PropertyFilter.toString(f)),
-    valueComparer: options.valueComparer || PropertyValue.defaultComparer,
-    falseItemIndex: options.falseItemIndex || 0,
-    trueItemIndex: options.trueItemIndex || 1,
+    sortValidFirst: options.sortValidFirst ?? false,
+    showCodes: options.showCodes ?? false,
+    disabled: options.disabled ?? false,
+    filterPrettyPrint: options.filterPrettyPrint ?? ((f) => PropertyFilter.toString(f)),
+    valueComparer: options.valueComparer ?? PropertyValue.defaultComparer,
+    falseItemIndex: options.falseItemIndex ?? 0,
+    trueItemIndex: options.trueItemIndex ?? 1,
     itemComparer: () => 0,
   };
 }
