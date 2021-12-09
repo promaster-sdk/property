@@ -63,5 +63,3 @@ It will build the packages and call `lerna publish` which will figure out which 
 [u-rp]: https://www.npmjs.com/package/@promaster-sdk/react-properties-selector
 [i-vl]: https://img.shields.io/npm/v/@promaster-sdk/variant-listing.svg?style=flat
 [u-vl]: https://www.npmjs.com/package/@promaster-sdk/variant-listing
-
-a
