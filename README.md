@@ -1,6 +1,6 @@
 # @promaster-sdk/property
 
-Softwre Development Kit for [promaster](https://promaster.se). The the code is provided as-is without support. It is possible to get support by separate agreement with [Divid Promaster AB](https://promaster.se).
+Software Development Kit for [promaster](https://promaster.se). The the code is provided as-is without support. It is possible to get support by separate agreement with [Divid Promaster AB](https://promaster.se).
 
 [![build][build-image]][build-url]
 [![Coverage Status][codecov-image]][codecov-url]
