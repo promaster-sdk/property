@@ -129,8 +129,8 @@ export function Example2(): React.ReactElement<{}> {
       return retVal;
     },
     unitLables: unitLabels,
-    autoSelectSingleValidValue: false,
-    lockSingleValidValue: true,
+    autoSelectSingleValidValue: autoSelectSingleValidValue,
+    lockSingleValidValue: lockSingleValidValue,
   };
 
   const sel = usePropertiesSelector(selOptions);
