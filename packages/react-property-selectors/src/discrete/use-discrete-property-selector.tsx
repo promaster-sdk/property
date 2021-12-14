@@ -56,6 +56,7 @@ export type DiscretePropertySelector<TItem> = {
   readonly getDropdownListItemProps: (item: TItem) => React.LiHTMLAttributes<HTMLLIElement>;
   readonly getRadioItemProps: (item: TItem) => React.HTMLAttributes<HTMLDivElement>;
   readonly getCheckboxDivProps: () => React.HTMLAttributes<HTMLDivElement>;
+  readonly setIsOpen: (toggle: boolean) => void;
 };
 
 export function useDiscretePropertySelector<TItem>(
@@ -159,8 +160,10 @@ export function useDiscretePropertySelector<TItem>(
     getCheckboxDivProps: () => ({
       onClick: () => onValueChange(isTrueItem ? getItemValue(falseItem)!! : getItemValue(trueItem)!!),
     }),
-
     items: selectableItems,
+    setIsOpen: (toggle) => {
+      setIsOpen(toggle);
+    },
   };
 }
 

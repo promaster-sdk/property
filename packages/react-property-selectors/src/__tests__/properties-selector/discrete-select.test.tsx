@@ -110,4 +110,21 @@ describe("Test <DiscreteSelectTestComponent />", () => {
     expect(optionA1.selected).toBeFalsy();
     expect(optionA2.selected).toBeTruthy();
   });
+
+  it("Select should toggle when pressing a button with setIsOpen(!setIsOpen) once", async () => {
+    render(<DiscreteSelectTestComponent />);
+    const selectA = screen.getByTestId("button-select_a") as HTMLButtonElement;
+    fireEvent.click(selectA);
+    const contentA = screen.queryByText("content-select_a") as HTMLDivElement;
+    expect(contentA).toBeTruthy();
+  });
+
+  it("Select should toggle twice when pressing a button with setIsOpen(!setIsOpen) twice", async () => {
+    render(<DiscreteSelectTestComponent />);
+    const selectA = screen.getByTestId("button-select_a") as HTMLButtonElement;
+    fireEvent.click(selectA);
+    fireEvent.click(selectA);
+    const contentA = screen.queryByText("content-select_a") as HTMLDivElement;
+    expect(contentA).toBeNull();
+  });
 });

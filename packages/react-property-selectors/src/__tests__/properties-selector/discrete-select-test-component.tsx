@@ -151,6 +151,16 @@ export function DiscreteSelectTestComponent({
               </Fragment>
             );
           })}
+          {sel.getGroupProperties(group).map((property) => {
+            const selectorInfo = sel.getPropertySelectorHookInfo(property);
+            return (
+              <Fragment key={property.name}>
+                {selectorInfo.type === "Discrete" && (
+                  <CustomDropdown propertyName={property.name} options={selectorInfo.getUseDiscreteOptions()} />
+                )}
+              </Fragment>
+            );
+          })}
         </Fragment>
       ))}
     </>
@@ -173,5 +183,27 @@ export function Select({
         </option>
       ))}
     </select>
+  );
+}
+
+function CustomDropdown({
+  options,
+  propertyName,
+}: {
+  readonly options: DiscretePropertySelectorOptions<PropertyValueDef>;
+  readonly propertyName: string;
+}): JSX.Element {
+  const discreteSelector = useDiscretePropertySelector(options);
+  return (
+    <>
+      <button {...discreteSelector.getDropdownToggleButtonProps()} />
+      {discreteSelector.isOpen && <div>{`content-${propertyName}`}</div>}
+      <button
+        data-testid={`button-${propertyName}`}
+        onClick={() => discreteSelector.setIsOpen(!discreteSelector.isOpen)}
+      >
+        Toggle
+      </button>
+    </>
   );
 }
