@@ -171,6 +171,14 @@ export function Example2(): React.ReactElement<{}> {
               </Fragment>
             );
           })}
+          {sel.getGroupProperties(group).map((property) => {
+            const selectorInfo = sel.getPropertySelectorHookInfo(property);
+            return (
+              <Fragment key={property.name}>
+                {selectorInfo.type === "Discrete" && <CustomDropdown options={selectorInfo.getUseDiscreteOptions()} />}
+              </Fragment>
+            );
+          })}
         </Fragment>
       ))}
     </div>
@@ -204,6 +212,32 @@ function Select({
           </option>
         ))}
       </select>
+    </div>
+  );
+}
+
+function CustomDropdown({
+  options,
+}: {
+  readonly options: DiscretePropertySelectorOptions<PropertyValueDef>;
+}): JSX.Element {
+  const discreteSelector = useDiscretePropertySelector(options);
+  return (
+    <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
+      <button {...discreteSelector.getDropdownToggleButtonProps()}>
+        <span>{discreteSelector.getItemLabel(discreteSelector.selectedItem.text, discreteSelector.selectedItem)}</span>
+        <i className="fa fa-caret-down" />
+      </button>
+      {discreteSelector.isOpen && (
+        <ul>
+          {discreteSelector.items.map((item) => (
+            <li key={item.sortNo} {...discreteSelector.getDropdownListItemProps(item)}>
+              <span>{discreteSelector.getItemLabel(item.text, item)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <button onClick={() => discreteSelector.setIsOpen(!discreteSelector.isOpen)}>Toggle</button>
     </div>
   );
 }

@@ -49,6 +49,7 @@ export type DiscretePropertySelector<TItem> = {
   readonly getItemToolTip: (item: TItem) => string;
   readonly getItemValue: (item: TItem) => string;
   readonly isItemValid: (item: TItem) => boolean;
+  readonly setIsOpen: (toggle: boolean) => void;
   // Tag-specific props
   readonly getSelectProps: () => DiscretePropertySelectorSelectProps; //React.SelectHTMLAttributes<HTMLSelectElement>;
   readonly getSelectOptionProps: (item: TItem) => DiscretePropertySelectorSelectOptionProps; // React.OptionHTMLAttributes<HTMLOptionElement>;
@@ -159,8 +160,10 @@ export function useDiscretePropertySelector<TItem>(
     getCheckboxDivProps: () => ({
       onClick: () => onValueChange(isTrueItem ? getItemValue(falseItem)!! : getItemValue(trueItem)!!),
     }),
-
     items: selectableItems,
+    setIsOpen: (toggle) => {
+      setIsOpen(toggle);
+    },
   };
 }
 
