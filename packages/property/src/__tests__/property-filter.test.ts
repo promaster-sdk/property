@@ -40,6 +40,14 @@ describe("PropertyFilter", () => {
       expect(PropertyFilter.equals(filter2, filter1)).toBe(true);
     });
   });
+
+  describe("not equals", () => {
+    it("should see two PropertyFilters with different values as not equal", () => {
+      const filter1 = PropertyFilter.fromStringOrEmpty("a>b&c=1|d<2", unitLookup);
+      const filter2 = PropertyFilter.fromStringOrEmpty("a>b&c=1|d<3", unitLookup);
+      expect(PropertyFilter.equals(filter2, filter1)).toBe(false);
+    });
+  });
 });
 
 function fromStringOrException(filter: string): PropertyFilter.PropertyFilter {

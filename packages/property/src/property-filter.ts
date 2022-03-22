@@ -129,6 +129,5 @@ export function equals(other: PropertyFilter, filter: PropertyFilter): boolean {
   if (other === null || other === undefined) {
     return false;
   }
-  // eslint-disable-next-line no-self-compare
-  return filter.text === filter.text;
+  return other.text === filter.text;
 }
