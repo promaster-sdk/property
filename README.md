@@ -1,12 +1,12 @@
 # @promaster-sdk/property
 
-Software Development Kit for [promaster](https://promaster.se). The the code is provided as-is without support. It is possible to get support by separate agreement with [Divid Promaster AB](https://promaster.se).
-
 [![build][build-image]][build-url]
 [![Coverage Status][codecov-image]][codecov-url]
 [![code style: prettier][prettier-image]][prettier-url]
 [![types][types-image]][types-url]
 [![MIT license][license-image]][license-url]
+
+> Software Development Kit for promaster. The code is provided as-is without support. Support is available by separate agreement with Divid Promaster.
 
 This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/).
 
