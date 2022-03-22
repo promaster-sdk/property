@@ -26,6 +26,13 @@ export const tests = [
     ]),
   },
   {
+    name: "should_parse_a_equals_1_with_space",
+    f: "a = 1",
+    result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
+      newValueRangeExpr(newValueExpr("1", unitLookup), newValueExpr("1", unitLookup)),
+    ]),
+  },
+  {
     name: "should_parse_a_greater_than_1",
     f: "a>1",
     result: newComparisonExpr(newIdentifierExpr("a"), "greater", newValueExpr("1", unitLookup)),
@@ -57,8 +64,29 @@ export const tests = [
     ]),
   },
   {
+    name: "should_parse_a_equals_20_Meters_range_30_Meter_with_space",
+    f: "a = 20:Meter ~ 30:Meter",
+    result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
+      newValueRangeExpr(newValueExpr("20:Meter", unitLookup), newValueExpr("30:Meter", unitLookup)),
+    ]),
+  },
+  {
+    name: "should_parse_a_equals_1_range_2_with_space",
+    f: "a = 1 ~ 2",
+    result: newEqualsExpr(newIdentifierExpr("a"), "equals", [
+      newValueRangeExpr(newValueExpr("1", unitLookup), newValueExpr("2", unitLookup)),
+    ]),
+  },
+  {
     name: "should_parse_addition",
     f: "1+1=2",
+    result: newEqualsExpr(newAddExpr(newValueExpr("1", unitLookup), "add", newValueExpr("1", unitLookup)), "equals", [
+      newValueRangeExpr(newValueExpr("2", unitLookup), newValueExpr("2", unitLookup)),
+    ]),
+  },
+  {
+    name: "should_parse_addition_with_space",
+    f: "1 + 1 = 2",
     result: newEqualsExpr(newAddExpr(newValueExpr("1", unitLookup), "add", newValueExpr("1", unitLookup)), "equals", [
       newValueRangeExpr(newValueExpr("2", unitLookup), newValueExpr("2", unitLookup)),
     ]),

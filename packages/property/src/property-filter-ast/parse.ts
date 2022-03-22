@@ -78,27 +78,3 @@ export function parse(
     }
   }
 }
-
-export function preProcessString(filter: string): string {
-  if (filter === "" || filter.trim().length === 0) {
-    return "";
-  }
-
-  // Remove whitespace, before/after
-  filter = filter.trim();
-
-  // Remove whitespace in the middle, but not in string literals
-  let inString: boolean = false;
-  let newFilter = "";
-  for (const char of filter.split("")) {
-    if (char === '"') {
-      inString = !inString;
-    }
-    if (char !== " " || inString) {
-      newFilter += char;
-    }
-  }
-  filter = newFilter.toString();
-
-  return filter;
-}

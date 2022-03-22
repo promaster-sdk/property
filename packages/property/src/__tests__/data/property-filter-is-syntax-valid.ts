@@ -20,6 +20,11 @@ export const tests = [
     result: true,
   },
   {
+    name: "atomic_value_range_filter_with_space_is_valid",
+    f: "a = 1 ~ 5",
+    result: true,
+  },
+  {
     name: "atomic_mixed_value_filter_is_valid",
     f: "a=1~5,10",
     result: true,
@@ -100,6 +105,31 @@ export const tests = [
     result: true,
   },
   {
+    name: "should_accept_whitespace_2",
+    f: "a != 2",
+    result: true,
+  },
+  {
+    name: "should_accept_whitespace_3",
+    f: "a = 2 & b = 3",
+    result: true,
+  },
+  {
+    name: "should_accept_whitespace_in_string_value",
+    f: 'b="testing a string value"',
+    result: true,
+  },
+  {
+    name: "should_reject_whitespace_in_value",
+    f: "a=2 000",
+    result: false,
+  },
+  {
+    name: "should_reject_whitespace_in_property_name",
+    f: "prop a=2",
+    result: false,
+  },
+  {
     name: "amount_value_is_supported",
     f: "a>=20:Kelvin&b=20:Meter~30:Meter",
     result: true,
@@ -117,6 +147,11 @@ export const tests = [
   {
     name: "supports_add_integers",
     f: "a=2+2",
+    result: true,
+  },
+  {
+    name: "supports_add_integers_with_space",
+    f: "a = 2 + 2",
     result: true,
   },
   {

@@ -27,17 +27,16 @@ export function fromString(filter: string, unitLookup: UnitMap.UnitLookup): Prop
   }
   // eslint-disable-next-line no-prototype-builtins
   if (!_cache.hasOwnProperty(filter)) {
-    const adjustedFilter = Ast.preProcessString(filter);
-    if (adjustedFilter === "") {
+    if (filter === "" || filter.trim().length === 0) {
       return Empty;
     }
-    const ast = Ast.parse(adjustedFilter, unitLookup, false);
+    const ast = Ast.parse(filter, unitLookup, false);
 
     if (ast === undefined) {
-      console.warn("Invalid property filter syntax: " + adjustedFilter);
+      console.warn("Invalid property filter syntax: " + filter);
       return undefined;
     }
-    _cache[filter] = create(adjustedFilter, ast);
+    _cache[filter] = create(filter, ast);
   }
   return _cache[filter];
 }
@@ -59,11 +58,10 @@ export function isSyntaxValid(
     throw new Error("Argument 'filter' must be defined.");
   }
 
-  const adjusted = Ast.preProcessString(filter);
-  if (adjusted === "") {
+  if (filter === "" || filter.trim().length === 0) {
     return true;
   }
-  const ast = Ast.parse(adjusted, unitLookup, false);
+  const ast = Ast.parse(filter, unitLookup, false);
 
   if (ast === undefined) {
     return false;

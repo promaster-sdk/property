@@ -36,7 +36,7 @@ letter
 digit
 	 = [0-9]
 any
-	= [a-z0-9]i
+	= [a-z0-9 ]i
 identletter
   = letter / "." / "_"
 
@@ -48,6 +48,9 @@ propval
   = $('"' any* '"')
   / $("-"? digit+ ("." digit+)? (":" letter+)?)
 
+// optional whitespace
+_  = [ ]*
+
 // --- PRODUCTIONS ----
 
 //-------------------------------------------------------------
@@ -56,7 +59,7 @@ PropertyFilter
 
 //-------------------------------------------------------------
 OrExpr
-  = e:AndExpr e2:("|" i:AndExpr {return i;})*
+  = e:AndExpr e2:(_ "|" _ i:AndExpr {return i;})*
   {
     e2.unshift(e);
     return e2.length == 1 ? e2[0] : callbacks.createOrExpr(e2);
@@ -64,7 +67,7 @@ OrExpr
 
 //-------------------------------------------------------------
 AndExpr
-  = e:Expr e2:("&" i:Expr {return i;})*
+  = e:Expr e2:(_ "&" _ i:Expr {return i;})*
   {
     e2.unshift(e);
     return e2.length == 1 ? e2[0] : callbacks.createAndExpr(e2);
@@ -84,13 +87,13 @@ ComparisonExpr
   = comp:(
       lh:AddExpr
       (
-        (c:(">=" / "<=" / ">" / "<") rh:AddExpr)
+        (_ c:(">=" / "<=" / ">" / "<") _ rh:AddExpr)
         {
           var opType = stringToComparisonOperationType(c);
           return callbacks.createComparisonExpr(lh, opType, rh);
         }
         /
-        (c:("=" / "!=") r1:ValueRangeExpr r2:("," r:ValueRangeExpr {return r;})*)
+        (_ c:("=" / "!=") _ r1:ValueRangeExpr r2:("," r:ValueRangeExpr {return r;})*)
         {
           var opType = stringToEqualsOperationType(c);
           r2.unshift(r1);
@@ -102,7 +105,7 @@ ComparisonExpr
 
 //-------------------------------------------------------------
 ValueRangeExpr
-  = v1:AddExpr v2:("~" v:AddExpr {return v;})?
+  = v1:AddExpr v2:(_ "~" _ v:AddExpr {return v;})?
   {
     if(v2) return callbacks.createValueRangeExpr(v1, v2);
     else return callbacks.createValueRangeExpr(v1, v1);
@@ -114,7 +117,7 @@ ValueRangeExpr
 //-------------------------------------------------------------
 AddExpr
   =	(
-      (lh:MultiplyExpr o:("+" / "-") rh:AddExpr)
+      (lh:MultiplyExpr _ o:("+" / "-") _ rh:AddExpr)
       {
         var opType = stringToAddSubOperationType(o);
         return callbacks.createAddExpr(lh, opType, rh);
@@ -125,7 +128,7 @@ AddExpr
 //-------------------------------------------------------------
 MultiplyExpr
   =	(
-      (lh:UnaryExpr o:("*" / "/") rh:MultiplyExpr)
+      (lh:UnaryExpr _ o:("*" / "/") _ rh:MultiplyExpr)
       {
         var opType = stringToMulDivOperationType(o);
         return callbacks.createMulExpr(lh, opType, rh);
@@ -144,10 +147,10 @@ UnaryExpr
 //-------------------------------------------------------------
 ValueExpr
   = "null" {return callbacks.createNullExpr();}
-  / i1:ident i2:(":" i:ident {return i;})?
-  {
-    //console.log("ValueExpr", i1, i2)
-    if(i2) return callbacks.createIdentifierAsExpr(i2, i1);
-    else return callbacks.createIdentifierExpr(i1);
-  }
-  / val:propval { return callbacks.createValueExpr(val); }
+    / i1:ident i2:(":" i:ident {return i;})?
+    {
+      //console.log("ValueExpr", i1, i2)
+      if(i2) return callbacks.createIdentifierAsExpr(i2, i1);
+      else return callbacks.createIdentifierExpr(i1);
+    }
+    / val:propval { return callbacks.createValueExpr(val); }
