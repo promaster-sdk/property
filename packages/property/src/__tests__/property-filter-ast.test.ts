@@ -46,6 +46,12 @@ describe("PropertyFilterAst", () => {
   //     });
   //   });
   // });
+
+  describe("exception", () => {
+    it("parse should give exception", () => {
+      expect(isException("a=1 000", ParseData.unitLookup)).toBe(true);
+    });
+  });
 });
 
 function fromStringOrException(filter: string, unitLookup: UnitMap.UnitLookup): Ast.BooleanExpr {
@@ -54,4 +60,13 @@ function fromStringOrException(filter: string, unitLookup: UnitMap.UnitLookup): 
     throw new Error(`Could not parse property filter "${filter}".`);
   }
   return f;
+}
+
+function isException(filter: string, unitLookup: UnitMap.UnitLookup): boolean {
+  try {
+    Ast.parse(filter, unitLookup, true);
+    return false;
+  } catch (error) {
+    return true;
+  }
 }
