@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.1.0...master)
+## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@11.0.0...master)
+
+## [v11.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@10.1.0...11.0.0)
+
+- Upgrade @promaster-sdk/property package to 6.0.0.
+
+## [v10.1.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@9.1.0...10.1.0)
 
 ## Changed
 
