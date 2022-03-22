@@ -6,7 +6,7 @@
 [![types][types-image]][types-url]
 [![MIT license][license-image]][license-url]
 
-> Software Development Kit for promaster. The code is provided as-is without support. Support is available by separate agreement with Divid Promaster.
+> Software Development Kit for Promaster. The code is provided as-is without support. Support is available by separate agreement with Divid Promaster.
 
 This is a [monorepo](https://medium.com/@maoberlehner/monorepos-in-the-wild-33c6eb246cb9) managed using [lerna](https://lernajs.io/).
 
