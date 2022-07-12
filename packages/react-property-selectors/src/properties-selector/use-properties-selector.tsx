@@ -85,7 +85,7 @@ export type UsePropertiesSelectorOptions<TPropertyDef, TPropertyValueDef> = {
   readonly itemComparer?: ItemComparer<TPropertyValueDef>;
   readonly propertyComparer?: (a: TPropertyDef, b: TPropertyDef) => number;
 
-  readonly unitLables: UnitLabels;
+  readonly unitLabels: UnitLabels;
 };
 
 export type BasePropertyInfo = {
