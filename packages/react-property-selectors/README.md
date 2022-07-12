@@ -33,7 +33,7 @@ yarn storybook
 
 ## Examples
 
-The [storybooks stories](https://github.com/promaster-sdk/property/tree/master/packages/_stories/src/react-property-selectors) is currently the best examples how to use this package.
+The [storybooks stories](https://github.com/promaster-sdk/property/tree/master/packages/react-property-selectors/src/__stories__) is currently the best examples how to use this package.
 
 ## Available hooks
 
