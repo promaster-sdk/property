@@ -9,14 +9,6 @@ export function toArray<T>(z: ZipList<T>): ReadonlyArray<T> {
 }
 
 export function fromArray<T>(arr: ReadonlyArray<T>, current: T, compare: (a: T, b: T) => boolean): ZipList<T> {
-  if (arr.length < 0) {
-    return {
-      head: [],
-      current: current,
-      tail: [],
-    };
-  }
-
   const currentInArray = arr.find((f) => compare(f, current));
   if (!currentInArray) {
     return {
