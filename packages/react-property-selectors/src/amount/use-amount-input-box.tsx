@@ -70,7 +70,7 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
       // but we still received the delayed event from when the input was valid. Therefore
       // we need an extra check here to make sure that the current input is valid before we
       // dispatch the value change.
-      if (state.isValid && newAmount) {
+      if (newAmount) {
         onValueChange(newAmount);
       }
     }, debounceTime),
