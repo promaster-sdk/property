@@ -7,7 +7,7 @@ import { AmountInputBoxTestComponent } from "./amount-input-box-test-component";
 describe("Test <AmountInputBoxTestComponent />", () => {
   it("should call onValueChange after typing a valid value", async () => {
     const onValueChange = jest.fn();
-    render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={10} />);
     const input = screen.getByTestId("input");
     userEvent.type(input, "1");
     expect(input).toHaveValue("101");
@@ -16,18 +16,20 @@ describe("Test <AmountInputBoxTestComponent />", () => {
     await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 }); // But will get called within 100ms
   });
 
-  it("should not call onValueChange after typing a invalid value", async () => {
+  it("should call onValueChange after changing undefined to a valid value", async () => {
     const onValueChange = jest.fn();
-    render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={undefined} />);
     const input = screen.getByTestId("input");
-    userEvent.type(input, "A");
-    expect(input).toHaveValue("10A");
-    await waitFor(() => expect(onValueChange).not.toHaveBeenCalled(), { timeout: 100 });
+    userEvent.type(input, "1");
+    expect(input).toHaveValue("1");
+    const a = Amount.create(1, Unit.One);
+    expect(onValueChange).not.toHaveBeenCalled(); // It won't be called immediately
+    await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 });
   });
 
-  it("should not call onValueChange after changing an invalid value back to valid", async () => {
+  it("should call onValueChange after changing an invalid value back to valid", async () => {
     const onValueChange = jest.fn();
-    render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={10} />);
     const input = screen.getByTestId("input");
     userEvent.type(input, "A{backspace}1");
     expect(input).toHaveValue("101");
@@ -36,9 +38,27 @@ describe("Test <AmountInputBoxTestComponent />", () => {
     await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 });
   });
 
+  it("should not call onValueChange after typing an invalid value", async () => {
+    const onValueChange = jest.fn();
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={10} />);
+    const input = screen.getByTestId("input");
+    userEvent.type(input, "A");
+    expect(input).toHaveValue("10A");
+    await waitFor(() => expect(onValueChange).not.toHaveBeenCalled(), { timeout: 100 });
+  });
+
+  it("should not call onValueChange changing value to empty", async () => {
+    const onValueChange = jest.fn();
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={1} />);
+    const input = screen.getByTestId("input");
+    userEvent.type(input, "{backspace}");
+    expect(input).toHaveValue("");
+    await waitFor(() => expect(onValueChange).not.toHaveBeenCalled(), { timeout: 100 });
+  });
+
   it("should work to make quick changes including invalid 'values'", async () => {
     const onValueChange = jest.fn();
-    render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={10} />);
     const input = screen.getByTestId("input");
     userEvent.clear(input);
     userEvent.type(input, "10");
