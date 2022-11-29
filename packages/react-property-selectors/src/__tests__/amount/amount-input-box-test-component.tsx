@@ -3,15 +3,18 @@ import { Amount, Unit } from "uom";
 import { getDefaultAmountInputBoxStyle, useAmountInputBox } from "../../amount";
 
 interface State {
-  readonly value: Amount.Amount<unknown>;
+  readonly value: Amount.Amount<unknown> | undefined;
 }
 
 export function AmountInputBoxTestComponent({
   onValueChange,
+  initialValue,
 }: {
   readonly onValueChange: (a: Amount.Amount<unknown>) => void;
+  readonly initialValue: number | undefined;
 }): React.ReactElement<{}> {
-  const value: Amount.Amount<unknown> | undefined = Amount.create(10, Unit.One);
+  const value: Amount.Amount<unknown> | undefined =
+    initialValue !== undefined ? Amount.create(initialValue, Unit.One) : initialValue;
 
   const [state, setState] = useState<State>({
     value,
@@ -43,7 +46,7 @@ export function AmountInputBoxTestComponent({
   return (
     <div>
       <div>AmountInputBox:</div>
-      <div>Value: {Amount.toString(state.value)}</div>
+      <div>Value: {state?.value !== undefined ? Amount.toString(state.value) : "undefined"}</div>
       <input
         data-testid="input"
         type="text"
