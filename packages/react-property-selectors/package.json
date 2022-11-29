@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/react-property-selectors",
   "author": "Divid Promaster AB",
   "license": "MIT",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "main": "lib/index.js",
   "types": "lib/index",
   "description": "Hooks for building UI for selection of property values",
