@@ -122,13 +122,18 @@ export function isValid(
   unitLookupOrComparer: UnitMap.UnitLookup | PropertyValue.Comparer = PropertyValue.defaultComparer,
   comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): boolean {
+  // All overloads that pass strings will also pass unitLookupOrComparer as a UnitLookup function
   const pvs =
     typeof properties === "string"
       ? PropertyValueSet.fromString(properties, unitLookupOrComparer as UnitMap.UnitLookup)
       : properties;
   const pf =
     typeof filter === "string" ? fromStringOrEmpty(filter, unitLookupOrComparer as UnitMap.UnitLookup) : filter;
-  return pf._evaluate(pvs, comparer);
+  const cmp =
+    typeof properties === "string" || typeof filter === "string"
+      ? comparer
+      : (unitLookupOrComparer as PropertyValue.Comparer);
+  return pf._evaluate(pvs, cmp);
 }
 
 export function isValidMatchMissing(
