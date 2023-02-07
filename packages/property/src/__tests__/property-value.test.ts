@@ -15,6 +15,9 @@ describe("PropertyValue", () => {
     const pv1 = fromStringOrException("2");
     expect(PropertyValue.getInteger(pv1)).toBe(2);
   });
+  it("should_not_parse_invalid_integer", () => {
+    expect(() => fromStringOrException("{invalidinteger}")).toThrowError();
+  });
 
   it("should_parse_text", () => {
     const pv1 = fromStringOrException('"Olle"');
