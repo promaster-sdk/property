@@ -16,6 +16,11 @@ describe("PropertyValue", () => {
     expect(PropertyValue.getInteger(pv1)).toBe(2);
   });
 
+  it("should_not_parse_invalid_integer", () => {
+    const pv1 = PropertyValue.fromString("{invalidinteger}", unitLookup);
+    expect(pv1).toBe(undefined);
+  });
+
   it("should_parse_text", () => {
     const pv1 = fromStringOrException('"Olle"');
     expect(PropertyValue.getText(pv1)).toBe("Olle");

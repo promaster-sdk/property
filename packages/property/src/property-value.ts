@@ -49,7 +49,7 @@ export function create(type: PropertyType, value: Amount.Amount<unknown> | strin
 
 export function fromString(encodedValue: string, unitLookup: UnitMap.UnitLookup): PropertyValue | undefined {
   const result = _fromSerializedStringOrUndefinedIfInvalidString(encodedValue, unitLookup);
-  if (result === null) {
+  if (result === undefined) {
     console.warn(`PropertyValue.fromString(): Could not parse encoded value: '${encodedValue}'`);
   }
   return result;
@@ -269,7 +269,7 @@ function _fromSerializedStringOrUndefinedIfInvalidString(
     }
   } else {
     const integerValue: number = parseInt(encodedValue, 10);
-    if (integerValue === null) {
+    if (!Number.isInteger(integerValue)) {
       return undefined;
     }
     deserializedValue = fromInteger(integerValue);
