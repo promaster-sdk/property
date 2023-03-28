@@ -35,8 +35,8 @@ letter
   = [a-z]i
 digit
 	 = [0-9]
-any
-	= [a-z0-9 ]i
+unescaped
+  = [^\0-\x1F\x22\x5C]
 identletter
   = letter / "." / "_"
 
@@ -45,7 +45,7 @@ identletter
 ident
   = $(identletter (identletter / digit)*)
 propval
-  = $('"' any* '"')
+  = $('"' unescaped* '"')
   / $("-"? digit+ ("." digit+)? (":" letter+)?)
 
 // optional whitespace

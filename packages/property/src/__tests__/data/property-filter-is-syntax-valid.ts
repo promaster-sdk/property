@@ -130,6 +130,16 @@ export const tests = [
     result: false,
   },
   {
+    name: "should_accept_underscore_in_property_name",
+    f: "prop_a=2",
+    result: true,
+  },
+  {
+    name: "should_accept_underscore_in_string_value",
+    f: 'a="m3_h"',
+    result: true,
+  },
+  {
     name: "amount_value_is_supported",
     f: "a>=20:Kelvin&b=20:Meter~30:Meter",
     result: true,
