@@ -6,6 +6,7 @@
  */
 import React, { useCallback, useState } from "react";
 import { Amount, Unit } from "uom";
+import { debounce } from "../debounce";
 
 export type UseAmountInputBoxOptions = {
   readonly key?: string;
@@ -252,23 +253,4 @@ function filterFloat(value: string): number {
     return Number(value);
   }
   return NaN;
-}
-
-// (From underscore.js)
-// Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function debounce(func: Function, wait: number): any {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let timeout: any;
-  return function (): void {
-    const args = arguments; //eslint-disable-line
-    const later = function (): void {
-      timeout = null;
-      func.apply({}, args);
-    };
-    clearTimeout(timeout!);
-    timeout = setTimeout(later, wait);
-  };
 }
