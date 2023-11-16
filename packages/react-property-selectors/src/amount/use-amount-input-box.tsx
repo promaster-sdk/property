@@ -67,6 +67,7 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
   React.useEffect(() => {
     const newState = initStateFromParams(options);
     setState(newState);
+    return debounced.cancel;
   }, [
     options.inputUnit,
     options.inputDecimalCount,

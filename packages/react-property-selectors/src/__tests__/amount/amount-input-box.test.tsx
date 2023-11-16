@@ -29,11 +29,11 @@ describe("Test <AmountInputBoxTestComponent />", () => {
     const onValueChange = jest.fn();
     render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
     const input = screen.getByTestId("input");
-    userEvent.type(input, "A{backspace}1");
-    expect(input).toHaveValue("101");
-    const a = Amount.create(101, Unit.One);
+    userEvent.type(input, "A{backspace}");
+    expect(input).toHaveValue("10");
+    const a = Amount.create(10, Unit.One);
     expect(onValueChange).not.toHaveBeenCalled(); // It won't be called immediately
-    await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 });
+    await waitFor(() => expect(onValueChange).not.toHaveBeenCalledWith(a), { timeout: 100 }); // It won't ever be called.
   });
 
   it("should work to make quick changes including invalid 'values'", async () => {
