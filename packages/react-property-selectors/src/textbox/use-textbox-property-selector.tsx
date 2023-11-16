@@ -27,10 +27,8 @@ export function useTextboxPropertySelector({
   readOnly,
   debounceTime,
 }: UseTextboxPropertySelectorOptions): UseTextboxPropertySelector {
-  const debouncedOnValueChange = useCallback(
-    debounce((newValue: PropertyValue.PropertyValue) => onValueChange(newValue), debounceTime),
-    [onValueChange, debounceTime]
-  );
+  const debounced = debounce((newValue: PropertyValue.PropertyValue) => onValueChange(newValue), debounceTime);
+  const debouncedOnValueChange = useCallback(debounced, [onValueChange, debounceTime]);
 
   const value = PropertyValueSet.getText(propertyName, propertyValueSet);
   const [myState, setMyState] = useState(value || "");

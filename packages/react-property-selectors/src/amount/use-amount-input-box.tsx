@@ -52,18 +52,16 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
   const { readOnly, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
 
-  const debouncedOnValueChange = useCallback(
-    debounce((newAmount: Amount.Amount<unknown> | undefined) => {
-      // An event can have been received when the input was valid, then the input has gone invalid
-      // but we still received the delayed event from when the input was valid. Therefore
-      // we need an extra check here to make sure that the current input is valid before we
-      // dispatch the value change.
-      if (state.isValid && newAmount) {
-        onValueChange(newAmount);
-      }
-    }, debounceTime),
-    [onValueChange, debounceTime]
-  );
+  const debounced = debounce((newAmount: Amount.Amount<unknown> | undefined) => {
+    // An event can have been received when the input was valid, then the input has gone invalid
+    // but we still received the delayed event from when the input was valid. Therefore
+    // we need an extra check here to make sure that the current input is valid before we
+    // dispatch the value change.
+    if (state.isValid && newAmount) {
+      onValueChange(newAmount);
+    }
+  }, debounceTime);
+  const debouncedOnValueChange = useCallback(debounced, [onValueChange, debounceTime]);
 
   // Re-init state if specific params change
   React.useEffect(() => {
