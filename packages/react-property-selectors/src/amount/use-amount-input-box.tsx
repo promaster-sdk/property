@@ -52,19 +52,6 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
   const { readOnly, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
 
-  // Re-init state if specific params change
-  React.useEffect(() => {
-    const newState = initStateFromParams(options);
-    setState(newState);
-  }, [
-    options.inputUnit,
-    options.inputDecimalCount,
-    options.isRequiredMessage,
-    options.notNumericMessage,
-    options.errorMessage,
-    options.value,
-  ]);
-
   const debouncedOnValueChange = useCallback(
     debounce((newAmount: Amount.Amount<unknown> | undefined) => {
       // An event can have been received when the input was valid, then the input has gone invalid
@@ -77,6 +64,19 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
     }, debounceTime),
     [onValueChange, debounceTime]
   );
+
+  // Re-init state if specific params change
+  React.useEffect(() => {
+    const newState = initStateFromParams(options);
+    setState(newState);
+  }, [
+    options.inputUnit,
+    options.inputDecimalCount,
+    options.isRequiredMessage,
+    options.notNumericMessage,
+    options.errorMessage,
+    options.value,
+  ]);
 
   const { effectiveErrorMessage, textValue } = state;
   return {
