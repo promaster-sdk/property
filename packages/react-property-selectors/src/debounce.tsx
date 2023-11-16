@@ -8,7 +8,7 @@ export function debounce(func: Function, wait: number, immediate?: boolean): any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let timeout: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function (this: any): void {
+  const debounced = function (this: any): void {
     const context = this; //eslint-disable-line
     const args = arguments; //eslint-disable-line
     const later = function (): void {
@@ -24,4 +24,11 @@ export function debounce(func: Function, wait: number, immediate?: boolean): any
       func.apply(context, args);
     }
   };
+
+  debounced.cancel = function () {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+
+  return debounced;
 }
