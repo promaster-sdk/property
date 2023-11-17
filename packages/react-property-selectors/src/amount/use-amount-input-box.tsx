@@ -52,7 +52,7 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
   const { readOnly, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
 
-  const debounced = debounce((newAmount: Amount.Amount<unknown> | undefined) => {
+  const onChangeHandler = (newAmount: Amount.Amount<unknown> | undefined): void => {
     // An event can have been received when the input was valid, then the input has gone invalid
     // but we still received the delayed event from when the input was valid. Therefore
     // we need an extra check here to make sure that the current input is valid before we
@@ -60,7 +60,8 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
     if (state.isValid && newAmount) {
       onValueChange(newAmount);
     }
-  }, debounceTime);
+  };
+  const debounced = debounce(onChangeHandler, debounceTime);
   const debouncedOnValueChange = useCallback(debounced, [onValueChange, debounceTime]);
 
   // Re-init state if specific params change
@@ -81,14 +82,30 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
   return {
     readOnly,
     effectiveErrorMessage,
-    getInputProps: ({ onFocus, onBlur }: GetInputPropsOptions = {}) => ({
-      value: textValue,
-      title: effectiveErrorMessage,
-      readOnly,
-      onBlur,
-      onFocus,
-      onChange: (e) => _onChange(debouncedOnValueChange, setState, options, e),
-    }),
+    getInputProps: ({ onFocus, onBlur }: GetInputPropsOptions = {}) => {
+      let latestChangeEvent:
+        | React.ChangeEvent<{
+            readonly value: string;
+          }>
+        | undefined;
+      return {
+        value: textValue,
+        title: effectiveErrorMessage,
+        readOnly,
+        onBlur: (e) => {
+          debounced.cancel();
+          if (latestChangeEvent) {
+            _onChange(onChangeHandler, setState, options, latestChangeEvent);
+          }
+          onBlur?.(e);
+        },
+        onFocus,
+        onChange: (e) => {
+          latestChangeEvent = e;
+          _onChange(debouncedOnValueChange, setState, options, e);
+        },
+      };
+    },
   };
 }
 

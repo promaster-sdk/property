@@ -48,4 +48,17 @@ describe("Test <AmountInputBoxTestComponent />", () => {
     const a = Amount.create(10.2, Unit.One);
     await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 });
   });
+
+  it("should call onValueChange immediately onBlur", async () => {
+    const onValueChange = jest.fn();
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} />);
+    const input = screen.getByTestId("input");
+    userEvent.type(input, "1");
+    expect(input).toHaveValue("101");
+    expect(onValueChange).not.toHaveBeenCalled(); // It won't be called immediately.
+    userEvent.tab(); // This should blur the input.
+    const a = Amount.create(101, Unit.One);
+    expect(onValueChange).toHaveBeenCalledWith(a); // But called on blur.
+    // await waitFor(() => expect(onValueChange).toHaveBeenCalledWith(a), { timeout: 100 });
+  });
 });
