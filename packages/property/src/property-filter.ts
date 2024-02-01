@@ -1,5 +1,5 @@
 import { UnitMap } from "uom";
-import { LRUCache } from "lru-cache";
+import LRUCache from "lru-cache";
 import * as PropertyValueSet from "./property-value-set";
 import * as PropertyValue from "./property-value";
 import * as Ast from "./property-filter-ast/index";

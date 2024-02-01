@@ -21,7 +21,7 @@
     "promaster-sdk"
   ],
   "dependencies": {
-    "lru-cache": "^10.2.0",
+    "lru-cache": "^7.18.3",
     "uom": "^6.0.0"
   }
 }
