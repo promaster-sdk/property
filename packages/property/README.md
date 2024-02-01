@@ -31,6 +31,8 @@ const pvs1valid = PropertyFilter.isValid(pvs1, pf); // false
 const pvs2valid = PropertyFilter.isValid(pvs2, pf); // true
 ```
 
+The library uses an LRU (Least Recently Used) cache to improve performance. The size of this cache is controlled by the `process.env.PROPERTY_FILTER_CACHE_SIZE` environment variable on node. By default the LRU cache can store up to 20000 items.
+
 [version-image]: https://img.shields.io/npm/v/@promaster-sdk/property.svg?style=flat
 [version-url]: https://www.npmjs.com/package/@promaster-sdk/property
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
