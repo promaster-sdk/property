@@ -1,4 +1,5 @@
 import { UnitMap } from "uom";
+import { LRUCache } from "lru-cache";
 import * as PropertyValueSet from "./property-value-set";
 import * as PropertyValue from "./property-value";
 import * as Ast from "./property-filter-ast/index";
@@ -9,7 +10,10 @@ export interface PropertyFilter {
   readonly _evaluate: Ast.CompiledFilterFunction;
 }
 
-const _cache: { [key: string]: PropertyFilter } = {}; //eslint-disable-line
+const LRUCacheOptions = {
+  max: 20000, // Arbitrary number. Uses on average up to 400mb
+};
+const _cache = new LRUCache<string, PropertyFilter>(LRUCacheOptions);
 
 export const Empty: PropertyFilter = {
   text: "",
@@ -25,8 +29,7 @@ export function fromString(filter: string, unitLookup: UnitMap.UnitLookup): Prop
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
-  // eslint-disable-next-line no-prototype-builtins
-  if (!_cache.hasOwnProperty(filter)) {
+  if (!_cache.has(filter)) {
     if (filter === "" || filter.trim().length === 0) {
       return Empty;
     }
@@ -36,9 +39,10 @@ export function fromString(filter: string, unitLookup: UnitMap.UnitLookup): Prop
       console.warn("Invalid property filter syntax: " + filter);
       return undefined;
     }
-    _cache[filter] = create(filter, ast);
+    _cache.set(filter, create(filter, ast));
   }
-  return _cache[filter];
+
+  return _cache.get(filter);
 }
 
 export function fromStringOrEmpty(filterString: string, unitLookup: UnitMap.UnitLookup): PropertyFilter {
