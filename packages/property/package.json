@@ -2,7 +2,7 @@
   "name": "@promaster-sdk/property",
   "author": "Divid Promaster AB",
   "license": "MIT",
-  "version": "6.1.0",
+  "version": "7.0.0",
   "main": "lib/index.js",
   "types": "lib/index",
   "description": "Property values and filtering",
