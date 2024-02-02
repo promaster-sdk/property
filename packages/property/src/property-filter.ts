@@ -10,7 +10,9 @@ export interface PropertyFilter {
   readonly _evaluate: Ast.CompiledFilterFunction;
 }
 
-const maxLRUCacheSize = process.env.PROPERTY_FILTER_CACHE_SIZE ? Number(process.env.PROPERTY_FILTER_CACHE_SIZE) : 20000;
+const maxLRUCacheSize = globalThis.process?.env?.PROPERTY_FILTER_CACHE_SIZE
+  ? Number(process.env.PROPERTY_FILTER_CACHE_SIZE)
+  : 20000;
 
 const LRUCacheOptions = {
   max: maxLRUCacheSize, // Arbitrary number. Uses on average up to 400mb
