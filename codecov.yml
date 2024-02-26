@@ -31,3 +31,5 @@ flags:
   variant_listing:
     paths:
       - packages/variant-listing/src
+ignore:
+  - "**/__benchmarks__"
