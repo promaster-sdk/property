@@ -48,6 +48,15 @@ describe("PropertyFilter", () => {
       expect(PropertyFilter.equals(filter2, filter1)).toBe(false);
     });
   });
+
+  describe("parse whitespace", () => {
+    it("should parse PropertyFilters with whitespaces and empty strings the same", () => {
+      const filter1 = PropertyFilter.fromStringOrEmpty(" ", unitLookup);
+      const filter2 = PropertyFilter.fromStringOrEmpty("", unitLookup);
+      expect(filter1).toBe(PropertyFilter.Empty);
+      expect(filter2).toBe(PropertyFilter.Empty);
+    });
+  });
 });
 
 function fromStringOrException(filter: string): PropertyFilter.PropertyFilter {
