@@ -4,19 +4,19 @@ coverage:
     project:
       default: off
       property:
-        flags: property
+        flags: [property]
         target: 64%
       property_filter_pretty:
         target: 66%
-        flags: property_filter_pretty
+        flags: [property_filter_pretty]
       react_properties_selector:
         target: 66%
-        flags: react_properties_selector
+        flags: [react_properties_selector]
       react_property_selectors:
-        flags: react_property_selectors
+        flags: [react_property_selectors]
         target: 26%
       variant_listing:
-        flags: variant_listing
+        flags: [variant_listing]
         target: 78%
 flags:
   property:
@@ -33,3 +33,6 @@ flags:
       - packages/variant-listing/src
 ignore:
   - "**/__benchmarks__/**"
+
+# When modifying this file, please validate using
+# curl -X POST --data-binary @codecov.yml https://codecov.io/validate
