@@ -72,6 +72,7 @@
     "build-storybook": "build-storybook",
     "benchmark": "yarn build && run-s benchmark:*",
     "benchmark:property": "node packages/property/lib/__benchmarks__/property-filter.js",
+    "benchmark:parse": "node packages/property/lib/__benchmarks__/property-filter-parse.js",
     "test": "run-s build test-all",
     "test-all": "jest",
     "test:property": "jest --projects packages/property",
