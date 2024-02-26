@@ -32,4 +32,4 @@ flags:
     paths:
       - packages/variant-listing/src
 ignore:
-  - "**/__benchmarks__"
+  - "**/__benchmarks__/**"
