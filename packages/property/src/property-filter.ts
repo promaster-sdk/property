@@ -33,20 +33,29 @@ export function fromString(filter: string, unitLookup: UnitMap.UnitLookup): Prop
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
-  if (!_cache.has(filter)) {
-    if (filter === "" || filter.trim().length === 0) {
-      return Empty;
-    }
-    const ast = Ast.parse(filter, unitLookup, false);
 
-    if (ast === undefined) {
-      console.warn("Invalid property filter syntax: " + filter);
-      return undefined;
-    }
-    _cache.set(filter, create(filter, ast));
+  if (filter === "") {
+    return Empty;
   }
 
-  return _cache.get(filter);
+  const cachedFilter = _cache.get(filter);
+  if (cachedFilter) {
+    return cachedFilter;
+  }
+
+  if (filter.trim() === "") {
+    return Empty;
+  }
+
+  const ast = Ast.parse(filter, unitLookup, false);
+  if (ast !== undefined) {
+    const parsedFilter = create(filter, ast);
+    _cache.set(filter, parsedFilter);
+    return parsedFilter;
+  }
+
+  console.warn("Invalid property filter syntax: " + filter);
+  return undefined;
 }
 
 export function fromStringOrEmpty(filterString: string, unitLookup: UnitMap.UnitLookup): PropertyFilter {
