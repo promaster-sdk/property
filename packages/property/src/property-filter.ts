@@ -1,4 +1,5 @@
 import { UnitMap } from "uom";
+import LRUCache from "lru-cache";
 import * as PropertyValueSet from "./property-value-set";
 import * as PropertyValue from "./property-value";
 import * as Ast from "./property-filter-ast/index";
@@ -9,7 +10,14 @@ export interface PropertyFilter {
   readonly _evaluate: Ast.CompiledFilterFunction;
 }
 
-const _cache: { [key: string]: PropertyFilter } = {}; //eslint-disable-line
+const maxLRUCacheSize = globalThis.process?.env?.PROPERTY_FILTER_CACHE_SIZE
+  ? Number(process.env.PROPERTY_FILTER_CACHE_SIZE)
+  : 20000;
+
+const LRUCacheOptions = {
+  max: maxLRUCacheSize, // Arbitrary number. Uses on average up to 400mb
+};
+const _cache = new LRUCache<string, PropertyFilter>(LRUCacheOptions);
 
 export const Empty: PropertyFilter = {
   text: "",
@@ -25,20 +33,29 @@ export function fromString(filter: string, unitLookup: UnitMap.UnitLookup): Prop
   if (filter === null || filter === undefined) {
     throw new Error("Argument 'filter' must be defined.");
   }
-  // eslint-disable-next-line no-prototype-builtins
-  if (!_cache.hasOwnProperty(filter)) {
-    if (filter === "" || filter.trim().length === 0) {
-      return Empty;
-    }
-    const ast = Ast.parse(filter, unitLookup, false);
 
-    if (ast === undefined) {
-      console.warn("Invalid property filter syntax: " + filter);
-      return undefined;
-    }
-    _cache[filter] = create(filter, ast);
+  if (filter === "") {
+    return Empty;
   }
-  return _cache[filter];
+
+  const cachedFilter = _cache.get(filter);
+  if (cachedFilter) {
+    return cachedFilter;
+  }
+
+  if (filter.trim() === "") {
+    return Empty;
+  }
+
+  const ast = Ast.parse(filter, unitLookup, false);
+  if (ast !== undefined) {
+    const parsedFilter = create(filter, ast);
+    _cache.set(filter, parsedFilter);
+    return parsedFilter;
+  }
+
+  console.warn("Invalid property filter syntax: " + filter);
+  return undefined;
 }
 
 export function fromStringOrEmpty(filterString: string, unitLookup: UnitMap.UnitLookup): PropertyFilter {

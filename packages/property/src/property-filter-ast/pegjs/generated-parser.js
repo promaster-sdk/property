@@ -39,8 +39,8 @@ module.exports = (function () {
       peg$c1 = { type: "class", value: "[a-z]i", description: "[a-z]i" },
       peg$c2 = /^[0-9]/,
       peg$c3 = { type: "class", value: "[0-9]", description: "[0-9]" },
-      peg$c4 = /^[a-z0-9 ]/i,
-      peg$c5 = { type: "class", value: "[a-z0-9 ]i", description: "[a-z0-9 ]i" },
+      peg$c4 = /^[^\0-\x1F"\\]/,
+      peg$c5 = { type: "class", value: "[^\\0-\\x1F\\x22\\x5C]", description: "[^\\0-\\x1F\\x22\\x5C]" },
       peg$c6 = ".",
       peg$c7 = { type: "literal", value: ".", description: '"."' },
       peg$c8 = "_",
@@ -387,7 +387,7 @@ module.exports = (function () {
       return s0;
     }
 
-    function peg$parseany() {
+    function peg$parseunescaped() {
       var s0;
 
       if (peg$c4.test(input.charAt(peg$currPos))) {
@@ -488,10 +488,10 @@ module.exports = (function () {
       }
       if (s2 !== peg$FAILED) {
         s3 = [];
-        s4 = peg$parseany();
+        s4 = peg$parseunescaped();
         while (s4 !== peg$FAILED) {
           s3.push(s4);
-          s4 = peg$parseany();
+          s4 = peg$parseunescaped();
         }
         if (s3 !== peg$FAILED) {
           if (input.charCodeAt(peg$currPos) === 34) {

@@ -7,6 +7,8 @@ import {
 } from "../../discrete/use-discrete-property-selector";
 import { usePropertiesSelector, UsePropertiesSelectorOptions } from "../../properties-selector/use-properties-selector";
 
+const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
+
 type PropertyValueDef = {
   readonly sortNo: number;
   readonly value: PropertyValue.PropertyValue | undefined | null;
@@ -83,8 +85,6 @@ function getExampleProductProperties(): {
   };
 }
 const propInfo = getExampleProductProperties();
-
-const unitLookup: UnitMap.UnitLookup = (unitString) => (BaseUnits as UnitMap.UnitMap)[unitString];
 
 type UnitLabels = {
   readonly [unitName: string]: string;

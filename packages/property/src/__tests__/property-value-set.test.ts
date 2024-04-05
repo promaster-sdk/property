@@ -41,6 +41,15 @@ describe("PropertyValueSet", () => {
       expect(PropertyValueSet.get("a", pvs)).toEqual(PropertyValue.fromInteger(1));
       expect(PropertyValueSet.get("b", pvs)).toEqual(PropertyValue.fromInteger(2));
     });
+
+    it("should not parse a=1;b={invalidinteger};", () => {
+      try {
+        PropertyValueSet.fromString("a=1;b={invalidinteger}", unitLookup);
+        expect(true).toBe(false);
+      } catch (e) {
+        expect(e.message).toBe("a=1;b={invalidinteger} is not a valid PropertyValueSet");
+      }
+    });
   });
 
   describe("set", () => {
