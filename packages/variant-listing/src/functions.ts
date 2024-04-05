@@ -1,4 +1,3 @@
-import * as R from "ramda";
 import { PropertyValue, PropertyValueSet, PropertyFilter } from "@promaster-sdk/property";
 import { ExtendedVariants, ProductProperty, VariantUrlList } from "./types";
 
@@ -108,13 +107,12 @@ export function buildAllPropertyValueSetsExtended(
                 }
 
                 // Add new variant to propertyValueSet
-                const propertyValueSet = R.mergeWith(R.merge, partialPropertyValueSet, {
-                  [property.name]: {
-                    type: "integer",
-                    value: propertyValueItem.value.value as number,
-                  },
-                });
+                // const newPvs = Object.entries(partialPropertyValueSet, ((k, v) => ))
 
+                const propertyValueSet: PropertyValueSet.PropertyValueSet = {
+                  ...partialPropertyValueSet,
+                  [property.name]: { type: "integer", value: propertyValueItem.value.value as number },
+                };
                 // Check validity, so invalid ones can be filtered out.
                 // This will not catch PVSes that get invalidated by a later added property.
                 // (They get filtered out in a separate step below.)

@@ -1,7 +1,6 @@
 import { BaseUnits, UnitMap } from "uom";
 import * as fs from "fs";
 import * as Path from "path";
-import * as R from "ramda";
 import { PropertyFilter } from "@promaster-sdk/property";
 import { buildAllPropertyValueSetsExtended } from "../functions";
 
@@ -12,12 +11,14 @@ describe("buildAllPropertyValueSets", () => {
     const cfcDataRaw = JSON.parse(
       fs.readFileSync(Path.join(__dirname, "../../src/__tests__/test-data/cfc.json")).toString()
     );
-    const explicitPropertyValueSet = R.map((item) => {
-      return {
+
+    const explicitPropertyValueSet = Object.values(cfcDataRaw.explicitPropertyValueSet).map(
+      (item: { property_filter: string }) => ({
         ...item,
         property_filter: item.property_filter && PropertyFilter.fromString(item.property_filter, unitLookup),
-      };
-    }, cfcDataRaw.explicitPropertyValueSet);
+      })
+    );
+
     // Need to go though and create PropertyFilter for all strings in the data
     const cfcData = {
       ...cfcDataRaw,
