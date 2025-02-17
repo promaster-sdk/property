@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Fproperty@6.1.0...master)
+## [v7.1.0](https://github.com/promaster-sdk/property/compare/@promaster%2Fproperty@6.0.0...@promaster-sdk%2Fproperty@6.1.0) - 2025-02-17
+
+- Allow \t\r\t in property filter.
 
 ## [v6.1.0](https://github.com/promaster-sdk/property/compare/@promaster%2Fproperty@6.0.0...@promaster-sdk%2Fproperty@6.1.0) - 2022-03-22
 
