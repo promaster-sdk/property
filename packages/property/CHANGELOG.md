@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [v7.2.0](https://github.com/promaster-sdk/property/compare/@promaster%2Fproperty@6.0.0...@promaster-sdk%2Fproperty@6.1.0) - 2025-02-17
+
+- Revert \t\r\t in property filter.
+
 ## [v7.1.0](https://github.com/promaster-sdk/property/compare/@promaster%2Fproperty@6.0.0...@promaster-sdk%2Fproperty@6.1.0) - 2025-02-17
 
 - Allow \t\r\t in property filter.

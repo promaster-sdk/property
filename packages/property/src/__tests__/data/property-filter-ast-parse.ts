@@ -1,5 +1,5 @@
 import { BaseUnits, Unit, UnitMap } from "uom";
-import * as ParseData from "../data/property-filter-ast-parse";
+// import * as ParseData from "../data/property-filter-ast-parse";
 import * as PropertyFilterAst from "../../property-filter-ast";
 
 const {
@@ -99,9 +99,9 @@ export const tests = [
       newValueRangeExpr(newValueExpr("0:MyCustomUnit", unitLookup), newValueExpr("0:MyCustomUnit", unitLookup)),
     ]),
   },
-  {
-    name: "new_line_equsl",
-    f: "ccc=20|a=1,2&\n\n\n\nd=5|z=50",
-    result: PropertyFilterAst.parse("ccc=20|a=1,2&d=5|z=50", ParseData.unitLookup),
-  },
+  // {
+  //   name: "new_line_equsl",
+  //   f: "ccc=20|a=1,2&\n\n\n\nd=5|z=50",
+  //   result: PropertyFilterAst.parse("ccc=20|a=1,2&d=5|z=50", ParseData.unitLookup),
+  // },
 ];

@@ -49,7 +49,7 @@ propval
   / $("-"? digit+ ("." digit+)? (":" letter+)?)
 
 // optional whitespace
-_  = [ \t\r\n]*
+_  = [ ]*
 
 // --- PRODUCTIONS ----
 
