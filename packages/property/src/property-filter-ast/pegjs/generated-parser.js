@@ -51,8 +51,8 @@ module.exports = (function () {
       peg$c13 = { type: "literal", value: "-", description: '"-"' },
       peg$c14 = ":",
       peg$c15 = { type: "literal", value: ":", description: '":"' },
-      peg$c16 = /^[ ]/,
-      peg$c17 = { type: "class", value: "[ ]", description: "[ ]" },
+      peg$c16 = /^[ \t\r\n]/,
+      peg$c17 = { type: "class", value: "[ \\t\\r\\n]", description: "[ \\t\\r\\n]" },
       peg$c18 = function (root) {
         return root;
       },

@@ -60,6 +60,11 @@ export const tests = [
     result: true,
   },
   {
+    name: "and_or_mixed_value_filter_is_valid_multiline",
+    f: "ccc=20|a=1,2&\nd=5|z=50",
+    result: true,
+  },
+  {
     name: "and_or_mixed_value_filter_with_parenthesis_is_valid",
     f: "(ccc=20|a=1,2)&d=5|z=50",
     result: true,
