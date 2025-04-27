@@ -64,10 +64,10 @@ function buildOptions(unitLookup: UnitMap.UnitLookup): ParserOptions {
 export function parse(
   text: string,
   unitLookup: UnitMap.UnitLookup,
-  throwOnInvalidSyntax: boolean = false
+  throwOnInvalidSyntax: boolean = false,
+  options: ParserOptions = buildOptions(unitLookup)
 ): Ast.BooleanExpr | undefined {
   try {
-    const options = buildOptions(unitLookup);
     const result = Parser.parse(text, options);
     return result;
   } catch (error) {
