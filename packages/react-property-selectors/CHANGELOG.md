@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@11.0.0...master)
 
+## [v12.2.3](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@11.0.0...12.2.3)
+
+- Add useEffect to synchronize state with property value changes
+  When value changes from outside the inne value does not change which can lead to all sorts of weird behaviours and bugs
+
 ## [v11.0.0](https://github.com/promaster-sdk/property/compare/@promaster-sdk%2Freact-property-selectors@10.1.0...11.0.0)
 
 - Upgrade @promaster-sdk/property package to 6.0.0.
