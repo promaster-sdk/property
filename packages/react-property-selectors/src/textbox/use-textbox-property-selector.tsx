@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PropertyValue, PropertyValueSet } from "@promaster-sdk/property";
 
 export interface UseTextboxPropertySelectorOptions {
@@ -33,6 +33,10 @@ export function useTextboxPropertySelector({
 
   const value = PropertyValueSet.getText(propertyName, propertyValueSet);
   const [myState, setMyState] = useState(value || "");
+  useEffect(() => {
+    setMyState(value || "");
+  }, [value]);
+
   return {
     getInputProps: () => ({
       value: myState,
