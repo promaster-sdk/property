@@ -195,7 +195,8 @@ function formatWithUnitAndDecimalCount<T>(
   decimalCount: number
 ): string {
   if (!amount) {
-    return "";
+    const test = "";
+    return test;
   }
 
   // Determine the value to use
