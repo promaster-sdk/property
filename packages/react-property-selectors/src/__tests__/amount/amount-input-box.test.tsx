@@ -58,7 +58,7 @@ describe("Test <AmountInputBoxTestComponent />", () => {
 
   it("should work to make quick changes including invalid 'values'", async () => {
     const onValueChange = jest.fn();
-    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={10} />);
+    render(<AmountInputBoxTestComponent onValueChange={onValueChange} initialValue={10} decimalCount={1} />);
     const input = screen.getByTestId("input");
     userEvent.clear(input);
     userEvent.type(input, "10");

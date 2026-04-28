@@ -9,9 +9,11 @@ interface State {
 export function AmountInputBoxTestComponent({
   onValueChange,
   initialValue,
+  decimalCount,
 }: {
   readonly onValueChange: (a: Amount.Amount<unknown>) => void;
   readonly initialValue: number | undefined;
+  readonly decimalCount?: number;
 }): React.ReactElement<{}> {
   const value: Amount.Amount<unknown> | undefined =
     initialValue !== undefined ? Amount.create(initialValue, Unit.One) : initialValue;
@@ -34,7 +36,7 @@ export function AmountInputBoxTestComponent({
   const amountInputBox = useAmountInputBox({
     value: state.value,
     inputUnit: Unit.One,
-    inputDecimalCount: 2,
+    inputDecimalCount: decimalCount ?? 0,
     notNumericMessage: "notNumericMessage",
     isRequiredMessage: "isRequiredMessage",
     readOnly: false,

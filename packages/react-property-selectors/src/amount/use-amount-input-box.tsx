@@ -203,18 +203,12 @@ function formatWithUnitAndDecimalCount<T>(
   if (amount.unit === unit) {
     // No conversion needed, use the original number of decimals in the amount
     valueToUse = amount.value;
-    // Determine number of decimals
-    if (amount.decimalCount <= decimalCount) {
-      return valueToUse.toFixed(amount.decimalCount);
-    } else {
-      return valueToUse.toFixed(decimalCount);
-    }
   } else {
     // Conversion needed, use the max number of decimals so the conversion
     // result is as accurate as possible
     valueToUse = Amount.valueAs(unit, amount);
-    return valueToUse.toFixed(decimalCount);
   }
+  return valueToUse.toFixed(decimalCount);
 }
 
 function unformatWithUnitAndDecimalCount<T>(
