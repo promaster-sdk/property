@@ -50,18 +50,26 @@ type State = {
 export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountInputBox {
   const { readOnly, onValueChange, debounceTime } = options;
   const [state, setState] = useState<State>(initStateFromParams(options));
+  const [isFocused, setIsFocused] = useState(false);
 
-  // Re-init state if specific params change
+  // Re-init state from props whenever relevant params change, but never while
+  // the user is actively editing — that would override in-progress input and
+  // re-add decimals they intentionally removed.
+  // Cap the decimal count to whatever the current value actually carries so
   React.useEffect(() => {
-    const newState = initStateFromParams(options);
+    if (isFocused) {
+      return;
+    }
+    const newState = initStateFromParams({ ...options });
     setState(newState);
   }, [
+    isFocused,
+    options.value,
     options.inputUnit,
     options.inputDecimalCount,
     options.isRequiredMessage,
     options.notNumericMessage,
     options.errorMessage,
-    options.value,
   ]);
 
   const debouncedOnValueChange = useCallback(
@@ -85,8 +93,14 @@ export function useAmountInputBox(options: UseAmountInputBoxOptions): UseAmountI
       value: textValue,
       title: effectiveErrorMessage,
       readOnly,
-      onBlur,
-      onFocus,
+      onFocus: (e) => {
+        setIsFocused(true);
+        onFocus?.(e);
+      },
+      onBlur: (e) => {
+        setIsFocused(false);
+        onBlur?.(e);
+      },
       onChange: (e) => _onChange(debouncedOnValueChange, setState, options, e),
     }),
   };
