@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import { UnitMap } from "uom";
 import LRUCache from "lru-cache";
 import * as PropertyValueSet from "./property-value-set";
@@ -98,12 +99,58 @@ export function isSyntaxValid(
   return true;
 }
 
+export const isValidFromString = (
+  properties: PropertyValueSet.PropertyValueSet | string,
+  filter: PropertyFilter | string,
+  unitLookup: UnitMap.UnitLookup,
+  comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
+): boolean => {
+  const pvs = typeof properties === "string" ? PropertyValueSet.fromString(properties, unitLookup) : properties;
+  const pf = typeof filter === "string" ? fromString(filter, unitLookup)! : filter;
+  return pf._evaluate(pvs, comparer);
+};
+
 export function isValid(
   properties: PropertyValueSet.PropertyValueSet,
   filter: PropertyFilter,
+  comparer?: PropertyValue.Comparer
+): boolean;
+export function isValid(
+  properties: string,
+  filter: PropertyFilter,
+  unitLookup: UnitMap.UnitLookup,
+  comparer?: PropertyValue.Comparer
+): boolean;
+export function isValid(
+  properties: PropertyValueSet.PropertyValueSet,
+  filter: string,
+  unitLookup: UnitMap.UnitLookup,
+  comparer?: PropertyValue.Comparer
+): boolean;
+export function isValid(
+  properties: string,
+  filter: string,
+  unitLookup: UnitMap.UnitLookup,
+  comparer?: PropertyValue.Comparer
+): boolean;
+export function isValid(
+  properties: PropertyValueSet.PropertyValueSet | string,
+  filter: PropertyFilter | string,
+  unitLookupOrComparer: UnitMap.UnitLookup | PropertyValue.Comparer = PropertyValue.defaultComparer,
   comparer: PropertyValue.Comparer = PropertyValue.defaultComparer
 ): boolean {
-  return filter._evaluate(properties, comparer);
+  // All overloads that pass strings will also pass unitLookupOrComparer as a UnitLookup function
+  const pvs =
+    typeof properties === "string"
+      ? PropertyValueSet.fromString(properties, unitLookupOrComparer as UnitMap.UnitLookup)
+      : properties;
+  const pf =
+    typeof filter === "string" ? fromStringOrEmpty(filter, unitLookupOrComparer as UnitMap.UnitLookup) : filter;
+  const cmp =
+    typeof properties === "string" || typeof filter === "string"
+      ? comparer
+      : (unitLookupOrComparer as PropertyValue.Comparer);
+  return pf._evaluate(pvs, cmp);
 }
 
 export function isValidMatchMissing(
