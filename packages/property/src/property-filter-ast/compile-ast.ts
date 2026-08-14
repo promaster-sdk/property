@@ -31,7 +31,7 @@ function isNotCompilable(ast: Ast.BooleanExpr): boolean {
   let hasAddOrMul = false;
   let hasAmountOrText = false;
   let hasNameToNameComparision = false;
-  visitAllExpr(ast, (e) => {
+  walkExpr(ast, (e) => {
     if (e.type === "ValueExpr" && e.parsed.type !== "integer") {
       hasAmountOrText = true;
     }
@@ -57,63 +57,63 @@ function isNotCompilable(ast: Ast.BooleanExpr): boolean {
   return hasAddOrMul || hasAmountOrText || hasNameToNameComparision;
 }
 
-function visitAllExpr(e: Ast.Expr, visit: (e: Ast.Expr) => void): void {
+export function walkExpr(e: Ast.Expr, walk: (e: Ast.Expr) => void): void {
   switch (e.type) {
     case "AndExpr": {
-      visit(e);
+      walk(e);
       for (const child of e.children) {
-        visitAllExpr(child, visit);
+        walkExpr(child, walk);
       }
       return;
     }
     case "OrExpr": {
-      visit(e);
+      walk(e);
       for (const child of e.children) {
-        visitAllExpr(child, visit);
+        walkExpr(child, walk);
       }
       return;
     }
     case "EqualsExpr": {
-      visit(e);
-      visitAllExpr(e.leftValue, visit);
+      walk(e);
+      walkExpr(e.leftValue, walk);
       for (const range of e.rightValueRanges) {
-        visitAllExpr(range, visit);
+        walkExpr(range, walk);
       }
       return;
     }
     case "ValueRangeExpr": {
-      visitAllExpr(e.min, visit);
-      visitAllExpr(e.max, visit);
+      walkExpr(e.min, walk);
+      walkExpr(e.max, walk);
       return;
     }
     case "ComparisonExpr": {
-      visit(e);
-      visitAllExpr(e.leftValue, visit);
-      visitAllExpr(e.rightValue, visit);
+      walk(e);
+      walkExpr(e.leftValue, walk);
+      walkExpr(e.rightValue, walk);
       return;
     }
     case "AddExpr": {
-      visit(e);
-      visitAllExpr(e.left, visit);
-      visitAllExpr(e.right, visit);
+      walk(e);
+      walkExpr(e.left, walk);
+      walkExpr(e.right, walk);
       return;
     }
     case "MulExpr": {
-      visit(e);
-      visitAllExpr(e.left, visit);
-      visitAllExpr(e.right, visit);
+      walk(e);
+      walkExpr(e.left, walk);
+      walkExpr(e.right, walk);
       return;
     }
     case "UnaryExpr": {
-      visit(e);
-      visitAllExpr(e.value, visit);
+      walk(e);
+      walkExpr(e.value, walk);
       return;
     }
     case "EmptyExpr":
     case "IdentifierExpr":
     case "ValueExpr":
     case "NullExpr": {
-      visit(e);
+      walk(e);
       return;
     }
     default: {
